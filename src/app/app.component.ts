@@ -9,6 +9,5 @@ export class AppComponent implements OnInit {
   title = 'sincrono';
   constructor(){}
   public ngOnInit(): void{
-    alert("ciao");
   }
 }

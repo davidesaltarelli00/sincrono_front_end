@@ -1,0 +1,258 @@
+<div class="card card-primary">
+
+    <div class="row mb-2">
+        <!-- /.col -->
+        <div class="col-sm-6">
+            <h1 class="m-0">
+                Nuova Anagrafica
+            </h1>
+        </div>
+        <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="home">Home</a></li>
+                <li class="breadcrumb-item"><a href="table">Lista anagrafica</a></li>
+                <li class="breadcrumb-item active">Nuova anagrafica</li>
+            </ol>
+        </div>
+        <!-- /.col -->
+    </div>
+    <div *ngIf="errore">
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-ban"></i> Alert!</h5>
+            {{messaggio}}
+        </div>
+    </div>
+    
+    <form [formGroup]="form" (ngSubmit)="inserisci()">
+
+           <div class="card-body">
+            <div class="row">
+            </div>
+            <fieldset class="border p-2">
+                <legend class="w-auto">Dati generali:</legend>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="nome">Nome</label>
+                            <input class="form-control" id="nome" type="text" placeholder="Inserisci un nome" formControlName="nome" [ngClass]="{'is-invalid': submitted && f['nome'].errors}">
+                            <div *ngIf="submitted && f['nome'].errors" class="invalid-feedback">
+                                <div *ngIf="form.get('nome')?.errors?.['required']">
+                                    Nome obbligatorio
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="cognome">Cognome</label>
+                            <input class="form-control" id="cognome" type="text" placeholder="Inserisci un cognome" formControlName="cognome" [ngClass]="{'is-invalid': submitted && f['cognome'].errors}">
+                            <div *ngIf="submitted && f['cognome'].errors" class="invalid-feedback">
+                                <div *ngIf="f['cognome'].errors['required']">Cognome obbligatorio</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+
+                            <label for="dataNascita" style="width: 100%;">Data di nascita</label>
+                        </div>
+                    </div>
+
+                 
+                </div>
+                
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="codice-fiscale">Codice Fiscale</label>
+                            <input type="text" class="form-control" id="codice-fiscale" placeholder="Inserisci un codice fiscale" formControlName="codiceFiscale" [ngClass]="{'is-invalid': submitted && f['codiceFiscale'].errors}">
+                            <div *ngIf="submitted && f['codiceFiscale'].errors" class="invalid-feedback">
+                                <div *ngIf="f['codiceFiscale'].errors['required']">Codice fiscale obbligatorio</div>
+                                <div *ngIf="f['codiceFiscale'].errors['minlength']">
+                                    Codice fiscale deve contenere almeno 16 caratteri
+                                </div>
+                                <div *ngIf="f['codiceFiscale'].errors['maxlength']">
+                                    Codice fiscale deve contenere massimo 16 caratteri
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="partita-iva">Partita IVA</label>
+                            <input type="text" class="form-control" id="partita-iva" placeholder="Inserisci una partita iva" formControlName="partitaIva">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="border p-2">
+                <legend class="w-auto">Indirizzi:</legend>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="indirizzo-residenza">Indirizzo di Residenza</label>
+                            <input type="text" class="form-control" id="indirizzo-residenza" placeholder="Inserisci un indirizzo di residenza" formControlName="indirizzoResidenza" [ngClass]="{'is-invalid': submitted && f['indirizzoResidenza'].errors}">
+                            <div *ngIf="submitted && f['indirizzoResidenza'].errors" class="invalid-feedback">
+                                <div *ngIf="f['indirizzoResidenza'].errors['residenza']">Indirizzo residenza obbligatorio</div>
+                                <div *ngIf="f['indirizzoResidenza'].errors['indirizzo']">compilare i campi restanti dell'indirizzo di residenza</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div formGroupName="provinciaResidenza">
+                            <label for="provincia-nascita">Provincia di Residenza</label>
+                            <select style="width: 100%;" id="provincia-nascita" class="form-control select2" formControlName="id">
+                            <option value="">--nessuna selezione--</option>
+                           <option *ngFor="let provincia of province" value="{{provincia.id}}">{{provincia.nome}}</option>
+                          </select>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="cap-residenza">CAP di Residenza</label>
+                            <input type="text" class="form-control" id="cap-residenza" placeholder="Inserisci un cap di residenza" formControlName="capResidenza">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="residenza-estera">Residenza Estera</label>
+                            <input type="text" class="form-control" id="residenza-estera" placeholder="Inserisci una residenza estera" formControlName="residenzaEstera" [ngClass]="{'is-invalid': submitted && f['residenzaEstera'].errors}">
+                            <div *ngIf="submitted && f['residenzaEstera'].errors" class="invalid-feedback">
+                                <div *ngIf="f['residenzaEstera'].errors['residenza']">Indirizzo di residenza obbligatorio</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="indirizzo-domicilio">Indirizzo di Domicilio</label>
+                            <input type="text" class="form-control" id="indirizzo-domicilio" placeholder="Inserisci un indirizzo di domicilio" formControlName="indirizzoDomicilio">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div formGroupName="provinciaDomicilio">
+                            <label for="provincia-domicilio">Provincia di Domicilio</label>
+                            <select style="width: 100%;" class="form-control select2" id="provincia-domicilio" formControlName="id">
+                           <option *ngFor="let provincia of province" value="{{provincia.id}}">{{provincia.nome}}</option>
+                          </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="cap-domicilio">CAP di domicilio</label>
+                            <input type="text" class="form-control" id="cap-domicilio" placeholder="Inserisci un cap di domicilio" formControlName="capDomicilio">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+
+
+            <fieldset class="border p-2">
+                <legend class="w-auto">Contatti:</legend>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="telefono">Telefono</label>
+                            <input type="text" class="form-control" id="telefono" placeholder="Inserisci un telefono" formControlName="telefono" [ngClass]="{'is-invalid': submitted && f['telefono'].errors}">
+                            <div *ngIf="submitted && f['telefono'].errors" class="invalid-feedback">
+                                <div *ngIf="f['telefono'].errors['required']">telefono obbligatorio</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="telefono-aziendale">Telefono Aziendale</label>
+                            <input type="text" class="form-control" id="telefono-aziendale" placeholder="Inserisci un telefono aziendale" formControlName="telefonoAziendale" [ngClass]="{'is-invalid': submitted && f['telefonoAziendale'].errors}">
+                            <div *ngIf="submitted && f['telefonoAziendale'].errors" class="invalid-feedback">
+                                <div *ngIf="f['telefonoAziendale'].errors['required']">telefono aziendale obbligatorio</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" id="email" placeholder="Inserisci una email" formControlName="email" [ngClass]="{'is-invalid': submitted && f['email'].errors}">
+                            <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                                <div *ngIf="f['email'].errors['required']">Email obbligatorio</div>
+                                <div *ngIf="f['email'].errors['email']">Email non valida</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="email-aziendale">Email Aziendale</label>
+                            <input type="text" class="form-control" id="email-aziendale" placeholder="Inserisci una email aziendale" formControlName="emailAziendale" [ngClass]="{'is-invalid': submitted && f['emailAziendale'].errors}">
+                            <div *ngIf="submitted && f['emailAziendale'].errors" class="invalid-feedback">
+                                <div *ngIf="f['emailAziendale'].errors['required']">Email aziendale obbligatorio</div>
+                                <div *ngIf="f['emailAziendale'].errors['email']">Email aziendale non valida</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="pec">PEC</label>
+                            <input type="text" class="form-control" id="pec" placeholder="Inserisci una pec" formControlName="pec" [ngClass]="{'is-invalid': submitted && f['pec'].errors}">
+                            <div *ngIf="submitted && f['pec'].errors" class="invalid-feedback">
+                                <div *ngIf="f['pec'].errors['required']">Pec obbligatorio</div>
+                                <div *ngIf="f['pec'].errors['email']">Pec non valida</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="border p-2">
+                <legend class="w-auto">Altri dati:</legend>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div formGroupName="titoloStudio">
+                            <label for="titolo-studio">Titolo di Studio</label>
+                            <select style="width: 100%;" class="form-control select2" id="titolo-studio" formControlName="id" [ngClass]="{'is-invalid': submitted && f['titoli_di_studio'].errors}">
+                           <option *ngFor="let titolo of titoli" value="{{titolo.id}}">{{titolo.descrizione}}</option>
+                          </select>
+                     
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+                            <!-- <label for="exampleFormControlSelect1">Figli a carico</label>
+                            <input type="text" formControlName="figliCarico">-->
+                            <div class="form-group">
+                                <label for="contry">Figli a carico</label>
+                                <select class="form-control" id="contry" formControlName="figliCarico">
+                                  <option *ngFor="let contry of countries" [value]="contry.id">{{contry.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+    
+
+            </fieldset>
+        </div>
+
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
