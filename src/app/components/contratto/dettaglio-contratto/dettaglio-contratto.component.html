@@ -1,0 +1,48 @@
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right border-bottom">
+            <div class="col-md-8 border-bottom">
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h1 class="text-right">Dettagli Contratto</h1>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label class="labels">Azineda</label><input type="text" class="form-control"
+                                value="{{ data?.tipoAzienda.descrizione }}" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Tipo Contratto</label><input type="text" class="form-control"
+                                value="{{ data?.tipoContratto.descrizione }}" readonly />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="labels">Livello Contratto</label><input type="text" class="form-control"
+                                value="{{ data?.livelloContratto.descrizione }}" readonly />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Contratto Nazionale</label><input type="text" class="form-control"
+                                value="{{ data?.contrattoNazionale.descrizione }}" readonly />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label class="labels">Qualifica</label><input type="text" class="form-control"
+                                value="{{ data?.qualifica }}" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Mesi Durata</label><input type="text" class="form-control"
+                                value="{{ data?.mesiDurata }}" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="p-3 py-5">
+            </div>
+        </div>
+    </div>
+</div>
