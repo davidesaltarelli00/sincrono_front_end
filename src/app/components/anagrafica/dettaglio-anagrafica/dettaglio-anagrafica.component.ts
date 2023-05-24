@@ -1,7 +1,8 @@
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnagraficaService } from '../anagrafica-service';
-import { AbstractControl, FormBuilder, FormControl, FormGroup,Validators } from '@angular/forms';
+
 declare var $: any;
 
 @Component({

@@ -1,12 +1,8 @@
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnagraficaService } from '../anagrafica-service';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators, } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-
-
-
-
 
 export const MY_DATE_FORMATS = {
   parse: {

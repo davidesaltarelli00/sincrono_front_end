@@ -1,6 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ModificaAnagraficaComponent } from './modifica-anagrafica.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 describe('ModificaAnagraficaComponent', () => {
   let component: ModificaAnagraficaComponent;
