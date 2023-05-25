@@ -27,4 +27,23 @@ export class ContrattoService {
   detail(id: any): Observable<any> {
     return this.http.get<any>(`http://localhost:8085/contratto/${id}`);
   }
+
+  //GET TIPOLOGICHE
+  getTipoContratto(): Observable<any> {
+    return this.http.get<any>(`http://localhost:8085/tipo-contratto/map`);
+  }
+
+  getLivelloContratto(): Observable<any> {
+    return this.http.get<any>(
+      `http://localhost:8085/tipo-livelli-contrattuali/map`
+    );
+  }
+
+  getTipoAzienda(): Observable<any> {
+    return this.http.get<any>(`http://localhost:8085/tipo-azienda/map`);
+  }
+
+  getContrattoNazionale(): Observable<any> {
+    return this.http.get<any>(`http://localhost:8085/contratto-nazionale/map`);
+  }
 }

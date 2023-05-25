@@ -1,1 +1,81 @@
-<p>modifica-contratto works!</p>
+<div>
+    <form [formGroup]="modifica" (ngSubmit)="inserisci()">
+        <div class="card-body">
+            <div class="row"></div>
+            <fieldset class="border p-2">
+                <legend class="w-auto">Dati generali:</legend>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="id">ID</label>
+                            <input class="form-control" id="id" type="text" placeholder="Inserisci un id"
+                                formControlName="id">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div formGroupName="tipoContratto">
+                            <label for="tipoContratto">Tipo Contratto</label>
+                            <select style="width: 100%;" id="tipoContratto" class="form-control select2"
+                                formControlName="id">
+                                <option value="">--nessuna selezione--</option>
+                                <option *ngFor="let tipoContratto of tipiContratti" value="{{tipoContratto.id}}">
+                                    {{tipoContratto.descrizione}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div formGroupName="livelloContratto">
+                            <label for="livelloContratto">Livello Contratto</label>
+                            <select style="width: 100%;" id="livelloContratto" class="form-control select2"
+                                formControlName="id">
+                                <option value="">--nessuna selezione--</option>
+                                <option *ngFor="let livelloContratto of livelliContratti"
+                                    value="{{livelloContratto.id}}">{{livelloContratto.descrizione}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div formGroupName="tipoAzienda">
+                            <label for="tipoAzienda">Tipo Azienda</label>
+                            <select style="width: 100%;" id="tipoAzienda" class="form-control select2"
+                                formControlName="id">
+                                <option value="">--nessuna selezione--</option>
+                                <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.id}}">
+                                    {{tipoAzienda.descrizione}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div formGroupName="contrattoNazionale">
+                            <label for="contrattoNazionale">Contratto Nazionale</label>
+                            <select style="width: 100%;" id="contrattoNazionale" class="form-control select2"
+                                formControlName="id">
+                                <option value="">--nessuna selezione--</option>
+                                <option *ngFor="let contrattoNazionale of contrattiNazionali"
+                                    value="{{contrattoNazionale.id}}">{{contrattoNazionale.descrizione}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="attivo" style="width: 100%;">Attivo</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="attivo" id="inlineRadio1" value=true
+                                    formControlName="attivo">
+                                <label class="form-check-label" for="inlineRadio1">Attivo</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="attivo" id="inlineRadio2" value=false
+                                    formControlName="attivo">
+                                <label class="form-check-label" for="inlineRadio2">Non Attivo</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>

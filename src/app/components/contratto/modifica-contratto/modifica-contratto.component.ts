@@ -2,7 +2,13 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { DettaglioAnagraficaComponent } from './../../anagrafica/dettaglio-anagrafica/dettaglio-anagrafica.component';
 import { ContrattoService } from './../contratto-service';
 import { Component } from '@angular/core';
-import {FormBuilder,FormControl,FormGroup,Validators,} from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -15,16 +21,15 @@ export class ModificaContrattoComponent {
   data: any = [];
 
   //TIPOLOGICHE
-  tipoContratto: any = [];
-  livelloContratto: any = [];
-  tipoAzienda: any = [];
-  contrattoNazionale: any = [];
+  tipiContratti: any = [];
+  livelliContratti: any = [];
+  tipiAziende: any = [];
+  contrattiNazionali: any = [];
 
   submitted = false;
 
   errore = false;
   messaggio: any;
-
 
   modifica = new FormGroup({
     id: new FormControl(''),
@@ -88,7 +93,7 @@ export class ModificaContrattoComponent {
         console.log(this.data);
 
         this.modifica = this.formBuilder.group({
-          id: new FormControl(''),
+          id: new FormControl(this.data?.id),
           tipoContratto: new FormGroup({
             id: new FormControl(this.data?.tipoContratto.id),
           }),
@@ -147,21 +152,43 @@ export class ModificaContrattoComponent {
     this.caricaContrattoNazionale();
   }
 
-  caricaTipoContratto(){
-    this.contrattoService.get().subscribe((result:any)=>{
+  caricaTipoContratto() {
+    this.contrattoService.getTipoContratto().subscribe((result: any) => {
       console.log(result);
-      this.province=(result as any)['list'];
+      this.tipiContratti = (result as any)['list'];
+    });
   }
-  caricaLivelloContratto(){
-
+  caricaLivelloContratto() {
+    this.contrattoService.getLivelloContratto().subscribe((result: any) => {
+      console.log(result);
+      this.livelliContratti = (result as any)['list'];
+    });
   }
-  caricaTipoAzienda(){
-
+  caricaTipoAzienda() {
+    this.contrattoService.getTipoAzienda().subscribe((result: any) => {
+      console.log(result);
+      this.tipiAziende = (result as any)['list'];
+    });
   }
 
-  caricaContrattoNazionale(){
-
+  caricaContrattoNazionale() {
+    this.contrattoService.getContrattoNazionale().subscribe((result: any) => {
+      console.log(result);
+      this.contrattiNazionali = (result as any)['list'];
+    });
   }
 
+  get f(): { [key: string]: AbstractControl } {
+    return this.modifica.controls;
+  }
 
+  inserisci() {
+    console.log(JSON.stringify(this.modifica.value));
+    const body=JSON.stringify({"contratto":this.modifica.value});
+    console.log(body);
+  
+    this.contrattoService.update(body).subscribe((result)=>{
+      console.log(result); 
+    })
+  }
 }

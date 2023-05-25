@@ -1,6 +1,37 @@
 <div>
-    
-    <!--<form [formGroup]="form" (ngSubmit)="inserisci()">
-    
-    </form>-->
+    <form [formGroup]="form" (ngSubmit)="inserisci()">
+        <div class="card-body">
+            <div class="row"></div>
+            <fieldset class="border p-2">
+                <legend class="w-auto">Dati generali:</legend>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="nome">Nome</label>
+                            <input class="form-control" id="nome" type="text" placeholder="Inserisci un nome"
+                                formControlName="nome" [ngClass]="{ 'is-invalid': submitted && f['nome'].errors }" />
+                            <div *ngIf="submitted && f['nome'].errors" class="invalid-feedback">
+                                <div *ngIf="form.get('nome')?.errors?.['required']">
+                                    Nome obbligatorio
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="cognome">Cognome</label>
+                            <input class="form-control" id="cognome" type="text" placeholder="Inserisci un cognome"
+                                formControlName="cognome"
+                                [ngClass]="{ 'is-invalid': submitted && f['cognome'].errors }" />
+                            <div *ngIf="submitted && f['cognome'].errors" class="invalid-feedback">
+                                <div *ngIf="f['cognome'].errors['required']">
+                                    Cognome obbligatorio
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </form>
 </div>
