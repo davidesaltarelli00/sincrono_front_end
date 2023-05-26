@@ -85,6 +85,7 @@ export class ModificaContrattoComponent {
     private formBuilder: FormBuilder,
     private router2: Router
   ) {}
+
   ngOnInit(): void {
     this.contrattoService
       .detail(this.router.snapshot.params['id'])
@@ -93,7 +94,7 @@ export class ModificaContrattoComponent {
         console.log(this.data);
 
         this.modifica = this.formBuilder.group({
-          id: new FormControl(this.data?.id),
+          id: new FormControl(this.router.snapshot.params['id']),
           tipoContratto: new FormGroup({
             id: new FormControl(this.data?.tipoContratto.id),
           }),
@@ -183,12 +184,25 @@ export class ModificaContrattoComponent {
   }
 
   inserisci() {
+    this.submitted = true;
+
+    const removeEmpty = (obj: any) => {
+      Object.keys(obj).forEach((key) => {
+        if (obj[key] && typeof obj[key] === 'object') {
+          removeEmpty(obj[key]);
+        } else if (obj[key] === null) {
+          delete obj[key];
+        }
+      });
+    };
+
+    removeEmpty(this.modifica.value);
     console.log(JSON.stringify(this.modifica.value));
-    const body=JSON.stringify({"contratto":this.modifica.value});
+    const body : string = JSON.stringify({ contratto: this.modifica.value });
     console.log(body);
-  
-    this.contrattoService.update(body).subscribe((result)=>{
-      console.log(result); 
-    })
+
+    this.contrattoService.update(body).subscribe((result) => {
+      console.log(result);
+    });
   }
 }
