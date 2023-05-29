@@ -19,7 +19,7 @@ export const MY_DATE_FORMATS = {
 @Component({
   selector: 'app-nuova-anagrafica',
   templateUrl: './nuova-anagrafica.component.html',
-  styleUrls: ['./nuova-anagrafica.component.css'],
+  styleUrls: ['./nuova-anagrafica.component.scss'],
   
  
 })

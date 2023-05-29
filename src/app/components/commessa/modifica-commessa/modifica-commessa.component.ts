@@ -1,9 +1,8 @@
 import { CommessaService } from './../commessa-service.component';
-import { Component, OnInit, HostBinding} from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AbstractControl,FormBuilder,FormControl, FormGroup,Validators,FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
-
 
 
 export const MY_DATE_FORMATS = {
@@ -18,7 +17,6 @@ export const MY_DATE_FORMATS = {
   },
 };
 
-
 @Component({
   selector: 'app-modifica-commessa',
   templateUrl: './modifica-commessa.component.html',
@@ -26,82 +24,86 @@ export const MY_DATE_FORMATS = {
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
   ],
-  
 })
-
-
-
-
 export class ModificaCommessaComponent implements OnInit {
   id: any = this.router.snapshot.params['id'];
-  data: any;
+  data: any = [];
+  data2: any = [];
   submitted = false;
   errore = false;
   messaggio: any;
-  
 
+  modificaCommessa = new FormGroup({
+    id: new FormControl(''),
+    cliente: new FormControl(''),
+    clienteFinale: new FormControl(''),
+    titoloPosizione: new FormControl(''),
+    distacco: new FormControl(''),
+    dataInizio: new FormControl(''),
+    dataFine: new FormControl(''),
+    costoMese: new FormControl(''),
+    tariffaGiornaliera: new FormControl(''),
+    nominativo: new FormControl(''),
+    azienda: new FormControl(''),
+    aziendaDiFatturazioneInterna: new FormControl(''),
+    stato: new FormControl(''),
+    attesaLavori: new FormControl(''),
+  });
 
-
- modificaCommessa = new FormGroup({
-  id:new FormControl(""),
-  cliente:new FormControl(""),
-  cliente_finale:new FormControl(""),
-  titolo_posizione:new FormControl(""),
-  distacco:new FormControl(""),
-  data_inizio:new FormControl(""),
-  data_fine:new FormControl(""),
-  costo_mese:new FormControl(""),
-  tariffa_giornaliera:new FormControl(""),
-  nominativo:new FormControl(""),
-  azienda:new FormControl(""),
-  azienda_di_fatturazione_interna:new FormControl(""),
-  stato:new FormControl(""),
-  attesaLavori:new FormControl(""),
-
-});
-
-
-constructor(
-  private CommessaService: CommessaService, 
-  private router: ActivatedRoute, 
-  private formBuilder: FormBuilder,
-  private router2: Router
+  constructor(
+    private commessaService: CommessaService,
+    private router: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private router2: Router
   ) { }
 
-ngOnInit(): void {
+  ngOnInit(): void {
+    this.commessaService.detail(this.router.snapshot.params['id']).subscribe((resp: any) => {
+      this.data2 = (resp as any)['commessa'];
+      console.log(this.data2);
+      
+    });
 
+    this.modificaCommessa = this.formBuilder.group({
+      id: new FormControl(this.router.snapshot.params['id']),
+      cliente: new FormControl(this.data?.cliente),
+      clienteFinale: new FormControl(this.data?.clienteFinale),
+      titoloPosizione: new FormControl(this.data?.titoloPosizione),
+      distacco: new FormControl(this.data?.distacco),
+      dataInizio: new FormControl(this.data?.dataInizio),
+      dataFine: new FormControl(this.data?.dataFine),
+      costoMese: new FormControl(this.data?.costoMese),
+      tariffaGiornaliera: new FormControl(this.data?.tariffaGiornaliera),
+      nominativo: new FormControl(this.data?.nominativo),
+      azienda: new FormControl(this.data?.azienda),
+      aziendaDiFatturazioneInterna: new FormControl(this.data?.aziendaDiFatturazioneInterna),
+      stato: new FormControl(""),
+      attesaLavori: new FormControl(this.data?.attesaLavori),
+    });
+  }
 
-  this.modificaCommessa=this.formBuilder.group({
-   id:new FormControl(this.router.snapshot.params['id']),
-   cliente:new FormControl(this.data?.cliente),
-   cliente_finale:new FormControl(this.data?.cliente_finale),
-   titolo_posizione:new FormControl(this.data?.titolo_posizione),
-   distacco:new FormControl(this.data?.distacco),
-   data_inizio:new FormControl(this.data?.data_inizio),
-   data_fine:new FormControl(this.data?.data_fine),
-   costo_mese:new FormControl(this.data?.costo_mese),
-   tariffa_giornaliera:new FormControl(this.data?.tariffa_giornaliera),
-   nominativo:new FormControl(this.data?.nominativo),
-   azienda:new FormControl(this.data?.azienda),
-   azienda_di_fatturazione_interna:new FormControl(this.data?.azienda_di_fatturazione_interna),
-   stato:new FormControl(this.data?.stato),
-   attesaLavori:new FormControl(this.data?.attesaLavori),
+ 
 
-})
-}
-get f(): { [key: string]: AbstractControl } {
-  return this.modificaCommessa.controls;
-}
+  transformDate(dateString: string): string {
+    const dateObject = new Date(dateString);
+    return dateObject.toLocaleDateString('en-US', {
+      day: '2-digit',
+      month: 'numeric',
+      year: 'numeric'
+    });
+  }
 
-inserisci() {
-  console.log(JSON.stringify(this.modificaCommessa.value));
-  const body=JSON.stringify({"commessa":this.modificaCommessa.value});
-  console.log(body);
+  get f(): { [key: string]: AbstractControl } {
+    return this.modificaCommessa.controls;
+  }
 
-  this.CommessaService.update(body).subscribe((result)=>{
-    console.log(result); 
-  })
-}
+  inserisci() {
+    console.log(JSON.stringify(this.modificaCommessa.value));
+    const body = JSON.stringify({ "commessa": this.modificaCommessa.value });
+    console.log(body);
 
-
+    this.commessaService.update(body).subscribe((result) => {
+      console.log(result);
+    });
+  }
 }
