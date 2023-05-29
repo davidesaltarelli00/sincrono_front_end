@@ -152,24 +152,25 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="form-group">
-                                    <label for="dimissioni">Dimissioni</label>
-                                    <input class="form-control" id="dimissioni" type="text"
-                                        placeholder="Inserisci le dimissioni" formControlName="dimissioni">
+                                    <label for="dimissioni" style="width: 100%;">Dimissioni</label>
+                                    <div class="form-check form-check-inline">
+                                        <input id="checkbox" type="checkbox" formcontrolname="dimissioni">
+                                        <label class="form-check-label" for="attivo">Dimissioni</label>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="partTime">Part Time</label>
-                                    <input class="form-control" id="partTime" type="text"
-                                        placeholder="Inserisci part time" formControlName="partTime">
+                                    <label for="partTime" style="width: 100%;">Part Time</label>
+                                    <div class="form-check form-check-inline">
+                                        <input id="checkbox" type="checkbox" formcontrolname="dimissioni">
+                                        <label class="form-check-label" for="partTime">Part Time</label>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="partTimeA">Part Time A</label>
-                                    <input class="form-control" id="partTime" type="text"
-                                        placeholder="Inserisci part time a" formControlName="partTimeA">
-                                </div>
-                                <div class="form-group">
-                                    <label for="partTimeA">Part Time A</label>
-                                    <input class="form-control" id="partTime" type="text"
-                                        placeholder="Inserisci part time a" formControlName="partTimeA">
+                                    <label for="partTimeA" style="width: 100%;">Part Time A</label>
+                                    <div class="form-check form-check-inline">
+                                        <input id="checkbox" type="checkbox" formcontrolname="dimissioni">
+                                        <label class="form-check-label" for="partTimeA">Part Time A</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -236,10 +237,12 @@
                                         placeholder="Inserisci il valore ticket" formControlName="valoreTicket">
                                 </div>
                                 <div class="form-group">
-                                    <label for="categoriaProtetta">Categoria Protetta</label>
-                                    <input class="form-control" id="categoriaProtetta" type="text"
-                                        placeholder="Inserisci se categoria protetta"
-                                        formControlName="categoriaProtetta">
+                                    <label for="categoriaProtetta" style="width: 100%;">Categoria Protetta</label>
+                                    <div class="form-check form-check-inline">
+                                        <input id="checkbox" type="checkbox" formcontrolname="attivo">
+                                        <label class="form-check-label" for="categoriaProtetta">Categoria
+                                            Protetta</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -279,17 +282,12 @@
                                         placeholder="Inserisci le motivazione di fine rapporto"
                                         formControlName="motivazioneFineRapporto">
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="pc" style="width: 100%;">Pc</label>
+                                    <label for="pc" style="width: 100%;">PC</label>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="pc" id="inlineRadio1"
-                                            value=true formControlName="pc">
-                                        <label class="form-check-label" for="inlineRadio1">Pc si</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="pc" id="inlineRadio2"
-                                            value=false formControlName="pc">
-                                        <label class="form-check-label" for="inlineRadio2">Pc no</label>
+                                        <input id="checkbox" type="checkbox" formcontrolname="pc">
+                                        <label class="form-check-label" for="pc">PC</label>
                                     </div>
                                 </div>
                                 <div class="form-group">

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { ContrattoService } from './../contratto-service';
 
 @Component({
@@ -199,7 +198,7 @@ export class NuovoContrattoComponent implements OnInit{
     removeEmpty(this.nuovo.value);
     console.log(JSON.stringify(this.nuovo.value));
     const body = JSON.stringify({
-      anagrafica: this.nuovo.value
+      contratto: this.nuovo.value
     });
     console.log(body);
 

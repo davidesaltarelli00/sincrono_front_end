@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
+const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Access-Control-Allow-Origin', '*');
 
 @Injectable({
   providedIn: 'root',
@@ -17,11 +21,15 @@ export class ContrattoService {
   }
 
   update(body: any): Observable<any> {
-    return this.http.put<any>(`http://localhost:8085/contratto`, body);
+    return this.http.put<any>(`http://localhost:8085/contratto`, body, {
+      headers: headers,
+    });
   }
 
   insert(body: any): Observable<any> {
-    return this.http.post<any>(`http://localhost:8085/contratto`, body);
+    return this.http.post<any>(`http://localhost:8085/contratto`, body, {
+      headers: headers,
+    });
   }
 
   detail(id: any): Observable<any> {
