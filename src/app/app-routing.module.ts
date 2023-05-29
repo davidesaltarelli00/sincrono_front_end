@@ -4,14 +4,19 @@ import { DettaglioAnagraficaComponent } from './components/anagrafica/dettaglio-
 import { DettaglioContrattoComponent } from './components/contratto/dettaglio-contratto/dettaglio-contratto.component';
 import { NuovoContrattoComponent } from './components/contratto/nuovo-contratto/nuovo-contratto.component';
 import { ModificaContrattoComponent } from './components/contratto/modifica-contratto/modifica-contratto.component';
+import { NuovaCommessaComponent } from './components/commessa/nuova-commessa/nuova-commessa.component';
+import { ModificaCommessaComponent } from './components/commessa/modifica-commessa/modifica-commessa.component';
+import { DettaglioCommessaComponent } from './components/commessa/dettaglio-commessa/dettaglio-commessa.component';
 
 const routes: Routes = [
 
   { path:"anagrafica/:id", component: DettaglioAnagraficaComponent },
   { path:"contratto/:id", component: DettaglioContrattoComponent },
+  { path:"commessa/:id", component: DettaglioCommessaComponent },
   { path:"modifica-contratto/:id", component: ModificaContrattoComponent},
   { path:"nuovo-contratto", component: NuovoContrattoComponent },
-
+  { path:"nuova-commessa", component: NuovaCommessaComponent},
+  { path:"modifica-commessa/:id", component: ModificaCommessaComponent}
 ];
 
 @NgModule({

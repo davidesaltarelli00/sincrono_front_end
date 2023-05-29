@@ -1,0 +1,91 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+// Override default styles
+.mat-datepicker-content {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  }
+  
+  .mat-calendar {
+    table-layout: fixed;
+  }
+  
+  .mat-calendar-table {
+    width: 100%;
+  }
+  
+  .mat-calendar-header {
+    background-color: #f5f5f5;
+  }
+  
+  .mat-calendar-header .mat-calendar-period-button {
+    font-weight: 500;
+  }
+  
+  .mat-calendar-header .mat-calendar-previous-button,
+  .mat-calendar-header .mat-calendar-next-button {
+    margin: 0 4px;
+  }
+  
+  .mat-calendar-content {
+    padding: 8px;
+  }
+  
+  .mat-calendar-table th {
+    padding: 8px;
+  }
+  
+  .mat-calendar-table td.mat-calendar-cell {
+    padding: 0;
+  }
+  
+  .mat-calendar-table td.mat-calendar-body-cell {
+    height: 36px;
+    padding: 0;
+  }
+  
+  .mat-calendar-table td.mat-calendar-body-cell .mat-calendar-body-cell-content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mat-calendar-table td.mat-calendar-body-active {
+    background-color: #e0e0e0;
+    cursor: pointer;
+  }
+  
+  .mat-calendar-table td.mat-calendar-body-disabled {
+    color: #bdbdbd;
+    cursor: default;
+  }
+  
+  .mat-calendar-arrow {
+    color: #000;
+  }
+  
+  .mat-datepicker-toggle {
+    color: #000;
+    cursor: pointer;
+  }
+  
+  .mat-form-field.mat-focused .mat-form-field-label {
+    color: #000;
+  }
+  
+  .mat-form-field-appearance-outline.mat-form-field-can-float .mat-form-field-label {
+    font-size: 12px;
+    transform: translateY(-16px);
+  }
+  
+  .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding-top: 8px;
+  }
+  
+  .mat-form-field-appearance-outline.mat-form-field-can-float .mat-form-field-prefix .mat-form-field-label,
+  .mat-form-field-appearance-outline.mat-form-field-can-float .mat-form-field-suffix .mat-form-field-label {
+    transform: translateY(-12px);
+  }
+  
