@@ -25,6 +25,8 @@ export const MY_DATE_FORMATS = {
   selector: 'app-nuova-anagrafica',
   templateUrl: './nuova-anagrafica.component.html',
   styleUrls: ['./nuova-anagrafica.component.scss'],
+  
+ 
 })
 export class NuovaAnagraficaComponent implements OnInit {
   data: any = [];
