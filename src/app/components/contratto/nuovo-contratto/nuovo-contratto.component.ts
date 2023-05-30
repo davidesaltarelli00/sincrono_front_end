@@ -88,7 +88,7 @@ export class NuovoContrattoComponent implements OnInit{
         console.log(this.data);
 
         this.nuovo = this.formBuilder.group({
-          id: new FormControl(this.data?.id),
+          id: new FormControl(),
           tipoContratto: new FormGroup({
             id: new FormControl(this.data?.tipoContratto.id),
           }),
@@ -112,9 +112,9 @@ export class NuovoContrattoComponent implements OnInit{
           livelloIniziale: new FormControl(this.data?.livelloIniziale),
           livelloAttuale: new FormControl(this.data?.livelloAttuale),
           livelloFinale: new FormControl(this.data?.livelloFinale),
-          dimissioni: new FormControl(this.data?.dimissioni),
-          partTime: new FormControl(this.data?.partTime),
-          partTimeA: new FormControl(this.data?.partTimeA),
+          dimissioni: new FormControl(""),
+          partTime: new FormControl(""),
+          partTimeA: new FormControl(""),
           retribuzioneMensileLorda: new FormControl(
             this.data?.retribuzioneMensileLorda
           ),
@@ -125,7 +125,7 @@ export class NuovoContrattoComponent implements OnInit{
           diariaGg: new FormControl(this.data?.diariaGg),
           ticket: new FormControl(this.data?.ticket),
           valoreTicket: new FormControl(this.data?.valoreTicket),
-          categoriaProtetta: new FormControl(this.data?.categoriaProtetta),
+          categoriaProtetta: new FormControl(""),
           tutor: new FormControl(this.data?.tutor),
           pfi: new FormControl(this.data?.pfi),
           assicurazioneObbligatoria: new FormControl(
@@ -187,7 +187,6 @@ export class NuovoContrattoComponent implements OnInit{
     const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
         if (obj[key] && typeof obj[key] === 'object') {
-          // recursive
           removeEmpty(obj[key]);
         } else if (obj[key] === null) {
           delete obj[key];

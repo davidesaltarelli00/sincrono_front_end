@@ -189,7 +189,7 @@ changeCity(e:any) {
     return;
   } 
    
- /* if (this.modificaAnagrafica.get("provinciaNascita.id")?.value == '') {
+  if (this.modificaAnagrafica.get("provinciaNascita.id")?.value == '') {
     this.modificaAnagrafica.removeControl('provinciaNascita');
   }
 
@@ -226,5 +226,6 @@ changeCity(e:any) {
   
   
 
-}*/
+}
 
+*/

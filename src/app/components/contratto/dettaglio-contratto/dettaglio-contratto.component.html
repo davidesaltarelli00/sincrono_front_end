@@ -9,16 +9,20 @@
                 <div class="card-body">
                     <div class="row">
                         <div>
-                            <label class="labels">Azienda: : </label>
+                            <label class="labels">Azienda : </label>
                             <input type="text" value="{{ data?.tipoAzienda.descrizione }}" readonly />
                         </div>
                         <div>
-                            <label class="labels">Tipo Contratto: : </label>
+                            <label class="labels">Tipo Contratto : </label>
                             <input type="text" value="{{ data?.tipoContratto.descrizione }}" readonly />
                         </div>
                         <div>
-                            <label class="labels">Livello Contratto: : </label>
+                            <label class="labels">Livello Contratto : </label>
                             <input type="text" value="{{ data?.livelloContratto.descrizione }}" readonly />
+                        </div>
+                        <div>
+                            <label class="labels">Contratto Naizonale : </label>
+                            <input type="text" value="{{ data?.contrattoNazionale.descrizione }}" readonly />
                         </div>
                     </div>
                 </div>
@@ -33,7 +37,7 @@
                     <div class="row">
                         <div>
                             <label class="labels">Attivo: </label>
-                            <input type="checkbox" checked="{{ data?.attivo }}" disabled="disabled" />
+                            <input type="checkbox" [checked]="data?.attivo" disabled="disabled" />
                         </div>
                         <div>
                             <label class="labels">Qualifica: </label>
@@ -206,7 +210,7 @@
                     </div>
                     <div>
                         <label class="labels">PC: </label>
-                        <input type="checkbox" checked="{{ data?.pc }}" disabled="disabled" />
+                        <input type="checkbox" [checked]="data?.pc" disabled="disabled" />
                     </div>
                     <div>
                         <label class="labels">Scatti Anzianita: </label>
