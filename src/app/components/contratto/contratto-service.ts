@@ -15,6 +15,9 @@ export class ContrattoService {
   constructor(private http: HttpClient) {}
 
   /*CRUD CONTRATTO*/
+  list():Observable<any>{
+    return this.http.get<any>(`http://localhost:8085/contratto-list`);
+  }
 
   delete(id: any) {
     return this.http.delete<any>(`http://localhost:8085/contratto/${id}`);

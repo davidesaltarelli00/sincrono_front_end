@@ -16,13 +16,13 @@ export class CommessaService {
 
   constructor(private http: HttpClient) { }
 
-  listaCommesse():Observable<any>{
-    return this.http.get<any>(`http://localhost:8085/commessa`);
+  /*CRUD COMMESSA*/
+  list():Observable<any>{
+    return this.http.get<any>(`http://localhost:8085/commessa-list`);
   }
   
   delete(id:any){
     return this.http.delete<any>(`http://localhost:8085/commessa/${id}`)
-
   }
 
   update(body:any):Observable<any>{

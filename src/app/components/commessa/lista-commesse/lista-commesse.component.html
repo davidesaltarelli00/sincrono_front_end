@@ -1,0 +1,30 @@
+<html>
+
+<body>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>Nominativo</th>
+                <th>Cliente</th>
+                <th>Data Inizio</th>
+                <th>Data Fine</th>
+                <th>Dettaglio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of lista">
+                <td>{{ data.nominativo }}</td>
+                <td>{{ data.cliente }}</td>
+                <td>{{ data.dataInizio }}</td>
+                <td>{{ data.dataFine }}</td>
+                <td>
+                    <a [routerLink]="['/commessa/', data.id]"><img src="../../../../assets/images/dettagli.png"
+                            height="30px" width="45px"></a>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</body>
+
+</html>

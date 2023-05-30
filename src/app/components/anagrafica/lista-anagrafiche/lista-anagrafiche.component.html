@@ -1,0 +1,29 @@
+<html>
+
+<body>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Cognome</th>
+                <th>Codice Fiscale</th>
+                <th>Dettaglio</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let data of lista">
+                <td>{{ data.nome }}</td>
+                <td>{{ data.cognome }}</td>
+                <td>{{ data.codiceFiscale }}</td>
+                <td>
+                    <a [routerLink]="['/anagrafica', data.id]"><img src="../../../../assets/images/dettagli.png"
+                            height="30px" width="45px"></a>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</body>
+
+</html>
