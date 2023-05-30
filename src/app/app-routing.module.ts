@@ -8,6 +8,7 @@ import { ModificaContrattoComponent } from './components/contratto/modifica-cont
 import { NuovaCommessaComponent } from './components/commessa/nuova-commessa/nuova-commessa.component';
 import { ModificaCommessaComponent } from './components/commessa/modifica-commessa/modifica-commessa.component';
 import { DettaglioCommessaComponent } from './components/commessa/dettaglio-commessa/dettaglio-commessa.component';
+import { ListaDashboardComponent } from './components/dashboard/lista-dashboard/lista-dashboard.component';
 import { NuovaAnagraficaComponent } from './components/anagrafica/nuova-anagrafica/nuova-anagrafica.component';
 import { ListaCommesseComponent } from './components/commessa/lista-commesse/lista-commesse.component';
 import { ListaAnagraficheComponent } from './components/anagrafica/lista-anagrafiche/lista-anagrafiche.component';
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'nuova-anagrafica', component: NuovaAnagraficaComponent },
   { path: 'lista-anagrafiche', component: ListaAnagraficheComponent },
 
+  { path: 'dashboard', component: ListaDashboardComponent },
   //CONTRATTO
   { path: 'contratto/:id', component: DettaglioContrattoComponent },
   { path: 'modifica-contratto/:id', component: ModificaContrattoComponent },
@@ -31,10 +33,11 @@ const routes: Routes = [
   { path: 'modifica-commessa/:id', component: ModificaCommessaComponent },
   { path: 'nuova-commessa', component: NuovaCommessaComponent },
   { path: 'lista-commesse', component: ListaCommesseComponent }
+
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

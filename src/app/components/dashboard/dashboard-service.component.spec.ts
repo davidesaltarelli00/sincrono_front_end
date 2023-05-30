@@ -1,17 +1,17 @@
-import { CommessaService } from './commessa-service.component';
+import { DashboardService } from './dashboard-service.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 
 
-describe('CommessaService', () => {
-  let component: CommessaService;
-  let fixture: ComponentFixture<CommessaService>;
+describe('DashboardService', () => {
+  let component: DashboardService;
+  let fixture: ComponentFixture<DashboardService>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CommessaService]
+      declarations: [DashboardService]
     });
-    fixture = TestBed.createComponent(CommessaService);
+    fixture = TestBed.createComponent(DashboardService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
