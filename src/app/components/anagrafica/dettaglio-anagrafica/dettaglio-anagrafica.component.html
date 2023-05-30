@@ -1,33 +1,138 @@
-<div class="container rounded bg-white mt-5 mb-5">
-    <div class="row">
-      <div class="col-md-3 border-right border-bottom">
-        <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-          <img class="rounded-circle mt-5" width="150px"
-            src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-      
-        </div>
-      </div>
-      <div class="col-md-8 border-bottom">
-        <div class="p-3 py-5">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h1 class="text-right">Dettaglio Anagrafica </h1>
+<html>
+
+<body>
+  <h1>Dettaglio Anagrafica</h1>
+  <fieldset class="border p-2">
+    <legend class="w-auto"></legend>
+    <div class="card">
+      <div class="row">
+        <div class="card-body">
+          <div class="row">
+            <div>
+              <label class="labels">Utente : </label>
+              <input type="text" value="{{ data?.utente.username }}" readonly />
+            </div>
           </div>
-          <div class="row mt-2">
-            <div class="col-md-6"><label class="labels">Nome</label><input type="text" class="form-control"
-                value="{{data?.nome}}" readonly></div>
-            <div class="col-md-6"><label class="labels">Cognome</label><input type="text" class="form-control"
-                value="{{data?.cognome}}" readonly></div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-md-12"><label class="labels">Codice Fiscale</label><input type="text" class="form-control"
-                value="{{data?.codiceFiscale}}" readonly></div>
-          </div>
-         
         </div>
       </div>
     </div>
+  </fieldset>
+  <fieldset class="border p-2">
+    <legend class="w-auto">Dettagli</legend>
+    <div class="card">
+      <div class="row">
+        <div class="card-body">
+          <div class="row">
+            <div>
+              <label class="labels">Attivo: </label>
+              <input type="checkbox" [checked]="data?.attivo" disabled="disabled" />
+            </div>
+            <div>
+              <label class="labels">Azienda: </label>
+              <input type="text" value="{{ data?.aziendaTipo }}" readonly />
+            </div>
+            <div>
+              <label class="labels">Nome: </label>
+              <input type="text" value="{{ data?.nome }}" readonly />
+            </div>
+            <div>
+              <label class="labels">Cognome: </label>
+              <input type="text" value="{{ data?.cognome }}" readonly />
+            </div>
+            <div>
+              <label class="labels">Codice Fiscale: </label>
+              <input type="text" value="{{ data?.codiceFiscale }}" readonly />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset class="border p-2">
+    <legend class="w-auto">Recapiti</legend>
+    <div class="card">
+      <div class="row">
+        <div class="card-body">
+          <div class="row">
+            <div>
+              <label class="labels">Cellulare Aziendale: </label>
+              <input type="text" value="{{ data?.celllulareAziendale }}" readonly />
+            </div>
+            <div>
+              <label class="labels">Cellulare Privato: </label>
+              <input type="text" value="{{ data?.cellularePrivato }}" readonly />
+            </div>
+            <div>
+              <label class="labels">Email Privata: </label>
+              <input type="text" value="{{ data?.mailPrivata}}" readonly />
+            </div>
+            <div>
+              <label class="labels">Email Aziendale: </label>
+              <input type="text" value="{{ data?.mailAziendale}}" readonly />
+            </div>
+            <div>
+              <label class="labels">Email Pec: </label>
+              <input type="text" value="{{ data?.mailPec }}" readonly />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset class="border p-2">
+    <legend class="w-auto">Competenze</legend>
+    <div class="card">
+      <div class="row">
+        <div class="card-body">
+          <div class="row">
+            <div>
+              <label class="labels">Titolo di Studio: </label>
+              <input type="text" value="{{ data?.titoliDiStudio}}" readonly />
+            </div>
+            <div>
+              <label class="labels">Altri Titoli: </label>
+              <input type="text" value="{{ data?.altriTitoli }}" readonly />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset class="border p-2">
+    <legend class="w-auto">Info Extra</legend>
+    <div class="card">
+      <div class="row">
+        <div class="card-body">
+          <div class="row">
+            <div>
+              <label class="labels">Comune di Nascita: </label>
+              <input type="text" value="{{ data?.comuneDiNascita }}" readonly />
+            </div>
+            <div>
+              <label class="labels">Data di Nascita: </label>
+              <input type="text" value="{{ data?.dataDiNascita }}" readonly />
+            </div>
+            <div>
+              <label class="labels">Residenza: </label>
+              <input type="text" value="{{ data?.residenza }}" readonly />
+            </div>
+            <div>
+              <label class="labels">Domicilio: </label>
+              <input type="text" value="{{ data?.domicilio }}" readonly />
+            </div>
+            <div>
+              <label class="labels">Coniugato: </label>
+              <input type="checkbox" [checked]="data?.coniugato" disabled="disabled" />
+            </div>
+            <div>
+              <label class="labels">Figli a Carico: </label>
+              <input type="checkbox" [checked]="data?.figliACarico" disabled="disabled" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</body>
 
-    
-  </div>
-  
-  
+</html>

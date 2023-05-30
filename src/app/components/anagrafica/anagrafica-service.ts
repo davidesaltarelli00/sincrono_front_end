@@ -2,54 +2,42 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Access-Control-Allow-Origin', '*');
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AnagraficaService {
+  token: any;
 
-  token:any;
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-    /*CRUD ANAGRAFICA*/
-    listaAnagrafica():Observable<any>{
-      return this.http.get<any>(`http://localhost:8080/UserService/anagrafica-personale`);
-    }
-
-    getNews(id:any):Observable<any>{
-      return this.http.get<any>(`http://localhost:8085/angrafica/${id}`);
+  /*CRUD ANAGRAFICA*/
+  list(): Observable<any> {
+    return this.http.get<any>(`http://localhost:8085/anagrafica-list`);
   }
 
-  delete(id:any){
-    return this.http.delete<any>(`http://localhost:8080/UserService/anagrafica-personale/${id}`)
-
+  detail(id: any): Observable<any> {
+    return this.http.get<any>(`http://localhost:8085/anagrafica/${id}`);
   }
 
-  update(body:any):Observable<any>{
-    return this.http.put<any>(`http://localhost:8080/UserService/anagrafica-personale`,body);
+  delete(id: any) {
+    return this.http.delete<any>(
+      `http://localhost:8085/anagrafica/${id}`
+    );
   }
 
-  inserisci(body:any):Observable<any>{
-  return this.http.post<any>(`http://localhost:8080/UserService/anagrafica-personale`,body);
-}
-
-  /*COMMONS*/
-  
-  getProvince(){
-    return this.http.get(`http://localhost:8080/CommonsService/province/map`);
+  update(body: any): Observable<any> {
+    return this.http.put<any>(`http://localhost:8085/anagrafica`, body, {
+      headers: headers,
+    });
   }
 
-  getTitoli(){
-    return this.http.get(`http://localhost:8080/CommonsService/titoli-studio/map`);
+  insert(body: any): Observable<any> {
+    return this.http.post<any>(`http://localhost:8085/anagrafica`, body, {
+      headers: headers,
+    });
   }
-
-  getAzienda(){
-    return this.http.get(`http://localhost:8080/CommonsService/aziende/map`);
-  }
-
-  getTipoAnagrafica(){ 
-    return this.http.get(`http://localhost:8080/CommonsService/tipi-anagrafica-personale/map`);
-  }
-
-
 }
