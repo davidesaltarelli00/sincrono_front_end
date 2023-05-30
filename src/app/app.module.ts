@@ -24,6 +24,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ModificaCommessaComponent } from './components/commessa/modifica-commessa/modifica-commessa.component';
 import { NuovaCommessaComponent } from './components/commessa/nuova-commessa/nuova-commessa.component';
 import { DettaglioCommessaComponent } from './components/commessa/dettaglio-commessa/dettaglio-commessa.component';
+import { ListaDashboardComponent } from './components/dashboard/lista-dashboard/lista-dashboard.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { DettaglioCommessaComponent } from './components/commessa/dettaglio-comm
     NuovoContrattoComponent,
     ModificaCommessaComponent,
     NuovaCommessaComponent,
-    DettaglioCommessaComponent
+    DettaglioCommessaComponent,
+    ListaDashboardComponent
   ],
   imports: [
     MatNativeDateModule,
