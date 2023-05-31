@@ -1,51 +1,49 @@
 <div>
     <form [formGroup]="modificaCommessa" (ngSubmit)="inserisci()">
-        <div class="card-body">
-            <div class="row"></div>
-            <fieldset class="border p-2">
-                <legend class="w-auto">Dati commessa:</legend>
+        <div>
+            <div></div>
+            <fieldset>
+                <legend>Dati commessa:</legend>
 
-                <div class="col-md-4" hidden>
+                <div hidden>
                     <div formGroupName="id">
                         <label for="id">id</label>
-                        <input class="form-control" type="text" id="id" name="id" />
+                        <input type="text" id="id" name="id" />
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div>
                     <div formGroupName="cliente">
                         <label for="cliente">Cliente</label>
-                        <input class="form-control" type="text" id="cliente" name="cliente"
-                            placeholder="{{ data2?.cliente }}" />
+                        <input type="text" id="cliente" name="cliente" placeholder="{{ data2?.cliente }}" />
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div>
                     <div formGroupName="clienteFinale">
                         <label for="clienteFinale">Cliente Finale</label>
-                        <input class="form-control" type="text" id="clienteFinale" name="clienteFinale"
+                        <input type="text" id="clienteFinale" name="clienteFinale"
                             placeholder="{{ data2?.clienteFinale }}" />
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div>
                     <div formGroupName="titoloPosizione">
                         <label for="titoloPosizione">Titolo Posizione</label>
-                        <input class="form-control" type="text" id="titoloPosizione" name="titoloPosizione"
+                        <input type="text" id="titoloPosizione" name="titoloPosizione"
                             placeholder="{{ data2?.titoloPosizione }}" />
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div>
                     <div formGroupName="distacco">
                         <label for="distacco">Distacco</label>
-                        <input class="form-control" type="text" id="distacco" name="distacco"
-                            placeholder="{{ data2?.distacco }}" />
+                        <input type="text" id="distacco" name="distacco" placeholder="{{ data2?.distacco }}" />
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="mat-form-field">
+                <div>
+                    <div>
                         <label for="dataInizio" style="width: 100%">Data inizio</label>
                         <mat-form-field appearance="outline">
                             <input matInput [matDatepicker]="picker" formControlName="dataInizio"
@@ -58,8 +56,8 @@
                 </div>
 
 
-                <div class="form-group">
-                    <div class="mat-form-field">
+                <div>
+                    <div>
                         <label for="dataFine" style="width: 100%">Data fine</label>
                         <mat-form-field appearance="outline">
                             <input matInput [matDatepicker]="picker2" formControlName="dataFine"
@@ -70,69 +68,66 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div>
                     <div formGroupName="costoMese">
                         <label for="costoMese">Costo mese</label>
-                        <input class="form-control" type="text" id="costoMese" name="costoMese"
-                            placeholder="{{ data2?.costoMese }}" />
+                        <input type="text" id="costoMese" name="costoMese" placeholder="{{ data2?.costoMese }}" />
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div>
                     <div formGroupName="tariffaGiornaliera">
                         <label for="tariffaGiornaliera">Tariffa giornaliera</label>
-                        <input class="form-control" type="text" id="tariffaGiornaliera" name="tariffaGiornaliera"
+                        <input type="text" id="tariffaGiornaliera" name="tariffaGiornaliera"
                             placeholder="{{ data2?.tariffaGiornaliera }}" />
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div>
                     <div formGroupName="nominativo">
                         <label for="nominativo">Nominativo</label>
-                        <input class="form-control" type="text" id="nominativo" name="nominativo"
-                            placeholder="{{ data2?.nominativo }}" />
+                        <input type="text" id="nominativo" name="nominativo" placeholder="{{ data2?.nominativo }}" />
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div>
                     <div formGroupName="azienda">
                         <label for="azienda">Azienda</label>
-                        <input class="form-control" stype="text" id="azienda" name="azienda"
-                            placeholder="{{ data2?.azienda }}" />
+                        <input stype="text" id="azienda" name="azienda" placeholder="{{ data2?.azienda }}" />
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div>
                     <div formGroupName="aziendaDiFatturazioneInterna">
                         <label for="aziendaDiFatturazioneInterna">Azienda di fatturazione interna</label>
-                        <input class="form-control" type="text" id="aziendaDiFatturazioneInterna"
-                            name="aziendaDiFatturazioneInterna"
+                        <input type="text" id="aziendaDiFatturazioneInterna" name="aziendaDiFatturazioneInterna"
                             placeholder="{{ data2?.aziendaDiFatturazioneInterna }}" />
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="form-group">
+                <div>
+                    <div>
                         <label for="stato" style="width: 100%">Stato</label>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="stato" id="inlineCheckbox1"
-                                formControlName="stato" [checked]="data2?.stato" />
-                            <label class="form-check-label" for="inlineCheckbox1">Attivo</label>
+                        <div>
+                            <input type="checkbox" name="stato" id="inlineCheckbox1" formControlName="stato"
+                                [checked]="data2?.stato" />
+                            <label for="inlineCheckbox1">Attivo</label>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div>
                     <div formGroupName="attesaLavori">
                         <label for="attesaLavori">Attesa lavori</label>
-                        <input class="form-control" type="text" id="attesaLavori" name="attesaLavori"
+                        <input type="text" id="attesaLavori" name="attesaLavori"
                             placeholder="{{ data2?.attesaLavori }}" />
                     </div>
                 </div>
             </fieldset>
         </div>
-        <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Submit</button>
+        <div>
+            <button type="submit">Salva</button>
+            <button [routerLink]="['/lista-commesse']">Annulla e torna indietro</button>
         </div>
     </form>
 </div>

@@ -1,93 +1,87 @@
+<h1>Dettaglio Commessa</h1>
+<fieldset>
 
-                          
-                 
-                            
-                            <h1>Dettaglio Commessa</h1>
-                                <fieldset class="border p-2">
-                                    
-                                    <div class="card">
-                                        <div class="row">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div>
-                                                        <label class="labels">Cliente: </label>
-                                                        <input type="text" value="{{ data?.cliente }}" readonly />
-                                                    </div>
-                                                    <div>
-                                                        <label class="labels">Cliente Finale: </label>
-                                                        <input type="text" value="{{ data?.clienteFinale }}" readonly />
-                                                    </div>
-                                                    <div>
-                                                        <label class="labels">Titolo Posizione: </label>
-                                                        <input type="text" value="{{ data?.titoloPosizione  }}" readonly />
-                                                    </div>
+    <div>
+        <div>
+            <div>
+                <div>
+                    <div>
+                        <label>Cliente: </label>
+                        <input type="text" value="{{ data?.cliente }}" readonly />
+                    </div>
+                    <div>
+                        <label>Cliente Finale: </label>
+                        <input type="text" value="{{ data?.clienteFinale }}" readonly />
+                    </div>
+                    <div>
+                        <label>Titolo Posizione: </label>
+                        <input type="text" value="{{ data?.titoloPosizione  }}" readonly />
+                    </div>
 
-                                                    <div>
-                                                        <label class="labels">Distacco: </label>
-                                                        <input type="text" value="{{ data?.distacco }}" readonly />
-                                                    </div>
-                                            
-                                                    <div>
-                                                        <label class="labels">Costo mese: </label>
-                                                        <input type="text" value="{{ data?.costoMese }}" readonly />
-                                                    </div>
+                    <div>
+                        <label>Distacco: </label>
+                        <input type="text" value="{{ data?.distacco }}" readonly />
+                    </div>
+
+                    <div>
+                        <label>Costo mese: </label>
+                        <input type="text" value="{{ data?.costoMese }}" readonly />
+                    </div>
 
 
-                                                    <fieldset class="border p-2">
-                                                        <legend class="w-auto">Date</legend>
-                                                        <div class="card">
-                                                            <div class="row">
-                                                                <div class="card-body">
-                                                                    <div class="row">
-                                                                        <div>
-                                                                            <label class="labels">Data Inizio: </label>
-                                                                            <input type="text" value="{{ data?.dataInizio }}" readonly />
-                                                                        </div>
-                                                                        <div>
-                                                                            <label class="labels">Data Fine: </label>
-                                                                            <input type="text" value="{{ data?.dataFine }}" readonly />
-                                                                        </div>                                                                    
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </fieldset>
-                                                        <div>
-                                                        <label class="labels">Tariffa giornaliera: </label>
-                                                        <input type="text" value="{{ data?.tariffaGiornaliera  }}" readonly />
-                                                    </div>
-
-                                                    <div>
-                                                        <label class="labels">Nominativo: </label>
-                                                        <input type="text" value="{{ data?.nominativo }}" readonly />
-                                                    </div>
-
-                                                    <div>
-                                                        <label class="labels">Azienda: </label>
-                                                        <input type="text" value="{{ data?.azienda }}" readonly />
-                                                    </div>
-
-                                                    <div>
-                                                        <label class="labels">Azienda di fatturazione interna: </label>
-                                                        <input type="text" value="{{ data?.aziendaDiFatturazioneInterna}}" readonly />
-                                                    </div>
-
-                                                    <div>
-                                                        <label class="labels">Stato: </label>
-                                                        <input type="checkbox" checked="{{ data?.stato }}" disabled="disabled" />
-                                                    </div>
-
-                                                    <div>
-                                                        <label class="labels">Attesa lavori: </label>
-                                                        <input type="text" value="{{ data?.attesaLavori}}" readonly />
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
+                    <fieldset>
+                        <legend>Date</legend>
+                        <div>
+                            <div>
+                                <div>
+                                    <div>
+                                        <div>
+                                            <label>Data Inizio: </label>
+                                            <input type="text" value="{{ data?.dataInizio }}" readonly />
+                                        </div>
+                                        <div>
+                                            <label>Data Fine: </label>
+                                            <input type="text" value="{{ data?.dataFine }}" readonly />
                                         </div>
                                     </div>
-                                </fieldset>
-                               
-                            
-       
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div>
+                        <label>Tariffa giornaliera: </label>
+                        <input type="text" value="{{ data?.tariffaGiornaliera  }}" readonly />
+                    </div>
+
+                    <div>
+                        <label>Nominativo: </label>
+                        <input type="text" value="{{ data?.nominativo }}" readonly />
+                    </div>
+
+                    <div>
+                        <label>Azienda: </label>
+                        <input type="text" value="{{ data?.azienda }}" readonly />
+                    </div>
+
+                    <div>
+                        <label>Azienda di fatturazione interna: </label>
+                        <input type="text" value="{{ data?.aziendaDiFatturazioneInterna}}" readonly />
+                    </div>
+
+                    <div>
+                        <label>Stato: </label>
+                        <input type="checkbox" checked="{{ data?.stato }}" disabled="disabled" />
+                    </div>
+
+                    <div>
+                        <label>Attesa lavori: </label>
+                        <input type="text" value="{{ data?.attesaLavori}}" readonly />
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</fieldset>
+<button (click)="delete(data.id)">Cancella</button>  <button [routerLink]="['/lista-commesse']">Torna indietro</button>
