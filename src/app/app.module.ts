@@ -28,6 +28,7 @@ import { ListaCommesseComponent } from './components/commessa/lista-commesse/lis
 import { ListaContrattiComponent } from './components/contratto/lista-contratti/lista-contratti.component';
 import { ListaAnagraficheComponent } from './components/anagrafica/lista-anagrafiche/lista-anagrafiche.component';
 import { ListaDashboardComponent } from './components/dashboard/lista-dashboard/lista-dashboard.component';
+import { ListaOrganicoComponent } from './components/organico/lista-organico/lista-organico.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { ListaDashboardComponent } from './components/dashboard/lista-dashboard/
     ListaCommesseComponent,
     ListaContrattiComponent,
     ListaAnagraficheComponent,
-    ListaDashboardComponent
+    ListaDashboardComponent,
+    ListaOrganicoComponent
   ],
   imports: [
     MatNativeDateModule,

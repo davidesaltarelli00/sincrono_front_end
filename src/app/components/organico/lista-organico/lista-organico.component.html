@@ -1,0 +1,41 @@
+<html>
+
+<body>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>Azienda</th>
+                <th>Numero dipendenti</th>
+                <th>Indeterminati</th>
+                <th>Determinati</th>
+                <th>Apprendistato</th>
+                <th>Consulenza</th>
+                <th>Stage</th>
+                <th>PartitaIva</th>
+                <th>Potenziale stage</th>
+                <th>Slot stage</th>
+                <th>Potenziale apprendistato</th>
+                <th>Slot apprendistato</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of lista">
+                <td>{{ data?.azienda }}</td>
+                <td>{{ data.numeroDipendenti }}</td>
+                <td>{{ data.indeterminati }}</td>
+                <td>{{ data.determinati}}</td>
+                <td>{{ data.apprendistato }}</td>
+                <td>{{ data.consulenza }}</td>
+                <td>{{ data.stage }}</td>
+                <td>{{ data.partitaIva }}</td>
+                <td>{{ data.potenzialeStage }}</td>
+                <td>{{ data.slotStage }}</td>
+                <td>{{ data.potenzialeApprendistato}}</td>
+                <td>{{ data.slotApprendistato }}</td>
+
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

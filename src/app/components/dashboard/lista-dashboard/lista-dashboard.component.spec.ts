@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { listaDashboardComponent } from './lista-dashboard.component';
+import { ListaDashboardComponent } from './lista-dashboard.component';
 
 describe('listaDashboardComponent', () => {
-  let component: listaDashboardComponent;
-  let fixture: ComponentFixture<listaDashboardComponent>;
+  let component: ListaDashboardComponent;
+  let fixture: ComponentFixture<ListaDashboardComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [listaDashboardComponent]
+      declarations: [ListaDashboardComponent]
     });
-    fixture = TestBed.createComponent(listaDashboardComponent);
+    fixture = TestBed.createComponent(ListaDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

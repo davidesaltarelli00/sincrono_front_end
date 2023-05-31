@@ -13,6 +13,7 @@ import { NuovaAnagraficaComponent } from './components/anagrafica/nuova-anagrafi
 import { ListaCommesseComponent } from './components/commessa/lista-commesse/lista-commesse.component';
 import { ListaAnagraficheComponent } from './components/anagrafica/lista-anagrafiche/lista-anagrafiche.component';
 import { ListaContrattiComponent } from './components/contratto/lista-contratti/lista-contratti.component';
+import { ListaOrganicoComponent } from './components/organico/lista-organico/lista-organico.component';
 
 const routes: Routes = [
   //ANAGRAFICA
@@ -20,8 +21,10 @@ const routes: Routes = [
   //{ path: 'modifica-anagrafica/:id', component: ModificaAnagraficaComponent },
   { path: 'nuova-anagrafica', component: NuovaAnagraficaComponent },
   { path: 'lista-anagrafiche', component: ListaAnagraficheComponent },
-
+ //DASHBOARD
   { path: 'dashboard', component: ListaDashboardComponent },
+  //ORGANICO
+  {path:'organico',component:ListaOrganicoComponent},
   //CONTRATTO
   { path: 'contratto/:id', component: DettaglioContrattoComponent },
   { path: 'modifica-contratto/:id', component: ModificaContrattoComponent },
