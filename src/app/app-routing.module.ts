@@ -1,4 +1,4 @@
-//import { ModificaAnagraficaComponent } from './components/anagrafica/modifica-anagrafica/modifica-anagrafica.component';
+import { ModificaAnagraficaComponent } from './components/anagrafica/modifica-anagrafica/modifica-anagrafica.component';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { DettaglioAnagraficaComponent } from './components/anagrafica/dettaglio-anagrafica/dettaglio-anagrafica.component';
@@ -18,7 +18,7 @@ import { ListaOrganicoComponent } from './components/organico/lista-organico/lis
 const routes: Routes = [
   //ANAGRAFICA
   { path: 'anagrafica/:id', component: DettaglioAnagraficaComponent },
-  //{ path: 'modifica-anagrafica/:id', component: ModificaAnagraficaComponent },
+  { path: 'modifica-anagrafica/:id', component: ModificaAnagraficaComponent },
   { path: 'nuova-anagrafica', component: NuovaAnagraficaComponent },
   { path: 'lista-anagrafiche', component: ListaAnagraficheComponent },
  //DASHBOARD

@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnagraficaService } from '../anagrafica-service';
 
-declare var $: any;
-
 @Component({
   selector: 'app-dettaglio-anagrafica',
   templateUrl: './dettaglio-anagrafica.component.html',

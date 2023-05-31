@@ -2,136 +2,98 @@
 
 <body>
   <h1>Dettaglio Anagrafica</h1>
-  <fieldset class="border p-2">
-    <legend class="w-auto"></legend>
-    <div class="card">
-      <div class="row">
-        <div class="card-body">
-          <div class="row">
-            <div>
-              <label class="labels">Utente : </label>
-              <input type="text" value="{{ data?.utente.username }}" readonly />
-            </div>
-          </div>
-        </div>
-      </div>
+  <fieldset>
+    <legend>Utente</legend>
+    <div>
+      <label>Utente : </label>
+      <input type="text" value="{{ data?.utente.username }}" readonly />
     </div>
   </fieldset>
-  <fieldset class="border p-2">
-    <legend class="w-auto">Dettagli</legend>
-    <div class="card">
-      <div class="row">
-        <div class="card-body">
-          <div class="row">
-            <div>
-              <label class="labels">Attivo: </label>
-              <input type="checkbox" [checked]="data?.attivo" disabled="disabled" />
-            </div>
-            <div>
-              <label class="labels">Azienda: </label>
-              <input type="text" value="{{ data?.aziendaTipo }}" readonly />
-            </div>
-            <div>
-              <label class="labels">Nome: </label>
-              <input type="text" value="{{ data?.nome }}" readonly />
-            </div>
-            <div>
-              <label class="labels">Cognome: </label>
-              <input type="text" value="{{ data?.cognome }}" readonly />
-            </div>
-            <div>
-              <label class="labels">Codice Fiscale: </label>
-              <input type="text" value="{{ data?.codiceFiscale }}" readonly />
-            </div>
-          </div>
-        </div>
-      </div>
+  <fieldset>
+    <legend>Dettagli</legend>
+    <div>
+      <label>Attivo: </label>
+      <input type="checkbox" [checked]="data?.attivo" disabled="disabled" />
+    </div>
+    <div>
+      <label>Azienda: </label>
+      <input type="text" value="{{ data?.aziendaTipo }}" readonly />
+    </div>
+    <div>
+      <label>Nome: </label>
+      <input type="text" value="{{ data?.nome }}" readonly />
+    </div>
+    <div>
+      <label>Cognome: </label>
+      <input type="text" value="{{ data?.cognome }}" readonly />
+    </div>
+    <div>
+      <label>Codice Fiscale: </label>
+      <input type="text" value="{{ data?.codiceFiscale }}" readonly />
     </div>
   </fieldset>
-  <fieldset class="border p-2">
-    <legend class="w-auto">Recapiti</legend>
-    <div class="card">
-      <div class="row">
-        <div class="card-body">
-          <div class="row">
-            <div>
-              <label class="labels">Cellulare Aziendale: </label>
-              <input type="text" value="{{ data?.celllulareAziendale }}" readonly />
-            </div>
-            <div>
-              <label class="labels">Cellulare Privato: </label>
-              <input type="text" value="{{ data?.cellularePrivato }}" readonly />
-            </div>
-            <div>
-              <label class="labels">Email Privata: </label>
-              <input type="text" value="{{ data?.mailPrivata}}" readonly />
-            </div>
-            <div>
-              <label class="labels">Email Aziendale: </label>
-              <input type="text" value="{{ data?.mailAziendale}}" readonly />
-            </div>
-            <div>
-              <label class="labels">Email Pec: </label>
-              <input type="text" value="{{ data?.mailPec }}" readonly />
-            </div>
-          </div>
-        </div>
-      </div>
+  <fieldset>
+    <legend>Recapiti</legend>
+    <div>
+      <label>Cellulare Aziendale: </label>
+      <input type="text" value="{{ data?.celllulareAziendale }}" readonly />
+    </div>
+    <div>
+      <label>Cellulare Privato: </label>
+      <input type="text" value="{{ data?.cellularePrivato }}" readonly />
+    </div>
+    <div>
+      <label>Email Privata: </label>
+      <input type="text" value="{{ data?.mailPrivata}}" readonly />
+    </div>
+    <div>
+      <label>Email Aziendale: </label>
+      <input type="text" value="{{ data?.mailAziendale}}" readonly />
+    </div>
+    <div>
+      <label>Email Pec: </label>
+      <input type="text" value="{{ data?.mailPec }}" readonly />
     </div>
   </fieldset>
-  <fieldset class="border p-2">
-    <legend class="w-auto">Competenze</legend>
-    <div class="card">
-      <div class="row">
-        <div class="card-body">
-          <div class="row">
-            <div>
-              <label class="labels">Titolo di Studio: </label>
-              <input type="text" value="{{ data?.titoliDiStudio}}" readonly />
-            </div>
-            <div>
-              <label class="labels">Altri Titoli: </label>
-              <input type="text" value="{{ data?.altriTitoli }}" readonly />
-            </div>
-          </div>
-        </div>
-      </div>
+  <fieldset>
+    <legend>Competenze</legend>
+    <div>
+      <label>Titolo di Studio: </label>
+      <input type="text" value="{{ data?.titoliDiStudio}}" readonly />
+    </div>
+    <div>
+      <label>Altri Titoli: </label>
+      <input type="text" value="{{ data?.altriTitoli }}" readonly />
     </div>
   </fieldset>
-  <fieldset class="border p-2">
-    <legend class="w-auto">Info Extra</legend>
-    <div class="card">
-      <div class="row">
-        <div class="card-body">
-          <div class="row">
-            <div>
-              <label class="labels">Comune di Nascita: </label>
-              <input type="text" value="{{ data?.comuneDiNascita }}" readonly />
-            </div>
-            <div>
-              <label class="labels">Data di Nascita: </label>
-              <input type="text" value="{{ data?.dataDiNascita }}" readonly />
-            </div>
-            <div>
-              <label class="labels">Residenza: </label>
-              <input type="text" value="{{ data?.residenza }}" readonly />
-            </div>
-            <div>
-              <label class="labels">Domicilio: </label>
-              <input type="text" value="{{ data?.domicilio }}" readonly />
-            </div>
-            <div>
-              <label class="labels">Coniugato: </label>
-              <input type="checkbox" [checked]="data?.coniugato" disabled="disabled" />
-            </div>
-            <div>
-              <label class="labels">Figli a Carico: </label>
-              <input type="checkbox" [checked]="data?.figliACarico" disabled="disabled" />
-            </div>
-          </div>
-        </div>
-      </div>
+  <fieldset>
+    <legend>Info Extra</legend>
+    <div>
+      <label>Comune di Nascita: </label>
+      <input type="text" value="{{ data?.comuneDiNascita }}" readonly />
     </div>
+    <div>
+      <label>Data di Nascita: </label>
+      <input type="text" value="{{ data?.dataDiNascita }}" readonly />
+    </div>
+    <div>
+      <label>Residenza: </label>
+      <input type="text" value="{{ data?.residenza }}" readonly />
+    </div>
+    <div>
+      <label>Domicilio: </label>
+      <input type="text" value="{{ data?.domicilio }}" readonly />
+    </div>
+    <div>
+      <label>Coniugato: </label>
+      <input type="checkbox" [checked]="data?.coniugato" disabled="disabled" />
+    </div>
+    <div>
+      <label>Figli a Carico: </label>
+      <input type="checkbox" [checked]="data?.figliACarico" disabled="disabled" />
+    </div>
+    <button [routerLink]="['../../modifica-anagrafica',data?.id]">Modifica Anagrafica</button>
+    <button [routerLink]="['../../lista-anagrafiche']">Torna alla lista</button>
   </fieldset>
 </body>
 

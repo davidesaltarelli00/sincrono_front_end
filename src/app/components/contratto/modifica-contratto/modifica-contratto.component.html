@@ -1,15 +1,17 @@
-<form [formGroup]="modifica" (ngSubmit)="inserisci()">
-    <div class="card-body">
-        <fieldset>
-            <legend class="w-auto">Dati:</legend>
-            <div class="row">
-                <div class="form-group">
-                    <label for="qualifica">ID</label>
-                    <input class="form-control" id="id" type="number" formControlName="id" hidden>
-                </div>
+<html>
+
+<body>
+    <form [formGroup]="modificaContratto" (ngSubmit)="inserisci()">
+        <div>
+            <div>
+                <label for="id">ID</label>
+                <input id="id" type="number" formControlName="id" hidden>
+            </div>
+            <fieldset>
+                <legend>Dati Tipologici</legend>
                 <div formGroupName="tipoContratto">
                     <label for="tipoContratto">Tipo Contratto</label>
-                    <select style="width: 100%;" id="tipoContratto" class="form-control select2" formControlName="id">
+                    <select id="tipoContratto" formControlName="id">
                         <option value="">--nessuna selezione--</option>
                         <option *ngFor="let tipoContratto of tipiContratti" value="{{tipoContratto.id}}">
                             {{tipoContratto.descrizione}}</option>
@@ -17,8 +19,7 @@
                 </div>
                 <div formGroupName="livelloContratto">
                     <label for="livelloContratto">Livello Contratto</label>
-                    <select style="width: 100%;" id="livelloContratto" class="form-control select2" formControlName="id"
-                        type="number">
+                    <select id="livelloContratto" formControlName="id" type="number">
                         <option value="">--nessuna selezione--</option>
                         <option *ngFor="let livelloContratto of livelliContratti" value="{{livelloContratto.id}}">
                             {{livelloContratto.descrizione}}</option>
@@ -26,8 +27,7 @@
                 </div>
                 <div formGroupName="tipoAzienda">
                     <label for="tipoAzienda">Tipo Azienda</label>
-                    <select style="width: 100%;" id="tipoAzienda" class="form-control select2" formControlName="id"
-                        type="number">
+                    <select id="tipoAzienda" formControlName="id" type="number">
                         <option value="">--nessuna selezione--</option>
                         <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.id}}">
                             {{tipoAzienda.descrizione}}</option>
@@ -35,201 +35,185 @@
                 </div>
                 <div formGroupName="contrattoNazionale">
                     <label for="contrattoNazionale">Contratto Nazionale</label>
-                    <select style="width: 100%;" id="contrattoNazionale" class="form-control select2"
-                        formControlName="id" type="number">
+                    <select id="contrattoNazionale" formControlName="id" type="number">
                         <option value="">--nessuna selezione--</option>
                         <option *ngFor="let contrattoNazionale of contrattiNazionali" value="{{contrattoNazionale.id}}">
                             {{contrattoNazionale.descrizione}}</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="attivo" style="width: 100%;">Attivo</label>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="attivo" id="inlineRadio1" value=true
-                            formControlName="attivo">
-                        <label class="form-check-label" for="inlineRadio1">Attivo</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="attivo" id="inlineRadio2" value=false
-                            formControlName="attivo">
-                        <label class="form-check-label" for="inlineRadio2">Non Attivo</label>
-                    </div>
+            </fieldset>
+            <fieldset>
+                <div>
+                    <label for="attivo">Attivo</label>
+                    <input type="checkbox" name="attivo" id="inlineCheckbox1" formControlName="attivo"
+                        [checked]="oldData?.attivo" />
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="sedeAssunzione">Sede Assunzione</label>
-                    <input class="form-control" id="sedeAssunzione" type="text"
-                        placeholder="Inserisci la sede di assunzione" formControlName="sedeAssunzione">
+                    <input id="sedeAssunzione" type="text" placeholder="{{oldData?.sedeAssunzione}}"
+                        formControlName="sedeAssunzione">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="qualifica">Qualifica</label>
-                    <input class="form-control" id="qualifica" type="text" placeholder="Inserisci una qualifica"
-                        formControlName="qualifica">
+                    <input id="qualifica" type="text" placeholder="{{oldData?.qualifica}}" formControlName="qualifica">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="dataAssunzione">Data Assunzione</label>
-                    <input class="form-control" id="dataAssunzione" type="text"
-                        placeholder="Inserisci una data assunzione" formControlName="dataAssunzione">
+                    <input id="dataAssunzione" type="text" placeholder="{{oldData?.dataAssunzione}}"
+                        formControlName="dataAssunzione">
                 </div>
-                <div class="form-group">
+            </fieldset>
+            <fieldset>
+                <div>
                     <label for="dataInizioProva">Data Inizio Prova</label>
-                    <input class="form-control" id="dataInizioProva" type="text"
-                        placeholder="Inserisci una data inizio prova" formControlName="dataInizioProva">
+                    <input id="dataInizioProva" type="text" placeholder="{{oldData?.dataInizioProva}}"
+                        formControlName="dataInizioProva">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="dataFineProva">Data FineProva</label>
-                    <input class="form-control" id="dataFineProva" type="text"
-                        placeholder="Inserisci una data di fine prova" formControlName="dataFineProva">
+                    <input id="dataFineProva" type="text" placeholder="{{oldData?.dataFineProva}}"
+                        formControlName="dataFineProva">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="dataFineRapporto">Data Fine Rapporto</label>
-                    <input class="form-control" id="dataFineRapporto" type="text"
-                        placeholder="Inserisci una data di fine rapporto" formControlName="dataFineRapporto">
+                    <input id="dataFineRapporto" type="text" placeholder="{{oldData?.dataFineRapporto}}"
+                        formControlName="dataFineRapporto">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="mesiDurata">Mesi Durata</label>
-                    <input class="form-control" id="mesiDurata" type="text" placeholder="Inserisci la durata in mesi"
+                    <input id="mesiDurata" type="text" placeholder="{{oldData?.mesiDurata}}"
                         formControlName="mesiDurata">
                 </div>
-                <div class="form-group">
+            </fieldset>
+            <fieldset>
+                <div>
                     <label for="livelloIniziale">Livello Iniziale</label>
-                    <input class="form-control" id="livelloIniziale" type="text"
-                        placeholder="Inserisci il livello iniziale" formControlName="livelloIniziale">
+                    <input id="livelloIniziale" type="text" placeholder="{{oldData?.livelloIniziale}}"
+                        formControlName="livelloIniziale">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="livelloAttuale">Livello Attuale</label>
-                    <input class="form-control" id="livelloAttuale" type="text"
-                        placeholder="Inserisci il livello attuale" formControlName="livelloAttuale">
+                    <input id="livelloAttuale" type="text" placeholder="{{oldData?.livelloAttuale}}"
+                        formControlName="livelloAttuale">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="livelloFinale">Livello Finale</label>
-                    <input class="form-control" id="livelloFinale" type="text" placeholder="Inserisci il livello finale"
+                    <input id="livelloFinale" type="text" placeholder="{{oldData?.livelloFinale}}"
                         formControlName="livelloFinale">
                 </div>
-                <div class="form-group">
-                    <label for="dimissioni">Dimissioni</label>
-                    <input class="form-control" id="dimissioni" type="text" placeholder="Inserisci le dimissioni"
-                        formControlName="dimissioni">
-                </div>
-                <div class="form-group">
+            </fieldset>
+            <fieldset>
+
+                <label for="dimissioni">Dimissioni</label>
+                <input type="checkbox" name="dimissioni" id="inlineCheckbox2" formControlName="dimissioni"
+                    [checked]="oldData?.dimissioni" />
+                <div>
                     <label for="partTime">Part Time</label>
-                    <input class="form-control" id="partTime" type="text" placeholder="Inserisci part time"
-                        formControlName="partTime">
+                    <input type="checkbox" name="partTime" id="inlineCheckbox3" formControlName="partTime"
+                        [checked]="oldData?.partTime" />
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="partTimeA">Part Time A</label>
-                    <input class="form-control" id="partTime" type="text" placeholder="Inserisci part time a"
-                        formControlName="partTimeA">
+                    <input type="checkbox" name="partTimeA" id="inlineCheckbox4" formControlName="partTimeA"
+                        [checked]="oldData?.partTimeA" />
                 </div>
-                <div class="form-group">
-                    <label for="partTimeA">Part Time A</label>
-                    <input class="form-control" id="partTime" type="text" placeholder="Inserisci part time a"
-                        formControlName="partTimeA">
-                </div>
-                <div class="form-group">
+            </fieldset>
+            <fieldset>
+                <div>
                     <label for="retribuzioneMensileLorda">Retribuzione Mensile Lorda</label>
-                    <input class="form-control" id="partTime" type="text"
-                        placeholder="Inserisci la retribuzione mensile lorda"
+                    <input id="retribuzioneMensileLorda" type="text" placeholder="{{oldData?.retribuzioneMensileLorda}}"
                         formControlName="retribuzioneMensileLorda">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="superminimoMensile">Superminimo Mensile</label>
-                    <input class="form-control" id="superminimoMensile" type="text"
-                        placeholder="Inserisci il superminimo mensile" formControlName="superminimoMensile">
+                    <input id="superminimoMensile" type="text" placeholder="{{oldData?.superminimoMensile}}"
+                        formControlName="superminimoMensile">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="ralAnnua">Ral Annua</label>
-                    <input class="form-control" id="ralAnnua" type="text" placeholder="Inserisci la ral annua"
-                        formControlName="ralAnnua">
+                    <input id="ralAnnua" type="text" placeholder="{{oldData?.ralAnnua}}" formControlName="ralAnnua">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="superminimoRal">Superminimo Ral</label>
-                    <input class="form-control" id="superminimoRal" type="text"
-                        placeholder="Inserisci il superminimo ral" formControlName="superminimoRal">
+                    <input id="superminimoRal" type="text" placeholder="{{oldData?.superminimoRal}}"
+                        formControlName="superminimoRal">
                 </div>
-                <div class="form-group">
-                    <label for="diariaMensile">Diaria Mensile</label>
-                    <input class="form-control" id="diariaMensile" type="text" placeholder="Inserisci la diaria mensile"
-                        formControlName="diariaMensile">
+                <div>
+                    <label for="diariaMese">Diaria Mensile</label>
+                    <input id="diariaMese" type="text" placeholder="{{oldData?.diariaMese}}"
+                        formControlName="diariaMese">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="diariaGg">Diaria Giornaliera</label>
-                    <input class="form-control" id="diariaGg" type="text" placeholder="Inserisci la diaria giornaliera"
-                        formControlName="diariaGg">
+                    <input id="diariaGg" type="text" placeholder="{{oldData?.diariaGg}}" formControlName="diariaGg">
                 </div>
-                <div class="form-group">
+            </fieldset>
+            <fieldset>
+                <div>
                     <label for="ticket">Ticket</label>
-                    <input class="form-control" id="ticket" type="text" placeholder="Inserisci il ticket"
-                        formControlName="ticket">
+                    <input id="ticket" type="text" placeholder="{{oldData?.ticket}}" formControlName="ticket">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="valoreTicket">Valore Ticket</label>
-                    <input class="form-control" id="valoreTicket" type="text" placeholder="Inserisci il valore ticket"
+                    <input id="valoreTicket" type="text" placeholder="{{oldData?.valoreTicket}}"
                         formControlName="valoreTicket">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="categoriaProtetta">Categoria Protetta</label>
-                    <input class="form-control" id="categoriaProtetta" type="text"
-                        placeholder="Inserisci se categoria protetta" formControlName="categoriaProtetta">
+                    <input type="checkbox" name="categoriaProtetta" id="inlineCheckbox5"
+                        formControlName="categoriaProtetta" [checked]="oldData?.categoriaProtetta" />
                 </div>
-                <div class="form-group">
+            </fieldset>
+            <fieldset>
+                <div>
                     <label for="tutor">Tutor</label>
-                    <input class="form-control" id="tutor" type="text" placeholder="Inserisci il/la tutor"
-                        formControlName="tutor">
+                    <input id="tutor" type="text" placeholder="{{oldData?.tutor}}" formControlName="tutor">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="pfi">Pfi</label>
-                    <input class="form-control" id="pfi" type="text" placeholder="Inserisci il pfi"
-                        formControlName="pfi">
+                    <input id="pfi" type="text" placeholder="{{oldData?.pfi}}" formControlName="pfi">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="assicurazioneObbligatoria">Assicurazione Obbligatoria</label>
-                    <input class="form-control" id="assicurazioneObbligatoria" type="text"
-                        placeholder="Inserisci le assicurazione obbligatoria"
+                    <input id="assicurazioneObbligatoria" type="text"
+                        placeholder="{{oldData?.assicurazioneObbligatoria}}"
                         formControlName="assicurazioneObbligatoria">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="corsoSicurezza">Corso Sicurezza</label>
-                    <input class="form-control" id="corsoSicurezza" type="text"
-                        placeholder="Inserisci il corso sicurezza" formControlName="corsoSicurezza">
+                    <input id="corsoSicurezza" type="text" placeholder="{{oldData?.corsoSicurezza}}"
+                        formControlName="corsoSicurezza">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="motivazioneFineRapporto">Motivazione di Fine Rapporto</label>
-                    <input class="form-control" id="motivazioneFineRapporto" type="text"
-                        placeholder="Inserisci le motivazione di fine rapporto"
+                    <input id="motivazioneFineRapporto" type="text" placeholder="{{oldData?.motivazioneFineRapporto}}"
                         formControlName="motivazioneFineRapporto">
                 </div>
-                <div class="form-group">
-                    <label for="pc" style="width: 100%;">Pc</label>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="pc" id="inlineRadio1" value=true
-                            formControlName="pc">
-                        <label class="form-check-label" for="inlineRadio1">Pc si</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="pc" id="inlineRadio2" value=false
-                            formControlName="pc">
-                        <label class="form-check-label" for="inlineRadio2">Pc no</label>
-                    </div>
+                <div>
+                    <label for="pc">Pc</label>
+                    <input type="checkbox" name="pc" id="inlineCheckbox6" formControlName="pc"
+                        [checked]="oldData?.pc" />
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="scattiAnzianita">Scatti Anzianita</label>
-                    <input class="form-control" id="scattiAnzianita" type="text"
-                        placeholder="Inserisci se scatti anzianita" formControlName="scattiAnzianita">
+                    <input id="scattiAnzianita" type="text" placeholder="{{oldData?.scattiAnzianita}}"
+                        formControlName="scattiAnzianita">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="tariffaPartitaIva">Tariffa Partita Iva</label>
-                    <input class="form-control" id="tariffaPartitaIva" type="text"
-                        placeholder="Inserisci la tariffa partita iva" formControlName="tariffaPartitaIva">
+                    <input id="tariffaPartitaIva" type="text" placeholder="{{oldData?.tariffaPartitaIva}}"
+                        formControlName="tariffaPartitaIva">
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="canaleReclutamento">Canale Reclutamento</label>
-                    <input class="form-control" id="canaleReclutamento" type="text"
-                        placeholder="Inserisci se canale di reclutamento" formControlName="canaleReclutamento">
+                    <input id="canaleReclutamento" type="text" placeholder="{{oldData?.canaleReclutamento}}"
+                        formControlName="canaleReclutamento">
                 </div>
-            </div>
-            <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </fieldset>
-    </div>
-</form>
+                <button type="submit">Salva</button>
+                <button [routerLink]="['../../contratto', oldData?.id]">Annulla e torna indietro</button>
+            </fieldset>
+        </div>
+    </form>
+</body>
+
+</html>

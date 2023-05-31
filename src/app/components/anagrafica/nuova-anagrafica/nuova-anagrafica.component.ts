@@ -5,9 +5,7 @@ import {
   FormGroup,
 } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { AnagraficaService } from '../anagrafica-service';
-import { HttpClient } from '@angular/common/http';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -25,8 +23,6 @@ export const MY_DATE_FORMATS = {
   selector: 'app-nuova-anagrafica',
   templateUrl: './nuova-anagrafica.component.html',
   styleUrls: ['./nuova-anagrafica.component.scss'],
-  
- 
 })
 export class NuovaAnagraficaComponent implements OnInit {
   data: any = [];
@@ -58,10 +54,7 @@ export class NuovaAnagraficaComponent implements OnInit {
 
   constructor(
     private anagraficaService: AnagraficaService,
-    private router: ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private router2: Router,
-    private http: HttpClient
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {

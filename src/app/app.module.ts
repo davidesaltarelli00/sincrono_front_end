@@ -1,6 +1,5 @@
-
 //ANAGRAFICA
-//import { ModificaAnagraficaComponent } from './components/anagrafica/modifica-anagrafica/modifica-anagrafica.component';
+import { ModificaAnagraficaComponent } from './components/anagrafica/modifica-anagrafica/modifica-anagrafica.component';
 import { NuovaAnagraficaComponent } from './components/anagrafica/nuova-anagrafica/nuova-anagrafica.component';
 import { DettaglioAnagraficaComponent } from './components/anagrafica/dettaglio-anagrafica/dettaglio-anagrafica.component';
 
@@ -15,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser'
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -30,13 +29,12 @@ import { ListaAnagraficheComponent } from './components/anagrafica/lista-anagraf
 import { ListaDashboardComponent } from './components/dashboard/lista-dashboard/lista-dashboard.component';
 import { ListaOrganicoComponent } from './components/organico/lista-organico/lista-organico.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
     NuovaAnagraficaComponent,
     DettaglioAnagraficaComponent,
-    //ModificaAnagraficaComponent,
+    ModificaAnagraficaComponent,
     DettaglioContrattoComponent,
     ModificaContrattoComponent,
     NuovoContrattoComponent,
@@ -47,7 +45,7 @@ import { ListaOrganicoComponent } from './components/organico/lista-organico/lis
     ListaContrattiComponent,
     ListaAnagraficheComponent,
     ListaDashboardComponent,
-    ListaOrganicoComponent
+    ListaOrganicoComponent,
   ],
   imports: [
     MatNativeDateModule,
@@ -58,9 +56,9 @@ import { ListaOrganicoComponent } from './components/organico/lista-organico/lis
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

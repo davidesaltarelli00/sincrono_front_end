@@ -1,6 +1,7 @@
 <html>
 
 <body>
+    <button [routerLink]="['../nuova-anagrafica']">Inserisci Nuova Anagrafica</button>
     <table id="table">
         <thead>
             <tr>
@@ -8,10 +9,10 @@
                 <th>Cognome</th>
                 <th>Codice Fiscale</th>
                 <th>Dettaglio</th>
+                <th>--------------</th>
             </tr>
         </thead>
         <tbody>
-
             <tr *ngFor="let data of lista">
                 <td>{{ data.nome }}</td>
                 <td>{{ data.cognome }}</td>
@@ -19,6 +20,9 @@
                 <td>
                     <a [routerLink]="['/anagrafica', data.id]"><img src="../../../../assets/images/dettagli.png"
                             height="30px" width="45px"></a>
+                </td>
+                <td>
+                    <button (click)="delete(data?.id)">Elimina</button>
                 </td>
             </tr>
         </tbody>
