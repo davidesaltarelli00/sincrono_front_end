@@ -20,7 +20,7 @@ export class ListaCommesseComponent {
   ngOnInit(): void {
 
     this.commessaService.list().subscribe((resp:any)=>{
-      this.lista = resp.commesseList;
+      this.lista = resp.list;
       console.log(resp);
 
       $(function() {

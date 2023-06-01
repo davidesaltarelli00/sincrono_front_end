@@ -25,7 +25,7 @@ export class ListaContrattiComponent {
   }
   ngOnInit(): void {
     this.contrattoService.list().subscribe((resp: any) => {
-      this.lista = resp.contrattoList;
+      this.lista = resp.list;
       console.log(resp);
 
       $(function () {

@@ -31,7 +31,7 @@ export class NuovaAnagraficaComponent implements OnInit {
   errore = false;
   messaggio: any;
 
-  nuova: FormGroup = new FormGroup({
+  nuovaAnagrafica: FormGroup = new FormGroup({
     nome: new FormControl(''),
     cognome: new FormControl(''),
     dataNascita: new FormControl(),
@@ -40,7 +40,7 @@ export class NuovaAnagraficaComponent implements OnInit {
     codiceFiscale: new FormControl(''),
     azienda_tipo: new FormControl(''),
     residenza: new FormControl(''),
-    Domicilio: new FormControl(''),
+    domicilio: new FormControl(''),
     cellularePrivato: new FormControl(''),
     cellulareAziendale: new FormControl(''),
     mailPrivata: new FormControl(''),
@@ -49,7 +49,7 @@ export class NuovaAnagraficaComponent implements OnInit {
     titoliDiStudio: new FormControl(''),
     altriTitoli: new FormControl(''),
     coniugato: new FormControl(''),
-    figliCarico: new FormControl(''),
+    figliACarico: new FormControl(''),
   });
 
   constructor(
@@ -58,12 +58,14 @@ export class NuovaAnagraficaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.nuova = this.formBuilder.group({
-      attivo: new FormControl(''),
+    this.nuovaAnagrafica = this.formBuilder.group({
       nome: new FormControl(this.data?.nome),
       cognome: new FormControl(this.data?.cognome),
       dataNascita: new FormControl(this.data?.dataNascita),
+      comuneDiNascita: new FormControl(this.data?.comuneDiNascita),
+      attivo: new FormControl(''),
       codiceFiscale: new FormControl(this.data?.codiceFiscale),
+      aziendaTipo: new FormControl(this.data?.aziendaTipo),
       residenza: new FormControl(this.data?.residenza),
       domicilio: new FormControl(this.data?.domicilio),
       cellularePrivato: new FormControl(this.data?.cellularePrivato),
@@ -74,19 +76,13 @@ export class NuovaAnagraficaComponent implements OnInit {
       titoliDiStudio: new FormControl(this.data?.titoliDiStudio),
       altriTitoli: new FormControl(this.data?.altriTitoli),
       coniugato: new FormControl(''),
-      figliCarico: new FormControl(''),
-      comuneDiNascita: new FormControl(this.data?.comuneDiNascita),
-      aziendaTipo: new FormControl(this.data?.aziendaTipo),
+      figliACarico: new FormControl(''),
     });
-  }
-
-  get f(): { [key: string]: AbstractControl } {
-    return this.nuova.controls;
   }
 
   inserisci() {
     this.submitted = true;
-    if (this.nuova.invalid) {
+    if (this.nuovaAnagrafica.invalid) {
       return;
     }
 
@@ -100,10 +96,10 @@ export class NuovaAnagraficaComponent implements OnInit {
       });
     };
 
-    removeEmpty(this.nuova.value);
-    console.log(JSON.stringify(this.nuova.value));
+    removeEmpty(this.nuovaAnagrafica.value);
+    console.log(JSON.stringify(this.nuovaAnagrafica.value));
     const body = JSON.stringify({
-      anagrafica: this.nuova.value,
+      anagrafica: this.nuovaAnagrafica.value,
     });
     console.log(body);
 

@@ -23,7 +23,7 @@ export class ListaDashboardComponent {
   ngOnInit(): void {
 
     this.dashboardService.listaDashboard().subscribe((resp:any)=>{
-      this.lista = resp.dashboardList;
+      this.lista = resp.list;
       console.log(resp);
 
       $(function() {
