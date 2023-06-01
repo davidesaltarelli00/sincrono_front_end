@@ -23,8 +23,8 @@
                 <td>{{ data.contratto.tipoContratto.descrizione }}</td>
                 <td>{{ data.contratto.tipoAzienda.descrizione }}</td>
                 <td>{{ data.contratto.contrattoNazionale.descrizione}}</td>
-                <td>{{ data.commessa.dataInizio }}</td>
-                <td>{{ data.commessa.dataFine }}</td>
+                <td>{{ this.transformDate(data.commessa.dataInizio) }}</td>
+                <td>{{ this.transformDate(data.commessa.dataFine) }}</td>
                 <td>{{ data.contratto.mesiDurata }}</td>  
                 <td>{{ data.contratto.livelloIniziale }}</td>
                 <td>{{ data.contratto.livelloAttuale }}</td>

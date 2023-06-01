@@ -2,6 +2,19 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnagraficaService } from '../anagrafica-service';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   selector: 'app-modifica-anagrafica',
@@ -18,7 +31,7 @@ export class ModificaAnagraficaComponent {
   modificaAnagrafica: FormGroup = new FormGroup({
     nome: new FormControl(''),
     cognome: new FormControl(''),
-    dataNascita: new FormControl(),
+    dataDiNascita: new FormControl(),
     comuneDiNascita: new FormControl(),
     attivo: new FormControl(''),
     codiceFiscale: new FormControl(''),
@@ -33,7 +46,7 @@ export class ModificaAnagraficaComponent {
     titoliDiStudio: new FormControl(''),
     altriTitoli: new FormControl(''),
     coniugato: new FormControl(''),
-    figliaCario: new FormControl(''),
+    figliACarico: new FormControl(''),
   });
 
   constructor(
@@ -55,7 +68,7 @@ export class ModificaAnagraficaComponent {
       attivo: new FormControl(''),
       nome: new FormControl(this.data?.nome),
       cognome: new FormControl(this.data?.cognome),
-      dataNascita: new FormControl(this.data?.dataNascita),
+      dataDiNascita: new FormControl(this.data?.dataDiNascita),
       codiceFiscale: new FormControl(this.data?.codiceFiscale),
       residenza: new FormControl(this.data?.residenza),
       domicilio: new FormControl(this.data?.domicilio),
@@ -67,7 +80,7 @@ export class ModificaAnagraficaComponent {
       titoliDiStudio: new FormControl(this.data?.titoliDiStudio),
       altriTitoli: new FormControl(this.data?.altriTitoli),
       coniugato: new FormControl(''),
-      figliaCario: new FormControl(''),
+      figliACarico: new FormControl(''),
       comuneDiNascita: new FormControl(this.data?.comuneDiNascita),
       aziendaTipo: new FormControl(this.data?.aziendaTipo),
     });
@@ -104,6 +117,14 @@ export class ModificaAnagraficaComponent {
         return;
       }
       this.router2.navigate(['../lista-anagrafiche']);
+    });
+  }
+  transformDate(dateString: string): string {
+    const dateObject = new Date(dateString);
+    return dateObject.toLocaleDateString('en-US', {
+      day: '2-digit',
+      month: 'numeric',
+      year: 'numeric'
     });
   }
 }

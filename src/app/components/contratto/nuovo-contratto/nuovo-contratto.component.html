@@ -88,27 +88,65 @@
                     <div class="row">
                         <div class="card-body">
                             <div class="row">
-                                <div class="form-group">
-                                    <label for="dataAssunzione">Data Assunzione</label>
-                                    <input class="form-control" id="dataAssunzione" type="text"
-                                        placeholder="Inserisci una data assunzione" formControlName="dataAssunzione">
+
+
+                                <div>
+                                    <div>
+                                        <label for="dataAssunzione" style="width: 100%;">Data Assunzione</label>
+                                        <mat-form-field appearance="outline">
+                                            <input matInput [matDatepicker]="picker" formControlName="dataAssunzione"
+                                                placeholder="Inserisci una data assunzione">
+
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="dataInizioProva">Data Inizio Prova</label>
-                                    <input class="form-control" id="dataInizioProva" type="text"
-                                        placeholder="Inserisci una data inizio prova" formControlName="dataInizioProva">
+
+                                <div>
+                                    <div>
+                                        <label for="dataInizioProva" style="width: 100%;">Data Inizio Prova</label>
+                                        <mat-form-field appearance="outline">
+                                            <input matInput [matDatepicker]="picker1" formControlName="dataInizioProva"
+                                                placeholder="Inserisci una data inizio prova">
+
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="dataFineProva">Data FineProva</label>
-                                    <input class="form-control" id="dataFineProva" type="text"
-                                        placeholder="Inserisci una data di fine prova" formControlName="dataFineProva">
+
+
+
+
+                                <div>
+                                    <div>
+                                        <label for="dataFineProva" style="width: 100%;">Data Fine Prova</label>
+                                        <mat-form-field appearance="outline">
+                                            <input matInput [matDatepicker]="picker2" formControlName="dataFineProva"
+                                                placeholder="Inserisci una data di fine prova">
+
+                                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker2></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="dataFineRapporto">Data Fine Rapporto</label>
-                                    <input class="form-control" id="dataFineRapporto" type="text"
-                                        placeholder="Inserisci una data di fine rapporto"
-                                        formControlName="dataFineRapporto">
+
+
+                                <div>
+                                    <div>
+                                        <label for="dataFineRapporto" style="width: 100%;">Data Fine Rapporto</label>
+                                        <mat-form-field appearance="outline">
+                                            <input matInput [matDatepicker]="picker3" formControlName="dataFineRapporto"
+                                                placeholder="Inserisci una data di fine rapporto">
+
+                                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker3></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
                                 </div>
+
+
                                 <div class="form-group">
                                     <label for="mesiDurata">Mesi Durata</label>
                                     <input class="form-control" id="mesiDurata" type="text"
@@ -275,6 +313,17 @@
                                     <label for="corsoSicurezza">Corso Sicurezza</label>
                                     <input class="form-control" id="corsoSicurezza" type="text"
                                         placeholder="Inserisci il corso sicurezza" formControlName="corsoSicurezza">
+                                </div>
+
+                                <div>
+                                    <div>
+                                        <label for="corsoSicurezza" style="width: 100%">Corso Sicurezza</label>
+                                        <mat-form-field appearance="outline">
+                                            <input matInput [matDatepicker]="picker" formControlName="corsoSicurezza"/>
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="motivazioneFineRapporto">Motivazione di Fine Rapporto</label>

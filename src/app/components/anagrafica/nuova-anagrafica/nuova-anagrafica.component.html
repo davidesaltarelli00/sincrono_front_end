@@ -75,11 +75,16 @@
                 <label for="comuneDiNascita">Comune di Nascia: </label>
                 <input id="comuneDiNascita" type="text" placeholder="Inserisci il comune di nascita"
                     formControlName="comuneDiNascita">
-            </div>
+            </div>          
             <div>
-                <label for="dataNascita">Data di Nascita: </label>
-                <input id="dataNascita" type="text" placeholder="Inserisci la data di nascita"
-                    formControlName="dataNascita">
+                <div>
+                    <label for="dataNascita" style="width: 100%">Data inizio</label>
+                    <mat-form-field appearance="outline">
+                        <input matInput [matDatepicker]="picker" formControlName="dataNascita"placeholder="Inserisci la data di nascita" />
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
             </div>
             <div>
                 <label for="domicilio">Domicilio: </label>

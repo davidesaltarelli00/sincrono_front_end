@@ -209,4 +209,5 @@ export class NuovoContrattoComponent implements OnInit{
       }
     });
   }
+   
 }

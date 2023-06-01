@@ -32,4 +32,12 @@ export class ListaCommesseComponent {
     });
  
   }
+  transformDate(dateString: string): string {
+    const dateObject = new Date(dateString);
+    return dateObject.toLocaleDateString('en-US', {
+      day: '2-digit',
+      month: 'numeric',
+      year: 'numeric'
+    });
+  }
 }
