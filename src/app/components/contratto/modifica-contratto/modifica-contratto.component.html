@@ -58,26 +58,53 @@
                     <input id="qualifica" type="text" placeholder="{{oldData?.qualifica}}" formControlName="qualifica">
                 </div>
                 <div>
-                    <label for="dataAssunzione">Data Assunzione</label>
-                    <input id="dataAssunzione" type="text" placeholder="{{oldData?.dataAssunzione}}"
-                        formControlName="dataAssunzione">
+                    <div>
+                        <label for="dataAssunzione" style="width: 100%">Data Assunzione</label>
+                        <mat-form-field appearance="outline">
+                            <input matInput [matDatepicker]="picker" formControlName="dataAssunzione"
+                                placeholder="{{ this.transformDate(oldData?.dataAssunzione) }}" />
+
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
                 </div>
             </fieldset>
             <fieldset>
                 <div>
-                    <label for="dataInizioProva">Data Inizio Prova</label>
-                    <input id="dataInizioProva" type="text" placeholder="{{oldData?.dataInizioProva}}"
-                        formControlName="dataInizioProva">
+                    <div>
+                        <label for="dataInizioProva" style="width: 100%">Data Inizio Prova</label>
+                        <mat-form-field appearance="outline">
+                            <input matInput [matDatepicker]="picker1" formControlName="dataInizioProva"
+                                placeholder="{{ this.transformDate(oldData?.dataInizioProva) }}" />
+
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+                    </div>
                 </div>
                 <div>
-                    <label for="dataFineProva">Data FineProva</label>
-                    <input id="dataFineProva" type="text" placeholder="{{oldData?.dataFineProva}}"
-                        formControlName="dataFineProva">
+                    <div>
+                        <label for="dataFineProva" style="width: 100%">Data Fine Prova</label>
+                        <mat-form-field appearance="outline">
+                            <input matInput [matDatepicker]="picker2" formControlName="dataFineProva"
+                                placeholder="{{ this.transformDate(oldData?.dataFineProva) }}" />
+
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                    </div>
                 </div>
                 <div>
-                    <label for="dataFineRapporto">Data Fine Rapporto</label>
-                    <input id="dataFineRapporto" type="text" placeholder="{{oldData?.dataFineRapporto}}"
-                        formControlName="dataFineRapporto">
+                    <div>
+                        <label for="dataFineRapporto" style="width: 100%">Data Fine Rapporto</label>
+                        <mat-form-field appearance="outline">
+                            <input matInput [matDatepicker]="picker3" formControlName="dataFineRapporto"
+                                placeholder="{{ this.transformDate(oldData?.dataFineRapporto) }}" />
+                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                            <mat-datepicker #picker3></mat-datepicker>
+                        </mat-form-field>
+                    </div>
                 </div>
                 <div>
                     <label for="mesiDurata">Mesi Durata</label>
@@ -180,9 +207,16 @@
                         formControlName="assicurazioneObbligatoria">
                 </div>
                 <div>
-                    <label for="corsoSicurezza">Corso Sicurezza</label>
-                    <input id="corsoSicurezza" type="text" placeholder="{{oldData?.corsoSicurezza}}"
-                        formControlName="corsoSicurezza">
+                    <div>
+                        <label for="corsoSicurezza" style="width: 100%">Corso Sicurezza</label>
+                        <mat-form-field appearance="outline">
+                            <input matInput [matDatepicker]="picker4" formControlName="corsoSicurezza"
+                                placeholder="{{ this.transformDate(oldData?.corsoSicurezza) }}" />
+
+                            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                            <mat-datepicker #picker4></mat-datepicker>
+                        </mat-form-field>
+                    </div>
                 </div>
                 <div>
                     <label for="motivazioneFineRapporto">Motivazione di Fine Rapporto</label>

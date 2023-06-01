@@ -71,14 +71,19 @@
         <fieldset>
             <legend>Info Extra</legend>
             <div>
-                <label for="comuneDiNascita">Comune di Nascia: </label>
+                <label for="comuneDiNascita">Comune di Nascita: </label>
                 <input id="comuneDiNascita" type="text" placeholder="{{oldData?.comuneDiNascita}}"
                     formControlName="comuneDiNascita">
             </div>
             <div>
-                <label for="dataNascita">Data di Nascita: </label>
-                <input id="dataNascita" type="text" placeholder="{{oldData?.dataNascita}}"
-                    formControlName="dataNascita">
+                <div>
+                    <label for="dataNascita" style="width: 100%">Data di Nascita:</label>
+                    <mat-form-field appearance="outline">
+                        <input matInput [matDatepicker]="picker" formControlName="dataNascita"placeholder="{{ this.transformDate(oldData?.dataNascita) }}" />
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
             </div>
             <div>
                 <label for="domicilio">Domicilio: </label>

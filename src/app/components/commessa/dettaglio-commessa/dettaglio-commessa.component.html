@@ -37,11 +37,11 @@
                                     <div>
                                         <div>
                                             <label>Data Inizio: </label>
-                                            <input type="text" value="{{ data?.dataInizio }}" readonly />
+                                            <input type="text" value="{{ this.transformDate(data?.dataInizio)}}" readonly />
                                         </div>
                                         <div>
                                             <label>Data Fine: </label>
-                                            <input type="text" value="{{ data?.dataFine }}" readonly />
+                                            <input type="text" value="{{ this.transformDate(data?.dataFine)}}" readonly />
                                         </div>
                                     </div>
                                 </div>

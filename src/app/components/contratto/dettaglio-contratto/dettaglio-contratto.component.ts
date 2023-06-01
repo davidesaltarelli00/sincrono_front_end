@@ -36,4 +36,12 @@ export class DettaglioContrattoComponent implements OnInit {
       console.log(this.data);
     });
   }
+  transformDate(dateString: string): string {
+    const dateObject = new Date(dateString);
+    return dateObject.toLocaleDateString('en-US', {
+      day: '2-digit',
+      month: 'numeric',
+      year: 'numeric'
+    });
+  }
 }

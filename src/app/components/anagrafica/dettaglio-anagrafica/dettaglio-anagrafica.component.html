@@ -74,7 +74,7 @@
     </div>
     <div>
       <label>Data di Nascita: </label>
-      <input type="text" value="{{ data?.dataDiNascita }}" readonly />
+      <input type="text" value="{{ this.transformDate(data?.dataDiNascita)}}" readonly />
     </div>
     <div>
       <label>Residenza: </label>

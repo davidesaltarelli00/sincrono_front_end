@@ -2,6 +2,20 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnagraficaService } from '../anagrafica-service';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 
 @Component({
   selector: 'app-modifica-anagrafica',
@@ -101,6 +115,14 @@ export class ModificaAnagraficaComponent {
         return;
       }
       this.router2.navigate(['../lista-anagrafiche']);
+    });
+  }
+  transformDate(dateString: string): string {
+    const dateObject = new Date(dateString);
+    return dateObject.toLocaleDateString('en-US', {
+      day: '2-digit',
+      month: 'numeric',
+      year: 'numeric'
     });
   }
 }

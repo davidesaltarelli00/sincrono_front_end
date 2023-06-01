@@ -40,7 +40,7 @@
             </div>
             <div>
                 <label>Data Assunzione: </label>
-                <input type="text" value="{{ data?.dataAssunzione }}" readonly />
+                <input type="text" value="{{ this.transformDate(data?.dataAssunzione) }}" readonly />
             </div>
         </div>
     </fieldset>
@@ -49,15 +49,15 @@
         <div>
             <div>
                 <label>Data Inizio Prova: </label>
-                <input type="text" value="{{ data?.dataInizioProva }}" readonly />
+                <input type="text" value="{{ this.transformDate(data?.dataInizioProva) }}" readonly />
             </div>
             <div>
                 <label>Data Fine Prova: </label>
-                <input type="text" value="{{ data?.dataFineProva }}" readonly />
+                <input type="text" value="{{ this.transformDate(data?.dataFineProva) }}" readonly />
             </div>
             <div>
                 <label>Data Fine Rapporto: </label>
-                <input type="text" value="{{ data?.dataFineRapporto }}" readonly />
+                <input type="text" value="{{ this.transformDate(data?.dataFineRapporto) }}" readonly />
             </div>
             <div>
                 <label>Mesi Durata: </label>

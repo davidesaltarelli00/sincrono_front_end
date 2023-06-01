@@ -85,7 +85,7 @@ export class ModificaContrattoComponent {
     private router: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router2: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.contrattoService.detail(this.id).subscribe((resp: any) => {
@@ -200,6 +200,14 @@ export class ModificaContrattoComponent {
 
     this.contrattoService.update(body).subscribe((result) => {
       console.log(result);
+    });
+  }
+  transformDate(dateString: string): string {
+    const dateObject = new Date(dateString);
+    return dateObject.toLocaleDateString('en-US', {
+      day: '2-digit',
+      month: 'numeric',
+      year: 'numeric'
     });
   }
 }
