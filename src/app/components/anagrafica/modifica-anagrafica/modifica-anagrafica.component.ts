@@ -10,7 +10,6 @@ import { AnagraficaService } from '../anagrafica-service';
 })
 export class ModificaAnagraficaComponent {
   data: any = [];
-  oldData: any = [];
 
   submitted = false;
   errore = false;
@@ -49,8 +48,8 @@ export class ModificaAnagraficaComponent {
     this.anagraficaService
       .detail(this.router.snapshot.params['id'])
       .subscribe((resp: any) => {
-        this.oldData = (resp as any)['anagrafica'];
-        console.log(this.oldData);
+        this.data = (resp as any)['anagrafica'];
+        console.log(this.data);
       });
     this.modificaAnagrafica = this.formBuilder.group({
       attivo: new FormControl(''),
@@ -74,8 +73,8 @@ export class ModificaAnagraficaComponent {
     });
   }
 
-  Aggiorna() {
-    const removeEmpty = (obj: any) => {
+  aggiorna() {
+    /*const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
         if (obj[key] && typeof obj[key] === 'object') {
           // recursive
@@ -88,6 +87,10 @@ export class ModificaAnagraficaComponent {
 
     removeEmpty(this.modificaAnagrafica.value);
     console.log(JSON.stringify(this.modificaAnagrafica.value));
+    const body = JSON.stringify({
+      anagrafica: this.modificaAnagrafica.value,
+    });
+    */
     const body = JSON.stringify({
       anagrafica: this.modificaAnagrafica.value,
     });
