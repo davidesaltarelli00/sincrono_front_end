@@ -25,7 +25,6 @@ export class DettaglioContrattoComponent implements OnInit {
 
   id: any = this.router.snapshot.params['id'];
   data: any;
-  date: any;
   constructor( private contrattoService: ContrattoService, private router: ActivatedRoute, private formBuilder: FormBuilder, private router2: Router ) {}
 
 

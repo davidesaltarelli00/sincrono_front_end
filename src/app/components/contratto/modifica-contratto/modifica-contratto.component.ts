@@ -19,7 +19,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ModificaContrattoComponent {
   id: any = this.router.snapshot.params['id'];
   data: any = [];
-  oldData: any = [];
 
   //TIPOLOGICHE
   tipiContratti: any = [];
@@ -89,8 +88,8 @@ export class ModificaContrattoComponent {
 
   ngOnInit(): void {
     this.contrattoService.detail(this.id).subscribe((resp: any) => {
-      this.oldData = (resp as any)['contratto'];
-      console.log(this.oldData);
+      this.data = (resp as any)['contratto'];
+      console.log(this.data);
     });
     this.modificaContratto = this.formBuilder.group({
       id: new FormControl(this.id),
