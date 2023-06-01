@@ -37,11 +37,13 @@
                                     <div>
                                         <div>
                                             <label>Data Inizio: </label>
-                                            <input type="text" value="{{ this.transformDate(data?.dataInizio)}}" readonly />
+                                            <input type="text" value="{{ this.transformDate(data?.dataInizio)}}"
+                                                readonly />
                                         </div>
                                         <div>
                                             <label>Data Fine: </label>
-                                            <input type="text" value="{{ this.transformDate(data?.dataFine)}}" readonly />
+                                            <input type="text" value="{{ this.transformDate(data?.dataFine)}}"
+                                                readonly />
                                         </div>
                                     </div>
                                 </div>
@@ -83,6 +85,7 @@
             </div>
         </div>
     </div>
+    <button (click)="delete(data.id)">Cancella</button>
+    <button [routerLink]="['/lista-commesse']">Torna indietro</button>
+    <button [routerLink]="['/modifica-commessa',data?.id]">Modifica</button>
 </fieldset>
-<button (click)="delete(data.id)">Cancella</button>  <button [routerLink]="['/lista-commesse']">Torna indietro</button>
-<button (click)="delete(data.id)">Cancella</button>  <button [routerLink]="['/modifica-commessa']">Modifica</button>

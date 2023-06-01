@@ -3,6 +3,16 @@
 <body>
     <form [formGroup]="modificaAnagrafica" (ngSubmit)="aggiorna()">
         <fieldset>
+            <div formGroupName="utente">
+                <legend>Utente</legend>
+                <select id="utente" formControlName="id">
+                    <option value="">--nessuna selezione--</option>
+                    <option *ngFor="let utente of utenti" [value]="utente.id">
+                        {{utente.username}}</option>
+                </select>
+            </div>
+        </fieldset>
+        <fieldset>
             <legend>Inserisci Dettagli</legend>
             <div>
                 <label for="attivo" style="width: 100%;">Attivo</label>
@@ -11,75 +21,71 @@
             </div>
             <div>
                 <label for="aziendaTipo">Azienda: </label>
-                <input id="aziendaTipo" type="text" placeholder="{{data?.aziendaTipo}}"
-                    formControlName="aziendaTipo">
+                <input id="aziendaTipo" type="text" value="{{data?.aziendaTipo}}" formControlName="aziendaTipo">
             </div>
             <div>
                 <label for="nome">Nome: </label>
-                <input id="nome" type="text" placeholder="{{data?.nome}}" formControlName="nome">
+                <input id="nome" type="text" value="{{data?.nome}}" formControlName="nome">
             </div>
             <div>
                 <label for="cognome">Cognome: </label>
-                <input id="cognome" type="text" placeholder="{{data?.cognome}}" formControlName="cognome">
+                <input id="cognome" type="text" value="{{data?.cognome}}" formControlName="cognome">
             </div>
             <div>
                 <label for="codiceFiscale">Codice Fiscale: </label>
-                <input id="codiceFiscale" type="text" placeholder="{{data?.codiceFiscale}}"
-                    formControlName="codiceFiscale">
+                <input id="codiceFiscale" type="text" value="{{data?.codiceFiscale}}" formControlName="codiceFiscale">
             </div>
         </fieldset>
         <fieldset>
             <legend>Inserisci i Recapiti</legend>
             <div>
                 <label for="cellulareAziendale">Celluare Aziendale: </label>
-                <input id="cellulareAziendale" type="text" placeholder="{{data?.cellulareAziendale}}"
+                <input id="cellulareAziendale" type="text" value="{{data?.cellulareAziendale}}"
                     formControlName="cellulareAziendale">
             </div>
             <div>
                 <label for="cellularePrivato">Celluare Privato: </label>
-                <input id="cellularePrivato" type="text" placeholder="{{data?.cellularePrivato}}"
+                <input id="cellularePrivato" type="text" value="{{data?.cellularePrivato}}"
                     formControlName="cellularePrivato">
             </div>
             <div>
                 <label for="mailAziendale">Email Aziendale: </label>
-                <input id="mailAziendale" type="text" placeholder="{{data?.mailAziendale}}"
-                    formControlName="mailAziendale">
+                <input id="mailAziendale" type="text" value="{{data?.mailAziendale}}" formControlName="mailAziendale">
             </div>
             <div>
                 <label for="mailPrivata">Mail Privata: </label>
-                <input id="mailPrivata" type="text" placeholder="{{data?.mailPrivata}}"
-                    formControlName="mailPrivata">
+                <input id="mailPrivata" type="text" value="{{data?.mailPrivata}}" formControlName="mailPrivata">
             </div>
             <div>
                 <label for="mailPec">Email PEC: </label>
-                <input id="mailPec" type="text" placeholder="{{data?.mailPec}}" formControlName="mailPec">
+                <input id="mailPec" type="text" value="{{data?.mailPec}}" formControlName="mailPec">
             </div>
         </fieldset>
         <fieldset>
             <legend>Competenze</legend>
             <div>
                 <label for="titoliDiStudio">Titolo di Studio: </label>
-                <input id="titoliDiStudio" type="text" placeholder="{{data?.titoliDiStudio}}"
+                <input id="titoliDiStudio" type="text" value="{{data?.titoliDiStudio}}"
                     formControlName="titoliDiStudio">
             </div>
             <div>
                 <label for="altriTitoli">Altri Titoli: </label>
-                <input id="altriTitoli" type="text" placeholder="{{data?.altriTitoli}}"
-                    formControlName="altriTitoli">
+                <input id="altriTitoli" type="text" value="{{data?.altriTitoli}}" formControlName="altriTitoli">
             </div>
         </fieldset>
         <fieldset>
             <legend>Info Extra</legend>
             <div>
                 <label for="comuneDiNascita">Comune di Nascita: </label>
-                <input id="comuneDiNascita" type="text" placeholder="{{data?.comuneDiNascita}}"
+                <input id="comuneDiNascita" type="text" value="{{data?.comuneDiNascita}}"
                     formControlName="comuneDiNascita">
             </div>
             <div>
                 <div>
                     <label for="dataDiNascita" style="width: 100%">Data di Nascita:</label>
                     <mat-form-field appearance="outline">
-                        <input matInput [matDatepicker]="picker" formControlName="dataDiNascita"placeholder="{{ this.transformDate(data?.dataDiNascita) }}" />
+                        <input matInput [matDatepicker]="picker" formControlName="dataDiNascita"
+                            value="{{ this.transformDate(data?.dataDiNascita) }}" placeholder="{{ this.transformDate(data?.dataDiNascita) }}" />
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
@@ -87,7 +93,7 @@
             </div>
             <div>
                 <label for="domicilio">Domicilio: </label>
-                <input id="domicilio" type="text" placeholder="{{data?.domicilio}}" formControlName="domicilio">
+                <input id="domicilio" type="text" value="{{data?.domicilio}}" formControlName="domicilio">
             </div>
             <div>
                 <label for="coniugato" style="width: 100%;">Coniugato</label>
@@ -99,7 +105,7 @@
                 <input class="form-check-input" type="checkbox" name="figliACarico" id="inlineCheckbox1"
                     formControlName="figliACarico" [checked]="data?.figliACarico" />
             </div>
-            <button type="submit" [routerLink]="['../../anagrafica', data?.id]">Salva</button>
+            <button type="submit">Salva</button>
             <button [routerLink]="['../../anagrafica', data?.id]">Annulla e torna indietro</button>
         </fieldset>
     </form>

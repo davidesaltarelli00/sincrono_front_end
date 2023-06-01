@@ -6,7 +6,7 @@
     <legend>Utente</legend>
     <div>
       <label>Utente : </label>
-      <input type="text" value="{{ data?.utente.username }}" readonly />
+      <input type="text" value="{{ data?.utente?.username }}" readonly />
     </div>
   </fieldset>
   <fieldset>
@@ -92,6 +92,7 @@
       <label>Figli a Carico: </label>
       <input type="checkbox" [checked]="data?.figliACarico" disabled="disabled" />
     </div>
+    <button (click)="delete(data.id)">Cancella</button>
     <button [routerLink]="['../../modifica-anagrafica',data?.id]">Modifica Anagrafica</button>
     <button [routerLink]="['../../lista-anagrafiche']">Torna alla lista</button>
   </fieldset>

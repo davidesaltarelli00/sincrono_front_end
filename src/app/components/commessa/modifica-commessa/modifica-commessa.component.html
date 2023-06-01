@@ -5,129 +5,88 @@
             <fieldset>
                 <legend>Dati commessa:</legend>
 
-                <div hidden>
-                    <div formGroupName="id">
-                        <label for="id">id</label>
-                        <input type="text" id="id" name="id" />
-                    </div>
-                </div>
-
                 <div>
-                    <div formGroupName="cliente">
-                        <label for="cliente">Cliente</label>
-                        <input type="text" id="cliente" name="cliente" placeholder="{{ data2?.cliente }}" />
-                    </div>
+                    <label for="id">id</label>
+                    <input type="text" id="id" formControlName="id" hidden />
                 </div>
-
                 <div>
-                    <div formGroupName="clienteFinale">
-                        <label for="clienteFinale">Cliente Finale</label>
-                        <input type="text" id="clienteFinale" name="clienteFinale"
-                            placeholder="{{ data2?.clienteFinale }}" />
-                    </div>
+                    <label for="cliente">Cliente</label>
+                    <input type="text" id="cliente" formControlName="cliente" placeholder="{{ data?.cliente }}" />
                 </div>
-
                 <div>
-                    <div formGroupName="titoloPosizione">
-                        <label for="titoloPosizione">Titolo Posizione</label>
-                        <input type="text" id="titoloPosizione" name="titoloPosizione"
-                            placeholder="{{ data2?.titoloPosizione }}" />
-                    </div>
+                    <label for="clienteFinale">Cliente Finale</label>
+                    <input type="text" id="clienteFinale" formControlName="clienteFinale"
+                        placeholder="{{ data?.clienteFinale }}" />
                 </div>
-
                 <div>
-                    <div formGroupName="distacco">
-                        <label for="distacco">Distacco</label>
-                        <input type="text" id="distacco" name="distacco" placeholder="{{ data2?.distacco }}" />
-                    </div>
+                    <label for="titoloPosizione">Titolo Posizione</label>
+                    <input type="text" id="titoloPosizione" formControlName="titoloPosizione"
+                        placeholder="{{ data?.titoloPosizione }}" />
                 </div>
-
                 <div>
+                    <label for="distacco">Distacco</label>
+                    <input type="text" id="distacco" formControlName="distacco" placeholder="{{ data?.distacco }}" />
+                </div>
+                <div>
+                    <label for="dataInizio">Data inizio</label>
+                    <mat-form-field appearance="outline">
+                        <input matInput [matDatepicker]="picker" formControlName="dataInizio"
+                            placeholder="{{ this.transformDate(data?.dataInizio) }}" />
+
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label for="dataFine">Data fine</label>
+                    <mat-form-field appearance="outline">
+                        <input matInput [matDatepicker]="picker2" formControlName="dataFine"
+                            placeholder="{{ this.transformDate(data?.dataFine) }}" />
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label for="costoMese">Costo mese</label>
+                    <input type="text" id="costoMese" formControlName="costoMese" placeholder="{{ data?.costoMese }}" />
+                </div>
+                <div>
+                    <label for="tariffaGiornaliera">Tariffa giornaliera</label>
+                    <input type="text" id="tariffaGiornaliera" formControlName="tariffaGiornaliera"
+                        placeholder="{{ data?.tariffaGiornaliera }}" />
+                </div>
+                <div>
+                    <label for="nominativo">Nominativo</label>
+                    <input type="text" id="nominativo" formControlName="nominativo"
+                        placeholder="{{ data?.nominativo }}" />
+                </div>
+                <div>
+                    <label for="azienda">Azienda</label>
+                    <input stype="text" id="azienda" formControlName="azienda" placeholder="{{ data?.azienda }}" />
+                </div>
+                <div>
+                    <label for="aziendaDiFatturazioneInterna">Azienda di fatturazione interna</label>
+                    <input type="text" id="aziendaDiFatturazioneInterna" formControlName="aziendaDiFatturazioneInterna"
+                        placeholder="{{ data?.aziendaDiFatturazioneInterna }}" />
+                </div>
+                <div>
+                    <label for="stato">Stato</label>
                     <div>
-                        <label for="dataInizio" style="width: 100%">Data inizio</label>
-                        <mat-form-field appearance="outline">
-                            <input matInput [matDatepicker]="picker" formControlName="dataInizio"
-                                placeholder="{{ this.transformDate(data2?.dataInizio) }}" />
-
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
+                        <input type="checkbox" formControlName="stato" id="inlineCheckbox1" formControlName="stato"
+                            [checked]="data?.stato" />
+                        <label for="inlineCheckbox1">Attivo</label>
                     </div>
                 </div>
-
-
                 <div>
-                    <div>
-                        <label for="dataFine" style="width: 100%">Data fine</label>
-                        <mat-form-field appearance="outline">
-                            <input matInput [matDatepicker]="picker2" formControlName="dataFine"
-                                placeholder="{{ this.transformDate(data2?.dataFine) }}" />
-                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                            <mat-datepicker #picker2></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                </div>
-
-                <div>
-                    <div formGroupName="costoMese">
-                        <label for="costoMese">Costo mese</label>
-                        <input type="text" id="costoMese" name="costoMese" placeholder="{{ data2?.costoMese }}" />
-                    </div>
-                </div>
-
-                <div>
-                    <div formGroupName="tariffaGiornaliera">
-                        <label for="tariffaGiornaliera">Tariffa giornaliera</label>
-                        <input type="text" id="tariffaGiornaliera" name="tariffaGiornaliera"
-                            placeholder="{{ data2?.tariffaGiornaliera }}" />
-                    </div>
-                </div>
-
-                <div>
-                    <div formGroupName="nominativo">
-                        <label for="nominativo">Nominativo</label>
-                        <input type="text" id="nominativo" name="nominativo" placeholder="{{ data2?.nominativo }}" />
-                    </div>
-                </div>
-
-                <div>
-                    <div formGroupName="azienda">
-                        <label for="azienda">Azienda</label>
-                        <input stype="text" id="azienda" name="azienda" placeholder="{{ data2?.azienda }}" />
-                    </div>
-                </div>
-
-                <div>
-                    <div formGroupName="aziendaDiFatturazioneInterna">
-                        <label for="aziendaDiFatturazioneInterna">Azienda di fatturazione interna</label>
-                        <input type="text" id="aziendaDiFatturazioneInterna" name="aziendaDiFatturazioneInterna"
-                            placeholder="{{ data2?.aziendaDiFatturazioneInterna }}" />
-                    </div>
-                </div>
-
-                <div>
-                    <div>
-                        <label for="stato" style="width: 100%">Stato</label>
-                        <div>
-                            <input type="checkbox" name="stato" id="inlineCheckbox1" formControlName="stato"
-                                [checked]="data2?.stato" />
-                            <label for="inlineCheckbox1">Attivo</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <div formGroupName="attesaLavori">
-                        <label for="attesaLavori">Attesa lavori</label>
-                        <input type="text" id="attesaLavori" name="attesaLavori"
-                            placeholder="{{ data2?.attesaLavori }}" />
-                    </div>
+                    <label for="attesaLavori">Attesa lavori</label>
+                    <input type="text" id="attesaLavori" formControlName="attesaLavori"
+                        placeholder="{{ data?.attesaLavori }}" />
                 </div>
             </fieldset>
         </div>
         <div>
             <button type="submit">Salva</button>
-            <button [routerLink]="['/lista-commesse']">Annulla e torna indietro</button>
+            <button [routerLink]="['/commessa',data?.id]">Annulla e torna indietro</button>
         </div>
     </form>
 </div>

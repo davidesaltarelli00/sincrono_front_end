@@ -24,9 +24,7 @@ export class AnagraficaService {
   }
 
   delete(id: any) {
-    return this.http.delete<any>(
-      `http://localhost:8085/anagrafica/${id}`
-    );
+    return this.http.delete<any>(`http://localhost:8085/anagrafica/${id}`);
   }
 
   update(body: any): Observable<any> {
@@ -37,6 +35,13 @@ export class AnagraficaService {
 
   insert(body: any): Observable<any> {
     return this.http.post<any>(`http://localhost:8085/anagrafica`, body, {
+      headers: headers,
+    });
+  }
+
+  //GET UTENTI LIST
+  getListaUtenti(): Observable<any> {
+    return this.http.get<any>(`http://localhost:8085/utenti-list`, {
       headers: headers,
     });
   }

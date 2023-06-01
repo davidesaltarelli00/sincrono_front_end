@@ -4,11 +4,21 @@
 
     <form [formGroup]="nuovaAnagrafica" (ngSubmit)="inserisci()">
         <fieldset>
+            <div formGroupName="utente">
+                <legend>Utente</legend>
+                <select id="utente" formControlName="id">
+                    <option value="">--nessuna selezione--</option>
+                    <option *ngFor="let utente of utenti" [value]="utente.id">
+                        {{utente.username}}</option>
+                </select>
+            </div>
+        </fieldset>
+        <fieldset>
             <legend>Inserisci Dettagli</legend>
             <div>
-                <label for="attivo" style="width: 100%;">Attivo</label>
+                <label for="attivo">Attivo</label>
                 <div>
-                    <input id="checkbox" type="checkbox" formcontrolname="attivo">
+                    <input id="checkbox" type="checkbox" formControlName="attivo">
                     <label for="attivo">Attivo</label>
                 </div>
             </div>
@@ -75,12 +85,13 @@
                 <label for="comuneDiNascita">Comune di Nascia: </label>
                 <input id="comuneDiNascita" type="text" placeholder="Inserisci il comune di nascita"
                     formControlName="comuneDiNascita">
-            </div>          
+            </div>
             <div>
                 <div>
                     <label for="dataNascita" style="width: 100%">Data inizio</label>
                     <mat-form-field appearance="outline">
-                        <input matInput [matDatepicker]="picker" formControlName="dataNascita"placeholder="Inserisci la data di nascita" />
+                        <input matInput [matDatepicker]="picker" formControlName="dataNascita"
+                            placeholder="Inserisci la data di nascita" />
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
@@ -91,17 +102,15 @@
                 <input id="domicilio" type="text" placeholder="Inserisci il domicilio" formControlName="domicilio">
             </div>
             <div>
-                <label for="coniugato" style="width: 100%;">Coniugato</label>
+                <label for="coniugato">Coniugato</label>
                 <div>
-                    <input id="checkbox" type="checkbox" formcontrolname="coniugato">
-                    <label for="coniugato">Coniugato</label>
+                    <input id="checkbox" type="checkbox" formControlName="coniugato">
                 </div>
             </div>
             <div>
-                <label for="figliACarico" style="width: 100%;">Figli a Carico</label>
+                <label for="figliACarico">Figli a Carico</label>
                 <div>
-                    <input id="checkbox" type="checkbox" formcontrolname="figliACarico">
-                    <label for="figliACarico">Figli a Carico</label>
+                    <input id="checkbox" type="checkbox" formControlName="figliACarico">
                 </div>
             </div>
             <button type="submit">Salva</button>

@@ -1,6 +1,7 @@
 <html>
 
 <body>
+    <button [routerLink]="['../nuova-commessa']">Inserisci Nuova Commessa</button>
     <h1>Lista delle Commesse </h1>
     <table id="table">
         <thead>
@@ -10,6 +11,7 @@
                 <th>Data Inizio</th>
                 <th>Data Fine</th>
                 <th>Dettaglio</th>
+                <th>--------------</th>
             </tr>
         </thead>
         <tbody>
@@ -22,11 +24,13 @@
                     <a [routerLink]="['/commessa/', data.id]"><img src="../../../../assets/images/dettagli.png"
                             height="30px" width="45px"></a>
                 </td>
+                <td>
+                    <button (click)="delete(data?.id)">Elimina</button>
+                </td>
             </tr>
         </tbody>
 
     </table>
-    <button [routerLink]="['../nuova-commessa']">Inserisci Nuova Commessa</button>
 </body>
 
 </html>

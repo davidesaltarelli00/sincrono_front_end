@@ -6,6 +6,7 @@ import {
 } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { AnagraficaService } from '../anagrafica-service';
+import { Router } from '@angular/router';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -26,12 +27,16 @@ export const MY_DATE_FORMATS = {
 })
 export class NuovaAnagraficaComponent implements OnInit {
   data: any = [];
+  utenti: any = [];
 
   submitted = false;
   errore = false;
   messaggio: any;
 
   nuovaAnagrafica: FormGroup = new FormGroup({
+    utente: new FormGroup({
+      id: new FormControl(''),
+    }),
     nome: new FormControl(''),
     cognome: new FormControl(''),
     dataNascita: new FormControl(),
@@ -54,11 +59,15 @@ export class NuovaAnagraficaComponent implements OnInit {
 
   constructor(
     private anagraficaService: AnagraficaService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.nuovaAnagrafica = this.formBuilder.group({
+      utente: new FormGroup({
+        id: new FormControl(this.data?.utente?.id),
+      }),
       nome: new FormControl(this.data?.nome),
       cognome: new FormControl(this.data?.cognome),
       dataNascita: new FormControl(this.data?.dataNascita),
@@ -78,8 +87,14 @@ export class NuovaAnagraficaComponent implements OnInit {
       coniugato: new FormControl(''),
       figliACarico: new FormControl(''),
     });
+    this.caricaListaUtenti();
   }
-
+  caricaListaUtenti() {
+    this.anagraficaService.getListaUtenti().subscribe((result: any) => {
+      console.log(result);
+      this.utenti = (result as any)['list'];
+    });
+  }
   inserisci() {
     this.submitted = true;
     if (this.nuovaAnagrafica.invalid) {
@@ -92,6 +107,9 @@ export class NuovaAnagraficaComponent implements OnInit {
           removeEmpty(obj[key]);
         } else if (obj[key] === null) {
           delete obj[key];
+        }
+        if (obj.utente && Object.keys(obj.utente).length === 0) {
+          delete obj.utente;
         }
       });
     };
@@ -109,6 +127,7 @@ export class NuovaAnagraficaComponent implements OnInit {
         this.messaggio = (result as any).esito.target;
         return;
       }
+      this.router.navigate(['../lista-anagrafiche']);
     });
   }
 }

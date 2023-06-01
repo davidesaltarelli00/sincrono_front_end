@@ -1,9 +1,16 @@
 import { CommessaService } from './../commessa-service.component';
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
-
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -13,7 +20,7 @@ export const MY_DATE_FORMATS = {
     dateInput: 'DD/MM/YYYY',
     monthYearLabel: 'MMMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY'
+    monthYearA11yLabel: 'MMMM YYYY',
   },
 };
 
@@ -21,14 +28,11 @@ export const MY_DATE_FORMATS = {
   selector: 'app-modifica-commessa',
   templateUrl: './modifica-commessa.component.html',
   styleUrls: ['./modifica-commessa.component.scss'],
-  providers: [
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
-  ],
+  providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }],
 })
 export class ModificaCommessaComponent implements OnInit {
-  id: any = this.router.snapshot.params['id'];
+  id: any = this.activatedRouter.snapshot.params['id'];
   data: any = [];
-  data2: any = [];
   submitted = false;
   errore = false;
   messaggio: any;
@@ -52,20 +56,19 @@ export class ModificaCommessaComponent implements OnInit {
 
   constructor(
     private commessaService: CommessaService,
-    private router: ActivatedRoute,
+    private activatedRouter: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private router2: Router
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.commessaService.detail(this.router.snapshot.params['id']).subscribe((resp: any) => {
-      this.data2 = (resp as any)['commessa'];
-      console.log(this.data2);
-      
+    this.commessaService.detail(this.id).subscribe((resp: any) => {
+      this.data = (resp as any)['commessa'];
+      console.log(this.data);
     });
 
     this.modificaCommessa = this.formBuilder.group({
-      id: new FormControl(this.router.snapshot.params['id']),
+      id: new FormControl(this.id),
       cliente: new FormControl(this.data?.cliente),
       clienteFinale: new FormControl(this.data?.clienteFinale),
       titoloPosizione: new FormControl(this.data?.titoloPosizione),
@@ -76,20 +79,20 @@ export class ModificaCommessaComponent implements OnInit {
       tariffaGiornaliera: new FormControl(this.data?.tariffaGiornaliera),
       nominativo: new FormControl(this.data?.nominativo),
       azienda: new FormControl(this.data?.azienda),
-      aziendaDiFatturazioneInterna: new FormControl(this.data?.aziendaDiFatturazioneInterna),
-      stato: new FormControl(""),
+      aziendaDiFatturazioneInterna: new FormControl(
+        this.data?.aziendaDiFatturazioneInterna
+      ),
+      stato: new FormControl(''),
       attesaLavori: new FormControl(this.data?.attesaLavori),
     });
   }
-
- 
 
   transformDate(dateString: string): string {
     const dateObject = new Date(dateString);
     return dateObject.toLocaleDateString('en-US', {
       day: '2-digit',
       month: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     });
   }
 
@@ -99,11 +102,13 @@ export class ModificaCommessaComponent implements OnInit {
 
   inserisci() {
     console.log(JSON.stringify(this.modificaCommessa.value));
-    const body = JSON.stringify({ "commessa": this.modificaCommessa.value });
+    const body = JSON.stringify({ commessa: this.modificaCommessa.value });
     console.log(body);
 
     this.commessaService.update(body).subscribe((result) => {
       console.log(result);
     });
+
+    this.router.navigate(['../commessa', this.id]);
   }
 }

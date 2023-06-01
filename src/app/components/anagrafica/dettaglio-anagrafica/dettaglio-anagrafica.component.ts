@@ -8,12 +8,13 @@ import { AnagraficaService } from '../anagrafica-service';
   styleUrls: ['./dettaglio-anagrafica.component.scss'],
 })
 export class DettaglioAnagraficaComponent implements OnInit {
-  id: any = this.router.snapshot.params['id'];
+  id: any = this.activatedRoute.snapshot.params['id'];
   data: any;
   date: any;
   constructor(
     private anagraficaService: AnagraficaService,
-    private router: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -22,6 +23,17 @@ export class DettaglioAnagraficaComponent implements OnInit {
       this.data = (resp as any)['anagrafica'];
       console.log(this.data);
     });
+  }
+  delete(id: number) {
+    this.anagraficaService.delete(id).subscribe(
+      () => {
+        console.log('Commessa deleted');
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+    this.router.navigate(['../lista-anagrafiche'])
   }
   transformDate(dateString: string): string {
     const dateObject = new Date(dateString);

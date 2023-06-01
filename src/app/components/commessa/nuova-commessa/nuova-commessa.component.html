@@ -1,128 +1,87 @@
-<div>
+<html>
+
+<body>
     <form [formGroup]="form" (ngSubmit)="inserisci()">
-        <div>
-            <div></div>
-            <fieldset>
-                <legend>Inserisci nuova commessa:</legend>
 
+        <fieldset>
+            <legend>Dati Generali</legend>
+            <div>
+                <label for="cliente">Cliente</label>
+                <input type="text" placeholder="Inserisci il cliente" id="cliente" formControlName="cliente">
+            </div>
+            <div>
+                <label for="clienteFinale">Cliente Finale</label>
+                <input type="text" placeholder="Inserisci il cliente finale" id="clienteFinale"
+                    formControlName="clienteFinale">
+            </div>
+            <div>
+                <label for="titoloPosizione">Titolo Posizione</label>
+                <input type="text" placeholder="Inserisci titolo posizione" id="titoloPosizione"
+                    formControlName="titoloPosizione">
+            </div>
+            <div>
+                <label for="distacco">Distacco</label>
+                <input type="text" placeholder="Inserisci il distacco" id="distacco" formControlName="distacco">
+            </div>
+            <div>
+                <label for="dataInizio">Data inizio</label>
+                <mat-form-field appearance="outline">
+                    <input matInput [matDatepicker]="picker" formControlName="dataInizio">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
 
-                <div>
-                    <div formGroupName="cliente">
-                        <label for="cliente">Cliente</label>
-                        <input type="text" id="cliente" name="cliente">
-                    </div>
-                </div>
+            </div>
+            <div>
+                <label for="dataFine">Data fine</label>
+                <mat-form-field appearance="outline">
+                    <input matInput [matDatepicker]="picker2" formControlName="dataFine">
 
-                <div>
-                    <div formGroupName="cliente_finale">
-                        <label for="cliente_finale">Cliente Finale</label>
-                        <input type="text" id="cliente_finale" name="cliente_finale">
-                    </div>
-                </div>
-
-                <div>
-                    <div formGroupName="titolo_posizione">
-                        <label for="titolo_posizione">Titolo Posizione</label>
-                        <input type="text" id="titolo_posizione" name="titolo_posizione">
-                    </div>
-                </div>
-
-
-                <div>
-                    <div formGroupName="distacco">
-                        <label for="distacco">Distacco</label>
-                        <input type="text" id="distacco" name="distacco">
-                    </div>
-                </div>
-
-
-                <div>
-                    <div>
-                        <label for="data_inizio" style="width: 100%;">Data inizio</label>
-                        <mat-form-field appearance="outline">
-                            <input matInput [matDatepicker]="picker" formControlName="data_inizio">
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
-
-                    </div>
-                </div>
-
-
-                <div>
-                    <div>
-                        <label for="data_fine" style="width: 100%;">Data fine</label>
-                        <mat-form-field appearance="outline">
-                            <input matInput [matDatepicker]="picker2" formControlName="data_fine">
-
-                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                            <mat-datepicker #picker2></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                </div>
-
-                <div>
-                    <div formGroupName="costo_mese">
-                        <label for="costo_mese">Costo mese</label>
-                        <input type="text" id="costo_mese" name="costo_mese">
-                    </div>
-                </div>
-
-                <div>
-                    <div formGroupName="tariffa_giornaliera">
-                        <label for="tariffa_giornaliera">Tariffa giornaliera</label>
-                        <input type="text" id="tariffa_giornaliera" name="tariffa_giornaliera">
-                    </div>
-                </div>
-
-                <div>
-                    <div formGroupName="nominativo">
-                        <label for="nominativo">Nominativo</label>
-                        <input type="text" id="nominativo" name="nominativo">
-                    </div>
-                </div>
-
-                <div>
-                    <div formGroupName="azienda">
-                        <label for="azienda">Azienda</label>
-                        <input stype="text" id="azienda" name="azienda">
-                    </div>
-                </div>
-
-                <div>
-                    <div formGroupName="azienda_di_fatturazione_interna">
-                        <label for="azienda_di_fatturazione_interna">Azienda di fatturazione interna</label>
-                        <input type="text" id="azienda_di_fatturazione_interna" name="azienda_di_fatturazione_interna">
-                    </div>
-                </div>
-
-                <div>
-                    <div>
-                        <label for="stato" style="width: 100%;">Stato</label>
-                        <div>
-                            <input type="radio" name="stato" id="inlineRadio1" value=true formControlName="stato">
-                            <label for="inlineRadio1">Attivo</label>
-                        </div>
-                        <div>
-                            <input type="radio" name="stato" id="inlineRadio2" value=false formControlName="stato">
-                            <label for="inlineRadio2">Non Attivo</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <div formGroupName="attesaLavori">
-                        <label for="attesaLavori">Attesa lavori</label>
-                        <input type="text" id="attesaLavori" name="attesaLavori">
-                    </div>
-                </div>
-
-            </fieldset>
-        </div>
-        <div>
-            <button type="submit">Salva</button>
-            <button [routerLink]="['../lista-commesse']">Annulla e torna indietro</button>
-        </div>
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Specifiche</legend>
+            <div>
+                <label for="costoMese">Costo mese</label>
+                <input type="text" placeholder="Inserisci il costo mensile" id="costoMese" formControlName="costoMese">
+            </div>
+            <div>
+                <label for="tariffaGiornaliera">Tariffa giornaliera</label>
+                <input type="text" placeholder="Inserisci il tariffa giornaliera" id="tariffaGiornaliera"
+                    formControlName="tariffaGiornaliera">
+            </div>
+            <div>
+                <label for="nominativo">Nominativo</label>
+                <input type="text" placeholder="Inserisci il nominativo" id="nominativo" formControlName="nominativo">
+            </div>
+            <div>
+                <label for="azienda">Azienda</label>
+                <input type="text" placeholder="Inserisci il azienda" id="azienda" formControlName="azienda">
+            </div>
+            <div>
+                <label for="aziendaDiFatturazioneInterna">Azienda di fatturazione interna</label>
+                <input type="text" placeholder="Inserisci il domicilio" id="aziendaDiFatturazioneInterna"
+                    formControlName="aziendaDiFatturazioneInterna">
+            </div>
+            <div>
+                <label for="stato">Stato</label>
+                <input id="checkbox" type="checkbox" formControlName="stato">
+            </div>
+            <div>
+                <label for="attesaLavori">Attesa lavori</label>
+                <input type="text" placeholder="Inserisci attesa lavori" id="attesaLavori"
+                    formControlName="attesaLavori">
+            </div>
+            <div>
+                <button type="submit">Salva</button>
+                <button [routerLink]="['../lista-commesse']">Annulla e torna indietro</button>
+            </div>
+        </fieldset>
     </form>
 
-</div>
+</body>
+
+</html>

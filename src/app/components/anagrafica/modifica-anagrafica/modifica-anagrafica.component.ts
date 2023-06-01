@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnagraficaService } from '../anagrafica-service';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -21,23 +20,28 @@ export const MY_DATE_FORMATS = {
   templateUrl: './modifica-anagrafica.component.html',
   styleUrls: ['./modifica-anagrafica.component.scss'],
 })
-export class ModificaAnagraficaComponent {
+export class ModificaAnagraficaComponent implements OnInit {
+  utenti: any = [];
   data: any = [];
-
+  id = this.activatedRouter.snapshot.params['id'];
   submitted = false;
   errore = false;
   messaggio: any;
 
   modificaAnagrafica: FormGroup = new FormGroup({
+    id: new FormControl(''),
+    utente: new FormGroup({
+      id: new FormControl(''),
+    }),
     nome: new FormControl(''),
     cognome: new FormControl(''),
     dataDiNascita: new FormControl(),
     comuneDiNascita: new FormControl(),
     attivo: new FormControl(''),
     codiceFiscale: new FormControl(''),
-    azienda_tipo: new FormControl(''),
+    aziendaTipo: new FormControl(''),
     residenza: new FormControl(''),
-    Domicilio: new FormControl(''),
+    domicilio: new FormControl(''),
     cellularePrivato: new FormControl(''),
     cellulareAziendale: new FormControl(''),
     mailPrivata: new FormControl(''),
@@ -51,59 +55,53 @@ export class ModificaAnagraficaComponent {
 
   constructor(
     private anagraficaService: AnagraficaService,
-    private router: ActivatedRoute,
-    private router2: Router,
-
-    private formBuilder: FormBuilder
+    private activatedRouter: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.anagraficaService
-      .detail(this.router.snapshot.params['id'])
+      .detail(this.id)
       .subscribe((resp: any) => {
         this.data = (resp as any)['anagrafica'];
         console.log(this.data);
+
+        this.modificaAnagrafica = this.formBuilder.group({
+          id: new FormControl(this.id),
+          utente: new FormGroup({
+            id: new FormControl(this.data?.utente?.id),
+          }),
+          nome: new FormControl(this.data?.nome),
+          cognome: new FormControl(this.data?.cognome),
+          dataDiNascita: new FormControl(this.data?.dataDiNascita),
+          comuneDiNascita: new FormControl(this.data?.comuneDiNascita),
+          attivo: new FormControl(''),
+          codiceFiscale: new FormControl(this.data?.codiceFiscale),
+          aziendaTipo: new FormControl(this.data?.aziendaTipo),
+          residenza: new FormControl(this.data?.residenza),
+          domicilio: new FormControl(this.data?.domicilio),
+          cellularePrivato: new FormControl(this.data?.cellularePrivato),
+          cellulareAziendale: new FormControl(this.data?.cellulareAziendale),
+          mailPrivata: new FormControl(this.data?.mailPrivata),
+          mailAziendale: new FormControl(this.data?.mailAziendale),
+          mailPec: new FormControl(this.data?.mailPec),
+          titoliDiStudio: new FormControl(this.data?.titoliDiStudio),
+          altriTitoli: new FormControl(this.data?.altriTitoli),
+          coniugato: new FormControl(''),
+          figliACarico: new FormControl(''),
+        });
+        this.caricaListaUtenti();
+        this.modificaAnagrafica.patchValue(this.data);
       });
-    this.modificaAnagrafica = this.formBuilder.group({
-      attivo: new FormControl(''),
-      nome: new FormControl(this.data?.nome),
-      cognome: new FormControl(this.data?.cognome),
-      dataDiNascita: new FormControl(this.data?.dataDiNascita),
-      codiceFiscale: new FormControl(this.data?.codiceFiscale),
-      residenza: new FormControl(this.data?.residenza),
-      domicilio: new FormControl(this.data?.domicilio),
-      cellularePrivato: new FormControl(this.data?.cellularePrivato),
-      cellulareAziendale: new FormControl(this.data?.cellulareAziendale),
-      mailPrivata: new FormControl(this.data?.mailPrivata),
-      mailAziendale: new FormControl(this.data?.mailAziendale),
-      mailPec: new FormControl(this.data?.mailPec),
-      titoliDiStudio: new FormControl(this.data?.titoliDiStudio),
-      altriTitoli: new FormControl(this.data?.altriTitoli),
-      coniugato: new FormControl(''),
-      figliACarico: new FormControl(''),
-      comuneDiNascita: new FormControl(this.data?.comuneDiNascita),
-      aziendaTipo: new FormControl(this.data?.aziendaTipo),
+  }
+  caricaListaUtenti() {
+    this.anagraficaService.getListaUtenti().subscribe((result: any) => {
+      console.log(result);
+      this.utenti = (result as any)['list'];
     });
   }
-
   aggiorna() {
-    /*const removeEmpty = (obj: any) => {
-      Object.keys(obj).forEach((key) => {
-        if (obj[key] && typeof obj[key] === 'object') {
-          // recursive
-          removeEmpty(obj[key]);
-        } else if (obj[key] === null) {
-          delete obj[key];
-        }
-      });
-    };
-
-    removeEmpty(this.modificaAnagrafica.value);
-    console.log(JSON.stringify(this.modificaAnagrafica.value));
-    const body = JSON.stringify({
-      anagrafica: this.modificaAnagrafica.value,
-    });
-    */
     const body = JSON.stringify({
       anagrafica: this.modificaAnagrafica.value,
     });
@@ -116,15 +114,16 @@ export class ModificaAnagraficaComponent {
         this.messaggio = (result as any).esito.target;
         return;
       }
-      this.router2.navigate(['../lista-anagrafiche']);
     });
+    this.router.navigate(['../lista-anagrafiche']);
   }
+
   transformDate(dateString: string): string {
     const dateObject = new Date(dateString);
     return dateObject.toLocaleDateString('en-US', {
       day: '2-digit',
       month: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     });
   }
 }
