@@ -1,6 +1,7 @@
 <html>
 
 <body>
+    <h1>Modifica Anagrafica</h1>
     <form [formGroup]="modificaAnagrafica" (ngSubmit)="aggiorna()">
         <fieldset>
             <div formGroupName="utente">
@@ -106,7 +107,7 @@
                     formControlName="figliACarico" [checked]="data?.figliACarico" />
             </div>
             <button type="submit">Salva</button>
-            <button [routerLink]="['../../anagrafica', data?.id]">Annulla e torna indietro</button>
+            <button [routerLink]="['/dettaglio-anagrafica', data?.id]">Annulla e torna indietro</button>
         </fieldset>
     </form>
 

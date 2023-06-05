@@ -1,8 +1,8 @@
 <html>
-
+<title>Lista Commesse</title>
 <body>
-    <button [routerLink]="['../nuova-commessa']">Inserisci Nuova Commessa</button>
-    <h1>Lista delle Commesse </h1>
+    <button [routerLink]="['/home']">Home</button>
+    <button [routerLink]="['/nuova-commessa']">Inserisci Nuova Commessa</button>
     <table id="table">
         <thead>
             <tr>
@@ -21,7 +21,7 @@
                 <td>{{ this.transformDate(data.dataInizio) }}</td>
                 <td>{{ this.transformDate(data.dataFine) }}</td>
                 <td>
-                    <a [routerLink]="['/commessa/', data.id]"><img src="../../../../assets/images/dettagli.png"
+                    <a [routerLink]="['/dettaglio-commessa/', data.id]"><img src="../../../../assets/images/dettagli.png"
                             height="30px" width="45px"></a>
                 </td>
                 <td>

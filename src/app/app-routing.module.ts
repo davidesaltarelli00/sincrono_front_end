@@ -1,3 +1,4 @@
+import { HomeComponent } from './components/home/home/home.component';
 import { ModificaAnagraficaComponent } from './components/anagrafica/modifica-anagrafica/modifica-anagrafica.component';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -16,31 +17,31 @@ import { ListaContrattiComponent } from './components/contratto/lista-contratti/
 import { ListaOrganicoComponent } from './components/organico/lista-organico/lista-organico.component';
 
 const routes: Routes = [
+  { path: 'home', component: HomeComponent },
   //ANAGRAFICA
-  { path: 'anagrafica/:id', component: DettaglioAnagraficaComponent },
+  { path: 'dettaglio-anagrafica/:id', component: DettaglioAnagraficaComponent },
   { path: 'modifica-anagrafica/:id', component: ModificaAnagraficaComponent },
   { path: 'nuova-anagrafica', component: NuovaAnagraficaComponent },
   { path: 'lista-anagrafiche', component: ListaAnagraficheComponent },
- //DASHBOARD
+  //DASHBOARD
   { path: 'dashboard', component: ListaDashboardComponent },
   //ORGANICO
-  {path:'organico',component:ListaOrganicoComponent},
+  { path: 'organico', component: ListaOrganicoComponent },
   //CONTRATTO
-  { path: 'contratto/:id', component: DettaglioContrattoComponent },
+  { path: 'dettaglio-contratto/:id', component: DettaglioContrattoComponent },
   { path: 'modifica-contratto/:id', component: ModificaContrattoComponent },
   { path: 'nuovo-contratto', component: NuovoContrattoComponent },
   { path: 'lista-contratti', component: ListaContrattiComponent },
 
   //COMMESSA
-  { path: 'commessa/:id', component: DettaglioCommessaComponent },
+  { path: 'dettaglio-commessa/:id', component: DettaglioCommessaComponent },
   { path: 'modifica-commessa/:id', component: ModificaCommessaComponent },
   { path: 'nuova-commessa', component: NuovaCommessaComponent },
-  { path: 'lista-commesse', component: ListaCommesseComponent }
-
+  { path: 'lista-commesse', component: ListaCommesseComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

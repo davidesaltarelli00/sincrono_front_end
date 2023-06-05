@@ -1,7 +1,7 @@
 <html>
 
 <body>
-
+    <h1>Nuova Anagrafica</h1>
     <form [formGroup]="nuovaAnagrafica" (ngSubmit)="inserisci()">
         <fieldset>
             <div formGroupName="utente">
@@ -114,7 +114,7 @@
                 </div>
             </div>
             <button type="submit">Salva</button>
-            <button [routerLink]="['../lista-anagrafiche']">Annulla e torna indietro</button>
+            <button [routerLink]="['/lista-anagrafiche']">Annulla e torna indietro</button>
         </fieldset>
     </form>
 

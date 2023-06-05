@@ -61,39 +61,37 @@ export class ModificaAnagraficaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.anagraficaService
-      .detail(this.id)
-      .subscribe((resp: any) => {
-        this.data = (resp as any)['anagrafica'];
-        console.log(this.data);
+    this.anagraficaService.detail(this.id).subscribe((resp: any) => {
+      this.data = (resp as any)['anagrafica'];
+      console.log(this.data);
 
-        this.modificaAnagrafica = this.formBuilder.group({
-          id: new FormControl(this.id),
-          utente: new FormGroup({
-            id: new FormControl(this.data?.utente?.id),
-          }),
-          nome: new FormControl(this.data?.nome),
-          cognome: new FormControl(this.data?.cognome),
-          dataDiNascita: new FormControl(this.data?.dataDiNascita),
-          comuneDiNascita: new FormControl(this.data?.comuneDiNascita),
-          attivo: new FormControl(''),
-          codiceFiscale: new FormControl(this.data?.codiceFiscale),
-          aziendaTipo: new FormControl(this.data?.aziendaTipo),
-          residenza: new FormControl(this.data?.residenza),
-          domicilio: new FormControl(this.data?.domicilio),
-          cellularePrivato: new FormControl(this.data?.cellularePrivato),
-          cellulareAziendale: new FormControl(this.data?.cellulareAziendale),
-          mailPrivata: new FormControl(this.data?.mailPrivata),
-          mailAziendale: new FormControl(this.data?.mailAziendale),
-          mailPec: new FormControl(this.data?.mailPec),
-          titoliDiStudio: new FormControl(this.data?.titoliDiStudio),
-          altriTitoli: new FormControl(this.data?.altriTitoli),
-          coniugato: new FormControl(''),
-          figliACarico: new FormControl(''),
-        });
-        this.caricaListaUtenti();
-        this.modificaAnagrafica.patchValue(this.data);
+      this.modificaAnagrafica = this.formBuilder.group({
+        id: new FormControl(this.id),
+        utente: new FormGroup({
+          id: new FormControl(this.data?.utente?.id),
+        }),
+        nome: new FormControl(this.data?.nome),
+        cognome: new FormControl(this.data?.cognome),
+        dataDiNascita: new FormControl(this.data?.dataDiNascita),
+        comuneDiNascita: new FormControl(this.data?.comuneDiNascita),
+        attivo: new FormControl(''),
+        codiceFiscale: new FormControl(this.data?.codiceFiscale),
+        aziendaTipo: new FormControl(this.data?.aziendaTipo),
+        residenza: new FormControl(this.data?.residenza),
+        domicilio: new FormControl(this.data?.domicilio),
+        cellularePrivato: new FormControl(this.data?.cellularePrivato),
+        cellulareAziendale: new FormControl(this.data?.cellulareAziendale),
+        mailPrivata: new FormControl(this.data?.mailPrivata),
+        mailAziendale: new FormControl(this.data?.mailAziendale),
+        mailPec: new FormControl(this.data?.mailPec),
+        titoliDiStudio: new FormControl(this.data?.titoliDiStudio),
+        altriTitoli: new FormControl(this.data?.altriTitoli),
+        coniugato: new FormControl(''),
+        figliACarico: new FormControl(''),
       });
+      this.caricaListaUtenti();
+      this.modificaAnagrafica.patchValue(this.data);
+    });
   }
   caricaListaUtenti() {
     this.anagraficaService.getListaUtenti().subscribe((result: any) => {
@@ -115,7 +113,7 @@ export class ModificaAnagraficaComponent implements OnInit {
         return;
       }
     });
-    this.router.navigate(['../lista-anagrafiche']);
+    this.router.navigate(['../../dettaglio-anagrafica']);
   }
 
   transformDate(dateString: string): string {
