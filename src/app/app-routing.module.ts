@@ -17,16 +17,16 @@ import { ListaContrattiComponent } from './components/contratto/lista-contratti/
 import { ListaOrganicoComponent } from './components/organico/lista-organico/lista-organico.component';
 
 const routes: Routes = [
+  //HOME
+  { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
+
   //ANAGRAFICA
   { path: 'dettaglio-anagrafica/:id', component: DettaglioAnagraficaComponent },
   { path: 'modifica-anagrafica/:id', component: ModificaAnagraficaComponent },
   { path: 'nuova-anagrafica', component: NuovaAnagraficaComponent },
   { path: 'lista-anagrafiche', component: ListaAnagraficheComponent },
-  //DASHBOARD
-  { path: 'dashboard', component: ListaDashboardComponent },
-  //ORGANICO
-  { path: 'organico', component: ListaOrganicoComponent },
+
   //CONTRATTO
   { path: 'dettaglio-contratto/:id', component: DettaglioContrattoComponent },
   { path: 'modifica-contratto/:id', component: ModificaContrattoComponent },
@@ -38,6 +38,11 @@ const routes: Routes = [
   { path: 'modifica-commessa/:id', component: ModificaCommessaComponent },
   { path: 'nuova-commessa', component: NuovaCommessaComponent },
   { path: 'lista-commesse', component: ListaCommesseComponent },
+
+  //DASHBOARD
+  { path: 'dashboard', component: ListaDashboardComponent },
+  //ORGANICO
+  { path: 'organico', component: ListaOrganicoComponent },
 ];
 
 @NgModule({

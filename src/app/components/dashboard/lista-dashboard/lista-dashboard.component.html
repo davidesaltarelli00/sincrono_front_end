@@ -1,39 +1,40 @@
-
 <html>
 
 <body>
-    <table id="table">
-        <thead>
-            <tr>
-                <th>Nominativo</th>
-                <th>Contratto</th>
-                <th>Società</th>
-                <th>Contratto Nazionale</th>
-                <th>Data inizio</th>
-                <th>Data fine</th>
-                <th>Mesi durata</th>
-                <th>Liv.iniz.</th>
-                <th>Liv.att.</th>
-                <th>Liv.fin.</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let data of lista">
-                <td>{{ data.commessa.nominativo }}</td>
-                <td>{{ data.contratto.tipoContratto.descrizione }}</td>
-                <td>{{ data.contratto.tipoAzienda.descrizione }}</td>
-                <td>{{ data.contratto.contrattoNazionale.descrizione}}</td>
-                <td>{{ this.transformDate(data.commessa.dataInizio) }}</td>
-                <td>{{ this.transformDate(data.commessa.dataFine) }}</td>
-                <td>{{ data.contratto.mesiDurata }}</td>  
-                <td>{{ data.contratto.livelloIniziale }}</td>
-                <td>{{ data.contratto.livelloAttuale }}</td>
-                <td>{{ data.contratto.livelloFinale }}</td>
-
-            </tr>
-        </tbody>
-
-    </table>
+    <div class="table-container">
+        <div class="table-horizontal-container">
+            <table class="unfixed-table">
+                <thead>
+                    <tr>
+                        <th>Nominativo</th>
+                        <th>Contratto</th>
+                        <th>Società</th>
+                        <th>Contratto Nazionale</th>
+                        <th>Data inizio</th>
+                        <th>Data fine</th>
+                        <th>Mesi durata</th>
+                        <th>Liv.iniz.</th>
+                        <th>Liv.att.</th>
+                        <th>Liv.fin.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of lista">
+                        <td>{{ data.commessa.nominativo }}</td>
+                        <td>{{ data.contratto.tipoContratto.descrizione }}</td>
+                        <td>{{ data.contratto.tipoAzienda.descrizione }}</td>
+                        <td>{{ data.contratto.contrattoNazionale.descrizione}}</td>
+                        <td>{{ this.transformDate(data.commessa.dataInizio) }}</td>
+                        <td>{{ this.transformDate(data.commessa.dataFine) }}</td>
+                        <td>{{ data.contratto.mesiDurata }}</td>
+                        <td>{{ data.contratto.livelloIniziale }}</td>
+                        <td>{{ data.contratto.livelloAttuale }}</td>
+                        <td>{{ data.contratto.livelloFinale }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 
 </html>
