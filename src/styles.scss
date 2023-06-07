@@ -68,3 +68,30 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+$navbar-bg-color: #b6f6ff; // Background color
+$navbar-padding: 10px 20px; // Padding around navbar
+
+
+.navbar{
+  background-color:$navbar-bg-color;
+  padding: 10;
+  
+ 
+  &-brand {
+    font-size: 24px; // Logo font size
+    font-weight: bold; // Logo font weight
+    color: #333; // Logo color
+  }
+
+
+  &-nav {
+    .nav-item {
+      margin-right: 10px; // Margin between nav items
+
+      .nav-link {
+        font-size: 18px; // Nav item font size
+      }
+    }
+  }
+}
