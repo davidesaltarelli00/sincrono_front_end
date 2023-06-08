@@ -48,3 +48,33 @@ button[type="submit"] {
   color: red;
   margin-top: 5px;
 }
+
+.filters {
+  margin-bottom: 10px;
+}
+
+.filter-input {
+  margin-right: 10px;
+}
+
+#list {
+  list-style-type: none;
+}
+
+#list li {
+  margin-bottom: 5px;
+}
+
+#filter-button {
+  padding: 5px 10px;
+  background-color: #337ab7;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+#filter-button:hover {
+  background-color: #23527c;
+}
+
+

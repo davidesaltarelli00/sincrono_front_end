@@ -6,96 +6,344 @@
     <legend>Utente</legend>
     <div>
       <label>Utente : </label>
-      <input type="text" value="{{ data?.utente?.username }}" readonly />
+      <input type="text" value="{{ data?.anagrafica.utente?.username }}" readonly />
     </div>
   </fieldset>
   <fieldset>
     <legend>Dettagli</legend>
     <div>
       <label>Attivo: </label>
-      <input type="checkbox" [checked]="data?.attivo" disabled="disabled" />
+      <input type="checkbox" [checked]="data?.anagrafica?.attivo" disabled="disabled" />
     </div>
     <div>
       <label>Azienda: </label>
-      <input type="text" value="{{ data?.aziendaTipo }}" readonly />
+<input type="text" value="{{ data?.anagrafica?.aziendaTipo }}" readonly />
     </div>
     <div>
       <label>Nome: </label>
-      <input type="text" value="{{ data?.nome }}" readonly />
+      <input type="text" value="{{ data?.anagrafica?.nome }}" readonly />
     </div>
     <div>
       <label>Cognome: </label>
-      <input type="text" value="{{ data?.cognome }}" readonly />
+      <input type="text" value="{{ data?.anagrafica?.cognome }}" readonly />
     </div>
     <div>
       <label>Codice Fiscale: </label>
-      <input type="text" value="{{ data?.codiceFiscale }}" readonly />
+      <input type="text" value="{{ data?.anagrafica?.codiceFiscale }}" readonly />
     </div>
   </fieldset>
   <fieldset>
     <legend>Recapiti</legend>
     <div>
       <label>Cellulare Aziendale: </label>
-      <input type="text" value="{{ data?.cellulareAziendale }}" readonly />
+      <input type="text" value="{{ data?.anagrafica?.cellulareAziendale }}" readonly />
     </div>
     <div>
       <label>Cellulare Privato: </label>
-      <input type="text" value="{{ data?.cellularePrivato }}" readonly />
+      <input type="text" value="{{ data?.anagrafica?.cellularePrivato }}" readonly />
     </div>
     <div>
       <label>Email Privata: </label>
-      <input type="text" value="{{ data?.mailPrivata}}" readonly />
+      <input type="text" value="{{ data?.anagrafica?.mailPrivata}}" readonly />
     </div>
     <div>
       <label>Email Aziendale: </label>
-      <input type="text" value="{{ data?.mailAziendale}}" readonly />
+      <input type="text" value="{{ data?.anagrafica?.mailAziendale}}" readonly />
     </div>
     <div>
       <label>Email Pec: </label>
-      <input type="text" value="{{ data?.mailPec }}" readonly />
+      <input type="text" value="{{ data?.anagrafica?.mailPec }}" readonly />
     </div>
   </fieldset>
   <fieldset>
     <legend>Competenze</legend>
     <div>
       <label>Titolo di Studio: </label>
-      <input type="text" value="{{ data?.titoliDiStudio}}" readonly />
+      <input type="text" value="{{ data?.anagrafica?.titoliDiStudio}}" readonly />
     </div>
     <div>
       <label>Altri Titoli: </label>
-      <input type="text" value="{{ data?.altriTitoli }}" readonly />
+      <input type="text" value="{{ data?.anagrafica?.altriTitoli }}" readonly />
     </div>
   </fieldset>
   <fieldset>
     <legend>Info Extra</legend>
     <div>
       <label>Comune di Nascita: </label>
-      <input type="text" value="{{ data?.comuneDiNascita }}" readonly />
+      <input type="text" value="{{ data?.anagrafica?.comuneDiNascita }}" readonly />
     </div>
     <div>
       <label>Data di Nascita: </label>
-      <input type="text" value="{{ this.transformDate(data?.dataDiNascita)}}" readonly />
+      <input type="text" value="{{ this.transformDate(data?.anagrafica?.dataDiNascita)}}" readonly />
     </div>
     <div>
       <label>Residenza: </label>
-      <input type="text" value="{{ data?.residenza }}" readonly />
+      <input type="text" value="{{ data?.anagrafica?.residenza }}" readonly />
     </div>
     <div>
       <label>Domicilio: </label>
-      <input type="text" value="{{ data?.domicilio }}" readonly />
+      <input type="text" value="{{ data?.anagrafica?.domicilio }}" readonly />
     </div>
     <div>
       <label>Coniugato: </label>
-      <input type="checkbox" [checked]="data?.coniugato" disabled="disabled" />
+      <input type="checkbox" [checked]="data?.anagrafica?.coniugato" disabled="disabled" />
     </div>
     <div>
       <label>Figli a Carico: </label>
-      <input type="checkbox" [checked]="data?.figliACarico" disabled="disabled" />
+      <input type="checkbox" [checked]="data?.anagrafica?.figliACarico" disabled="disabled" />
     </div>
-    <button (click)="delete(data.id)">Cancella</button>
-    <button [routerLink]="['../../modifica-anagrafica',data?.id]">Modifica Anagrafica</button>
-    <button [routerLink]="['../../lista-anagrafiche']">Torna alla lista</button>
   </fieldset>
+  <!-----------contratto----------->
+  <h1>Dettaglio Contratto</h1>
+    <fieldset>
+        <legend>Dati Tipologici</legend>
+        <div>
+            <div>
+                <label>Azienda : </label>
+                <input type="text" value="{{ data?.contratto?.tipoAzienda.descrizione }}" readonly />
+            </div>
+            <div>
+                <label>Tipo Contratto : </label>
+                <input type="text" value="{{ data?.contratto?.tipoContratto.descrizione }}" readonly />
+            </div>
+            <div>
+                <label>Livello Contratto : </label>
+                <input type="text" value="{{ data?.contratto?.livelloContratto.descrizione }}" readonly />
+            </div>
+            <div>
+                <label>Contratto Nazionale : </label>
+                <input type="text" value="{{ data?.contratto?.contrattoNazionale.descrizione }}" readonly />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Dettagli</legend>
+        <div>
+            <div>
+                <label>Attivo: </label>
+                <input type="checkbox" [checked]="data?.contratto?.attivo" disabled="disabled" />
+            </div>
+            <div>
+                <label>Qualifica: </label>
+                <input type="text" value="{{ data?.contratto?.qualifica }}" readonly />
+            </div>
+            <div>
+                <label>Sede Assunzione: </label>
+                <input type="text" value="{{ data?.contratto?.sedeAssunzione }}" readonly />
+            </div>
+            <div>
+                <label>Data Assunzione: </label>
+                <input type="text" value="{{ this.transformDate(data?.contratto?.dataAssunzione) }}" readonly />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Date</legend>
+        <div>
+            <div>
+                <label>Data Inizio Prova: </label>
+                <input type="text" value="{{ this.transformDate(data?.contratto?.dataInizioProva) }}" readonly />
+            </div>
+            <div>
+                <label>Data Fine Prova: </label>
+                <input type="text" value="{{ this.transformDate(data?.contratto?.dataFineProva) }}" readonly />
+            </div>
+            <div>
+                <label>Data Fine Rapporto: </label>
+                <input type="text" value="{{ this.transformDate(data?.contratto?.dataFineRapporto) }}" readonly />
+            </div>
+            <div>
+                <label>Mesi Durata: </label>
+                <input type="text" value="{{ data?.contratto?.mesiDurata }}" readonly />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Livello Dipendente</legend>
+        <div>
+            <div>
+                <label>Livello Iniziale: </label>
+                <input type="text" value="{{ data?.contratto?.livelloIniziale }}" readonly />
+            </div>
+            <div>
+                <label>Livello Attuale: </label>
+                <input type="text" value="{{ data?.contratto?.livelloAttuale }}" readonly />
+            </div>
+            <div>
+                <label>Livello Finale: </label>
+                <input type="text" value="{{ data?.contratto?.livelloFinale }}" readonly />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Info Generali</legend>
+        <div>
+            <div>
+                <label>Dimissioni: </label>
+                <input type="text" value="{{ data?.contratto?.dimissioni }}" readonly />
+            </div>
+            <div>
+                <label>Part Time: </label>
+                <input type="text" value="{{ data?.contratto?.partTime }}" readonly />
+            </div>
+            <div>
+                <label>Part Time A: </label>
+                <input type="text" value="{{ data?.contratto?.partTimeA }}" readonly />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Retribuzione e Diaria</legend>
+        <div>
+            <div>
+                <label>Retribuzione Mensile Lorda: </label>
+                <input type="text" value="{{ data?.contratto?.retribuzioneMensileLorda }}" readonly />
+            </div>
+            <div>
+                <label>Superminimo Mensile: </label>
+                <input type="text" value="{{ data?.contratto?.superminimoMensile }}" readonly />
+            </div>
+            <div>
+                <label>RAL Annua: </label>
+                <input type="text" value="{{ data?.contratto?.ralAnnua }}" readonly />
+            </div>
+            <div>
+                <label>Supermionimo RAL: </label>
+                <input type="text" value="{{ data?.contratto?.superminimoRal }}" readonly />
+            </div>
+            <div>
+                <label>Diaria Mensile: </label>
+                <input type="text" value="{{ data?.contratto?.diariaMese }}" readonly />
+            </div>
+            <div>
+                <label>Diaria Giornaliera: </label>
+                <input type="text" value="{{ data?.contratto?.diariaGg }}" readonly />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Ticket e Aggevolazioni</legend>
+        <div>
+            <div>
+                <label>Ticket: </label>
+                <input type="text" value="{{ data?.contratto?.ticket }}" readonly />
+            </div>
+            <div>
+                <label>ValoreTicket: </label>
+                <input type="text" value="{{ data?.contratto?.valoreTicket }}" readonly />
+            </div>
+            <div>
+                <label>Categoria Protetta: </label>
+                <input type="text" value="{{ data?.contratto?.categoriaProtetta }}" readonly />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Altro</legend>
+        <div>
+            <label>Tutor: </label>
+            <input type="text" value="{{ data?.contratto?.tutor }}" readonly />
+        </div>
+        <div>
+            <label>PFI: </label>
+            <input type="text" value="{{ data?.contratto?.pfi }}" readonly />
+        </div>
+        <div>
+            <label>Corso di Sicurezza: </label>
+            <input type="text" value="{{ data?.contratto?.corsoSicurezza }}" readonly />
+        </div>
+        <div>
+            <label>Motivazione Fine Rapporto: </label>
+            <input type="text" value="{{ data?.contratto?.motivazioneFineRapporto }}" readonly />
+        </div>
+        <div>
+            <label>PC: </label>
+            <input type="checkbox" [checked]="data?.contratto?.pc" disabled="disabled" />
+        </div>
+        <div>
+            <label>Scatti Anzianita: </label>
+            <input type="text" value="{{ data?.contratto?.scattiAnzianita }}" readonly />
+        </div>
+        <div><label>Tariffa Partita IVA: </label>
+            <input type="text" value="{{ data?.contratto?.tariffaPartitaIva }}" readonly />
+        </div>
+        <div>
+            <label>Canale Reclutamento: </label>
+            <input type="text" value="{{ data?.contratto?.canaleReclutamento }}" readonly />
+        </div>
+    </fieldset>
+    <!---------commessa----------->
+    
+    <h1>Dettaglio Commessa</h1>
+    <fieldset>
+        <div>
+            <label>Cliente: </label>
+            <input type="text" value="{{ data?.commessa?.cliente }}" placeholder={{data?.cliente}} readonly />
+        </div>
+        <div>
+            <label>Cliente Finale: </label>
+            <input type="text" value="{{ data?.commessa?.clienteFinale }}" readonly />
+        </div>
+        <div>
+            <label>Titolo Posizione: </label>
+            <input type="text" value="{{ data?.commessa?.titoloPosizione  }}" readonly />
+        </div>
+
+        <div>
+            <label>Distacco: </label>
+            <input type="text" value="{{ data?.commessa?.distacco }}" readonly />
+        </div>
+
+        <div>
+            <label>Costo mese: </label>
+            <input type="text" value="{{ data?.commessa?.costoMese }}" readonly />
+        </div>
+
+
+        <fieldset>
+            <legend>Date</legend>
+            <div>
+                <label>Data Inizio: </label>
+                <input type="text" value="{{ this.transformDate(data?.commessa?.dataInizio)}}" readonly />
+            </div>
+            <div>
+                <label>Data Fine: </label>
+                <input type="text" value="{{ this.transformDate(data?.commessa?.dataFine)}}" readonly />
+            </div>
+        </fieldset>
+        <div>
+            <label>Tariffa giornaliera: </label>
+            <input type="text" value="{{ data?.commessa?.tariffaGiornaliera  }}" readonly />
+        </div>
+
+        <div>
+            <label>Nominativo: </label>
+            <input type="text" value="{{ data?.commessa?.nominativo }}" readonly />
+        </div>
+
+        <div>
+            <label>Azienda: </label>
+            <input type="text" value="{{ data?.commessa?.azienda }}" readonly />
+        </div>
+
+        <div>
+            <label>Azienda di fatturazione interna: </label>
+            <input type="text" value="{{ data?.commessa?.aziendaDiFatturazioneInterna}}" readonly />
+        </div>
+
+        <div>
+            <label>Stato: </label>
+            <input type="checkbox" checked="{{ data?.commessa?.stato }}" disabled="disabled" />
+        </div>
+
+        <div>
+            <label>Attesa lavori: </label>
+            <input type="text" value="{{ data?.commessa?.attesaLavori}}" readonly />
+        </div>
+    </fieldset>
+    <button (click)="delete(data.id)">Cancella</button>
+    <button  [routerLink]="['../../modifica-anagrafica',data?.id]">Modifica Anagrafica</button>
+    <button [routerLink]="['../../lista-anagrafiche']">Torna alla lista</button>
 </body>
 
 </html>

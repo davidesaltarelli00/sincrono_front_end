@@ -15,12 +15,18 @@ export class AnagraficaService {
   constructor(private http: HttpClient) {}
 
   /*CRUD ANAGRAFICA*/
-  list(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/anagrafica-list`);
+  listAnagraficaDTo(body: any): Observable<any> {
+    return this.http.post<any>(`http://localhost:8085/anagrafica-list-filter`, body, {
+      headers: headers,
+    });
   }
 
   detail(id: any): Observable<any> {
     return this.http.get<any>(`http://localhost:8085/anagrafica/${id}`);
+  }
+
+  detailAnagraficaDto(id: any): Observable<any> {
+    return this.http.get<any>(`http://localhost:8085/dettaglio-anagrafica/${id}`);
   }
 
   delete(id: any) {
