@@ -2,6 +2,7 @@
     <title>Organico</title>
 </head>
 <title>Organico</title>
+
 <body>
     <div class="table-container">
         <button [routerLink]="['/home']">Home</button>
@@ -26,17 +27,17 @@
                 <tbody>
                     <tr *ngFor="let data of lista">
                         <td>{{ data?.azienda }}</td>
-                        <td><a href="">{{ data.numeroDipendenti }}</a></td>
-                        <td><a href="">{{ data.indeterminati }}</a></td>
-                        <td><a href="">{{ data.determinati}}</a></td>
-                        <td><a href="">{{ data.apprendistato }}</a></td>
-                        <td><a href="">{{ data.consulenza }}</a></td>
-                        <td><a href="">{{ data.stage }}</a></td>
-                        <td><a href="">{{ data.partitaIva }}</a></td>
-                        <td><a href="">{{ data.potenzialeStage }}</a></td>
-                        <td><a href="">{{ data.slotStage }}</a></td>
-                        <td><a href="">{{ data.potenzialeApprendistato}}</a></td>
-                        <td><a href="">{{ data.slotApprendistato }}</a></td>
+                        <td><a onclick="filter('numeroDipendenti', data?.azienda)">{{ data.numeroDipendenti }}</a></td>
+                        <td><a onclick="filter('indeterminati',data?.azienda)">{{ data.indeterminati }}</a></td>
+                        <td><a onclick="filter('determinati',data?.azienda)">{{ data.determinati}}</a></td>
+                        <td><a onclick="filter('apprendistato',data?.azienda)">{{ data.apprendistato }}</a></td>
+                        <td><a onclick="filter('consulenza',data?.azienda)">{{ data.consulenza }}</a></td>
+                        <td><a onclick="filter('stage',data?.azienda)">{{ data.stage }}</a></td>
+                        <td><a onclick="filter('partitaIva',data?.azienda)">{{ data.partitaIva }}</a></td>
+                        <td><a onclick="filter('potenzialeStage',data?.azienda)">{{ data.potenzialeStage }}</a></td>
+                        <td><a onclick="filter('slotStage',data?.azienda)">{{ data.slotStage }}</a></td>
+                        <td><a onclick="filter('potenzialeApprendistato',data?.azienda)">{{ data.potenzialeApprendistato }}</a></td>
+                        <td><a onclick="filter('slotApprendistato',data?.azienda)">{{ data.slotApprendistato }}</a></td>
                     </tr>
                 </tbody>
             </table>

@@ -45,4 +45,11 @@ export class AnagraficaService {
       headers: headers,
     });
   }
+
+  //FILTER ANAGRAFICA
+  filter(body: any): Observable<any> {
+    return this.http.post<any>(`http://localhost:8085/utenti-list`, body, {
+      headers: headers,
+    });
+  }
 }

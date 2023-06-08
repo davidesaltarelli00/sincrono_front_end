@@ -1,4 +1,4 @@
-import { HomeComponent } from './components/home/home/home.component';
+import { HomeComponent } from './components/home/home.component';
 import { ModificaAnagraficaComponent } from './components/anagrafica/modifica-anagrafica/modifica-anagrafica.component';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
