@@ -18,9 +18,9 @@ export class DettaglioAnagraficaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.anagraficaService.detail(this.id).subscribe((resp: any) => {
+    this.anagraficaService.detailAnagraficaDto(this.id).subscribe((resp: any) => {
       console.log(resp);
-      this.data = (resp as any)['anagrafica'];
+      this.data = (resp as any)['anagraficaDto'];
       console.log(this.data);
     });
   }

@@ -1,9 +1,93 @@
 <html>
-
-<body>
+<body style="padding-top: 70px;">
     <h1>Lista Anagrafiche</h1>
-    <button [routerLink]="['/home']">Home</button>
-    <button [routerLink]="['/nuova-anagrafica']">Inserisci Nuova Anagrafica</button>
+    <button  class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;" [routerLink]="['/nuova-anagrafica']">Inserisci Nuova Anagrafica</button>
+    <br>
+    <br>
+    <br>
+    <h3>Filtri</h3>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="filter-name">Nome:</label>
+                <input type="text" id="filter-Nome" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label for="filter-name">Cognome:</label>
+                <input type="text" id="filter-Nome" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label for="filter-name">Ral:</label>
+                <input type="text" id="filter-Nome" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label for="filter-name">Cliente:</label>
+                <input type="text" id="filter-Nome" class="form-control">
+            </div>
+           
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="filter-name">Nominativo:</label>
+                <input type="text" id="filter-Nome" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label for="filter-name">Azienda:</label>
+                <input type="text" id="filter-Nome" class="form-control">
+            </div>
+            <div class="col-md-3">
+            <label for="dataAssunzione" >Data Assunzione</label>
+                <mat-form-field appearance="outline">
+                    <input matInput [matDatepicker]="picker" formControlName="dataAssunzione"
+                        placeholder="Inserisci la data di assunzione" class="form-control" />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <label for="dataFineRapporto" >data Fine Rapporto</label>
+                    <mat-form-field appearance="outline">
+                        <input matInput [matDatepicker]="picker" formControlName="dataFineRapporto"
+                            placeholder="Inserisci la data di fine rapporto" class="form-control" />
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="filter-TipoContratto">Tipo Contratto:</label>
+                <select id="filter-TipoContratto" class="form-control">
+                    
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="filter-Azienda">Azienda:</label>
+                <select id="filter-Azienda" class="form-control">
+                   
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="filter-Tipo Contratto nazionale">Tipo Contratto nazionale:</label>
+                <select id="filter-Tipo Contratto nazionale" class="form-control">
+                  
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="filter-Tipo Azienda">Tipo Azienda:</label>
+                <select id="filter-Tipo Azienda" class="form-control">
+                  
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button id="filter-Button"  class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;">Filtra</button>
+            </div>
+        </div>
+        
+    </div>
+      <br>
+      <br>
+      <br>
     <table id="table">
         <thead>
             <tr>
@@ -24,7 +108,7 @@
                             src="../../../../assets/images/dettagli.png" height="30px" width="45px"></a>
                 </td>
                 <td>
-                    <button (click)="delete(data?.id)">Elimina</button>
+                    <!--<button (click)="delete(data?.id)">Elimina</button>-->
                 </td>
             </tr>
         </tbody>

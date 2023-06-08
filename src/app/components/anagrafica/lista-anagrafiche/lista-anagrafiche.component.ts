@@ -12,6 +12,8 @@ declare var $: any;
 export class ListaAnagraficheComponent {
   lista: any;
   token: any;
+  errore = false;
+  messaggio: any;
 
   constructor(
     private anagraficaService: AnagraficaService,
@@ -25,7 +27,9 @@ export class ListaAnagraficheComponent {
   }
 
   ngOnInit(): void {
-    this.anagraficaService.list().subscribe((resp: any) => {
+
+  this.listAnagraficaDto();
+    /*this.anagraficaService.list().subscribe((resp: any) => {
       this.lista = resp.list;
       console.log(resp);
 
@@ -35,10 +39,24 @@ export class ListaAnagraficheComponent {
           responsive: true,
         });
       });
-    });
+    });*/
   }
+  listAnagraficaDto() {
+    const body = JSON.stringify({
+      anagraficaDto:{} 
+    });
+    console.log("bodyAnagraficaDto:"+body);
 
-  delete(id: number) {
+    this.anagraficaService.listAnagraficaDTo(body).subscribe((result) => {
+      console.log(result);
+      if ((result as any).esito.code != 0) {
+        this.errore = true;
+        this.messaggio = (result as any).esito.target;
+        return;
+      }
+    });
+
+ /*delete(id: number) {
     this.anagraficaService.delete(id).subscribe(
       () => {
         console.log('Anagrafica eliminata');
@@ -48,5 +66,7 @@ export class ListaAnagraficheComponent {
         console.error(error);
       }
     );
-  }
+  }*/
+}
+
 }

@@ -19,7 +19,6 @@
                 <label for="attivo">Attivo</label>
                 <div>
                     <input id="checkbox" type="checkbox" formControlName="attivo">
-                    <label for="attivo">Attivo</label>
                 </div>
             </div>
             <div>
@@ -113,8 +112,8 @@
                     <input id="checkbox" type="checkbox" formControlName="figliACarico">
                 </div>
             </div>
-            <button type="submit">Salva</button>
-            <button [routerLink]="['/lista-anagrafiche']">Annulla e torna indietro</button>
+            <button class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(18, 0, 122); color: white;" type="submit">Salva</button>
+            <button class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;" [routerLink]="['/lista-anagrafiche']">Annulla e torna indietro</button>
         </fieldset>
     </form>
 
