@@ -1,3 +1,6 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
 // Plus imports for other components in your app.
 
@@ -17,19 +20,19 @@ $sincrono-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$sincrono-theme: mat.define-light-theme((color: (primary: $sincrono-primary,
-        accent: $sincrono-accent,
-        warn: $sincrono-warn,
-      )));
+$sincrono-theme: mat.define-light-theme((
+  color: (
+    primary: $sincrono-primary,
+    accent: $sincrono-accent,
+    warn: $sincrono-warn,
+  )
+));
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-component-themes($sincrono-theme);
 
-
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -54,8 +57,8 @@ $sincrono-theme: mat.define-light-theme((color: (primary: $sincrono-primary,
       )));
 
 
+
 /* You can add global styles to this file, and also import other style files */
-@import 'app/components/commessa/modifica-commessa/modifica-commessa.component.scss';
 
 html,
 body {
@@ -71,11 +74,11 @@ $navbar-bg-color: #b6f6ff; // Background color
 $navbar-padding: 10px 20px; // Padding around navbar
 
 
-.navbar{
-  background-color:$navbar-bg-color;
+.navbar {
+  background-color: $navbar-bg-color;
   padding: 10;
-  
- 
+
+
   &-brand {
     font-size: 24px; // Logo font size
     font-weight: bold; // Logo font weight
@@ -92,6 +95,16 @@ $navbar-padding: 10px 20px; // Padding around navbar
       }
     }
   }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

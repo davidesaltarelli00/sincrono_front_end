@@ -1,5 +1,5 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { DettaglioAnagraficaComponent } from './../../anagrafica/dettaglio-anagrafica/dettaglio-anagrafica.component';
+import { DettaglioAnagraficaComponent } from '../../anagrafica/dettaglio-anagraficaDto/dettaglio-anagrafica.component';
 import { ContrattoService } from './../contratto-service';
 import { Component } from '@angular/core';
 import {

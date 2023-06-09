@@ -1,11 +1,6 @@
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { AnagraficaService } from '../anagrafica-service';
+import { AnagraficaDtoService } from '../anagraficaDto-service';
 import { Router } from '@angular/router';
 
 export const MY_DATE_FORMATS = {
@@ -21,11 +16,11 @@ export const MY_DATE_FORMATS = {
 };
 
 @Component({
-  selector: 'app-nuova-anagrafica',
-  templateUrl: './nuova-anagrafica.component.html',
-  styleUrls: ['./nuova-anagrafica.component.scss'],
+  selector: 'app-nuova-anagrafica-dto',
+  templateUrl: './nuova-anagrafica-dto.component.html',
+  styleUrls: ['./nuova-anagrafica-dto.component.scss'],
 })
-export class NuovaAnagraficaComponent implements OnInit {
+export class NuovaAnagraficaDtoComponent implements OnInit {
   data: any = [];
   utenti: any = [];
 
@@ -58,7 +53,7 @@ export class NuovaAnagraficaComponent implements OnInit {
   });
 
   constructor(
-    private anagraficaService: AnagraficaService,
+    private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
     private router: Router
   ) {}
@@ -90,7 +85,7 @@ export class NuovaAnagraficaComponent implements OnInit {
     this.caricaListaUtenti();
   }
   caricaListaUtenti() {
-    this.anagraficaService.getListaUtenti().subscribe((result: any) => {
+    this.anagraficaDtoService.getListaUtenti().subscribe((result: any) => {
       console.log(result);
       this.utenti = (result as any)['list'];
     });
@@ -121,13 +116,13 @@ export class NuovaAnagraficaComponent implements OnInit {
     });
     console.log(body);
 
-    this.anagraficaService.insert(body).subscribe((result) => {
+    this.anagraficaDtoService.insert(body).subscribe((result) => {
       if ((result as any).esito.code != 0) {
         this.errore = true;
         this.messaggio = (result as any).esito.target;
         return;
       }
-      this.router.navigate(['../lista-anagrafiche']);
+      this.router.navigate(['../lista-anagrafica-dto']);
     });
   }
 }

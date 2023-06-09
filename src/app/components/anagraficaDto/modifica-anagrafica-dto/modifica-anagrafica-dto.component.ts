@@ -1,26 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AnagraficaService } from '../anagrafica-service';
-
-export const MY_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+import { AnagraficaDtoService } from './../anagraficaDto-service';
 
 @Component({
-  selector: 'app-modifica-anagrafica',
-  templateUrl: './modifica-anagrafica.component.html',
-  styleUrls: ['./modifica-anagrafica.component.scss'],
+  selector: 'app-modifica-anagrafica-dto',
+  templateUrl: './modifica-anagrafica-dto.component.html',
+  styleUrls: ['./modifica-anagrafica-dto.component.scss'],
 })
-export class ModificaAnagraficaComponent implements OnInit {
+export class ModificaAnagraficaDtoComponent implements OnInit {
   utenti: any = [];
   data: any = [];
   id = this.activatedRouter.snapshot.params['id'];
@@ -54,14 +42,14 @@ export class ModificaAnagraficaComponent implements OnInit {
   });
 
   constructor(
-    private anagraficaService: AnagraficaService,
+    private anagraficaDtoService: AnagraficaDtoService,
     private activatedRouter: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.anagraficaService.detail(this.id).subscribe((resp: any) => {
+    this.anagraficaDtoService.detail(this.id).subscribe((resp: any) => {
       this.data = (resp as any)['anagrafica'];
       console.log(this.data);
 
@@ -94,7 +82,7 @@ export class ModificaAnagraficaComponent implements OnInit {
     });
   }
   caricaListaUtenti() {
-    this.anagraficaService.getListaUtenti().subscribe((result: any) => {
+    this.anagraficaDtoService.getListaUtenti().subscribe((result: any) => {
       console.log(result);
       this.utenti = (result as any)['list'];
     });
@@ -105,7 +93,7 @@ export class ModificaAnagraficaComponent implements OnInit {
     });
     console.log(body);
 
-    this.anagraficaService.update(body).subscribe((result) => {
+    this.anagraficaDtoService.update(body).subscribe((result) => {
       console.log(result);
       if ((result as any).esito.code != 0) {
         this.errore = true;

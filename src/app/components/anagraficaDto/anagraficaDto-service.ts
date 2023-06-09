@@ -9,7 +9,7 @@ const headers = new HttpHeaders()
 @Injectable({
   providedIn: 'root',
 })
-export class AnagraficaService {
+export class AnagraficaDtoService {
   token: any;
 
   constructor(private http: HttpClient) {}
