@@ -15,7 +15,7 @@ export class AnagraficaService {
   constructor(private http: HttpClient) {}
 
   /*CRUD ANAGRAFICA*/
-  listAnagraficaDTo(body: any): Observable<any> {
+  listAnagraficaDto(body: any): Observable<any> {
     return this.http.post<any>(`http://localhost:8085/anagrafica-list-filter`, body, {
       headers: headers,
     });

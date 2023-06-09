@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AnagraficaService } from '../anagrafica-service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 declare var $: any;
 
 @Component({
@@ -15,9 +16,35 @@ export class ListaAnagraficheComponent {
   errore = false;
   messaggio: any;
 
+  filterAnagraficaDto: FormGroup = new FormGroup({
+    id: new FormControl(''),
+    utente: new FormGroup({
+      id: new FormControl(''),
+    }),
+    nome: new FormControl(''),
+    cognome: new FormControl(''),
+    dataDiNascita: new FormControl(),
+    comuneDiNascita: new FormControl(),
+    attivo: new FormControl(''),
+    codiceFiscale: new FormControl(''),
+    aziendaTipo: new FormControl(''),
+    residenza: new FormControl(''),
+    domicilio: new FormControl(''),
+    cellularePrivato: new FormControl(''),
+    cellulareAziendale: new FormControl(''),
+    mailPrivata: new FormControl(''),
+    mailAziendale: new FormControl(''),
+    mailPec: new FormControl(''),
+    titoliDiStudio: new FormControl(''),
+    altriTitoli: new FormControl(''),
+    coniugato: new FormControl(''),
+    figliACarico: new FormControl(''),
+  });
+
   constructor(
     private anagraficaService: AnagraficaService,
     private router: Router,
+    private formBuilder: FormBuilder,
     private location: Location
   ) {}
 
@@ -28,8 +55,40 @@ export class ListaAnagraficheComponent {
 
   ngOnInit(): void {
 
-  this.listAnagraficaDto();
-    /*this.anagraficaService.list().subscribe((resp: any) => {
+    this.filterAnagraficaDto = this.formBuilder.group({
+    
+      anagrafica: new FormGroup({
+      nome: new FormControl(''),
+      cognome: new FormControl(''),
+      attivo: new FormControl(''),
+      aziendaTipo: new FormControl('')
+    }),
+    contratto: new FormGroup({
+      ralAnnua: new FormControl(''),
+      dataAssunzione: new FormControl(''),
+      dataFineRapporto: new FormControl(''),
+      livelloContratto: new FormGroup({
+        descrizione: new FormControl('')
+      }),
+      ContrattoNazionale: new FormGroup({
+        descrizione: new FormControl('')
+      }),
+      TipoContratto: new FormGroup({
+        descrizione: new FormControl('')
+      }),
+      tipoAzienda: new FormGroup({
+        descrizione: new FormControl('')
+      }),
+    }),
+    commessa: new FormGroup({
+      cliente: new FormControl(''),
+      azienda: new FormControl(''),
+      nominativo: new FormControl(''),
+    }),
+    });
+
+ 
+    this.anagraficaService.listAnagraficaDto(JSON.stringify({anagraficaDto:{}})).subscribe((resp: any) => {
       this.lista = resp.list;
       console.log(resp);
 
@@ -39,24 +98,15 @@ export class ListaAnagraficheComponent {
           responsive: true,
         });
       });
-    });*/
+    });
   }
-  listAnagraficaDto() {
-    const body = JSON.stringify({
-      anagraficaDto:{} 
-    });
-    console.log("bodyAnagraficaDto:"+body);
+ 
+  filter(){
 
-    this.anagraficaService.listAnagraficaDTo(body).subscribe((result) => {
-      console.log(result);
-      if ((result as any).esito.code != 0) {
-        this.errore = true;
-        this.messaggio = (result as any).esito.target;
-        return;
-      }
-    });
 
- /*delete(id: number) {
+  }
+
+ delete(id: number) {
     this.anagraficaService.delete(id).subscribe(
       () => {
         console.log('Anagrafica eliminata');
@@ -66,7 +116,7 @@ export class ListaAnagraficheComponent {
         console.error(error);
       }
     );
-  }*/
-}
+  }
+
 
 }
