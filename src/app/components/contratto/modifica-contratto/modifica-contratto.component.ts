@@ -1,14 +1,6 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { DettaglioAnagraficaComponent } from '../../anagrafica/dettaglio-anagraficaDto/dettaglio-anagrafica.component';
 import { ContrattoService } from './../contratto-service';
 import { Component } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -84,7 +76,7 @@ export class ModificaContrattoComponent {
     private router: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router2: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.contrattoService.detail(this.id).subscribe((resp: any) => {
@@ -206,7 +198,7 @@ export class ModificaContrattoComponent {
     return dateObject.toLocaleDateString('en-US', {
       day: '2-digit',
       month: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     });
   }
 }

@@ -1,4 +1,4 @@
-import { AnagraficaService } from '../../anagrafica/anagraficaDto-service';
+import { AnagraficaDtoService } from './../../anagraficaDto/anagraficaDto-service';
 import { OrganicoService } from '../organico-service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -22,7 +22,7 @@ export class ListaOrganicoComponent implements OnInit {
   constructor(
     private organicoService: OrganicoService,
     private formBuilder: FormBuilder,
-    private anagraficaService: AnagraficaService,
+    private anagraficaDtoService: AnagraficaDtoService,
     private router: Router
   ) {}
 
@@ -49,7 +49,6 @@ export class ListaOrganicoComponent implements OnInit {
     });
   }
 
-  
   filter(tipoContratto: any, azienda: any) {
     console.log(JSON.stringify(tipoContratto, azienda));
     this.anagraficaDto = this.formBuilder.group({
@@ -64,7 +63,7 @@ export class ListaOrganicoComponent implements OnInit {
       anagraficaDto: this.anagraficaDto.value,
     });
     console.log(body);
-    this.anagraficaService.filter(body).subscribe((result) => {
+    this.anagraficaDtoService.filter(body).subscribe((result) => {
       if ((result as any).esito.code != 0) {
         this.errore = true;
         this.messaggio = (result as any).esito.target;
