@@ -28,7 +28,7 @@ import { ListaContrattiComponent } from './components/contratto/lista-contratti/
 import { ListaAnagraficheComponent } from './components/anagrafica/lista-anagrafiche/lista-anagrafiche.component';
 import { ListaDashboardComponent } from './components/dashboard/lista-dashboard/lista-dashboard.component';
 import { ListaOrganicoComponent } from './components/organico/lista-organico/lista-organico.component';
-import { HomeComponent } from './components/home/home/home.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
