@@ -1,41 +1,93 @@
 <html>
-    <title>Dashboard</title>
+<title>Dashboard</title>
+
 <body style="padding-top: 70px;">
-   
-  
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Nominativo</th>
-                        <th scope="col">Contratto</th>
-                        <th scope="col">Società</th>
-                        <th scope="col">Contratto Nazionale</th>
-                        <th scope="col">Data inizio</th>
-                        <th scope="col">Data fine</th>
-                        <th scope="col">Mesi durata</th>
-                        <th scope="col">Liv.iniz.</th>
-                        <th scope="col">Liv.att.</th>
-                        <th scope="col">Liv.fin.</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of lista">
-                        <td>{{ data.commessa.nominativo }}</td>
-                        <td>{{ data.contratto.tipoContratto.descrizione }}</td>
-                        <td>{{ data.contratto.tipoAzienda.descrizione }}</td>
-                        <td>{{ data.contratto.contrattoNazionale.descrizione}}</td>
-                        <td>{{ this.transformDate(data.commessa.dataInizio) }}</td>
-                        <td>{{ this.transformDate(data.commessa.dataFine) }}</td>
-                        <td>{{ data.contratto.mesiDurata }}</td>
-                        <td>{{ data.contratto.livelloIniziale }}</td>
-                        <td>{{ data.contratto.livelloAttuale }}</td>
-                        <td>{{ data.contratto.livelloFinale }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-  
+
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nominativo</th>
+                    <th scope="col">Contratto</th>
+                    <th scope="col">Società</th>
+                    <th scope="col">Contratto Nazionale</th>
+                    <th scope="col">Data inizio</th>
+                    <th scope="col">Data fine</th>
+                    <th scope="col">Mesi durata</th>
+                    <th scope="col">1° Periodo</th>
+                    <th scope="col">2° Periodo</th>
+                    <th scope="col">3° Periodo</th>
+                    <th scope="col">Liv.att.</th>
+                    <th scope="col">Liv.fin.</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of lista">
+                    <td>{{ data.commessa.nominativo }}</td>
+                    <td>{{ data.contratto.tipoContratto.descrizione }}</td>
+                    <td>{{ data.contratto.tipoAzienda.descrizione }}</td>
+                    <td>{{ data.contratto.contrattoNazionale.descrizione}}</td>
+                    <td>{{ this.transformDate(data.commessa.dataInizio) }}</td>
+                    <td>{{ this.transformDate(data.commessa.dataFine) }}</td>
+                    <td>{{ data.contratto.mesiDurata }}</td>
+
+                    <!---->
+                    <td>
+                        <div
+                            *ngIf="this.calcolaScadenzaImminentePeriodo(data?.contratto.dataAssunzione,this.calcolaPeriodi(data.contratto.mesiDurata,data.contratto.contrattoNazionale.descrizione),this.data.contratto.contrattoNazionale.descrizione) == true ;else elseBlock1">
+                            <div style="color:red;">
+                                {{this.calcolaPeriodi(data.contratto.mesiDurata,data.contratto.contrattoNazionale.descrizione)}}
+                            </div>
+                        </div>
+                        <ng-template #elseBlock1>
+                            {{this.calcolaPeriodi(data.contratto.mesiDurata,data.contratto.contrattoNazionale.descrizione)}}
+                        </ng-template>
+                    </td>
+
+
+                    <td>
+                        <div
+                            *ngIf="this.calcolaScadenzaImminentePeriodo2(data?.contratto.dataAssunzione,this.calcolaPeriodi(data.contratto.mesiDurata,data.contratto.contrattoNazionale.descrizione),this.data.contratto.contrattoNazionale.descrizione) == true ;else elseBlock2">
+                            <div style="color:red;">
+                                {{this.calcolaPeriodi(data.contratto.mesiDurata,data.contratto.contrattoNazionale.descrizione)}}
+                            </div>
+                        </div>
+                        <ng-template #elseBlock2>
+                            {{this.calcolaPeriodi(data.contratto.mesiDurata,data.contratto.contrattoNazionale.descrizione)}}
+                        </ng-template>
+                    </td>
+
+
+                    <td>
+                        
+                        <div
+                            *ngIf="data.contratto.contrattoNazionale.descrizione == 'METALMECCANICO PMI CONFAPI';else elseBlock3">
+                            <div
+                            *ngIf="this.calcolaScadenzaImminentePeriodo3(data?.contratto.dataAssunzione,this.calcolaPeriodi(data.contratto.mesiDurata,data.contratto.contrattoNazionale.descrizione),this.data.contratto.contrattoNazionale.descrizione) == true ;else elseBlock4">
+                            <div style="color:red;">
+                                {{this.calcolaPeriodi(data.contratto.mesiDurata,data.contratto.contrattoNazionale.descrizione)}}
+                            </div>
+                        </div>
+                            
+                        </div>
+
+                        <ng-template #elseBlock3>
+
+                        </ng-template>
+                        <ng-template #elseBlock4>
+                            {{this.calcolaPeriodi(data.contratto.mesiDurata,data.contratto.contrattoNazionale.descrizione)}}
+                        </ng-template>
+
+
+                    </td>
+                    <td>{{ data.contratto.livelloAttuale }}</td>
+                    <td>{{ data.contratto.livelloFinale }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 </body>
 
 </html>
