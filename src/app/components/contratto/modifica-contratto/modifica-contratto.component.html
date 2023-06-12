@@ -3,10 +3,7 @@
 <body>
     <form [formGroup]="modificaContratto" (ngSubmit)="inserisci()">
         <div>
-            <div>
-                <label for="id">ID</label>
-                <input id="id" type="number" formControlName="id" hidden>
-            </div>
+            
             <fieldset>
                 <legend>Dati Tipologici</legend>
                 <div formGroupName="tipoContratto">

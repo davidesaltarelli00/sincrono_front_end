@@ -15,6 +15,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   submitted = false;
   errore = false;
   messaggio: any;
+  showErrorPopup:any;
+  showSuccessPopup:any;
 
   modificaAnagrafica: FormGroup = new FormGroup({
     id: new FormControl(''),
@@ -96,9 +98,14 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.anagraficaDtoService.update(body).subscribe((result) => {
       console.log(result);
       if ((result as any).esito.code != 0) {
+        this.showErrorPopup = true;
         this.errore = true;
         this.messaggio = (result as any).esito.target;
         return;
+      }else{
+
+        this.showSuccessPopup = true;
+        
       }
     });
     this.router.navigate(['../../dettaglio-anagrafica']);
@@ -112,4 +119,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       year: 'numeric',
     });
   }
-}
+
+    chiudiPopup() {
+      this.showErrorPopup = false;
+      this.showSuccessPopup = false;
+    }
+  }
+  
+

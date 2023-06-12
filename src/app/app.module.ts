@@ -30,6 +30,7 @@ import { ListaOrganicoComponent } from './components/organico/lista-organico/lis
 
 //HOME
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login/login.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { HomeComponent } from './components/home/home.component';
     DettaglioAnagraficaDtoComponent,
     ModificaAnagraficaDtoComponent,
     NuovaAnagraficaDtoComponent,
+    LoginComponent,
   ],
   imports: [
     MatNativeDateModule,

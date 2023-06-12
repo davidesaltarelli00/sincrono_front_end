@@ -1,7 +1,24 @@
 <html>
 
 <body>
+    
+    
     <h1>Nuova Anagrafica</h1>
+    
+    <div *ngIf="showErrorPopup" class="alert alert-danger" role="alert">
+        Si è verificato un errore.
+        <button (click)="chiudiPopup()" class="close" aria-label="Chiudi">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div *ngIf="showSuccessPopup" class="alert alert-success" role="alert">
+        Operazione completata con successo.
+        <button (click)="chiudiPopup()" class="close" aria-label="Chiudi">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
     <form [formGroup]="nuovaAnagrafica" (ngSubmit)="inserisci()">
         <fieldset>
             <div formGroupName="utente">

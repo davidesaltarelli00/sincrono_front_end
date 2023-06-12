@@ -11,6 +11,7 @@ import { ListaAnagraficaDtoComponent } from './components/anagraficaDto/lista-an
 import { DettaglioAnagraficaDtoComponent } from './components/anagraficaDto/dettaglio-anagrafica-dto/dettaglio-anagrafica-dto.component';
 import { NuovaAnagraficaDtoComponent } from './components/anagraficaDto/nuova-anagrafica-dto/nuova-anagrafica-dto.component';
 import { ModificaAnagraficaDtoComponent } from './components/anagraficaDto/modifica-anagrafica-dto/modifica-anagrafica-dto.component';
+import { LoginComponent } from './components/login/login/login.component';
 
 const routes: Routes = [
   //HOME
@@ -34,6 +35,9 @@ const routes: Routes = [
 
   //ORGANICO
   { path: 'organico', component: ListaOrganicoComponent },
+
+  //LOGIN
+  { path: 'login', component: LoginComponent },
 ];
 
 @NgModule({

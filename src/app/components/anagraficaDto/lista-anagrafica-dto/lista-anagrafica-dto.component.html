@@ -7,90 +7,148 @@
     <br>
     <br>
     <br>
-    <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter()">
-        <h3>Filtri</h3>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <div formGroupName="anagrafica"></div>
-                    <label for="filter-name">Nome:</label>
-                    <input type="text" id="filter-Nome" class="form-control" formControlName="nome">
-                </div>
-                <div class="col-md-3">
-                    <label for="filter-name">Cognome:</label>
-                    <input type="text" id="filter-Nome" class="form-control" formControlName="cognome">
-                </div>
-                <div class="col-md-3">
-                    <label for="filter-name">Ral:</label>
-                    <input type="text" id="filter-Nome" class="form-control">
-                </div>
-                <div class="col-md-3">
-                    <label for="filter-name">Cliente:</label>
-                    <input type="text" id="filter-Nome" class="form-control">
+    <button (click)="mostraFiltri = !mostraFiltri" id="toggle-filtri-button" class="btn btn-dark btn-sm rounded-pill shadow-sm"
+  style="background-color: rgb(24, 122, 0); color: white;">
+  {{ mostraFiltri ? 'Nascondi filtri' : 'Mostra filtri' }}
+</button>
+
+    <div *ngIf="mostraFiltri">
+        <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter()">
+            <h3>Filtri</h3>
+            <div class="container">
+
+
+                <div formGroupName="anagrafica">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="filter-name">Nome:</label>
+                            <input type="text" id="filter-Nome" class="form-control" formControlName="nome">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="filter-name">Cognome:</label>
+                            <input type="text" id="filter-Nome" class="form-control" formControlName="cognome">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="filter-name">Tipo Azienda:</label>
+                            <input type="text" id="filter-Nome" class="form-control" formControlName="aziendaTipo">
+                        </div>
+                        <div class="col-md-3">
+                            <input class="form-check-input" type="checkbox" id="exampleCheckbox" formControlName="attivo">
+                            <label class="form-check-label" for="exampleCheckbox" >
+                                Attivo
+                            </label>
+                        </div>
+
+
+                    </div>
                 </div>
 
+
+
+                <div formGroupName="commessa">
+
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <label for="filter-name">Nominativo:</label>
+                            <input type="text" id="filter-Nome" class="form-control" formControlName="nominativo">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="filter-name">Cliente:</label>
+                            <input type="text" id="filter-Nome" class="form-control" formControlName="cliente">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="filter-name">Azienda:</label>
+                            <input type="text" id="filter-Nome" class="form-control" formControlName="azienda">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div formGroupName="contratto">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="filter-name">ralAnnua:</label>
+                            <input type="text" id="filter-Nome" class="form-control" formControlName="ralAnnua">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="dataAssunzione">Data Assunzione</label>
+                            <mat-form-field appearance="outline">
+                                <input matInput [matDatepicker]="picker" formControlName="dataAssunzione"
+                                    placeholder="Inserisci la data di assunzione" class="form-control"
+                                    formControlName="dataAssunzione" />
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="dataFineRapporto">data Fine Rapporto</label>
+                            <mat-form-field appearance="outline">
+                                <input matInput [matDatepicker]="picker1" formControlName="dataFineRapporto"
+                                    placeholder="Inserisci la data di fine rapporto" class="form-control"
+                                    formControlName="dataFineRapporto" />
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                        <div class="col-md-3">
+                            <div formGroupName="TipoContratto">
+                                <label for="filter-TipoContratto">Tipo Contratto:</label>
+                                <select id="tipoContratto"  formControlName="descrizione">
+                                    <option value="">--nessuna selezione--</option>
+                                    <option *ngFor="let tipoContratto of tipiContratti" value="{{tipoContratto.descrizione}}">
+                                        {{tipoContratto.descrizione}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div formGroupName="ContrattoNazionale">
+                            
+                                <label for="filter-Tipo Contratto nazionale">Tipo Contratto nazionale:</label>
+                                <select id="tipoContrattoNazionale" formControlName="descrizione">
+                                    <option value="">--nessuna selezione--</option>
+                                    <option *ngFor="let contrattiNazionale of contrattiNazionali" value="{{contrattiNazionale.descrizione}}" formControlName="descrizione">
+                                        {{contrattiNazionale.descrizione}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    
+                        <div class="col-md-3">
+                            <div formGroupName="tipoAzienda">
+                                <label for="filter-Tipo Azienda">Tipo Azienda:</label>
+                                <select id="tipoAzienda" formControlName="descrizione" type="number">
+                                    <option value="">--nessuna selezione--</option>
+                                    <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.descrizione}}">
+                                        {{tipoAzienda.descrizione}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <button id="filter-Button" class="btn btn-dark btn-sm rounded-pill shadow-sm"
+                                    style="background-color: rgb(24, 122, 0); color: white;">Filtra</button>
+                                <button (click)="annullaFiltri()" id="filter-Button"
+                                    class="btn btn-dark btn-sm rounded-pill shadow-sm"
+                                    style="background-color: rgb(24, 122, 0); color: white;">annulla filtri </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <label for="filter-name">Nominativo:</label>
-                    <input type="text" id="filter-Nome" class="form-control">
-                </div>
-                <div class="col-md-3">
-                    <label for="filter-name">Azienda:</label>
-                    <input type="text" id="filter-Nome" class="form-control">
-                </div>
-                <div class="col-md-3">
-                    <label for="dataAssunzione">Data Assunzione</label>
-                    <mat-form-field appearance="outline">
-                        <input matInput [matDatepicker]="picker" formControlName="dataAssunzione"
-                            placeholder="Inserisci la data di assunzione" class="form-control" />
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                </div>
-                <div class="col-md-3">
-                    <label for="dataFineRapporto">data Fine Rapporto</label>
-                    <mat-form-field appearance="outline">
-                        <input matInput [matDatepicker]="picker1" formControlName="dataFineRapporto"
-                            placeholder="Inserisci la data di fine rapporto" class="form-control" />
-                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                        <mat-datepicker #picker1></mat-datepicker>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <label for="filter-TipoContratto">Tipo Contratto:</label>
-                    <select id="filter-TipoContratto" class="form-control">
-
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label for="filter-Azienda">Azienda:</label>
-                    <select id="filter-Azienda" class="form-control">
-
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label for="filter-Tipo Contratto nazionale">Tipo Contratto nazionale:</label>
-                    <select id="filter-Tipo Contratto nazionale" class="form-control">
-
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label for="filter-Tipo Azienda">Tipo Azienda:</label>
-                    <select id="filter-Tipo Azienda" class="form-control">
-
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <button id="filter-Button" class="btn btn-dark btn-sm rounded-pill shadow-sm"
-                        style="background-color: rgb(24, 122, 0); color: white;">Filtra</button>
-                </div>
-            </div>
-
-        </div>
-    </form>
+        </form>
+    </div>
     <br>
     <br>
     <br>

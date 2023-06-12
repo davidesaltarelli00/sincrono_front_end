@@ -27,6 +27,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   submitted = false;
   errore = false;
   messaggio: any;
+  showErrorPopup:any;
+  showSuccessPopup:any;
 
   nuovaAnagrafica: FormGroup = new FormGroup({
     utente: new FormGroup({
@@ -118,11 +120,21 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
     this.anagraficaDtoService.insert(body).subscribe((result) => {
       if ((result as any).esito.code != 0) {
+        this.showErrorPopup = true;
         this.errore = true;
         this.messaggio = (result as any).esito.target;
         return;
+      }else{
+
+        this.showSuccessPopup = true;
+        
       }
       this.router.navigate(['../lista-anagrafica-dto']);
     });
+  }
+
+  chiudiPopup() {
+    this.showErrorPopup = false;
+    this.showSuccessPopup = false;
   }
 }
