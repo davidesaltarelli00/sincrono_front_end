@@ -27,11 +27,13 @@ export class ListaOrganicoComponent implements OnInit {
   ) {}
 
   anagraficaDto: FormGroup = new FormGroup({
-    azienda: new FormGroup({
-      descrizione: new FormControl(''),
-    }),
-    tipoContratto: new FormGroup({
-      descrizione: new FormControl(''),
+    contratto: new FormGroup({
+      azienda: new FormGroup({
+        descrizione: new FormControl(''),
+      }),
+      tipoContratto: new FormGroup({
+        descrizione: new FormControl(''),
+      }),
     }),
   });
 
@@ -49,14 +51,15 @@ export class ListaOrganicoComponent implements OnInit {
     });
   }
 
-  filter(tipoContratto: any, azienda: any) {
-    console.log(JSON.stringify(tipoContratto, azienda));
+  filter(tipoContratto: any, tipoAzienda: any) {
     this.anagraficaDto = this.formBuilder.group({
-      tipoContratto: new FormGroup({
-        descrizione: new FormControl(tipoContratto),
-      }),
-      azienda: new FormGroup({
-        descrizione: new FormControl(azienda),
+      contratto: new FormGroup({
+        tipoContratto: new FormGroup({
+          descrizione: new FormControl(tipoContratto),
+        }),
+        tipoAzienda: new FormGroup({
+          descrizione: new FormControl(tipoAzienda),
+        }),
       }),
     });
     const body = JSON.stringify({
@@ -69,7 +72,7 @@ export class ListaOrganicoComponent implements OnInit {
         this.messaggio = (result as any).esito.target;
         return;
       }
-      //this.router.navigate(['../lista-anagrafiche']);
+      this.router.navigate(['/lista-anagrafica', { body }]);
       console.log(result);
     });
   }

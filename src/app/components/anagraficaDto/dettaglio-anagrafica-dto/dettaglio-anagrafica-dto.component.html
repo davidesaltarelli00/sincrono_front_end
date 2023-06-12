@@ -1,346 +1,527 @@
 <html>
 
-<body>
+<body style="padding-top: 70px;">
     <h1>Dettaglio Anagrafica</h1>
-    <fieldset>
+    <!--
+        <fieldset>
         <legend>Utente</legend>
-        <div>
+        <div class="form-group">
             <label>Utente : </label>
-            <input type="text" value="{{ data?.anagrafica.utente?.username }}" readonly />
+            <input type="text" class="form-control" value="{{ data?.anagrafica.utente?.username }}" readonly />
         </div>
-    </fieldset>
-    <fieldset>
-        <legend>Dettagli</legend>
-        <div>
-            <label>Attivo: </label>
-            <input type="checkbox" [checked]="data?.anagrafica?.attivo" disabled="disabled" />
+    -->
+    <div class="row">
+        <div class="col-md-3">
+            <label>Attivo:</label>
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" [checked]="data.anagrafica.attivo === true"
+                        disabled />
+                </div>
+            </div>
         </div>
-        <div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <label>Azienda: </label>
-            <input type="text" value="{{ data?.anagrafica?.aziendaTipo }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.anagrafica.aziendaTipo }}" readonly />
+            </div>
         </div>
-        <div>
-            <label>Nome: </label>
-            <input type="text" value="{{ data?.anagrafica?.nome }}" readonly />
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label for="nome">Nome: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.anagrafica.nome }}" readonly />
+            </div>
         </div>
-        <div>
+        <div class="col-md-3">
             <label>Cognome: </label>
-            <input type="text" value="{{ data?.anagrafica?.cognome }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.anagrafica.cognome }}" readonly />
+            </div>
         </div>
-        <div>
+        <div class="col-md-3">
             <label>Codice Fiscale: </label>
-            <input type="text" value="{{ data?.anagrafica?.codiceFiscale }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.anagrafica.codiceFiscale }}" readonly />
+            </div>
         </div>
-    </fieldset>
-    <fieldset>
-        <legend>Recapiti</legend>
-        <div>
-            <label>Cellulare Aziendale: </label>
-            <input type="text" value="{{ data?.anagrafica?.cellulareAziendale }}" readonly />
-        </div>
-        <div>
+    </div>
+    <legend>Recapiti</legend>
+    <div class="row">
+        <div class="col-md-3">
             <label>Cellulare Privato: </label>
-            <input type="text" value="{{ data?.anagrafica?.cellularePrivato }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.anagrafica.cellularePrivato }}" readonly />
+            </div>
         </div>
-        <div>
+        <div class="col-md-3">
+            <label>Cellulare Aziendale: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.anagrafica.cellulareAziendale }}" readonly />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <label>Email Privata: </label>
-            <input type="text" value="{{ data?.anagrafica?.mailPrivata}}" readonly />
-        </div>
-        <div>
-            <label>Email Aziendale: </label>
-            <input type="text" value="{{ data?.anagrafica?.mailAziendale}}" readonly />
-        </div>
-        <div>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.anagrafica.mailPrivata}}" readonly />
+            </div>
             <label>Email Pec: </label>
-            <input type="text" value="{{ data?.anagrafica?.mailPec }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.anagrafica.mailPec }}" readonly />
+            </div>
         </div>
-    </fieldset>
-    <fieldset>
-        <legend>Competenze</legend>
-        <div>
+        <div class="col-md-3">
+            <label>Email Aziendale: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.anagrafica.mailAziendale}}" readonly />
+            </div>
+
+        </div>
+    </div>
+    <legend>Competenze</legend>
+    <div class="row">
+        <div class="col-md-3">
             <label>Titolo di Studio: </label>
-            <input type="text" value="{{ data?.anagrafica?.titoliDiStudio}}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.anagrafica.titoliDiStudio}}" readonly />
+            </div>
         </div>
-        <div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <label>Altri Titoli: </label>
-            <input type="text" value="{{ data?.anagrafica?.altriTitoli }}" readonly />
+            <div class="form-group">
+                <p class="text-decoration-example">{{ data.anagrafica.altriTitoli }}</p>
+            </div>
         </div>
-    </fieldset>
-    <fieldset>
-        <legend>Info Extra</legend>
-        <div>
+    </div>
+    <legend>Info Extra</legend>
+    <div class="row">
+        <div class="col-md-3">
             <label>Comune di Nascita: </label>
-            <input type="text" value="{{ data?.anagrafica?.comuneDiNascita }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.anagrafica.comuneDiNascita }}" readonly />
+            </div>
         </div>
-        <div>
-            <label>Data di Nascita: </label>
-            <input type="text" value="{{ this.transformDate(data?.anagrafica?.dataDiNascita)}}" readonly />
-        </div>
-        <div>
+        <div class="col-md-3">
             <label>Residenza: </label>
-            <input type="text" value="{{ data?.anagrafica?.residenza }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.anagrafica.residenza }}" readonly />
+            </div>
         </div>
-        <div>
+        <div class="col-md-3">
             <label>Domicilio: </label>
-            <input type="text" value="{{ data?.anagrafica?.domicilio }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.anagrafica.domicilio }}" readonly />
+            </div>
         </div>
-        <div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label>Data di Nascita: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ this.transformDate(data.anagrafica.dataDiNascita)}}"
+                    readonly />
+            </div>
+        </div>
+        <div class="col-md-3">
             <label>Coniugato: </label>
-            <input type="checkbox" [checked]="data?.anagrafica?.coniugato" disabled="disabled" />
+            <div class="form-group">
+                <input class="form-check-input" type="checkbox" [checked]="data.anagrafica.coniugato"
+                    disabled="disabled" />
+            </div>
         </div>
-        <div>
+        <div class="col-md-3">
             <label>Figli a Carico: </label>
-            <input type="checkbox" [checked]="data?.anagrafica?.figliACarico" disabled="disabled" />
+            <div class="form-group">
+                <input class="form-check-input" type="checkbox" [checked]="data.anagrafica.figliACarico"
+                    disabled="disabled" />
+            </div>
         </div>
-    </fieldset>
+    </div>
     <!-----------contratto----------->
     <h1>Dettaglio Contratto</h1>
-    <fieldset>
-        <legend>Dati Tipologici</legend>
-        <div>
-            <div>
-                <label>Azienda : </label>
-                <input type="text" value="{{ data?.contratto?.tipoAzienda.descrizione }}" readonly />
-            </div>
-            <div>
-                <label>Tipo Contratto : </label>
-                <input type="text" value="{{ data?.contratto?.tipoContratto.descrizione }}" readonly />
-            </div>
-            <div>
-                <label>Livello Contratto : </label>
-                <input type="text" value="{{ data?.contratto?.livelloContratto.descrizione }}" readonly />
-            </div>
-            <div>
-                <label>Contratto Nazionale : </label>
-                <input type="text" value="{{ data?.contratto?.contrattoNazionale.descrizione }}" readonly />
+    <legend>Dati Tipologici</legend>
+    <div class="row">
+        <div class="col-md-3">
+            <label>Attivo: </label>
+            <div class="form-group">
+                <input class="form-check-input" type="checkbox" [checked]="data.contratto.attivo" disabled="disabled" />
             </div>
         </div>
-    </fieldset>
-    <fieldset>
-        <legend>Dettagli</legend>
-        <div>
-            <div>
-                <label>Attivo: </label>
-                <input type="checkbox" [checked]="data?.contratto?.attivo" disabled="disabled" />
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label>Azienda : </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.tipoAzienda.descrizione }}" readonly />
             </div>
-            <div>
-                <label>Qualifica: </label>
-                <input type="text" value="{{ data?.contratto?.qualifica }}" readonly />
+        </div>
+        <div class="col-md-3">
+            <label>Tipo Contratto : </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.tipoContratto.descrizione }}"
+                    readonly />
             </div>
-            <div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label>Livello Contratto : </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.livelloContratto.descrizione }}"
+                    readonly />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label>Contratto Nazionale : </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.contrattoNazionale.descrizione }}"
+                    readonly />
+            </div>
+        </div>
+    </div>
+    <legend>Dettagli</legend>
+    <div class="row">
+        <div class="col-md-3">
+            <label>Qualifica: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.qualifica }}" readonly />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
                 <label>Sede Assunzione: </label>
-                <input type="text" value="{{ data?.contratto?.sedeAssunzione }}" readonly />
+                <div class="form-group">
+                    <input type="text" class="form-control" value="{{ data.contratto.sedeAssunzione }}" readonly />
+                </div>
             </div>
-            <div>
+            <div class="col-md-3">
                 <label>Data Assunzione: </label>
-                <input type="text" value="{{ this.transformDate(data?.contratto?.dataAssunzione) }}" readonly />
+                <div class="form-group">
+                    <input type="text" class="form-control"
+                        value="{{ this.transformDate(data.contratto.dataAssunzione) }}" readonly />
+                </div>
             </div>
         </div>
-    </fieldset>
-    <fieldset>
-        <legend>Date</legend>
-        <div>
-            <div>
-                <label>Data Inizio Prova: </label>
-                <input type="text" value="{{ this.transformDate(data?.contratto?.dataInizioProva) }}" readonly />
-            </div>
-            <div>
-                <label>Data Fine Prova: </label>
-                <input type="text" value="{{ this.transformDate(data?.contratto?.dataFineProva) }}" readonly />
-            </div>
-            <div>
-                <label>Data Fine Rapporto: </label>
-                <input type="text" value="{{ this.transformDate(data?.contratto?.dataFineRapporto) }}" readonly />
-            </div>
-            <div>
-                <label>Mesi Durata: </label>
-                <input type="text" value="{{ data?.contratto?.mesiDurata }}" readonly />
+    </div>
+    <legend>Date</legend>
+    <div class="row">
+        <div class="col-md-3">
+            <label>Data Inizio Prova: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ this.transformDate(data.contratto.dataInizioProva) }}"
+                    readonly />
             </div>
         </div>
-    </fieldset>
-    <fieldset>
-        <legend>Livello Dipendente</legend>
-        <div>
-            <div>
+        <div class="col-md-3">
+            <label>Data Fine Prova: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ this.transformDate(data.contratto.dataFineProva) }}"
+                    readonly />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label>Data Fine Rapporto: </label>
+            <div class="form-group">
+                <input type="text" class="form-control"
+                    value="{{ this.transformDate(data.contratto.dataFineRapporto) }}" readonly />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label>Mesi Durata: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.mesiDurata }}" readonly />
+            </div>
+        </div>
+    </div>
+    <legend>Livello Dipendente</legend>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
                 <label>Livello Iniziale: </label>
-                <input type="text" value="{{ data?.contratto?.livelloIniziale }}" readonly />
-            </div>
-            <div>
-                <label>Livello Attuale: </label>
-                <input type="text" value="{{ data?.contratto?.livelloAttuale }}" readonly />
-            </div>
-            <div>
-                <label>Livello Finale: </label>
-                <input type="text" value="{{ data?.contratto?.livelloFinale }}" readonly />
+                <div class="form-group">
+                    <input type="text" class="form-control" value="{{ data.contratto.livelloIniziale }}" readonly />
+                </div>
             </div>
         </div>
-    </fieldset>
-    <fieldset>
-        <legend>Info Generali</legend>
-        <div>
-            <div>
-                <label>Dimissioni: </label>
-                <input type="text" value="{{ data?.contratto?.dimissioni }}" readonly />
-            </div>
-            <div>
-                <label>Part Time: </label>
-                <input type="text" value="{{ data?.contratto?.partTime }}" readonly />
-            </div>
-            <div>
-                <label>Part Time A: </label>
-                <input type="text" value="{{ data?.contratto?.partTimeA }}" readonly />
+        <div class="col-md-3">
+            <label>Livello Attuale: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.livelloAttuale }}" readonly />
             </div>
         </div>
-    </fieldset>
-    <fieldset>
-        <legend>Retribuzione e Diaria</legend>
-        <div>
-            <div>
-                <label>Retribuzione Mensile Lorda: </label>
-                <input type="text" value="{{ data?.contratto?.retribuzioneMensileLorda }}" readonly />
-            </div>
-            <div>
-                <label>Superminimo Mensile: </label>
-                <input type="text" value="{{ data?.contratto?.superminimoMensile }}" readonly />
-            </div>
-            <div>
-                <label>RAL Annua: </label>
-                <input type="text" value="{{ data?.contratto?.ralAnnua }}" readonly />
-            </div>
-            <div>
-                <label>Supermionimo RAL: </label>
-                <input type="text" value="{{ data?.contratto?.superminimoRal }}" readonly />
-            </div>
-            <div>
-                <label>Diaria Mensile: </label>
-                <input type="text" value="{{ data?.contratto?.diariaMese }}" readonly />
-            </div>
-            <div>
-                <label>Diaria Giornaliera: </label>
-                <input type="text" value="{{ data?.contratto?.diariaGg }}" readonly />
+        <div class="col-md-3">
+            <label>Livello Finale: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.livelloFinale }}" readonly />
             </div>
         </div>
-    </fieldset>
-    <fieldset>
-        <legend>Ticket e Aggevolazioni</legend>
-        <div>
-            <div>
-                <label>Ticket: </label>
-                <input type="text" value="{{ data?.contratto?.ticket }}" readonly />
-            </div>
-            <div>
-                <label>ValoreTicket: </label>
-                <input type="text" value="{{ data?.contratto?.valoreTicket }}" readonly />
-            </div>
-            <div>
-                <label>Categoria Protetta: </label>
-                <input type="text" value="{{ data?.contratto?.categoriaProtetta }}" readonly />
+    </div>
+    <legend>Info Generali</legend>
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-check-label">Dimissioni: </label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" [checked]="data.contratto.dimissioni === true"
+                    disabled />
             </div>
         </div>
-    </fieldset>
-    <fieldset>
-        <legend>Altro</legend>
-        <div>
+        <div class="col-md-3">
+            <label class="form-check-label">Part Time: </label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" [checked]="data.contratto.partTime === true" disabled />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-check-label">Part Time A: </label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" [checked]="data.contratto.partTimeA === true"
+                    disabled />
+            </div>
+        </div>
+    </div>
+    <legend>Retribuzione e Diaria</legend>
+
+    <div class="row">
+        <div class="col-md-3">
+            <label>Retribuzione Mensile Lorda: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.retribuzioneMensileLorda }}"
+                    readonly />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label>Superminimo Mensile: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.superminimoMensile }}" readonly />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <label>RAL Annua: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.ralAnnua }}" readonly />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label>Supermionimo RAL: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.superminimoRal }}" readonly />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label>Diaria Mensile: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.diariaMese }}" readonly />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label>Diaria Giornaliera: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.diariaGg }}" readonly />
+            </div>
+        </div>
+    </div>
+    <legend>Ticket e Aggevolazioni</legend>
+    <div class="row">
+        <div class="col-md-3">
+            <label>Ticket: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.ticket }}" readonly />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label>Valore Ticket: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.valoreTicket }}" readonly />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <label class="form-check-label">Categoria Protetta: </label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" [checked]="data.contratto.categoriaProtetta === true"
+                disabled />
+        </div>
+    </div>
+    <legend>Altro</legend>
+    <div class="row">
+        <div class="col-md-3">
             <label>Tutor: </label>
-            <input type="text" value="{{ data?.contratto?.tutor }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.tutor }}" readonly />
+            </div>
         </div>
-        <div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <label>PFI: </label>
-            <input type="text" value="{{ data?.contratto?.pfi }}" readonly />
+            <div class="form-group">
+                <p class="text-decoration-example">{{ data.contratto.pfi }}</p>
+            </div>
         </div>
-        <div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <label>Corso di Sicurezza: </label>
-            <input type="text" value="{{ data?.contratto?.corsoSicurezza }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.corsoSicurezza }}" readonly />
+            </div>
         </div>
-        <div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <label>Motivazione Fine Rapporto: </label>
-            <input type="text" value="{{ data?.contratto?.motivazioneFineRapporto }}" readonly />
+            <div class="form-group">
+                <p class="text-decoration-example">{{ data.contratto.motivazioneFineRapporto }}</p>
+            </div>
         </div>
-        <div>
-            <label>PC: </label>
-            <input type="checkbox" [checked]="data?.contratto?.pc" disabled="disabled" />
-        </div>
-        <div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <label>Scatti Anzianita: </label>
-            <input type="text" value="{{ data?.contratto?.scattiAnzianita }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.scattiAnzianita }}" readonly />
+            </div>
         </div>
-        <div><label>Tariffa Partita IVA: </label>
-            <input type="text" value="{{ data?.contratto?.tariffaPartitaIva }}" readonly />
+        <div class="col-md-3">
+            <label>PC: </label>
+            <div class="form-group">
+                <input class="form-check-input" type="checkbox" [checked]="data.contratto.pc" disabled="disabled" />
+            </div>
         </div>
-        <div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <label>Tariffa Partita IVA: </label>
+            <div class="col-md-3">
+                <input type="text" class="form-control" value="{{ data.contratto.tariffaPartitaIva }}" readonly />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <label>Canale Reclutamento: </label>
-            <input type="text" value="{{ data?.contratto?.canaleReclutamento }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.contratto.canaleReclutamento }}" readonly />
+            </div>
         </div>
-    </fieldset>
+    </div>
     <!---------commessa----------->
-
     <h1>Dettaglio Commessa</h1>
-    <fieldset>
-        <div>
+    <div class="row">
+        <div class="col-md-3">
             <label>Cliente: </label>
-            <input type="text" value="{{ data?.commessa?.cliente }}" placeholder={{data?.cliente}} readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.commessa.cliente }}"
+                    placeholder={{data?.cliente}} readonly />
+            </div>
         </div>
-        <div>
+        <div class="col-md-3">
             <label>Cliente Finale: </label>
-            <input type="text" value="{{ data?.commessa?.clienteFinale }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.commessa.clienteFinale }}" readonly />
+            </div>
         </div>
-        <div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <label>Titolo Posizione: </label>
-            <input type="text" value="{{ data?.commessa?.titoloPosizione  }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.commessa.titoloPosizione  }}" readonly />
+            </div>
         </div>
-
-        <div>
+        <div class="col-md-3">
             <label>Distacco: </label>
-            <input type="text" value="{{ data?.commessa?.distacco }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.commessa.distacco }}" readonly />
+            </div>
         </div>
-
-        <div>
+        <div class="col-md-3">
             <label>Costo mese: </label>
-            <input type="text" value="{{ data?.commessa?.costoMese }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.commessa.costoMese }}" readonly />
+            </div>
         </div>
-
-
-        <fieldset>
-            <legend>Date</legend>
-            <div>
-                <label>Data Inizio: </label>
-                <input type="text" value="{{ this.transformDate(data?.commessa?.dataInizio)}}" readonly />
+    </div>
+    <legend>Date</legend>
+    <div class="row">
+        <div class="col-md-3">
+            <label>Data Inizio: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ this.transformDate(data.commessa.dataInizio)}}"
+                    readonly />
             </div>
-            <div>
-                <label>Data Fine: </label>
-                <input type="text" value="{{ this.transformDate(data?.commessa?.dataFine)}}" readonly />
+        </div>
+        <div class="col-md-3">
+            <label>Data Fine: </label>
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ this.transformDate(data.commessa.dataFine)}}"
+                    readonly />
             </div>
-        </fieldset>
-        <div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <label>Tariffa giornaliera: </label>
-            <input type="text" value="{{ data?.commessa?.tariffaGiornaliera  }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.commessa.tariffaGiornaliera  }}" readonly />
+            </div>
         </div>
-
-        <div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <label>Nominativo: </label>
-            <input type="text" value="{{ data?.commessa?.nominativo }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.commessa.nominativo }}" readonly />
+            </div>
         </div>
-
-        <div>
+        <div class="col-md-3">
             <label>Azienda: </label>
-            <input type="text" value="{{ data?.commessa?.azienda }}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.commessa.azienda }}" readonly />
+            </div>
         </div>
-
-        <div>
+        <div class="col-md-3">
             <label>Azienda di fatturazione interna: </label>
-            <input type="text" value="{{ data?.commessa?.aziendaDiFatturazioneInterna}}" readonly />
+            <div class="form-group">
+                <input type="text" class="form-control" value="{{ data.commessa.aziendaDiFatturazioneInterna}}"
+                    readonly />
+            </div>
         </div>
-
-        <div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <label>Stato: </label>
-            <input type="checkbox" checked="{{ data?.commessa?.stato }}" disabled="disabled" />
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" [checked]="data.commessa.stato === true" disabled />
+                </div>
+            </div>
         </div>
-
-        <div>
+        <div class="col-md-3">
             <label>Attesa lavori: </label>
-            <input type="text" value="{{ data?.commessa?.attesaLavori}}" readonly />
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" [checked]="data.commessa.attesaLavori === true"
+                        disabled />
+                </div>
+            </div>
         </div>
-    </fieldset>
+    </div>
     <button (click)="delete(data.id)">Cancella</button>
     <button [routerLink]="['../../modifica-anagrafica',data?.id]">Modifica Anagrafica</button>
     <button [routerLink]="['../../lista-anagrafiche']">Torna alla lista</button>

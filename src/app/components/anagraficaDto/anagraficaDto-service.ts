@@ -22,7 +22,7 @@ export class AnagraficaDtoService {
   }
 
   detail(id: any): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/anagrafica/${id}`);
+    return this.http.get<any>(`http://localhost:8085/dettaglio-anagrafica/${id}`);
   }
 
   detailAnagraficaDto(id: any): Observable<any> {
@@ -54,7 +54,7 @@ export class AnagraficaDtoService {
 
   //FILTER ANAGRAFICA
   filter(body: any): Observable<any> {
-    return this.http.post<any>(`http://localhost:8085/utenti-list`, body, {
+    return this.http.post<any>(`http://localhost:8085/anagrafica-list-filter`, body, {
       headers: headers,
     });
   }

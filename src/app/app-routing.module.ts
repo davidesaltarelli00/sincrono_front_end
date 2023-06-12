@@ -20,7 +20,8 @@ const routes: Routes = [
 
   //ANAGRAFICA
   { path: 'lista-anagrafica', component: ListaAnagraficaDtoComponent },
-  { path: 'dettaglio-anagrafica', component: DettaglioAnagraficaDtoComponent },
+  { path: 'lista-anagrafica/:body', component: ListaAnagraficaDtoComponent },
+  { path: 'dettaglio-anagrafica/:id', component: DettaglioAnagraficaDtoComponent },
   { path: 'nuova-anagrafica', component: NuovaAnagraficaDtoComponent },
   { path: 'modifica-anagrafica', component: ModificaAnagraficaDtoComponent },
 

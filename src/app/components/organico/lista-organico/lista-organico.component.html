@@ -25,14 +25,13 @@
             <tbody>
                 <tr *ngFor="let data of lista">
                     <td><button class="btn btn-link"></button>{{ data?.azienda }}</td>
-                    <td><button class="btn btn-link">{{ data.numeroDipendenti }}</button></td>
-                    <td><button class="btn btn-link">{{ data.indeterminati }}</button></td>
-                    <td><button class="btn btn-link">{{ data.indeterminati }}</button></td>
-                    <td><button class="btn btn-link">{{ data.determinati}}</button></td>
-                    <td><button class="btn btn-link">{{ data.apprendistato }}</button></td>
-                    <td><button class="btn btn-link">{{ data.consulenza }}</button></td>
-                    <td><button class="btn btn-link">{{ data.stage }}</button></td>
-                    <td><button class="btn btn-link">{{ data.partitaIva }}</button></td>
+                    <td><button (click)="filter('',data?.azienda)" class="btn btn-link">{{ data.numeroDipendenti }}</button></td>
+                    <td><button (click)="filter('Indeterminato',data?.azienda)" class="btn btn-link">{{ data.indeterminati }}</button></td>
+                    <td><button (click)="filter('Determinato',data?.azienda)" class="btn btn-link">{{ data.determinati}}</button></td>
+                    <td><button (click)="filter('Apprendistato',data?.azienda)" class="btn btn-link">{{ data.apprendistato }}</button></td>
+                    <td><button (click)="filter('Consulenza',data?.azienda)" class="btn btn-link">{{ data.consulenza }}</button></td>
+                    <td><button (click)="filter('Stage',data?.azienda)" class="btn btn-link">{{ data.stage }}</button></td>
+                    <td><button (click)="filter('PartitaIva',data?.azienda)" class="btn btn-link">{{ data.partitaIva }}</button></td>
                     <td><button class="btn btn-link">{{ data.potenzialeStage }}</button></td>
                     <td><button class="btn btn-link">{{ data.slotStage }}</button></td>
                     <td><button class="btn btn-link">{{ data.potenzialeApprendistato}}</button></td>
