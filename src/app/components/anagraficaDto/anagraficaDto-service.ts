@@ -29,8 +29,10 @@ export class AnagraficaDtoService {
     return this.http.get<any>(`http://localhost:8085/dettaglio-anagrafica/${id}`);
   }
 
-  delete(id: any) {
-    return this.http.delete<any>(`http://localhost:8085/anagrafica/${id}`);
+  delete(body: any) {
+    return this.http.put<any>(`http://localhost:8085/delete-anagrafica`, body, {
+      headers: headers,
+    });
   }
 
   update(body: any): Observable<any> {
@@ -40,7 +42,7 @@ export class AnagraficaDtoService {
   }
 
   insert(body: any): Observable<any> {
-    return this.http.post<any>(`http://localhost:8085/anagrafica`, body, {
+    return this.http.post<any>(`http://localhost:8085/nuova-anagrafica`, body, {
       headers: headers,
     });
   }

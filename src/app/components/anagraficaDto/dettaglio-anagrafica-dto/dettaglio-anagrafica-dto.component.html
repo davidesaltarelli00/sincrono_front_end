@@ -522,9 +522,12 @@
             </div>
         </div>
     </div>
-    <button (click)="delete(data.id)">Cancella</button>
-    <button [routerLink]="['../../modifica-anagrafica',data?.id]">Modifica Anagrafica</button>
-    <button [routerLink]="['../../lista-anagrafiche']">Torna alla lista</button>
+    <button class="btn btn-dark btn-sm rounded-pill shadow-sm"
+    style="background-color: rgb(24, 122, 0); color: white;" (click)="delete(data.id)">Cancella</button>
+    <button class="btn btn-dark btn-sm rounded-pill shadow-sm"
+    style="background-color: rgb(24, 122, 0); color: white;" [routerLink]="['../../modifica-anagrafica',data?.id]">Modifica Anagrafica</button>
+    <button class="btn btn-dark btn-sm rounded-pill shadow-sm"
+    style="background-color: rgb(24, 122, 0); color: white;" [routerLink]="['../../lista-anagrafica']">Torna alla lista</button>
 </body>
 
 </html>

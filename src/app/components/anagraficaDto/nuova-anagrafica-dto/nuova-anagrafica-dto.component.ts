@@ -2,6 +2,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { AnagraficaDtoService } from '../anagraficaDto-service';
 import { Router } from '@angular/router';
+import { ContrattoService } from '../../contratto/contratto-service';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -29,62 +30,137 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   messaggio: any;
   showErrorPopup:any;
   showSuccessPopup:any;
+  tipiContratti: any = [];
+  livelliContratti: any = [];
+  tipiAziende: any = [];
+  contrattiNazionali: any = [];
 
-  nuovaAnagrafica: FormGroup = new FormGroup({
-    utente: new FormGroup({
-      id: new FormControl(''),
+
+  AnagraficaDto = this.formBuilder.group({
+    anagrafica: new FormGroup({
+      attivo: new FormControl(''),
+      azienda: new FormControl(''),
+      nome: new FormControl(''),
+      cognome: new FormControl(''),
+      codiceFiscale: new FormControl(''),
+      cellularePrivato:new FormControl(''),
+      cellulareAziendale: new FormControl(''),
+      mailPrivata: new FormControl(''),
+      mailPec: new FormControl(''),
+      mailAziendale: new FormControl(''),
+      titoloDiStudio: new FormControl(''),
+      altriTitoli:new FormControl(''),
     }),
-    nome: new FormControl(''),
-    cognome: new FormControl(''),
-    dataNascita: new FormControl(),
-    comuneDiNascita: new FormControl(),
-    attivo: new FormControl(''),
-    codiceFiscale: new FormControl(''),
-    azienda_tipo: new FormControl(''),
-    residenza: new FormControl(''),
-    domicilio: new FormControl(''),
-    cellularePrivato: new FormControl(''),
-    cellulareAziendale: new FormControl(''),
-    mailPrivata: new FormControl(''),
-    mailAziendale: new FormControl(''),
-    mailPec: new FormControl(''),
-    titoliDiStudio: new FormControl(''),
-    altriTitoli: new FormControl(''),
-    coniugato: new FormControl(''),
-    figliACarico: new FormControl(''),
+    commessa: new FormGroup({
+      cliente: new FormControl(''),
+      clienteFinale: new FormControl(''),
+      titoloPosizione: new FormControl(''),
+      distacco:new FormControl(''),
+      costoMese: new FormControl(''),
+      dataInizio: new FormControl(''),
+      dataFine:new FormControl(''),
+      tariffaGiornaliera: new FormControl(''),
+      nominativo: new FormControl(''),
+      azienda: new FormControl(''),
+      aziendaDiFatturazioneInterna: new FormControl(''),
+      stato: new FormControl(''),
+      attesaLavori:new FormControl(''),
+    }),
+    contratto: new FormGroup({
+      attivo: new FormControl(''),
+      aziendaDiFatturazioneInterna: new FormControl(''),
+      tipoContratto: new FormControl(''),
+      livelloContratto: new FormGroup({
+        descrizione: new FormControl(''),
+      }),
+      contrattoNazionale: new FormGroup({
+        descrizione: new FormControl(''),
+      }),
+      qualifica: new FormControl(''),
+      sedeAssunzione: new FormControl(''),
+      dataAssunzione: new FormControl(''),
+      dataInizioProva: new FormControl(''),
+      dataFineProva: new FormControl(''),
+      dataFineRapporto: new FormControl(''),
+      mesiDurata: new FormControl(''),
+      livelloDipendente: new FormGroup({
+        livelloIniziale: new FormControl(''),
+        livelloAttuale: new FormControl(''),
+      })
+    })
   });
+
+
+
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
-    private router: Router
-  ) {}
+    private router: Router,
+    private contrattoService: ContrattoService
+  ){}
 
   ngOnInit(): void {
-    this.nuovaAnagrafica = this.formBuilder.group({
-      utente: new FormGroup({
-        id: new FormControl(this.data?.utente?.id),
+    this.AnagraficaDto = this.formBuilder.group({
+      anagrafica: new FormGroup({
+        attivo: new FormControl(''),
+        azienda: new FormControl(''),
+        nome: new FormControl(''),
+        cognome: new FormControl(''),
+        codiceFiscale: new FormControl(''),
+        cellularePrivato:new FormControl(''),
+        cellulareAziendale: new FormControl(''),
+        mailPrivata: new FormControl(''),
+        mailPec: new FormControl(''),
+        mailAziendale: new FormControl(''),
+        titoloDiStudio: new FormControl(''),
+        altriTitoli:new FormControl(''),
       }),
-      nome: new FormControl(this.data?.nome),
-      cognome: new FormControl(this.data?.cognome),
-      dataNascita: new FormControl(this.data?.dataNascita),
-      comuneDiNascita: new FormControl(this.data?.comuneDiNascita),
-      attivo: new FormControl(''),
-      codiceFiscale: new FormControl(this.data?.codiceFiscale),
-      aziendaTipo: new FormControl(this.data?.aziendaTipo),
-      residenza: new FormControl(this.data?.residenza),
-      domicilio: new FormControl(this.data?.domicilio),
-      cellularePrivato: new FormControl(this.data?.cellularePrivato),
-      cellulareAziendale: new FormControl(this.data?.cellulareAziendale),
-      mailPrivata: new FormControl(this.data?.mailPrivata),
-      mailAziendale: new FormControl(this.data?.mailAziendale),
-      mailPec: new FormControl(this.data?.mailPec),
-      titoliDiStudio: new FormControl(this.data?.titoliDiStudio),
-      altriTitoli: new FormControl(this.data?.altriTitoli),
-      coniugato: new FormControl(''),
-      figliACarico: new FormControl(''),
+      commessa: new FormGroup({
+        cliente: new FormControl(''),
+        clienteFinale: new FormControl(''),
+        titoloPosizione: new FormControl(''),
+        distacco:new FormControl(''),
+        costoMese: new FormControl(''),
+        dataInizio: new FormControl(''),
+        dataFine:new FormControl(''),
+        tariffaGiornaliera: new FormControl(''),
+        nominativo: new FormControl(''),
+        azienda: new FormControl(''),
+        aziendaDiFatturazioneInterna: new FormControl(''),
+        stato: new FormControl(''),
+        attesaLavori:new FormControl(''),
+      }),
+      contratto: new FormGroup({
+        attivo: new FormControl(''),
+        aziendaDiFatturazioneInterna: new FormControl(''),
+        tipoContratto: new FormControl(''),
+        livelloContratto: new FormGroup({
+          descrizione: new FormControl(''),
+        }),
+        contrattoNazionale: new FormGroup({
+          descrizione: new FormControl(''),
+        }),
+        qualifica: new FormControl(''),
+        sedeAssunzione: new FormControl(''),
+        dataAssunzione: new FormControl(''),
+        dataInizioProva: new FormControl(''),
+        dataFineProva: new FormControl(''),
+        dataFineRapporto: new FormControl(''),
+        mesiDurata: new FormControl(''),
+        livelloDipendente: new FormGroup({
+          livelloIniziale: new FormControl(''),
+          livelloAttuale: new FormControl(''),
+        })
+      })
     });
+
     this.caricaListaUtenti();
+    
+    this.caricaTipoContratto();
+    this.caricaLivelloContratto();
+    this.caricaTipoAzienda();
+    this.caricaContrattoNazionale();
   }
   caricaListaUtenti() {
     this.anagraficaDtoService.getListaUtenti().subscribe((result: any) => {
@@ -94,7 +170,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
   inserisci() {
     this.submitted = true;
-    if (this.nuovaAnagrafica.invalid) {
+    if (this.AnagraficaDto.invalid) {
       return;
     }
 
@@ -111,30 +187,57 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       });
     };
 
-    removeEmpty(this.nuovaAnagrafica.value);
-    console.log(JSON.stringify(this.nuovaAnagrafica.value));
+    removeEmpty(this.AnagraficaDto.value);
+    console.log(JSON.stringify(this.AnagraficaDto.value));
     const body = JSON.stringify({
-      anagrafica: this.nuovaAnagrafica.value,
+      anagrafica: this.AnagraficaDto.value,
     });
     console.log(body);
 
     this.anagraficaDtoService.insert(body).subscribe((result) => {
       if ((result as any).esito.code != 0) {
-        this.showErrorPopup = true;
+        alert('inserimento non riuscito');
         this.errore = true;
         this.messaggio = (result as any).esito.target;
         return;
       }else{
 
-        this.showSuccessPopup = true;
+        alert('inserimento riuscito');
         
       }
       this.router.navigate(['../lista-anagrafica-dto']);
     });
   }
 
-  chiudiPopup() {
+  /*chiudiPopup() {
     this.showErrorPopup = false;
     this.showSuccessPopup = false;
+  }*/
+
+  caricaTipoContratto() {
+    this.contrattoService.getTipoContratto().subscribe((result: any) => {
+      console.log(result);
+      this.tipiContratti = (result as any)['list'];
+    });
   }
+  caricaLivelloContratto() {
+    this.contrattoService.getLivelloContratto().subscribe((result: any) => {
+      console.log(result);
+      this.livelliContratti = (result as any)['list'];
+    });
+  }
+  caricaTipoAzienda() {
+    this.contrattoService.getTipoAzienda().subscribe((result: any) => {
+      console.log(result);
+      this.tipiAziende = (result as any)['list'];
+    });
+  }
+
+  caricaContrattoNazionale() {
+    this.contrattoService.getContrattoNazionale().subscribe((result: any) => {
+      console.log(result);
+      this.contrattiNazionali = (result as any)['list'];
+    });
+  }
+
 }

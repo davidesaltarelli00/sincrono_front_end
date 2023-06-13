@@ -23,6 +23,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   tipiAziende: any = [];
   contrattiNazionali: any = [];
   mostraFiltri = false;
+  showErrorPopup:any;
+  showSuccessPopup:any;
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -59,7 +61,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
     private location: Location,
-    private contrattoService: ContrattoService
+    private contrattoService: ContrattoService,
+    private router: Router
   ) {}
 
   reloadPage(): void {
@@ -245,17 +248,52 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
   
 
-  delete(id: number) {
-    this.anagraficaDtoService.delete(id).subscribe(
-      () => {
-        console.log('Anagrafica eliminata');
+  delete(idAnagrafica: number,idContratto: number,idCommessa: number) {
+    
+    this.filterAnagraficaDto.value.anagrafica.id=idAnagrafica;
+    this.filterAnagraficaDto.value.contratto.id=idContratto;
+    this.filterAnagraficaDto.value.commessa.id=idCommessa;
+    const body = JSON.stringify({
+      anagraficaDto: this.filterAnagraficaDto.value,
+    });
+    console.log(body);
+    this.anagraficaDtoService.delete(body).subscribe((result: any) => {
+      if ((result as any).esito.code != 0) {
+        alert('cancellazione non riuscita');
+        this.errore = true;
+        this.messaggio = (result as any).esito.target;
+        return;
+      }else{
+        
+        alert('cancellazione riuscita');
+
         this.reloadPage();
-      },
-      (error) => {
-        console.error(error);
+       
+
       }
-    );
+  });
+
   }
+
+  chiudiPopup(){
+    this.showErrorPopup = false;
+    this.showSuccessPopup = false;
+    this.reloadPage();
+  }
+
+  showAlert(message: string): void {
+    const alertElement = document.createElement('div');
+    alertElement.className = 'alert';
+    alertElement.textContent = message;
+    document.body.appendChild(alertElement);
+  
+    setTimeout(() => {
+      alertElement.remove();
+    }, 3000); // Rimuovi l'alert dopo 3 secondi (puoi modificare il valore in base alle tue esigenze)
+  }
+
+ 
+  
 
   
 }
