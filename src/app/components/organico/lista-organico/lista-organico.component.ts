@@ -40,7 +40,6 @@ export class ListaOrganicoComponent implements OnInit {
   ngOnInit(): void {
     this.organicoService.listaOrganico().subscribe((resp: any) => {
       this.lista = resp.list;
-      console.log(resp);
 
       $(function () {
         $('#table').DataTable({
@@ -51,29 +50,7 @@ export class ListaOrganicoComponent implements OnInit {
     });
   }
 
-  filter(tipoContratto: any, tipoAzienda: any) {
-    this.anagraficaDto = this.formBuilder.group({
-      contratto: new FormGroup({
-        tipoContratto: new FormGroup({
-          descrizione: new FormControl(tipoContratto),
-        }),
-        tipoAzienda: new FormGroup({
-          descrizione: new FormControl(tipoAzienda),
-        }),
-      }),
-    });
-    const body = JSON.stringify({
-      anagraficaDto: this.anagraficaDto.value,
-    });
-    console.log(body);
-    this.anagraficaDtoService.filter(body).subscribe((result) => {
-      if ((result as any).esito.code != 0) {
-        this.errore = true;
-        this.messaggio = (result as any).esito.target;
-        return;
-      }
-      this.router.navigate(['/lista-anagrafica', { body }]);
-      console.log(result);
-    });
+  filter(tipoContratto: string, tipoAzienda: string) {
+    this.router.navigate(['/lista-anagrafica', { tipoContratto, tipoAzienda }]);
   }
 }

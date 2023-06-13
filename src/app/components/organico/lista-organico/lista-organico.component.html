@@ -1,8 +1,6 @@
 <head>
     <title>Organico</title>
 </head>
-<title>Organico</title>
-
 <body style="padding-top: 70px;">
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
@@ -23,19 +21,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let data of lista">
-                    <td><button class="btn btn-link"></button>{{ data?.azienda }}</td>
-                    <td><button (click)="filter('',data?.azienda)" class="btn btn-link">{{ data.numeroDipendenti }}</button></td>
-                    <td><button (click)="filter('Indeterminato',data?.azienda)" class="btn btn-link">{{ data.indeterminati }}</button></td>
-                    <td><button (click)="filter('Determinato',data?.azienda)" class="btn btn-link">{{ data.determinati}}</button></td>
-                    <td><button (click)="filter('Apprendistato',data?.azienda)" class="btn btn-link">{{ data.apprendistato }}</button></td>
-                    <td><button (click)="filter('Consulenza',data?.azienda)" class="btn btn-link">{{ data.consulenza }}</button></td>
-                    <td><button (click)="filter('Stage',data?.azienda)" class="btn btn-link">{{ data.stage }}</button></td>
-                    <td><button (click)="filter('PartitaIva',data?.azienda)" class="btn btn-link">{{ data.partitaIva }}</button></td>
-                    <td><button class="btn btn-link">{{ data.potenzialeStage }}</button></td>
-                    <td><button class="btn btn-link">{{ data.slotStage }}</button></td>
-                    <td><button class="btn btn-link">{{ data.potenzialeApprendistato}}</button></td>
-                    <td><button class="btn btn-link">{{ data.slotApprendistato }}</button></td>
+                <tr *ngFor="let element of lista">
+                    <td>{{ element?.azienda }}</td>
+                    <td><button (click)="filter('',element?.azienda)" class="btn btn-link">{{ element.numeroDipendenti }}</button></td>
+                    <td><button (click)="filter('Indeterminato',element?.azienda)" class="btn btn-link">{{ element.indeterminati }}</button></td>
+                    <td><button (click)="filter('Determinato',element?.azienda)" class="btn btn-link">{{ element.determinati}}</button></td>
+                    <td><button (click)="filter('Apprendistato',element?.azienda)" class="btn btn-link">{{ element.apprendistato }}</button></td>
+                    <td><button (click)="filter('Consulenza',element?.azienda)" class="btn btn-link">{{ element.consulenza }}</button></td>
+                    <td><button (click)="filter('Stage',element?.azienda)" class="btn btn-link">{{ element.stage }}</button></td>
+                    <td><button (click)="filter('PartitaIva',element?.azienda)" class="btn btn-link">{{ element.partitaIva }}</button></td>
+                    <td>{{ element.potenzialeStage }}</td>
+                    <td>{{ element.slotStage }}</td>
+                    <td>{{ element.potenzialeApprendistato}}</td>
+                    <td>{{ element.slotApprendistato }}</td>
                 </tr>
             </tbody>
         </table>
