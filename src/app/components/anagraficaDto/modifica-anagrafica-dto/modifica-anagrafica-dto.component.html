@@ -579,7 +579,8 @@
         <button class="btn btn-dark btn-sm rounded-pill shadow-sm"
             style="background-color: rgb(18, 0, 122); color: white;" type="submit" (onclick)="aggiorna()">Salva</button>
     </form>
-    <button [routerLink]="['/dettaglio-anagrafica',this.id]">Annulla</button>
+    <button class="btn btn-dark btn-sm rounded-pill shadow-sm"
+    style="background-color: rgb(24, 122, 0); color: white;" [routerLink]="['/dettaglio-anagrafica',this.id]">Annulla</button>
 </body>
 
 </html>

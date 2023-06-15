@@ -140,6 +140,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         this.tipoContrattoFilter;
       this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione =
         this.tipoAziendaFilter;
+      this.filterAnagraficaDto.value.anagrafica.attivo=1;
     }
   }
   caricaTipoContratto() {

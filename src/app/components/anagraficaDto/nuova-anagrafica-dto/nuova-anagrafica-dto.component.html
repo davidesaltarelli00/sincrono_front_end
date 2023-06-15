@@ -26,17 +26,6 @@
                     <h1>Anagrafica</h1>
                     <div class="row">
                         <div class="col-md-3">
-                            <label>Attivo:</label>
-                            <div class="form-group">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" formControlName="attivo"
-                                         />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
                             <label>Azienda: </label>
                             <div class="form-group">
                                 <input type="text" class="form-control" formControlName="azienda"  />
@@ -47,19 +36,22 @@
                         <div class="col-md-3">
                             <label for="nome">Nome: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="nome"  />
+                                <input id="anagrafica.nome" type="text" class="form-control" formControlName="nome"   
+                               />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label>Cognome: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="Cognome"  />
+                                <input type="text" class="form-control" formControlName="cognome"  
+                              />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label>Codice Fiscale: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="codiceFiscale"  />
+                                <input type="text" class="form-control" formControlName="codiceFiscale"
+                                />
                             </div>
                         </div>
                     </div>
@@ -110,7 +102,7 @@
                         <div class="col-md-3">
                             <label>Altri Titoli: </label>
                             <div class="form-group">
-                                <p class="text-decoration-example">{{ data.anagrafica.altriTitoli }}</p>
+                                <input type="text" class="form-control" formControlName="altriTitoli"  />
                             </div>
                         </div>
                     </div>
@@ -125,7 +117,7 @@
                         <div class="col-md-3">
                             <label>Residenza: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="Residenza"  />
+                                <input type="text" class="form-control" formControlName="residenza"  />
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -146,15 +138,14 @@
                         <div class="col-md-3">
                             <label>Coniugato: </label>
                             <div class="form-group">
-                                <input class="form-check-input" type="checkbox" [checked]="data.anagrafica.coniugato"
-                                    disabled="disabled" />
+                                <input class="form-check-input" type="checkbox" formControlName="Coniugato"
+                                    />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label>Figli a Carico: </label>
                             <div class="form-group">
-                                <input class="form-check-input" type="checkbox" [checked]="data.anagrafica.figliACarico"
-                                    disabled="disabled" />
+                                <input class="form-check-input" type="checkbox" formControlName="figliACarico" />
                             </div>
                         </div>
                     </div>
@@ -169,7 +160,7 @@
                             <label>Cliente: </label>
                             <div class="form-group">
                                 <input type="text" class="form-control" formControlName="cliente"
-                                    placeholder={{data?.cliente}}  />
+                                 />
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -202,17 +193,25 @@
                     <legend>Date</legend>
                     <div class="row">
                         <div class="col-md-3">
-                            <label>Data Inizio: </label>
-                            <div class="form-group">
-                                <input type="text" class="form-control" formControlName="dataInizio"
-                                     />
-                            </div>
+                            <label for="dataInizio">Data Inizio:</label>
+                            <mat-form-field appearance="outline">
+                                <input matInput [matDatepicker]="picker1" formControlName="dataFineRapporto"
+                                    placeholder="Inserisci la data di fine rapporto" class="form-control"
+                                    formControlName="dataFineRapporto" />
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-3">
-                            <label>Data Fine: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="dataFine"
-                                     />
+                                <label for="dataFineRapporto">Data Fine:</label>
+                                <mat-form-field appearance="outline">
+                                    <input id="contratto.dataFine" matInput [matDatepicker]="picker1" formControlName="dataFine"
+                                        placeholder="Inserisci la data di fine rapporto" class="form-control"
+                                        formControlName="dataFineRapporto" />
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
                             </div>
                         </div>
                     </div>
@@ -234,7 +233,8 @@
                         <div class="col-md-3">
                             <label>Azienda: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="azienda"  />
+                                <input type="text" class="form-control" formControlName="azienda"  
+                                />
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -246,20 +246,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3">
-                            <label>Stato: </label>
-                            <div class="form-group">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" [checked]="data.commessa.stato === true" disabled />
-                                </div>
-                            </div>
-                        </div>
+                      
                         <div class="col-md-3">
                             <label>Attesa lavori: </label>
                             <div class="form-group">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" [checked]="data.commessa.attesaLavori === true"
-                                        disabled />
+                                    <input class="form-check-input" type="checkbox" formControlName="attesaLavori"
+                                         />
                                 </div>
                             </div>
                         </div>
@@ -274,38 +267,30 @@
                     <legend>Dati Tipologici</legend>
                     <div class="row">
                         <div class="col-md-3">
-                            <label>Attivo: </label>
-                            <div class="form-group">
-                                <input class="form-check-input" type="checkbox" [checked]="data.contratto.attivo" disabled="disabled" />
+                            <div formGroupName="tipoAzienda">
+                                <label for="filter-Tipo Azienda">Tipo Azienda:</label>
+                                <select id="tipoAzienda" formControlName="id" type="number">
+                                    <option value="">--nessuna selezione--</option>
+                                    <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.id}}">
+                                        {{tipoAzienda.descrizione}}</option>
+                                </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-3">
-                        <div formGroupName="tipoAzienda">
-                            <label for="filter-Tipo Azienda">Tipo Azienda:</label>
-                            <select id="tipoAzienda" formControlName="id" type="number">
-                                <option value="">--nessuna selezione--</option>
-                                <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.id}}">
-                                    {{tipoAzienda.descrizione}}</option>
-                            </select>
-                        </div>
-                    </div>
-                        <div class="col-md-3">
-                            <div formGroupName="TipoContratto">
-                            <label for="filter-TipoContratto">Tipo Contratto:</label>
-                            <select id="tipoContratto"  formControlName="id">
-                                <option value="">--nessuna selezione--</option>
-                                <option *ngFor="let tipoContratto of tipiContratti" value="{{tipoContratto.id}}">
-                                    {{tipoContratto.descrizione}}</option>
-                            </select>
+                            <div formGroupName="tipoContratto">
+                                <label for="filter-TipoContratto">Tipo Contratto:</label>
+                                <select id="tipoContratto"  formControlName="id">
+                                    <option value="">--nessuna selezione--</option>
+                                    <option *ngFor="let tipoContratto of tipiContratti" value="{{tipoContratto.id}}">
+                                        {{tipoContratto.descrizione}}</option>
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                        
                             <div class="col-md-3">
-                                <div formGroupName="LivelloContratto">
+                                <div formGroupName="livelloContratto">
                                 <label for="filter-LivelloContratto">Livello Contratto:</label>
                                 <select id="livelloContratto"  formControlName="id">
                                     <option value="">--nessuna selezione--</option>
@@ -316,7 +301,7 @@
                         </div>
                         
                         <div class="col-md-3">
-                            <div formGroupName="ContrattoNazionale">
+                            <div formGroupName="contrattoNazionale">
                                 <label for="filter-Tipo Contratto nazionale">Tipo Contratto nazionale:</label>
                                 <select id="tipoContrattoNazionale" formControlName="id">
                                     <option value="">--nessuna selezione--</option>
@@ -332,54 +317,68 @@
                         <div class="col-md-3">
                             <label>Qualifica: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="Qualifica"  />
+                                <input type="text" class="form-control" formControlName="qualifica"  />
                             </div>
                         </div>
-                        <div class="row">
+                        
                             <div class="col-md-3">
                                 <label>Sede Assunzione: </label>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" formControlName="Sede"  />
+                                    <input type="text" class="form-control" formControlName="SedeAssunzione"  />
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label>Data Assunzione: </label>
-                                <div class="form-group">
-                                    <input type="text" class="form-control"
-                                        value="{{data.contratto.dataAssunzione}}" formControlName="dataAssunzione">
-                                </div>
-                            </div>
-                        </div>
+                           
+                       
                     </div>
-                    <legend>Date</legend>
                     <div class="row">
                         <div class="col-md-3">
-                            <label>Data Inizio Prova: </label>
-                            <div class="form-group">
-                                <input type="text" class="form-control" formControlName="Date"
-                                     />
-                            </div>
+                            <label for="dataAssunzione">Data Assunzione</label>
+                            <mat-form-field appearance="outline">
+                                <input matInput [matDatepicker]="picker" formControlName="dataAssunzione"
+                                    placeholder="Inserisci la data di assunzione" class="form-control"
+                                    formControlName="dataAssunzione" />
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-3">
-                            <label>Data Fine Prova: </label>
-                            <div class="form-group">
-                                <input type="text" class="form-control" formControlName="dataFineProva"
-                                     />
-                            </div>
+                            <label for="dataInizoProva">Data Inzio prova</label>
+                            <mat-form-field appearance="outline">
+                                <input matInput [matDatepicker]="picker" formControlName="dataInizoProva"
+                                    placeholder="Inserisci la data di assunzione" class="form-control"
+                                    formControlName="dataInizoProva" />
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="dataInizoProva">Data Fine prova</label>
+                            <mat-form-field appearance="outline">
+                                <input matInput [matDatepicker]="picker" formControlName="dataFineProva"
+                                    placeholder="Inserisci la data di assunzione" class="form-control"
+                                    formControlName="dataFineProva" />
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-3">
-                            <label>Data Fine Rapporto: </label>
-                            <div class="form-group">
-                                <input type="text" class="form-control"
-                                    value="{{ data.contratto.dataFineRapporto }}"  />
-                            </div>
+                            <label for="dataFineRapporto">data Fine Rapporto</label>
+                            <mat-form-field appearance="outline">
+                                <input matInput [matDatepicker]="picker1" formControlName="dataFineRapporto"
+                                    placeholder="Inserisci la data di fine rapporto" class="form-control"
+                                    formControlName="dataFineRapporto" />
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-3">
                             <label>Mesi Durata: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="Mesi"  />
+                                <input type="text" class="form-control" formControlName="MesiDurata"  />
                             </div>
                         </div>
                     </div>
@@ -412,21 +411,21 @@
                         <div class="col-md-3">
                             <label class="form-check-label">Dimissioni: </label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" [checked]="data.contratto.dimissioni === true"
-                                    disabled />
+                                <input class="form-check-input" type="checkbox" formControlName="dimissioni"
+                                     />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label class="form-check-label">Part Time: </label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" [checked]="data.contratto.partTime === true" disabled />
+                                <input class="form-check-input" type="checkbox" formControlName="partTime" />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label class="form-check-label">Part Time A: </label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" [checked]="data.contratto.partTimeA === true"
-                                    disabled />
+                                <input class="form-check-input" type="checkbox" formControlName="partTimeA"
+                                     />
                             </div>
                         </div>
                     </div>
@@ -494,8 +493,8 @@
                     <div class="col-md-3">
                         <label class="form-check-label">Categoria Protetta: </label>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" [checked]="data.contratto.categoriaProtetta === true"
-                                disabled />
+                            <input class="form-check-input" type="checkbox" formControlName="categoriaProtetta"
+                                 />
                         </div>
                     </div>
                     <legend>Altro</legend>
@@ -511,7 +510,7 @@
                         <div class="col-md-3">
                             <label>PFI: </label>
                             <div class="form-group">
-                                <p class="text-decoration-example">{{ data.contratto.pfi }}</p>
+                                <input type="text" class="form-control" formControlName="pfi"  />
                             </div>
                         </div>
                     </div>
@@ -519,7 +518,14 @@
                         <div class="col-md-3">
                             <label>Corso di Sicurezza: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="corso"  />
+                                <label for="corso">corso</label>
+                                <mat-form-field appearance="outline">
+                                    <input matInput [matDatepicker]="picker" formControlName="corso"
+                                        placeholder="Inserisci la data del corso sulla sicurezza" class="form-control"
+                                        formControlName="corso" />
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
                             </div>
                         </div>
                     </div>
@@ -527,7 +533,7 @@
                         <div class="col-md-3">
                             <label>Motivazione Fine Rapporto: </label>
                             <div class="form-group">
-                                <p class="text-decoration-example">{{ data.contratto.motivazioneFineRapporto }}</p>
+                                <input type="text" class="form-control" formControlName="motivazioneFineRapporto"  />
                             </div>
                         </div>
                     </div>
@@ -541,7 +547,7 @@
                         <div class="col-md-3">
                             <label>PC: </label>
                             <div class="form-group">
-                                <input class="form-check-input" type="checkbox" [checked]="data.contratto.pc" disabled="disabled" />
+                                <input class="form-check-input" type="checkbox" formControlName="pc" />
                             </div>
                         </div>
                     </div>
@@ -569,7 +575,7 @@
         </form>
         
         <button class="btn btn-dark btn-sm rounded-pill shadow-sm"
-            style="background-color: rgb(24, 122, 0); color: white;" [routerLink]="['../lista-anagrafica-dto']">Annulla e
+            style="background-color: rgb(24, 122, 0); color: white;" [routerLink]="['/lista-anagrafica']">Annulla e
             torna indietro</button>
 
 

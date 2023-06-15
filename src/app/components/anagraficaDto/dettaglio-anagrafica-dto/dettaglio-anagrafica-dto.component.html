@@ -527,7 +527,7 @@
         </div>
     </div>
     <button class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;"
-        (click)="delete(data.id)">Cancella</button>
+        (click)="delete(data?.anagrafica.id,data?.contratto.id,data?.commessa.id)">Cancella</button>
     <button class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;"
         [routerLink]="['/modifica-anagrafica',this.id]">Modifica Anagrafica</button>
     <button class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;"

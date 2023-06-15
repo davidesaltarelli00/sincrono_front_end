@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AnagraficaDtoService } from '../anagraficaDto-service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-dettaglio-anagrafica-dto',
   templateUrl: './dettaglio-anagrafica-dto.component.html',
@@ -10,10 +12,45 @@ export class DettaglioAnagraficaDtoComponent {
   id: any = this.activatedRoute.snapshot.params['id'];
   data: any;
   date: any;
+  errore = false;
+  messaggio: any;
+
+  filterAnagraficaDto: FormGroup = new FormGroup({
+    anagrafica: new FormGroup({
+      nome: new FormControl(''),
+      cognome: new FormControl(''),
+      attivo: new FormControl(''),
+      aziendaTipo: new FormControl(''),
+    }),
+    contratto: new FormGroup({
+      ralAnnua: new FormControl(''),
+      dataAssunzione: new FormControl(''),
+      dataFineRapporto: new FormControl(''),
+      livelloContratto: new FormGroup({
+        descrizione: new FormControl(''),
+      }),
+      contrattoNazionale: new FormGroup({
+        descrizione: new FormControl(''),
+      }),
+      tipoContratto: new FormGroup({
+        descrizione: new FormControl(''),
+      }),
+      tipoAzienda: new FormGroup({
+        descrizione: new FormControl(''),
+      }),
+    }),
+    commessa: new FormGroup({
+      cliente: new FormControl(''),
+      azienda: new FormControl(''),
+      nominativo: new FormControl(''),
+    }),
+  });
+  
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location,
   ) {}
 
   ngOnInit(): void {
@@ -25,16 +62,24 @@ export class DettaglioAnagraficaDtoComponent {
         console.log(this.data);
       });
   }
-  delete(id: number) {
-    this.anagraficaDtoService.delete(id).subscribe(
-      () => {
-        console.log('Commessa deleted');
-      },
-      (error) => {
-        console.error(error);
+  delete(idAnagrafica: number, idContratto: number, idCommessa: number) {
+    this.filterAnagraficaDto.value.anagrafica.id = idAnagrafica;
+    this.filterAnagraficaDto.value.contratto.id = idContratto;
+    this.filterAnagraficaDto.value.commessa.id = idCommessa;
+    const body = JSON.stringify({
+      anagraficaDto: this.filterAnagraficaDto.value,
+    });
+    this.anagraficaDtoService.delete(body).subscribe((result: any) => {
+      if ((result as any).esito.code != 0) {
+        alert('cancellazione non riuscita\n'+'target: '+(result as any).esito.target);
+        this.errore = true;
+        this.messaggio = (result as any).esito.target;
+        return;
+      } else {
+        alert('cancellazione riuscita');
+        this.router.navigate(['/lista-anagrafica']);
       }
-    );
-    this.router.navigate(['../lista-anagrafiche']);
+    });
   }
   transformDate(dateString: string): string {
     const dateObject = new Date(dateString);
@@ -43,5 +88,9 @@ export class DettaglioAnagraficaDtoComponent {
       month: 'numeric',
       year: 'numeric',
     });
+  }
+  reloadPage(): void {
+    this.location.go(this.location.path());
+    location.reload();
   }
 }
