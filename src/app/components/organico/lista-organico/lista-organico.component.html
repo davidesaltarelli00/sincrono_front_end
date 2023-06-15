@@ -1,6 +1,7 @@
 <head>
     <title>Organico</title>
 </head>
+
 <body style="padding-top: 70px;">
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
@@ -23,13 +24,75 @@
             <tbody>
                 <tr *ngFor="let element of lista">
                     <td>{{ element?.azienda }}</td>
-                    <td><button (click)="filter('',element?.azienda)" class="btn btn-link">{{ element.numeroDipendenti }}</button></td>
-                    <td><button (click)="filter('Indeterminato',element?.azienda)" class="btn btn-link">{{ element.indeterminati }}</button></td>
-                    <td><button (click)="filter('Determinato',element?.azienda)" class="btn btn-link">{{ element.determinati}}</button></td>
-                    <td><button (click)="filter('Apprendistato',element?.azienda)" class="btn btn-link">{{ element.apprendistato }}</button></td>
-                    <td><button (click)="filter('Consulenza',element?.azienda)" class="btn btn-link">{{ element.consulenza }}</button></td>
-                    <td><button (click)="filter('Stage',element?.azienda)" class="btn btn-link">{{ element.stage }}</button></td>
-                    <td><button (click)="filter('PartitaIva',element?.azienda)" class="btn btn-link">{{ element.partitaIva }}</button></td>
+                    <td>
+                        <div *ngIf="element.numeroDipendenti === 0;else elseBlock1">
+                            {{ element.numeroDipendenti }}
+                        </div>
+                        <ng-template #elseBlock1>
+                            <button (click)="filter('',element?.azienda)" class="btn btn-link">
+                                {{ element.numeroDipendenti }}
+                            </button>
+                        </ng-template>
+                    <td>
+                        <div *ngIf="element.indeterminati === 0;else elseBlock2">
+                            {{ element.indeterminati }}
+                        </div>
+                        <ng-template #elseBlock2>
+                            <button (click)="filter('Indeterminato',element?.azienda)" class="btn btn-link">
+                                {{ element.indeterminati }}
+                            </button>
+                        </ng-template>
+                    </td>
+                    <td>
+                        <div *ngIf="element.determinati === 0;else elseBlock3">
+                            {{ element.determinati}}
+                        </div>
+                        <ng-template #elseBlock3>
+                            <button (click)="filter('Determinato',element?.azienda)" class="btn btn-link">
+                                {{ element.determinati}}
+                            </button>
+                        </ng-template>
+                    </td>
+                    <td>
+                        <div *ngIf="element.apprendistato === 0;else elseBlock4">
+                            {{ element.apprendistato }}
+                        </div>
+                        <ng-template #elseBlock4>
+                            <button (click)="filter('Apprendistato',element?.azienda)" class="btn btn-link">
+                                {{ element.apprendistato }}
+                            </button>
+                        </ng-template>
+                    </td>
+                    <td>
+                        <div *ngIf="element.consulenza === 0;else elseBlock5">
+                            {{ element.consulenza }}
+                        </div>
+                        <ng-template #elseBlock5>
+                            <button (click)="filter('Consulenza',element?.azienda)" class="btn btn-link">
+                                {{ element.consulenza }}
+                            </button>
+                        </ng-template>
+                    </td>
+                    <td>
+                        <div *ngIf="element.stage === 0;else elseBlock6">
+                            {{ element.stage }}
+                        </div>
+                        <ng-template #elseBlock6>
+                            <button (click)="filter('Stage',element?.azienda)" class="btn btn-link">
+                                {{ element.stage }}
+                            </button>
+                        </ng-template>
+                    </td>
+                    <td>
+                        <div *ngIf="element.partitaIva === 0;else elseBlock7">
+                            {{ element.partitaIva }}
+                        </div>
+                        <ng-template #elseBlock7>
+                            <button (click)="filter('PartitaIva',element?.azienda)" class="btn btn-link">
+                                {{ element.partitaIva }}
+                            </button>
+                        </ng-template>
+                    </td>
                     <td>{{ element.potenzialeStage }}</td>
                     <td>{{ element.slotStage }}</td>
                     <td>{{ element.potenzialeApprendistato}}</td>
