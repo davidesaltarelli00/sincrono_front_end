@@ -15,32 +15,113 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   submitted = false;
   errore = false;
   messaggio: any;
-  showErrorPopup:any;
-  showSuccessPopup:any;
+  showErrorPopup: any;
+  showSuccessPopup: any;
+  //TIPOLOGICHE
+  tipiContratti: any = [];
+  livelliContratti: any = [];
+  tipiAziende: any = [];
+  contrattiNazionali: any = [];
 
-  modificaAnagrafica: FormGroup = new FormGroup({
-    id: new FormControl(''),
-    utente: new FormGroup({
+  anagraficaDto: FormGroup = new FormGroup({
+
+    anagrafica: new FormGroup({
       id: new FormControl(''),
+      nome: new FormControl(''),
+      cognome: new FormControl(''),
+      dataDiNascita: new FormControl(),
+      comuneDiNascita: new FormControl(),
+      attivo: new FormControl(''),
+      codiceFiscale: new FormControl(''),
+      aziendaTipo: new FormControl(''),
+      residenza: new FormControl(''),
+      domicilio: new FormControl(''),
+      cellularePrivato: new FormControl(''),
+      cellulareAziendale: new FormControl(''),
+      mailPrivata: new FormControl(''),
+      mailAziendale: new FormControl(''),
+      mailPec: new FormControl(''),
+      titoliDiStudio: new FormControl(''),
+      altriTitoli: new FormControl(''),
+      coniugato: new FormControl(''),
+      figliACarico: new FormControl(''),
     }),
-    nome: new FormControl(''),
-    cognome: new FormControl(''),
-    dataDiNascita: new FormControl(),
-    comuneDiNascita: new FormControl(),
-    attivo: new FormControl(''),
-    codiceFiscale: new FormControl(''),
-    aziendaTipo: new FormControl(''),
-    residenza: new FormControl(''),
-    domicilio: new FormControl(''),
-    cellularePrivato: new FormControl(''),
-    cellulareAziendale: new FormControl(''),
-    mailPrivata: new FormControl(''),
-    mailAziendale: new FormControl(''),
-    mailPec: new FormControl(''),
-    titoliDiStudio: new FormControl(''),
-    altriTitoli: new FormControl(''),
-    coniugato: new FormControl(''),
-    figliACarico: new FormControl(''),
+    contratto: new FormGroup({
+      
+
+      tipoContratto: new FormGroup({
+        id: new FormControl(''),
+
+      }),
+      livelloContratto: new FormGroup({
+        id: new FormControl(''),
+
+
+
+      }),
+
+      tipoAzienda: new FormGroup({
+        id: new FormControl(''),
+
+      }),
+
+      contrattoNazionale: new FormGroup({
+        id: new FormControl(''),
+
+      }),
+
+      attivo: new FormControl(''),
+      sedeAssunzione: new FormControl(''),
+      qualifica: new FormControl(''),
+      dataAssunzione: new FormControl(''),
+      dataInizioProva: new FormControl(''),
+      dataFineProva: new FormControl(''),
+      dataFineRapporto: new FormControl(''),
+      mesiDurata: new FormControl(''),
+      livelloAttuale: new FormControl(''),
+      livelloFinale: new FormControl(''),
+      dimissioni: new FormControl(''),
+      partTime: new FormControl(''),
+      partTimeA: new FormControl(''),
+      retribuzioneMensileLorda: new FormControl(''),
+      superminimoMensile: new FormControl(''),
+      ralAnnua: new FormControl(''),
+      superminimoRal: new FormControl(''),
+      diariaMese: new FormControl(''),
+      diariaGg: new FormControl(''),
+      ticket: new FormControl(''),
+      valoreTicket: new FormControl(''),
+      categoriaProtetta: new FormControl(''),
+      tutor: new FormControl(''),
+      pfi: new FormControl(''),
+      assicurazioneObbligatoria: new FormControl(''),
+      corsoSicurezza: new FormControl(''),
+      motivazioneFineRapporto: new FormControl(''),
+      pc: new FormControl(''),
+      scattiAnzianita: new FormControl(''),
+      tariffaPartitaIva: new FormControl(''),
+      canaleReclutamento: new FormControl(''),
+    }),
+
+    commessa: new FormGroup({
+      cliente: new FormControl(''),
+      clienteFinale: new FormControl(''),
+      titoloPosizione: new FormControl(''),
+      distacco: new FormControl(''),
+      dataInizio: new FormControl(''),
+      dataFine: new FormControl(''),
+      costoMese: new FormControl(''),
+      tariffaGiornaliera: new FormControl(''),
+      nominativo: new FormControl(''),
+      azienda: new FormControl(''),
+      aziendaDiFatturazioneInterna: new FormControl(''),
+      stato: new FormControl(''),
+      attesaLavori: new FormControl(''),
+    }),
+
+
+
+
   });
 
   constructor(
@@ -48,39 +129,144 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     private activatedRouter: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.anagraficaDtoService.detail(this.id).subscribe((resp: any) => {
-      this.data = (resp as any)['anagrafica'];
-      console.log(this.data);
 
-      this.modificaAnagrafica = this.formBuilder.group({
-        id: new FormControl(this.id),
-        utente: new FormGroup({
-          id: new FormControl(this.data?.utente?.id),
+    this.anagraficaDtoService.detailAnagraficaDto(this.activatedRouter.snapshot.params['id']).subscribe((resp: any) => {
+      this.data = (resp as any)['anagraficaDto'];
+      console.log(this.data);
+      this.anagraficaDto.patchValue(this.data);
+    });
+
+    this.anagraficaDto = this.formBuilder.group({
+    
+        anagrafica: new FormGroup({
+          id: new FormControl(this.id),
+          nome: new FormControl(this.data?.anagrafica?.nome),
+          cognome: new FormControl(this.data?.anagrafica?.cognome),
+          dataDiNascita: new FormControl(this.data?.anagrafica?.dataDiNascita),
+          comuneDiNascita: new FormControl(this.data?.anagrafica?.comuneDiNascita),
+          attivo: new FormControl(''),
+          codiceFiscale: new FormControl(this.data?.anagrafica?.codiceFiscale),
+          aziendaTipo: new FormControl(this.data?.anagrafica?.aziendaTipo),
+          residenza: new FormControl(this.data?.anagrafica?.residenza),
+          domicilio: new FormControl(this.data?.anagrafica?.domicilio),
+          cellularePrivato: new FormControl(this.data?.anagrafica?.cellularePrivato),
+          cellulareAziendale: new FormControl(this.data?.anagrafica?.cellulareAziendale),
+          mailPrivata: new FormControl(this.data?.anagrafica?.mailPrivata),
+          mailAziendale: new FormControl(this.data?.anagrafica?.mailAziendale),
+          mailPec: new FormControl(this.data?.anagrafica?.mailPec),
+          titoliDiStudio: new FormControl(this.data?.anagrafica?.titoliDiStudio),
+          altriTitoli: new FormControl(this.data?.anagrafica?.altriTitoli),
+          coniugato: new FormControl(''),
+          figliACarico: new FormControl(''),
         }),
-        nome: new FormControl(this.data?.nome),
-        cognome: new FormControl(this.data?.cognome),
-        dataDiNascita: new FormControl(this.data?.dataDiNascita),
-        comuneDiNascita: new FormControl(this.data?.comuneDiNascita),
-        attivo: new FormControl(''),
-        codiceFiscale: new FormControl(this.data?.codiceFiscale),
-        aziendaTipo: new FormControl(this.data?.aziendaTipo),
-        residenza: new FormControl(this.data?.residenza),
-        domicilio: new FormControl(this.data?.domicilio),
-        cellularePrivato: new FormControl(this.data?.cellularePrivato),
-        cellulareAziendale: new FormControl(this.data?.cellulareAziendale),
-        mailPrivata: new FormControl(this.data?.mailPrivata),
-        mailAziendale: new FormControl(this.data?.mailAziendale),
-        mailPec: new FormControl(this.data?.mailPec),
-        titoliDiStudio: new FormControl(this.data?.titoliDiStudio),
-        altriTitoli: new FormControl(this.data?.altriTitoli),
-        coniugato: new FormControl(''),
-        figliACarico: new FormControl(''),
-      });
-      this.caricaListaUtenti();
-      this.modificaAnagrafica.patchValue(this.data);
+
+        contratto: new FormGroup({
+          id: new FormControl(this.data?.contratto?.id),
+          tipoContratto: new FormGroup({
+            id: new FormControl(this.data?.contratto?.tipoContratto.id),
+
+          }),
+          livelloContratto: new FormGroup({
+            id: new FormControl(this.data?.contratto?.livelloContratto.id),
+
+          }),
+
+          tipoAzienda: new FormGroup({
+            id: new FormControl(this.data?.contratto?.tipoAzienda.id),
+
+          }),
+
+          contrattoNazionale: new FormGroup({
+            id: new FormControl(this.data?.contratto?.contrattoNazionale.id),
+
+          }),
+
+          attivo: new FormControl(''),
+          sedeAssunzione: new FormControl(this.data?.contratto?.sedeAssunzione),
+          qualifica: new FormControl(this.data?.contratto?.qualifica),
+          dataAssunzione: new FormControl(this.data?.contratto?.dataAssunzione),
+          dataInizioProva: new FormControl(this.data?.contratto?.dataInizioProva),
+          dataFineProva: new FormControl(this.data?.contratto?.dataFineProva),
+          dataFineRapporto: new FormControl(this.data?.contratto?.dataFineRapporto),
+          mesiDurata: new FormControl(this.data?.contratto?.mesiDurata),
+          livelloAttuale: new FormControl(this.data?.contratto?.livelloAttuale),
+          livelloFinale: new FormControl(this.data?.contratto?.livelloFinale),
+          dimissioni: new FormControl(''),
+          partTime: new FormControl(''),
+          partTimeA: new FormControl(''),
+          retribuzioneMensileLorda: new FormControl(this.data?.contratto?.retribuzioneMensileLorda),
+          superminimoMensile: new FormControl(this.data?.contratto?.superminimoMensile),
+          ralAnnua: new FormControl(this.data?.contratto?.ralAnnua),
+          superminimoRal: new FormControl(this.data?.contratto?.superminimoRal),
+          diariaMese: new FormControl(this.data?.contratto?.diariaMese),
+          diariaGg: new FormControl(this.data?.contratto?.diariaGg),
+          ticket: new FormControl(this.data?.contratto?.ticket),
+          valoreTicket: new FormControl(this.data?.contratto?.valoreTicket),
+          categoriaProtetta: new FormControl(''),
+          tutor: new FormControl(this.data?.contratto?.tutor),
+          pfi: new FormControl(this.data?.contratto?.pfi),
+          assicurazioneObbligatoria: new FormControl(this.data?.contratto?.assicurazioneObbligatoria),
+          corsoSicurezza: new FormControl(this.data?.contratto?.corsoSicurezza),
+          motivazioneFineRapporto: new FormControl(this.data?.contratto?.motivazioneFineRapporto),
+          pc: new FormControl(''),
+          scattiAnzianita: new FormControl(this.data?.contratto?.scattiAnzianita),
+          tariffaPartitaIva: new FormControl(this.data?.contratto?.tariffaPartitaIva),
+          canaleReclutamento: new FormControl(this.data?.contratto?.canaleReclutamento),
+        }),
+
+        commessa: new FormGroup({
+          id: new FormControl(this.data?.commessa?.id),
+          cliente: new FormControl(this.data?.commessa?.cliente),
+          clienteFinale: new FormControl(this.data?.commessa?.clienteFinale),
+          titoloPosizione: new FormControl(this.data?.commessa?.titoloPosizione),
+          distacco: new FormControl(this.data?.commessa?.distacco),
+          dataInizio: new FormControl(this.data?.commessa?.dataInizio),
+          dataFine: new FormControl(this.data?.commessa?.dataFine),
+          costoMese: new FormControl(this.data?.commessa?.costoMese),
+          tariffaGiornaliera: new FormControl(this.data?.commessa?.tariffaGiornaliera),
+          nominativo: new FormControl(this.data?.commessa?.nominativo),
+          azienda: new FormControl(this.data?.commessa?.azienda),
+          aziendaDiFatturazioneInterna: new FormControl(this.data?.commessa?.aziendaDiFatturazioneInterna),
+          stato: new FormControl(''),
+          attesaLavori: new FormControl(this.data?.commessa?.attesaLavori),
+
+        })
+      })
+    
+
+    this.caricaListaUtenti();
+    this.caricaTipoContratto();
+    this.caricaLivelloContratto();
+    this.caricaTipoAzienda();
+    this.caricaContrattoNazionale();
+  }
+
+  caricaTipoContratto() {
+    this.anagraficaDtoService.getTipoContratto().subscribe((result: any) => {
+      console.log(result);
+      this.tipiContratti = (result as any)['list'];
+    });
+  }
+  caricaLivelloContratto() {
+    this.anagraficaDtoService.getLivelloContratto().subscribe((result: any) => {
+      console.log(result);
+      this.livelliContratti = (result as any)['list'];
+    });
+  }
+  caricaTipoAzienda() {
+    this.anagraficaDtoService.getTipoAzienda().subscribe((result: any) => {
+      console.log(result);
+      this.tipiAziende = (result as any)['list'];
+    });
+  }
+
+  caricaContrattoNazionale() {
+    this.anagraficaDtoService.getContrattoNazionale().subscribe((result: any) => {
+      console.log(result);
+      this.contrattiNazionali = (result as any)['list'];
     });
   }
   caricaListaUtenti() {
@@ -91,7 +277,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
   aggiorna() {
     const body = JSON.stringify({
-      anagrafica: this.modificaAnagrafica.value,
+      anagraficaDto: this.anagraficaDto.value,
+
     });
     console.log(body);
 
@@ -102,13 +289,14 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.errore = true;
         this.messaggio = (result as any).esito.target;
         return;
-      }else{
+      } else {
 
         this.showSuccessPopup = true;
-        
+
       }
     });
-    this.router.navigate(['../../dettaglio-anagrafica']);
+    this.router.navigate(['/dettaglio-anagrafica',this.id]);
+   
   }
 
   transformDate(dateString: string): string {
@@ -120,10 +308,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     });
   }
 
-    chiudiPopup() {
-      this.showErrorPopup = false;
-      this.showSuccessPopup = false;
-    }
+  chiudiPopup() {
+    this.showErrorPopup = false;
+    this.showSuccessPopup = false;
   }
-  
+}
+
 

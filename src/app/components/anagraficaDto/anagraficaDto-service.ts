@@ -21,9 +21,6 @@ export class AnagraficaDtoService {
     });
   }
 
-  detail(id: any): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/dettaglio-anagrafica/${id}`);
-  }
 
   detailAnagraficaDto(id: any): Observable<any> {
     return this.http.get<any>(`http://localhost:8085/dettaglio-anagrafica/${id}`);
@@ -36,7 +33,7 @@ export class AnagraficaDtoService {
   }
 
   update(body: any): Observable<any> {
-    return this.http.put<any>(`http://localhost:8085/anagrafica`, body, {
+    return this.http.put<any>(`http://localhost:8085/modifica-anagrafica`, body, {
       headers: headers,
     });
   }
@@ -59,5 +56,23 @@ export class AnagraficaDtoService {
     return this.http.post<any>(`http://localhost:8085/anagrafica-list-filter`, body, {
       headers: headers,
     });
+  }
+   //GET TIPOLOGICHE
+   getTipoContratto(): Observable<any> {
+    return this.http.get<any>(`http://localhost:8085/tipo-contratto/map`);
+  }
+
+  getLivelloContratto(): Observable<any> {
+    return this.http.get<any>(
+      `http://localhost:8085/tipo-livelli-contrattuali/map`
+    );
+  }
+
+  getTipoAzienda(): Observable<any> {
+    return this.http.get<any>(`http://localhost:8085/tipo-azienda/map`);
+  }
+
+  getContrattoNazionale(): Observable<any> {
+    return this.http.get<any>(`http://localhost:8085/contratto-nazionale/map`);
   }
 }

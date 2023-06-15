@@ -29,7 +29,7 @@ export class ListaDashboardComponent {
 
     this.dashboardService.listaDashboard().subscribe((resp: any) => {
       this.lista = resp.list;
-      console.log(resp);
+     
 
       $(function () {
         $('#table').DataTable({
@@ -58,9 +58,9 @@ export class ListaDashboardComponent {
     }
 
     const startYear = dataAssunzione.getFullYear();
-    const startMonth = dataAssunzione.getMonth()+1;
+    const startMonth = dataAssunzione.getMonth() + 1;
     const endYear = dataOdierna.getFullYear();
-    const endMonth = dataOdierna.getMonth()+1;
+    const endMonth = dataOdierna.getMonth() + 1;
     return (endYear - startYear) * 12 + (endMonth - startMonth);
 
 
@@ -76,7 +76,7 @@ export class ListaDashboardComponent {
 
 
       if (this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) == (mesiDurata - 1)) {
-        console.log(this.calcolaMesiPassati(currentDataAssunzione, dataOdierna))
+       
         return true
 
 
@@ -89,7 +89,7 @@ export class ListaDashboardComponent {
     } else {
 
       if (this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) == (mesiDurata - 1)) {
-        console.log(this.calcolaMesiPassati(currentDataAssunzione, dataOdierna))
+        
 
         return true
 
@@ -109,7 +109,7 @@ export class ListaDashboardComponent {
 
     if (descrizione == "METALMECCANICO PMI CONFAPI") {
       if (this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) == (mesiDurata * 2 - 1)) {
-        console.log(this.calcolaMesiPassati(currentDataAssunzione, dataOdierna))
+       
 
         return true
 
@@ -125,7 +125,7 @@ export class ListaDashboardComponent {
     } else {
 
       if (this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) == (mesiDurata * 2 - 1)) {
-        console.log(this.calcolaMesiPassati(currentDataAssunzione, dataOdierna))
+     
         return true
 
       } else {
@@ -137,14 +137,14 @@ export class ListaDashboardComponent {
 
   }
 
-  calcolaScadenzaImminentePeriodo3(dataAssunzione: Date, mesiDurata: number, descrizione: string) {
+  calcolaScadenzaImminentePeriodo3(dataAssunzione: Date, mesiDurata: number) {
     const currentDataAssunzione = new Date(dataAssunzione)
     const dataOdierna = new Date()
 
 
 
     if (this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) == (mesiDurata * 3 - 1)) {
-      console.log(this.calcolaMesiPassati(currentDataAssunzione, dataOdierna))
+  
       return true
 
     }
@@ -155,6 +155,34 @@ export class ListaDashboardComponent {
 
   }
 
+  scadenzaContratti40Giorni(dataAssunzione: any, mesiDurata: any) {
+    var currentDataAssunzione = new Date(dataAssunzione);
+    var fineContratto = new Date(dataAssunzione);
+    var year = currentDataAssunzione.getFullYear();
+    fineContratto.setFullYear(year + Math.floor(mesiDurata / 12), currentDataAssunzione.getMonth() + (mesiDurata % 12), currentDataAssunzione.getDate());
+    var currentDate = new Date();
+
+    // Calculate the difference in days between the end date and current date
+    var daysRemaining = Math.ceil((fineContratto.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+  
+
+    // Determine if the remaining days are within the specified threshold
+    var thresholdDays = 40; // Adjust this value as per your requirement
+    return daysRemaining <= thresholdDays;
+
+  }
+
+  scadenzaCommesse40Giorni( dataFine: any) {
+    var dataAttuale = new Date();
+    var fineCommessa = new Date(dataFine);
+    // Calculate the difference in days between the end date and current date
+    var daysRemaining = Math.ceil((dataAttuale.getTime() - fineCommessa.getTime()) / (1000 * 60 * 60 * 24));
+
+    // Determine if the remaining days are within the specified threshold
+    var thresholdDays = 40; // Adjust this value as per your requirement
+    return daysRemaining <= thresholdDays;
+
+  }
 
 
   transformDate(dateString: string): string {

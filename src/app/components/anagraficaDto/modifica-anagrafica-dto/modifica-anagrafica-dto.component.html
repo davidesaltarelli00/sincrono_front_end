@@ -1,129 +1,585 @@
 <html>
 
-<body>
-    <div *ngIf="showErrorPopup" class="alert alert-danger" role="alert">
-        Si è verificato un errore.
-        <button (click)="chiudiPopup()" class="close" aria-label="Chiudi">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      
-      <div *ngIf="showSuccessPopup" class="alert alert-success" role="alert">
-        Operazione completata con successo.
-        <button (click)="chiudiPopup()" class="close" aria-label="Chiudi">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-    <h1>Modifica Anagrafica</h1>
-    <form [formGroup]="modificaAnagrafica" (ngSubmit)="aggiorna()">
-        <fieldset>
-            <div formGroupName="utente">
-                <legend>Utente</legend>
-                <select id="utente" formControlName="id">
-                    <option value="">--nessuna selezione--</option>
-                    <option *ngFor="let utente of utenti" [value]="utente.id">
-                        {{utente.username}}</option>
-                </select>
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend>Inserisci Dettagli</legend>
-            <div>
-                <label for="attivo" style="width: 100%;">Attivo</label>
-                <input class="form-check-input" type="checkbox" name="attivo" id="inlineCheckbox1"
-                    formControlName="attivo" [checked]="data?.attivo" />
-            </div>
-            <div>
-                <label for="aziendaTipo">Azienda: </label>
-                <input id="aziendaTipo" type="text" value="{{data?.aziendaTipo}}" formControlName="aziendaTipo">
-            </div>
-            <div>
-                <label for="nome">Nome: </label>
-                <input id="nome" type="text" value="{{data?.nome}}" formControlName="nome">
-            </div>
-            <div>
-                <label for="cognome">Cognome: </label>
-                <input id="cognome" type="text" value="{{data?.cognome}}" formControlName="cognome">
-            </div>
-            <div>
-                <label for="codiceFiscale">Codice Fiscale: </label>
-                <input id="codiceFiscale" type="text" value="{{data?.codiceFiscale}}" formControlName="codiceFiscale">
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend>Inserisci i Recapiti</legend>
-            <div>
-                <label for="cellulareAziendale">Celluare Aziendale: </label>
-                <input id="cellulareAziendale" type="text" value="{{data?.cellulareAziendale}}"
-                    formControlName="cellulareAziendale">
-            </div>
-            <div>
-                <label for="cellularePrivato">Celluare Privato: </label>
-                <input id="cellularePrivato" type="text" value="{{data?.cellularePrivato}}"
-                    formControlName="cellularePrivato">
-            </div>
-            <div>
-                <label for="mailAziendale">Email Aziendale: </label>
-                <input id="mailAziendale" type="text" value="{{data?.mailAziendale}}" formControlName="mailAziendale">
-            </div>
-            <div>
-                <label for="mailPrivata">Mail Privata: </label>
-                <input id="mailPrivata" type="text" value="{{data?.mailPrivata}}" formControlName="mailPrivata">
-            </div>
-            <div>
-                <label for="mailPec">Email PEC: </label>
-                <input id="mailPec" type="text" value="{{data?.mailPec}}" formControlName="mailPec">
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend>Competenze</legend>
-            <div>
-                <label for="titoliDiStudio">Titolo di Studio: </label>
-                <input id="titoliDiStudio" type="text" value="{{data?.titoliDiStudio}}"
-                    formControlName="titoliDiStudio">
-            </div>
-            <div>
-                <label for="altriTitoli">Altri Titoli: </label>
-                <input id="altriTitoli" type="text" value="{{data?.altriTitoli}}" formControlName="altriTitoli">
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend>Info Extra</legend>
-            <div>
-                <label for="comuneDiNascita">Comune di Nascita: </label>
-                <input id="comuneDiNascita" type="text" value="{{data?.comuneDiNascita}}"
-                    formControlName="comuneDiNascita">
-            </div>
-            <div>
-                <div>
-                    <label for="dataDiNascita" style="width: 100%">Data di Nascita:</label>
-                    <mat-form-field appearance="outline">
-                        <input matInput [matDatepicker]="picker" formControlName="dataDiNascita"
-                            value="{{ this.transformDate(data?.dataDiNascita) }}" placeholder="{{ this.transformDate(data?.dataDiNascita) }}" />
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
+<body style="padding-top: 70px;">
+
+    <form [formGroup]="anagraficaDto" (ngSubmit)="aggiorna()">
+        <h1>Modifica Anagrafica</h1>
+
+
+        <div formGroupName="anagrafica">
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Attivo:</label>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                                [checked]="data?.anagrafica?.attivo === true" formControlName="attivo" />
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div>
-                <label for="domicilio">Domicilio: </label>
-                <input id="domicilio" type="text" value="{{data?.domicilio}}" formControlName="domicilio">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Azienda: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.anagrafica?.aziendaTipo }}"
+                            formControlName="aziendaTipo" />
+                    </div>
+                </div>
             </div>
-            <div>
-                <label for="coniugato" style="width: 100%;">Coniugato</label>
-                <input class="form-check-input" type="checkbox" name="coniugato" id="inlineCheckbox1"
-                    formControlName="coniugato" [checked]="data?.coniugato" />
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="nome">Nome: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.anagrafica?.nome }}"
+                            formControlName="nome" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Cognome: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.anagrafica?.cognome }}"
+                            formControlName="cognome" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Codice Fiscale: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.anagrafica?.codiceFiscale }}"
+                            formControlName="codiceFiscale" />
+                    </div>
+                </div>
             </div>
-            <div>
-                <label for="figliACarico" style="width: 100%;">figli A Carico</label>
-                <input class="form-check-input" type="checkbox" name="figliACarico" id="inlineCheckbox1"
-                    formControlName="figliACarico" [checked]="data?.figliACarico" />
+            <legend>Recapiti</legend>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Cellulare Privato: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.anagrafica?.cellularePrivato }}"
+                            formControlName="cellularePrivato" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Cellulare Aziendale: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.anagrafica?.cellulareAziendale }}"
+                            formControlName="cellulareAziendale" />
+                    </div>
+                </div>
             </div>
-            <button type="submit">Salva</button>
-            <button [routerLink]="['/dettaglio-anagrafica', data?.id]">Annulla e torna indietro</button>
-        </fieldset>
-    </form>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Email Privata: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.anagrafica?.mailPrivata}}"
+                            formControlName="mailPrivata" />
+                    </div>
+                    <label>Email Pec: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.anagrafica?.mailPec }}"
+                            formControlName="mailPec" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Email Aziendale: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.anagrafica?.mailAziendale}}"
+                            formControlName="mailAziendale" />
+                    </div>
 
+                </div>
+            </div>
+            <legend>Competenze</legend>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Titolo di Studio: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.anagrafica?.titoliDiStudio}}"
+                            formControlName="titoliDiStudio" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Altri Titoli: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.anagrafica?.altriTitoli}}"
+                            formControlName="altriTitoli" />
+                    </div>
+                </div>
+            </div>
+            <legend>Info Extra</legend>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Comune di Nascita: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.anagrafica?.comuneDiNascita }}"
+                            formControlName="comuneDiNascita" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Residenza: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.anagrafica?.residenza }}"
+                            formControlName="residenza" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Domicilio: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.anagrafica?.domicilio }}"
+                            formControlName="domicilio" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Data di Nascita: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control"
+                            value="{{ this.transformDate(data?.anagrafica?.dataDiNascita)}}"
+                            formControlName="dataDiNascita" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Coniugato: </label>
+                    <div class="form-group">
+                        <input class="form-check-input" type="checkbox" [checked]="data?.anagrafica?.coniugato"
+                            formControlName="coniugato" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Figli a Carico: </label>
+                    <div class="form-group">
+                        <input class="form-check-input" type="checkbox" [checked]="data?.anagrafica?.figliACarico"
+                            formControlName="figliACarico" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-----------contratto----------->
+        <h1>Dettaglio Contratto</h1>
+        <div formGroupName="contratto">
+            <fieldset>
+                <legend>Dati Tipologici</legend>
+
+
+                <div class="form-group">
+                    <input type="text" class="form-control" value="{{ data?.contratto?.cliente }}" formControlName="id"
+                        hidden />
+                </div>
+
+                <div formGroupName="tipoContratto">
+                    <label for="tipoContratto">Tipo Contratto</label>
+                    <select id="tipoContratto" formControlName="id">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let tipoContratto of tipiContratti" value="{{tipoContratto.id}}">
+                            {{tipoContratto.descrizione}}</option>
+                    </select>
+                </div>
+                <div formGroupName="livelloContratto">
+                    <label for="livelloContratto">Livello Contratto</label>
+                    <select id="livelloContratto" formControlName="id" type="number">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let livelloContratto of livelliContratti" value="{{livelloContratto.id}}">
+                            {{livelloContratto.descrizione}}</option>
+                    </select>
+                </div>
+                <div formGroupName="tipoAzienda">
+                    <label for="tipoAzienda">Tipo Azienda</label>
+                    <select id="tipoAzienda" formControlName="id" type="number">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.id}}">
+                            {{tipoAzienda.descrizione}}</option>
+                    </select>
+                </div>
+                <div formGroupName="contrattoNazionale">
+                    <label for="contrattoNazionale">Contratto Nazionale</label>
+                    <select id="contrattoNazionale" formControlName="id" type="number">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let contrattoNazionale of contrattiNazionali" value="{{contrattoNazionale.id}}">
+                            {{contrattoNazionale.descrizione}}</option>
+                    </select>
+                </div>
+            </fieldset>
+            <legend>Dettagli</legend>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Qualifica: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.qualifica }}"
+                            formControlName="qualifica" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Sede Assunzione: </label>
+                        <div class="form-group">
+                            <input type="text" class="form-control" value="{{ data?.contratto?.sedeAssunzione }}"
+                                formControlName="sedeAssunzione" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Data Assunzione: </label>
+                        <div class="form-group">
+                            <input type="text" class="form-control"
+                                value="{{ this.transformDate(data?.contratto?.dataAssunzione) }}"
+                                formControlName="dataAssunzione" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <legend>Date</legend>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Data Inizio Prova: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control"
+                            value="{{ this.transformDate(data?.contratto?.dataInizioProva) }}"
+                            formControlName="dataInizioProva" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Data Fine Prova: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control"
+                            value="{{ this.transformDate(data?.contratto?.dataFineProva) }}"
+                            formControlName="dataFineProva" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Data Fine Rapporto: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control"
+                            value="{{ this.transformDate(data?.contratto?.dataFineRapporto) }}"
+                            formControlName="dataFineRapporto" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Mesi Durata: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.mesiDurata }}"
+                            formControlName="mesiDurata" />
+                    </div>
+                </div>
+            </div>
+            <legend>Livello Dipendente</legend>
+
+            <div class="row">
+
+                <div class="col-md-3">
+                    <label>Livello Attuale: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.livelloAttuale }}"
+                            formControlName="livelloAttuale" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Livello Finale: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.livelloFinale }}"
+                            formControlName="livelloFinale" />
+                    </div>
+                </div>
+            </div>
+            <legend>Info Generali</legend>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-check-label">Dimissioni: </label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" [checked]="data?.contratto?.dimissioni === true"
+                            formControlName="dimissioni" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-check-label">Part Time: </label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" [checked]="data?.contratto?.partTime === true"
+                            formControlName="partTime" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-check-label">Part Time A: </label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" [checked]="data?.contratto?.partTimeA === true"
+                            formControlName="partTimeA" />
+                    </div>
+                </div>
+            </div>
+            <legend>Retribuzione e Diaria</legend>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Retribuzione Mensile Lorda: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.retribuzioneMensileLorda }}"
+                            formControlName="retribuzioneMensileLorda" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Superminimo Mensile: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.superminimoMensile }}"
+                            formControlName="superminimoMensile" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label>RAL Annua: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.ralAnnua }}"
+                            formControlName="ralAnnua" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Supermionimo RAL: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.superminimoRal }}"
+                            formControlName="superminimoRal" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Diaria Mensile: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.diariaMese }}"
+                            formControlName="diariaMese" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Diaria Giornaliera: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.diariaGg }}"
+                            formControlName="diariaGg" />
+                    </div>
+                </div>
+            </div>
+            <legend>Ticket e Aggevolazioni</legend>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Ticket: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.ticket }}"
+                            formControlName="ticket" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Valore Ticket: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.valoreTicket }}"
+                            formControlName="valoreTicket" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="form-check-label">Categoria Protetta: </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox"
+                        [checked]="data?.contratto?.categoriaProtetta === true" formControlName="categoriaProtetta" />
+                </div>
+            </div>
+            <legend>Altro</legend>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Tutor: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.tutor }}"
+                            formControlName="tutor" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>PFI: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.pfi }}"
+                            formControlName="pfi" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Corso di Sicurezza: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.corsoSicurezza }}"
+                            formControlName="corsoSicurezza" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Motivazione Fine Rapporto: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.motivazioneFineRapporto }}"
+                            formControlName="motivazioneFineRapporto" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Scatti Anzianita: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.scattiAnzianita }}"
+                            formControlName="scattiAnzianita" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>PC: </label>
+                    <div class="form-group">
+                        <input class="form-check-input" type="checkbox" [checked]="data?.contratto?.pc"
+                            formControlName="pc" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Tariffa Partita IVA: </label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.tariffaPartitaIva }}"
+                            formControlName="tariffaPartitaIva" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Canale Reclutamento: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.contratto?.canaleReclutamento }}"
+                            formControlName="canaleReclutamento" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!---------commessa----------->
+        <h1>Dettaglio Commessa</h1>
+        <div formGroupName="commessa">
+            <div class="row">
+               
+                <div class="form-group">
+                    <input type="text" class="form-control" value="{{ data?.commessa?.id }}" formControlName="id"
+                        hidden />
+                </div>
+
+                <div class="col-md-3">
+                    <label>Cliente: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.commessa?.cliente }}"
+                            formControlName="cliente" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Cliente Finale: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.commessa?.clienteFinale }}"
+                            formControlName="clienteFinale" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Titolo Posizione: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.commessa?.titoloPosizione  }}"
+                            formControlName="titoloPosizione" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Distacco: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.commessa?.distacco }}"
+                            formControlName="distacco" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Costo mese: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.commessa?.costoMese }}"
+                            formControlName="costoMese" />
+                    </div>
+                </div>
+            </div>
+            <legend>Date</legend>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Data Inizio: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control"
+                            value="{{ this.transformDate(data?.commessa?.dataInizio)}}" formControlName="dataInizio" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Data Fine: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control"
+                            value="{{ this.transformDate(data?.commessa?.dataFine)}}" formControlName="dataFine" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Tariffa giornaliera: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.commessa?.tariffaGiornaliera  }}"
+                            formControlName="tariffaGiornaliera" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Nominativo: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.commessa?.nominativo }}"
+                            formControlName="nominativo" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Azienda: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{ data?.commessa?.azienda }}"
+                            formControlName="azienda" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Azienda di fatturazione interna: </label>
+                    <div class="form-group">
+                        <input type="text" class="form-control"
+                            value="{{ data?.commessa?.aziendaDiFatturazioneInterna}}"
+                            formControlName="aziendaDiFatturazioneInterna" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Stato: </label>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" [checked]="data?.commessa?.stato === true"
+                                formControlName="stato" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Attesa lavori: </label>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                                [checked]="data?.commessa?.attesaLavori === true" formControlName="attesaLavori" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-dark btn-sm rounded-pill shadow-sm"
+            style="background-color: rgb(18, 0, 122); color: white;" type="submit" (onclick)="aggiorna()">Salva</button>
+    </form>
+    <button [routerLink]="['/dettaglio-anagrafica',this.id]">Annulla</button>
 </body>
 
 </html>
