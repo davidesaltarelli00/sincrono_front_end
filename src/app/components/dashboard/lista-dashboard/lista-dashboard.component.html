@@ -4,7 +4,8 @@
 <body style="padding-top: 70px;">
     <div style="padding-top: 70px;" class="table-responsive">
         <h4>Contratti in Scadenza (40 giorni)</h4>
-        <table id="table" class="table table-striped table-bordered">
+        <button (click)="toggleTable()" class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;">Espandi</button>
+        <table id="table" class="table table-striped table-bordered" *ngIf="isTableVisible">          
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Nominativo</th>
@@ -23,7 +24,8 @@
     </div>
     <div style="padding-top: 70px;" class="table-responsive">
         <h4>Commesse in Scadenza (40 giorni)</h4>
-        <table id="table" class="table table-striped table-bordered">
+        <button (click)="toggleTable2()" class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;">Espandi</button>
+        <table id="table" class="table table-striped table-bordered"  *ngIf="isTable2Visible">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Nominativo</th>
@@ -86,7 +88,6 @@
                             {{this.calcolaPeriodi(data.contratto.mesiDurata,data.contratto.contrattoNazionale.descrizione)}}
                         </ng-template>
                     </td>
-
 
                     <td>
                         <div

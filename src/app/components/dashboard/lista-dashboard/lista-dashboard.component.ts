@@ -24,7 +24,8 @@ export class ListaDashboardComponent {
   check3: boolean = false;
   dateString: any
   constructor(private dashboardService: DashboardService, private router: Router, private contrattoService: ContrattoService) { }
-
+  isTableVisible: boolean = false;
+  isTable2Visible: boolean = false;
   ngOnInit(): void {
 
     this.dashboardService.listaDashboard().subscribe((resp: any) => {
@@ -194,6 +195,11 @@ export class ListaDashboardComponent {
     });
   }
 
-
+  toggleTable() {
+    this.isTableVisible = !this.isTableVisible;
+  }
+  toggleTable2() {
+    this.isTable2Visible = !this.isTable2Visible;
+  }
 
 }
