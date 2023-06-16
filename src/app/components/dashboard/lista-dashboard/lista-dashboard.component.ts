@@ -5,7 +5,6 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { Component, OnInit } from '@angular/core';
 
 
-
 declare var $: any;
 
 @Component({
