@@ -167,32 +167,45 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   filter() {
     const filtroNome =
-      this.filterAnagraficaDto.value.anagrafica.nome.toLowerCase();
+      this.filterAnagraficaDto.value.anagrafica.nome!=null?
+      this.filterAnagraficaDto.value.anagrafica.nome.toLowerCase():"";
     const filtroCognome =
-      this.filterAnagraficaDto.value.anagrafica.cognome.toLowerCase();
+      this.filterAnagraficaDto.value.anagrafica.cognome!=null?
+      this.filterAnagraficaDto.value.anagrafica.cognome.toLowerCase():"";
     const filtroAziendaTipo =
-      this.filterAnagraficaDto.value.anagrafica.aziendaTipo.toLowerCase();
-    const filtroAttivo = this.filterAnagraficaDto.value.anagrafica.attivo;
+      this.filterAnagraficaDto.value.anagrafica.aziendaTipo!=null?
+      this.filterAnagraficaDto.value.anagrafica.aziendaTipo.toLowerCase():"";
+    const filtroAttivo = this.filterAnagraficaDto.value.anagrafica.attivo!=null?
+    this.filterAnagraficaDto.value.anagrafica.attivo:false;
 
     const filtroNominativo =
-      this.filterAnagraficaDto.value.commessa.nominativo.toLowerCase();
+      this.filterAnagraficaDto.value.commessa.nominativo!=null?
+      this.filterAnagraficaDto.value.commessa.nominativo.toLowerCase():"";
     const filtroCliente =
-      this.filterAnagraficaDto.value.commessa.cliente.toLowerCase();
+      this.filterAnagraficaDto.value.commessa.cliente!=null?
+      this.filterAnagraficaDto.value.commessa.cliente.toLowerCase():"";
     const filtroAzienda =
-      this.filterAnagraficaDto.value.commessa.azienda.toLowerCase();
+      this.filterAnagraficaDto.value.commessa.azienda!=null?
+      this.filterAnagraficaDto.value.commessa.azienda.toLowerCase():"";
 
     const filtroRalAnnua =
-      this.filterAnagraficaDto.value.contratto.ralAnnua.toLowerCase();
+      this.filterAnagraficaDto.value.contratto.ralAnnua!=null?
+      this.filterAnagraficaDto.value.contratto.ralAnnua.toLowerCase():"";
     const filtroDataAssunzione =
-      this.filterAnagraficaDto.value.contratto.dataAssunzione;
+      this.filterAnagraficaDto.value.contratto.dataAssunzione!=null?
+      this.filterAnagraficaDto.value.contratto.dataAssunzione:"";
     const filtroDataFineRapporto =
-      this.filterAnagraficaDto.value.contratto.dataFineRapporto;
+      this.filterAnagraficaDto.value.contratto.dataFineRapporto!=null?
+      this.filterAnagraficaDto.value.contratto.dataFineRapporto:"";
     const filtroDescrizioneTipoContratto =
-      this.filterAnagraficaDto.value.contratto.tipoContratto.descrizione.toLowerCase();
+      this.filterAnagraficaDto.value.contratto.tipoContratto.descrizione!=null?
+      this.filterAnagraficaDto.value.contratto.tipoContratto.descrizione.toLowerCase():"";
     const filtroDescrizioneContrattoNazionale =
-      this.filterAnagraficaDto.value.contratto.contrattoNazionale.descrizione.toLowerCase();
+      this.filterAnagraficaDto.value.contratto.contrattoNazionale.descrizione!=null?
+      this.filterAnagraficaDto.value.contratto.contrattoNazionale.descrizione.toLowerCase():"";
     const filtroDescrizioneTipoAzienda =
-      this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione.toLowerCase();
+      this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione!=null?
+      this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione.toLowerCase():"";
 
     this.lista = this.originalLista.filter((element: any) => {
       const nome = (element?.anagrafica.nome ?? 'undefined').toLowerCase();

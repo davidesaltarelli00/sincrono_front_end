@@ -37,20 +37,20 @@
                             <label for="nome">Nome: </label>
                             <div class="form-group">
                                 <input id="anagrafica.nome" type="text" class="form-control" formControlName="nome"   
-                               />
+                                />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label>Cognome: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="cognome"  
+                                <input id="anagrafica.cognome" type="text" class="form-control" formControlName="cognome"  
                               />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label>Codice Fiscale: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="codiceFiscale"
+                                <input id="anagrafica.codiceFiscale" type="text" class="form-control" formControlName="codiceFiscale"
                                 />
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                         <div class="col-md-3">
                             <label>Email Aziendale: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="mailAziendale"  />
+                                <input id="anagrafica.mailAziendale" type="text" class="form-control" formControlName="mailAziendale"  />
                             </div>
                 
                         </div>
@@ -159,7 +159,7 @@
                         <div class="col-md-3">
                             <label>Cliente: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="cliente"
+                                <input id="commessa.cliente" type="text" class="form-control" formControlName="cliente"
                                  />
                             </div>
                         </div>
@@ -193,9 +193,9 @@
                     <legend>Date</legend>
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="dataInizio">Data Inizio:</label>
-                            <mat-form-field appearance="outline">
-                                <input matInput [matDatepicker]="picker1" formControlName="dataFineRapporto"
+                            <label id="commessa.dataInizo" for="dataInizio">Data Inizio:</label>
+                            <mat-form-field  appearance="outline">
+                                <input  matInput [matDatepicker]="picker1" formControlName="dataInizo"
                                     placeholder="Inserisci la data di fine rapporto" class="form-control"
                                     formControlName="dataFineRapporto" />
                                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
@@ -204,13 +204,13 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="dataFineRapporto">Data Fine:</label>
+                                <label id="commessa.dataFine" for="dataFineRapporto">Data Fine:</label>
                                 <mat-form-field appearance="outline">
-                                    <input id="contratto.dataFine" matInput [matDatepicker]="picker1" formControlName="dataFine"
+                                    <input  matInput [matDatepicker]="picker2" formControlName="dataFine"
                                         placeholder="Inserisci la data di fine rapporto" class="form-control"
-                                        formControlName="dataFineRapporto" />
-                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker1></mat-datepicker>
+                                       />
+                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker2></mat-datepicker>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -227,7 +227,7 @@
                         <div class="col-md-3">
                             <label>Nominativo: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="nominativo"  />
+                                <input id="commessa.nominativo" type="text" class="form-control" formControlName="nominativo"  />
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -269,7 +269,7 @@
                         <div class="col-md-3">
                             <div formGroupName="tipoAzienda">
                                 <label for="filter-Tipo Azienda">Tipo Azienda:</label>
-                                <select id="tipoAzienda" formControlName="id" type="number">
+                                <select id="contratto.tipoAzienda.id" formControlName="id" type="number">
                                     <option value="">--nessuna selezione--</option>
                                     <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.id}}">
                                         {{tipoAzienda.descrizione}}</option>
@@ -279,7 +279,7 @@
                         <div class="col-md-3">
                             <div formGroupName="tipoContratto">
                                 <label for="filter-TipoContratto">Tipo Contratto:</label>
-                                <select id="tipoContratto"  formControlName="id">
+                                <select id="contratto.tipoContratto.id"  formControlName="id">
                                     <option value="">--nessuna selezione--</option>
                                     <option *ngFor="let tipoContratto of tipiContratti" value="{{tipoContratto.id}}">
                                         {{tipoContratto.descrizione}}</option>
@@ -292,7 +292,7 @@
                             <div class="col-md-3">
                                 <div formGroupName="livelloContratto">
                                 <label for="filter-LivelloContratto">Livello Contratto:</label>
-                                <select id="livelloContratto"  formControlName="id">
+                                <select id="contratto.livelloContratto.id"  formControlName="id">
                                     <option value="">--nessuna selezione--</option>
                                     <option *ngFor="let livelloContratto of livelliContratti" value="{{livelloContratto.id}}">
                                         {{livelloContratto.descrizione}}</option>
@@ -303,7 +303,7 @@
                         <div class="col-md-3">
                             <div formGroupName="contrattoNazionale">
                                 <label for="filter-Tipo Contratto nazionale">Tipo Contratto nazionale:</label>
-                                <select id="tipoContrattoNazionale" formControlName="id">
+                                <select id="contratto.contrattoNazionale.id" formControlName="id">
                                     <option value="">--nessuna selezione--</option>
                                     <option *ngFor="let contrattiNazionale of contrattiNazionali" value="{{contrattiNazionale.id}}">
                                         {{contrattiNazionale.descrizione}}</option>
@@ -491,7 +491,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-check-label">Categoria Protetta: </label>
+                        <label id="contratto.categoriaProtetta" class="form-check-label">Categoria Protetta: </label>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" formControlName="categoriaProtetta"
                                  />

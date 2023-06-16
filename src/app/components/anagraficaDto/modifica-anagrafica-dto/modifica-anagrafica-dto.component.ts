@@ -276,11 +276,88 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     });
   }
   aggiorna() {
+
+    
+    const removeEmpty = (obj: any) => {
+      Object.keys(obj).forEach((key) => {
+        if (obj[key] && typeof obj[key] === 'object') {
+          removeEmpty(obj[key]);
+        } else if (obj[key] === '') {
+          delete obj[key];
+        }
+        if (obj.anagrafica && Object.keys(obj.anagrafica).length === 0) {
+          delete obj.anagrafica;
+        }
+        if (obj.commessa && Object.keys(obj.commessa).length === 0) {
+          delete obj.commessa;
+        }
+        if (obj.contratto && Object.keys(obj.contratto).length === 0) {
+          delete obj.contratto;
+        }
+        if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
+          delete obj.tipoContratto;
+        }
+        if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
+          delete obj.tipoAzienda;
+        }
+        if (obj.contrattoNazionale && Object.keys(obj.contrattoNazionale).length === 0) {
+          delete obj.contrattoNazionale;
+        }
+        if (obj.livelloContratto && Object.keys(obj.livelloContratto).length === 0) {
+          delete obj.livelloContratto;
+        }
+      });
+    };
+
+    removeEmpty(this.anagraficaDto.value);
+
+
+    let check=true;
+
+    if(this.anagraficaDto.value.anagrafica!=null){
+      
+      check=this.checkValid(['anagrafica.nome','anagrafica.cognome','anagrafica.codiceFiscale',
+      'anagrafica.mailAziendale'])
+
+    }else{
+
+      return;
+    }
+
+    if(this.anagraficaDto.value.commessa!=null){
+
+      check=this.checkValid(['commessa.cliente','commessa.dataInizo','comessa.dataFine',
+      'commessa.nominativo'])
+
+    }else{
+
+      this.reset(['commessa.cliente','commessa.dataInizo','comessa.dataFine',
+      'commessa.nominativo']);
+    }
+
+    if(this.anagraficaDto.value.contratto!=null){
+
+      check=this.checkValid(['contratto.tipoContratto.id','contratto.livelloContratto.id',
+      'contratto.contrattoNazionale.id','contratto.tipoAzienda.id'])
+
+    }else{
+
+      this.reset(['contratto.tipoContratto.id','contratto.livelloContratto.id',
+      'contratto.contrattoNazionale.id','contratto.tipoAzienda.id']);
+    }
+
+    if(check){
+
+      return;
+
+    }
     const body = JSON.stringify({
       anagraficaDto: this.anagraficaDto.value,
 
     });
     console.log(body);
+
+    
 
     this.anagraficaDtoService.update(body).subscribe((result) => {
       console.log(result);
@@ -296,8 +373,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       }
     });
     this.router.navigate(['/dettaglio-anagrafica',this.id]);
-   
-  }
+  
+    }
+
+  
 
   transformDate(dateString: string): string {
     const dateObject = new Date(dateString);
@@ -312,6 +391,54 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.showErrorPopup = false;
     this.showSuccessPopup = false;
   }
-}
+
+  
+  checkValid(myArray: string[]) {
+
+    let check=false;
+
+    for(let element of myArray){
+
+
+      if(this.isControlInvalid(element)){
+
+        check=true;
+
+      }
+    
+    }
+
+    return check;
+  }
+      
+    isControlInvalid(controlName: string):boolean {
+      const control = this.anagraficaDto.get(controlName);
+      const inputElement = document.getElementById(controlName);
+     
+      if(!(control?.dirty && control?.value!=null && control?.value!="" )){
+        inputElement?.classList.add('invalid-field');
+        return true;
+    }else{
+        inputElement?.classList.remove('invalid-field');
+        return false;
+      }
+  
+      }
+
+      reset(myArray: string[]){
+
+        for(let element of myArray){
+
+
+          const inputElement = document.getElementById(element);
+       
+          inputElement?.classList.remove('invalid-field');
+           
+          }
+        
+        }
+
+  }
+
 
 

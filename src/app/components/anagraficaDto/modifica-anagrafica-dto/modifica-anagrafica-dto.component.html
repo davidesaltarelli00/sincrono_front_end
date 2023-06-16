@@ -32,21 +32,21 @@
                 <div class="col-md-3">
                     <label for="nome">Nome: </label>
                     <div class="form-group">
-                        <input type="text" class="form-control" value="{{ data?.anagrafica?.nome }}"
+                        <input id='anagrafica.nome' type="text" class="form-control" value="{{ data?.anagrafica?.nome }}"
                             formControlName="nome" />
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label>Cognome: </label>
                     <div class="form-group">
-                        <input type="text" class="form-control" value="{{ data?.anagrafica?.cognome }}"
+                        <input id="anagrafica.cognome" type="text" class="form-control" value="{{ data?.anagrafica?.cognome }}"
                             formControlName="cognome" />
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label>Codice Fiscale: </label>
                     <div class="form-group">
-                        <input type="text" class="form-control" value="{{ data?.anagrafica?.codiceFiscale }}"
+                        <input id="anagrafica.codiceFiscale" type="text" class="form-control" value="{{ data?.anagrafica?.codiceFiscale }}"
                             formControlName="codiceFiscale" />
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                 <div class="col-md-3">
                     <label>Email Aziendale: </label>
                     <div class="form-group">
-                        <input type="text" class="form-control" value="{{ data?.anagrafica?.mailAziendale}}"
+                        <input id="anagrafica.mailAziendale" type="text" class="form-control" value="{{ data?.anagrafica?.mailAziendale}}"
                             formControlName="mailAziendale" />
                     </div>
 
@@ -172,7 +172,7 @@
 
                 <div formGroupName="tipoContratto">
                     <label for="tipoContratto">Tipo Contratto</label>
-                    <select id="tipoContratto" formControlName="id">
+                    <select id="contratto.tipoContratto.id" formControlName="id">
                         <option value="">--nessuna selezione--</option>
                         <option *ngFor="let tipoContratto of tipiContratti" value="{{tipoContratto.id}}">
                             {{tipoContratto.descrizione}}</option>
@@ -180,7 +180,7 @@
                 </div>
                 <div formGroupName="livelloContratto">
                     <label for="livelloContratto">Livello Contratto</label>
-                    <select id="livelloContratto" formControlName="id" type="number">
+                    <select id="contratto.livelloContratto.id" formControlName="id" type="number">
                         <option value="">--nessuna selezione--</option>
                         <option *ngFor="let livelloContratto of livelliContratti" value="{{livelloContratto.id}}">
                             {{livelloContratto.descrizione}}</option>
@@ -188,7 +188,7 @@
                 </div>
                 <div formGroupName="tipoAzienda">
                     <label for="tipoAzienda">Tipo Azienda</label>
-                    <select id="tipoAzienda" formControlName="id" type="number">
+                    <select id="contratto.tipoAzienda.id" formControlName="id" type="number">
                         <option value="">--nessuna selezione--</option>
                         <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.id}}">
                             {{tipoAzienda.descrizione}}</option>
@@ -196,7 +196,7 @@
                 </div>
                 <div formGroupName="contrattoNazionale">
                     <label for="contrattoNazionale">Contratto Nazionale</label>
-                    <select id="contrattoNazionale" formControlName="id" type="number">
+                    <select id="contratto.contrattoNazionale.id" formControlName="id" type="number">
                         <option value="">--nessuna selezione--</option>
                         <option *ngFor="let contrattoNazionale of contrattiNazionali" value="{{contrattoNazionale.id}}">
                             {{contrattoNazionale.descrizione}}</option>
@@ -470,7 +470,7 @@
                 <div class="col-md-3">
                     <label>Cliente: </label>
                     <div class="form-group">
-                        <input type="text" class="form-control" value="{{ data?.commessa?.cliente }}"
+                        <input id="commessa.cliente" type="text" class="form-control" value="{{ data?.commessa?.cliente }}"
                             formControlName="cliente" />
                     </div>
                 </div>
@@ -508,16 +508,16 @@
             <legend>Date</legend>
             <div class="row">
                 <div class="col-md-3">
-                    <label>Data Inizio: </label>
+                    <label id="commessa.dataInizo">Data Inizio: </label>
                     <div class="form-group">
-                        <input type="text" class="form-control"
+                        <input  type="text" class="form-control"
                             value="{{ this.transformDate(data?.commessa?.dataInizio)}}" formControlName="dataInizio" />
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label>Data Fine: </label>
+                    <label id="comessa.dataFine">Data Fine: </label>
                     <div class="form-group">
-                        <input type="text" class="form-control"
+                        <input  type="text" class="form-control"
                             value="{{ this.transformDate(data?.commessa?.dataFine)}}" formControlName="dataFine" />
                     </div>
                 </div>
@@ -535,7 +535,7 @@
                 <div class="col-md-3">
                     <label>Nominativo: </label>
                     <div class="form-group">
-                        <input type="text" class="form-control" value="{{ data?.commessa?.nominativo }}"
+                        <input id="commessa.nominativo" type="text" class="form-control" value="{{ data?.commessa?.nominativo }}"
                             formControlName="nominativo" />
                     </div>
                 </div>

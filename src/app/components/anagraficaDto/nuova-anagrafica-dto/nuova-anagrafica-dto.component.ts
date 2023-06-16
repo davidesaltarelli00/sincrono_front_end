@@ -131,12 +131,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       anagrafica: new FormGroup({
         attivo: new FormControl(''),
         azienda: new FormControl(''),
-        nome: new FormControl('',/*[
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(50),
-          (control: AbstractControl) => this.isControlInvalid('anagrafica.nome', 50, 2) ? { invalid: true } : null
-        ]*/),
+        nome: new FormControl(''),
         cognome: new FormControl(''),
         codiceFiscale: new FormControl(''),
         cellularePrivato:new FormControl(''),
@@ -160,11 +155,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         distacco:new FormControl(''),
         costoMese: new FormControl(''),
         dataInizio: new FormControl(''),
-        dataFine:new FormControl(''/*,[
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(50),
-          (control: AbstractControl) => this.isControlInvalid('contratto.dataFine', 50, 2) ? { invalid: true } : null]*/),
+        dataFine:new FormControl(''),
         tariffaGiornaliera: new FormControl(''),
         nominativo: new FormControl(''),
         azienda: new FormControl(''),
@@ -262,9 +253,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
   inserisci() {
     this.submitted = true;
-    if (this.AnagraficaDto.invalid) {
-      return;
-    }
+    
 
     const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
@@ -273,7 +262,9 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         } else if (obj[key] === '') {
           delete obj[key];
         }
-        if (obj.commessa) console.log("Object: "+Object.keys(obj.commessa)+" lunghezza: "+Object.keys(obj.commessa).length);
+        if (obj.anagrafica && Object.keys(obj.anagrafica).length === 0) {
+          delete obj.anagrafica;
+        }
         if (obj.commessa && Object.keys(obj.commessa).length === 0) {
           delete obj.commessa;
         }
@@ -297,6 +288,45 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
     removeEmpty(this.AnagraficaDto.value);
 
+
+    let check=true;
+
+    if(this.AnagraficaDto.value.anagrafica!=null){
+      
+      check=this.checkValid(['anagrafica.nome','anagrafica.cognome','anagrafica.codiceFiscale',
+      'anagrafica.mailAziendale'])
+
+    }else{
+
+      return;
+    }
+
+    if(this.AnagraficaDto.value.commessa!=null){
+
+      check=this.checkValid(['commessa.cliente','commessa.dataInizo','comessa.dataFine',
+      'commessa.nominativo'])
+
+    }else{
+
+      this.reset(['commessa.cliente','commessa.dataInizo','comessa.dataFine',
+      'commessa.nominativo']);
+    }
+
+    if(this.AnagraficaDto.value.contratto!=null){
+
+      check=this.checkValid(['contratto.tipoContratto.id','contratto.livelloContratto.id',
+      'contratto.contrattoNazionale.id','contratto.tipoAzienda.id'])
+
+    }else{
+
+      this.reset(['contratto.tipoContratto.id','contratto.livelloContratto.id',
+      'contratto.contrattoNazionale.id','contratto.tipoAzienda.id']);
+    }
+
+    if(check){
+
+      return;
+    }
 
     console.log(JSON.stringify(this.AnagraficaDto.value));
     const body = JSON.stringify({
@@ -350,19 +380,59 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     });
   }
 
-  /*isControlInvalid(controlName: string,max:number,min:number) {
-    const control = this.AnagraficaDto.get(controlName);
-    const inputElement = document.getElementById(controlName);
-    if(!(control?.dirty && (control?.value.length<max && control?.value.length>min))){
-      inputElement?.classList.add('invalid-field');
-      return true;
-    }else{
-      inputElement?.classList.remove('invalid-field');
-      return false;
-    }
-      }*/
+ 
+      
+
+      checkValid(myArray: string[]) {
+
+        let check=false;
+
+        for(let element of myArray){
 
 
+          if(this.isControlInvalid(element)){
+
+            check=true;
+
+          }
+        
+        }
+
+        return check;
+      }
+          
+        isControlInvalid(controlName: string):boolean {
+          const control = this.AnagraficaDto.get(controlName);
+          const inputElement = document.getElementById(controlName);
+         
+          if(!(control?.dirty && control?.value!=null && control?.value!="" )){
+            inputElement?.classList.add('invalid-field');
+            return true;
+        }else{
+            inputElement?.classList.remove('invalid-field');
+            return false;
+          }
+      
+          }
+
+          reset(myArray: string[]){
+
+            for(let element of myArray){
+
+
+              const inputElement = document.getElementById(element);
+           
+              inputElement?.classList.remove('invalid-field');
+               
+              }
+            
+            }
+    
+
+
+          
+
+      
       isEmpty(value: any): boolean {
         return value === null || value === undefined || value === '';
       }
