@@ -13,7 +13,7 @@ import { NuovaAnagraficaDtoComponent } from './components/anagraficaDto/nuova-an
 import { ModificaAnagraficaDtoComponent } from './components/anagraficaDto/modifica-anagrafica-dto/modifica-anagrafica-dto.component';
 import { LoginComponent } from './components/login/login/login.component';
 import { StoricoContrattiComponent } from './components/storici/storico-contratti/storico-contratti.component';
-
+import { StoricoCommesseComponent } from './components/storici/storico-commesse/storico-commesse.component';
 const routes: Routes = [
   //HOME
   { path: '', component: HomeComponent },
@@ -44,7 +44,11 @@ const routes: Routes = [
 
   //STORICO CONTRATTI
 
-  { path: 'storico-contratti/:id', component: StoricoContrattiComponent }
+  { path: 'storico-contratti/:id', component: StoricoContrattiComponent },
+
+//STORICO COMMESSE
+  { path: 'storico-commesse-anagrafica/:id', component: StoricoCommesseComponent }
+  
 ];
 
 @NgModule({

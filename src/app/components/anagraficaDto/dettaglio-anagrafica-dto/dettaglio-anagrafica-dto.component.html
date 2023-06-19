@@ -436,8 +436,20 @@
         </div>
     </div>
     <!---------commessa----------->
-    <h1>Dettaglio Commessa</h1>
     <div class="row">
+
+        <div class="col-md-3">
+            <h1>Dettaglio Commessa</h1>
+        </div>
+
+
+        <div class="col-md-3">
+            <button class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;"
+            (click)="getStoricoCommessa(data?.anagrafica.id)">Storico Commesse</button>
+        </div>
+    </div>
+    <div class="row">
+
         <div class="col-md-3">
             <label>Cliente: </label>
             <div class="form-group">

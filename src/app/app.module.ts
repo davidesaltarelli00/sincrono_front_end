@@ -32,7 +32,7 @@ import { ListaOrganicoComponent } from './components/organico/lista-organico/lis
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login/login.component';
 import { StoricoContrattiComponent } from './components/storici/storico-contratti/storico-contratti.component';
-
+import { StoricoCommesseComponent } from './components/storici/storico-commesse/storico-commesse.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,6 +49,7 @@ import { StoricoContrattiComponent } from './components/storici/storico-contratt
     NuovaAnagraficaDtoComponent,
     LoginComponent,
     StoricoContrattiComponent,
+    StoricoCommesseComponent,
   ],
   imports: [
     MatNativeDateModule,

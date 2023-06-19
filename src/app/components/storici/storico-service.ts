@@ -19,6 +19,8 @@ export class StoricoService {
     return this.http.get<any>(`http://localhost:8085/storico-Contratti/${id}`);
   }
 
-  
+  getStoricoCommesse(id: any): Observable<any> {
+    return this.http.get<any>(`http://localhost:8085/storico-commesse-anagrafica/${id}`);
+  }
 
 }
