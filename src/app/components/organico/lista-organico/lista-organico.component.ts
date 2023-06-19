@@ -1,7 +1,5 @@
-import { AnagraficaDtoService } from './../../anagraficaDto/anagraficaDto-service';
 import { OrganicoService } from '../organico-service';
 import { Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 declare var $: any;
@@ -21,21 +19,8 @@ export class ListaOrganicoComponent implements OnInit {
 
   constructor(
     private organicoService: OrganicoService,
-    private formBuilder: FormBuilder,
-    private anagraficaDtoService: AnagraficaDtoService,
     private router: Router
   ) {}
-
-  anagraficaDto: FormGroup = new FormGroup({
-    contratto: new FormGroup({
-      azienda: new FormGroup({
-        descrizione: new FormControl(''),
-      }),
-      tipoContratto: new FormGroup({
-        descrizione: new FormControl(''),
-      }),
-    }),
-  });
 
   ngOnInit(): void {
     this.organicoService.listaOrganico().subscribe((resp: any) => {
@@ -50,7 +35,7 @@ export class ListaOrganicoComponent implements OnInit {
     });
   }
 
-  filter(tipoContratto: string, tipoAzienda: string) {
+  filter(tipoContratto: any, tipoAzienda: any) {
     this.router.navigate(['/lista-anagrafica', { tipoContratto, tipoAzienda }]);
   }
 }
