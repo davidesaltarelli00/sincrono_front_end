@@ -31,7 +31,7 @@ import { ListaOrganicoComponent } from './components/organico/lista-organico/lis
 //HOME
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login/login.component';
-import { StoricoContrattiComponent } from './components/storico-contratti/storico-contratti.component';
+import { StoricoContrattiComponent } from './components/storici/storico-contratti/storico-contratti.component';
 
 @NgModule({
   declarations: [

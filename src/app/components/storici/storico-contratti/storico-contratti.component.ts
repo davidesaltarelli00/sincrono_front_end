@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { StoricoService } from './storico-service';
+import { StoricoService } from '../storico-service';
 import { ActivatedRoute} from '@angular/router';
 
 declare var $: any;

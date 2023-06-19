@@ -12,7 +12,7 @@ import { DettaglioAnagraficaDtoComponent } from './components/anagraficaDto/dett
 import { NuovaAnagraficaDtoComponent } from './components/anagraficaDto/nuova-anagrafica-dto/nuova-anagrafica-dto.component';
 import { ModificaAnagraficaDtoComponent } from './components/anagraficaDto/modifica-anagrafica-dto/modifica-anagrafica-dto.component';
 import { LoginComponent } from './components/login/login/login.component';
-import { StoricoContrattiComponent } from './components/storico-contratti/storico-contratti.component';
+import { StoricoContrattiComponent } from './components/storici/storico-contratti/storico-contratti.component';
 
 const routes: Routes = [
   //HOME
