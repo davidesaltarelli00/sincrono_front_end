@@ -18,6 +18,7 @@ export class StoricoContrattiComponent implements OnInit  {
 
   
   lista: any;
+  idAnagrafica:any;
 
   constructor(
     private storicoService: StoricoService,
@@ -28,9 +29,9 @@ export class StoricoContrattiComponent implements OnInit  {
 
   ngOnInit(): void {
 
-    var idAnagrafica = this.activatedRoute.snapshot.params['id'];
+    this.idAnagrafica = this.activatedRoute.snapshot.params['id'];
 
-    this.storicoService.getStoricoContratti(idAnagrafica).subscribe((resp: any) => {
+    this.storicoService.getStoricoContratti(this.idAnagrafica).subscribe((resp: any) => {
       this.lista = resp.list;
 
       console.log("lista contratti:"+this.lista);
