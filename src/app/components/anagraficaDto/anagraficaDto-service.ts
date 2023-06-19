@@ -75,4 +75,7 @@ export class AnagraficaDtoService {
   getContrattoNazionale(): Observable<any> {
     return this.http.get<any>(`http://localhost:8085/contratto-nazionale/map`);
   }
+
+  
+
 }

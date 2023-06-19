@@ -93,4 +93,8 @@ export class DettaglioAnagraficaDtoComponent {
     this.location.go(this.location.path());
     location.reload();
   }
+
+  getStoricoContratti(idAnagrafica:any) {
+    this.router.navigate(['/storico-contratti', idAnagrafica]);
+  }
 }

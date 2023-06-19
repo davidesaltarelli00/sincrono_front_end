@@ -145,7 +145,19 @@
         </div>
     </div>
     <!-----------contratto----------->
-    <h1>Dettaglio Contratto</h1>
+    <div class="row">
+
+        <div class="col-md-3">
+            <h1>Dettaglio Contratto</h1>
+        </div>
+
+
+        <div class="col-md-3">
+            <button class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;"
+            (click)="getStoricoContratti(data?.anagrafica.id)">storicoContratti</button>
+        </div>
+
+    </div>
     <legend>Dati Tipologici</legend>
     <div class="row">
         <div class="col-md-3">
