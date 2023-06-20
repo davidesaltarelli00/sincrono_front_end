@@ -1,19 +1,16 @@
 <html>
 
 <body style="padding-top: 70px;">
-
     <form [formGroup]="anagraficaDto" (ngSubmit)="aggiorna()">
         <h1>Modifica Anagrafica</h1>
 
-
         <div formGroupName="anagrafica">
-
             <div class="row">
                 <div class="col-md-3">
                     <label>Attivo:</label>
                     <div class="form-group">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox"
+                            <input class="form-check-input" type="checkbox" style="border-color:black;"
                                 [checked]="data?.anagrafica?.attivo === true" formControlName="attivo" />
                         </div>
                     </div>
@@ -32,22 +29,22 @@
                 <div class="col-md-3">
                     <label for="nome">Nome: </label>
                     <div class="form-group">
-                        <input id='anagrafica.nome' type="text" class="form-control" value="{{ data?.anagrafica?.nome }}"
-                            formControlName="nome" />
+                        <input id='anagrafica.nome' type="text" class="form-control"
+                            value="{{ data?.anagrafica?.nome }}" formControlName="nome" />
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label>Cognome: </label>
                     <div class="form-group">
-                        <input id="anagrafica.cognome" type="text" class="form-control" value="{{ data?.anagrafica?.cognome }}"
-                            formControlName="cognome" />
+                        <input id="anagrafica.cognome" type="text" class="form-control"
+                            value="{{ data?.anagrafica?.cognome }}" formControlName="cognome" />
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label>Codice Fiscale: </label>
                     <div class="form-group">
-                        <input id="anagrafica.codiceFiscale" type="text" class="form-control" value="{{ data?.anagrafica?.codiceFiscale }}"
-                            formControlName="codiceFiscale" />
+                        <input id="anagrafica.codiceFiscale" type="text" class="form-control"
+                            value="{{ data?.anagrafica?.codiceFiscale }}" formControlName="codiceFiscale" />
                     </div>
                 </div>
             </div>
@@ -84,8 +81,8 @@
                 <div class="col-md-3">
                     <label>Email Aziendale: </label>
                     <div class="form-group">
-                        <input id="anagrafica.mailAziendale" type="text" class="form-control" value="{{ data?.anagrafica?.mailAziendale}}"
-                            formControlName="mailAziendale" />
+                        <input id="anagrafica.mailAziendale" type="text" class="form-control"
+                            value="{{ data?.anagrafica?.mailAziendale}}" formControlName="mailAziendale" />
                     </div>
 
                 </div>
@@ -133,27 +130,30 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-md-3">
-                    <label>Data di Nascita: </label>
-                    <div class="form-group">
-                        <input type="text" class="form-control"
-                            value="{{ this.transformDate(data?.anagrafica?.dataDiNascita)}}"
-                            formControlName="dataDiNascita" />
-                    </div>
+                    <form>
+                        <div class="form-group">
+                            <label>Data di Nascita: </label>
+                            <input type="date" class="form-control"
+                                value="this.transformDate(data?.anagrafica?.dataDiNascita)"
+                                formControlName="dataDiNascita">
+                        </div>
+                    </form>
                 </div>
                 <div class="col-md-3">
                     <label>Coniugato: </label>
                     <div class="form-group">
-                        <input class="form-check-input" type="checkbox" [checked]="data?.anagrafica?.coniugato"
-                            formControlName="coniugato" />
+                        <input class="form-check-input" type="checkbox" style="border-color:black;"
+                            [checked]="data?.anagrafica?.coniugato" formControlName="coniugato" />
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label>Figli a Carico: </label>
                     <div class="form-group">
-                        <input class="form-check-input" type="checkbox" [checked]="data?.anagrafica?.figliACarico"
-                            formControlName="figliACarico" />
+                        <input class="form-check-input" type="checkbox" style="border-color:black;"
+                            [checked]="data?.anagrafica?.figliACarico" formControlName="figliACarico" />
                     </div>
                 </div>
             </div>
@@ -163,7 +163,6 @@
         <div formGroupName="contratto">
             <fieldset>
                 <legend>Dati Tipologici</legend>
-
 
                 <div class="form-group">
                     <input type="text" class="form-control" value="{{ data?.contratto?.cliente }}" formControlName="id"
@@ -221,43 +220,51 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <label>Data Assunzione: </label>
-                        <div class="form-group">
-                            <input type="text" class="form-control"
-                                value="{{ this.transformDate(data?.contratto?.dataAssunzione) }}"
-                                formControlName="dataAssunzione" />
-                        </div>
+                        <form>
+                            <label>Data Assunzione: </label>
+                            <div class="form-group">
+                                <input type="date" class="form-control"
+                                    value="this.transformDate(data?.contratto?.dataAssunzione)"
+                                    formControlName="dataAssunzione" />
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
             <legend>Date</legend>
             <div class="row">
                 <div class="col-md-3">
-                    <label>Data Inizio Prova: </label>
-                    <div class="form-group">
-                        <input type="text" class="form-control"
-                            value="{{ this.transformDate(data?.contratto?.dataInizioProva) }}"
-                            formControlName="dataInizioProva" />
-                    </div>
+                    <form>
+                        <label>Data inzio prova:</label>
+                        <div class="form-group">
+                            <input type="date" class="form-control"
+                                value="this.transformDate(data?.contratto?.dataInizioProva)"
+                                formControlName="dataInizioProva">
+                        </div>
+                    </form>
                 </div>
                 <div class="col-md-3">
-                    <label>Data Fine Prova: </label>
-                    <div class="form-group">
-                        <input type="text" class="form-control"
-                            value="{{ this.transformDate(data?.contratto?.dataFineProva) }}"
-                            formControlName="dataFineProva" />
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <label>Data Fine Rapporto: </label>
-                    <div class="form-group">
-                        <input type="text" class="form-control"
-                            value="{{ this.transformDate(data?.contratto?.dataFineRapporto) }}"
-                            formControlName="dataFineRapporto" />
-                    </div>
+                    <form>
+                        <label>Data fine Prova: </label>
+                        <div class="form-group">
+                            <input type="date" class="form-control"
+                                value="this.transformDate(data?.contratto?.dataFineProva)"
+                                formControlName="dataFineProva">
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-3">
+                    <form>
+                        <label>Data Fine Rapporto: </label>
+                        <div class="form-group">
+                            <input type="date" class="form-control"
+                                value="this.transformDate(data?.contratto?.dataFineRapporto)"
+                                formControlName="dataFineRapporto">
+                        </div>
+                    </form>
+                </div>
                 <div class="col-md-3">
                     <label>Mesi Durata: </label>
                     <div class="form-group">
@@ -290,22 +297,22 @@
                 <div class="col-md-3">
                     <label class="form-check-label">Dimissioni: </label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" [checked]="data?.contratto?.dimissioni === true"
-                            formControlName="dimissioni" />
+                        <input class="form-check-input" type="checkbox" style="border-color:black;"
+                            [checked]="data?.contratto?.dimissioni === true" formControlName="dimissioni" />
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label class="form-check-label">Part Time: </label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" [checked]="data?.contratto?.partTime === true"
-                            formControlName="partTime" />
+                        <input class="form-check-input" type="checkbox" style="border-color:black;"
+                            [checked]="data?.contratto?.partTime === true" formControlName="partTime" />
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label class="form-check-label">Part Time A: </label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" [checked]="data?.contratto?.partTimeA === true"
-                            formControlName="partTimeA" />
+                        <input class="form-check-input" type="checkbox" style="border-color:black;"
+                            [checked]="data?.contratto?.partTimeA === true" formControlName="partTimeA" />
                     </div>
                 </div>
             </div>
@@ -380,7 +387,7 @@
             <div class="col-md-3">
                 <label class="form-check-label">Categoria Protetta: </label>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox"
+                    <input class="form-check-input" type="checkbox" style="border-color:black;"
                         [checked]="data?.contratto?.categoriaProtetta === true" formControlName="categoriaProtetta" />
                 </div>
             </div>
@@ -432,8 +439,8 @@
                 <div class="col-md-3">
                     <label>PC: </label>
                     <div class="form-group">
-                        <input class="form-check-input" type="checkbox" [checked]="data?.contratto?.pc"
-                            formControlName="pc" />
+                        <input class="form-check-input" type="checkbox" style="border-color:black;"
+                            [checked]="data?.contratto?.pc" formControlName="pc" />
                     </div>
                 </div>
             </div>
@@ -461,7 +468,7 @@
         <h1>Dettaglio Commessa</h1>
         <div formGroupName="commessa">
             <div class="row">
-               
+
                 <div class="form-group">
                     <input type="text" class="form-control" value="{{ data?.commessa?.id }}" formControlName="id"
                         hidden />
@@ -470,8 +477,8 @@
                 <div class="col-md-3">
                     <label>Cliente: </label>
                     <div class="form-group">
-                        <input id="commessa.cliente" type="text" class="form-control" value="{{ data?.commessa?.cliente }}"
-                            formControlName="cliente" />
+                        <input id="commessa.cliente" type="text" class="form-control"
+                            value="{{ data?.commessa?.cliente }}" formControlName="cliente" />
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -508,17 +515,17 @@
             <legend>Date</legend>
             <div class="row">
                 <div class="col-md-3">
-                    <label id="commessa.dataInizo">Data Inizio: </label>
+                    <label>Data Inizio: </label>
                     <div class="form-group">
-                        <input  type="text" class="form-control"
-                            value="{{ this.transformDate(data?.commessa?.dataInizio)}}" formControlName="dataInizio" />
+                        <input type="date" class="form-control" value="this.transformDate(data?.commessa?.dataInizio)"
+                            formControlName="dataInizio" id="commessa.dataInizio" />
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label id="comessa.dataFine">Data Fine: </label>
+                    <label>Data Fine: </label>
                     <div class="form-group">
-                        <input  type="text" class="form-control"
-                            value="{{ this.transformDate(data?.commessa?.dataFine)}}" formControlName="dataFine" />
+                        <input type="date" class="form-control" value="this.transformDate(data?.commessa?.dataFine)"
+                            formControlName="dataFine" id="commessa.dataFine" />
                     </div>
                 </div>
             </div>
@@ -535,8 +542,8 @@
                 <div class="col-md-3">
                     <label>Nominativo: </label>
                     <div class="form-group">
-                        <input id="commessa.nominativo" type="text" class="form-control" value="{{ data?.commessa?.nominativo }}"
-                            formControlName="nominativo" />
+                        <input id="commessa.nominativo" type="text" class="form-control"
+                            value="{{ data?.commessa?.nominativo }}" formControlName="nominativo" />
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -560,8 +567,8 @@
                     <label>Stato: </label>
                     <div class="form-group">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" [checked]="data?.commessa?.stato === true"
-                                formControlName="stato" />
+                            <input class="form-check-input" type="checkbox" style="border-color:black;"
+                                [checked]="data?.commessa?.stato === true" formControlName="stato" />
                         </div>
                     </div>
                 </div>
@@ -569,7 +576,7 @@
                     <label>Attesa lavori: </label>
                     <div class="form-group">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox"
+                            <input class="form-check-input" type="checkbox" style="border-color:black;"
                                 [checked]="data?.commessa?.attesaLavori === true" formControlName="attesaLavori" />
                         </div>
                     </div>
@@ -579,8 +586,8 @@
         <button class="btn btn-dark btn-sm rounded-pill shadow-sm"
             style="background-color: rgb(18, 0, 122); color: white;" type="submit" (onclick)="aggiorna()">Salva</button>
     </form>
-    <button class="btn btn-dark btn-sm rounded-pill shadow-sm"
-    style="background-color: rgb(24, 122, 0); color: white;" [routerLink]="['/dettaglio-anagrafica',this.id]">Annulla</button>
+    <button class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;"
+        [routerLink]="['/dettaglio-anagrafica',this.id]">Annulla</button>
 </body>
 
 </html>
