@@ -38,7 +38,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   AnagraficaDto = this.formBuilder.group({
     anagrafica: new FormGroup({
       attivo: new FormControl(''),
-      azienda: new FormControl(''),
+      aziendaTipo: new FormControl(''),
       nome: new FormControl(''),
       cognome: new FormControl(''),
       codiceFiscale: new FormControl(''),
@@ -47,13 +47,13 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       mailPrivata: new FormControl(''),
       mailPec: new FormControl(''),
       mailAziendale: new FormControl(''),
-      titoloDiStudio: new FormControl(''),
+      titoliDiStudio: new FormControl(''),
       altriTitoli:new FormControl(''),
       comuneDiNascita: new FormControl(''),
       residenza: new FormControl(''),
       domicilio: new FormControl(''),
       dataDiNascita: new FormControl(''),
-      Coniugato: new FormControl(''),
+      coniugato: new FormControl(''),
       figliACarico: new FormControl(''),
     }),
     commessa: new FormGroup({
@@ -100,17 +100,17 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       partTime: new FormControl(''),
       partTimeA: new FormControl(''),
       retribuzioneMensileLorda: new FormControl(''),
-      Superminimo: new FormControl(''),
+      superminimoMensile: new FormControl(''),
       ralAnnua: new FormControl(''),
       superminimoRal: new FormControl(''),
-      diariaMensile: new FormControl(''),
-      diariaGiornaliera: new FormControl(''),
-      Ticket:new FormControl(''),
+      diariaMese: new FormControl(''),
+      diariaGg: new FormControl(''),
+      ticket:new FormControl(''),
       valoreTicket:new FormControl(''),
       categoriaProtetta:new FormControl(''),
-      altro:new FormControl(''),
+      tutor:new FormControl(''),
       pfi:new FormControl(''),
-      corso:new FormControl(''),
+      corsoSicurezza:new FormControl(''),
       motivazioneFineRapporto:new FormControl(''),
       scattiAnzianita:new FormControl(''),
       pc:new FormControl(''),
@@ -130,7 +130,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.AnagraficaDto = this.formBuilder.group({
       anagrafica: new FormGroup({
         attivo: new FormControl(''),
-        azienda: new FormControl(''),
+        aziendaTipo: new FormControl(''),
         nome: new FormControl(''),
         cognome: new FormControl(''),
         codiceFiscale: new FormControl(''),
@@ -139,13 +139,13 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         mailPrivata: new FormControl(''),
         mailPec: new FormControl(''),
         mailAziendale: new FormControl(''),
-        titoloDiStudio: new FormControl(''),
+        titoliDiStudio: new FormControl(''),
         altriTitoli:new FormControl(''),
         comuneDiNascita: new FormControl(''),
         residenza: new FormControl(''),
         domicilio: new FormControl(''),
         dataDiNascita: new FormControl(''),
-        Coniugato: new FormControl(''),
+        coniugato: new FormControl(''),
         figliACarico: new FormControl(''),
       }),
       commessa: new FormGroup({
@@ -192,17 +192,17 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         partTime: new FormControl(''),
         partTimeA: new FormControl(''),
         retribuzioneMensileLorda: new FormControl(''),
-        Superminimo: new FormControl(''),
+        superminimoMensile: new FormControl(''),
         ralAnnua: new FormControl(''),
         superminimoRal: new FormControl(''),
-        diariaMensile: new FormControl(''),
-        diariaGiornaliera: new FormControl(''),
-        Ticket:new FormControl(''),
+        diariaMese: new FormControl(''),
+        diariaGg: new FormControl(''),
+        ticket:new FormControl(''),
         valoreTicket:new FormControl(''),
         categoriaProtetta:new FormControl(''),
-        altro:new FormControl(''),
+        tutor:new FormControl(''),
         pfi:new FormControl(''),
-        corso:new FormControl(''),
+        corsoSicurezza:new FormControl(''),
         motivazioneFineRapporto:new FormControl(''),
         scattiAnzianita:new FormControl(''),
         pc:new FormControl(''),
@@ -293,8 +293,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
     if(this.AnagraficaDto.value.anagrafica!=null){
       
-      check=this.checkValid(['anagrafica.nome','anagrafica.cognome','anagrafica.codiceFiscale',
-      'anagrafica.mailAziendale'])
+      if(this.checkValid(['anagrafica.nome','anagrafica.cognome','anagrafica.codiceFiscale',
+      'anagrafica.mailAziendale'])){
+
+        return;
+      }
 
     }else{
 
@@ -303,19 +306,23 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
     if(this.AnagraficaDto.value.commessa!=null){
 
-      check=this.checkValid(['commessa.cliente','commessa.dataInizo','comessa.dataFine',
-      'commessa.nominativo'])
+      if(this.checkValid(['commessa.cliente','commessa.dataInizio','commessa.dataFine',
+      'commessa.nominativo'])){
+        return;
+      }
 
     }else{
 
-      this.reset(['commessa.cliente','commessa.dataInizo','comessa.dataFine',
+      this.reset(['commessa.cliente','commessa.dataInizio','commessa.dataFine',
       'commessa.nominativo']);
     }
 
     if(this.AnagraficaDto.value.contratto!=null){
 
-      check=this.checkValid(['contratto.tipoContratto.id','contratto.livelloContratto.id',
-      'contratto.contrattoNazionale.id','contratto.tipoAzienda.id'])
+      if(check=this.checkValid(['contratto.tipoContratto.id','contratto.livelloContratto.id',
+      'contratto.contrattoNazionale.id','contratto.tipoAzienda.id'])){
+        return;
+      }
 
     }else{
 
@@ -323,10 +330,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       'contratto.contrattoNazionale.id','contratto.tipoAzienda.id']);
     }
 
-    if(check){
 
-      return;
-    }
 
     console.log(JSON.stringify(this.AnagraficaDto.value));
     const body = JSON.stringify({

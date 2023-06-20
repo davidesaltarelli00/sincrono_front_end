@@ -28,7 +28,7 @@
                         <div class="col-md-3">
                             <label>Azienda: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="azienda"  />
+                                <input type="text" class="form-control" formControlName="aziendaTipo"  />
                             </div>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                         <div class="col-md-3">
                             <label>Titolo di Studio: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="titoloDiStudio"  />
+                                <input type="text" class="form-control" formControlName="titoliDiStudio"  />
                             </div>
                         </div>
                     </div>
@@ -138,14 +138,14 @@
                         <div class="col-md-3">
                             <label>Coniugato: </label>
                             <div class="form-group">
-                                <input class="form-check-input" type="checkbox" formControlName="Coniugato"
+                                <input style="border-color:black;" class="form-check-input" type="checkbox" formControlName="coniugato"
                                     />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label>Figli a Carico: </label>
                             <div class="form-group">
-                                <input class="form-check-input" type="checkbox" formControlName="figliACarico" />
+                                <input style="border-color:black;" class="form-check-input" type="checkbox" formControlName="figliACarico" />
                             </div>
                         </div>
                     </div>
@@ -193,26 +193,22 @@
                     <legend>Date</legend>
                     <div class="row">
                         <div class="col-md-3">
-                            <label id="commessa.dataInizo" for="dataInizio">Data Inizio:</label>
-                            <mat-form-field  appearance="outline">
-                                <input  matInput [matDatepicker]="picker1" formControlName="dataInizo"
-                                    placeholder="Inserisci la data di fine rapporto" class="form-control"
-                                    formControlName="dataFineRapporto" />
-                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                <mat-datepicker #picker1></mat-datepicker>
-                            </mat-form-field>
+                            <form>
+                                <div class="form-group">
+                                <label  for="dataInizio">Data Inizio:</label>
+                                <input id="commessa.dataInizio" type="date" class="form-control"  name="dataInput" formControlName="dataInizio">
+                                </div>
+                               
+                            </form>
                         </div>
                         <div class="col-md-3">
-                            <div class="form-group">
-                                <label id="commessa.dataFine" for="dataFineRapporto">Data Fine:</label>
-                                <mat-form-field appearance="outline">
-                                    <input  matInput [matDatepicker]="picker2" formControlName="dataFine"
-                                        placeholder="Inserisci la data di fine rapporto" class="form-control"
-                                       />
-                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker2></mat-datepicker>
-                                </mat-form-field>
-                            </div>
+                            <form>
+                                <div class="form-group">
+                                <label  for="dataInizio">Data Fine:</label>
+                                <input id="commessa.dataFine" type="date" class="form-control"  name="dataInput" formControlName="dataFine">
+                                </div>
+                               
+                            </form>
                         </div>
                     </div>
                     <div class="row">
@@ -251,7 +247,7 @@
                             <label>Attesa lavori: </label>
                             <div class="form-group">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" formControlName="attesaLavori"
+                                    <input style="border-color:black;" class="form-check-input" type="checkbox" formControlName="attesaLavori"
                                          />
                                 </div>
                             </div>
@@ -324,7 +320,7 @@
                             <div class="col-md-3">
                                 <label>Sede Assunzione: </label>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" formControlName="SedeAssunzione"  />
+                                    <input type="text" class="form-control" formControlName="sedeAssunzione"  />
                                 </div>
                             </div>
                            
@@ -332,53 +328,51 @@
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="dataAssunzione">Data Assunzione</label>
-                            <mat-form-field appearance="outline">
-                                <input matInput [matDatepicker]="picker" formControlName="dataAssunzione"
-                                    placeholder="Inserisci la data di assunzione" class="form-control"
-                                    formControlName="dataAssunzione" />
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
+                            <form>
+                                <div class="form-group">
+                                <label for="dataAssunzione">Data Assunzione</label>
+                                <input  type="date" class="form-control"  name="dataInput" formControlName="dataAssunzione">
+                                </div>
+                               
+                            </form>
                         </div>
                         <div class="col-md-3">
-                            <label for="dataInizoProva">Data Inzio prova</label>
-                            <mat-form-field appearance="outline">
-                                <input matInput [matDatepicker]="picker" formControlName="dataInizoProva"
-                                    placeholder="Inserisci la data di assunzione" class="form-control"
-                                    formControlName="dataInizoProva" />
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
+                    
+                            <form>
+                                <div class="form-group">
+                                <label for="dataInizoProva">Data Inzio prova</label>
+                                <input  type="date" class="form-control"  name="dataInput" formControlName="dataInizioProva">
+                                </div>
+                               
+                            </form>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="dataInizoProva">Data Fine prova</label>
-                            <mat-form-field appearance="outline">
-                                <input matInput [matDatepicker]="picker" formControlName="dataFineProva"
-                                    placeholder="Inserisci la data di assunzione" class="form-control"
-                                    formControlName="dataFineProva" />
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
+                            <form>
+                                <div class="form-group">
+                                <label for="dataInizoProva">Data Fine prova</label>
+                                <input  type="date" class="form-control"  name="dataInput" formControlName="dataFineProva">
+                                </div>
+                               
+                            </form>
                         </div>
                         <div class="col-md-3">
-                            <label for="dataFineRapporto">data Fine Rapporto</label>
-                            <mat-form-field appearance="outline">
-                                <input matInput [matDatepicker]="picker1" formControlName="dataFineRapporto"
-                                    placeholder="Inserisci la data di fine rapporto" class="form-control"
-                                    formControlName="dataFineRapporto" />
-                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                <mat-datepicker #picker1></mat-datepicker>
-                            </mat-form-field>
+                   
+                            <form>
+                                <div class="form-group">
+                                <label for="dataFineRapporto">data Fine Rapporto</label>
+                                <input  type="date" class="form-control"  name="dataInput" formControlName="dataFineRapporto">
+                                </div>
+                               
+                            </form>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-3">
                             <label>Mesi Durata: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="MesiDurata"  />
+                                <input type="text" class="form-control" formControlName="mesiDurata"  />
                             </div>
                         </div>
                     </div>
@@ -411,20 +405,20 @@
                         <div class="col-md-3">
                             <label class="form-check-label">Dimissioni: </label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" formControlName="dimissioni"
+                                <input style="border-color:black;" class="form-check-input" type="checkbox" formControlName="dimissioni"
                                      />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label class="form-check-label">Part Time: </label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" formControlName="partTime" />
+                                <input style="border-color:black;" class="form-check-input" type="checkbox" formControlName="partTime" />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label class="form-check-label">Part Time A: </label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" formControlName="partTimeA"
+                                <input style="border-color:black;" class="form-check-input" type="checkbox" formControlName="partTimeA"
                                      />
                             </div>
                         </div>
@@ -442,7 +436,7 @@
                         <div class="col-md-3">
                             <label>Superminimo Mensile: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="Superminimo"  />
+                                <input type="text" class="form-control" formControlName="superminimoMensile"  />
                             </div>
                         </div>
                     </div>
@@ -465,13 +459,13 @@
                         <div class="col-md-3">
                             <label>Diaria Mensile: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control"  formControlName="diariaMensile"  />
+                                <input type="text" class="form-control"  formControlName="diariaMese"  />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label>Diaria Giornaliera: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control"  formControlName="diariaGiornaliera"  />
+                                <input type="text" class="form-control"  formControlName="diariaGg"  />
                             </div>
                         </div>
                     </div>
@@ -480,7 +474,7 @@
                         <div class="col-md-3">
                             <label>Ticket: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="Ticket"  />
+                                <input type="text" class="form-control" formControlName="ticket"  />
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -493,7 +487,7 @@
                     <div class="col-md-3">
                         <label id="contratto.categoriaProtetta" class="form-check-label">Categoria Protetta: </label>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" formControlName="categoriaProtetta"
+                            <input style="border-color:black;" class="form-check-input" type="checkbox" formControlName="categoriaProtetta"
                                  />
                         </div>
                     </div>
@@ -502,7 +496,7 @@
                         <div class="col-md-3">
                             <label>Tutor: </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" formControlName="altro"  />
+                                <input type="text" class="form-control" formControlName="tutor"  />
                             </div>
                         </div>
                     </div>
@@ -516,16 +510,15 @@
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <label>Corso di Sicurezza: </label>
                             <div class="form-group">
-                                <label for="corso">corso</label>
-                                <mat-form-field appearance="outline">
-                                    <input matInput [matDatepicker]="picker" formControlName="corso"
-                                        placeholder="Inserisci la data del corso sulla sicurezza" class="form-control"
-                                        formControlName="corso" />
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
+                                
+                                <form>
+                                    <div class="form-group">
+                                    <label>Corso di Sicurezza: </label>
+                                    <input  type="date" class="form-control"  name="dataInput" formControlName="corsoSicurezza">
+                                    </div>
+                                
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -547,7 +540,7 @@
                         <div class="col-md-3">
                             <label>PC: </label>
                             <div class="form-group">
-                                <input class="form-check-input" type="checkbox" formControlName="pc" />
+                                <input style="border-color:black;" class="form-check-input" type="checkbox" formControlName="pc" />
                             </div>
                         </div>
                     </div>
