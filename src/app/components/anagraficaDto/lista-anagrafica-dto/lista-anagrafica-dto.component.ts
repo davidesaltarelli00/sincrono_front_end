@@ -1,7 +1,7 @@
+import { AnagraficaDtoService } from './../anagraficaDto-service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AnagraficaDtoService } from '../anagraficaDto-service';
 import { Location } from '@angular/common';
 import { ContrattoService } from '../../contratto/contratto-service';
 
@@ -28,6 +28,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   mostraFiltri = false;
   showErrorPopup: any;
   showSuccessPopup: any;
+ 
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -58,6 +59,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       azienda: new FormControl(''),
       nominativo: new FormControl(''),
     }),
+  
   });
 
   constructor(
@@ -81,12 +83,11 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       this.tipoAziendaFilter
     );
 
-    console.log(this.filterAnagraficaDto.value);
+    /*console.log(this.filterAnagraficaDto.value);
     const body = JSON.stringify({
       anagraficaDto: this.filterAnagraficaDto.value,
-    });
-    console.log(body);
-    this.anagraficaDtoService.listAnagraficaDto(body).subscribe((resp: any) => {
+    });*/
+    this.anagraficaDtoService.listAnagraficaDto().subscribe((resp: any) => {
       this.originalLista = resp.list; // Memorizza la lista originale nella variabile 'originalLista'
       this.lista = this.originalLista;
       console.log(resp);
@@ -164,6 +165,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       this.contrattiNazionali = (result as any)['list'];
     });
   }
+
+ 
+
 
   filter() {
     const filtroNome =
@@ -269,10 +273,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   annullaFiltri() {
-    const body = JSON.stringify({
-      anagrafica: this.filterAnagraficaDto.value,
-    });
-    this.anagraficaDtoService.listAnagraficaDto(body).subscribe((resp: any) => {
+    
+    this.anagraficaDtoService.listAnagraficaDto().subscribe((resp: any) => {
       this.lista = resp.list;
       this.reset();
     });

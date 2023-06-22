@@ -34,6 +34,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   livelliContratti: any = [];
   tipiAziende: any = [];
   contrattiNazionali: any = [];
+  ruoli:any=[];
 
   AnagraficaDto = this.formBuilder.group({
     anagrafica: new FormGroup({
@@ -116,7 +117,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       pc:new FormControl(''),
       tariffaPartitaIva:new FormControl(''),
       canaleReclutamento:new FormControl(''),
-    })
+    }),
+    ruolo: new FormGroup({
+      id: new FormControl(''),
+    }),
   });
 
   constructor(
@@ -208,7 +212,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         pc:new FormControl(''),
         tariffaPartitaIva:new FormControl(''),
         canaleReclutamento:new FormControl(''),
-      })
+      }),
+      ruolo: new FormGroup({
+        id: new FormControl(''),
+      }),
     });
 
     /*const nomeControl = this.AnagraficaDto.get('anagrafica.nome');
@@ -244,6 +251,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.caricaLivelloContratto();
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
+
+    this.caricaRuoli();
   }
   caricaListaUtenti() {
     this.anagraficaDtoService.getListaUtenti().subscribe((result: any) => {
@@ -282,6 +291,9 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         }
         if (obj.livelloContratto && Object.keys(obj.livelloContratto).length === 0) {
           delete obj.livelloContratto;
+        }
+        if (obj.ruolo && Object.keys(obj.ruolo).length === 0) {
+          delete obj.ruolo;
         }
       });
     };
@@ -439,6 +451,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       
       isEmpty(value: any): boolean {
         return value === null || value === undefined || value === '';
+      }
+
+      caricaRuoli() {
+        this.anagraficaDtoService.getRuoli().subscribe((result: any) => {
+          this.ruoli = (result as any)['list'];
+        });
       }
 
 }

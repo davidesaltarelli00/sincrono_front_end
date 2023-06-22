@@ -3,19 +3,22 @@
 <body style="padding-top: 70px;">
     <form [formGroup]="anagraficaDto" (ngSubmit)="aggiorna()">
         <h1>Modifica Anagrafica</h1>
-
-        <div formGroupName="anagrafica">
-            <div class="row">
-                <div class="col-md-3">
-                    <label>Attivo:</label>
-                    <div class="form-group">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" style="border-color:black;"
-                                [checked]="data?.anagrafica?.attivo === true" formControlName="attivo" />
-                        </div>
-                    </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div formGroupName="ruolo">
+                    <label for="filter-ruoli">ruolo</label>
+                    <select  formControlName="id" type="number">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let ruolo of ruoli" value="{{ruolo.id}}">
+                            {{ruolo.nome}}</option>
+                    </select>
                 </div>
             </div>
+          
+        </div>
+
+        <div formGroupName="anagrafica">
+        
             <div class="row">
                 <div class="col-md-3">
                     <label>Azienda: </label>
@@ -563,15 +566,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3">
-                    <label>Stato: </label>
-                    <div class="form-group">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" style="border-color:black;"
-                                [checked]="data?.commessa?.stato === true" formControlName="stato" />
-                        </div>
-                    </div>
-                </div>
+               
                 <div class="col-md-3">
                     <label>Attesa lavori: </label>
                     <div class="form-group">

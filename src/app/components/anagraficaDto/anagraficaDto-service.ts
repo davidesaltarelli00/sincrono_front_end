@@ -15,10 +15,8 @@ export class AnagraficaDtoService {
   constructor(private http: HttpClient) {}
 
   /*CRUD ANAGRAFICA*/
-  listAnagraficaDto(body: any): Observable<any> {
-    return this.http.post<any>(`http://localhost:8085/anagrafica-list-filter`, body, {
-      headers: headers,
-    });
+  listAnagraficaDto(): Observable<any> {
+    return this.http.get<any>(`http://localhost:8085/anagraficaDto-list`);
   }
 
 
@@ -76,6 +74,9 @@ export class AnagraficaDtoService {
     return this.http.get<any>(`http://localhost:8085/contratto-nazionale/map`);
   }
 
+  getRuoli():Observable<any> {
+    return this.http.get<any>(`http://localhost:8085/ruoli/map`);
+  }
   
 
 }

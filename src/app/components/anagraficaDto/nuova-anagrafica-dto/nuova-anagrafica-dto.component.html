@@ -22,8 +22,21 @@
     <form [formGroup]="AnagraficaDto" (ngSubmit)="inserisci()">
            
             <div class="container">
+                <h1>Anagrafica</h1>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div formGroupName="ruolo">
+                            <label for="filter-ruoli">ruolo</label>
+                            <select  formControlName="id" type="number">
+                                <option value="">--nessuna selezione--</option>
+                                <option *ngFor="let ruolo of ruoli" value="{{ruolo.id}}">
+                                    {{ruolo.nome}}</option>
+                            </select>
+                        </div>
+                    </div>
+                  
+                </div>
                 <div formGroupName="anagrafica">
-                    <h1>Anagrafica</h1>
                     <div class="row">
                         <div class="col-md-3">
                             <label>Azienda: </label>
