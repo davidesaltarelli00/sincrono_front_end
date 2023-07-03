@@ -48,7 +48,7 @@ const routes: Routes = [
 
 //STORICO COMMESSE
   { path: 'storico-commesse-anagrafica/:id', component: StoricoCommesseComponent }
-  
+
 ];
 
 @NgModule({

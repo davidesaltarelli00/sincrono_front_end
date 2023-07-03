@@ -25,6 +25,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   data: any = [];
   utenti: any = [];
 
+  currentStep=1;
+
   submitted = false;
   errore = false;
   messaggio: any;
@@ -242,11 +244,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       codiceFiscaleControl.setErrors({ 'invalid': true });
     }*/
 
-    
+
 
 
     this.caricaListaUtenti();
-    
+
     this.caricaTipoContratto();
     this.caricaLivelloContratto();
     this.caricaTipoAzienda();
@@ -260,9 +262,24 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       this.utenti = (result as any)['list'];
     });
   }
+
+
+  nextStep() {
+    this.currentStep++;
+  }
+
+  prevStep() {
+    this.currentStep--;
+  }
+
+  submitForm() {
+    // Handle form submission
+  }
+
+
   inserisci() {
     this.submitted = true;
-    
+
 
     const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
@@ -304,7 +321,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     let check=true;
 
     if(this.AnagraficaDto.value.anagrafica!=null){
-      
+
       if(this.checkValid(['anagrafica.nome','anagrafica.cognome','anagrafica.codiceFiscale',
       'anagrafica.mailAziendale'])){
 
@@ -359,7 +376,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       }else{
 
         alert('inserimento riuscito');
-        
+
       }
       this.router.navigate(['../lista-anagrafica-dto']);
     });
@@ -396,8 +413,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     });
   }
 
- 
-      
+
+
 
       checkValid(myArray: string[]) {
 
@@ -411,16 +428,16 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
             check=true;
 
           }
-        
+
         }
 
         return check;
       }
-          
+
         isControlInvalid(controlName: string):boolean {
           const control = this.AnagraficaDto.get(controlName);
           const inputElement = document.getElementById(controlName);
-         
+
           if(!(control?.dirty && control?.value!=null && control?.value!="" )){
             inputElement?.classList.add('invalid-field');
             return true;
@@ -428,7 +445,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
             inputElement?.classList.remove('invalid-field');
             return false;
           }
-      
+
           }
 
           reset(myArray: string[]){
@@ -437,18 +454,18 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
 
               const inputElement = document.getElementById(element);
-           
+
               inputElement?.classList.remove('invalid-field');
-               
+
               }
-            
+
             }
-    
 
 
-          
 
-      
+
+
+
       isEmpty(value: any): boolean {
         return value === null || value === undefined || value === '';
       }

@@ -13,6 +13,7 @@ declare var $: any;
   styleUrls: ['./lista-anagrafica-dto.component.scss'],
 })
 export class ListaAnagraficaDtoComponent implements OnInit {
+
   tipoContrattoFilter = this.activatedRoute.snapshot.params['tipoContratto'];
   tipoAziendaFilter = this.activatedRoute.snapshot.params['tipoAzienda'];
 
@@ -28,7 +29,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   mostraFiltri = false;
   showErrorPopup: any;
   showSuccessPopup: any;
- 
+
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -59,7 +60,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       azienda: new FormControl(''),
       nominativo: new FormControl(''),
     }),
-  
+
   });
 
   constructor(
@@ -166,7 +167,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     });
   }
 
- 
+
 
 
   filter() {
@@ -273,7 +274,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   annullaFiltri() {
-    
+
     this.anagraficaDtoService.listAnagraficaDto().subscribe((resp: any) => {
       this.lista = resp.list;
       this.reset();

@@ -6,21 +6,17 @@ const headers = new HttpHeaders()
   .set('content-type', 'application/json')
   .set('Access-Control-Allow-Origin', '*');
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OrganicoService {
+  token: any;
 
-  token:any;
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  listaOrganico():Observable<any>{
-    return this.http.post<any>(`http://localhost:8085/organico`,{
-      headers: headers,});
-
+  listaOrganico(): Observable<any> {
+    return this.http.post<any>(`http://localhost:8085/organico`, {
+      headers: headers,
+    });
   }
-  
-
 }
