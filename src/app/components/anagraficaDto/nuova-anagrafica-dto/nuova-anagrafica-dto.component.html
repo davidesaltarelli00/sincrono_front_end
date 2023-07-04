@@ -25,7 +25,7 @@
           <div *ngIf="currentStep === 1">
             <div class="row">
               <div class="col-12">
-                <h1 style="text-align: center;">Anagrafica</h1>
+               <strong> <h1 style="text-align: center;">Step 1: Anagrafica</h1></strong>
               </div>
             </div>
             <div class="row">
@@ -247,17 +247,23 @@
                 </div>
               </div>
             </div>
+            <br>
             <div class="row">
-              <div class="col-12 ">
-                <button id="avanti" type="button" class="btn btn-primary" (click)="nextStep()">Avanti</button>
+              <div class="col-6" style="text-align: end;">
+                <button id="avanti" style="margin: auto; text-align: center;" type="button" class="btn btn-primary" (click)="nextStep()">Avanti »</button>
               </div>
             </div>
+            <br>
           </div>
 
           <!-- Step 2: Commessa -->
           <div *ngIf="currentStep === 2">
             <div formGroupName="commessa">
-              <h1>Commessa</h1>
+              <div class="row">
+                <div class="col-12">
+             <strong><h1 style="text-align: center;">Step 2: Commessa</h1></strong>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-md-3">
                   <label>Cliente: </label>
@@ -407,10 +413,10 @@
             </div>
             <div class="row">
               <div class="col-6">
-                <button id="indietro" type="button" class="btn btn-primary" (click)="prevStep()">Indietro</button>
+                <button id="indietro" type="button" class="btn btn-primary" (click)="prevStep()">« Indietro</button>
               </div>
               <div class="col-6 text-right">
-                <button id="avanti" type="button" class="btn btn-primary" (click)="nextStep()">Avanti</button>
+                <button id="avanti" type="button" class="btn btn-primary" (click)="nextStep()">Avanti »</button>
               </div>
             </div>
           </div>
@@ -418,7 +424,7 @@
           <!-- Step 3: Contratto -->
           <div *ngIf="currentStep === 3">
             <div formGroupName="contratto">
-              <h1>Contratto</h1>
+             <strong><h1 style="text-align: center;" >Step 3: Contratto</h1></strong>
               <legend>Dati Tipologici</legend>
               <div class="row">
                 <div class="col-md-3">
@@ -868,6 +874,7 @@
                 </div>
               </div>
             </div>
+            <br>
             <div class="row">
               <!-- <div class="col-6">
                 <button id="indietro" type="button" class="btn btn-primary" (click)="prevStep()">Indietro</button>
