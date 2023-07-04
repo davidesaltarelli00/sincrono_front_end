@@ -33,6 +33,11 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login/login.component';
 import { StoricoContrattiComponent } from './components/storici/storico-contratti/storico-contratti.component';
 import { StoricoCommesseComponent } from './components/storici/storico-commesse/storico-commesse.component';
+
+
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MaterialModule } from './material.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,6 +66,7 @@ import { StoricoCommesseComponent } from './components/storici/storico-commesse/
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent],
