@@ -217,3 +217,75 @@ mat-drawer-container{
   font-size: 16px;
 }
 
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  // background-color: #333;
+  color: #fff;
+  padding: 20px;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 10px;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+.cards {
+  display: flex;
+}
+
+.card {
+  background-color: #f4f4f4;
+  padding: 20px;
+  margin-right: 10px;
+  flex-basis: 33.33%;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.recent-activity li {
+  margin-bottom: 10px;
+}
+
+.timestamp {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
