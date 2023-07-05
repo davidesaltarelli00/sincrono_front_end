@@ -8,7 +8,7 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   title = 'sincrono';
-
+  showFiller = false;
   isLoginPage :any;
   constructor(private router: Router) {}
   public ngOnInit(): void {

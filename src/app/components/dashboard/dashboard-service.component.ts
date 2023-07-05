@@ -21,6 +21,18 @@ export class DashboardService {
       headers: headers,});
 
   }
-  
+
+  listaScattiContratto():Observable<any>{
+    return this.http.get<any>(`http://localhost:8085/anagrafica-list-contratti`,{
+      headers: headers,});
+
+  }
+
+  deleteScattiContratto():Observable<any>{
+    return this.http.delete<any>(`http://localhost:8085/anagraficaDeleteScattoContratti`,{
+      headers: headers,});
+
+  }
+
 
 }

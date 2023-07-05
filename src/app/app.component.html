@@ -87,15 +87,15 @@
 
     <ng-template #mainContent>
       <mat-toolbar>
-        <span>Sincrono CRM</span>
+        <span>Sincrono CRM <button (click)="drawer.toggle()" mat-flat-button style="background-color: transparent; color: black;" > <mat-icon>menu</mat-icon> </button> </span>
         <span class="spacer"></span>
         <button mat-icon-button [routerLink]="['/login']">
           <mat-icon>logout</mat-icon>
         </button>
       </mat-toolbar>
 
-      <mat-drawer-container class="example-container">
-        <mat-drawer mode="side" opened>
+      <mat-drawer-container autosize class="example-container">
+        <mat-drawer #drawer class="example-sidenav" mode="side">
           <nav>
             <ul class="list-unstyled">
               <li class="sidebar-item">

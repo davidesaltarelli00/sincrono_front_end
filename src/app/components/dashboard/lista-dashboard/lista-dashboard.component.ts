@@ -16,6 +16,7 @@ declare var $: any;
 export class ListaDashboardComponent {
 
   lista: any;
+  data: any;
   token: any;
   livelliContrattuali: any = [];
   check1: boolean = false;
@@ -25,11 +26,12 @@ export class ListaDashboardComponent {
   constructor(private dashboardService: DashboardService, private router: Router, private contrattoService: ContrattoService) { }
   isTableVisible: boolean = false;
   isTable2Visible: boolean = false;
+  isTableVisible1: boolean=false;
   ngOnInit(): void {
 
     this.dashboardService.listaDashboard().subscribe((resp: any) => {
       this.lista = resp.list;
-     
+
 
       $(function () {
         $('#table').DataTable({
@@ -40,7 +42,20 @@ export class ListaDashboardComponent {
     });
 
 
+    this.dashboardService.listaScattiContratto().subscribe((resp: any) => {
+      this.data = resp.list;
+
+
+
+    });
+
+
   }
+
+
+
+
+
 
   calcolaPeriodi(mesiDurata: any, descrizione: any): any {
 
@@ -76,7 +91,7 @@ export class ListaDashboardComponent {
 
 
       if (this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) == (mesiDurata - 1)) {
-       
+
         return true
 
 
@@ -89,7 +104,7 @@ export class ListaDashboardComponent {
     } else {
 
       if (this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) == (mesiDurata - 1)) {
-        
+
 
         return true
 
@@ -109,7 +124,7 @@ export class ListaDashboardComponent {
 
     if (descrizione == "METALMECCANICO PMI CONFAPI") {
       if (this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) == (mesiDurata * 2 - 1)) {
-       
+
 
         return true
 
@@ -125,7 +140,7 @@ export class ListaDashboardComponent {
     } else {
 
       if (this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) == (mesiDurata * 2 - 1)) {
-     
+
         return true
 
       } else {
@@ -144,7 +159,7 @@ export class ListaDashboardComponent {
 
 
     if (this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) == (mesiDurata * 3 - 1)) {
-  
+
       return true
 
     }
@@ -164,7 +179,7 @@ export class ListaDashboardComponent {
 
     // Calculate the difference in days between the end date and current date
     var daysRemaining = Math.ceil((fineContratto.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
-  
+
 
     // Determine if the remaining days are within the specified threshold
     var thresholdDays = 40; // Adjust this value as per your requirement
@@ -199,6 +214,32 @@ export class ListaDashboardComponent {
   }
   toggleTable2() {
     this.isTable2Visible = !this.isTable2Visible;
+  }
+  toggleTable1() {
+    this.isTableVisible1 = !this.isTableVisible1;
+  }
+
+  resetTabella(){
+
+    this.dashboardService.deleteScattiContratto().subscribe((resp: any) => {
+
+      if ((resp as any).esito.code != 0) {
+        alert('cancellazione non riuscita\n'+'target: '+(resp as any).esito.target);
+        return;
+      }else{
+
+        this.data=[];
+        alert('cancellazione riuscita');
+
+      }
+
+
+
+
+    });
+
+
+
   }
 
 }
