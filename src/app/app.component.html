@@ -77,6 +77,23 @@
   flex: 1 1 auto;
 }
 
+mat-drawer{
+  background-color: #333;
+}
+
+p{
+  cursor: pointer;
+}
+
+mat-icon-button:hover{
+background-color: none;
+}
+
+mat-toolbar{
+  background-color: #333;
+  color: white;
+}
+
 
 </style>
 
@@ -87,34 +104,38 @@
 
     <ng-template #mainContent>
       <mat-toolbar>
-        <span>Sincrono CRM <button (click)="drawer.toggle()" mat-flat-button style="background-color: transparent; color: black;" > <mat-icon>menu</mat-icon> </button> </span>
+        <a [routerLink]="['/home']" style="margin:5px; text-align: center;" > <img style="margin:5px; text-align: center;" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo"> </a>
+        <span> Sincrono CRM <button (click)="drawer.toggle()" mat-flat-button style="background-color: transparent; color: black;" > <mat-icon >menu</mat-icon> </button> </span>
         <span class="spacer"></span>
-        <button mat-icon-button [routerLink]="['/login']">
+        <span style="cursor: pointer;" id="icona" mat-icon-button [routerLink]="['/login']">
           <mat-icon>logout</mat-icon>
-        </button>
+        </span>
       </mat-toolbar>
 
       <mat-drawer-container autosize class="example-container">
         <mat-drawer #drawer class="example-sidenav" mode="side" opened>
           <nav>
             <ul class="list-unstyled">
-              <li class="sidebar-item">
+              <!-- <li class="sidebar-item">
                 <div class="row">
                   <div class="col-12"  >
-                     <!-- <img src="../../../../assets/images/logo.jpeg" alt="Logo"> -->
-                     <a [routerLink]="['/home']" style="margin:5px; text-align: center;" > <img style="margin:5px; text-align: center;" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo"> </a>
+                     <img src="../../../../assets/images/logo.jpeg" alt="Logo">
                   </div>
                 </div>
               </li>
+              <mat-divider></mat-divider> -->
               <li class="sidebar-item">
-                <a class="sidebar-link" [routerLink]="['/lista-anagrafica']">Lista anagrafiche</a>
+                <p class="sidebar-link" [routerLink]="['/lista-anagrafica']">Lista anagrafiche</p>
               </li>
+              <mat-divider></mat-divider>
               <li class="sidebar-item">
-                <a class="sidebar-link" [routerLink]="['/dashboard']">Dashboard</a>
+                <p class="sidebar-link" [routerLink]="['/dashboard']">Dashboard</p>
               </li>
+              <mat-divider></mat-divider>
               <li class="sidebar-item">
-                <a class="sidebar-link" [routerLink]="['/organico']">Organico</a>
+                <p class="sidebar-link" [routerLink]="['/organico']">Organico</p>
               </li>
+              <mat-divider></mat-divider>
             </ul>
           </nav>
         </mat-drawer>
