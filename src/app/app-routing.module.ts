@@ -22,10 +22,16 @@ const routes: Routes = [
   //ANAGRAFICA
   { path: 'lista-anagrafica', component: ListaAnagraficaDtoComponent },
   { path: 'lista-anagrafica/:body', component: ListaAnagraficaDtoComponent },
-  { path: 'dettaglio-anagrafica/:id', component: DettaglioAnagraficaDtoComponent },
+  {
+    path: 'dettaglio-anagrafica/:id',
+    component: DettaglioAnagraficaDtoComponent,
+  },
   { path: 'dettaglio-anagrafica', component: DettaglioAnagraficaDtoComponent },
   { path: 'nuova-anagrafica', component: NuovaAnagraficaDtoComponent },
-  { path: 'modifica-anagrafica/:id', component: ModificaAnagraficaDtoComponent },
+  {
+    path: 'modifica-anagrafica/:id',
+    component: ModificaAnagraficaDtoComponent,
+  },
 
   //CONTRATTO
   { path: 'dettaglio-contratto/:id', component: DettaglioContrattoComponent },
@@ -46,9 +52,13 @@ const routes: Routes = [
 
   { path: 'storico-contratti/:id', component: StoricoContrattiComponent },
 
-//STORICO COMMESSE
-  { path: 'storico-commesse-anagrafica/:id', component: StoricoCommesseComponent }
+  //STORICO COMMESSE
+  {
+    path: 'storico-commesse-anagrafica/:id',
+    component: StoricoCommesseComponent,
+  },
 
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
 @NgModule({

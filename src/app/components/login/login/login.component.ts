@@ -10,6 +10,8 @@ import { NavigationEnd, Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   showSidebar: boolean = false;
   formLogin: FormGroup;
+  isLoginPage = true; // Imposta su true quando sei nella pagina di login
+
 
   constructor(private router: Router, private formBuilder: FormBuilder) {
     const currentUrl = this.router.url;
