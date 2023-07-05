@@ -192,8 +192,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         dataFineRapporto: new FormControl(''),
         mesiDurata: new FormControl(''),
         livelloIniziale: new FormControl(''),
-        livelloAttuale: new FormControl(''),
-        livelloFinale: new FormControl(''),
+        livelloAttuale: new FormControl(''), //calcolato in base al giorno odierno del server in runtime
+        livelloFinale: new FormControl(''), //vede il tipo di contratto nazionale se é diviso in due o tre fasi
         dimissioni: new FormControl(''),
         partTime: new FormControl(''),
         partTimeA: new FormControl(''),

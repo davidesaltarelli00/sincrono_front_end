@@ -20,12 +20,20 @@
 
 
       <div class="container-fluid">
+
         <form [formGroup]="AnagraficaDto" (ngSubmit)="inserisci()">
           <!-- Step 1: Anagrafica -->
           <div *ngIf="currentStep === 1">
             <div class="row">
               <div class="col-12">
-               <strong> <h1 style="text-align: center;">Step 1: Anagrafica</h1></strong>
+                <div class="step-menu">
+                  <ul>
+                    <li class="active"><span>Anagrafica</span></li>
+                    <li><span>Commessa</span></li>
+                    <li><span>Contratto</span></li>
+                  </ul>
+                </div>
+
               </div>
             </div>
             <div class="row">
@@ -258,10 +266,18 @@
 
           <!-- Step 2: Commessa -->
           <div *ngIf="currentStep === 2">
+            <div class="step-menu">
+              <ul>
+                <li ><span>Anagrafica</span></li>
+                <li class="active"><span>Commessa</span></li>
+                <li><span>Contratto</span></li>
+              </ul>
+            </div>
+
             <div formGroupName="commessa">
               <div class="row">
                 <div class="col-12">
-             <strong><h1 style="text-align: center;">Step 2: Commessa</h1></strong>
+             <!-- <strong><h1 style="text-align: center;">Step 2: Commessa</h1></strong> -->
                 </div>
               </div>
               <div class="row">
@@ -423,8 +439,15 @@
 
           <!-- Step 3: Contratto -->
           <div *ngIf="currentStep === 3">
+            <div class="step-menu">
+              <ul>
+                <li ><span>Anagrafica</span></li>
+                <li ><span>Commessa</span></li>
+                <li class="active"><span>Contratto</span></li>
+              </ul>
+            </div>
             <div formGroupName="contratto">
-             <strong><h1 style="text-align: center;" >Step 3: Contratto</h1></strong>
+             <!-- <strong><h1 style="text-align: center;" >Step 3: Contratto</h1></strong> -->
               <legend>Dati Tipologici</legend>
               <div class="row">
                 <div class="col-md-3">
@@ -881,7 +904,7 @@
               </div> -->
               <div class="row">
                 <div class="col-1">
-                  <button class="btn btn-success" type="submit" onclick="inserisci()">
+                  <button class="btn btn-success" type="submit" [disabled]="AnagraficaDto.invalid" (click)="inserisci()">
                     Salva
                   </button>
                   <!--dark btn-sm rounded-pill shadow-sm  style="background-color: rgb(18, 0, 122); color: white"-->
