@@ -1,67 +1,40 @@
-<head>
+<html>
+  <head>
     <title>Home</title>
-</head>
+  </head>
 
-
-<body  >
-    <!-- <div class="ag-format-container">
-        <div class="ag-courses_box">
-            <div class="ag-courses_item">
-                <a [routerLink]="['/lista-anagrafica']" class="ag-courses-item_link">
-                    <div class="ag-courses-item_bg"></div>
-                    <div class="ag-courses-item_title">
-                        Lista Anagrafiche
-                    </div>
-                </a>
-            </div>
-            <div class="ag-courses_item">
-                <a [routerLink]="['/dashboard']" class="ag-courses-item_link">
-                    <div class="ag-courses-item_bg"></div>
-                    <div class="ag-courses-item_title">
-                        Dashboard
-                    </div>
-                </a>
-            </div>
-            <div class="ag-courses_item">
-                <a [routerLink]="['/organico']" class="ag-courses-item_link">
-                    <div class="ag-courses-item_bg"></div>
-                    <div class="ag-courses-item_title">
-                        Organico
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div> -->
-
+  <body>
     <div class="container-fluid">
 
       <div class="row">
         <div class="col-12">
           <header>
             <div class="row">
-              <div class="col-12"  style="margin: auto; text-align: center;">
-                 <img src="../../../../assets/images/logo.jpeg" alt="Logo">
-
+              <div class="col-12" style="margin: auto; text-align: center;">
+                <!-- Componente Angular Material - Logo -->
+                <mat-card>
+                  <mat-card-content>
+                    <img src="../../../../assets/images/logo.jpeg" alt="Logo" style="max-width: 300px;">
+                  </mat-card-content>
+                </mat-card>
               </div>
             </div>
-
           </header>
-          <main>
-            <h1>Sincrono CRM</h1>
-          </main>
         </div>
       </div>
 
+      <main>
+        <section>
+          <h2>Sincrono CRM</h2>
+          <p>Questa è la tua home page personalizzata del CRM.</p>
+        </section>
+      </main>
 
-
-      <!-- <footer class="fixed-bottom">
-        <p>© 2023 CRM. All rights reserved.</p>
-      </footer> -->
-
+      <footer>
+        <p>© 2023 CRM Company. Tutti i diritti riservati.</p>
+      </footer>
 
     </div>
 
-
-
-
-</body>
+  </body>
+</html>

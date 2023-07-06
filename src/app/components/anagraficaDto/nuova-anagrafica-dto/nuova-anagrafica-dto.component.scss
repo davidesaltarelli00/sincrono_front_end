@@ -73,48 +73,20 @@
 #nominativo {
   margin-bottom: 10px;
 }
-
-.step-menu {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 300px;
-  margin: 0 auto;
+.mat-stepper-horizontal {
+  margin-top: 8px;
 }
 
-.step-menu ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
+.mat-mdc-form-field {
+  margin-top: 16px;
 }
 
-.step-menu li {
-  position: relative;
-  margin-right: 20px;
-  color: #999;
+*{
+  box-sizing: border-box;
 }
 
-.step-menu li.active {
-  color: #000;
+button:hover{
+  background-color: transparent;
 }
 
-.step-menu li:before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: -12px;
-  transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #ccc;
-}
-
-.step-menu li.active:before {
-  background-color: #000;
-}
-
-.step-menu span {
-  cursor: not-allowed;
-}
+button{border: 1px solid #333;}

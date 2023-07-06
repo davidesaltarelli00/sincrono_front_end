@@ -263,13 +263,24 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     });
   }
 
+  setStep1(){
+this.currentStep=1;
+  }
+  setStep2(){
+    this.currentStep=2;
+  }
+  setStep3(){
+    this.currentStep=3;
+  }
 
   nextStep() {
     this.currentStep++;
+    console.log(this.currentStep);
   }
 
   prevStep() {
     this.currentStep--;
+    console.log(this.currentStep);
   }
 
   submitForm() {
