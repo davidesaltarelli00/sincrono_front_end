@@ -97,7 +97,7 @@ mat-toolbar{
 
 </style>
 
-  <body style="overflow-y: auto;">
+  <body >
     <ng-container *ngIf="isLoginPage; else mainContent">
       <app-login></app-login>
     </ng-container>
@@ -112,7 +112,7 @@ mat-toolbar{
         </span>
       </mat-toolbar>
 
-      <mat-drawer-container autosize class="example-container">
+      <mat-drawer-container autosize class="example-container" >
         <mat-drawer #drawer class="example-sidenav" mode="side" opened>
           <nav>
             <ul class="list-unstyled">
@@ -140,7 +140,6 @@ mat-toolbar{
           </nav>
         </mat-drawer>
         <mat-drawer-content>
-          <!-- Contenuto principale -->
           <router-outlet></router-outlet>
         </mat-drawer-content>
       </mat-drawer-container>

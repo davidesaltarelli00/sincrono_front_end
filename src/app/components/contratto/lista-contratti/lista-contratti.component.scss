@@ -48,3 +48,31 @@ button[type="submit"] {
     color: red;
     margin-top: 5px;
 }
+
+
+
+// overflow
+body {
+  overflow-y: auto; /* Nasconde l'overflow verticale */
+}
+
+body::after {
+  content: "";
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow-y: auto; /* Consente lo scrolling */
+  padding-right: 17px; /* Aggiunge un margine destro per compensare la larghezza della barra di scorrimento */
+}
+
+/* Nasconde la barra di scorrimento orizzontale */
+body::-webkit-scrollbar {
+  width: 0.5em;
+  background-color: #F5F5F5;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
