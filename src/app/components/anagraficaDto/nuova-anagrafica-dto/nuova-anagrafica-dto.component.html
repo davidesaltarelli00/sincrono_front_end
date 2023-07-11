@@ -33,6 +33,11 @@
                     <mat-card>
                       <mat-card-content>
                         <div class="row">
+                          <div class="col-12">
+                            <h3 style="text-align: center;" >Step 1:Anagrafica</h3>
+                          </div>
+                        </div>
+                        <div class="row">
                           <div class="col-md-3">
                             <div class="ruolo" formGroupName="ruolo">
                               <label for="filter-ruoli">ruolo</label>
@@ -798,20 +803,23 @@
                               />
                             </div>
                           </div>
-                        </div>
-                        <div class="col-md-3">
-                          <label id="contratto.categoriaProtetta" class="form-check-label"
-                            >Categoria Protetta:
-                          </label>
-                          <div class="form-check">
-                            <input
-                              style="border-color: black"
-                              class="form-check-input"
-                              type="checkbox"
-                              formControlName="categoriaProtetta"
-                            />
+
+                          <div class="col-md-3">
+                            <label id="contratto.categoriaProtetta" class="form-check-label"
+                              >Categoria Protetta:
+                            </label>
+                            <div class="form-check">
+                              <input
+                                style="border-color: black"
+                                class="form-check-input"
+                                type="checkbox"
+                                formControlName="categoriaProtetta"
+                              />
+                            </div>
                           </div>
+
                         </div>
+
                         <legend>Altro</legend>
                         <div class="row">
                           <div class="col-md-3">
@@ -947,24 +955,15 @@
                     </div>
                    </mat-step>
                 </mat-stepper>
-
-
-
-
-
               </div>
             </div>
-
-
-
           </div>
-
-          <!-- Step 2: Commessa -->
-
-
-          <!-- Step 3: Contratto -->
-
         </form>
+
+        <footer>
+          <p>© 2023 CRM Company. Tutti i diritti riservati.</p>
+        </footer>
+
       </div>
 
 
