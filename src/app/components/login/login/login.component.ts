@@ -51,21 +51,18 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService: AuthService, private router:Router) {}
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   login() {
     if (this.authService.login(this.username, this.password)) {
       console.log(this.username, this.password);
-      const userLogged = this.authService.userLogged;
-      localStorage.setItem('userLogged', userLogged);
+      const userLogged = localStorage.getItem('userLogged');
+      this.authService.userLogged = userLogged;
       this.router.navigate(['/home']);
     } else {
       console.log('Errore di autenticazione, riprovare.');
     }
   }
-
 
 
 

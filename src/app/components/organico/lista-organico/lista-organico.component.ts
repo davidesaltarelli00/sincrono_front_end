@@ -17,12 +17,20 @@ export class ListaOrganicoComponent implements OnInit {
   submitted = false;
   errore = false;
   messaggio: any;
+  userlogged:any;
 
   constructor(
     private organicoService: OrganicoService,
     private router: Router,
     private authService:AuthService
-  ) {}
+  ) {
+    this.userlogged = localStorage.getItem('userLogged');
+
+    const userLogged = localStorage.getItem('userLogged');
+    if (userLogged) {
+      this.userlogged = userLogged;
+  }
+  }
 
   logout() {
     this.authService.logout();

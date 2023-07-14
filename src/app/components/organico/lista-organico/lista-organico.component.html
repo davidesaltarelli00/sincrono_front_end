@@ -90,6 +90,17 @@
   </style>
 <body> <!--style="padding-top: 50px;"-->
 
+  <script>
+
+    userlogged = localStorage.getItem('userLogged');
+
+      const userLogged = localStorage.getItem('userLogged');
+      if (userLogged) {
+        this.userlogged = userLogged;
+    }
+  </script>
+
+
   <mat-toolbar>
     <a [routerLink]="['/home']" style="margin:5px; text-align: center;" > <img style="margin:5px; text-align: center;" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo"> </a>
     <span> Sincrono CRM <button (click)="drawer.toggle()" mat-flat-button style="background-color: transparent; color: black;" > <mat-icon style="color: #ffffff;" >menu</mat-icon> </button> </span>
@@ -100,6 +111,13 @@
   </mat-toolbar>
   <mat-drawer-container autosize class="example-container" >
     <mat-drawer #drawer class="example-sidenav" mode="side" opened>
+      <div class="profile-box" style="text-align: center;
+      color: white;
+      font-weight: 400;
+      border-bottom: 1px solid #f2f2f2; margin:auto;">
+        <mat-icon>account_circle</mat-icon> <br>
+        <p>{{userlogged}}</p>
+          </div>
       <nav>
         <ul class="list-unstyled">
           <li class="sidebar-item">

@@ -10,7 +10,7 @@ export class AuthService {
     { username: 'risorseumane', password: 'risorseumane', role: 'risorseumane' }
   ];
 
-  public userLogged:string="";
+  public userLogged:any;
 
   login(username: string, password: string): boolean {
     const user = this.users.find(user => user.username === username && user.password === password);

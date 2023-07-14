@@ -24,10 +24,20 @@ export class ListaDashboardComponent {
   check2: boolean = false;
   check3: boolean = false;
   dateString: any
-  constructor(private dashboardService: DashboardService, private router: Router, private contrattoService: ContrattoService, private authService:AuthService) { }
+  userlogged:any;
+
+  constructor(private dashboardService: DashboardService, private router: Router, private contrattoService: ContrattoService, private authService:AuthService) {
+    this.userlogged = localStorage.getItem('userLogged');
+
+    const userLogged = localStorage.getItem('userLogged');
+    if (userLogged) {
+      this.userlogged = userLogged;
+  }
+  }
   isTableVisible: boolean = false;
   isTable2Visible: boolean = false;
   isTableVisible1: boolean=false;
+
   ngOnInit(): void {
 
     this.dashboardService.listaDashboard().subscribe((resp: any) => {
