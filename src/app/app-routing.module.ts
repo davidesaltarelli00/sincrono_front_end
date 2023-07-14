@@ -85,7 +85,7 @@ const routes: Routes = [
     path: 'dashboard',
     component: ListaDashboardComponent,
     canActivate: [AuthGuard, RoleGuard],
-    data: { 'expectedRoles': ['admin', 'dipendente'] }
+    data: { 'expectedRoles': ['admin'] }
   },
 
   //ORGANICO
