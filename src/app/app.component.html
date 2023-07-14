@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -6,7 +6,6 @@
   <title>Document</title>
 </head>
 <style>
-    /* Stile della sidebar */
 .sidebar {
   width: 250px;
   background-color: #333;
@@ -34,13 +33,11 @@
   color: #d8d8d8;
 }
 
-/* Stile del contenuto principale */
 .content {
   flex: 1;
   padding: 20px;
 }
 
-/* Stile della navbar */
 .navbar {
   padding: 10px 20px;
 }
@@ -70,7 +67,6 @@
 .example-container {
  width: 100%;
   height: 100%;
-  /* border: 1px solid #555; */
 }
 
 .spacer {
@@ -117,14 +113,6 @@ mat-toolbar{
         <mat-drawer #drawer class="example-sidenav" mode="side" opened>
           <nav>
             <ul class="list-unstyled">
-              <!-- <li class="sidebar-item">
-                <div class="row">
-                  <div class="col-12"  >
-                     <img src="../../../../assets/images/logo.jpeg" alt="Logo">
-                  </div>
-                </div>
-              </li>
-              <mat-divider></mat-divider> -->
               <li class="sidebar-item">
                 <p class="sidebar-link" [routerLink]="['/lista-anagrafica']">Lista anagrafiche</p>
               </li>
@@ -149,4 +137,6 @@ mat-toolbar{
 
 
 </html>
+ -->
 
+ <router-outlet></router-outlet>

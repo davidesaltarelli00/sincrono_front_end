@@ -16,7 +16,7 @@ import { StoricoContrattiComponent } from './components/storici/storico-contratt
 import { StoricoCommesseComponent } from './components/storici/storico-commesse/storico-commesse.component';
 const routes: Routes = [
   //HOME
-  { path: '', component: HomeComponent },
+  { path: '', component: LoginComponent },
   { path: 'home', component: HomeComponent },
 
   //ANAGRAFICA

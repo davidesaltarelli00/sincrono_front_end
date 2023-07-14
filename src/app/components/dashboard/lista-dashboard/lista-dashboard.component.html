@@ -1,275 +1,409 @@
 <html>
   <title>Dashboard</title>
 
+  <style>
+    .sidebar {
+      width: 250px;
+      background-color: #333;
+      color: #ffffff;
+      height: 200vh;
+      position: inherit;
+    }
+
+    /* Stile delle voci di menu nella sidebar */
+    .sidebar-item {
+      padding: 10px 20px;
+      border-bottom: 1px solid #ffffff;
+    }
+
+    .sidebar-item:last-child {
+      border-bottom: none;
+    }
+
+    .sidebar-link {
+      text-decoration: none;
+      color: #ffffff;
+    }
+
+    .sidebar-link:hover {
+      color: #d8d8d8;
+    }
+
+    .content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .navbar {
+      padding: 10px 20px;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+    }
+
+    .navbar-nav {
+      margin-left: auto;
+    }
+
+    .nav-link {
+      color: #ffffff;
+      text-decoration: none;
+      margin-left: 10px;
+    }
+
+    .nav-link:hover {
+      color: #d8d8d8;
+    }
+
+    .login-page .sidebar {
+      display: none;
+    }
+
+    .example-container {
+     width: 100%;
+      height: 100%;
+    }
+
+    .spacer {
+      flex: 1 1 auto;
+    }
+
+    mat-drawer{
+      background-color: #333;
+    }
+
+    p{
+      cursor: pointer;
+    }
+
+    mat-icon-button:hover{
+    background-color: none;
+    }
+
+    mat-toolbar{
+      background-color: #333;
+      color: white;
+    }
+
+
+    </style>
+
   <body>
-    <div class="container-fluid">
-      <header>
-        <h1>Dashboard</h1>
-      </header>
-      <main>
-        <div class="table-responsive">
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <h4>Contratti Scatto Livello</h4>
-            </mat-expansion-panel-header>
 
-            <ng-template matExpansionPanelContent>
-              <table id="table" class="table table-striped table-bordered">
-                <thead class="thead-dark">
-                  <tr>
-                    <th scope="col">nome</th>
-                    <th scope="col">cognome</th>
-                    <th scope="col">codice fiscale</th>
-                    <th scope="col">Data Assunzione</th>
-                    <th scope="col">ccnl</th>
-                    <th scope="col">descrizione</th>
-                    <th scope="col">minimo retribuzione</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <ng-container *ngFor="let element of data">
-                    <tr>
-                      <td>{{ element.anagrafica.nome }}</td>
-                      <td>{{ element.anagrafica.cognome }}</td>
-                      <td>{{ element.anagrafica.codiceFiscale }}</td>
-                      <td>{{ element.contratto.dataAssunzione }}</td>
-                      <td>{{ element.contratto.livelloContratto.ccnl }}</td>
-                      <td>
-                        {{ element.contratto.livelloContratto.descrizione }}
-                      </td>
-                      <td>
-                        {{ element.contratto.livelloContratto.minimiRet23 }}
-                      </td>
-                    </tr>
-                  </ng-container>
-                </tbody>
-                <button (click)="resetTabella()" class="btn btn-success">
-                  reset tabella
-                </button>
-              </table>
-            </ng-template>
-          </mat-expansion-panel>
-          <!-- <button (click)="toggleTable1()" class="btn btn-success" > {{ isTableVisible1 ? 'Nascondi' : 'Espandi' }}</button> -->
-        </div>
 
-        <div class="table-responsive">
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <h4>Contratti in Scadenza (40 giorni)</h4>
-            </mat-expansion-panel-header>
 
-            <ng-template matExpansionPanelContent>
-              <table id="table" class="table table-striped table-bordered">
-                <!--*ngIf="isTableVisible"-->
+
+
+    <mat-toolbar>
+      <a [routerLink]="['/home']" style="margin:5px; text-align: center;" > <img style="margin:5px; text-align: center;" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo"> </a>
+      <span> Sincrono CRM <button (click)="drawer.toggle()" mat-flat-button style="background-color: transparent; color: black;" > <mat-icon style="color: #ffffff;" >menu</mat-icon> </button> </span>
+      <span class="spacer"></span>
+      <span style="cursor: pointer;" id="icona" mat-icon-button [routerLink]="['/login']">
+        <mat-icon>logout</mat-icon>
+      </span>
+    </mat-toolbar>
+    <mat-drawer-container autosize class="example-container" >
+      <mat-drawer #drawer class="example-sidenav" mode="side" opened>
+        <nav>
+          <ul class="list-unstyled">
+            <li class="sidebar-item">
+              <p class="sidebar-link" [routerLink]="['/lista-anagrafica']">Lista anagrafiche</p>
+            </li>
+            <mat-divider></mat-divider>
+            <li class="sidebar-item">
+              <p class="sidebar-link" [routerLink]="['/dashboard']">Dashboard</p>
+            </li>
+            <mat-divider></mat-divider>
+            <li class="sidebar-item">
+              <p class="sidebar-link" [routerLink]="['/organico']">Organico</p>
+            </li>
+            <mat-divider></mat-divider>
+          </ul>
+        </nav>
+      </mat-drawer>
+      <mat-drawer-content>
+
+
+
+        <div class="container-fluid">
+          <header>
+            <h1>Dashboard</h1>
+          </header>
+          <main>
+            <div class="table-responsive">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <h4>Contratti Scatto Livello</h4>
+                </mat-expansion-panel-header>
+
+                <ng-template matExpansionPanelContent>
+                  <table id="table" class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">nome</th>
+                        <th scope="col">cognome</th>
+                        <th scope="col">codice fiscale</th>
+                        <th scope="col">Data Assunzione</th>
+                        <th scope="col">ccnl</th>
+                        <th scope="col">descrizione</th>
+                        <th scope="col">minimo retribuzione</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let element of data">
+                        <tr>
+                          <td>{{ element.anagrafica.nome }}</td>
+                          <td>{{ element.anagrafica.cognome }}</td>
+                          <td>{{ element.anagrafica.codiceFiscale }}</td>
+                          <td>{{ element.contratto.dataAssunzione }}</td>
+                          <td>{{ element.contratto.livelloContratto.ccnl }}</td>
+                          <td>
+                            {{ element.contratto.livelloContratto.descrizione }}
+                          </td>
+                          <td>
+                            {{ element.contratto.livelloContratto.minimiRet23 }}
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                    <button (click)="resetTabella()" class="btn btn-success">
+                      reset tabella
+                    </button>
+                  </table>
+                </ng-template>
+              </mat-expansion-panel>
+              <!-- <button (click)="toggleTable1()" class="btn btn-success" > {{ isTableVisible1 ? 'Nascondi' : 'Espandi' }}</button> -->
+            </div>
+
+            <div class="table-responsive">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <h4>Contratti in Scadenza (40 giorni)</h4>
+                </mat-expansion-panel-header>
+
+                <ng-template matExpansionPanelContent>
+                  <table id="table" class="table table-striped table-bordered">
+                    <!--*ngIf="isTableVisible"-->
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Nominativo</th>
+                        <th scope="col">Data Assunzione</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let data of lista">
+                        <tr
+                          *ngIf="
+                            this.scadenzaContratti40Giorni(
+                              data.contratto.dataAssunzione,
+                              data.contratto.mesiDurata
+                            )
+                          "
+                        >
+                          <td>{{ data.commessa.nominativo }}</td>
+                          <td>
+                            {{ this.transformDate(data.contratto.dataAssunzione) }}
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </ng-template>
+              </mat-expansion-panel>
+
+              <!-- <button (click)="toggleTable()" class="btn btn-success">  {{ isTableVisible ? 'Nascondi' : 'Espandi' }}</button> dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white; -->
+            </div>
+            <div class="table-responsive">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <h4>Commesse in Scadenza (40 giorni)</h4>
+                </mat-expansion-panel-header>
+
+                <ng-template matExpansionPanelContent>
+                  <!-- <button (click)="toggleTable2()" class="btn btn-success" >  {{ isTable2Visible ? 'Nascondi' : 'Espandi' }}</button> dark btn-sm rounded-pill shadow-sm style="background-color: rgb(24, 122, 0); color: white;" -->
+                  <table id="table" class="table table-striped table-bordered">
+                    <!--*ngIf="isTable2Visible"-->
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Nominativo</th>
+                        <th scope="col">Data Assunzione</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container
+                        *ngFor="let data of lista; index as i; first as isFirst"
+                      >
+                        <tr
+                          *ngIf="
+                            this.scadenzaCommesse40Giorni(data.commessa.dataFine)
+                          "
+                        >
+                          <td>{{ data.commessa.nominativo }}</td>
+                          <td>
+                            {{ this.transformDate(data.contratto.dataAssunzione) }}
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </ng-template>
+              </mat-expansion-panel>
+            </div>
+
+            <div style="padding-top: 70px" class="table-responsive">
+              <table class="table table-striped table-bordered">
                 <thead class="thead-dark">
                   <tr>
                     <th scope="col">Nominativo</th>
-                    <th scope="col">Data Assunzione</th>
+                    <th scope="col">Contratto</th>
+                    <th scope="col">Società</th>
+                    <th scope="col">Contratto Nazionale</th>
+                    <th scope="col">Data inizio</th>
+                    <th scope="col">Data fine</th>
+                    <th scope="col">Mesi durata</th>
+                    <th scope="col">1° Periodo</th>
+                    <th scope="col">2° Periodo</th>
+                    <th scope="col">3° Periodo</th>
+                    <th scope="col">Liv.att.</th>
+                    <th scope="col">Liv.fin.</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <ng-container *ngFor="let data of lista">
-                    <tr
-                      *ngIf="
-                        this.scadenzaContratti40Giorni(
-                          data.contratto.dataAssunzione,
-                          data.contratto.mesiDurata
-                        )
-                      "
-                    >
-                      <td>{{ data.commessa.nominativo }}</td>
-                      <td>
-                        {{ this.transformDate(data.contratto.dataAssunzione) }}
-                      </td>
-                    </tr>
-                  </ng-container>
-                </tbody>
-              </table>
-            </ng-template>
-          </mat-expansion-panel>
+                  <tr *ngFor="let data of lista">
+                    <td>{{ data.commessa.nominativo }}</td>
+                    <td>{{ data.contratto.tipoContratto.descrizione }}</td>
+                    <td>{{ data.contratto.tipoAzienda.descrizione }}</td>
+                    <td>{{ data.contratto.contrattoNazionale.descrizione }}</td>
+                    <td>{{ this.transformDate(data.commessa.dataInizio) }}</td>
+                    <td>{{ this.transformDate(data.commessa.dataFine) }}</td>
+                    <td>{{ data.contratto.mesiDurata }}</td>
 
-          <!-- <button (click)="toggleTable()" class="btn btn-success">  {{ isTableVisible ? 'Nascondi' : 'Espandi' }}</button> dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white; -->
-        </div>
-        <div class="table-responsive">
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <h4>Commesse in Scadenza (40 giorni)</h4>
-            </mat-expansion-panel-header>
-
-            <ng-template matExpansionPanelContent>
-              <!-- <button (click)="toggleTable2()" class="btn btn-success" >  {{ isTable2Visible ? 'Nascondi' : 'Espandi' }}</button> dark btn-sm rounded-pill shadow-sm style="background-color: rgb(24, 122, 0); color: white;" -->
-              <table id="table" class="table table-striped table-bordered">
-                <!--*ngIf="isTable2Visible"-->
-                <thead class="thead-dark">
-                  <tr>
-                    <th scope="col">Nominativo</th>
-                    <th scope="col">Data Assunzione</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <ng-container
-                    *ngFor="let data of lista; index as i; first as isFirst"
-                  >
-                    <tr
-                      *ngIf="
-                        this.scadenzaCommesse40Giorni(data.commessa.dataFine)
-                      "
-                    >
-                      <td>{{ data.commessa.nominativo }}</td>
-                      <td>
-                        {{ this.transformDate(data.contratto.dataAssunzione) }}
-                      </td>
-                    </tr>
-                  </ng-container>
-                </tbody>
-              </table>
-            </ng-template>
-          </mat-expansion-panel>
-        </div>
-
-        <div style="padding-top: 70px" class="table-responsive">
-          <table class="table table-striped table-bordered">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">Nominativo</th>
-                <th scope="col">Contratto</th>
-                <th scope="col">Società</th>
-                <th scope="col">Contratto Nazionale</th>
-                <th scope="col">Data inizio</th>
-                <th scope="col">Data fine</th>
-                <th scope="col">Mesi durata</th>
-                <th scope="col">1° Periodo</th>
-                <th scope="col">2° Periodo</th>
-                <th scope="col">3° Periodo</th>
-                <th scope="col">Liv.att.</th>
-                <th scope="col">Liv.fin.</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data of lista">
-                <td>{{ data.commessa.nominativo }}</td>
-                <td>{{ data.contratto.tipoContratto.descrizione }}</td>
-                <td>{{ data.contratto.tipoAzienda.descrizione }}</td>
-                <td>{{ data.contratto.contrattoNazionale.descrizione }}</td>
-                <td>{{ this.transformDate(data.commessa.dataInizio) }}</td>
-                <td>{{ this.transformDate(data.commessa.dataFine) }}</td>
-                <td>{{ data.contratto.mesiDurata }}</td>
-
-                <!---->
-                <td>
-                  <div
-                    *ngIf="
-                      this.calcolaScadenzaImminentePeriodo(
-                        data?.contratto.dataAssunzione,
-                        this.calcolaPeriodi(
-                          data.contratto.mesiDurata,
-                          data.contratto.contrattoNazionale.descrizione
-                        ),
-                        this.data.contratto.contrattoNazionale.descrizione
-                      ) == true;
-                      else elseBlock1
-                    "
-                  >
-                    <div style="color: red">
-                      {{
-                        this.calcolaPeriodi(
-                          data.contratto.mesiDurata,
-                          data.contratto.contrattoNazionale.descrizione
-                        )
-                      }}
-                    </div>
-                  </div>
-                  <ng-template #elseBlock1>
-                    {{
-                      this.calcolaPeriodi(
-                        data.contratto.mesiDurata,
-                        data.contratto.contrattoNazionale.descrizione
-                      )
-                    }}
-                  </ng-template>
-                </td>
-
-                <td>
-                  <div
-                    *ngIf="
-                      this.calcolaScadenzaImminentePeriodo2(
-                        data?.contratto.dataAssunzione,
-                        this.calcolaPeriodi(
-                          data.contratto.mesiDurata,
-                          data.contratto.contrattoNazionale.descrizione
-                        ),
-                        this.data.contratto.contrattoNazionale.descrizione
-                      ) == true;
-                      else elseBlock2
-                    "
-                  >
-                    <div style="color: red">
-                      {{
-                        this.calcolaPeriodi(
-                          data.contratto.mesiDurata,
-                          data.contratto.contrattoNazionale.descrizione
-                        )
-                      }}
-                    </div>
-                  </div>
-                  <ng-template #elseBlock2>
-                    {{
-                      this.calcolaPeriodi(
-                        data.contratto.mesiDurata,
-                        data.contratto.contrattoNazionale.descrizione
-                      )
-                    }}
-                  </ng-template>
-                </td>
-
-                <td>
-                  <div
-                    *ngIf="
-                      data.contratto.contrattoNazionale.descrizione ==
-                        'METALMECCANICO PMI CONFAPI';
-                      else elseBlock3
-                    "
-                  >
-                    <div
-                      *ngIf="
-                        this.calcolaScadenzaImminentePeriodo3(
-                          data?.contratto.dataAssunzione,
-                          this.calcolaPeriodi(
-                            data.contratto.mesiDurata,
-                            data.contratto.contrattoNazionale.descrizione
-                          )
-                        ) == true;
-                        else elseBlock4
-                      "
-                    >
-                      <div style="color: red">
+                    <!---->
+                    <td>
+                      <div
+                        *ngIf="
+                          this.calcolaScadenzaImminentePeriodo(
+                            data?.contratto.dataAssunzione,
+                            this.calcolaPeriodi(
+                              data.contratto.mesiDurata,
+                              data.contratto.contrattoNazionale.descrizione
+                            ),
+                            this.data.contratto.contrattoNazionale.descrizione
+                          ) == true;
+                          else elseBlock1
+                        "
+                      >
+                        <div style="color: red">
+                          {{
+                            this.calcolaPeriodi(
+                              data.contratto.mesiDurata,
+                              data.contratto.contrattoNazionale.descrizione
+                            )
+                          }}
+                        </div>
+                      </div>
+                      <ng-template #elseBlock1>
                         {{
                           this.calcolaPeriodi(
                             data.contratto.mesiDurata,
                             data.contratto.contrattoNazionale.descrizione
                           )
                         }}
-                      </div>
-                    </div>
-                  </div>
+                      </ng-template>
+                    </td>
 
-                  <ng-template #elseBlock3> </ng-template>
-                  <ng-template #elseBlock4>
-                    {{
-                      this.calcolaPeriodi(
-                        data.contratto.mesiDurata,
-                        data.contratto.contrattoNazionale.descrizione
-                      )
-                    }}
-                  </ng-template>
-                </td>
-                <td>{{ data.contratto.livelloAttuale }}</td>
-                <td>{{ data.contratto.livelloFinale }}</td>
-              </tr>
-            </tbody>
-          </table>
+                    <td>
+                      <div
+                        *ngIf="
+                          this.calcolaScadenzaImminentePeriodo2(
+                            data?.contratto.dataAssunzione,
+                            this.calcolaPeriodi(
+                              data.contratto.mesiDurata,
+                              data.contratto.contrattoNazionale.descrizione
+                            ),
+                            this.data.contratto.contrattoNazionale.descrizione
+                          ) == true;
+                          else elseBlock2
+                        "
+                      >
+                        <div style="color: red">
+                          {{
+                            this.calcolaPeriodi(
+                              data.contratto.mesiDurata,
+                              data.contratto.contrattoNazionale.descrizione
+                            )
+                          }}
+                        </div>
+                      </div>
+                      <ng-template #elseBlock2>
+                        {{
+                          this.calcolaPeriodi(
+                            data.contratto.mesiDurata,
+                            data.contratto.contrattoNazionale.descrizione
+                          )
+                        }}
+                      </ng-template>
+                    </td>
+
+                    <td>
+                      <div
+                        *ngIf="
+                          data.contratto.contrattoNazionale.descrizione ==
+                            'METALMECCANICO PMI CONFAPI';
+                          else elseBlock3
+                        "
+                      >
+                        <div
+                          *ngIf="
+                            this.calcolaScadenzaImminentePeriodo3(
+                              data?.contratto.dataAssunzione,
+                              this.calcolaPeriodi(
+                                data.contratto.mesiDurata,
+                                data.contratto.contrattoNazionale.descrizione
+                              )
+                            ) == true;
+                            else elseBlock4
+                          "
+                        >
+                          <div style="color: red">
+                            {{
+                              this.calcolaPeriodi(
+                                data.contratto.mesiDurata,
+                                data.contratto.contrattoNazionale.descrizione
+                              )
+                            }}
+                          </div>
+                        </div>
+                      </div>
+
+                      <ng-template #elseBlock3> </ng-template>
+                      <ng-template #elseBlock4>
+                        {{
+                          this.calcolaPeriodi(
+                            data.contratto.mesiDurata,
+                            data.contratto.contrattoNazionale.descrizione
+                          )
+                        }}
+                      </ng-template>
+                    </td>
+                    <td>{{ data.contratto.livelloAttuale }}</td>
+                    <td>{{ data.contratto.livelloFinale }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </main>
+          <!-- <footer>
+            <p>© 2023 CRM Company. Tutti i diritti riservati.</p>
+          </footer> -->
         </div>
-      </main>
-    </div>
+
+
+
+      </mat-drawer-content>
+
+    </mat-drawer-container>
+
   </body>
 </html>
