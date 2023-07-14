@@ -4,6 +4,7 @@ import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ContrattoService } from '../../contratto/contratto-service';
+import { AuthService } from '../../login/login-service';
 
 declare var $: any;
 
@@ -68,8 +69,14 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     private formBuilder: FormBuilder,
     private location: Location,
     private contrattoService: ContrattoService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private authService:AuthService
   ) {}
+
+
+  logout() {
+    this.authService.logout();
+  }
 
   reloadPage(): void {
     this.location.go(this.location.path());

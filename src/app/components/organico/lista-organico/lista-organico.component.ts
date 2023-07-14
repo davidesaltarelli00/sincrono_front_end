@@ -1,6 +1,7 @@
 import { OrganicoService } from '../organico-service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../login/login-service';
 
 declare var $: any;
 
@@ -19,8 +20,13 @@ export class ListaOrganicoComponent implements OnInit {
 
   constructor(
     private organicoService: OrganicoService,
-    private router: Router
+    private router: Router,
+    private authService:AuthService
   ) {}
+
+  logout() {
+    this.authService.logout();
+  }
 
   ngOnInit(): void {
     this.organicoService.listaOrganico().subscribe((resp: any) => {

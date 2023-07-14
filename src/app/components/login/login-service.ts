@@ -1,0 +1,33 @@
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  private users = [
+    { username: 'admin', password: 'admin', role: 'admin' },
+    { username: 'dipendente', password: 'dipendente', role: 'dipendente' },
+    { username: 'risorseumane', password: 'risorseumane', role: 'risorseumane' }
+  ];
+
+  public userLogged:string="";
+
+  login(username: string, password: string): boolean {
+    const user = this.users.find(user => user.username === username && user.password === password);
+    if (user) {
+      const token = { username: user.username, role: user.role };
+      localStorage.setItem('token', JSON.stringify(token));
+      console.log(token);
+      this.userLogged=username;
+      console.log("Utente loggato: " +this.userLogged)
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.clear();
+  }
+}

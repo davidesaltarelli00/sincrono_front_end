@@ -14,48 +14,103 @@ import { ModificaAnagraficaDtoComponent } from './components/anagraficaDto/modif
 import { LoginComponent } from './components/login/login/login.component';
 import { StoricoContrattiComponent } from './components/storici/storico-contratti/storico-contratti.component';
 import { StoricoCommesseComponent } from './components/storici/storico-commesse/storico-commesse.component';
+import { AuthGuard } from './components/login/AuthGuard';
+import { RoleGuard } from './components/login/RoleGuard ';
 const routes: Routes = [
   //HOME
   { path: '', component: LoginComponent },
-  { path: 'home', component: HomeComponent },
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
 
   //ANAGRAFICA
-  { path: 'lista-anagrafica', component: ListaAnagraficaDtoComponent },
-  { path: 'lista-anagrafica/:body', component: ListaAnagraficaDtoComponent },
+  {
+    path: 'lista-anagrafica',
+    component: ListaAnagraficaDtoComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'lista-anagrafica/:body',
+    component: ListaAnagraficaDtoComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
   {
     path: 'dettaglio-anagrafica/:id',
     component: DettaglioAnagraficaDtoComponent,
+    canActivate: [AuthGuard, RoleGuard],
   },
-  { path: 'dettaglio-anagrafica', component: DettaglioAnagraficaDtoComponent },
-  { path: 'nuova-anagrafica', component: NuovaAnagraficaDtoComponent },
+  {
+    path: 'dettaglio-anagrafica',
+    component: DettaglioAnagraficaDtoComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'nuova-anagrafica',
+    component: NuovaAnagraficaDtoComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { 'expectedRoles': ['admin', 'risorseumane'] }
+  },
   {
     path: 'modifica-anagrafica/:id',
     component: ModificaAnagraficaDtoComponent,
+    canActivate: [AuthGuard, RoleGuard],
   },
 
   //CONTRATTO
-  { path: 'dettaglio-contratto/:id', component: DettaglioContrattoComponent },
-  { path: 'modifica-contratto/:id', component: ModificaContrattoComponent },
-  { path: 'nuovo-contratto', component: NuovoContrattoComponent },
-  { path: 'lista-contratti', component: ListaContrattiComponent },
+  {
+    path: 'dettaglio-contratto/:id',
+    component: DettaglioContrattoComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'modifica-contratto/:id',
+    component: ModificaContrattoComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'nuovo-contratto',
+    component: NuovoContrattoComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'lista-contratti',
+    component: ListaContrattiComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
 
   //DASHBOARD
-  { path: 'dashboard', component: ListaDashboardComponent },
+  {
+    path: 'dashboard',
+    component: ListaDashboardComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { 'expectedRoles': ['admin', 'dipendente'] }
+  },
 
   //ORGANICO
-  { path: 'organico', component: ListaOrganicoComponent },
+  {
+    path: 'organico',
+    component: ListaOrganicoComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
 
   //LOGIN
   { path: 'login', component: LoginComponent },
 
   //STORICO CONTRATTI
 
-  { path: 'storico-contratti/:id', component: StoricoContrattiComponent },
+  {
+    path: 'storico-contratti/:id',
+    component: StoricoContrattiComponent,
+    canActivate: [AuthGuard],
+  },
 
   //STORICO COMMESSE
   {
     path: 'storico-commesse-anagrafica/:id',
     component: StoricoCommesseComponent,
+    canActivate: [AuthGuard],
   },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },

@@ -3,6 +3,7 @@ import { DashboardService } from './../dashboard-service.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../login/login-service';
 
 
 declare var $: any;
@@ -23,7 +24,7 @@ export class ListaDashboardComponent {
   check2: boolean = false;
   check3: boolean = false;
   dateString: any
-  constructor(private dashboardService: DashboardService, private router: Router, private contrattoService: ContrattoService) { }
+  constructor(private dashboardService: DashboardService, private router: Router, private contrattoService: ContrattoService, private authService:AuthService) { }
   isTableVisible: boolean = false;
   isTable2Visible: boolean = false;
   isTableVisible1: boolean=false;
@@ -52,7 +53,9 @@ export class ListaDashboardComponent {
 
   }
 
-
+logout(){
+  this.authService.logout();
+}
 
 
 

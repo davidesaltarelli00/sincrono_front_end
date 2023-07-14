@@ -93,9 +93,10 @@
       <mat-toolbar>
         <a [routerLink]="['/home']" style="margin:5px; text-align: center;" > <img style="margin:5px; text-align: center;" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo"> </a>
         <span> Sincrono CRM <button (click)="drawer.toggle()" mat-flat-button style="background-color: transparent; color: black;" > <mat-icon style="color: #ffffff;" >menu</mat-icon> </button> </span>
+        <small> <mat-icon>account_circle</mat-icon> {{userlogged}}</small>
         <span class="spacer"></span>
         <span style="cursor: pointer;" id="icona" mat-icon-button [routerLink]="['/login']">
-          <mat-icon>logout</mat-icon>
+           <mat-icon>logout</mat-icon>
         </span>
       </mat-toolbar>
       <mat-drawer-container autosize class="example-container" >
@@ -107,7 +108,7 @@
               </li>
               <mat-divider></mat-divider>
               <li class="sidebar-item">
-                <p class="sidebar-link" [routerLink]="['/dashboard']">Dashboard</p>
+                <p class="sidebar-link"  [routerLink]="['/dashboard']">Dashboard</p>
               </li>
               <mat-divider></mat-divider>
               <li class="sidebar-item">
