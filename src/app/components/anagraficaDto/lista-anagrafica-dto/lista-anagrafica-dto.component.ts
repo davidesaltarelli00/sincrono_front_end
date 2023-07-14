@@ -64,14 +64,22 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   });
 
+  userlogged: string='';
+
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
     private location: Location,
     private contrattoService: ContrattoService,
     private activatedRoute: ActivatedRoute,
-    private authService:AuthService
-  ) {}
+    public authService:AuthService
+  ) {
+    const userLogged = localStorage.getItem('userLogged');
+    if (userLogged) {
+      console.log("Utente loggato constructor: "+ this.userlogged)
+      this.userlogged = userLogged;
+    }
+  }
 
 
   logout() {

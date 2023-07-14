@@ -18,8 +18,8 @@ export class AuthService {
       const token = { username: user.username, role: user.role };
       localStorage.setItem('token', JSON.stringify(token));
       console.log(token);
-      this.userLogged=username;
-      console.log("Utente loggato: " +this.userLogged)
+      localStorage.setItem('userLogged', username);
+      console.log("Utente loggato: " + username);
       return true;
     } else {
       return false;
@@ -30,4 +30,10 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.clear();
   }
+
+
+  getUser(){
+    localStorage.getItem('userLogged');
+  }
+
 }

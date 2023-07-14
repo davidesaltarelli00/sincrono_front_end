@@ -57,12 +57,16 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.authService.login(this.username, this.password)) {
-        console.log(this.username, this.password);
-        this.userlogged=this.authService.userLogged;
-        this.router.navigate(["/home"]);
+      console.log(this.username, this.password);
+      const userLogged = this.authService.userLogged;
+      localStorage.setItem('userLogged', userLogged);
+      this.router.navigate(['/home']);
     } else {
-      console.log("Errore di autenticazione, riprovare.");
+      console.log('Errore di autenticazione, riprovare.');
     }
   }
+
+
+
 
 }

@@ -7,22 +7,20 @@ import { AuthService } from '../login/login-service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-
   isRisorseUmane: boolean = false;
-  userlogged='';
-  constructor(public authService:AuthService) {}
+  userlogged = localStorage.getItem('userLogged');
 
-  ngOnInit(): void {
-    this.userlogged = this.authService.userLogged;
-    console.log("Utente loggato home:"+ this.userlogged);
+  constructor(private authService: AuthService) {
+    const userLogged = localStorage.getItem('userLogged');
+    if (userLogged) {
+      this.userlogged = userLogged;
+    }
   }
+  ngOnInit(): void {}
 
-  seeSide(){
-
-  }
+  seeSide() {}
 
   logout() {
     this.authService.logout();
   }
-
 }

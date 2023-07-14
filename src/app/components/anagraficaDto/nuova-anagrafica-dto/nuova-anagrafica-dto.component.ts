@@ -124,13 +124,20 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       id: new FormControl(''),
     }),
   });
+  userlogged: string='';
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
     private router: Router,
     private contrattoService: ContrattoService
-  ){}
+  ){
+    const userLogged = localStorage.getItem('userLogged');
+         if (userLogged) {
+           console.log("Utente loggato constructor: "+ this.userlogged)
+           this.userlogged = userLogged;
+         }
+  }
 
   ngOnInit(): void {
     this.AnagraficaDto = this.formBuilder.group({

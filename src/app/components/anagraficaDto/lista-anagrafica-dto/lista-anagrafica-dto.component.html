@@ -120,6 +120,13 @@
       </mat-toolbar>
       <mat-drawer-container autosize class="example-container" >
         <mat-drawer #drawer class="example-sidenav" mode="side" opened>
+          <div class="profile-box" style="text-align: center;
+          color: white;
+          font-weight: 400;
+          border-bottom: 1px solid #f2f2f2; margin:auto;">
+            <mat-icon>account_circle</mat-icon> <br>
+            <p>{{userlogged}}</p>
+          </div>
           <nav>
             <ul class="list-unstyled">
               <li class="sidebar-item">
@@ -161,7 +168,6 @@
           <ng-template matExpansionPanelContent>
             <div *ngIf="mostraFiltri">
               <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter()">
-                  <h6>Filtri</h6>
                   <div class="container">
                       <div formGroupName="anagrafica">
                           <div class="row">
@@ -337,6 +343,13 @@
 
       </mat-drawer-container>
 
+<script>
+   const userLogged = localStorage.getItem('userLogged');
+         if (userLogged) {
+           console.log("Utente loggato constructor: "+ this.userlogged)
+           this.userlogged = userLogged;
+         }
+</script>
 
 </body>
 
