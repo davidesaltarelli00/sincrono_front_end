@@ -13,6 +13,8 @@ declare var $: any;
   templateUrl: './lista-anagrafica-dto.component.html',
   styleUrls: ['./lista-anagrafica-dto.component.scss'],
 })
+
+
 export class ListaAnagraficaDtoComponent implements OnInit {
 
   tipoContrattoFilter = this.activatedRoute.snapshot.params['tipoContratto'];
@@ -116,12 +118,13 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       this.lista = this.originalLista;
       console.log(resp);
 
-      $(function () {
-        $('#table').DataTable({
-          autoWidth: false,
-          responsive: true,
-        });
-      });
+      // $(function () {
+      //   $('#table').DataTable({
+      //     autoWidth: false,
+      //     responsive: true,
+      //   });
+      // }
+      // );
     });
 
     this.filterAnagraficaDto = this.formBuilder.group({
