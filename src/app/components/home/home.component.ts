@@ -10,26 +10,25 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   isRisorseUmane: boolean = false;
   userlogged = localStorage.getItem('userLogged');
+  role:any;
 
-  constructor(private authService: AuthService, private router:Router) {
+  constructor(private authService: AuthService, private router: Router) {
     const userLogged = localStorage.getItem('userLogged');
     if (userLogged) {
       this.userlogged = userLogged;
     }
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.role = this.authService.getTokenAndRole();
+    console.log("Ruolo: " + this.role);
+  }
 
   seeSide() {}
 
   logout() {
     this.authService.logout();
-    localStorage.clear();
-    location.reload();
-
   }
-
-
-  profile(){
-    this.router.navigate(['/profile-box/',this.userlogged]);
+  profile() {
+    this.router.navigate(['/profile-box/', this.userlogged]);
   }
 }

@@ -18,6 +18,7 @@ export class ListaOrganicoComponent implements OnInit {
   errore = false;
   messaggio: any;
   userlogged:any;
+  role: any;
 
   constructor(
     private organicoService: OrganicoService,
@@ -41,6 +42,9 @@ export class ListaOrganicoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.role = this.authService.getTokenAndRole();
+    console.log("Ruolo: " + this.role);
+
     this.organicoService.listaOrganico().subscribe((resp: any) => {
       this.lista = resp.list;
 

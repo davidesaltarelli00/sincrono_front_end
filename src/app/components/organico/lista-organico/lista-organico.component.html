@@ -124,8 +124,8 @@
             <p class="sidebar-link" [routerLink]="['/lista-anagrafica']">Lista anagrafiche</p>
           </li>
           <mat-divider></mat-divider>
-          <li class="sidebar-item">
-            <p class="sidebar-link" [routerLink]="['/dashboard']">Dashboard</p>
+          <li class="sidebar-item" [hidden]="role==='dipendente'|| role==='risorseumane'">
+            <p class="sidebar-link" [routerLink]="['/dashboard']" >Dashboard</p>
           </li>
           <mat-divider></mat-divider>
           <li class="sidebar-item">

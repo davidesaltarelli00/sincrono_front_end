@@ -129,7 +129,7 @@
           </div>
           <nav>
             <ul class="list-unstyled">
-              <li class="sidebar-item">
+              <li class="sidebar-item" [hidden]="role==='dipendente'|| role==='risorseumane'">
                 <p class="sidebar-link" [routerLink]="['/lista-anagrafica']">Lista anagrafiche</p>
               </li>
               <mat-divider></mat-divider>

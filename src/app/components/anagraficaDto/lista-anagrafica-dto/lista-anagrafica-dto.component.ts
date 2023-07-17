@@ -65,6 +65,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   });
 
   userlogged: string='';
+  role:any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -95,6 +96,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.role = this.authService.getTokenAndRole();
+    console.log("Ruolo: " + this.role);
+
     this.mostraFiltri = false;
 
     this.setFilterFromOrganico(
