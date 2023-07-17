@@ -16,6 +16,7 @@ import { StoricoContrattiComponent } from './components/storici/storico-contratt
 import { StoricoCommesseComponent } from './components/storici/storico-commesse/storico-commesse.component';
 import { AuthGuard } from './components/login/AuthGuard';
 import { RoleGuard } from './components/login/RoleGuard ';
+import { ProfileBoxComponent } from './components/profile-box/profile-box.component';
 const routes: Routes = [
   //HOME
   { path: '', component: LoginComponent },
@@ -77,6 +78,11 @@ const routes: Routes = [
   {
     path: 'lista-contratti',
     component: ListaContrattiComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'profile-box/:user',
+    component: ProfileBoxComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
 

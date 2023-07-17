@@ -67,7 +67,9 @@ logout(){
   this.authService.logout();
 }
 
-
+profile(){
+  this.router.navigate(['/profile-box/',this.userlogged]);
+}
 
 
   calcolaPeriodi(mesiDurata: any, descrizione: any): any {

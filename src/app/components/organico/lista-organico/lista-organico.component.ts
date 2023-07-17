@@ -36,6 +36,10 @@ export class ListaOrganicoComponent implements OnInit {
     this.authService.logout();
   }
 
+  profile(){
+    this.router.navigate(['/profile-box/',this.userlogged]);
+  }
+
   ngOnInit(): void {
     this.organicoService.listaOrganico().subscribe((resp: any) => {
       this.lista = resp.list;

@@ -37,6 +37,7 @@ import { StoricoCommesseComponent } from './components/storici/storico-commesse/
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MaterialModule } from './material.module';
+import { ProfileBoxComponent } from './components/profile-box/profile-box.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { MaterialModule } from './material.module';
     LoginComponent,
     StoricoContrattiComponent,
     StoricoCommesseComponent,
+    ProfileBoxComponent
   ],
   imports: [
     MatNativeDateModule,

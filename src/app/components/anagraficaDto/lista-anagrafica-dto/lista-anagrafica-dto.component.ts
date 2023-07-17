@@ -72,7 +72,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     private location: Location,
     private contrattoService: ContrattoService,
     private activatedRoute: ActivatedRoute,
-    public authService:AuthService
+    public authService:AuthService,
+    private router:Router
   ) {
     const userLogged = localStorage.getItem('userLogged');
     if (userLogged) {
@@ -80,7 +81,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       this.userlogged = userLogged;
     }
   }
-
+  profile(){
+    this.router.navigate(['/profile-box/',this.userlogged]);
+  }
 
   logout() {
     this.authService.logout();
