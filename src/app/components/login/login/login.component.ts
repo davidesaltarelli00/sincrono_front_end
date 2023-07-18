@@ -8,7 +8,7 @@ import { AuthService } from '../login-service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit, DoCheck {
+export class LoginComponent implements OnInit {
   // showSidebar: boolean = false;
   // formLogin: FormGroup;
   // isLoginPage = true; // Imposta su true quando sei nella pagina di login
@@ -58,11 +58,9 @@ export class LoginComponent implements OnInit, DoCheck {
 
 
   ngOnInit() {
+
   }
 
-  ngDoCheck(): void {
-    this. ngOnInit() ;
-  }
 
 
   login() {

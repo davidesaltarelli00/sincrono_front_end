@@ -19,7 +19,7 @@ import { RoleGuard } from './components/login/RoleGuard ';
 import { ProfileBoxComponent } from './components/profile-box/profile-box.component';
 const routes: Routes = [
   //HOME
-  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Reindirizza alla rotta '/login'
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   {
     path: 'home',

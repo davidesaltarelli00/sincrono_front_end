@@ -43,4 +43,8 @@ export class AuthService {
     return this.http.get<any>(resourceUrl, { headers });
   }
 
+logout(){
+  localStorage.clear();
+}
+
 }
