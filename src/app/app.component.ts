@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
   title = 'sincrono';
   showFiller = false;
   isLoginPage :any;
-  userlogged=this.authService.userLogged;
+  // userlogged=this.authService.userLogged;
   constructor(private router: Router, private authService:AuthService) {}
   public ngOnInit(): void {
     this.router.events.subscribe((event) => {

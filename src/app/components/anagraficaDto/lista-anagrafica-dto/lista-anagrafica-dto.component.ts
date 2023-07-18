@@ -89,7 +89,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
+    // this.authService.logout();
   }
 
   reloadPage(): void {
@@ -99,7 +99,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.role = this.authService.getTokenAndRole();
+    // this.role = this.authService.getTokenAndRole();
     console.log("Ruolo: " + this.role);
 
     this.mostraFiltri = false;

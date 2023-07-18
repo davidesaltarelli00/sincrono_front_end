@@ -67,6 +67,7 @@ import { ProfileBoxComponent } from './components/profile-box/profile-box.compon
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule ,
     FormsModule,
     ReactiveFormsModule,
     MaterialModule

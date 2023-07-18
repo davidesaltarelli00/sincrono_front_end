@@ -1,51 +1,42 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
+import { AuthenticationResponse } from './login/AuthenticationResponse';
+// import { AuthenticationResponse } from 'path-to-authentication-response.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private users = [
-    { username: 'admin', password: 'admin', role: 'admin' },
-    { username: 'dipendente', password: 'dipendente', role: 'dipendente' },
-    {
-      username: 'risorseumane',
-      password: 'risorseumane',
-      role: 'risorseumane',
-    },
-  ];
+  constructor(private http: HttpClient) {}
 
-  public userLogged: any;
+  authenticate(username: string, password: string): Observable<AuthenticationResponse> {
+    const body = {
+      email: username,
+      password: password
+    };
 
-  login(username: string, password: string): boolean {
-    const user = this.users.find(
-      (user) => user.username === username && user.password === password
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Authenticate', 'token');
+
+    // return this.http.post<AuthenticationResponse>('http://localhost:8080/login-service/authenticate', body, { headers });
+    return this.http.post<AuthenticationResponse>('http://localhost:8080/login-service/authenticate', body, { headers })
+    .pipe(
+      tap(response => {
+        localStorage.setItem('token', response.token); // Memorizza il token nel localStorage
+      })
     );
-    if (user) {
-      const token = { username: user.username, role: user.role };
-      localStorage.setItem('token', JSON.stringify(token));
-      console.log(token);
-      localStorage.setItem('userLogged', username);
-      console.log('Utente loggato: ' + username);
-      return true;
-    } else {
-      return false;
-    }
+
+  }
+  getAuthenticatedResource(resourceUrl: string): Observable<any> {
+    const token = localStorage.getItem('token'); // Ottieni il token dal localStorage o da una fonte sicura
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<any>(resourceUrl, { headers });
   }
 
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userLogged');
-  }
-
-  getUser() {
-    return localStorage.getItem('userLogged');
-  }
-
-  getTokenAndRole() {
-    const tokenString = localStorage.getItem('token');
-    if (tokenString) {
-      const token = JSON.parse(tokenString);
-      return token.role;
-    }
-  }
 }

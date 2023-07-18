@@ -45,24 +45,57 @@ export class LoginComponent implements OnInit {
   //   }
   // }
 
-  username: string="";
-  password: string="";
-  userlogged="";
 
-  constructor(private authService: AuthService, private router:Router) {}
 
-  ngOnInit(): void {
+  loginForm: FormGroup;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router:Router
+  ) {
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
+
+  ngOnInit() {
+
   }
 
   login() {
-    if (this.authService.login(this.username, this.password)) {
-      console.log(this.username, this.password);
-      const userLogged = localStorage.getItem('userLogged');
-      this.authService.userLogged = userLogged;
-      this.router.navigate(['/home']);
-    } else {
-      console.log('Errore di autenticazione, riprovare.');
-    }
+    const username = this.loginForm.value.username;
+    const password = this.loginForm.value.password;
+
+    this.authService.authenticate(username, password)
+    .subscribe(
+      response => {
+        // Login successful, handle the response
+        console.log('Login successful!');
+        console.log(response);
+
+        // Formatta il token
+        const tokenParts = response.token.split('.');
+        const tokenHeader = JSON.parse(atob(tokenParts[0]));
+        const tokenPayload = JSON.parse(atob(tokenParts[1]));
+
+        // Puoi accedere alle parti del token come oggetti JSON
+        console.log('Token header:', tokenHeader);
+        console.log('Token payload:', tokenPayload);
+
+        // Memorizza il token nel localStorage
+        localStorage.setItem('token', response.token);
+
+        // Redirect a una diversa pagina o esegui altre azioni
+        this.router.navigate(['/home']);
+      },
+      error => {
+        // Login failed, handle the error
+        console.error('Login failed', error);
+      }
+    );
+
   }
 
 

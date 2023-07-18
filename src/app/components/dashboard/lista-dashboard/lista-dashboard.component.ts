@@ -64,7 +64,7 @@ export class ListaDashboardComponent {
   }
 
 logout(){
-  this.authService.logout();
+  // this.authService.logout();
 }
 
 profile(){

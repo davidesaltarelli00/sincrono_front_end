@@ -34,7 +34,7 @@ export class ListaOrganicoComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
+    // this.authService.logout();
   }
 
   profile(){
@@ -42,7 +42,7 @@ export class ListaOrganicoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.role = this.authService.getTokenAndRole();
+    // this.role = this.authService.getTokenAndRole();
     console.log("Ruolo: " + this.role);
 
     this.organicoService.listaOrganico().subscribe((resp: any) => {

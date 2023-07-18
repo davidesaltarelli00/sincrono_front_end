@@ -69,7 +69,7 @@ export class DettaglioAnagraficaDtoComponent {
         console.log(this.data);
       });
 
-      this.role = this.authService.getTokenAndRole();
+      // this.role = this.authService.getTokenAndRole();
       console.log("Ruolo: " + this.role);
       const userLogged = localStorage.getItem('userLogged');
       if (userLogged) {
@@ -78,7 +78,7 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
   logout() {
-    this.authService.logout();
+    // this.authService.logout();
   }
   profile() {
     this.router.navigate(['/profile-box/', this.userlogged]);
