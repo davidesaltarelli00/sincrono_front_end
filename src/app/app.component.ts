@@ -12,10 +12,20 @@ export class AppComponent implements OnInit {
   isAuthenticated: boolean = false;
   @ViewChild('drawer') drawer!: MatDrawer;
   isViewInitialized: boolean = false;
+  token:any;
 
   constructor(private router: Router, private authService: AuthService) {
-    console.log(this.isAuthenticated);
-    console.log(this.isViewInitialized);
+    const token = localStorage.getItem('token');
+    console.log("TOKEN:"+token);
+    if (token ==null) {
+      const toolbarElement = document.getElementById('toolbar');
+      if (toolbarElement) {
+        toolbarElement.style.display = 'none';
+      }
+    } else{
+      this.token=token;
+      console.log("TOKEN VALORIZZATO:"+ this.token);
+    }
 
   }
 
@@ -27,7 +37,6 @@ export class AppComponent implements OnInit {
         this.isAuthenticated = url !== '/login';
       }
     });
-
     setTimeout(() => {
       this.isViewInitialized = true; // Imposta la vista come inizializzata dopo un ritardo
     }, 0);

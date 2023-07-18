@@ -21,7 +21,6 @@ export class AuthService {
       .set('Access-Control-Allow-Origin', '*')
       .set('Authenticate', 'token');
 
-    // return this.http.post<AuthenticationResponse>('http://localhost:8080/login-service/authenticate', body, { headers });
     return this.http.post<AuthenticationResponse>('http://localhost:8080/login-service/authenticate', body, { headers })
     .pipe(
       tap(response => {
