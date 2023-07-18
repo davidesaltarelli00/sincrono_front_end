@@ -19,7 +19,8 @@ import { RoleGuard } from './components/login/RoleGuard ';
 import { ProfileBoxComponent } from './components/profile-box/profile-box.component';
 const routes: Routes = [
   //HOME
-  { path: '', component: LoginComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Reindirizza alla rotta '/login'
+  { path: 'login', component: LoginComponent },
   {
     path: 'home',
     component: HomeComponent,
@@ -51,7 +52,7 @@ const routes: Routes = [
     path: 'nuova-anagrafica',
     component: NuovaAnagraficaDtoComponent,
     canActivate: [AuthGuard, RoleGuard],
-    data: { 'expectedRoles': ['admin', 'risorseumane'] }
+    // data: { 'expectedRoles': ['admin', 'risorseumane'] }
   },
   {
     path: 'modifica-anagrafica/:id',
@@ -91,7 +92,7 @@ const routes: Routes = [
     path: 'dashboard',
     component: ListaDashboardComponent,
     canActivate: [AuthGuard, RoleGuard],
-    data: { 'expectedRoles': ['admin'] }
+    // data: { 'expectedRoles': ['admin'] }
   },
 
   //ORGANICO
@@ -119,7 +120,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
 
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
 @NgModule({

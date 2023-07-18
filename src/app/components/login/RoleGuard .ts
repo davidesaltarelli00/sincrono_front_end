@@ -20,7 +20,7 @@ export class RoleGuard implements CanActivate {
 
       if (expectedRoles && !expectedRoles.includes(userRole)) { // verifica della presenza del ruolo dell'utente tra quelli consentiti
         // Utente NON AUTORIZZATO
-        this.router.navigate(['/unauthorized']);
+        alert("Utente non autorizzato.")
         return false;
       }
 

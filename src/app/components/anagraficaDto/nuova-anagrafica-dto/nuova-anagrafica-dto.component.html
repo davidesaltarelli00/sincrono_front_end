@@ -1,1119 +1,946 @@
-<html>
-  <head>
-    <title> </title>
-  </head>
-  <style>
-    .sidebar {
-      width: 250px;
-      background-color: #333;
-      color: #ffffff;
-      height: 200vh;
-      position: inherit;
-    }
+<div class="container-fluid">
 
-    /* Stile delle voci di menu nella sidebar */
-    .sidebar-item {
-      padding: 10px 20px;
-      border-bottom: 1px solid #ffffff;
-    }
+  <form [formGroup]="AnagraficaDto" (ngSubmit)="inserisci()">
+    <!-- Step 1: Anagrafica -->
+    <div *ngIf="currentStep === 1">
+      <div class="row">
+        <div class="col-12">
 
-    .sidebar-item:last-child {
-      border-bottom: none;
-    }
+          <mat-stepper #stepper [selectedIndex]="currentStep - 1">
+            <mat-step>
+              <ng-template matStepLabel>Anagrafica</ng-template>
+              <mat-card>
+                <mat-card-content>
+                  <div class="row">
+                    <div class="col-12">
+                      <h3 style="text-align: center;" >Step 1:Anagrafica</h3>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="ruolo" formGroupName="ruolo">
+                        <label for="filter-ruoli">ruolo</label>
+                        <select class="form-control" formControlName="id" type="number">
+                          <option value="">--nessuna selezione--</option>
+                          <option *ngFor="let ruolo of ruoli" value="{{ ruolo.id }}">
+                            {{ ruolo.nome }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Azienda: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="aziendaTipo"
+                          placeholder="Inserire azienda"
+                        />
+                      </div>
+                    </div>
+                    <br>
+                  </div>
+                  <div formGroupName="anagrafica">
+                    <!-- <div class="row">
 
-    .sidebar-link {
-      text-decoration: none;
-      color: #ffffff;
-    }
+                    </div> -->
+                    <div class="row" id="nominativo">
+                      <legend>Dati personali:</legend>
+                      <div class="col-md-3">
+                        <label for="nome">Nome: </label>
+                        <div class="form-group">
+                          <input
+                            id="anagrafica.nome"
+                            type="text"
+                            class="form-control"
+                            placeholder="Inserire il nome"
+                            formControlName="nome"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Cognome: </label>
+                        <div class="form-group">
+                          <input
+                            id="anagrafica.cognome"
+                            type="text"
+                            class="form-control"
+                            placeholder="Inserire il cognome"
+                            formControlName="cognome"
+                          />
+                        </div>
+                      </div>
+                      <br>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label>Codice Fiscale: </label>
+                        <div class="form-group">
+                          <input
+                            id="anagrafica.codiceFiscale"
+                            type="text"
+                            class="form-control"
+                            placeholder="Inserire il codice fiscale"
+                            formControlName="codiceFiscale"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <legend>Recapiti</legend>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label>Cellulare Privato: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="cellularePrivato"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Cellulare Aziendale: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="cellulareAziendale"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label>Email Privata: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="mailPrivata"
+                          />
+                        </div>
+                        <label>Email Pec: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="mailPec"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Email Aziendale: </label>
+                        <div class="form-group">
+                          <input
+                            id="anagrafica.mailAziendale"
+                            type="text"
+                            class="form-control"
+                            formControlName="mailAziendale"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <legend>Competenze</legend>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label>Titolo di Studio: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="titoliDiStudio"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Altri Titoli: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="altriTitoli"
+                          />
+                        </div>
+                      </div>
+                    </div>
 
-    .sidebar-link:hover {
-      color: #d8d8d8;
-    }
+                    <legend>Info Extra</legend>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label>Comune di Nascita: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="comuneDiNascita"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Residenza: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="residenza"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Domicilio: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="domicilio"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label>Data di Nascita: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="dataDiNascita"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Coniugato: </label>
+                        <div class="form-group">
+                          <input
+                            style="border-color: black"
+                            class="form-check-input"
+                            type="checkbox"
+                            formControlName="coniugato"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Figli a Carico: </label>
+                        <div class="form-group">
+                          <input
+                            style="border-color: black"
+                            class="form-check-input"
+                            type="checkbox"
+                            formControlName="figliACarico"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-6" style="text-align: end;">
+                        <!-- <button id="avanti" style="margin: auto; text-align: center;" type="button" class="btn btn-primary" (click)="nextStep()">Avanti »</button> -->
+                        <button hidden mat-button matStepperPrevious>« Indietro</button>
 
-    .content {
-      flex: 1;
-      padding: 20px;
-    }
-
-    .navbar {
-      padding: 10px 20px;
-    }
-
-    .navbar-brand {
-      font-weight: bold;
-    }
-
-    .navbar-nav {
-      margin-left: auto;
-    }
-
-    .nav-link {
-      color: #ffffff;
-      text-decoration: none;
-      margin-left: 10px;
-    }
-
-    .nav-link:hover {
-      color: #d8d8d8;
-    }
-
-    .login-page .sidebar {
-      display: none;
-    }
-
-    .example-container {
-     width: 100%;
-      height: 100%;
-    }
-
-    .spacer {
-      flex: 1 1 auto;
-    }
-
-    mat-drawer{
-      background-color: #333;
-    }
-
-    p{
-      cursor: pointer;
-    }
-
-    mat-icon-button:hover{
-    background-color: none;
-    }
-
-    mat-toolbar{
-      background-color: #333;
-      color: white;
-    }
-
-
-    </style>
-  <body > <!--style="padding-top: 70px"-->
-    <!--div *ngIf="showErrorPopup" class="alert alert-danger" role="alert">
-        Si è verificato un errore.
-        <button (click)="chiudiPopup()" class="close" aria-label="Chiudi">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </!--div>
-
-      <div-- *ngIf="showSuccessPopup" class="alert alert-success" role="alert">
-        Operazione completata con successo.
-        <button (click)="chiudiPopup()" class="close" aria-label="Chiudi">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div-->
-
-
-
-
-
-
-      <!-- <div class="container-fluid">
-        <form [formGroup]="AnagraficaDto" (ngSubmit)="inserisci()">
-          <div class="container-fluid">
+                      </div>
+                      <div class="col-6" style="text-align: start;">
+                        <!-- <button id="avanti" style="margin: auto; text-align: center;" type="button" class="btn btn-primary" (click)="nextStep()">Avanti »</button> -->
+                        <button mat-button matStepperNext>Avanti »</button>
+                      </div>
+                    </div>
+                    <br>
+                  </div>
+                </mat-card-content>
+              </mat-card>
 
 
 
+             </mat-step>
+            <mat-step >
+              <ng-template matStepLabel>Commessa</ng-template>
+              <div class="row">
+                <div class="col-12">
+                  <mat-card>
+                    <mat-card-content>
 
-
-          </div>
-
-
-        </form>
-      </div> -->
-
-      <mat-toolbar>
-        <a [routerLink]="['/home']" style="margin:5px; text-align: center;" > <img style="margin:5px; text-align: center;" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo"> </a>
-        <span> Sincrono CRM <button (click)="drawer.toggle()" mat-flat-button style="background-color: transparent; color: black;" > <mat-icon style="color: #ffffff;" >menu</mat-icon> </button> </span>
-        <span class="spacer"></span>
-        <span style="cursor: pointer;" id="icona" mat-icon-button [routerLink]="['/login']">
-          <mat-icon>logout</mat-icon>
-        </span>
-      </mat-toolbar>
-      <mat-drawer-container autosize class="example-container" >
-        <mat-drawer #drawer class="example-sidenav" mode="side" opened>
-          <div class="profile-box" style="text-align: center;
-          color: white;
-          font-weight: 400;
-          border-bottom: 1px solid #f2f2f2; margin:auto;">
-            <mat-icon>account_circle</mat-icon> <br>
-            <p>{{userlogged}}</p>
-          </div>
-          <nav>
-            <ul class="list-unstyled">
-              <li class="sidebar-item">
-                <p class="sidebar-link" [routerLink]="['/lista-anagrafica']">Lista anagrafiche</p>
-              </li>
-              <mat-divider></mat-divider>
-              <li class="sidebar-item">
-                <p class="sidebar-link" [routerLink]="['/dashboard']">Dashboard</p>
-              </li>
-              <mat-divider></mat-divider>
-              <li class="sidebar-item">
-                <p class="sidebar-link" [routerLink]="['/organico']">Organico</p>
-              </li>
-              <mat-divider></mat-divider>
-            </ul>
-          </nav>
-        </mat-drawer>
-        <mat-drawer-content>
-          <div class="container-fluid">
-
-            <form [formGroup]="AnagraficaDto" (ngSubmit)="inserisci()">
-              <!-- Step 1: Anagrafica -->
-              <div *ngIf="currentStep === 1">
+                <div formGroupName="commessa">
+                  <div class="row">
+                    <div class="col-12">
+                 <!-- <strong><h1 style="text-align: center;">Step 2: Commessa</h1></strong> -->
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Cliente: </label>
+                      <div class="form-group">
+                        <input
+                          id="commessa.cliente"
+                          type="text"
+                          class="form-control"
+                          formControlName="cliente"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Cliente Finale: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="clienteFinale"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Titolo Posizione: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="titoloPosizione"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Distacco: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="distacco"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Costo mese: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="costoMese"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <legend>Date</legend>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <form>
+                        <div class="form-group">
+                          <label for="dataInizio">Data Inizio:</label>
+                          <input
+                            id="commessa.dataInizio"
+                            type="date"
+                            class="form-control"
+                            name="dataInput"
+                            formControlName="dataInizio"
+                          />
+                        </div>
+                      </form>
+                    </div>
+                    <div class="col-md-3">
+                      <form>
+                        <div class="form-group">
+                          <label for="dataInizio">Data Fine:</label>
+                          <input
+                            id="commessa.dataFine"
+                            type="date"
+                            class="form-control"
+                            name="dataInput"
+                            formControlName="dataFine"
+                          />
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Tariffa giornaliera: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="tariffaGiornaliera"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Nominativo: </label>
+                      <div class="form-group">
+                        <input
+                          id="commessa.nominativo"
+                          type="text"
+                          class="form-control"
+                          formControlName="nominativo"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Azienda: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="azienda"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Azienda di fatturazione interna: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="aziendaDiFatturazioneInterna"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Attesa lavori: </label>
+                      <div class="form-group">
+                        <div class="form-check">
+                          <input
+                            style="border-color: black"
+                            class="form-check-input"
+                            type="checkbox"
+                            formControlName="attesaLavori"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="row">
-                  <div class="col-12">
+                  <div class="col-6" style="text-align: end;">
+                    <!-- <button id="indietro" type="button" class="btn btn-primary" (click)="prevStep()">« Indietro</button> -->
+                    <button mat-button matStepperPrevious>« Indietro</button>
+                  </div>
+                  <div class="col-6" style="text-align: start;">
+                    <!-- <button id="avanti" type="button" class="btn btn-primary" (click)="nextStep()">Avanti »</button> -->
+                    <button mat-button matStepperNext>Avanti »</button>
+                  </div>
+                </div>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+              </div>
+            </mat-step>
+            <mat-step>
+              <ng-template matStepLabel>Contratto</ng-template>
+              <div >
 
-                    <mat-stepper #stepper [selectedIndex]="currentStep - 1">
-                      <mat-step>
-                        <ng-template matStepLabel>Anagrafica</ng-template>
-                        <mat-card>
-                          <mat-card-content>
-                            <div class="row">
-                              <div class="col-12">
-                                <h3 style="text-align: center;" >Step 1:Anagrafica</h3>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <div class="ruolo" formGroupName="ruolo">
-                                  <label for="filter-ruoli">ruolo</label>
-                                  <select class="form-control" formControlName="id" type="number">
-                                    <option value="">--nessuna selezione--</option>
-                                    <option *ngFor="let ruolo of ruoli" value="{{ ruolo.id }}">
-                                      {{ ruolo.nome }}
-                                    </option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>Azienda: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="aziendaTipo"
-                                    placeholder="Inserire azienda"
-                                  />
-                                </div>
-                              </div>
-                              <br>
-                            </div>
-                            <div formGroupName="anagrafica">
-                              <!-- <div class="row">
+                <div formGroupName="contratto">
+                 <!-- <strong><h1 style="text-align: center;" >Step 3: Contratto</h1></strong> -->
+                  <legend>Dati Tipologici</legend>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div formGroupName="tipoAzienda">
+                        <label for="filter-Tipo Azienda">Tipo Azienda:</label>
+                        <select
+                          class="form-control"
+                          id="contratto.tipoAzienda.id"
+                          formControlName="id"
+                          type="number"
+                        >
+                          <option value="">--nessuna selezione--</option>
+                          <option
+                            *ngFor="let tipoAzienda of tipiAziende"
+                            value="{{ tipoAzienda.id }}"
+                          >
+                            {{ tipoAzienda.descrizione }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div formGroupName="tipoContratto">
+                        <label for="filter-TipoContratto">Tipo Contratto:</label>
+                        <select
+                          class="form-control"
+                          id="contratto.tipoContratto.id"
+                          formControlName="id"
+                        >
+                          <option value="">--nessuna selezione--</option>
+                          <option
+                            *ngFor="let tipoContratto of tipiContratti"
+                            value="{{ tipoContratto.id }}"
+                          >
+                            {{ tipoContratto.descrizione }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div formGroupName="livelloContratto">
+                        <label for="filter-LivelloContratto">Livello Contratto:</label>
+                        <select
+                          class="form-control"
+                          id="contratto.livelloContratto.id"
+                          formControlName="id"
+                        >
+                          <option value="">--nessuna selezione--</option>
+                          <option
+                            *ngFor="let livelloContratto of livelliContratti"
+                            value="{{ livelloContratto.id }}"
+                          >
+                            {{ livelloContratto.descrizione }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
 
-                              </div> -->
-                              <div class="row" id="nominativo">
-                                <legend>Dati personali:</legend>
-                                <div class="col-md-3">
-                                  <label for="nome">Nome: </label>
-                                  <div class="form-group">
-                                    <input
-                                      id="anagrafica.nome"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="Inserire il nome"
-                                      formControlName="nome"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-3">
-                                  <label>Cognome: </label>
-                                  <div class="form-group">
-                                    <input
-                                      id="anagrafica.cognome"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="Inserire il cognome"
-                                      formControlName="cognome"
-                                    />
-                                  </div>
-                                </div>
-                                <br>
-                              </div>
-                              <div class="row">
-                                <div class="col-md-6">
-                                  <label>Codice Fiscale: </label>
-                                  <div class="form-group">
-                                    <input
-                                      id="anagrafica.codiceFiscale"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="Inserire il codice fiscale"
-                                      formControlName="codiceFiscale"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <br>
-                              <legend>Recapiti</legend>
-                              <div class="row">
-                                <div class="col-md-3">
-                                  <label>Cellulare Privato: </label>
-                                  <div class="form-group">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      formControlName="cellularePrivato"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-3">
-                                  <label>Cellulare Aziendale: </label>
-                                  <div class="form-group">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      formControlName="cellulareAziendale"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-md-3">
-                                  <label>Email Privata: </label>
-                                  <div class="form-group">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      formControlName="mailPrivata"
-                                    />
-                                  </div>
-                                  <label>Email Pec: </label>
-                                  <div class="form-group">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      formControlName="mailPec"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-3">
-                                  <label>Email Aziendale: </label>
-                                  <div class="form-group">
-                                    <input
-                                      id="anagrafica.mailAziendale"
-                                      type="text"
-                                      class="form-control"
-                                      formControlName="mailAziendale"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <br>
-                              <legend>Competenze</legend>
-                              <div class="row">
-                                <div class="col-md-3">
-                                  <label>Titolo di Studio: </label>
-                                  <div class="form-group">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      formControlName="titoliDiStudio"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-3">
-                                  <label>Altri Titoli: </label>
-                                  <div class="form-group">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      formControlName="altriTitoli"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-
-                              <legend>Info Extra</legend>
-                              <div class="row">
-                                <div class="col-md-3">
-                                  <label>Comune di Nascita: </label>
-                                  <div class="form-group">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      formControlName="comuneDiNascita"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-3">
-                                  <label>Residenza: </label>
-                                  <div class="form-group">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      formControlName="residenza"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-3">
-                                  <label>Domicilio: </label>
-                                  <div class="form-group">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      formControlName="domicilio"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-md-3">
-                                  <label>Data di Nascita: </label>
-                                  <div class="form-group">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      formControlName="dataDiNascita"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-3">
-                                  <label>Coniugato: </label>
-                                  <div class="form-group">
-                                    <input
-                                      style="border-color: black"
-                                      class="form-check-input"
-                                      type="checkbox"
-                                      formControlName="coniugato"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-3">
-                                  <label>Figli a Carico: </label>
-                                  <div class="form-group">
-                                    <input
-                                      style="border-color: black"
-                                      class="form-check-input"
-                                      type="checkbox"
-                                      formControlName="figliACarico"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <br>
-                              <div class="row">
-                                <div class="col-6" style="text-align: end;">
-                                  <!-- <button id="avanti" style="margin: auto; text-align: center;" type="button" class="btn btn-primary" (click)="nextStep()">Avanti »</button> -->
-                                  <button hidden mat-button matStepperPrevious>« Indietro</button>
-
-                                </div>
-                                <div class="col-6" style="text-align: start;">
-                                  <!-- <button id="avanti" style="margin: auto; text-align: center;" type="button" class="btn btn-primary" (click)="nextStep()">Avanti »</button> -->
-                                  <button mat-button matStepperNext>Avanti »</button>
-                                </div>
-                              </div>
-                              <br>
-                            </div>
-                          </mat-card-content>
-                        </mat-card>
+                    <div class="col-md-3">
+                      <div formGroupName="contrattoNazionale">
+                        <label for="filter-Tipo Contratto nazionale"
+                          >Tipo Contratto nazionale:</label
+                        >
+                        <select
+                          class="form-control"
+                          id="contratto.contrattoNazionale.id"
+                          formControlName="id"
+                        >
+                          <option value="">--nessuna selezione--</option>
+                          <option
+                            *ngFor="let contrattiNazionale of contrattiNazionali"
+                            value="{{ contrattiNazionale.id }}"
+                          >
+                            {{ contrattiNazionale.descrizione }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
 
 
+                  </div>
+                  <div class="row">
 
-                       </mat-step>
-                      <mat-step >
-                        <ng-template matStepLabel>Commessa</ng-template>
-                        <div class="row">
-                          <div class="col-12">
-                            <mat-card>
-                              <mat-card-content>
+                  </div>
 
-                          <div formGroupName="commessa">
-                            <div class="row">
-                              <div class="col-12">
-                           <!-- <strong><h1 style="text-align: center;">Step 2: Commessa</h1></strong> -->
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <label>Cliente: </label>
-                                <div class="form-group">
-                                  <input
-                                    id="commessa.cliente"
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="cliente"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>Cliente Finale: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="clienteFinale"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <label>Titolo Posizione: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="titoloPosizione"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>Distacco: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="distacco"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>Costo mese: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="costoMese"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <legend>Date</legend>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <form>
-                                  <div class="form-group">
-                                    <label for="dataInizio">Data Inizio:</label>
-                                    <input
-                                      id="commessa.dataInizio"
-                                      type="date"
-                                      class="form-control"
-                                      name="dataInput"
-                                      formControlName="dataInizio"
-                                    />
-                                  </div>
-                                </form>
-                              </div>
-                              <div class="col-md-3">
-                                <form>
-                                  <div class="form-group">
-                                    <label for="dataInizio">Data Fine:</label>
-                                    <input
-                                      id="commessa.dataFine"
-                                      type="date"
-                                      class="form-control"
-                                      name="dataInput"
-                                      formControlName="dataFine"
-                                    />
-                                  </div>
-                                </form>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <label>Tariffa giornaliera: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="tariffaGiornaliera"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <label>Nominativo: </label>
-                                <div class="form-group">
-                                  <input
-                                    id="commessa.nominativo"
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="nominativo"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>Azienda: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="azienda"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>Azienda di fatturazione interna: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="aziendaDiFatturazioneInterna"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <label>Attesa lavori: </label>
-                                <div class="form-group">
-                                  <div class="form-check">
-                                    <input
-                                      style="border-color: black"
-                                      class="form-check-input"
-                                      type="checkbox"
-                                      formControlName="attesaLavori"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-6" style="text-align: end;">
-                              <!-- <button id="indietro" type="button" class="btn btn-primary" (click)="prevStep()">« Indietro</button> -->
-                              <button mat-button matStepperPrevious>« Indietro</button>
-                            </div>
-                            <div class="col-6" style="text-align: start;">
-                              <!-- <button id="avanti" type="button" class="btn btn-primary" (click)="nextStep()">Avanti »</button> -->
-                              <button mat-button matStepperNext>Avanti »</button>
-                            </div>
-                          </div>
-                              </mat-card-content>
-                            </mat-card>
-                          </div>
+                  <legend>Dettagli</legend>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Qualifica: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="qualifica"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <label>Sede Assunzione: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="sedeAssunzione"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <form>
+                        <div class="form-group">
+                          <label for="dataAssunzione">Data Assunzione</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            name="dataInput"
+                            formControlName="dataAssunzione"
+                          />
                         </div>
-                      </mat-step>
-                      <mat-step>
-                        <ng-template matStepLabel>Contratto</ng-template>
-                        <div >
-
-                          <div formGroupName="contratto">
-                           <!-- <strong><h1 style="text-align: center;" >Step 3: Contratto</h1></strong> -->
-                            <legend>Dati Tipologici</legend>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <div formGroupName="tipoAzienda">
-                                  <label for="filter-Tipo Azienda">Tipo Azienda:</label>
-                                  <select
-                                    class="form-control"
-                                    id="contratto.tipoAzienda.id"
-                                    formControlName="id"
-                                    type="number"
-                                  >
-                                    <option value="">--nessuna selezione--</option>
-                                    <option
-                                      *ngFor="let tipoAzienda of tipiAziende"
-                                      value="{{ tipoAzienda.id }}"
-                                    >
-                                      {{ tipoAzienda.descrizione }}
-                                    </option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <div formGroupName="tipoContratto">
-                                  <label for="filter-TipoContratto">Tipo Contratto:</label>
-                                  <select
-                                    class="form-control"
-                                    id="contratto.tipoContratto.id"
-                                    formControlName="id"
-                                  >
-                                    <option value="">--nessuna selezione--</option>
-                                    <option
-                                      *ngFor="let tipoContratto of tipiContratti"
-                                      value="{{ tipoContratto.id }}"
-                                    >
-                                      {{ tipoContratto.descrizione }}
-                                    </option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <div formGroupName="livelloContratto">
-                                  <label for="filter-LivelloContratto">Livello Contratto:</label>
-                                  <select
-                                    class="form-control"
-                                    id="contratto.livelloContratto.id"
-                                    formControlName="id"
-                                  >
-                                    <option value="">--nessuna selezione--</option>
-                                    <option
-                                      *ngFor="let livelloContratto of livelliContratti"
-                                      value="{{ livelloContratto.id }}"
-                                    >
-                                      {{ livelloContratto.descrizione }}
-                                    </option>
-                                  </select>
-                                </div>
-                              </div>
-
-                              <div class="col-md-3">
-                                <div formGroupName="contrattoNazionale">
-                                  <label for="filter-Tipo Contratto nazionale"
-                                    >Tipo Contratto nazionale:</label
-                                  >
-                                  <select
-                                    class="form-control"
-                                    id="contratto.contrattoNazionale.id"
-                                    formControlName="id"
-                                  >
-                                    <option value="">--nessuna selezione--</option>
-                                    <option
-                                      *ngFor="let contrattiNazionale of contrattiNazionali"
-                                      value="{{ contrattiNazionale.id }}"
-                                    >
-                                      {{ contrattiNazionale.descrizione }}
-                                    </option>
-                                  </select>
-                                </div>
-                              </div>
-
-
-                            </div>
-                            <div class="row">
-
-                            </div>
-
-                            <legend>Dettagli</legend>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <label>Qualifica: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="qualifica"
-                                  />
-                                </div>
-                              </div>
-
-                              <div class="col-md-3">
-                                <label>Sede Assunzione: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="sedeAssunzione"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <form>
-                                  <div class="form-group">
-                                    <label for="dataAssunzione">Data Assunzione</label>
-                                    <input
-                                      type="date"
-                                      class="form-control"
-                                      name="dataInput"
-                                      formControlName="dataAssunzione"
-                                    />
-                                  </div>
-                                </form>
-                              </div>
-                              <div class="col-md-3">
-                                <form>
-                                  <div class="form-group">
-                                    <label for="dataInizoProva">Data Inzio prova</label>
-                                    <input
-                                      type="date"
-                                      class="form-control"
-                                      name="dataInput"
-                                      formControlName="dataInizioProva"
-                                    />
-                                  </div>
-                                </form>
-                              </div>
-
-                            </div>
-                            <br>
-                            <div class="row">
-
-                            </div>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <form>
-                                  <div class="form-group">
-                                    <label for="dataInizoProva">Data Fine prova</label>
-                                    <input
-                                      type="date"
-                                      class="form-control"
-                                      name="dataInput"
-                                      formControlName="dataFineProva"
-                                    />
-                                  </div>
-                                </form>
-                              </div>
-                              <div class="col-md-3">
-                                <form>
-                                  <div class="form-group">
-                                    <label for="dataFineRapporto">data Fine Rapporto</label>
-                                    <input
-                                      type="date"
-                                      class="form-control"
-                                      name="dataInput"
-                                      formControlName="dataFineRapporto"
-                                    />
-                                  </div>
-                                </form>
-                              </div>
-                              <div class="col-md-3">
-                                <label>Mesi Durata: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="mesiDurata"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
-
-                            </div>
-                            <br>
-                            <legend>Livello Dipendente</legend>
-
-                            <div class="row">
-                              <div class="col-md-3">
-                                <div class="form-group">
-                                  <label>Livello Iniziale: </label>
-                                  <div class="form-group">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      formControlName="LivelloIniziale"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>Livello Attuale: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="livelloAttuale"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>Livello Finale: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="livelloFinale"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <legend>Info Generali</legend>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <label class="form-check-label">Dimissioni: </label>
-                                <div class="form-check">
-                                  <input
-                                    style="border-color: black"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    formControlName="dimissioni"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label class="form-check-label">Part Time: </label>
-                                <div class="form-check">
-                                  <input
-                                    style="border-color: black"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    formControlName="partTime"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label class="form-check-label">Part Time A: </label>
-                                <div class="form-check">
-                                  <input
-                                    style="border-color: black"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    formControlName="partTimeA"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <legend>Retribuzione e Diaria</legend>
-
-                            <div class="row">
-                              <div class="col-md-3">
-                                <label>Retribuzione Mensile Lorda: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="retribuzioneMensileLorda"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>Superminimo Mensile: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="superminimoMensile"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>RAL Annua: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="ralAnnua"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="row">
-
-
-                            </div>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <label>Superminimo RAL: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="superminimoRal"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>Diaria Mensile: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="diariaMese"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>Diaria Giornaliera: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="diariaGg"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <legend>Ticket e Aggevolazioni</legend>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <label>Ticket: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="ticket"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>Valore Ticket: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="valoreTicket"
-                                  />
-                                </div>
-                              </div>
-
-                              <div class="col-md-3">
-                                <label id="contratto.categoriaProtetta" class="form-check-label"
-                                  >Categoria Protetta:
-                                </label>
-                                <div class="form-check">
-                                  <input
-                                    style="border-color: black"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    formControlName="categoriaProtetta"
-                                  />
-                                </div>
-                              </div>
-
-                            </div>
-
-                            <legend>Altro</legend>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <label>Tutor: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="tutor"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>PFI: </label>
-                                <div class="form-group">
-                                  <input type="text" class="form-control" formControlName="pfi" />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <div class="form-group">
-                                  <form>
-                                    <div class="form-group">
-                                      <label>Corso di Sicurezza: </label>
-                                      <input
-                                        type="date"
-                                        class="form-control"
-                                        name="dataInput"
-                                        formControlName="corsoSicurezza"
-                                      />
-                                    </div>
-                                  </form>
-                                </div>
-                              </div>
-
-                              <div class="col-md-3">
-                                <label>Motivazione Fine Rapporto: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="motivazioneFineRapporto"
-                                  />
-                                </div>
-                              </div>
-
-
-
-
-                            </div>
-                            <div class="row">
-
-                            </div>
-                            <div class="row">
-
-                            </div>
-                            <div class="row">
-
-                            </div>
-                            <div class="row">
-                              <div class="col-md-3">
-                                <label>Scatti Anzianita: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="scattiAnzianita"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>PC: </label>
-                                <div class="form-group">
-                                  <input
-                                    style="border-color: black"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    formControlName="pc"
-                                  />
-                                </div>
-                              </div>
-
-                              <div class="col-md-3">
-                                <div class="form-group">
-                                  <label>Tariffa Partita IVA: </label>
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      formControlName="tariffaPartitaIva"
-                                    />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label>Canale Reclutamento: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="canaleReclutamento"
-                                  />
-                                </div>
-                              </div>
-
-
-                            </div>
-
-                            <div class="row">
-
-                            </div>
-                          </div>
-                          <br>
-                          <div class="row">
-                            <!-- <div class="col-6">
-                              <button id="indietro" type="button" class="btn btn-primary" (click)="prevStep()">Indietro</button>
-                            </div> -->
-                            <div class="row">
-                              <div class="col-6" style="text-align: end;">
-
-                                <button class="btn btn-info" type="submit" [routerLink]="['/lista-anagrafica']">
-                                  Annulla
-                                </button>
-                                <!--dark btn-sm rounded-pill shadow-sm  style="background-color: rgb(18, 0, 122); color: white"-->
-
-                              </div>
-                              <div class="col-6" style="text-align: start;">
-                                <button class="btn btn-success" type="submit" [disabled]="AnagraficaDto.invalid" >
-                                  Salva
-                                </button>
-                              </div>
-
-                              <!--dark btn-sm rounded-pill shadow-sm     style="background-color: rgb(24, 122, 0); color: white"-->
-                            </div>
-                          </div>
+                      </form>
+                    </div>
+                    <div class="col-md-3">
+                      <form>
+                        <div class="form-group">
+                          <label for="dataInizoProva">Data Inzio prova</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            name="dataInput"
+                            formControlName="dataInizioProva"
+                          />
                         </div>
-                       </mat-step>
-                    </mat-stepper>
+                      </form>
+                    </div>
+
+                  </div>
+                  <br>
+                  <div class="row">
+
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <form>
+                        <div class="form-group">
+                          <label for="dataInizoProva">Data Fine prova</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            name="dataInput"
+                            formControlName="dataFineProva"
+                          />
+                        </div>
+                      </form>
+                    </div>
+                    <div class="col-md-3">
+                      <form>
+                        <div class="form-group">
+                          <label for="dataFineRapporto">data Fine Rapporto</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            name="dataInput"
+                            formControlName="dataFineRapporto"
+                          />
+                        </div>
+                      </form>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Mesi Durata: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="mesiDurata"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+
+                  </div>
+                  <br>
+                  <legend>Livello Dipendente</legend>
+
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Livello Iniziale: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="LivelloIniziale"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Livello Attuale: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="livelloAttuale"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Livello Finale: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="livelloFinale"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <legend>Info Generali</legend>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label class="form-check-label">Dimissioni: </label>
+                      <div class="form-check">
+                        <input
+                          style="border-color: black"
+                          class="form-check-input"
+                          type="checkbox"
+                          formControlName="dimissioni"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-check-label">Part Time: </label>
+                      <div class="form-check">
+                        <input
+                          style="border-color: black"
+                          class="form-check-input"
+                          type="checkbox"
+                          formControlName="partTime"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-check-label">Part Time A: </label>
+                      <div class="form-check">
+                        <input
+                          style="border-color: black"
+                          class="form-check-input"
+                          type="checkbox"
+                          formControlName="partTimeA"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <legend>Retribuzione e Diaria</legend>
+
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Retribuzione Mensile Lorda: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="retribuzioneMensileLorda"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Superminimo Mensile: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="superminimoMensile"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>RAL Annua: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="ralAnnua"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+
+
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Superminimo RAL: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="superminimoRal"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Diaria Mensile: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="diariaMese"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Diaria Giornaliera: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="diariaGg"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <legend>Ticket e Aggevolazioni</legend>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Ticket: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="ticket"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Valore Ticket: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="valoreTicket"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <label id="contratto.categoriaProtetta" class="form-check-label"
+                        >Categoria Protetta:
+                      </label>
+                      <div class="form-check">
+                        <input
+                          style="border-color: black"
+                          class="form-check-input"
+                          type="checkbox"
+                          formControlName="categoriaProtetta"
+                        />
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <legend>Altro</legend>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Tutor: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="tutor"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>PFI: </label>
+                      <div class="form-group">
+                        <input type="text" class="form-control" formControlName="pfi" />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <form>
+                          <div class="form-group">
+                            <label>Corso di Sicurezza: </label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              name="dataInput"
+                              formControlName="corsoSicurezza"
+                            />
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <label>Motivazione Fine Rapporto: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="motivazioneFineRapporto"
+                        />
+                      </div>
+                    </div>
+
+
+
+
+                  </div>
+                  <div class="row">
+
+                  </div>
+                  <div class="row">
+
+                  </div>
+                  <div class="row">
+
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Scatti Anzianita: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="scattiAnzianita"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>PC: </label>
+                      <div class="form-group">
+                        <input
+                          style="border-color: black"
+                          class="form-check-input"
+                          type="checkbox"
+                          formControlName="pc"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Tariffa Partita IVA: </label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="tariffaPartitaIva"
+                          />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Canale Reclutamento: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="canaleReclutamento"
+                        />
+                      </div>
+                    </div>
+
+
+                  </div>
+
+                  <div class="row">
+
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <!-- <div class="col-6">
+                    <button id="indietro" type="button" class="btn btn-primary" (click)="prevStep()">Indietro</button>
+                  </div> -->
+                  <div class="row">
+                    <div class="col-6" style="text-align: end;">
+
+                      <button class="btn btn-info" type="submit" [routerLink]="['/lista-anagrafica']">
+                        Annulla
+                      </button>
+                      <!--dark btn-sm rounded-pill shadow-sm  style="background-color: rgb(18, 0, 122); color: white"-->
+
+                    </div>
+                    <div class="col-6" style="text-align: start;">
+                      <button class="btn btn-success" type="submit" [disabled]="AnagraficaDto.invalid" >
+                        Salva
+                      </button>
+                    </div>
+
+                    <!--dark btn-sm rounded-pill shadow-sm     style="background-color: rgb(24, 122, 0); color: white"-->
                   </div>
                 </div>
               </div>
-            </form>
+             </mat-step>
+          </mat-stepper>
+        </div>
+      </div>
+    </div>
+  </form>
 
-            <!-- <footer>
-              <p>© 2023 CRM Company. Tutti i diritti riservati.</p>
-            </footer> -->
+  <!-- <footer>
+    <p>© 2023 CRM Company. Tutti i diritti riservati.</p>
+  </footer> -->
 
-          </div>
-        </mat-drawer-content>
-
-      </mat-drawer-container>
-      <script>
-        const userLogged = localStorage.getItem('userLogged');
-         if (userLogged) {
-           console.log("Utente loggato constructor: "+ this.userlogged)
-           this.userlogged = userLogged;
-         }
-     </script>
-
-  </body>
-</html>
+</div>

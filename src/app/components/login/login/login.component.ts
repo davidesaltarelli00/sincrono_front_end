@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../login-service';
@@ -8,11 +8,10 @@ import { AuthService } from '../login-service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, DoCheck {
   // showSidebar: boolean = false;
   // formLogin: FormGroup;
   // isLoginPage = true; // Imposta su true quando sei nella pagina di login
-
 
   // constructor(private router: Router, private formBuilder: FormBuilder) {
   //   const currentUrl = this.router.url;
@@ -37,7 +36,6 @@ export class LoginComponent implements OnInit {
   //     const email = this.formLogin.value.email;
   //     const password = this.formLogin.value.password;
 
-
   //     this.router.navigate(['/home']);
   //     this.showSidebar=true;
   //   } else{
@@ -45,32 +43,34 @@ export class LoginComponent implements OnInit {
   //   }
   // }
 
-
-
   loginForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router:Router
+    private router: Router
   ) {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
     });
   }
 
-  ngOnInit() {
 
+  ngOnInit() {
   }
+
+  ngDoCheck(): void {
+    this. ngOnInit() ;
+  }
+
 
   login() {
     const username = this.loginForm.value.username;
     const password = this.loginForm.value.password;
 
-    this.authService.authenticate(username, password)
-    .subscribe(
-      response => {
+    this.authService.authenticate(username, password).subscribe(
+      (response) => {
         // Login successful, handle the response
         console.log('Login successful!');
         console.log(response);
@@ -90,14 +90,10 @@ export class LoginComponent implements OnInit {
         // Redirect a una diversa pagina o esegui altre azioni
         this.router.navigate(['/home']);
       },
-      error => {
+      (error) => {
         // Login failed, handle the error
         console.error('Login failed', error);
       }
     );
-
   }
-
-
-
 }

@@ -25,7 +25,11 @@ export class AuthService {
     return this.http.post<AuthenticationResponse>('http://localhost:8080/login-service/authenticate', body, { headers })
     .pipe(
       tap(response => {
-        localStorage.setItem('token', response.token); // Memorizza il token nel localStorage
+        if(!response.token){
+          location.reload(), "Token non presente."
+        } else{
+          localStorage.setItem('token', response.token); // Memorizza il token nel localStorage
+        }
       })
     );
 
@@ -36,7 +40,7 @@ export class AuthService {
       .set('Content-Type', 'application/json')
       .set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<any>(resourceUrl, { headers });
-  }
+    return this.http.get<any>(resourceUrl, { headers });
+  }
 
 }
