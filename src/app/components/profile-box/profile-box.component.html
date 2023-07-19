@@ -98,10 +98,31 @@
 
 
           <div class="profile-box-container">
-            <div class="profile-box">
-              <mat-icon>account_circle</mat-icon>
 
+            <br>
+            <div class="profile-box">
+              <h3>Dati dell'utente</h3>
+              <div>
+                <strong>Nome:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.nome }}
+              </div>
+              <div>
+                <strong>Cognome:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.cognome }}
+              </div>
+              <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita !=null">
+                <strong>Data di nascita:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date: 'dd/MM/yyyy'  }}
+              </div>
+              <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita ==null">
+                <strong>Data di nascita:</strong> Dato non inserito.
+              </div>
+              <div>
+                <strong>Codice fiscale:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}
+              </div>
+              <div>
+                <a [routerLink]="['/cambia-password']">Cambia password</a>
+              </div>
             </div>
+
+
           </div>
         </div>
       </div>
