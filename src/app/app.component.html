@@ -147,6 +147,9 @@ ng-container{
     </div>
   </ng-container>
 
+  <footer *ngIf="token">
+    <p>© 2023 CRM Sincrono. Tutti i diritti riservati.</p>
+  </footer>
   <!-- Mostra il form di recupero password se non c'è un token -->
   <!-- <ng-container *ngIf="!token">
     <div class="recupero-password">
