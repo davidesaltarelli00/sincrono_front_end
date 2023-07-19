@@ -11,6 +11,7 @@ export class ProfileBoxComponent {
   isRisorseUmane: boolean = false;
   userlogged = localStorage.getItem('userLogged');
   anagrafica:any;
+  username_accesso=null;
 
   constructor(private authService: AuthService, private profileBoxService:profileBoxService) {
     const userLogged = localStorage.getItem('userLogged');
@@ -22,11 +23,12 @@ export class ProfileBoxComponent {
     this.profileBoxService.getData().subscribe(
       (response:any)=>{
         this.anagrafica=response;
+        this.username_accesso=response.anagraficaDto.anagrafica.mailAziendale;
       },
       (error:any)=>{
         console.error("Si é verificato il seguente errore durante il recupero dei dati : "+error)
       }
-    )
+    );
   }
 
 }

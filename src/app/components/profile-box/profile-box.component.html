@@ -101,7 +101,7 @@
 
             <br>
             <div class="profile-box">
-              <h3>Dati dell'utente</h3>
+              <h3>Dati anagrafici dell'utente</h3>
               <div>
                 <strong>Nome:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.nome }}
               </div>
@@ -120,7 +120,24 @@
               <div>
                 <a [routerLink]="['/cambia-password']">Cambia password</a>
               </div>
+
+              <div class="contatti">
+                <h3>Contatti</h3>
+                <div>
+                  <strong>Cellulare aziendale:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale }}
+                </div>
+                <div>
+                  <strong>Cellulare privato:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.cellularePrivato }}
+                </div>
+                <div>
+                  <strong>Mail aziendale:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}
+                </div>
+                <div>
+                  <strong>Mail privata:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.mailPrivata }}
+                </div>
+              </div>
             </div>
+
 
 
           </div>
@@ -129,3 +146,30 @@
     </div>
   </body>
 </html>
+
+
+<!--
+  "anagraficaDto": {
+        "anagrafica": {
+            "id": 24,
+            "utente": null,
+            "attivo": true,
+            "aziendaTipo": null,
+            "cognome": "Sbarigia",
+            "nome": "Luca ",
+            "codiceFiscale": "SRGLCA75B21H501L",
+            "comuneDiNascita": "Bucarest",
+            "dataDiNascita": "2002-04-06",
+            "residenza": "Roma",
+            "domicilio": "Roma",
+            "cellularePrivato": "3335555555",
+            "cellulareAziendale": "3478998001",
+            "mailPrivata": "luca@gmail.com",
+            "mailAziendale": "andreimusat2000@gmail.com",
+            "mailPec": "andreimusat2000@gmail.com",
+            "titoliDiStudio": "diploma in informatica e telecomunicazioni",
+            "altriTitoli": "Perito informatico",
+            "coniugato": null,
+            "figliACarico": null
+        },
+-->
