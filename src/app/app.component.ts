@@ -1,6 +1,7 @@
 import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from './components/login/login-service';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
@@ -8,12 +9,16 @@ import { AuthService } from './components/login/login-service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  token: string | null | undefined;
+  token: any=null;
 
   constructor(
     private router: Router,
     private authService: AuthService
-  ) {}
+  ) {
+    if(this.token!=null){
+      localStorage.removeItem("token");
+    }
+  }
 
   ngOnInit() {
     this.router.events.subscribe((event) => {

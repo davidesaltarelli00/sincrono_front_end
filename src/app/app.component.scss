@@ -323,9 +323,32 @@ mat-drawer{
   height: 110%;
 }
 
-.login-page .sidebar {
-  display: none;
+/* Stile della sidenav */
+mat-sidenav {
+  width: 250px;
+  background-color: #333;
+  color: #ffffff;
+  height: 100vh;
+  position: inherit;
 }
+
+/* Stile delle voci di menu nella sidenav */
+mat-nav-list a {
+  color: #ffffff;
+  text-decoration: none;
+  display: block;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ffffff;
+}
+
+mat-nav-list a:last-child {
+  border-bottom: none;
+}
+
+mat-nav-list a:hover {
+  color: #d8d8d8;
+}
+
 
 footer {
   position: fixed;
