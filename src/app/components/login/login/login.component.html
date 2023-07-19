@@ -10,45 +10,55 @@
 
 <body style="overflow-y: hidden;">
 
-    <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="text-center">Login</h3>
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="text-center">Login</h3>
+          </div>
+          <div class="card-body">
+            <div *ngIf="!recuperoPasswordInCorso">
+              <!-- Form di login -->
+                <form [formGroup]="loginForm" (ngSubmit)="login()">
+                  <div>
+                    <label for="username">Username:</label>
+                    <input class="form-control" type="text" placeholder="Inserisci la mail" id="username" formControlName="username" required>
+                    <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+                      la mail é obbligatoria.
                     </div>
-                    <div class="card-body">
-                      <div>
-                        <div>
-                          <!-- <h2>Login</h2> -->
-                          <form [formGroup]="loginForm" (ngSubmit)="login()">
-                            <div>
-                              <label for="username">Username:</label>
-                              <input class="form-control" type="text" id="username" formControlName="username" required>
-                              <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
-                                Username is required.
-                              </div>
-                            </div>
-                            <div>
-                              <label for="password">Password:</label>
-                              <input class="form-control" type="password" id="password" formControlName="password" required>
-                              <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-                                Password is required.
-                              </div>
-                            </div>
-                            <button mat-flat-button class="btn btn success" type="submit" [disabled]="loginForm.invalid">Login</button>
-                          </form>
-                        </div>
-
-                      </div>
-
-
-
+                  </div>
+                  <div>
+                    <label for="password">Password:</label>
+                    <input class="form-control" type="password" placeholder="Inserisci la password." id="password" formControlName="password" required>
+                    <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                      La password é obbligatoria.
                     </div>
+                  </div>
+                  <br>
+                  <div class="col-3">
+                    <button mat-flat-button class="btn btn success" type="submit" [disabled]="loginForm.invalid">Login</button>
+                    <!-- <button mat-flat-button class="btn btn info" (click)="reset()" [disabled]="loginForm==null">Annulla</button> -->
+
+                  </div>
+
+                </form>
+              <!-- Link per avviare il recupero password -->
+              <div class="row">
+                <div class="col-6">
+                  <a style="color: blue; cursor: pointer;" (click)="avviaRecuperoPassword()">Password dimenticata?</a>
                 </div>
+              </div>
             </div>
+
+            <!-- Form di recupero password -->
+            <app-recupero-password *ngIf="recuperoPasswordInCorso"></app-recupero-password>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+
 
 
 

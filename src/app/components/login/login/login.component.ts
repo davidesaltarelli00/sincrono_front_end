@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
   // }
 
   loginForm: FormGroup;
-
+  recuperoPasswordInCorso: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -61,6 +61,17 @@ export class LoginComponent implements OnInit {
 
   }
 
+  avviaRecuperoPassword() {
+    this.router.navigate(['/recupera-password']);
+    this.recuperoPasswordInCorso = true;
+  }
+
+  reset(){
+    var username = this.loginForm.value.username;
+    var password = this.loginForm.value.password;
+    username=null;
+    password=null;
+  }
 
 
   login() {

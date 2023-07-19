@@ -35,9 +35,10 @@ import { StoricoContrattiComponent } from './components/storici/storico-contratt
 import { StoricoCommesseComponent } from './components/storici/storico-commesse/storico-commesse.component';
 
 
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MaterialModule } from './material.module';
 import { ProfileBoxComponent } from './components/profile-box/profile-box.component';
+import { CambioPasswordComponent } from './components/cambio-password/cambio-password.component';
+import { RecuperoPasswordComponent } from './components/recupero-password/recupero-password.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,9 @@ import { ProfileBoxComponent } from './components/profile-box/profile-box.compon
     LoginComponent,
     StoricoContrattiComponent,
     StoricoCommesseComponent,
-    ProfileBoxComponent
+    ProfileBoxComponent,
+    CambioPasswordComponent,
+    RecuperoPasswordComponent
   ],
   imports: [
     MatNativeDateModule,

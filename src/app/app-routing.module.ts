@@ -17,6 +17,8 @@ import { StoricoCommesseComponent } from './components/storici/storico-commesse/
 import { AuthGuard } from './components/login/AuthGuard';
 import { RoleGuard } from './components/login/RoleGuard ';
 import { ProfileBoxComponent } from './components/profile-box/profile-box.component';
+import { CambioPasswordComponent } from './components/cambio-password/cambio-password.component';
+import { RecuperoPasswordComponent } from './components/recupero-password/recupero-password.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -82,9 +84,19 @@ const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
   },
   {
-    path: 'profile-box/:user',
+    path: 'profile-box',
     component: ProfileBoxComponent,
     canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'cambia-password',
+    component: CambioPasswordComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'recupera-password',
+    component: RecuperoPasswordComponent,
+    // canActivate: [AuthGuard],
   },
 
   //DASHBOARD

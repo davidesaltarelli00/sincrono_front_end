@@ -13,14 +13,11 @@ export class HomeComponent implements OnInit {
   role:any;
 
   constructor(private authService: AuthService, private router: Router) {
-    const userLogged = localStorage.getItem('userLogged');
-    if (userLogged) {
-      this.userlogged = userLogged;
-    }
+
   }
   ngOnInit(): void {
     // this.role = this.authService.getTokenAndRole();
-    console.log("Ruolo: " + this.role);
+    // console.log("Ruolo: " + this.role);
   }
 
   seeSide() {}
