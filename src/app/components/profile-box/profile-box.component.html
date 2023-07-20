@@ -1,232 +1,191 @@
-
-
-
 <html>
   <head>
     <title>Home</title>
   </head>
   <style>
-    .sidebar {
-      width: 250px;
-      background-color: #333;
-      color: #ffffff;
-      height: 200vh;
-      position: inherit;
-    }
-
-    /* Stile delle voci di menu nella sidebar */
-    .sidebar-item {
-      padding: 10px 20px;
-      border-bottom: 1px solid #ffffff;
-    }
-
-    .sidebar-item:last-child {
-      border-bottom: none;
-    }
-
-    .sidebar-link {
-      text-decoration: none;
-      color: #ffffff;
-    }
-
-    .sidebar-link:hover {
-      color: #d8d8d8;
-    }
-
-    .content {
-      flex: 1;
-      padding: 20px;
-    }
-
-    .navbar {
-      padding: 10px 20px;
-    }
-
-    .navbar-brand {
-      font-weight: bold;
-    }
-
-    .navbar-nav {
-      margin-left: auto;
-    }
-
-    .nav-link {
-      color: #ffffff;
-      text-decoration: none;
-      margin-left: 10px;
-    }
-
-    .nav-link:hover {
-      color: #d8d8d8;
-    }
-
-    .login-page .sidebar {
-      display: none;
-    }
-
-    .example-container {
-     width: 100%;
-      height: 100%;
-    }
-
-    .spacer {
-      flex: 1 1 auto;
-    }
-
-    mat-drawer{
-      background-color: #333;
-    }
-
-    p{
-      cursor: pointer;
-    }
-
-    mat-icon-button:hover{
-    background-color: none;
-    }
-
-    mat-toolbar{
+    mat-toolbar {
       background-color: #333;
       color: white;
     }
 
-    </style>
+    strong {
+      margin-left: 5px;
+    }
+  </style>
   <body>
+    <!-- Include necessary Angular Material modules in your app.module.ts -->
+    <!-- For example, import MatButtonModule, MatCardModule, MatIconModule, MatDividerModule, etc. -->
+
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-
-
           <div class="profile-box-container">
-
-            <br>
+            <br />
             <div class="row">
               <div class="col-6">
-                <div class="profile-box">
+                <mat-card class="profile-box">
                   <h3>Dati anagrafici dell'utente</h3>
-              <div>
-                <strong>Nome:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.nome }}
-              </div>
-              <div>
-                <strong>Cognome:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.cognome }}
-              </div>
-              <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita !=null">
-                <strong>Data e luogo di nascita:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date: 'dd/MM/yyyy'  }}, {{ anagrafica?.anagraficaDto.anagrafica?.comuneDiNascita }}
-              </div>
-              <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita ==null">
-                <strong>Data e luogo di nascita:</strong> Dato non inserito.
-              </div>
-              <div>
-                <strong>Codice fiscale:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}
-              </div>
-                </div>
+                  <div>
+                    <strong>Nome:</strong>
+                    {{ anagrafica?.anagraficaDto.anagrafica?.nome }}
+                  </div>
+                  <div>
+                    <strong>Cognome:</strong>
+                    {{ anagrafica?.anagraficaDto.anagrafica?.cognome }}
+                  </div>
+                  <div
+                    *ngIf="
+                      anagrafica?.anagraficaDto.anagrafica?.dataDiNascita !=
+                      null
+                    "
+                  >
+                    <strong>Data e luogo di nascita:</strong>
+                    {{
+                      anagrafica?.anagraficaDto.anagrafica?.dataDiNascita
+                        | date : "dd/MM/yyyy"
+                    }},
+                    {{ anagrafica?.anagraficaDto.anagrafica?.comuneDiNascita }}
+                  </div>
+                  <div
+                    *ngIf="
+                      anagrafica?.anagraficaDto.anagrafica?.dataDiNascita ==
+                      null
+                    "
+                  >
+                    <strong>Data e luogo di nascita:</strong> Dato non inserito.
+                  </div>
+                  <div>
+                    <strong>Codice fiscale:</strong>
+                    {{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}
+                  </div>
+                </mat-card>
               </div>
               <div class="col-6">
-                <div class="profile-box">
+                <mat-card class="profile-box">
                   <h3>Contatti</h3>
-                   <div>
-                     <strong>Cellulare aziendale:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale }}
-                   </div>
-                   <div>
-                     <strong>Cellulare privato:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.cellularePrivato }}
-                   </div>
-                   <div>
-                     <strong>Mail aziendale:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}
-                   </div>
-                   <div>
-                     <strong>Mail privata:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.mailPrivata }}
-                   </div>
-
-               </div>
+                  <div>
+                    <strong>Cellulare aziendale:</strong>
+                    {{
+                      anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale
+                    }}
+                  </div>
+                  <div>
+                    <strong>Cellulare privato:</strong>
+                    {{ anagrafica?.anagraficaDto.anagrafica?.cellularePrivato }}
+                  </div>
+                  <div>
+                    <strong>Mail aziendale:</strong>
+                    {{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}
+                  </div>
+                  <div>
+                    <strong>Mail privata:</strong>
+                    {{ anagrafica?.anagraficaDto.anagrafica?.mailPrivata }}
+                  </div>
+                </mat-card>
               </div>
-
             </div>
-
-            <br>
-
-
-
-
-
           </div>
-
-
-          <br>
-
+          <br />
           <div class="profile-box-container">
             <div class="row">
               <div class="col-6">
-                <div class="profile-box">
+                <mat-card class="profile-box">
                   <h3>Residenza e domicilio</h3>
                   <div>
-                    <strong>Comune di residenza</strong> {{ anagrafica?.anagraficaDto.anagrafica?.residenza }}
+                    <strong>Comune di residenza</strong>
+                    {{ anagrafica?.anagraficaDto.anagrafica?.residenza }}
                   </div>
                   <div>
-                    <strong>Comune di domicilio</strong> {{ anagrafica?.anagraficaDto.anagrafica?.domicilio }}
+                    <strong>Comune di domicilio</strong>
+                    {{ anagrafica?.anagraficaDto.anagrafica?.domicilio }}
                   </div>
-                </div>
-
+                </mat-card>
               </div>
               <div class="col-6">
-                <div class="profile-box">
+                <mat-card class="profile-box">
                   <h3>Referenze</h3>
                   <div>
-                    <strong>Titoli di studio</strong> {{anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio}}
+                    <strong>Titoli di studio</strong>
+                    {{ anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio }}
                   </div>
                   <div>
-                    <strong>Altri titoli</strong> {{anagrafica?.anagraficaDto.anagrafica?.altriTitoli}}
+                    <strong>Altri titoli</strong>
+                    {{ anagrafica?.anagraficaDto.anagrafica?.altriTitoli }}
                   </div>
-                </div>
-
+                </mat-card>
               </div>
             </div>
           </div>
-
+          <br />
           <div class="profile-box-container">
             <div class="row">
               <div class="col-6">
-                <div class="profile-box">
+                <mat-card class="profile-box">
                   <h3>Accesso</h3>
-                  <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.attivo==true">
-                    <strong>Attivo: </strong> <i style="color: blue;" class="fa-solid fa-check"></i>
-                   </div>
-                   <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.attivo==false">
-                    <strong>Attivo: </strong> <i style="color: red;" class="fa-solid fa-close"></i>
-                   </div>
-                  <div>
-                   <strong>Nome utente:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}
+                  <div
+                    *ngIf="anagrafica?.anagraficaDto.anagrafica?.attivo == true"
+                  >
+                    <strong>Attivo: </strong>
+                    <mat-icon style="color: blue">check</mat-icon>
+                  </div>
+                  <div
+                    *ngIf="
+                      anagrafica?.anagraficaDto.anagrafica?.attivo == false
+                    "
+                  >
+                    <strong>Attivo: </strong>
+                    <mat-icon style="color: red">close</mat-icon>
                   </div>
                   <div>
-                <a [routerLink]="['/cambia-password']">Cambia password</a>
+                    <strong>Nome utente:</strong>
+                    {{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}
                   </div>
-                </div>
+                  <div>
+                    <a [routerLink]="['/cambia-password']">Cambia password</a>
+                  </div>
+                </mat-card>
               </div>
               <div class="col-6">
-                <div class="profile-box">
+                <mat-card class="profile-box">
                   <h3>Altre informazioni</h3>
-                  <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.coniugato!=null">
+                  <div
+                    *ngIf="
+                      anagrafica?.anagraficaDto.anagrafica?.coniugato != null
+                    "
+                  >
                     <strong>Coniugato</strong> Si
                   </div>
-                  <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.coniugato==null">
+                  <div
+                    *ngIf="
+                      anagrafica?.anagraficaDto.anagrafica?.coniugato == null
+                    "
+                  >
                     <strong>Coniugato</strong> No
                   </div>
-                  <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.figliACarico!=null">
-                    <strong>Figli a carico</strong> {{anagrafica?.anagraficaDto.anagrafica?.figliACarico}}
+                  <div
+                    *ngIf="
+                      anagrafica?.anagraficaDto.anagrafica?.figliACarico != null
+                    "
+                  >
+                    <strong>Figli a carico</strong>
+                    {{ anagrafica?.anagraficaDto.anagrafica?.figliACarico }}
                   </div>
-                  <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.figliACarico==null">
+                  <div
+                    *ngIf="
+                      anagrafica?.anagraficaDto.anagrafica?.figliACarico == null
+                    "
+                  >
                     <strong>Figli a carico</strong> No
                   </div>
-                </div>
+                </mat-card>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   </body>
 </html>
-
 
 <!-- {
   "esito": {

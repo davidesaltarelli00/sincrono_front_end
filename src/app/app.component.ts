@@ -9,11 +9,11 @@ import { profileBoxService } from './components/profile-box/profile-box.service'
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  token: any = null;
+  token: any = localStorage.getItem("token");
   @ViewChild(MatSidenav) sidenav!: MatSidenav;
   userLoggedMail: any;
-  userLoggedName:any;
-  userLoggedSurname:any;
+  userLoggedName: any;
+  userLoggedSurname: any;
 
   constructor(
     private router: Router,
@@ -21,8 +21,7 @@ export class AppComponent implements OnInit {
     private profileBoxService: profileBoxService
   ) {
     if (this.token != null) {
-      localStorage.removeItem('token');
-      this.authService.logout();
+      localStorage.getItem('token');
     }
   }
 
@@ -40,8 +39,16 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+    this.authService.logout().subscribe(
+      (response: any) => {
+        localStorage.removeItem('token');
+        console.log('Logout effettuato correttamente. ', response);
+        this.router.navigate(['/login']);
+      },
+      (error: any) => {
+        console.log('Errore durante il logout:' + error.message);
+      }
+    );
   }
 
   getUserLogged() {
