@@ -75,21 +75,19 @@ export class AuthService {
   //   return this.http.put(`http://localhost:8080/services/logout`, body, { headers });
   // }
 
-
   logout() {
     const token = localStorage.getItem('token');
     console.log('Token logout:', token);
     const body = {
-          token: token
-        };
+      token: token,
+    };
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
 
-
-
-    return this.http.put('http://localhost:8080/services/logout', body, { headers });
+    return this.http.put('http://localhost:8080/services/logout', body, {
+      headers,
+    });
   }
-
 }

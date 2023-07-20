@@ -52,16 +52,19 @@ export class AppComponent implements OnInit {
   // }
 
   logout() {
-    this.authService.logout().subscribe(
-      () => {
-        localStorage.removeItem('token');
-        console.log('Logout effettuato correttamente.');
-        this.router.navigate(['/login']);
-      },
-      (error: any) => {
-        console.log('Errore durante il logout:', error.message);
-      }
-    );
+    const confirmation = confirm("Sei sicuro di voler effettuare il logout?");
+    if (confirmation) {
+      this.authService.logout().subscribe(
+        () => {
+          localStorage.removeItem('token');
+          console.log('Logout effettuato correttamente.');
+          this.router.navigate(['/login']);
+        },
+        (error: any) => {
+          console.log('Errore durante il logout:', error.message);
+        }
+      );
+    }
   }
 
 
