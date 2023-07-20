@@ -39,6 +39,7 @@ import { MaterialModule } from './material.module';
 import { ProfileBoxComponent } from './components/profile-box/profile-box.component';
 import { CambioPasswordComponent } from './components/cambio-password/cambio-password.component';
 import { RecuperoPasswordComponent } from './components/recupero-password/recupero-password.component';
+import { FormRecuperoPasswordComponent } from './components/form-recupero-password/form-recupero-password.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { RecuperoPasswordComponent } from './components/recupero-password/recupe
     StoricoCommesseComponent,
     ProfileBoxComponent,
     CambioPasswordComponent,
-    RecuperoPasswordComponent
+    RecuperoPasswordComponent,
+    FormRecuperoPasswordComponent
   ],
   imports: [
     MatNativeDateModule,

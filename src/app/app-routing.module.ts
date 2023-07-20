@@ -19,6 +19,7 @@ import { RoleGuard } from './components/login/RoleGuard ';
 import { ProfileBoxComponent } from './components/profile-box/profile-box.component';
 import { CambioPasswordComponent } from './components/cambio-password/cambio-password.component';
 import { RecuperoPasswordComponent } from './components/recupero-password/recupero-password.component';
+import { FormRecuperoPasswordComponent } from './components/form-recupero-password/form-recupero-password.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -131,6 +132,11 @@ const routes: Routes = [
     component: StoricoCommesseComponent,
     canActivate: [AuthGuard],
   },
+
+  {
+    path:'form-recupero-password/:tokenProvvisorio',
+    component:FormRecuperoPasswordComponent
+  }
 
 ];
 
