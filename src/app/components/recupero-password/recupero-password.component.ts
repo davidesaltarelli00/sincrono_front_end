@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { RecuperoPasswordService } from './recupero-password.service';
 
 @Component({
   selector: 'app-recupero-password',
@@ -9,7 +10,10 @@ import { Router } from '@angular/router';
 export class RecuperoPasswordComponent implements OnInit {
   email: string = ''; // Proprietà per memorizzare l'indirizzo email inserito nell'input
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private recuperoPasswordService: RecuperoPasswordService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -19,11 +23,13 @@ export class RecuperoPasswordComponent implements OnInit {
   }
 
   recuperaPassword() {
-    // Implementa la logica per il recupero password qui
-    // Utilizza this.email per ottenere l'indirizzo email inserito dall'utente
-    // Esegui la chiamata al servizio di recupero password se necessario
-
-    console.log('Email inserito:', this.email);
-    // Esempio: this.authService.recuperoPassword(this.email).subscribe(result => { ... });
+    this.recuperoPasswordService.recuperaPassword().subscribe(
+      (response: any) => {
+       console.log(response)
+      },
+      (error: any) => {
+        console.log('Errore durante l invio dei dati: ' + error);
+      }
+    );
   }
 }
