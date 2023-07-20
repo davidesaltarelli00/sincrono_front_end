@@ -11,7 +11,9 @@ import { profileBoxService } from './components/profile-box/profile-box.service'
 export class AppComponent implements OnInit {
   token: any = null;
   @ViewChild(MatSidenav) sidenav!: MatSidenav;
-  username_accesso: any;
+  userLoggedMail: any;
+  userLoggedName:any;
+  userLoggedSurname:any;
 
   constructor(
     private router: Router,
@@ -45,7 +47,9 @@ export class AppComponent implements OnInit {
   getUserLogged() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
-        this.username_accesso = response.anagraficaDto.anagrafica.mailAziendale;
+        this.userLoggedMail = response.anagraficaDto.anagrafica.mailAziendale;
+        this.userLoggedName = response.anagraficaDto.anagrafica.nome;
+        this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
       },
       (error: any) => {
         console.error(
