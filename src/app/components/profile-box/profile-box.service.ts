@@ -16,10 +16,9 @@ export class profileBoxService {
   }
 
   getData(): any {
-    const token = this.getToken();
+    const token = localStorage.getItem('token');
     if (token) {
       const url = `http://localhost:8085/dettaglio-anagrafica-token/${token}`;
-      console.log(url);
       return this.http.get<any>(url);
     } else {
       console.error('Token non presente.');

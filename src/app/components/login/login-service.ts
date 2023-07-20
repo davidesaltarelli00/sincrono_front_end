@@ -59,17 +59,34 @@ export class AuthService {
     return this.http.get<any>(resourceUrl, { headers });
   }
 
-  logout() {
-    const body = {
-      token: localStorage.getItem('token'),
-    };
-    console.log('Body logout:' + body.token);
+  // logout() {
+  //   const body = {
+  //     token: localStorage.getItem('token'),
+  //   };
+  //   console.log('Body logout:' + body.token);
 
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'Access-Control-Allow-Origin': '*',
+  //     Authenticate: 'token',
+  //   });
+
+  //   return this.http.put(`http://localhost:8080/services/logout`, body, { headers });
+  // }
+
+
+  logout() {
+    const token = localStorage.getItem('token');
+    console.log('Token logout:', token);
+    const body = {
+          token: token
+        };
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${body.token}`,
+      Authorization: `Bearer ${token}`,
     });
 
-    return this.http.put(`http://localhost:8080/services/logout`, body, { headers });
+    return this.http.post('http://localhost:8080/services/logout', body, { headers });
   }
+
 }

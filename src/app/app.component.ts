@@ -38,20 +38,36 @@ export class AppComponent implements OnInit {
     this.getUserLogged();
   }
 
+  // logout() {
+  //   this.authService.logout().subscribe(
+  //     (response: any) => {
+  //       localStorage.removeItem('token');
+  //       console.log('Logout effettuato correttamente. ', response);
+  //       this.router.navigate(['/login']);
+  //     },
+  //     (error: any) => {
+  //       console.log('Errore durante il logout:' + error.message);
+  //     }
+  //   );
+  // }
+
   logout() {
     this.authService.logout().subscribe(
-      (response: any) => {
+      () => {
         localStorage.removeItem('token');
-        console.log('Logout effettuato correttamente. ', response);
+        console.log('Logout effettuato correttamente.');
         this.router.navigate(['/login']);
       },
       (error: any) => {
-        console.log('Errore durante il logout:' + error.message);
+        console.log('Errore durante il logout:', error.message);
       }
     );
   }
 
+
   getUserLogged() {
+    const token=localStorage.getItem('token');
+    console.log("TOKEN PROFILE BOX APP COMPONENT: "+ token);
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         this.userLoggedMail = response.anagraficaDto.anagrafica.mailAziendale;

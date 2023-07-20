@@ -77,6 +77,6 @@ export class AnagraficaDtoService {
   getRuoli():Observable<any> {
     return this.http.get<any>(`http://localhost:8085/ruoli/map`);
   }
-  
+
 
 }
