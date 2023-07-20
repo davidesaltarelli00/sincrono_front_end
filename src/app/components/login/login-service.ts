@@ -89,7 +89,7 @@ export class AuthService {
 
 
 
-    return this.http.post('http://localhost:8080/services/logout', body, { headers });
+    return this.http.put('http://localhost:8080/services/logout', body, { headers });
   }
 
 }
