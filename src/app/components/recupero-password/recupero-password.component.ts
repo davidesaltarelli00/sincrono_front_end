@@ -8,7 +8,7 @@ import { RecuperoPasswordService } from './recupero-password.service';
   styleUrls: ['./recupero-password.component.scss'],
 })
 export class RecuperoPasswordComponent implements OnInit {
-  email: string = ''; // Proprietà per memorizzare l'indirizzo email inserito nell'input
+  email: string = '';
 
   constructor(
     private router: Router,
@@ -23,9 +23,9 @@ export class RecuperoPasswordComponent implements OnInit {
   }
 
   recuperaPassword() {
-    this.recuperoPasswordService.recuperaPassword().subscribe(
+    this.recuperoPasswordService.recuperaPassword(this.email).subscribe(
       (response: any) => {
-       console.log(response)
+        console.log(response);
       },
       (error: any) => {
         console.log('Errore durante l invio dei dati: ' + error);

@@ -5,15 +5,13 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class RecuperoPasswordService {
-  email: string = '';
-  url = `http://localhost:8080/login-service/`;
+  private url = `http://localhost:8080/login-service/`;
 
   constructor(private http: HttpClient) {}
 
-  recuperaPassword() {
-    //questo metodo invierá l username dell'utente (la email al backend che invierá una mail con un token provvisorio per recuperare la password)
+  recuperaPassword(email: string) {
     const body = {
-      username: this.email,
+      username: email,
     };
     return this.http.post<any>(this.url + `recupero-password`, body);
   }
