@@ -53,6 +53,7 @@ export class AuthService {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
 
@@ -85,6 +86,8 @@ export class AuthService {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
+
+
 
     return this.http.post('http://localhost:8080/services/logout', body, { headers });
   }
