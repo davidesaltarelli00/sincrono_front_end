@@ -9,8 +9,7 @@ import { profileBoxService } from './components/profile-box/profile-box.service'
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  token: any = localStorage.getItem("token");
-  @ViewChild(MatSidenav) sidenav!: MatSidenav;
+  token: any = localStorage.getItem('token');
   userLoggedMail: any;
   userLoggedName: any;
   userLoggedSurname: any;
@@ -19,40 +18,44 @@ export class AppComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private profileBoxService: profileBoxService
-  ) {
-    if (this.token != null) {
-      localStorage.getItem('token');
-    }
-  }
+  ) {}
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        const url = event.url;
         this.token = localStorage.getItem('token');
       }
     });
 
     this.token = localStorage.getItem('token');
     console.log('Token:', this.token);
-    this.getUserLogged();
+
+    if (this.token) {
+      // Se l'utente è autenticato, recupera i dati dell'utente
+      this.getUserLogged();
+    }
   }
 
-  // logout() {
-  //   this.authService.logout().subscribe(
-  //     (response: any) => {
-  //       localStorage.removeItem('token');
-  //       console.log('Logout effettuato correttamente. ', response);
-  //       this.router.navigate(['/login']);
-  //     },
-  //     (error: any) => {
-  //       console.log('Errore durante il logout:' + error.message);
-  //     }
-  //   );
-  // }
+  getUserLogged() {
+    const token = localStorage.getItem('token');
+    console.log('TOKEN PROFILE BOX APP COMPONENT: ' + token);
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        this.userLoggedMail = response.anagraficaDto.anagrafica.mailAziendale;
+        this.userLoggedName = response.anagraficaDto.anagrafica.nome;
+        this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+      },
+      (error: any) => {
+        console.error(
+          'Si è verificato il seguente errore durante il recupero dei dati: ' +
+            error
+        );
+      }
+    );
+  }
 
   logout() {
-    const confirmation = confirm("Sei sicuro di voler effettuare il logout?");
+    const confirmation = confirm('Sei sicuro di voler effettuare il logout?');
     if (confirmation) {
       this.authService.logout().subscribe(
         () => {
@@ -65,24 +68,5 @@ export class AppComponent implements OnInit {
         }
       );
     }
-  }
-
-
-  getUserLogged() {
-    const token=localStorage.getItem('token');
-    console.log("TOKEN PROFILE BOX APP COMPONENT: "+ token);
-    this.profileBoxService.getData().subscribe(
-      (response: any) => {
-        this.userLoggedMail = response.anagraficaDto.anagrafica.mailAziendale;
-        this.userLoggedName = response.anagraficaDto.anagrafica.nome;
-        this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-      },
-      (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
-        );
-      }
-    );
   }
 }

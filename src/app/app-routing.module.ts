@@ -22,7 +22,14 @@ import { RecuperoPasswordComponent } from './components/recupero-password/recupe
 import { FormRecuperoPasswordComponent } from './components/form-recupero-password/form-recupero-password.component';
 const routes: Routes = [
   //HOME
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  // { path: '', redirectTo: '/login', pathMatch: 'full' },
+
+  {
+    path: 'form-recupero-password/:tokenProvvisorio',
+    component: FormRecuperoPasswordComponent,
+    canActivate: [],
+  },
+
   { path: 'login', component: LoginComponent },
   {
     path: 'home',
@@ -97,7 +104,6 @@ const routes: Routes = [
   {
     path: 'recupera-password',
     component: RecuperoPasswordComponent,
-    // canActivate: [AuthGuard],
   },
 
   //DASHBOARD
@@ -105,7 +111,6 @@ const routes: Routes = [
     path: 'dashboard',
     component: ListaDashboardComponent,
     canActivate: [AuthGuard, RoleGuard],
-    // data: { 'expectedRoles': ['admin'] }
   },
 
   //ORGANICO
@@ -132,11 +137,6 @@ const routes: Routes = [
     component: StoricoCommesseComponent,
     canActivate: [AuthGuard],
   },
-
-  {
-    path:'form-recupero-password/:tokenProvvisorio',
-    component:FormRecuperoPasswordComponent
-  }
 
 ];
 

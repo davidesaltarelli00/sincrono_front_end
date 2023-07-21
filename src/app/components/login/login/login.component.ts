@@ -62,8 +62,11 @@ export class LoginComponent implements OnInit {
   }
 
   avviaRecuperoPassword() {
-    this.router.navigate(['/recupera-password']);
     this.recuperoPasswordInCorso = true;
+  }
+
+  annullaRecuperoPassword() {
+    this.recuperoPasswordInCorso = false;
   }
 
   reset(){
