@@ -20,6 +20,7 @@ import { ProfileBoxComponent } from './components/profile-box/profile-box.compon
 import { CambioPasswordComponent } from './components/cambio-password/cambio-password.component';
 import { RecuperoPasswordComponent } from './components/recupero-password/recupero-password.component';
 import { FormRecuperoPasswordComponent } from './components/form-recupero-password/form-recupero-password.component';
+import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -34,6 +35,11 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'logout',
+    component: AlertLogoutComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
 

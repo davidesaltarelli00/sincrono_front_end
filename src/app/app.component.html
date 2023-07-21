@@ -1,163 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sincrono CRM</title>
+    <style>
+      #toolbar {
+  background-color: #007bff; /* Colore blu aziendale */
+  color: #ffffff; /* Testo bianco */
+  display: flex;
+  background-color: #333;
+  justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
+  align-items: center; /* Allinea verticalmente gli elementi al centro */
+}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sincrono CRM</title>
-  <style>
-    /* Stile della sidebar e della toolbar */
-    .sidebar {
-      width: 250px;
-      background-color: #333;
-      color: #ffffff;
-      height: 200vh;
-      position: inherit;
-    }
+.logo-link {
+  margin-right: 10px;
+}
 
-    .sidebar-item {
-      padding: 10px 20px;
-      border-bottom: 1px solid #ffffff;
-    }
+.toolbar-menu {
+  display: flex;
+  gap: 10px;
+  background-color: #333;
+  margin-right:auto;
+}
 
-    .sidebar-item:last-child {
-      border-bottom: none;
-    }
+.toolbar-link {
+  text-decoration: none;
+  color: #ffffff;
+  /* padding: 10px; */
+}
 
-    .sidebar-link {
-      text-decoration: none;
-      color: #ffffff;
-    }
+a{
+  color: white;
+}
 
-    .sidebar-link:hover {
-      color: #d8d8d8;
-    }
+.toolbar-link:hover {
+  color: #d8d8d8;
+}
 
-    .content {
-      flex: 1;
-      padding: 20px;
-    }
+.user-icon,
+.logout-icon {
+  color: #ffffff;
+  cursor: pointer;
+}
 
-    .navbar {
-      padding: 10px 20px;
-    }
+    </style>
+  </head>
 
-    .navbar-brand {
-      font-weight: bold;
-    }
+  <body>
+    <!-- Mostra la toolbar solo se c'è un token -->
 
-    .navbar-nav {
-      margin-left: auto;
-    }
-
-    .nav-link {
-      color: #ffffff;
-      text-decoration: none;
-      margin-left: 10px;
-    }
-
-    .nav-link:hover {
-      color: #d8d8d8;
-    }
-
-    .login-page .sidebar {
-      display: none;
-    }
-
-    .example-container {
-      width: 100%;
-      height: 100%;
-    }
-
-    .spacer {
-      flex: 1 1 auto;
-    }
-
-    mat-drawer {
-      background-color: #333;
-    }
-
-    p {
-      cursor: pointer;
-    }
-
-    mat-icon-button:hover {
-      background-color: none;
-    }
-
-    mat-toolbar {
-      background-color: #333;
-      color: white;
-    }
-
-    ng-container {
-      width: 100%;
-      height: 100%;
-    }
-
-    .toolbar-menu {
-      display: flex;
-      gap: 10px;
-    }
-
-    .toolbar-link {
-      margin: 0;
-    }
-
-    .logo-link {
-      margin-right: 10px;
-    }
-
-    .logo-image {
-      margin: 0;
-    }
-  </style>
-</head>
-
-<body>
-  <!-- Mostra la toolbar solo se c'è un token -->
-  <div class="container-toolbar" [hidden]="tokenProvvisorio!=null && tokenProvvisorio==null">
-    <mat-toolbar id="toolbar" *ngIf="token " >
+    <div
+      class="container-toolbar"
+      [hidden]="tokenProvvisorio != null && tokenProvvisorio == null"
+    >
+    <mat-toolbar id="toolbar" *ngIf="token">
       <!-- Logo e link alla home -->
       <a [routerLink]="['/home']" class="logo-link">
         <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
       </a>
 
+
       <!-- Menu della toolbar -->
       <div class="toolbar-menu">
-        <p class="toolbar-link" [routerLink]="['/lista-anagrafica']">Lista anagrafiche</p>
-        <p class="toolbar-link" [routerLink]="['/dashboard']">Dashboard</p>
-        <p class="toolbar-link" [routerLink]="['/organico']">Organico</p>
+        <a style=" color: white;" class="toolbar-link" [routerLink]="['/lista-anagrafica']">Lista anagrafiche</a>
+        <a style=" color: white;" class="toolbar-link" [routerLink]="['/dashboard']">Dashboard</a>
+        <a style=" color: white;" class="toolbar-link" [routerLink]="['/organico']">Organico</a>
       </div>
 
-      <!-- Altri elementi della toolbar come il nome dell'utente loggato e il pulsante di logout -->
-      <span style="cursor: pointer" id="icona" mat-icon-button [routerLink]="['/profile-box']">
-        <small>{{userLoggedName}} {{userLoggedSurname}} &nbsp; </small> <i class="fa fa-user" ></i>
+      <!-- Altri elementi della toolbar come il nome dell'utente loggato -->
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small>{{userLoggedName}} {{userLoggedSurname}} &nbsp;</small> <i class="fa fa-user"></i>
       </span> &nbsp;&nbsp;
-      <span style="cursor: pointer; " id="icona" mat-icon-button (click)="logout()">
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
         <i class="fa fa-sign-out" aria-hidden="true"></i>
       </span>
     </mat-toolbar>
-  </div>
 
- <!-- Mostra il form di login se non c'è un token e il recupero password non è attivo -->
- <!-- <div  *ngIf="!token && !isRecuperoPassword">
+    </div>
+
+    <!-- Mostra il form di login se non c'è un token e il recupero password non è attivo -->
+    <!-- <div  *ngIf="!token && !isRecuperoPassword">
   <div class="login" >
     <app-login ></app-login>
   </div>
 </div> -->
 
-<!-- Mostra il form di recupero password solo se c'è il token nel localStorage e il recupero password è attivo -->
-<div *ngIf="tokenProvvisorio && isRecuperoPassword">
-  <app-form-recupero-password></app-form-recupero-password>
-</div>
+    <!-- Mostra il form di recupero password solo se c'è il token nel localStorage e il recupero password è attivo -->
+    <div *ngIf="tokenProvvisorio && isRecuperoPassword">
+      <app-form-recupero-password></app-form-recupero-password>
+    </div>
 
-<!-- Router outlet per mostrare i componenti corrispondenti alle varie rotte -->
-<router-outlet></router-outlet>
+    <!-- Router outlet per mostrare i componenti corrispondenti alle varie rotte -->
+    <router-outlet></router-outlet>
 
-<footer *ngIf="token">
-  <p>© 2023 CRM Sincrono. Tutti i diritti riservati.</p>
-</footer>
-</body>
-
+    <footer *ngIf="token">
+      <p>© 2023 CRM Sincrono. Tutti i diritti riservati.</p>
+    </footer>
+  </body>
 </html>

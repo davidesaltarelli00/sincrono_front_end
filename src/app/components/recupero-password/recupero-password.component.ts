@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RecuperoPasswordService } from './recupero-password.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-recupero-password',
@@ -9,11 +10,18 @@ import { RecuperoPasswordService } from './recupero-password.service';
 })
 export class RecuperoPasswordComponent implements OnInit {
   email: string = '';
+  mailInviata: any;
+  recuperoPasswordForm: FormGroup;
 
   constructor(
     private router: Router,
-    private recuperoPasswordService: RecuperoPasswordService
-  ) {}
+    private recuperoPasswordService: RecuperoPasswordService,
+    private formBuilder: FormBuilder
+  ) {
+    this.recuperoPasswordForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+    });
+  }
 
   ngOnInit(): void {}
 
@@ -23,13 +31,23 @@ export class RecuperoPasswordComponent implements OnInit {
   }
 
   recuperaPassword() {
-    this.recuperoPasswordService.recuperaPassword(this.email).subscribe(
-      (response: any) => {
-        console.log(response);
-      },
-      (error: any) => {
-        console.log('Errore durante l invio dei dati: ' + error);
-      }
-    );
+    if (this.recuperoPasswordForm.valid) {
+      const email = this.recuperoPasswordForm.get('email')?.value;
+      this.email = email;
+      console.log('Email recuperata:', email);
+      this.recuperoPasswordService.recuperaPassword(this.email).subscribe(
+        (response: any) => {
+          console.log(response);
+          this.mailInviata = true;
+        },
+        (error: any) => {
+          console.log('Errore durante l invio dei dati: ' + error);
+          this.mailInviata = false;
+        }
+      );
+    }else{
+      console.error("ERRORE_GENERICO");
+    }
+
   }
 }

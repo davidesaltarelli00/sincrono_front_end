@@ -3,6 +3,8 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { AuthService } from './components/login/login-service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { profileBoxService } from './components/profile-box/profile-box.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -20,7 +22,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private profileBoxService: profileBoxService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -30,26 +33,25 @@ export class AppComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         this.token = localStorage.getItem('token');
       }
+      // console.log('Token:', this.token);
+
+      if (this.token) {
+        // Se l'utente è autenticato, recupera i dati dell'utente
+        this.getUserLogged();
+      }
     });
 
     this.token = localStorage.getItem('token');
-    console.log('Token:', this.token);
-
-    if (this.token) {
-      // Se l'utente è autenticato, recupera i dati dell'utente
-      this.getUserLogged();
-    }
 
     // Estrai il token provvisorio dai parametri della URL
     this.route.params.subscribe((params) => {
       this.tokenProvvisorio = params['tokenProvvisorio'];
     });
-
   }
 
   getUserLogged() {
     const token = localStorage.getItem('token');
-    console.log('TOKEN PROFILE BOX APP COMPONENT: ' + token);
+    // console.log('TOKEN PROFILE BOX APP COMPONENT: ' + token);
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         this.userLoggedMail = response.anagraficaDto.anagrafica.mailAziendale;
@@ -66,21 +68,22 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    const confirmation = confirm('Sei sicuro di voler effettuare il logout?');
-    if (confirmation) {
-      this.authService.logout().subscribe(
-        () => {
-          localStorage.removeItem('token');
-          localStorage.removeItem('tokenProvvisorio');
-          console.log('Logout effettuato correttamente.');
-          this.router.navigate(['/login']);
-          location.reload();
-        },
-        (error: any) => {
-          console.log('Errore durante il logout:', error.message);
-        }
-      );
-    }
+    this.dialog.open(AlertLogoutComponent);
+    // const confirmation = confirm('Sei sicuro di voler effettuare il logout?');
+    // if (confirmation) {
+    //   this.authService.logout().subscribe(
+    //     () => {
+    //       localStorage.removeItem('token');
+    //       localStorage.removeItem('tokenProvvisorio');
+    //       // console.log('Logout effettuato correttamente.');
+    //       this.router.navigate(['/login']);
+    //       location.reload();
+    //     },
+    //     (error: any) => {
+    //       console.log('Errore durante il logout:', error.message);
+    //     }
+    //   );
+    // }
   }
 
   avviaRecuperoPassword() {

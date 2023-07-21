@@ -17,14 +17,14 @@ export class CambioPasswordService {
     private profileBoxService: profileBoxService
   ) {
     const token = localStorage.getItem('token');
-    console.log('profile box component token: ' + token);
+    // console.log('profile box component token: ' + token);
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         this.anagrafica = response;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
-        console.log(
-          'ID UTENTE valorizzato globalmente nel service: ' + this.idUtente
-        );
+        // console.log(
+        //   'ID UTENTE valorizzato globalmente nel service: ' + this.idUtente
+        // );
       },
       (error: any) => {
         console.error(

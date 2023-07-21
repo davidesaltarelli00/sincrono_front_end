@@ -19,7 +19,7 @@ export class ProfileBoxComponent {
   ) {}
   ngOnInit(): void {
     const token = localStorage.getItem('token');
-    console.log("profile box component token: "+ token)
+    // console.log("profile box component token: "+ token)
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         this.anagrafica = response;

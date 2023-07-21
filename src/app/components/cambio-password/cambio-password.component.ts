@@ -39,7 +39,7 @@ export class CambioPasswordComponent {
     window.scrollTo(0, 0);
 
     const token = localStorage.getItem('token');
-    console.log('profile box component token: ' + token);
+    // console.log('profile box component token: ' + token);
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         this.anagrafica = response;

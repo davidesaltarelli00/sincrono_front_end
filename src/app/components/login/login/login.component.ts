@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
       (response) => {
         // Login successful, handle the response
         console.log('Login successful!');
-        console.log(response);
+        // console.log(response);
 
         // Formatta il token
         const tokenParts = response.token.split('.');
@@ -62,8 +62,8 @@ export class LoginComponent implements OnInit {
         const tokenPayload = JSON.parse(atob(tokenParts[1]));
 
         // Puoi accedere alle parti del token come oggetti JSON
-        console.log('Token header:', tokenHeader);
-        console.log('Token payload:', tokenPayload);
+        // console.log('Token header:', tokenHeader);
+        // console.log('Token payload:', tokenPayload);
 
         // Memorizza il token nel localStorage e assegna alla variabile token
         localStorage.setItem('token', response.token);
