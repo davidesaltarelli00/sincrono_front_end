@@ -8,39 +8,35 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./form-recupero-password.component.scss'],
 })
 export class FormRecuperoPasswordComponent implements OnInit {
-  tokenProvvisorio: string = '';
+  tokenProvvisorio: any = '';
   password: any;
 
   constructor(
     private recuperoPasswordService: RecuperoPasswordService,
-    private route: ActivatedRoute,
-    private router: Router
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.tokenProvvisorio = params['tokenProvvisorio'];
+      // Memorizza il token provvisorio nel localStorage
+      localStorage.setItem('tokenProvvisorio', this.tokenProvvisorio);
       // Ora puoi chiamare il metodo per recuperare la password
       this.recuperaPassword();
     });
   }
 
   recuperaPassword() {
-    this.recuperoPasswordService
-      .recuperaPassword(this.tokenProvvisorio, this.password)
-      .subscribe(
-        (res: any) => {
-          this.password = res.password;
-        },
-        (error: any) => {
-          console.log('Errore ' + error);
-        }
-      );
-  }
+    this.recuperoPasswordService.recuperaPassword(this.tokenProvvisorio,this.password).subscribe(
+      (res: any) => {
+        this.password = res.password;
+        const tokenProvvisorio= localStorage.getItem('tokenProvvisorio');
+        this.tokenProvvisorio=tokenProvvisorio;
 
-  // Metodo per il reindirizzamento
-  redirectToFormRecuperoPassword() {
-    // Reindirizza l'utente alla pagina /form-recupero-password/token
-    this.router.navigate(['/form-recupero-password', this.tokenProvvisorio]);
+      },
+      (error: any) => {
+        console.log('Errore ' + error);
+      }
+    );
   }
 }
