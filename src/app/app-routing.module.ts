@@ -22,7 +22,7 @@ import { RecuperoPasswordComponent } from './components/recupero-password/recupe
 import { FormRecuperoPasswordComponent } from './components/form-recupero-password/form-recupero-password.component';
 const routes: Routes = [
   //HOME
-  // { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 
   {
     path: 'form-recupero-password/:tokenProvvisorio',

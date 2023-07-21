@@ -5,169 +5,159 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sincrono CRM</title>
-  <!-- Includi i link ai CSS esterni, se necessario -->
   <style>
+    /* Stile della sidebar e della toolbar */
+    .sidebar {
+      width: 250px;
+      background-color: #333;
+      color: #ffffff;
+      height: 200vh;
+      position: inherit;
+    }
 
-.sidebar {
-  width: 250px;
-  background-color: #333;
-  color: #ffffff;
-  height: 200vh;
-  position: inherit;
-}
+    .sidebar-item {
+      padding: 10px 20px;
+      border-bottom: 1px solid #ffffff;
+    }
 
-/* Stile delle voci di menu nella sidebar */
-.sidebar-item {
-  padding: 10px 20px;
-  border-bottom: 1px solid #ffffff;
-}
+    .sidebar-item:last-child {
+      border-bottom: none;
+    }
 
-.sidebar-item:last-child {
-  border-bottom: none;
-}
+    .sidebar-link {
+      text-decoration: none;
+      color: #ffffff;
+    }
 
-.sidebar-link {
-  text-decoration: none;
-  color: #ffffff;
-}
+    .sidebar-link:hover {
+      color: #d8d8d8;
+    }
 
-.sidebar-link:hover {
-  color: #d8d8d8;
-}
+    .content {
+      flex: 1;
+      padding: 20px;
+    }
 
-.content {
-  flex: 1;
-  padding: 20px;
-}
+    .navbar {
+      padding: 10px 20px;
+    }
 
-.navbar {
-  padding: 10px 20px;
-}
+    .navbar-brand {
+      font-weight: bold;
+    }
 
-.navbar-brand {
-  font-weight: bold;
-}
+    .navbar-nav {
+      margin-left: auto;
+    }
 
-.navbar-nav {
-  margin-left: auto;
-}
+    .nav-link {
+      color: #ffffff;
+      text-decoration: none;
+      margin-left: 10px;
+    }
 
-.nav-link {
-  color: #ffffff;
-  text-decoration: none;
-  margin-left: 10px;
-}
+    .nav-link:hover {
+      color: #d8d8d8;
+    }
 
-.nav-link:hover {
-  color: #d8d8d8;
-}
+    .login-page .sidebar {
+      display: none;
+    }
 
-.login-page .sidebar {
-  display: none;
-}
+    .example-container {
+      width: 100%;
+      height: 100%;
+    }
 
-.example-container {
-  width: 100%;
-  height: 100%;
-}
+    .spacer {
+      flex: 1 1 auto;
+    }
 
-.spacer {
-  flex: 1 1 auto;
-}
+    mat-drawer {
+      background-color: #333;
+    }
 
-mat-drawer {
-  background-color: #333;
-}
+    p {
+      cursor: pointer;
+    }
 
-p {
-  cursor: pointer;
-}
+    mat-icon-button:hover {
+      background-color: none;
+    }
 
-mat-icon-button:hover {
-  background-color: none;
-}
+    mat-toolbar {
+      background-color: #333;
+      color: white;
+    }
 
-mat-toolbar {
-  background-color: #333;
-  color: white;
-}
+    ng-container {
+      width: 100%;
+      height: 100%;
+    }
 
-ng-container{
-width: 100%;
-height: 100%;
-}
+    .toolbar-menu {
+      display: flex;
+      gap: 10px;
+    }
 
-.toolbar-menu {
-display: flex;
-gap: 10px;
-}
+    .toolbar-link {
+      margin: 0;
+    }
 
-.toolbar-link {
-margin: 0;
-}
+    .logo-link {
+      margin-right: 10px;
+    }
 
-.logo-link {
-margin-right: 10px;
-}
-
-.logo-image {
-margin: 0;
-}
-
+    .logo-image {
+      margin: 0;
+    }
   </style>
 </head>
 
 <body>
   <!-- Mostra la toolbar solo se c'è un token -->
-  <mat-toolbar id="toolbar" *ngIf="token">
+  <mat-toolbar id="toolbar" *ngIf="token " >
+    <!-- Logo e link alla home -->
     <a [routerLink]="['/home']" class="logo-link">
       <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
     </a>
+
+    <!-- Menu della toolbar -->
     <div class="toolbar-menu">
       <p class="toolbar-link" [routerLink]="['/lista-anagrafica']">Lista anagrafiche</p>
       <p class="toolbar-link" [routerLink]="['/dashboard']">Dashboard</p>
       <p class="toolbar-link" [routerLink]="['/organico']">Organico</p>
     </div>
-    <span class="spacer"></span>
+
+    <!-- Altri elementi della toolbar come il nome dell'utente loggato e il pulsante di logout -->
     <span style="cursor: pointer" id="icona" mat-icon-button [routerLink]="['/profile-box']">
-     <small>{{userLoggedName}} {{userLoggedSurname}} &nbsp; </small> <i class="fa fa-user" ></i>
+      <small>{{userLoggedName}} {{userLoggedSurname}} &nbsp; </small> <i class="fa fa-user" ></i>
     </span> &nbsp;&nbsp;
-    <span style="cursor: pointer" id="icona" mat-icon-button (click)="logout()">
-      <i class="fa fa-sign-out" aria-hidden="true"></i>    </span>  </mat-toolbar>
-
-  <!-- Mostra il form di login o il router outlet a seconda della presenza del token -->
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <ng-container *ngIf="token; else loginForm">
-          <!-- Mostra il router outlet solo se c'è un token -->
-          <router-outlet></router-outlet>
-        </ng-container>
-        <ng-template #loginForm>
-          <!-- Mostra il form di login se non c'è un token -->
-          <div class="login">
-            <app-login></app-login>
-          </div>
-        </ng-template>
-      </div>
-    </div>
+    <span style="cursor: pointer; " id="icona" mat-icon-button (click)="logout()">
+      <i class="fa fa-sign-out" aria-hidden="true"></i>
+    </span>
+  </mat-toolbar>
+ <!-- Mostra il form di login se non c'è un token e il recupero password non è attivo -->
+ <div *ngIf="!token && !isRecuperoPassword && !tokenProvvisorio">
+  <div class="login" >
+    <app-login></app-login>
   </div>
+  <!-- <div class="recupero-password">
+    <a style="color: blue; cursor: pointer;" (click)="avviaRecuperoPassword()">Password dimenticata?</a>
+  </div> -->
+</div>
 
-  <!-- Mostra il form di recupero password se non c'è un token -->
-  <!-- <ng-container *ngIf="!token">
-    <div class="recupero-password">
-      <app-recupero-password></app-recupero-password>
-    </div>
-  </ng-container> -->
+<!-- Mostra il form di recupero password solo se c'è il token nel localStorage e il recupero password è attivo -->
+<div *ngIf="tokenProvvisorio && isRecuperoPassword">
+  <app-form-recupero-password></app-form-recupero-password>
+</div>
 
-  <footer *ngIf="token">
-    <!-- Inserisci qui il contenuto del footer -->
-  </footer>
+<!-- Router outlet per mostrare i componenti corrispondenti alle varie rotte -->
+<router-outlet></router-outlet>
 
-  <!-- Includi gli script esterni, se necessario -->
-  <script>
-    // ... Inserisci qui eventuali script JavaScript ...
-  </script>
+<footer *ngIf="token">
+  <p>© 2023 CRM Sincrono. Tutti i diritti riservati.</p>
+</footer>
 </body>
 
 </html>

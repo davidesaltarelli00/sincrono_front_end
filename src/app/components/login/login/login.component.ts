@@ -9,39 +9,7 @@ import { AuthService } from '../login-service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  // showSidebar: boolean = false;
-  // formLogin: FormGroup;
-  // isLoginPage = true; // Imposta su true quando sei nella pagina di login
 
-  // constructor(private router: Router, private formBuilder: FormBuilder) {
-  //   const currentUrl = this.router.url;
-  //   const isLoginPage = currentUrl === '/login';
-
-  //   if (isLoginPage) {
-  //     document.body.classList.add('login-page');
-  //   } else {
-  //     document.body.classList.remove('login-page');
-  //   }
-
-  //   this.formLogin = this.formBuilder.group({
-  //     email: ['', [Validators.required, Validators.email]],
-  //     password: ['', Validators.required],
-  //   });
-  // }
-
-  // ngOnInit() {}
-
-  // login() {
-  //   if (this.formLogin.valid) {
-  //     const email = this.formLogin.value.email;
-  //     const password = this.formLogin.value.password;
-
-  //     this.router.navigate(['/home']);
-  //     this.showSidebar=true;
-  //   } else{
-  //     this.showSidebar=false;
-  //   }
-  // }
 
   loginForm: FormGroup;
   recuperoPasswordInCorso: boolean = false;
@@ -101,6 +69,7 @@ export class LoginComponent implements OnInit {
 
         // Redirect a una diversa pagina o esegui altre azioni
         this.router.navigate(['/home']);
+        location.reload();
       },
       (error) => {
         // Login failed, handle the error

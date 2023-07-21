@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { AuthService } from './components/login/login-service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { profileBoxService } from './components/profile-box/profile-box.service';
@@ -9,18 +9,22 @@ import { profileBoxService } from './components/profile-box/profile-box.service'
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  token: any = localStorage.getItem('token');
+  token: string | null = null;
   userLoggedMail: any;
   userLoggedName: any;
   userLoggedSurname: any;
+  isRecuperoPassword: boolean = false;
+  tokenProvvisorio: string | null = localStorage.getItem('tokenProvvisorio');
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private profileBoxService: profileBoxService
+    private profileBoxService: profileBoxService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    this.token = localStorage.getItem('tokenProvvisorio');
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.token = localStorage.getItem('token');
@@ -34,6 +38,12 @@ export class AppComponent implements OnInit {
       // Se l'utente è autenticato, recupera i dati dell'utente
       this.getUserLogged();
     }
+
+    // Estrai il token provvisorio dai parametri della URL
+    this.route.params.subscribe((params) => {
+      this.tokenProvvisorio = params['tokenProvvisorio'];
+    });
+
   }
 
   getUserLogged() {
@@ -60,13 +70,23 @@ export class AppComponent implements OnInit {
       this.authService.logout().subscribe(
         () => {
           localStorage.removeItem('token');
+          localStorage.removeItem('tokenProvvisorio');
           console.log('Logout effettuato correttamente.');
           this.router.navigate(['/login']);
+          location.reload();
         },
         (error: any) => {
           console.log('Errore durante il logout:', error.message);
         }
       );
     }
+  }
+
+  avviaRecuperoPassword() {
+    this.isRecuperoPassword = true;
+  }
+
+  tornaAlogin() {
+    this.isRecuperoPassword = false;
   }
 }
