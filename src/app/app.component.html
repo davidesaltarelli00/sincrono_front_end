@@ -141,11 +141,11 @@
   </div>
 
  <!-- Mostra il form di login se non c'è un token e il recupero password non è attivo -->
- <div *ngIf="!token && !isRecuperoPassword">
+ <!-- <div  *ngIf="!token && !isRecuperoPassword">
   <div class="login" >
     <app-login ></app-login>
   </div>
-</div>
+</div> -->
 
 <!-- Mostra il form di recupero password solo se c'è il token nel localStorage e il recupero password è attivo -->
 <div *ngIf="tokenProvvisorio && isRecuperoPassword">

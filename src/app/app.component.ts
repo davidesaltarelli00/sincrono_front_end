@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.token = localStorage.getItem('tokenProvvisorio');
+    this.token = localStorage.getItem('token');
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.token = localStorage.getItem('token');
