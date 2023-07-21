@@ -13,7 +13,8 @@ export class FormRecuperoPasswordComponent implements OnInit {
 
   constructor(
     private recuperoPasswordService: RecuperoPasswordService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router:Router
   ) {}
 
   ngOnInit(): void {
@@ -27,12 +28,14 @@ export class FormRecuperoPasswordComponent implements OnInit {
   }
 
   recuperaPassword() {
-    this.recuperoPasswordService.recuperaPassword(this.tokenProvvisorio,this.password).subscribe(
+    this.recuperoPasswordService.recuperaPassword(this.tokenProvvisorio, this.password).subscribe(
       (res: any) => {
         this.password = res.password;
-        const tokenProvvisorio= localStorage.getItem('tokenProvvisorio');
-        this.tokenProvvisorio=tokenProvvisorio;
+        // Memorizza il token provvisorio nel localStorage (puoi farlo all'inizio del metodo ngOnInit se preferisci)
+        localStorage.setItem('tokenProvvisorio', this.tokenProvvisorio);
 
+        // Reindirizza l'utente alla pagina /form-recupero-password/:tokenProvvisorio
+        this.router.navigate(['form-recupero-password', this.tokenProvvisorio]);
       },
       (error: any) => {
         console.log('Errore ' + error);

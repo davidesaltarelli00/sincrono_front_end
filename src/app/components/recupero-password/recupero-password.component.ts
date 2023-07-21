@@ -26,6 +26,7 @@ export class RecuperoPasswordComponent implements OnInit {
     this.recuperoPasswordService.recuperaPassword(this.email).subscribe(
       (response: any) => {
         console.log(response);
+        this.router.navigate(['/form-recupero-password']);
       },
       (error: any) => {
         console.log('Errore durante l invio dei dati: ' + error);
