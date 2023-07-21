@@ -18,31 +18,40 @@ export class FormRecuperoPasswordComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Estrai il token provvisorio dai parametri della URL
-    this.route.params.subscribe((params) => {
-      this.tokenProvvisorio = params['tokenProvvisorio'];
-    });
+ // Estrai il token provvisorio dai parametri della URL
+ this.route.params.subscribe((params) => {
+  this.tokenProvvisorio = params['tokenProvvisorio'];
+
+  // Salva il token provvisorio nel localStorage e assegnalo alla variabile tokenProvvisorio
+  localStorage.setItem('tokenProvvisorio', this.tokenProvvisorio);
+
+  // Formatta il token provvisorio (se necessario)
+  const tokenParts = this.tokenProvvisorio.split('.');
+  const tokenHeader = JSON.parse(atob(tokenParts[0]));
+  const tokenPayload = JSON.parse(atob(tokenParts[1]));
+
+  // Puoi accedere alle parti del token provvisorio come oggetti JSON
+  console.log('Token provvisorio header:', tokenHeader);
+  console.log('Token provvisorio payload:', tokenPayload);
+});
   }
 
   recuperaPassword() {
-    this.recuperoPasswordService.recuperaPassword(this.tokenProvvisorio, this.password).subscribe(
-      (res: any) => {
-        // Recupero password avvenuto con successo, puoi effettuare azioni aggiuntive se necessario
-        // Ad esempio, puoi reindirizzare l'utente a una pagina di successo o mostrare un messaggio di conferma
-        console.log('Recupero password avvenuto con successo');
-        console.log('Nuova password:', this.password);
-
-        // Effettua l'operazione di logout dopo aver recuperato la password (opzionale)
-        this.logout();
-
-        // Puoi anche reindirizzare l'utente a una pagina di successo
-        this.router.navigateByUrl('/recupero-password-successo');
-      },
-      (error: any) => {
-        console.log('Errore durante il recupero della password: ', error);
-        // Puoi gestire l'errore mostrando un messaggio all'utente o effettuando altre azioni necessarie
-      }
-    );
+    console.log("Start invocation method recuperaPassword");
+    this.recuperoPasswordService
+      .recuperaPassword(this.tokenProvvisorio, this.password)
+      .subscribe(
+        (res: any) => {
+          console.log("RISPOSTA: "+ res);
+          this.password = res;
+          console.log('Recupero password avvenuto con successo');
+          console.log('Nuova password:', this.password);
+        },
+        (error: any) => {
+          console.log('Errore durante il recupero della password: ', error);
+        }
+      );
+      console.log("end of invocation method recuperaPassword");
   }
 
   tornaAlogin() {
@@ -50,10 +59,7 @@ export class FormRecuperoPasswordComponent implements OnInit {
   }
 
   logout() {
-    // Esempio di funzione per effettuare il logout
-    // Puoi implementare la tua logica di logout se necessario
-    // Rimuovi il token dal localStorage o dall'auth service
-    // Effettua altre operazioni per resettare lo stato dell'applicazione
+    // Effettua il logout qui
     console.log('Effettua il logout qui');
   }
 }

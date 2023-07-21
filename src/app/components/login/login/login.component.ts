@@ -10,6 +10,7 @@ import { AuthService } from '../login-service';
 })
 export class LoginComponent implements OnInit {
 
+  token: string | null = null;
 
   loginForm: FormGroup;
   recuperoPasswordInCorso: boolean = false;
@@ -64,12 +65,12 @@ export class LoginComponent implements OnInit {
         console.log('Token header:', tokenHeader);
         console.log('Token payload:', tokenPayload);
 
-        // Memorizza il token nel localStorage
+        // Memorizza il token nel localStorage e assegna alla variabile token
         localStorage.setItem('token', response.token);
+        this.token = response.token;
 
         // Redirect a una diversa pagina o esegui altre azioni
         this.router.navigate(['/home']);
-        location.reload();
       },
       (error) => {
         // Login failed, handle the error
@@ -77,4 +78,5 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+
 }
