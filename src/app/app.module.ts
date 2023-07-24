@@ -34,13 +34,15 @@ import { LoginComponent } from './components/login/login/login.component';
 import { StoricoContrattiComponent } from './components/storici/storico-contratti/storico-contratti.component';
 import { StoricoCommesseComponent } from './components/storici/storico-commesse/storico-commesse.component';
 
-
 import { MaterialModule } from './material.module';
 import { ProfileBoxComponent } from './components/profile-box/profile-box.component';
 import { CambioPasswordComponent } from './components/cambio-password/cambio-password.component';
 import { RecuperoPasswordComponent } from './components/recupero-password/recupero-password.component';
 import { FormRecuperoPasswordComponent } from './components/form-recupero-password/form-recupero-password.component';
 import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
+import { UtenteComponent } from './components/utente/utente.component';
+import { GiornoComponent } from './components/giorno/giorno.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { AlertLogoutComponent } from './components/alert-logout/alert-logout.com
     CambioPasswordComponent,
     RecuperoPasswordComponent,
     FormRecuperoPasswordComponent,
-    AlertLogoutComponent
+    AlertLogoutComponent,
+    UtenteComponent,
+    GiornoComponent
   ],
   imports: [
     MatNativeDateModule,
@@ -74,12 +78,12 @@ import { AlertLogoutComponent } from './components/alert-logout/alert-logout.com
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule ,
+    ReactiveFormsModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

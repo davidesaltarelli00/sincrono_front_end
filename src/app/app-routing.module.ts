@@ -21,6 +21,8 @@ import { CambioPasswordComponent } from './components/cambio-password/cambio-pas
 import { RecuperoPasswordComponent } from './components/recupero-password/recupero-password.component';
 import { FormRecuperoPasswordComponent } from './components/form-recupero-password/form-recupero-password.component';
 import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
+import { UtenteComponent } from './components/utente/utente.component';
+import { GiornoComponent } from './components/giorno/giorno.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -144,6 +146,17 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
 
+  //CALENDARIO
+  {
+    path: 'utente',
+    component: UtenteComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'giorno/:date',
+    component: GiornoComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container-fluid">
+
+    <div class="calendar">
+      <table>
+        <!-- Intestazione con nome mese e pulsanti di navigazione -->
+        <thead>
+          <tr>
+            <th colspan="7">
+              {{ months[currentMonthIndex] }} {{ currentDate.getFullYear() }}
+              <button (click)="prevMonth()">Prev</button>
+              <button (click)="nextMonth()">Next</button>
+            </th>
+          </tr>
+          <tr>
+            <th *ngFor="let day of weekDays">{{ day }}</th>
+          </tr>
+        </thead>
+        <!-- Corpo del calendario con giorni -->
+        <tbody>
+          <tr *ngFor="let week of calendar">
+            <td *ngFor="let day of week"  (click)="openDayComponent(day.date)">
+              {{ day.day }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
+</body>
+</html>
