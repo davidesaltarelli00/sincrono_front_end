@@ -64,14 +64,16 @@ a{
 
       <!-- Menu della toolbar -->
       <div class="toolbar-menu">
-        <a style=" color: white;" class="toolbar-link" [routerLink]="['/lista-anagrafica']">Lista anagrafiche</a>
-        <a style=" color: white;" class="toolbar-link" [routerLink]="['/dashboard']">Dashboard</a>
-        <a style=" color: white;" class="toolbar-link" [routerLink]="['/organico']">Organico</a>
+        <!-- Utilizza ngFor per generare le voci del menu dinamicamente -->
+        <a   (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link" *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+          {{ menuItem.nome }}
+        </a>
       </div>
 
       <!-- Altri elementi della toolbar come il nome dell'utente loggato -->
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
-        <small>{{userLoggedName}} {{userLoggedSurname}} &nbsp;</small> <i class="fa fa-user"></i>
+        <small *ngIf="userRole===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRole===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i class="fa fa-user"></i>
       </span> &nbsp;&nbsp;
       <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
         <i class="fa fa-sign-out" aria-hidden="true"></i>

@@ -5,6 +5,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { profileBoxService } from './components/profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,13 +18,19 @@ export class AppComponent implements OnInit {
   userLoggedSurname: any;
   isRecuperoPassword: boolean = false;
   tokenProvvisorio: string | null = localStorage.getItem('tokenProvvisorio');
+  voceMenu: any;
+  userRole: any;
+  jsonData: any = {};
+  idFunzione: any={};
+  id: any;
 
   constructor(
     private router: Router,
     private authService: AuthService,
     private profileBoxService: profileBoxService,
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -38,6 +45,7 @@ export class AppComponent implements OnInit {
       if (this.token) {
         // Se l'utente è autenticato, recupera i dati dell'utente
         this.getUserLogged();
+        this.getUserRole();
       }
     });
 
@@ -65,7 +73,76 @@ export class AppComponent implements OnInit {
         );
       }
     );
+    // console.log('l utente che si é loggato é un ' + this.userRole);
   }
+
+  getUserRole() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        this.userRole = response.anagraficaDto.ruolo.nome;
+        if ((this.userRole = response.anagraficaDto.ruolo.nome === 'ADMIN')) {
+          this.id = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRole = response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.id = 2;
+          this.generateMenuByUserRole();
+        }
+      },
+      (error: any) => {
+        console.error(
+          'Si è verificato il seguente errore durante il recupero del ruolo: ' +
+            error
+        );
+      }
+    );
+    // console.log('l utente che si é loggato é un ' + this.userRole);
+  }
+
+  generateMenuByUserRole() {
+    const url = `http://localhost:8085/funzioni-ruolo/tree/${this.id}`;
+    this.http.get<MenuData>(url).subscribe(
+      (data) => {
+        this.jsonData = data;
+        console.log(this.jsonData);
+        this.idFunzione = data.list[0].id;
+        console.log(this.idFunzione);
+      },
+      (error) => {
+        console.error('Errore nella generazione del menu:', error);
+      }
+    );
+  }
+
+  getPermissions(functionId: number) {
+    const url = `http://localhost:8085/operazioni/${functionId}`;
+    this.http.get(url).subscribe(
+      (data: any) => {
+        // Qui puoi fare qualcosa con i permessi ottenuti dalla chiamata API
+        console.log('Permessi ottenuti:', data);
+
+        // Ad esempio, puoi mostrarli in una finestra di dialogo o in un altro componente
+        this.showPermissionsDialog(data);
+      },
+      (error) => {
+        console.error('Errore nella generazione dei permessi:', error);
+      }
+    );
+  }
+
+  showPermissionsDialog(permissions: any) {
+   console.log("Permessi: "+ permissions);
+  }
+
+
+
+
+
+
+
+
 
   logout() {
     this.dialog.open(AlertLogoutComponent);
@@ -93,4 +170,24 @@ export class AppComponent implements OnInit {
   tornaAlogin() {
     this.isRecuperoPassword = false;
   }
+}
+
+
+interface MenuData {
+  esito: {
+    code: number;
+    target: any;
+    args: any;
+  };
+  list: {
+    id: number;
+    funzione: any;
+    menuItem: number;
+    nome: string;
+    percorso: string;
+    immagine: any;
+    ordinamento: number;
+    funzioni: any;
+    privilegio: any;
+  }[];
 }
