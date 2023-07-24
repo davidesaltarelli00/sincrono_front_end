@@ -15,8 +15,8 @@
           <tr>
             <th colspan="7">
               {{ months[currentMonthIndex] }} {{ currentDate.getFullYear() }}
-              <button (click)="prevMonth()">Prev</button>
-              <button (click)="nextMonth()">Next</button>
+              <button (click)="prevMonth()" [disabled]="isPrevButtonDisabled()" >Prev</button>
+              <button (click)="nextMonth()" [disabled]="isNextButtonDisabled()">Next</button>
             </th>
           </tr>
           <tr>

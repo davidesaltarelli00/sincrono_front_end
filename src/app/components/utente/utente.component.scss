@@ -8,6 +8,11 @@
   background-color: #fff;
 }
 
+button:disabled {
+  opacity: 0.6; /* Riduce l'opacità del pulsante quando è disabilitato */
+  cursor: not-allowed; /* Cambia il cursore del mouse per indicare che il pulsante non è cliccabile */
+}
+
 .calendar table {
   width: 100%;
   border-collapse: collapse;

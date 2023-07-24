@@ -60,4 +60,14 @@ export class UtenteComponent {
     const formattedDate = this.datePipe.transform(selectedDate, 'yyyy-MM-dd');
     this.router.navigate(['/giorno', formattedDate]);
   }
+
+
+  isPrevButtonDisabled() {
+    return this.currentMonthIndex === 0;
+  }
+
+  isNextButtonDisabled() {
+    return this.currentMonthIndex === 11;
+  }
+
 }
