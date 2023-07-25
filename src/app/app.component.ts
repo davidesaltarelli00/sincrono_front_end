@@ -31,7 +31,12 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private http: HttpClient
-  ) {}
+  ) {
+    window.addEventListener('beforeunload', function(event) {
+      // Svuota il localStorage
+      localStorage.clear();
+    });
+  }
 
   ngOnInit() {
     this.token = localStorage.getItem('tokenProvvisorio');

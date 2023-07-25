@@ -1,6 +1,17 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+export interface TimeSelection {
+  start: number;
+  end: number;
+  isSelected: boolean;
+}
+
+interface TimeSlot {
+  time: string;
+  checked: boolean;
+  activity: string;
+}
 
 @Component({
   selector: 'app-giorno',
@@ -10,35 +21,83 @@ import { ActivatedRoute } from '@angular/router';
 export class GiornoComponent implements OnInit {
   selectedDate: any;
   formattedDate: any;
+  hours: string[] = [];
+  selectedHours: boolean[] = new Array(24).fill(false);
+  selectedRange: number[] = [];
+  timeSlots: TimeSlot[] = [];
 
-  constructor(private route: ActivatedRoute, private datePipe: DatePipe) { }
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       const dateString = params['date'];
-      this.selectedDate = this.parseDateStringToDate(dateString);
-      if (this.selectedDate) {
-        this.formatDate();
-      } else {
-        console.error('Data non valida:', dateString);
-      }
+      this.selectedDate = new Date(dateString);
+      this.formatDate();
+      this.generateHours();
     });
   }
 
-  parseDateStringToDate(dateString: string): Date | null {
-    const dateParts = dateString.split('-');
-    if (dateParts.length === 3) {
-      const year = parseInt(dateParts[0], 10);
-      const month = parseInt(dateParts[1], 10);
-      const day = parseInt(dateParts[2], 10);
-      if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
-        return new Date(year, month - 1, day); // Mese inizia da 0 (0 = gennaio, 1 = febbraio, ecc.)
-      }
-    }
-    return null;
+  formatDate() {
+    this.formattedDate = this.selectedDate.toDateString();
   }
 
-  formatDate() {
-    this.formattedDate = this.datePipe.transform(this.selectedDate, 'dd, MMMM yyyy');
+  generateHours() {
+    for (let i = 0; i < 24; i++) {
+      const hour = i.toString().padStart(2, '0');
+      this.hours.push(`${hour}:00`);
+    }
+  }
+
+  onInput(event: Event, index: number) {
+    const target = event.target as HTMLTableCellElement;
+    const activity = target.innerText.trim();
+    // Aggiungi qui la logica per salvare l'attività nella tua applicazione
+  }
+
+  onCheckboxChange(index: number) {
+    if (this.selectedHours[index]) {
+      // Se la checkbox è selezionata, evidenzia solo l'ora corrispondente
+      this.clearSelectedHours();
+      this.selectedHours[index] = true;
+      this.selectedRange = [index, index]; // Imposta il range selezionato come un singolo elemento
+    } else {
+      // Se la checkbox è deselezionata, rimuovi l'evidenziazione
+      this.selectedHours[index] = false;
+      this.selectedRange = []; // Rimuovi il range selezionato
+    }
+  }
+
+  isHourSelected(index: number): boolean {
+    return this.selectedHours[index];
+  }
+
+  onCheckboxRangeChange(startIndex: number, endIndex: number) {
+    this.clearSelectedHours();
+    this.selectedRange = [startIndex, endIndex];
+    for (let i = startIndex; i <= endIndex; i++) {
+      this.selectedHours[i] = true;
+    }
+  }
+
+  isHourInSelectedRange(index: number): boolean {
+    if (this.selectedRange.length === 2) {
+      console.log(this.selectedRange);
+      return index >= this.selectedRange[0] && index <= this.selectedRange[1];
+    }
+    return false;
+  }
+
+  clearSelectedHours() {
+    this.selectedHours.fill(false);
+    this.selectedRange = [];
+  }
+
+  saveActivity(index: number) {
+    // Stampa in console l'attività salvata
+    console.log(`Attività salvata per l'ora ${this.timeSlots[index].time}: ${this.timeSlots[index].activity}`);
+  }
+
+  clearActivity(index: number) {
+    this.timeSlots[index].activity = '';
   }
 }

@@ -7,9 +7,36 @@
 </head>
 <body>
   <div class="container-fluid">
-    <div class="message">
-      Giorno selezionato: {{ formattedDate }}
+
+    <div class="day-calendar">
+      <h1>Giorno selezionato: {{ formattedDate }}</h1>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Ora</th>
+            <th>Attività</th>
+            <th>Salva</th>
+            <th>Svuota</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let hour of hours; let i = index">
+            <tr [ngClass]="{ 'highlighted': isHourSelected(i) }">
+              <td>
+                <input type="checkbox" [(ngModel)]="selectedHours[i]" (change)="onCheckboxChange(i)">
+              </td>
+              <td>{{ hour }}</td>
+              <td contenteditable="true" class="form-control" (input)="onInput($event, i)"></td>
+              <td><button class="btn btn-success" (click)="saveActivity(i)">Salva</button></td>
+              <td><button  class="btn btn-danger" (click)="clearActivity(i)">Svuota</button></td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <br><br><br>
     </div>
+
   </div>
 </body>
 </html>
