@@ -4,23 +4,48 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-utente',
   templateUrl: './utente.component.html',
-  styleUrls: ['./utente.component.scss']
+  styleUrls: ['./utente.component.scss'],
 })
 export class UtenteComponent {
   currentDate: Date = new Date();
-  currentMonthIndex: number = this.currentDate.getMonth(); // Indice del mese corrente
+  currentMonthIndex: number = this.currentDate.getMonth();
   weekDays: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   calendar: any[] = [];
-  months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  months: string[] = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
 
-  constructor(private router: Router,private datePipe: DatePipe) {
+  constructor(private router: Router, private datePipe: DatePipe) {
     this.generateCalendar();
   }
 
   generateCalendar() {
-    const currentMonth = new Date(this.currentDate.getFullYear(), this.currentMonthIndex, 1);
-    const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
-    const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
+    const currentMonth = new Date(
+      this.currentDate.getFullYear(),
+      this.currentMonthIndex,
+      1
+    );
+    const startOfMonth = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth(),
+      1
+    );
+    const endOfMonth = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth() + 1,
+      0
+    );
     const startDate = new Date(startOfMonth);
     startDate.setDate(startDate.getDate() - startDate.getDay());
     const endDate = new Date(endOfMonth);
@@ -32,7 +57,7 @@ export class UtenteComponent {
       for (let i = 0; i < 7; i++) {
         week.push({
           day: startDate.getDate(),
-          date: new Date(startDate)
+          date: new Date(startDate),
         });
         startDate.setDate(startDate.getDate() + 1);
       }
@@ -61,7 +86,6 @@ export class UtenteComponent {
     this.router.navigate(['/giorno', formattedDate]);
   }
 
-
   isPrevButtonDisabled() {
     return this.currentMonthIndex === 0;
   }
@@ -69,5 +93,4 @@ export class UtenteComponent {
   isNextButtonDisabled() {
     return this.currentMonthIndex === 11;
   }
-
 }

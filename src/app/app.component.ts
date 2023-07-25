@@ -107,9 +107,9 @@ export class AppComponent implements OnInit {
     this.http.get<MenuData>(url).subscribe(
       (data) => {
         this.jsonData = data;
-        console.log(this.jsonData);
+        // console.log(this.jsonData);
         this.idFunzione = data.list[0].id;
-        console.log(this.idFunzione);
+        // console.log(this.idFunzione);
       },
       (error) => {
         console.error('Errore nella generazione del menu:', error);

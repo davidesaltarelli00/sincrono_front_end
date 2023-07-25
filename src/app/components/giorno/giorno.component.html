@@ -9,7 +9,7 @@
   <div class="container-fluid">
 
     <div class="day-calendar">
-      <h1>Giorno selezionato: {{ formattedDate }}</h1>
+      <h1 style="text-align: center;">Giorno selezionato: {{ formattedDate }}</h1>
       <table>
         <thead>
           <tr>
@@ -28,8 +28,8 @@
               </td>
               <td>{{ hour }}</td>
               <td contenteditable="true" class="form-control" (input)="onInput($event, i)"></td>
-              <td><button class="btn btn-success" (click)="saveActivity(i)">Salva</button></td>
-              <td><button  class="btn btn-danger" (click)="clearActivity(i)">Svuota</button></td>
+              <td><button class="btn btn-success" (click)="saveActivity(i)" [disabled]="i==null" > <i class="fa fa-check"></i> </button></td>
+              <td><button class="btn btn-danger" (click)="clearActivity(i)"> <i class="fa fa-trash"></i> </button></td>
             </tr>
           </ng-container>
         </tbody>

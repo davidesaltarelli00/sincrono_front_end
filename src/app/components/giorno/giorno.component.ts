@@ -1,10 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-export interface TimeSelection {
-  start: number;
-  end: number;
-  isSelected: boolean;
+interface TimeSlot {
+  time: string;
+  checked: boolean;
+  activity: string;
 }
 
 interface TimeSlot {
@@ -45,12 +45,14 @@ export class GiornoComponent implements OnInit {
     for (let i = 0; i < 24; i++) {
       const hour = i.toString().padStart(2, '0');
       this.hours.push(`${hour}:00`);
+      this.timeSlots.push({ time: `${hour}:00`, checked: false, activity: '' });
     }
   }
 
   onInput(event: Event, index: number) {
     const target = event.target as HTMLTableCellElement;
     const activity = target.innerText.trim();
+    this.timeSlots[index].activity = activity;
   }
 
   onCheckboxChange(index: number) {
@@ -80,7 +82,6 @@ export class GiornoComponent implements OnInit {
 
   isHourInSelectedRange(index: number): boolean {
     if (this.selectedRange.length === 2) {
-      console.log(this.selectedRange);
       return index >= this.selectedRange[0] && index <= this.selectedRange[1];
     }
     return false;
@@ -92,11 +93,21 @@ export class GiornoComponent implements OnInit {
   }
 
   saveActivity(index: number) {
-    // Stampa in console l'attività salvata
-    console.log(`Attività salvata per l'ora ${this.timeSlots[index].time}: ${this.timeSlots[index].activity}`);
+    if (!this.timeSlots[index]) {
+      this.timeSlots[index] = { time: this.hours[index], checked: false, activity: '' };
+    }
+    const activity = this.timeSlots[index].activity;
+    console.log(`Attività salvata per l'ora ${this.timeSlots[index].time}: ${activity}`);
   }
 
   clearActivity(index: number) {
-    this.timeSlots[index].activity = '';
+    if (this.timeSlots[index]) {
+      const time = this.timeSlots[index].time;
+      const activity = this.timeSlots[index].activity;
+      this.timeSlots[index].activity = '';
+      console.log(`Attività eliminata per l'orario ${time}: ${activity}`);
+    }
+
   }
+
 }
