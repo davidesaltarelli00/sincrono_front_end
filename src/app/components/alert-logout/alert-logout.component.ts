@@ -20,6 +20,12 @@ export class AlertLogoutComponent {
       () => {
         localStorage.removeItem('token');
         localStorage.removeItem('tokenProvvisorio');
+
+
+        window.addEventListener('unload', function (event) {
+          // Svuota il localStorage
+          localStorage.clear();
+        });
         this.router.navigate(['/login']);
         this.dialog.closeAll();
       },

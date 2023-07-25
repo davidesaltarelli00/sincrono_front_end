@@ -32,10 +32,6 @@ export class AppComponent implements OnInit {
     private dialog: MatDialog,
     private http: HttpClient
   ) {
-    window.addEventListener('beforeunload', function(event) {
-      // Svuota il localStorage
-      localStorage.clear();
-    });
   }
 
   ngOnInit() {

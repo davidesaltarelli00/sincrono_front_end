@@ -51,7 +51,6 @@ export class GiornoComponent implements OnInit {
   onInput(event: Event, index: number) {
     const target = event.target as HTMLTableCellElement;
     const activity = target.innerText.trim();
-    // Aggiungi qui la logica per salvare l'attività nella tua applicazione
   }
 
   onCheckboxChange(index: number) {
