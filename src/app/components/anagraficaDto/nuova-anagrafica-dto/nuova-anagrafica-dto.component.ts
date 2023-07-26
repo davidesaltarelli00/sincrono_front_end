@@ -156,17 +156,24 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     const selectedValue = event.target.value;
     // Seleziona il ruolo corrispondente in base al valore selezionato
     switch (selectedValue) {
+      case "-1":
+        this.anagraficaDto.ruolo.nome = "Seleziona ruolo";
+        console.log("Seleziona ruolo");
+        break;
       case "1":
-        this.anagraficaDto.anagrafica.ruolo.nome = "ADMIN";
+        this.anagraficaDto.ruolo.nome = "ADMIN";
+        console.log("Settato il ruolo di "+ this.anagraficaDto.ruolo.nome);
         break;
       case "2":
-        this.anagraficaDto.anagrafica.ruolo.nome = "DIPENDENTE";
+        this.anagraficaDto.ruolo.nome = "DIPENDENTE";
+        console.log("Settato il ruolo di "+ this.anagraficaDto.ruolo.nome);
         break;
       // case "3":
       //   // this.anagraficaDto.anagrafica.ruolo.nome = "Amministrazione";
       //   break;
       default:
-        this.anagraficaDto.anagrafica.ruolo.nome = null;
+        this.anagraficaDto.ruolo.nome = null;
+        console.log("Ruolo non settato");
     }
   }
 

@@ -65,8 +65,8 @@
                     </div>
                   </div>
                   <div class="col-3">
-                    <label for="Ruolo">Ruolo</label>
-                    <select name="ruoloNome" id="ruoloNome" (change)="selectRoleName($event)" class="form-control" [(ngModel)]="anagraficaDto.anagrafica.ruolo.nome" >
+                    <label for="Ruolo">Ruolo *</label>
+                    <select name="ruoloNome" required id="ruoloNome" (change)="selectRoleName($event)" class="form-control" [(ngModel)]="anagraficaDto.ruolo.nome" >
                       <option value="-1" selected>Seleziona ruolo</option>
                       <option value="1">ADMIN</option>
                       <option value="2">DIPENDENTE</option>
