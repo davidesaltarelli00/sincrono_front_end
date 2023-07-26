@@ -52,10 +52,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         mailPrivata: null, //
         mailAziendale: null, //
         mailPec: null, //
-        titoliDiStudio: null,
-        altriTitoli: null,
-        coniugato: null,
-        figliACarico: null,
+        titoliDiStudio: null, //
+        altriTitoli: null, //
+        coniugato: null, //
+        figliACarico: null, //
       },
       contratto: {
         id: null,
@@ -112,34 +112,18 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       commesse: [
         {
           id: null,
-          cliente: null,
-          clienteFinale: null,
-          titoloPosizione: null,
-          distacco: null,
-          dataInizio: null,
-          dataFine: null,
-          costoMese: null,
-          tariffaGiornaliera: null,
-          nominativo: null,
-          azienda: null,
-          aziendaDiFatturazioneInterna: null,
-          stato: null,
-          attesaLavori: null,
-        },
-        {
-          id: null,
-          cliente: null,
-          clienteFinale: null,
-          titoloPosizione: null,
-          distacco: null,
-          dataInizio: null,
-          dataFine: null,
-          costoMese: null,
-          tariffaGiornaliera: null,
-          nominativo: null,
-          azienda: null,
-          aziendaDiFatturazioneInterna: null,
-          stato: null,
+          cliente: null, //
+          clienteFinale: null, //
+          titoloPosizione: null, //
+          distacco: null, //
+          dataInizio: null, //
+          dataFine: null, //
+          costoMese: null, //
+          tariffaGiornaliera: null, //
+          nominativo: null, //
+          azienda: null, //
+          aziendaDiFatturazioneInterna: null, //
+          stato: null, //
           attesaLavori: null,
         },
       ],
@@ -162,6 +146,34 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   ngOnInit(): void {}
 
   inserisci(value: any) {
-    console.log(value)
+    console.log("Valore di anagraficaDto:", this.anagraficaDto);
   }
+
+    aggiungiCommessa() {
+      this.anagraficaDto.commesse.push({
+        id: null,
+        cliente: null,
+        clienteFinale: null,
+        titoloPosizione: null,
+        distacco: null,
+        dataInizio: null,
+        dataFine: null,
+        costoMese: null,
+        tariffaGiornaliera: null,
+        nominativo: null,
+        azienda: null,
+        aziendaDiFatturazioneInterna: null,
+        stato: null,
+        attesaLavori: null,
+      });
+  }
+
+
+  rimuoviCommessa(index: number) {
+    this.anagraficaDto.commesse.splice(index, 1);
+  }
+
+
+
+
 }

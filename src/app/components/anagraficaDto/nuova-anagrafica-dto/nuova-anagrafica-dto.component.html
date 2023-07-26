@@ -115,10 +115,149 @@
 
               </div>
               <br>
-              <div class="commessa">
-                <h1>Commessa</h1>
+
+              <div class="row">
+                <div class="col-12">
+                  <h2>Altri dati</h2>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label for="titoliDiStudio">Titolo di studio</label>
+                    <input type="text" class="form-control" id="titoliDiStudio" name="titoliDiStudio" [(ngModel)]="anagraficaDto.anagrafica.titoliDiStudio">
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label for="altriTitoli">Altri titoli</label>
+                    <input type="text" class="form-control" id="altriTitoli" name="altriTitoli" [(ngModel)]="anagraficaDto.anagrafica.altriTitoli">
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label for="coniugato">Coniugato</label> <br>
+                    <input type="checkbox"  id="coniugato" name="coniugato" [(ngModel)]="anagraficaDto.anagrafica.coniugato">
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="form-group">
+                    <label for="coniugato">Figli a carico</label> <br>
+                    <input type="checkbox"  id="figliACarico" name="figliACarico" [(ngModel)]="anagraficaDto.anagrafica.figliACarico">
+                  </div>
+                </div>
               </div>
-              <button [disabled]="anagraficaForm.invalid" class="btn btn-success" >Salva</button>
+              <br>
+              <hr>
+              <br>
+
+
+              <!-- ----------------------------------------COMMESSA---------------------------------------- -->
+
+                <div class="commessa" *ngFor="let commessa of anagraficaDto.commesse; let i = index">
+                  <h1 *ngIf="i==0">Commessa</h1>
+                  <h1 *ngIf="i>0">Nuova Commessa : {{i}}</h1>
+                  <div class="row" >
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label for="cliente">Cliente</label>
+                        <input type="text" class="form-control" name="cliente" [id]="'cliente' + i" [(ngModel)]="anagraficaDto.commesse[i].cliente">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <label for="clienteFinale">Cliente finale</label>
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="clienteFinale"  [id]="'clienteFinale' + i" [(ngModel)]="anagraficaDto.commesse[i].clienteFinale">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <label for="titoloPosizione">Titolo posizione</label>
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="titoloPosizione"  [id]="'titoloPosizione' + i" [(ngModel)]="anagraficaDto.commesse[i].titoloPosizione">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <label for="distacco">Distacco</label>
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="distacco"  [id]="'distacco' + i" [(ngModel)]="anagraficaDto.commesse[i].distacco">
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label for="dataInizio">Data inizio</label>
+                        <input type="date" class="form-control" name="dataInizio"  [id]="'dataInizio' + i" [(ngModel)]="anagraficaDto.commesse[i].dataInizio">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label for="dataFine">Data fine</label>
+                        <input type="date" class="form-control" name="dataFine"  [id]="'dataFine' + i" [(ngModel)]="anagraficaDto.commesse[i].dataFine">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label for="costoMese">Costo mese</label>
+                        <input type="number" class="form-control" name="costoMese"  [id]="'costoMese' + i" [(ngModel)]="anagraficaDto.commesse[i].costoMese">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label for="tariffaGiornaliera">Tariffa giornaliera</label>
+                        <input type="number" class="form-control" name="tariffaGiornaliera"  [id]="'tariffaGiornaliera' + i" [(ngModel)]="anagraficaDto.commesse[i].tariffaGiornaliera">
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label for="nominativo">Nominativo</label>
+                        <input type="text" class="form-control" name="nominativo"  [id]="'nominativo' + i" [(ngModel)]="anagraficaDto.commesse[i].nominativo" >
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label for="azienda">Azienda</label>
+                        <input type="text" class="form-control" name="azienda"  [id]="'azienda' + i" [(ngModel)]="anagraficaDto.commesse[i].azienda" >
+                      </div>
+                     </div>
+                     <div class="col-3">
+                      <div class="form-group">
+                        <label for="aziendaDiFatturazioneInterna">Azienda di fatturazione</label>
+                        <input type="text" class="form-control" name="aziendaDiFatturazioneInterna"  [id]="'aziendaDiFatturazioneInterna' + i" [(ngModel)]="anagraficaDto.commesse[i].aziendaDiFatturazioneInterna">
+                      </div>
+                     </div>
+                     <div class="col-3">
+                      <div class="form-group">
+                        <label for="stato">Stato</label>
+                        <input type="checkbox"  name="stato"  [id]="'stato' + i" [(ngModel)]="anagraficaDto.commesse[i].stato">
+                      </div>
+                     </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label for="attesaLavori">Attesa lavori</label> <br>
+                        <input type="checkbox" [(ngModel)]="anagraficaDto.commesse[i].attesaLavori" name="attesaLavori"  [id]="'attesaLavori' + i">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-4">
+                      <button (click)="aggiungiCommessa()"  class="btn btn-primary">Aggiungi Commessa</button> &nbsp;
+                      <button (click)="rimuoviCommessa(i)"  class="btn btn-danger" [disabled]="i==0" >Rimuovi Commessa</button>
+
+                    </div>
+                   </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-12" style="text-align:center;">
+                    <button [disabled]="anagraficaForm.invalid" class="btn btn-success" >Salva</button>
+                  </div>
+                </div>
             </form>
           </mat-card-content>
         </mat-card>
@@ -128,3 +267,23 @@
   </div>
 </body>
 </html>
+
+
+<!--
+    {
+          id: null,
+          cliente: null,
+          clienteFinale: null,
+          titoloPosizione: null,
+          distacco: null,
+          dataInizio: null,
+          dataFine: null,
+          costoMese: null,
+          tariffaGiornaliera: null,
+          nominativo: null,
+          azienda: null,
+          aziendaDiFatturazioneInterna: null,
+          stato: null,
+          attesaLavori: null,
+        },
+-->
