@@ -64,6 +64,15 @@
                       <input type="text" class="form-control" name="domicilio" id="domicilio" [(ngModel)]="anagraficaDto.anagrafica.domicilio" >
                     </div>
                   </div>
+                  <div class="col-3">
+                    <label for="Ruolo">Ruolo</label>
+                    <select name="ruoloNome" id="ruoloNome" (change)="selectRoleName($event)" class="form-control" [(ngModel)]="anagraficaDto.anagrafica.ruolo.nome" >
+                      <option value="-1" selected>Seleziona ruolo</option>
+                      <option value="1">ADMIN</option>
+                      <option value="2">DIPENDENTE</option>
+                      <!-- <option value="3">Amministrazione</option> -->
+                    </select>
+                  </div>
 
                 </div>
 
@@ -73,26 +82,26 @@
                   <h2>Contatti</h2>
                   <div class="col-3">
                     <div class="form-group">
-                      <label for="cellulare privato">Cellulare privato *</label>
+                      <label for="cellulare privato">Cellulare privato </label>
                       <input type="number" class="form-control" name="cellularePrivato" id="cellularePrivato" [(ngModel)]="anagraficaDto.anagrafica.cellularePrivato">
                     </div>
                   </div>
                   <div class="col-3">
                     <div class="form-group">
-                      <label for="cellulare aziendale">Cellulare aziendale *</label>
+                      <label for="cellulare aziendale">Cellulare aziendale </label>
                       <input type="number" class="form-control" name="cellulareAziendale" id="cellulareAziendale" [(ngModel)]="anagraficaDto.anagrafica.cellulareAziendale">
                     </div>
                   </div>
                   <div class="col-3">
                     <div class="form-group">
-                      <label for="cellulare aziendale">Mail privata</label>
-                      <input type="text" class="form-control" name="mailPrivata" id="mailPrivata" [(ngModel)]="anagraficaDto.anagrafica.mailPrivata">
+                      <label for="mailPrivata">Mail privata</label>
+                      <input type="email" class="form-control" name="mailPrivata" id="mailPrivata" [(ngModel)]="anagraficaDto.anagrafica.mailPrivata">
                     </div>
                   </div>
                   <div class="col-3">
                     <div class="form-group">
-                      <label for="cellulare aziendale">Mail aziendale *</label>
-                      <input type="text" class="form-control" name="mailAziendale" id="mailAziendale" [(ngModel)]="anagraficaDto.anagrafica.mailAziendale" required>
+                      <label for="mailAziendale">Mail aziendale *</label>
+                      <input type="email" class="form-control" name="mailAziendale" id="mailAziendale" [(ngModel)]="anagraficaDto.anagrafica.mailAziendale" required>
                     </div>
                   </div>
                 </div>
@@ -132,16 +141,19 @@
                     <input type="text" class="form-control" id="altriTitoli" name="altriTitoli" [(ngModel)]="anagraficaDto.anagrafica.altriTitoli">
                   </div>
                 </div>
-                <div class="col-3">
+                <div class="col-3" style="text-align: center;">
                   <div class="form-group">
-                    <label for="coniugato">Coniugato</label> <br>
-                    <input type="checkbox"  id="coniugato" name="coniugato" [(ngModel)]="anagraficaDto.anagrafica.coniugato">
+                    <!-- <label for="coniugato">Coniugato</label> <br> -->
+                    <!-- <input type="checkbox"  id="coniugato" name="coniugato" [(ngModel)]="anagraficaDto.anagrafica.coniugato"> -->
+                    <mat-slide-toggle id="coniugato" class="example-margin" color="primary" name="coniugato" [(ngModel)]="anagraficaDto.anagrafica.coniugato">Coniugato</mat-slide-toggle>
+
                   </div>
                 </div>
-                <div class="col-3">
+                <div class="col-3" style="text-align: center;">
                   <div class="form-group">
-                    <label for="coniugato">Figli a carico</label> <br>
-                    <input type="checkbox"  id="figliACarico" name="figliACarico" [(ngModel)]="anagraficaDto.anagrafica.figliACarico">
+                    <!-- <label for="coniugato">Figli a carico</label> <br> -->
+                    <!-- <input type="checkbox"  id="figliACarico" name="figliACarico" [(ngModel)]="anagraficaDto.anagrafica.figliACarico"> -->
+                    <mat-slide-toggle id="figliACarico" class="example-margin" color="primary" name="figliACarico"  [(ngModel)]="anagraficaDto.anagrafica.figliACarico">Figli a carico</mat-slide-toggle>
                   </div>
                 </div>
               </div>
@@ -154,7 +166,7 @@
 
                 <div class="commessa" *ngFor="let commessa of anagraficaDto.commesse; let i = index">
                   <h1 *ngIf="i==0">Commessa</h1>
-                  <h1 *ngIf="i>0">Nuova Commessa : {{i}}</h1>
+                  <h1 *ngIf="i>0">Nuova Commessa : {{i+1}}</h1>
                   <div class="row" >
                     <div class="col-3">
                       <div class="form-group">
@@ -228,34 +240,292 @@
                         <input type="text" class="form-control" name="aziendaDiFatturazioneInterna"  [id]="'aziendaDiFatturazioneInterna' + i" [(ngModel)]="anagraficaDto.commesse[i].aziendaDiFatturazioneInterna">
                       </div>
                      </div>
-                     <div class="col-3">
-                      <div class="form-group">
-                        <label for="stato">Stato</label>
-                        <input type="checkbox"  name="stato"  [id]="'stato' + i" [(ngModel)]="anagraficaDto.commesse[i].stato">
+                     <div class="col-1">
+                      <div class="form-group" style="text-align: center;">
+                        <!-- <label for="stato">Stato</label> -->
+                        <!-- <input type="checkbox"  name="stato"  [id]="'stato' + i" [(ngModel)]="anagraficaDto.commesse[i].stato"> -->
+                        <mat-slide-toggle [id]="'stato' + i" class="example-margin" color="primary" name="stato"  [(ngModel)]="anagraficaDto.commesse[i].stato">Stato</mat-slide-toggle>
+
                       </div>
                      </div>
-                  </div>
-                  <br>
-                  <div class="row">
-                    <div class="col-3">
+                     <div class="col-2" style="text-align: center;">
                       <div class="form-group">
-                        <label for="attesaLavori">Attesa lavori</label> <br>
-                        <input type="checkbox" [(ngModel)]="anagraficaDto.commesse[i].attesaLavori" name="attesaLavori"  [id]="'attesaLavori' + i">
+                        <!-- <label for="attesaLavori">Attesa lavori</label> <br> -->
+                        <mat-slide-toggle [id]="'attesaLavori' + i" class="example-margin" color="primary" name="attesaLavori"  [(ngModel)]="anagraficaDto.commesse[i].attesaLavori">Attesa lavori</mat-slide-toggle>
+
                       </div>
                     </div>
+
                   </div>
+
+                  <br>
+
                   <div class="row">
                     <div class="col-4">
-                      <button (click)="aggiungiCommessa()"  class="btn btn-primary">Aggiungi Commessa</button> &nbsp;
-                      <button (click)="rimuoviCommessa(i)"  class="btn btn-danger" [disabled]="i==0" >Rimuovi Commessa</button>
+                      <button (click)="aggiungiCommessa()"  class="btn btn-primary">Aggiungi Commessa {{i+1}} </button> &nbsp;
+                      <button (click)="rimuoviCommessa(i)"  class="btn btn-danger" [disabled]="i==0"  >Rimuovi Commessa {{i+1}} </button>
 
                     </div>
                    </div>
                 </div>
                 <br>
+                <hr>
+                <br>
+                <div class="row">
+                  <div class="col-12">
+                    <h1>Contratto</h1>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="contrattoTipoContratto">Tipo contratto</label>
+                      <input type="text" class="form-control" name="tipoContratto" id="tipoContratto" [(ngModel)]="anagraficaDto.contratto.tipoContratto.descrizione" >
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="livelloContratto">CCNL</label>
+                      <input type="text" name="livelloContratto" id="livelloContratto" class="form-control" [(ngModel)]="anagraficaDto.contratto.livelloContratto.ccnl">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="descrizione">Descrizione</label>
+                      <input type="text" name="descrizione" id="descrizione" class="form-control" [(ngModel)]="anagraficaDto.contratto.livelloContratto.descrizione">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="minimiRet23">minimi Retributivi 2023</label>
+                      <input type="text" name="minimiRet23" id="minimiRet23" class="form-control" [(ngModel)]="anagraficaDto.contratto.livelloContratto.minimiRet23">
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="tipoAzienda">Tipo azienda</label>
+                      <input type="text" class="form-control" name="tipoAzienda" id="tipoAzienda" [(ngModel)]="anagraficaDto.contratto.tipoAzienda.descrizione">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="contrattoNazionale">Contratto nazionale</label>
+                      <input type="text" class="form-control" name="contrattoNazionale" id="contrattoNazionale" [(ngModel)]="anagraficaDto.contratto.contrattoNazionale.descrizione">
+                    </div>
+                  </div>
+                  <div class="col-3" style="text-align: center;">
+                    <div class="form-group">
+                      <!-- <label for="attivo">Attivo</label> -->
+                      <mat-slide-toggle id="contrattoAttivo" class="example-margin" color="primary" name="contrattoAttivo" [(ngModel)]="anagraficaDto.contratto.attivo">Attivo</mat-slide-toggle>
+                      <!-- <input type="checkbox" id="contrattoAttivo" name="contrattoAttivo" [(ngModel)]="anagraficaDto.contratto.attivo"> -->
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="sedeAssunzione">Sede assunzione</label>
+                      <input type="text" class="form-control" id="sedeAssunzione" name="sedeAssunzione" [(ngModel)]="anagraficaDto.contratto.sedeAssunzione">
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="qualifica">Qualifica</label>
+                      <input type="text" class="form-control" id="qualifica" name="qualifica" [(ngModel)]="anagraficaDto.contratto.qualifica">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="dataAssunzione">Data assunzione</label>
+                      <input type="date" class="form-control" id="dataAssunzione" name="dataAssunzione" [(ngModel)]="anagraficaDto.contratto.dataAssunzione">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="dataInizioProva">Data inizio prova</label>
+                      <input type="date" class="form-control" id="dataInizioProva" name="dataInizioProva" [(ngModel)]="anagraficaDto.contratto.dataInizioProva">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="dataFineProva">Data fine prova</label>
+                      <input type="date" class="form-control" id="dataFineProva" name="dataFineProva" [(ngModel)]="anagraficaDto.contratto.dataFineProva">
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="dataFineRapporto">Data fine rapporto</label>
+                      <input type="date" id="dataFineRapporto" name="dataFineRapporto" class="form-control" [(ngModel)]="anagraficaDto.contratto.dataFineRapporto">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="mesiDurata">Mesi durata</label>
+                      <input type="number" class="form-control" id="mesiDurata" name="mesiDurata" [(ngModel)]="anagraficaDto.contratto.mesiDurata">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="livelloAttuale">Livello attuale</label>
+                      <input type="text" class="form-control" name="livelloAttuale" id="livelloAttuale" [(ngModel)]="anagraficaDto.contratto.livelloAttuale">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group" style="text-align: center;">
+                      <label for="dimissioni"></label>
+                      <mat-slide-toggle class="example-margin" id="dimissioni" name="dimissioni"  color="primary" [(ngModel)]="anagraficaDto.contratto.dimissioni">dimissioni</mat-slide-toggle>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="partTime"></label>
+                      <mat-slide-toggle class="example-margin" id="partTime" name="partTime"  color="primary" [(ngModel)]="anagraficaDto.contratto.partTime">Part time</mat-slide-toggle>
+                    </div>
+                  </div>
+                  <div class="col-3" style="text-align: center;">
+                    <div class="form-group">
+                      <label for="partTimeA"></label>
+                      <mat-slide-toggle class="example-margin" id="partTimeA" name="partTimeA"  color="primary" [(ngModel)]="anagraficaDto.contratto.partTimeA">Part time A</mat-slide-toggle>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="retribuzioneMensileLorda">Retribuzione lorda mensile</label>
+                      <input type="number" class="form-control" name="retribuzioneMensileLorda" id="retribuzioneMensileLorda" [(ngModel)]="anagraficaDto.contratto.retribuzioneMensileLorda">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="superminimoMensile">Super minimo mensile</label>
+                      <input type="number" class="form-control" name="superminimoMensile" id="superminimoMensile" [(ngModel)]="anagraficaDto.contratto.superminimoMensile">
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-3">
+                 <div class="form-group">
+                    <label for="ralAnnua">Ral annua</label>
+                    <input type="text" class="form-control" id="ralAnnua" name="ralAnnua" [(ngModel)]="anagraficaDto.contratto.ralAnnua">
+                  </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="superminimoRal">Super minimo ral</label>
+                      <input type="number" name="superminimoRal" id="superminimoRal" class="form-control" [(ngModel)]="anagraficaDto.contratto.superminimoRal">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="diariaMese">Diaria mese</label>
+                      <input type="text" name="diariaMese" id="diariaMese" class="form-control" [(ngModel)]="anagraficaDto.contratto.diariaMese">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="diariaGg">Diaria gg</label>
+                      <input type="text" name="diariaGg" id="diariaGg" class="form-control" [(ngModel)]="anagraficaDto.contratto.diariaGg">
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="ticket">Tiket</label>
+                      <input type="text" class="form-control" name="ticket" id="ticket" [(ngModel)]="anagraficaDto.contratto.ticket">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="ticket"> Valore Tiket</label>
+                      <input type="text" class="form-control" name="valoreTicket" id="valoreTicket" [(ngModel)]="anagraficaDto.contratto.valoreTicket">
+                    </div>
+                  </div>
+                  <div class="col-3" style="text-align: center;">
+                    <div class="form-group">
+                      <mat-slide-toggle class="example-margin" id="categoriaProtetta" name="categoriaProtetta"  color="primary" [(ngModel)]="anagraficaDto.contratto.categoriaProtetta">Categoria protetta</mat-slide-toggle>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="tutor">Tutor</label>
+                      <input type="text" class="form-control" id="tutor" name="tutor" [(ngModel)]="anagraficaDto.contratto.tutor">
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="pfi">PFI</label>
+                      <input type="text" class="form-control" id="pfi" name="pfi" [(ngModel)]="anagraficaDto.contratto.pfi">
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="assicurazioneObbligatoria">Assicurazione obbligatoria</label>
+                      <input type="text" class="form-control" id="assicurazioneObbligatoria" name="assicurazioneObbligatoria" [(ngModel)]="anagraficaDto.contratto.assicurazioneObbligatoria">
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="corsoSicurezza">Corso di sicurezza</label>
+                      <input type="date" class="form-control" id="corsoSicurezza" name="corsoSicurezza" [(ngModel)]="anagraficaDto.contratto.corsoSicurezza">
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label for="motivazioneFineRapporto">Motivazione fine rapporto</label>
+                      <textarea name="motivazioneFineRapporto" id="motivazioneFineRapporto" cols="30" rows="10" [(ngModel)]="anagraficaDto.contratto.motivazioneFineRapporto" class="form-control"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-3">
+                    <div class="form-group">
+
+                      <mat-slide-toggle class="example-margin" id="pc" name="pc"  color="primary" [(ngModel)]="anagraficaDto.contratto.pc">PC</mat-slide-toggle>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="scattiAnzianita">Scatti anzianitá</label>
+                      <input type="text" id="scattiAnzianita" name="scattiAnzianita" class="form-control" [(ngModel)]="anagraficaDto.contratto.scattiAnzianita">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="tariffaPartitaIva">Tariffa partita IVA</label>
+                      <input type="text" id="tariffaPartitaIva" name="tariffaPartitaIva" class="form-control" [(ngModel)]="anagraficaDto.contratto.tariffaPartitaIva">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label for="canaleReclutamento">Canale reclutamento</label>
+                      <input type="text" id="canaleReclutamento" name="canaleReclutamento" class="form-control" [(ngModel)]="anagraficaDto.contratto.canaleReclutamento">
+                    </div>
+                  </div>
+                </div>
+                <br>
                 <div class="row">
                   <div class="col-12" style="text-align:center;">
-                    <button [disabled]="anagraficaForm.invalid" class="btn btn-success" >Salva</button>
+                    <button [disabled]="anagraficaForm.invalid" class="btn btn-success" >Salva</button> &nbsp;
+                    <button class="btn btn-info" (click)="annulla()">Annulla</button>
                   </div>
                 </div>
             </form>
@@ -267,23 +537,3 @@
   </div>
 </body>
 </html>
-
-
-<!--
-    {
-          id: null,
-          cliente: null,
-          clienteFinale: null,
-          titoloPosizione: null,
-          distacco: null,
-          dataInizio: null,
-          dataFine: null,
-          costoMese: null,
-          tariffaGiornaliera: null,
-          nominativo: null,
-          azienda: null,
-          aziendaDiFatturazioneInterna: null,
-          stato: null,
-          attesaLavori: null,
-        },
--->
