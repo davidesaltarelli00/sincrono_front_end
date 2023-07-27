@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ContrattoService } from '../../contratto/contratto-service';
 import { AuthService } from '../../login/login-service';
+import { profileBoxService } from '../../profile-box/profile-box.service';
 
 declare var $: any;
 
@@ -68,6 +69,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   userlogged: string='';
   role:any;
+  anagrafica: any;
+  idUtente: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -76,7 +79,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     private contrattoService: ContrattoService,
     private activatedRoute: ActivatedRoute,
     public authService:AuthService,
-    private router:Router
+    private router:Router,
+    private profileBoxService:profileBoxService
   ) {
     const userLogged = localStorage.getItem('userLogged');
     if (userLogged) {
@@ -98,6 +102,23 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        this.anagrafica = response;
+        const idUtente = response.anagraficaDto.anagrafica.utente.id;
+        // console.log('ID UTENTE valorizzato : ' + idUtente);
+        this.idUtente=idUtente;
+        // console.log('ID UTENTE valorizzato globalmente: ' + this.idUtente);
+
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato il seguente errore durante il recupero dei dati : ' +
+            error
+        );
+      }
+    );
 
     // this.role = this.authService.getTokenAndRole();
     console.log("Ruolo: " + this.role);

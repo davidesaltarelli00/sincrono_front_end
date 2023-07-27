@@ -52,6 +52,11 @@ const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
   },
   {
+    path: 'anagraficaDto',
+    component: ListaAnagraficaDtoComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
     path: 'lista-anagrafica/:body',
     component: ListaAnagraficaDtoComponent,
     canActivate: [AuthGuard, RoleGuard],

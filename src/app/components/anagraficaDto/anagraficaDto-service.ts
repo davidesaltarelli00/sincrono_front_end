@@ -16,7 +16,7 @@ export class AnagraficaDtoService {
 
   /*CRUD ANAGRAFICA*/
   listAnagraficaDto(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/lista`); //anagraficaDto-list
+    return this.http.get<any>(`http://localhost:8085/anagraficaDto-list`);
   }
 
 
@@ -37,7 +37,7 @@ export class AnagraficaDtoService {
   }
 
   insert(body: any): Observable<any> {
-    return this.http.post<any>(`http://localhost:8085/inserisci`, body, { //nuova-anagrafica
+    return this.http.post<any>(`http://localhost:8085/nuova-anagrafica`, body, {
       headers: headers,
     });
   }
