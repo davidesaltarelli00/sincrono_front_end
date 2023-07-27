@@ -24,6 +24,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   contrattiNazionali: any = [];
   ruoli:any=[];
 
+
   anagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
       id: new FormControl(''),
@@ -63,7 +64,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         id: new FormControl(''),
       }),
 
-     
+
       sedeAssunzione: new FormControl(''),
       qualifica: new FormControl(''),
       dataAssunzione: new FormControl(''),
@@ -109,7 +110,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       nominativo: new FormControl(''),
       azienda: new FormControl(''),
       aziendaDiFatturazioneInterna: new FormControl(''),
-     
+
       attesaLavori: new FormControl(''),
     }),
     ruolo: new FormGroup({
@@ -121,7 +122,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     private anagraficaDtoService: AnagraficaDtoService,
     private activatedRouter: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private activatedRoute:ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -163,16 +165,16 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         livelloContratto: new FormGroup({
           id: new FormControl(''),
         }),
-  
+
         tipoAzienda: new FormGroup({
           id: new FormControl(''),
         }),
-  
+
         contrattoNazionale: new FormGroup({
           id: new FormControl(''),
         }),
-  
-       
+
+
         sedeAssunzione: new FormControl(''),
         qualifica: new FormControl(''),
         dataAssunzione: new FormControl(''),
@@ -204,7 +206,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         tariffaPartitaIva: new FormControl(''),
         canaleReclutamento: new FormControl(''),
       }),
-  
+
       commessa: new FormGroup({
         id: new FormControl(this.data?.commessa?.id),
         cliente: new FormControl(''),
@@ -218,12 +220,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         nominativo: new FormControl(''),
         azienda: new FormControl(''),
         aziendaDiFatturazioneInterna: new FormControl(''),
-       
+
         attesaLavori: new FormControl(''),
       }),
       ruolo: new FormGroup({
         id: new FormControl(''),
-      
+
       }),
     });
 
@@ -385,10 +387,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       }else{
 
         alert('modifica riuscita');
-        
+
       }
     });
-    
+
   }
 
   transformDate(dateString: string): string {
@@ -437,7 +439,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       inputElement?.classList.remove('invalid-field');
     }
   }
-  
+
   caricaRuoli() {
     this.anagraficaDtoService.getRuoli().subscribe((result: any) => {
       this.ruoli = (result as any)['list'];

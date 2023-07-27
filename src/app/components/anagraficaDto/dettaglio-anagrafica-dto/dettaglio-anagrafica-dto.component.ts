@@ -77,6 +77,11 @@ export class DettaglioAnagraficaDtoComponent {
       }
   }
 
+
+  modificaAnagrafica(){
+    this.router.navigate(['/modifica-anagrafica/'+this.id]);
+  }
+
   logout() {
     // this.authService.logout();
   }
