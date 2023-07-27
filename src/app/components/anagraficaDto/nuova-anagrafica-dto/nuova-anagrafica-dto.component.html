@@ -1,539 +1,895 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <mat-card>
-          <mat-card-content>
-            <form #anagraficaForm="ngForm" (ngSubmit)="inserisci(anagraficaForm.value)">
+<div class="container-fluid">
 
-              <div class="anagrafica">
-                <h1>Anagrafica</h1>
-                <div class="row">
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="nome">Nome *</label>
-                      <input type="text" id="nome" class="form-control" name="nome" [(ngModel)]="anagraficaDto.anagrafica.nome" required />
-                    </div>
-                  </div>
+  <form [formGroup]="AnagraficaDto" (ngSubmit)="inserisci()">
+    <!-- Step 1: Anagrafica -->
+    <div *ngIf="currentStep === 1">
+      <div class="row">
+        <div class="col-12">
 
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="nome">Cognome *</label>
-                      <input type="text" id="cognome" class="form-control" name="cognome" [(ngModel)]="anagraficaDto.anagrafica.cognome" required />
+          <mat-stepper #stepper [selectedIndex]="currentStep - 1">
+            <mat-step>
+              <ng-template matStepLabel>Anagrafica</ng-template>
+              <mat-card>
+                <mat-card-content>
+                  <div class="row">
+                    <div class="col-12">
+                      <strong><h1 style="text-align: center;" >Anagrafica</h1></strong>
                     </div>
                   </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="nome">Codice fiscale *</label>
-                      <input type="text" id="codiceFiscale" class="form-control" name="codiceFiscale" [(ngModel)]="anagraficaDto.anagrafica.codiceFiscale" minlength="16" maxlength="16" required />
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="ruolo" formGroupName="ruolo">
+                        <label for="filter-ruoli">ruolo</label>
+                        <select class="form-control" formControlName="id" type="number">
+                          <option value="">--nessuna selezione--</option>
+                          <option *ngFor="let ruolo of ruoli" value="{{ ruolo.id }}">
+                            {{ ruolo.nome }}
+                          </option>
+                        </select>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="nome">Data di nascita </label>
-                      <input type="date" id="dataDiNascita" class="form-control" name="dataDiNascita" [(ngModel)]="anagraficaDto.anagrafica.dataDiNascita"  />
+                    <div class="col-md-3">
+                      <label>Azienda: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="aziendaTipo"
+                          placeholder="Inserire azienda"
+                        />
+                      </div>
                     </div>
+                    <br>
                   </div>
-                </div>
+                  <div formGroupName="anagrafica">
+                    <!-- <div class="row">
 
-                <br>
+                    </div> -->
+                    <div class="row" id="nominativo">
+                      <legend>Dati personali:</legend>
+                      <div class="col-md-3">
+                        <label for="nome">Nome: </label>
+                        <div class="form-group">
+                          <input
+                            id="anagrafica.nome"
+                            type="text"
+                            class="form-control"
+                            placeholder="Inserire il nome"
+                            formControlName="nome"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Cognome: </label>
+                        <div class="form-group">
+                          <input
+                            id="anagrafica.cognome"
+                            type="text"
+                            class="form-control"
+                            placeholder="Inserire il cognome"
+                            formControlName="cognome"
+                          />
+                        </div>
+                      </div>
+                      <br>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label>Codice Fiscale: </label>
+                        <div class="form-group">
+                          <input
+                            id="anagrafica.codiceFiscale"
+                            type="text"
+                            class="form-control"
+                            placeholder="Inserire il codice fiscale"
+                            formControlName="codiceFiscale"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <legend>Recapiti</legend>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label>Cellulare Privato: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="cellularePrivato"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Cellulare Aziendale: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="cellulareAziendale"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label>Email Privata: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="mailPrivata"
+                          />
+                        </div>
+                        <label>Email Pec: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="mailPec"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Email Aziendale: </label>
+                        <div class="form-group">
+                          <input
+                            id="anagrafica.mailAziendale"
+                            type="text"
+                            class="form-control"
+                            formControlName="mailAziendale"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <legend>Competenze</legend>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label>Titolo di Studio: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="titoliDiStudio"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Altri Titoli: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="altriTitoli"
+                          />
+                        </div>
+                      </div>
+                    </div>
 
-                <div class="row">
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="comune di nascita">Comune di nascita</label>
-                      <input type="text" class="form-control" name="comuneDiNascita" id="comuneDiNascita" [(ngModel)]="anagraficaDto.anagrafica.comuneDiNascita" >
+                    <legend>Info Extra</legend>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label>Comune di Nascita: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="comuneDiNascita"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Residenza: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="residenza"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Domicilio: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="domicilio"
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="residenza">Residenza</label>
-                      <input type="text" class="form-control" name="residenza" id="residenza" [(ngModel)]="anagraficaDto.anagrafica.residenza" >
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label>Data di Nascita: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="dataDiNascita"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Coniugato: </label>
+                        <div class="form-group">
+                          <input
+                            style="border-color: black"
+                            class="form-check-input"
+                            type="checkbox"
+                            formControlName="coniugato"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Figli a Carico: </label>
+                        <div class="form-group">
+                          <input
+                            style="border-color: black"
+                            class="form-check-input"
+                            type="checkbox"
+                            formControlName="figliACarico"
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="domicilio">Domicilio</label>
-                      <input type="text" class="form-control" name="domicilio" id="domicilio" [(ngModel)]="anagraficaDto.anagrafica.domicilio" >
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <label for="Ruolo">Ruolo *</label>
-                    <select name="ruoloNome" required id="ruoloNome" (change)="selectRoleName($event)" class="form-control" [(ngModel)]="anagraficaDto.ruolo.nome" >
-                      <option value="-1" selected>Seleziona ruolo</option>
-                      <option value="1">ADMIN</option>
-                      <option value="2">DIPENDENTE</option>
-                      <!-- <option value="3">Amministrazione</option> -->
-                    </select>
-                  </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-6" style="text-align: end;">
+                        <!-- <button id="avanti" style="margin: auto; text-align: center;" type="button" class="btn btn-primary" (click)="nextStep()">Avanti »</button> -->
+                        <button hidden mat-button matStepperPrevious>« Indietro</button>
 
-                </div>
+                      </div>
+                      <div class="col-6" style="text-align: start;">
+                        <!-- <button id="avanti" style="margin: auto; text-align: center;" type="button" class="btn btn-primary" (click)="nextStep()">Avanti »</button> -->
+                        <button mat-button matStepperNext>Avanti »</button>
+                      </div>
+                    </div>
+                    <br>
+                  </div>
+                </mat-card-content>
+              </mat-card>
 
-                <br>
 
-                <div class="row">
-                  <h2>Contatti</h2>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="cellulare privato">Cellulare privato </label>
-                      <input type="number" class="form-control" name="cellularePrivato" id="cellularePrivato" [(ngModel)]="anagraficaDto.anagrafica.cellularePrivato">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="cellulare aziendale">Cellulare aziendale </label>
-                      <input type="number" class="form-control" name="cellulareAziendale" id="cellulareAziendale" [(ngModel)]="anagraficaDto.anagrafica.cellulareAziendale">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="mailPrivata">Mail privata</label>
-                      <input type="email" class="form-control" name="mailPrivata" id="mailPrivata" [(ngModel)]="anagraficaDto.anagrafica.mailPrivata">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="mailAziendale">Mail aziendale *</label>
-                      <input type="email" class="form-control" name="mailAziendale" id="mailAziendale" [(ngModel)]="anagraficaDto.anagrafica.mailAziendale" required>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="mailPec">PEC</label>
-                      <input type="email" class="form-control" name="mailPec" id="mailPec" [(ngModel)]="anagraficaDto.anagrafica.mailPec" >
-                    </div>
-                  </div>
-                   <div class="col-3">
-                    <div class="form-group">
-                      <label for="domicilio">Azienda tipo</label>
-                      <input type="text" class="form-control" name="aziendaTipo" id="aziendaTipo" [(ngModel)]="anagraficaDto.anagrafica.aziendaTipo" >
-                    </div>
-                  </div>
 
-                </div>
+             </mat-step>
 
-              </div>
-              <br>
 
+            <mat-step>
+              <ng-template matStepLabel>Commessa</ng-template>
               <div class="row">
                 <div class="col-12">
-                  <h2>Altri dati</h2>
+                  <mat-card>
+                    <mat-card-content>
+                      <!-- Utilizzo del formArrayName per le commesse -->
+                      <div formArrayName="commesse">
+                        <!-- Loop attraverso le commesse esistenti -->
+                        <div class="row" *ngFor="let commessa of commesse.controls; let i = index" [formGroupName]="i">
+                          <div class="col-12">
+                            <strong><h1 style="text-align: center;"> Commessa {{ i + 1 }}</h1></strong>
+                          </div>
+                          <!-- Inserimento dei campi delle commesse -->
+                          <div class="col-md-3">
+                            <label>Cliente: </label>
+                            <div class="form-group">
+                              <input type="text" class="form-control" formControlName="cliente" />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Cliente Finale: </label>
+                            <div class="form-group">
+                              <input type="text" class="form-control" formControlName="clienteFinale" />
+                            </div>
+                          </div>
+                          <!-- Aggiungere gli altri campi della commessa simile a quanto fatto sopra -->
+                          <div class="col-md-3">
+                            <label>Titolo Posizione: </label>
+                            <div class="form-group">
+                              <input type="text" class="form-control" formControlName="titoloPosizione" />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Distacco: </label>
+                            <div class="form-group">
+                              <input type="text" class="form-control" formControlName="distacco" />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Costo mese: </label>
+                            <div class="form-group">
+                              <input type="text" class="form-control" formControlName="costoMese" />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Data Inizio: </label>
+                            <div class="form-group">
+                              <input type="date" class="form-control" formControlName="dataInizio" />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Data Fine: </label>
+                            <div class="form-group">
+                              <input type="date" class="form-control" formControlName="dataFine" />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Tariffa giornaliera: </label>
+                            <div class="form-group">
+                              <input type="text" class="form-control" formControlName="tariffaGiornaliera" />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Nominativo: </label>
+                            <div class="form-group">
+                              <input type="text" class="form-control" formControlName="nominativo" />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Azienda: </label>
+                            <div class="form-group">
+                              <input type="text" class="form-control" formControlName="azienda" />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Azienda di fatturazione interna: </label>
+                            <div class="form-group">
+                              <input type="text" class="form-control" formControlName="aziendaDiFatturazioneInterna" />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Attesa lavori: </label>
+                            <div class="form-group">
+                              <div class="form-check">
+                                <input
+                                  style="border-color: black"
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  formControlName="attesaLavori"
+                                />
+                              </div>
+                            </div>
+                            <br>
+                          </div>
+                          <br>
+                          <div class="row">
+                            <div class="col-12" style="text-align: center; margin: auto;">
+                              <button mat-flat-button color="primary" (click)="aggiungiCommessa()">Aggiungi Commessa</button> &nbsp;
+                              <button mat-flat-button color="accent" [disabled]="i === 0" (click)="rimuoviCommessa(i)" [matTooltip]="i === 0 ? 'La commessa uno non può essere eliminata' : ''">Rimuovi Commessa</button>
+                              </div>
+
+                          </div>
+
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-6" style="text-align: end;">
+                          <button mat-button matStepperPrevious>« Indietro</button>
+                        </div>
+                        <div class="col-6" style="text-align: start;">
+                          <button mat-button matStepperNext>Avanti »</button>
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
                 </div>
-                <div class="col-3">
-                  <div class="form-group">
-                    <label for="titoliDiStudio">Titolo di studio</label>
-                    <input type="text" class="form-control" id="titoliDiStudio" name="titoliDiStudio" [(ngModel)]="anagraficaDto.anagrafica.titoliDiStudio">
+              </div>
+            </mat-step>
+
+
+            <mat-step>
+              <ng-template matStepLabel>Contratto</ng-template>
+              <div >
+
+                <div formGroupName="contratto">
+                 <strong><h1 style="text-align: center;" > Contratto</h1></strong>
+                  <legend>Dati Tipologici</legend>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div formGroupName="tipoAzienda">
+                        <label for="filter-Tipo Azienda">Tipo Azienda:</label>
+                        <select
+                          class="form-control"
+                          id="contratto.tipoAzienda.id"
+                          formControlName="id"
+                          type="number"
+                        >
+                          <option value="">--nessuna selezione--</option>
+                          <option
+                            *ngFor="let tipoAzienda of tipiAziende"
+                            value="{{ tipoAzienda.id }}"
+                          >
+                            {{ tipoAzienda.descrizione }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div formGroupName="tipoContratto">
+                        <label for="filter-TipoContratto">Tipo Contratto:</label>
+                        <select
+                          class="form-control"
+                          id="contratto.tipoContratto.id"
+                          formControlName="id"
+                        >
+                          <option value="">--nessuna selezione--</option>
+                          <option
+                            *ngFor="let tipoContratto of tipiContratti"
+                            value="{{ tipoContratto.id }}"
+                          >
+                            {{ tipoContratto.descrizione }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div formGroupName="livelloContratto">
+                        <label for="filter-LivelloContratto">Livello Contratto:</label>
+                        <select
+                          class="form-control"
+                          id="contratto.livelloContratto.id"
+                          formControlName="id"
+                        >
+                          <option value="">--nessuna selezione--</option>
+                          <option
+                            *ngFor="let livelloContratto of livelliContratti"
+                            value="{{ livelloContratto.id }}"
+                          >
+                            {{ livelloContratto.descrizione }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <div formGroupName="contrattoNazionale">
+                        <label for="filter-Tipo Contratto nazionale"
+                          >Tipo Contratto nazionale:</label
+                        >
+                        <select
+                          class="form-control"
+                          id="contratto.contrattoNazionale.id"
+                          formControlName="id"
+                        >
+                          <option value="">--nessuna selezione--</option>
+                          <option
+                            *ngFor="let contrattiNazionale of contrattiNazionali"
+                            value="{{ contrattiNazionale.id }}"
+                          >
+                            {{ contrattiNazionale.descrizione }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+
+
                   </div>
-                </div>
-                <div class="col-3">
-                  <div class="form-group">
-                    <label for="altriTitoli">Altri titoli</label>
-                    <input type="text" class="form-control" id="altriTitoli" name="altriTitoli" [(ngModel)]="anagraficaDto.anagrafica.altriTitoli">
+                  <div class="row">
+
                   </div>
-                </div>
-                <div class="col-3" style="text-align: center;">
-                  <div class="form-group">
-                    <!-- <label for="coniugato">Coniugato</label> <br> -->
-                    <!-- <input type="checkbox"  id="coniugato" name="coniugato" [(ngModel)]="anagraficaDto.anagrafica.coniugato"> -->
-                    <mat-slide-toggle id="coniugato" class="example-margin" color="primary" name="coniugato" [(ngModel)]="anagraficaDto.anagrafica.coniugato">Coniugato</mat-slide-toggle>
+
+                  <legend>Dettagli</legend>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Qualifica: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="qualifica"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <label>Sede Assunzione: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="sedeAssunzione"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <form>
+                        <div class="form-group">
+                          <label for="dataAssunzione">Data Assunzione</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            name="dataInput"
+                            formControlName="dataAssunzione"
+                          />
+                        </div>
+                      </form>
+                    </div>
+                    <div class="col-md-3">
+                      <form>
+                        <div class="form-group">
+                          <label for="dataInizoProva">Data Inzio prova</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            name="dataInput"
+                            formControlName="dataInizioProva"
+                          />
+                        </div>
+                      </form>
+                    </div>
+
+                  </div>
+                  <br>
+                  <div class="row">
+
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <form>
+                        <div class="form-group">
+                          <label for="dataInizoProva">Data Fine prova</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            name="dataInput"
+                            formControlName="dataFineProva"
+                          />
+                        </div>
+                      </form>
+                    </div>
+                    <div class="col-md-3">
+                      <form>
+                        <div class="form-group">
+                          <label for="dataFineRapporto">data Fine Rapporto</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            name="dataInput"
+                            formControlName="dataFineRapporto"
+                          />
+                        </div>
+                      </form>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Mesi Durata: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="mesiDurata"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+
+                  </div>
+                  <br>
+                  <legend>Livello Dipendente</legend>
+
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Livello Iniziale: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="LivelloIniziale"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Livello Attuale: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="livelloAttuale"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Livello Finale: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="livelloFinale"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <legend>Info Generali</legend>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label class="form-check-label">Dimissioni: </label>
+                      <div class="form-check">
+                        <input
+                          style="border-color: black"
+                          class="form-check-input"
+                          type="checkbox"
+                          formControlName="dimissioni"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-check-label">Part Time: </label>
+                      <div class="form-check">
+                        <input
+                          style="border-color: black"
+                          class="form-check-input"
+                          type="checkbox"
+                          formControlName="partTime"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-check-label">Part Time A: </label>
+                      <div class="form-check">
+                        <input
+                          style="border-color: black"
+                          class="form-check-input"
+                          type="checkbox"
+                          formControlName="partTimeA"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <legend>Retribuzione e Diaria</legend>
+
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Retribuzione Mensile Lorda: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="retribuzioneMensileLorda"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Superminimo Mensile: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="superminimoMensile"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>RAL Annua: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="ralAnnua"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+
+
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Superminimo RAL: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="superminimoRal"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Diaria Mensile: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="diariaMese"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Diaria Giornaliera: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="diariaGg"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <legend>Ticket e Aggevolazioni</legend>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Ticket: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="ticket"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Valore Ticket: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="valoreTicket"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <label id="contratto.categoriaProtetta" class="form-check-label"
+                        >Categoria Protetta:
+                      </label>
+                      <div class="form-check">
+                        <input
+                          style="border-color: black"
+                          class="form-check-input"
+                          type="checkbox"
+                          formControlName="categoriaProtetta"
+                        />
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <legend>Altro</legend>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Tutor: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="tutor"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>PFI: </label>
+                      <div class="form-group">
+                        <input type="text" class="form-control" formControlName="pfi" />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <form>
+                          <div class="form-group">
+                            <label>Corso di Sicurezza: </label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              name="dataInput"
+                              formControlName="corsoSicurezza"
+                            />
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <label>Motivazione Fine Rapporto: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="motivazioneFineRapporto"
+                        />
+                      </div>
+                    </div>
+
+
+
+
+                  </div>
+                  <div class="row">
+
+                  </div>
+                  <div class="row">
+
+                  </div>
+                  <div class="row">
+
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Scatti Anzianita: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="scattiAnzianita"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>PC: </label>
+                      <div class="form-group">
+                        <input
+                          style="border-color: black"
+                          class="form-check-input"
+                          type="checkbox"
+                          formControlName="pc"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label>Tariffa Partita IVA: </label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="tariffaPartitaIva"
+                          />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Canale Reclutamento: </label>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="canaleReclutamento"
+                        />
+                      </div>
+                    </div>
+
+
+                  </div>
+
+                  <div class="row">
 
                   </div>
                 </div>
-                <div class="col-3" style="text-align: center;">
-                  <div class="form-group">
-                    <!-- <label for="coniugato">Figli a carico</label> <br> -->
-                    <!-- <input type="checkbox"  id="figliACarico" name="figliACarico" [(ngModel)]="anagraficaDto.anagrafica.figliACarico"> -->
-                    <mat-slide-toggle id="figliACarico" class="example-margin" color="primary" name="figliACarico"  [(ngModel)]="anagraficaDto.anagrafica.figliACarico">Figli a carico</mat-slide-toggle>
+                <br>
+                <div class="row">
+                  <!-- <div class="col-6">
+                    <button id="indietro" type="button" class="btn btn-primary" (click)="prevStep()">Indietro</button>
+                  </div> -->
+                  <div class="row">
+                    <div class="col-6" style="text-align: end;">
+
+                      <button class="btn btn-info" type="submit" [routerLink]="['/lista-anagrafica']">
+                        Annulla
+                      </button>
+                      <!--dark btn-sm rounded-pill shadow-sm  style="background-color: rgb(18, 0, 122); color: white"-->
+
+                    </div>
+                    <div class="col-6" style="text-align: start;">
+                      <button class="btn btn-success" type="submit" [disabled]="AnagraficaDto.invalid" >
+                        Salva
+                      </button>
+                    </div>
+
+                    <!--dark btn-sm rounded-pill shadow-sm     style="background-color: rgb(24, 122, 0); color: white"-->
                   </div>
                 </div>
               </div>
-              <br>
-              <hr>
-              <br>
-
-
-              <!-- ----------------------------------------COMMESSA---------------------------------------- -->
-
-                <div class="commessa" *ngFor="let commessa of anagraficaDto.commesse; let i = index">
-                  <h1 *ngIf="i==0">Commessa</h1>
-                  <h1 *ngIf="i>0">Nuova Commessa : {{i+1}}</h1>
-                  <div class="row" >
-                    <div class="col-3">
-                      <div class="form-group">
-                        <label for="cliente">Cliente</label>
-                        <input type="text" class="form-control" name="cliente" [id]="'cliente' + i" [(ngModel)]="anagraficaDto.commesse[i].cliente">
-                      </div>
-                    </div>
-                    <div class="col-3">
-                      <label for="clienteFinale">Cliente finale</label>
-                      <div class="form-group">
-                        <input type="text" class="form-control" name="clienteFinale"  [id]="'clienteFinale' + i" [(ngModel)]="anagraficaDto.commesse[i].clienteFinale">
-                      </div>
-                    </div>
-                    <div class="col-3">
-                      <label for="titoloPosizione">Titolo posizione</label>
-                      <div class="form-group">
-                        <input type="text" class="form-control" name="titoloPosizione"  [id]="'titoloPosizione' + i" [(ngModel)]="anagraficaDto.commesse[i].titoloPosizione">
-                      </div>
-                    </div>
-                    <div class="col-3">
-                      <label for="distacco">Distacco</label>
-                      <div class="form-group">
-                        <input type="text" class="form-control" name="distacco"  [id]="'distacco' + i" [(ngModel)]="anagraficaDto.commesse[i].distacco">
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <div class="row">
-                    <div class="col-3">
-                      <div class="form-group">
-                        <label for="dataInizio">Data inizio</label>
-                        <input type="date" class="form-control" name="dataInizio"  [id]="'dataInizio' + i" [(ngModel)]="anagraficaDto.commesse[i].dataInizio">
-                      </div>
-                    </div>
-                    <div class="col-3">
-                      <div class="form-group">
-                        <label for="dataFine">Data fine</label>
-                        <input type="date" class="form-control" name="dataFine"  [id]="'dataFine' + i" [(ngModel)]="anagraficaDto.commesse[i].dataFine">
-                      </div>
-                    </div>
-                    <div class="col-3">
-                      <div class="form-group">
-                        <label for="costoMese">Costo mese</label>
-                        <input type="number" class="form-control" name="costoMese"  [id]="'costoMese' + i" [(ngModel)]="anagraficaDto.commesse[i].costoMese">
-                      </div>
-                    </div>
-                    <div class="col-3">
-                      <div class="form-group">
-                        <label for="tariffaGiornaliera">Tariffa giornaliera</label>
-                        <input type="number" class="form-control" name="tariffaGiornaliera"  [id]="'tariffaGiornaliera' + i" [(ngModel)]="anagraficaDto.commesse[i].tariffaGiornaliera">
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <div class="row">
-                    <div class="col-3">
-                      <div class="form-group">
-                        <label for="nominativo">Nominativo</label>
-                        <input type="text" class="form-control" name="nominativo"  [id]="'nominativo' + i" [(ngModel)]="anagraficaDto.commesse[i].nominativo" >
-                      </div>
-                    </div>
-                    <div class="col-3">
-                      <div class="form-group">
-                        <label for="azienda">Azienda</label>
-                        <input type="text" class="form-control" name="azienda"  [id]="'azienda' + i" [(ngModel)]="anagraficaDto.commesse[i].azienda" >
-                      </div>
-                     </div>
-                     <div class="col-3">
-                      <div class="form-group">
-                        <label for="aziendaDiFatturazioneInterna">Azienda di fatturazione</label>
-                        <input type="text" class="form-control" name="aziendaDiFatturazioneInterna"  [id]="'aziendaDiFatturazioneInterna' + i" [(ngModel)]="anagraficaDto.commesse[i].aziendaDiFatturazioneInterna">
-                      </div>
-                     </div>
-                     <div class="col-1">
-                      <div class="form-group" style="text-align: center;">
-                        <!-- <label for="stato">Stato</label> -->
-                        <!-- <input type="checkbox"  name="stato"  [id]="'stato' + i" [(ngModel)]="anagraficaDto.commesse[i].stato"> -->
-                        <mat-slide-toggle [id]="'stato' + i" class="example-margin" color="primary" name="stato"  [(ngModel)]="anagraficaDto.commesse[i].stato">Stato</mat-slide-toggle>
-
-                      </div>
-                     </div>
-                     <div class="col-2" style="text-align: center;">
-                      <div class="form-group">
-                        <!-- <label for="attesaLavori">Attesa lavori</label> <br> -->
-                        <mat-slide-toggle [id]="'attesaLavori' + i" class="example-margin" color="primary" name="attesaLavori"  [(ngModel)]="anagraficaDto.commesse[i].attesaLavori">Attesa lavori</mat-slide-toggle>
-
-                      </div>
-                    </div>
-
-                  </div>
-
-                  <br>
-
-                  <div class="row">
-                    <div class="col-4">
-                      <button (click)="aggiungiCommessa()"  class="btn btn-primary">Aggiungi Commessa {{i+1}} </button> &nbsp;
-                      <button (click)="rimuoviCommessa(i)"  class="btn btn-danger" [disabled]="i==0"  >Rimuovi Commessa {{i+1}} </button>
-
-                    </div>
-                   </div>
-                </div>
-                <br>
-                <hr>
-                <br>
-                <div class="row">
-                  <div class="col-12">
-                    <h1>Contratto</h1>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="contrattoTipoContratto">Tipo contratto</label>
-                      <input type="text" class="form-control" name="tipoContratto" id="tipoContratto" [(ngModel)]="anagraficaDto.contratto.tipoContratto.descrizione" >
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="livelloContratto">CCNL</label>
-                      <input type="text" name="livelloContratto" id="livelloContratto" class="form-control" [(ngModel)]="anagraficaDto.contratto.livelloContratto.ccnl">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="descrizione">Descrizione</label>
-                      <input type="text" name="descrizione" id="descrizione" class="form-control" [(ngModel)]="anagraficaDto.contratto.livelloContratto.descrizione">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="minimiRet23">minimi Retributivi 2023</label>
-                      <input type="text" name="minimiRet23" id="minimiRet23" class="form-control" [(ngModel)]="anagraficaDto.contratto.livelloContratto.minimiRet23">
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="tipoAzienda">Tipo azienda</label>
-                      <input type="text" class="form-control" name="tipoAzienda" id="tipoAzienda" [(ngModel)]="anagraficaDto.contratto.tipoAzienda.descrizione">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="contrattoNazionale">Contratto nazionale</label>
-                      <input type="text" class="form-control" name="contrattoNazionale" id="contrattoNazionale" [(ngModel)]="anagraficaDto.contratto.contrattoNazionale.descrizione">
-                    </div>
-                  </div>
-                  <div class="col-3" style="text-align: center;">
-                    <div class="form-group">
-                      <!-- <label for="attivo">Attivo</label> -->
-                      <mat-slide-toggle id="contrattoAttivo" class="example-margin" color="primary" name="contrattoAttivo" [(ngModel)]="anagraficaDto.contratto.attivo">Attivo</mat-slide-toggle>
-                      <!-- <input type="checkbox" id="contrattoAttivo" name="contrattoAttivo" [(ngModel)]="anagraficaDto.contratto.attivo"> -->
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="sedeAssunzione">Sede assunzione</label>
-                      <input type="text" class="form-control" id="sedeAssunzione" name="sedeAssunzione" [(ngModel)]="anagraficaDto.contratto.sedeAssunzione">
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="qualifica">Qualifica</label>
-                      <input type="text" class="form-control" id="qualifica" name="qualifica" [(ngModel)]="anagraficaDto.contratto.qualifica">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="dataAssunzione">Data assunzione</label>
-                      <input type="date" class="form-control" id="dataAssunzione" name="dataAssunzione" [(ngModel)]="anagraficaDto.contratto.dataAssunzione">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="dataInizioProva">Data inizio prova</label>
-                      <input type="date" class="form-control" id="dataInizioProva" name="dataInizioProva" [(ngModel)]="anagraficaDto.contratto.dataInizioProva">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="dataFineProva">Data fine prova</label>
-                      <input type="date" class="form-control" id="dataFineProva" name="dataFineProva" [(ngModel)]="anagraficaDto.contratto.dataFineProva">
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="dataFineRapporto">Data fine rapporto</label>
-                      <input type="date" id="dataFineRapporto" name="dataFineRapporto" class="form-control" [(ngModel)]="anagraficaDto.contratto.dataFineRapporto">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="mesiDurata">Mesi durata</label>
-                      <input type="number" class="form-control" id="mesiDurata" name="mesiDurata" [(ngModel)]="anagraficaDto.contratto.mesiDurata">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="livelloAttuale">Livello attuale</label>
-                      <input type="text" class="form-control" name="livelloAttuale" id="livelloAttuale" [(ngModel)]="anagraficaDto.contratto.livelloAttuale">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group" style="text-align: center;">
-                      <label for="dimissioni"></label>
-                      <mat-slide-toggle class="example-margin" id="dimissioni" name="dimissioni"  color="primary" [(ngModel)]="anagraficaDto.contratto.dimissioni">dimissioni</mat-slide-toggle>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="partTime"></label>
-                      <mat-slide-toggle class="example-margin" id="partTime" name="partTime"  color="primary" [(ngModel)]="anagraficaDto.contratto.partTime">Part time</mat-slide-toggle>
-                    </div>
-                  </div>
-                  <div class="col-3" style="text-align: center;">
-                    <div class="form-group">
-                      <label for="partTimeA"></label>
-                      <mat-slide-toggle class="example-margin" id="partTimeA" name="partTimeA"  color="primary" [(ngModel)]="anagraficaDto.contratto.partTimeA">Part time A</mat-slide-toggle>
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="retribuzioneMensileLorda">Retribuzione lorda mensile</label>
-                      <input type="number" class="form-control" name="retribuzioneMensileLorda" id="retribuzioneMensileLorda" [(ngModel)]="anagraficaDto.contratto.retribuzioneMensileLorda">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="superminimoMensile">Super minimo mensile</label>
-                      <input type="number" class="form-control" name="superminimoMensile" id="superminimoMensile" [(ngModel)]="anagraficaDto.contratto.superminimoMensile">
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-3">
-                 <div class="form-group">
-                    <label for="ralAnnua">Ral annua</label>
-                    <input type="text" class="form-control" id="ralAnnua" name="ralAnnua" [(ngModel)]="anagraficaDto.contratto.ralAnnua">
-                  </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="superminimoRal">Super minimo ral</label>
-                      <input type="number" name="superminimoRal" id="superminimoRal" class="form-control" [(ngModel)]="anagraficaDto.contratto.superminimoRal">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="diariaMese">Diaria mese</label>
-                      <input type="text" name="diariaMese" id="diariaMese" class="form-control" [(ngModel)]="anagraficaDto.contratto.diariaMese">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="diariaGg">Diaria gg</label>
-                      <input type="text" name="diariaGg" id="diariaGg" class="form-control" [(ngModel)]="anagraficaDto.contratto.diariaGg">
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="ticket">Tiket</label>
-                      <input type="text" class="form-control" name="ticket" id="ticket" [(ngModel)]="anagraficaDto.contratto.ticket">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="ticket"> Valore Tiket</label>
-                      <input type="text" class="form-control" name="valoreTicket" id="valoreTicket" [(ngModel)]="anagraficaDto.contratto.valoreTicket">
-                    </div>
-                  </div>
-                  <div class="col-3" style="text-align: center;">
-                    <div class="form-group">
-                      <mat-slide-toggle class="example-margin" id="categoriaProtetta" name="categoriaProtetta"  color="primary" [(ngModel)]="anagraficaDto.contratto.categoriaProtetta">Categoria protetta</mat-slide-toggle>
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="tutor">Tutor</label>
-                      <input type="text" class="form-control" id="tutor" name="tutor" [(ngModel)]="anagraficaDto.contratto.tutor">
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label for="pfi">PFI</label>
-                      <input type="text" class="form-control" id="pfi" name="pfi" [(ngModel)]="anagraficaDto.contratto.pfi">
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label for="assicurazioneObbligatoria">Assicurazione obbligatoria</label>
-                      <input type="text" class="form-control" id="assicurazioneObbligatoria" name="assicurazioneObbligatoria" [(ngModel)]="anagraficaDto.contratto.assicurazioneObbligatoria">
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label for="corsoSicurezza">Corso di sicurezza</label>
-                      <input type="date" class="form-control" id="corsoSicurezza" name="corsoSicurezza" [(ngModel)]="anagraficaDto.contratto.corsoSicurezza">
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-12">
-                    <div class="form-group">
-                      <label for="motivazioneFineRapporto">Motivazione fine rapporto</label>
-                      <textarea name="motivazioneFineRapporto" id="motivazioneFineRapporto" cols="30" rows="10" [(ngModel)]="anagraficaDto.contratto.motivazioneFineRapporto" class="form-control"></textarea>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-3">
-                    <div class="form-group">
-
-                      <mat-slide-toggle class="example-margin" id="pc" name="pc"  color="primary" [(ngModel)]="anagraficaDto.contratto.pc">PC</mat-slide-toggle>
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="scattiAnzianita">Scatti anzianitá</label>
-                      <input type="text" id="scattiAnzianita" name="scattiAnzianita" class="form-control" [(ngModel)]="anagraficaDto.contratto.scattiAnzianita">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="tariffaPartitaIva">Tariffa partita IVA</label>
-                      <input type="text" id="tariffaPartitaIva" name="tariffaPartitaIva" class="form-control" [(ngModel)]="anagraficaDto.contratto.tariffaPartitaIva">
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="form-group">
-                      <label for="canaleReclutamento">Canale reclutamento</label>
-                      <input type="text" id="canaleReclutamento" name="canaleReclutamento" class="form-control" [(ngModel)]="anagraficaDto.contratto.canaleReclutamento">
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-12" style="text-align:center;">
-                    <button [disabled]="anagraficaForm.invalid" class="btn btn-success" >Salva</button> &nbsp;
-                    <button class="btn btn-info" (click)="annulla()">Annulla</button>
-                  </div>
-                </div>
-            </form>
-          </mat-card-content>
-        </mat-card>
-
+             </mat-step>
+          </mat-stepper>
+        </div>
       </div>
     </div>
-  </div>
-</body>
-</html>
+  </form>
+
+  <!-- <footer>
+    <p>© 2023 CRM Company. Tutti i diritti riservati.</p>
+  </footer> -->
+
+</div>
