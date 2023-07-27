@@ -9,21 +9,23 @@ import { Router } from '@angular/router';
 export class UtenteComponent {
   currentDate: Date = new Date();
   currentMonthIndex: number = this.currentDate.getMonth();
-  weekDays: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  weekDays: string[] = ['Domenica', 'Lunedí', 'Martedí', 'Mercoledí', 'Giovedí', 'Venerdí', 'Sabato'];
   calendar: any[] = [];
+  currentDayRowIndex: any;
+  currentDayColIndex: any;
   months: string[] = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    'Gennaio',
+    'Febbraio',
+    'Marzo',
+    'Aprile',
+    'Maggio',
+    'Jugno',
+    'Luglio',
+    'Agosto',
+    'Settembre',
+    'Ottobre',
+    'Novembre',
+    'Dicembre',
   ];
 
   constructor(private router: Router, private datePipe: DatePipe) {
@@ -63,6 +65,28 @@ export class UtenteComponent {
       }
       this.calendar.push(week);
     }
+
+    const today = new Date();
+  this.currentDayRowIndex = this.calendar.findIndex((week) =>
+    week.some((day:any) => this.isSameDate(day.date, today))
+  );
+  this.currentDayColIndex = this.calendar[this.currentDayRowIndex].findIndex(
+    (day:any) => this.isSameDate(day.date, today)
+  );
+  }
+
+  isCurrentDay(day: any): boolean {
+    const today = new Date();
+    return this.isSameDate(day.date, today);
+  }
+
+
+  isSameDate(date1: Date, date2: Date): boolean {
+    return (
+      date1.getDate() === date2.getDate() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getFullYear() === date2.getFullYear()
+    );
   }
 
   prevMonth() {

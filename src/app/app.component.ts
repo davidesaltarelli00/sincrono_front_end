@@ -138,13 +138,6 @@ export class AppComponent implements OnInit {
   }
 
 
-
-
-
-
-
-
-
   logout() {
     this.dialog.open(AlertLogoutComponent);
     // const confirmation = confirm('Sei sicuro di voler effettuare il logout?');
