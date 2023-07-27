@@ -60,14 +60,14 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       anagrafica: this.formBuilder.group({
         attivo: new FormControl(''),
         aziendaTipo: new FormControl(''),
-        nome: new FormControl(''),
-        cognome: new FormControl(''),
-        codiceFiscale: new FormControl(''),
+        nome: new FormControl('',Validators.required),
+        cognome: new FormControl('',Validators.required),
+        codiceFiscale: new FormControl('',Validators.required),
         cellularePrivato: new FormControl(''),
         cellulareAziendale: new FormControl(''),
         mailPrivata: new FormControl(''),
         mailPec: new FormControl(''),
-        mailAziendale: new FormControl(''),
+        mailAziendale: new FormControl('',Validators.required),
         titoliDiStudio: new FormControl(''),
         altriTitoli: new FormControl(''),
         comuneDiNascita: new FormControl(''),
@@ -126,7 +126,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         canaleReclutamento: new FormControl(''),
       }),
       ruolo: this.formBuilder.group({
-        id: new FormControl(''),
+        id: new FormControl('', Validators.required),
       }),
     });
 
@@ -322,8 +322,9 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         return;
       } else {
         alert('inserimento riuscito');
+        console.log(this.AnagraficaDto.value)
       }
-      this.router.navigate(['../lista-anagrafica-dto']);
+      this.router.navigate(['/lista-anagrafica']);
     });
   }
 
