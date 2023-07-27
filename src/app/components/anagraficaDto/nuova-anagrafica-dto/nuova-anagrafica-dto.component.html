@@ -35,7 +35,7 @@
                           type="text"
                           class="form-control"
                           formControlName="aziendaTipo"
-                          placeholder="Inserire azienda"
+                          placeholder="Inserire azienda."
                         />
                       </div>
                     </div>
@@ -54,7 +54,7 @@
                             id="anagrafica.nome"
                             type="text"
                             class="form-control"
-                            placeholder="Inserire il nome"
+                            placeholder="Inserire il nome."
                             formControlName="nome"
                           />
                         </div>
@@ -66,7 +66,7 @@
                             id="anagrafica.cognome"
                             type="text"
                             class="form-control"
-                            placeholder="Inserire il cognome"
+                            placeholder="Inserire il cognome."
                             formControlName="cognome"
                           />
                         </div>
@@ -81,7 +81,7 @@
                             id="anagrafica.codiceFiscale"
                             type="text"
                             class="form-control"
-                            placeholder="Inserire il codice fiscale"
+                            placeholder="Inserire il codice fiscale."
                             formControlName="codiceFiscale"
                           />
                         </div>
@@ -97,6 +97,7 @@
                             type="text"
                             class="form-control"
                             formControlName="cellularePrivato"
+                            placeholder="Inserire cellulare privato."
                           />
                         </div>
                       </div>
@@ -107,6 +108,7 @@
                             type="text"
                             class="form-control"
                             formControlName="cellulareAziendale"
+                            placeholder="Inserire cellulare aziendale."
                           />
                         </div>
                       </div>
@@ -119,6 +121,7 @@
                             type="text"
                             class="form-control"
                             formControlName="mailPrivata"
+                            placeholder="Inserire mail privata."
                           />
                         </div>
                         <label>Email Pec: </label>
@@ -127,6 +130,7 @@
                             type="text"
                             class="form-control"
                             formControlName="mailPec"
+                            placeholder="Inserire PEC."
                           />
                         </div>
                       </div>
@@ -138,6 +142,7 @@
                             type="text"
                             class="form-control"
                             formControlName="mailAziendale"
+                            placeholder="Inserire mail aziendale."
                           />
                         </div>
                       </div>
@@ -152,6 +157,7 @@
                             type="text"
                             class="form-control"
                             formControlName="titoliDiStudio"
+                            placeholder="Inserire titolo di studio."
                           />
                         </div>
                       </div>
@@ -162,6 +168,7 @@
                             type="text"
                             class="form-control"
                             formControlName="altriTitoli"
+                            placeholder="Inserire altri titoli conseguiti."
                           />
                         </div>
                       </div>
@@ -176,6 +183,7 @@
                             type="text"
                             class="form-control"
                             formControlName="comuneDiNascita"
+                            placeholder="Inserire comune di nascita."
                           />
                         </div>
                       </div>
@@ -186,6 +194,7 @@
                             type="text"
                             class="form-control"
                             formControlName="residenza"
+                            placeholder="Inserire residenza."
                           />
                         </div>
                       </div>
@@ -196,6 +205,7 @@
                             type="text"
                             class="form-control"
                             formControlName="domicilio"
+                            placeholder="Inserire domicilio."
                           />
                         </div>
                       </div>
@@ -206,6 +216,7 @@
                         <div class="form-group">
                           <input
                             type="text"
+                            placeholder="Data di nascita (Anno-mese-giorno)"
                             class="form-control"
                             formControlName="dataDiNascita"
                           />
@@ -352,7 +363,7 @@
                           <br>
                           <div class="row">
                             <div class="col-12" style="text-align: center; margin: auto;">
-                              <button mat-flat-button color="primary" (click)="aggiungiCommessa()">Aggiungi Commessa</button> &nbsp;
+                              <button mat-flat-button color="primary" (click)="aggiungiCommessa()" id="button-duplica"  >Aggiungi Commessa</button> &nbsp;
                               <button mat-flat-button color="accent" [disabled]="i === 0" (click)="rimuoviCommessa(i)" [matTooltip]="i === 0 ? 'La commessa uno non può essere eliminata' : ''">Rimuovi Commessa</button>
                               </div>
 

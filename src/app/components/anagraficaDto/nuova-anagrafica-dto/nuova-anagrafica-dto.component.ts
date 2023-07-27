@@ -32,7 +32,7 @@ export const MY_DATE_FORMATS = {
 export class NuovaAnagraficaDtoComponent implements OnInit {
   data: any = [];
   utenti: any = [];
-
+  isFormDuplicated: boolean = false;
   currentStep = 1;
 
   submitted = false;
@@ -46,7 +46,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   contrattiNazionali: any = [];
   ruoli: any = [];
   userlogged: string = '';
-
+  formsDuplicati: boolean[] = [];
   AnagraficaDto: FormGroup; // Assicurati di avere dichiarato il FormGroup
   commesse!: FormArray; // Assicurati di avere dichiarato il FormArray
 
@@ -147,6 +147,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   aggiungiCommessa() {
     const commessaFormGroup = this.creaFormCommessa();
     this.commesse.push(commessaFormGroup);
+    // this.isFormDuplicated = true;
+    this.formsDuplicati.push(true);
+
+
   }
 
   creaFormCommessa(): FormGroup {
@@ -169,6 +173,16 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
   rimuoviCommessa(index: number) {
     this.commesse.removeAt(index);
+    this.formsDuplicati.splice(index);
+    // console.log(index);
+    // const buttonDuplica = document.getElementById("button-duplica");
+    // if (buttonDuplica) {
+    //   if (index === 1) {
+    //     buttonDuplica.setAttribute("disabled", "false");
+    //   } else {
+    //     buttonDuplica.setAttribute("disabled", "true");
+    //   }
+    // }
   }
 
   caricaListaUtenti() {
