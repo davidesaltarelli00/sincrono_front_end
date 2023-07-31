@@ -1,0 +1,30 @@
+th,td{
+  font-size: 12px;
+}
+
+/* Stile per la tabella */
+.table {
+  display: flex;
+  flex-direction: column;
+  max-height: 500px; /* Specifica un'altezza massima per evitare che la tabella diventi troppo alta */
+  overflow-y: auto; /* Aggiunge una scrollbar verticale se la tabella è troppo alta */
+}
+
+/* Stile per le righe della tabella */
+tr {
+  display: flex;
+  width: 100%;
+}
+
+/* Stile per le celle della tabella */
+td, th {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  word-wrap: break-word; /* Per evitare che il testo vada oltre i limiti delle celle */
+}
+
+/* Opzionale: Aggiungi uno sfondo alternato per migliorare la leggibilità */
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}

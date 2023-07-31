@@ -1,6 +1,6 @@
 <html>
 
-<body style="padding-top: 70px;">
+<body>
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
@@ -167,7 +167,9 @@
                       </div>
                   </div>
               </div>
+              <br><br><br>
               </mat-step>
+
               <mat-step>
                 <ng-template matStepLabel>Modifica contratto</ng-template>
             <!-----------contratto----------->
@@ -183,7 +185,7 @@
 
                         <div formGroupName="tipoContratto">
                             <label for="tipoContratto">Tipo Contratto</label>
-                            <select id="contratto.tipoContratto.id" formControlName="id">
+                            <select class="form-control" id="contratto.tipoContratto.id" formControlName="id">
                                 <option value="">--nessuna selezione--</option>
                                 <option *ngFor="let tipoContratto of tipiContratti" value="{{tipoContratto.id}}">
                                     {{tipoContratto.descrizione}}</option>
@@ -191,7 +193,7 @@
                         </div>
                         <div formGroupName="livelloContratto">
                             <label for="livelloContratto">Livello Contratto</label>
-                            <select id="contratto.livelloContratto.id" formControlName="id" type="number">
+                            <select class="form-control" id="contratto.livelloContratto.id" formControlName="id" type="number">
                                 <option value="">--nessuna selezione--</option>
                                 <option *ngFor="let livelloContratto of livelliContratti" value="{{livelloContratto.id}}">
                                     {{livelloContratto.descrizione}}</option>
@@ -199,7 +201,7 @@
                         </div>
                         <div formGroupName="tipoAzienda">
                             <label for="tipoAzienda">Tipo Azienda</label>
-                            <select id="contratto.tipoAzienda.id" formControlName="id" type="number">
+                            <select class="form-control" id="contratto.tipoAzienda.id" formControlName="id" type="number">
                                 <option value="">--nessuna selezione--</option>
                                 <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.id}}">
                                     {{tipoAzienda.descrizione}}</option>
@@ -207,7 +209,7 @@
                         </div>
                         <div formGroupName="contrattoNazionale">
                             <label for="contrattoNazionale">Contratto Nazionale</label>
-                            <select id="contratto.contrattoNazionale.id" formControlName="id" type="number">
+                            <select class="form-control" id="contratto.contrattoNazionale.id" formControlName="id" type="number">
                                 <option value="">--nessuna selezione--</option>
                                 <option *ngFor="let contrattoNazionale of contrattiNazionali" value="{{contrattoNazionale.id}}">
                                     {{contrattoNazionale.descrizione}}</option>
@@ -289,20 +291,20 @@
 
                     <div class="row">
 
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label>Livello Attuale: </label>
                             <div class="form-group">
                                 <input type="text" class="form-control" value="{{ data?.contratto?.livelloAttuale }}"
                                     formControlName="livelloAttuale" />
                             </div>
-                        </div>
-                        <div class="col-md-3">
+                        </div> -->
+                        <!-- <div class="col-md-3">
                             <label>Livello Finale: </label>
                             <div class="form-group">
                                 <input type="text" class="form-control" value="{{ data?.contratto?.livelloFinale }}"
                                     formControlName="livelloFinale" />
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <legend>Info Generali</legend>
                     <div class="row">
@@ -476,12 +478,20 @@
 
                     </div>
                 </div>
+                <div class="col-md-3">
+                  <label>Attivo: </label>
+                  <div class="form-group">
+                      <input class="form-check-input" type="checkbox" style="border-color:black;"
+                          [checked]="data?.contratto?.attivo" formControlName="attivo" />
+                  </div>
+              </div>
+                <br><br><br>
               </mat-step>
 
               <mat-step>
                 <ng-template matStepLabel>Modifica commessa</ng-template>
                     <!---------commessa----------->
-            <h1>Dettaglio Commessa</h1>
+            <h1>Modifica Commessa</h1>
             <div formGroupName="commessa">
                 <div class="row">
 

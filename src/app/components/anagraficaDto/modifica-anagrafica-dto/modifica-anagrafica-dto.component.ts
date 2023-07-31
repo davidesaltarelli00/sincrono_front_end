@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnagraficaDtoService } from './../anagraficaDto-service';
 
@@ -24,99 +24,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   contrattiNazionali: any = [];
   ruoli:any=[];
   currentStep = 1;
-
-  anagraficaDto: FormGroup = new FormGroup({
-    anagrafica: new FormGroup({
-      id: new FormControl(''),
-      nome: new FormControl(''),
-      cognome: new FormControl(''),
-      dataDiNascita: new FormControl(),
-      comuneDiNascita: new FormControl(),
-      codiceFiscale: new FormControl(''),
-      aziendaTipo: new FormControl(''),
-      residenza: new FormControl(''),
-      domicilio: new FormControl(''),
-      dataInizioProva: new FormControl(''),
-      cellularePrivato: new FormControl(''),
-      cellulareAziendale: new FormControl(''),
-      mailPrivata: new FormControl(''),
-      mailAziendale: new FormControl(''),
-      mailPec: new FormControl(''),
-      titoliDiStudio: new FormControl(''),
-      altriTitoli: new FormControl(''),
-      coniugato: new FormControl(''),
-      figliACarico: new FormControl(''),
-    }),
-    contratto: new FormGroup({
-      id: new FormControl(''),
-      tipoContratto: new FormGroup({
-        id: new FormControl(''),
-      }),
-      livelloContratto: new FormGroup({
-        id: new FormControl(''),
-      }),
-
-      tipoAzienda: new FormGroup({
-        id: new FormControl(''),
-      }),
-
-      contrattoNazionale: new FormGroup({
-        id: new FormControl(''),
-      }),
+  anagraficaDto:FormGroup;
+  commesse: FormArray<any>;
+  formsDuplicati: any;
 
 
-      sedeAssunzione: new FormControl(''),
-      qualifica: new FormControl(''),
-      dataAssunzione: new FormControl(''),
-      dataInizioProva: new FormControl(''),
-      dataFineProva: new FormControl(''),
-      dataFineRapporto: new FormControl(''),
-      mesiDurata: new FormControl(''),
-      livelloAttuale: new FormControl(''),
-      livelloFinale: new FormControl(''),
-      dimissioni: new FormControl(''),
-      partTime: new FormControl(''),
-      partTimeA: new FormControl(''),
-      retribuzioneMensileLorda: new FormControl(''),
-      superminimoMensile: new FormControl(''),
-      ralAnnua: new FormControl(''),
-      superminimoRal: new FormControl(''),
-      diariaMese: new FormControl(''),
-      diariaGg: new FormControl(''),
-      ticket: new FormControl(''),
-      valoreTicket: new FormControl(''),
-      categoriaProtetta: new FormControl(''),
-      tutor: new FormControl(''),
-      pfi: new FormControl(''),
-      assicurazioneObbligatoria: new FormControl(''),
-      corsoSicurezza: new FormControl(''),
-      motivazioneFineRapporto: new FormControl(''),
-      pc: new FormControl(''),
-      scattiAnzianita: new FormControl(''),
-      tariffaPartitaIva: new FormControl(''),
-      canaleReclutamento: new FormControl(''),
-    }),
-
-    commessa: new FormGroup({
-      id: new FormControl(''),
-      cliente: new FormControl(''),
-      clienteFinale: new FormControl(''),
-      titoloPosizione: new FormControl(''),
-      distacco: new FormControl(''),
-      dataInizio: new FormControl(''),
-      dataFine: new FormControl(''),
-      costoMese: new FormControl(''),
-      tariffaGiornaliera: new FormControl(''),
-      nominativo: new FormControl(''),
-      azienda: new FormControl(''),
-      aziendaDiFatturazioneInterna: new FormControl(''),
-
-      attesaLavori: new FormControl(''),
-    }),
-    ruolo: new FormGroup({
-      id: new FormControl(''),
-    }),
-  });
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -124,66 +36,70 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute:ActivatedRoute
-  ) {}
-
-  ngOnInit(): void {
-    this.anagraficaDtoService
-      .detailAnagraficaDto(this.activatedRouter.snapshot.params['id'])
-      .subscribe((resp: any) => {
-        this.data = (resp as any)['anagraficaDto'];
-        console.log(this.data);
-        this.anagraficaDto.patchValue(this.data);
-      });
+  ) {
 
     this.anagraficaDto = this.formBuilder.group({
-      anagrafica: new FormGroup({
-        id: new FormControl(this.activatedRouter.snapshot.params['id']),
-        nome: new FormControl(''),
-        cognome: new FormControl(''),
-        dataDiNascita: new FormControl(),
-        comuneDiNascita: new FormControl(),
-        codiceFiscale: new FormControl(''),
+      anagrafica: this.formBuilder.group({
+        attivo: new FormControl(''),
         aziendaTipo: new FormControl(''),
-        residenza: new FormControl(''),
-        domicilio: new FormControl(''),
-        dataInizioProva: new FormControl(''),
+        nome: new FormControl('',Validators.required),
+        cognome: new FormControl('',Validators.required),
+        codiceFiscale: new FormControl('',Validators.required),
         cellularePrivato: new FormControl(''),
         cellulareAziendale: new FormControl(''),
         mailPrivata: new FormControl(''),
-        mailAziendale: new FormControl(''),
         mailPec: new FormControl(''),
+        mailAziendale: new FormControl('',Validators.required),
         titoliDiStudio: new FormControl(''),
         altriTitoli: new FormControl(''),
+        comuneDiNascita: new FormControl(''),
+        residenza: new FormControl(''),
+        domicilio: new FormControl(''),
+        dataDiNascita: new FormControl(''),
         coniugato: new FormControl(''),
         figliACarico: new FormControl(''),
       }),
-      contratto: new FormGroup({
-        id: new FormControl(this.data?.contratto?.id),
+      commesse: this.formBuilder.array([  this.formBuilder.group({
+        cliente: new FormControl(''),
+        clienteFinale: new FormControl(''),
+        titoloPosizione: new FormControl(''),
+        distacco: new FormControl(''),
+        costoMese: new FormControl(''),
+        dataInizio: new FormControl(''),
+        dataFine: new FormControl(''),
+        tariffaGiornaliera: new FormControl(''),
+        nominativo: new FormControl(''),
+        azienda: new FormControl(''),
+        aziendaDiFatturazioneInterna: new FormControl(''),
+        stato: new FormControl(''),
+        attesaLavori: new FormControl('')
+      }),]),
+
+      contratto: this.formBuilder.group({
+        attivo: new FormControl(''),
+        aziendaDiFatturazioneInterna: new FormControl(''),
+        tipoAzienda: new FormGroup({
+          id: new FormControl(''),
+        }),
         tipoContratto: new FormGroup({
           id: new FormControl(''),
         }),
         livelloContratto: new FormGroup({
           id: new FormControl(''),
         }),
-
-        tipoAzienda: new FormGroup({
-          id: new FormControl(''),
-        }),
-
         contrattoNazionale: new FormGroup({
           id: new FormControl(''),
         }),
-
-
-        sedeAssunzione: new FormControl(''),
         qualifica: new FormControl(''),
+        sedeAssunzione: new FormControl(''),
         dataAssunzione: new FormControl(''),
         dataInizioProva: new FormControl(''),
         dataFineProva: new FormControl(''),
         dataFineRapporto: new FormControl(''),
         mesiDurata: new FormControl(''),
-        livelloAttuale: new FormControl(''),
-        livelloFinale: new FormControl(''),
+        livelloIniziale: new FormControl(''),
+        // livelloAttuale: new FormControl(''),
+        // livelloFinale: new FormControl(''),
         dimissioni: new FormControl(''),
         partTime: new FormControl(''),
         partTimeA: new FormControl(''),
@@ -198,36 +114,32 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         categoriaProtetta: new FormControl(''),
         tutor: new FormControl(''),
         pfi: new FormControl(''),
-        assicurazioneObbligatoria: new FormControl(''),
         corsoSicurezza: new FormControl(''),
         motivazioneFineRapporto: new FormControl(''),
-        pc: new FormControl(''),
         scattiAnzianita: new FormControl(''),
+        pc: new FormControl(''),
         tariffaPartitaIva: new FormControl(''),
         canaleReclutamento: new FormControl(''),
       }),
-
-      commessa: new FormGroup({
-        id: new FormControl(this.data?.commessa?.id),
-        cliente: new FormControl(''),
-        clienteFinale: new FormControl(''),
-        titoloPosizione: new FormControl(''),
-        distacco: new FormControl(''),
-        dataInizio: new FormControl(''),
-        dataFine: new FormControl(''),
-        costoMese: new FormControl(''),
-        tariffaGiornaliera: new FormControl(''),
-        nominativo: new FormControl(''),
-        azienda: new FormControl(''),
-        aziendaDiFatturazioneInterna: new FormControl(''),
-
-        attesaLavori: new FormControl(''),
-      }),
-      ruolo: new FormGroup({
-        id: new FormControl(''),
-
+      ruolo: this.formBuilder.group({
+        id: new FormControl('', Validators.required),
       }),
     });
+
+  this.commesse = this.anagraficaDto.get('commesse') as FormArray;
+
+  }
+
+  ngOnInit(): void {
+    this.anagraficaDtoService
+      .detailAnagraficaDto(this.activatedRouter.snapshot.params['id'])
+      .subscribe((resp: any) => {
+        this.data = (resp as any)['anagraficaDto'];
+        console.log(this.data);
+        this.anagraficaDto.patchValue(this.data);
+      });
+
+
 
     this.caricaListaUtenti();
     this.caricaTipoContratto();
@@ -379,7 +291,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.anagraficaDtoService.update(body).subscribe((result) => {
       console.log(result);
       if ((result as any).esito.code != 0) {
-        alert('modifica non riuscita\n'+'target: '+(result as any).esito.target);
+        alert('modifica non riuscita \n'+'target: '+(result as any).esito.target);
         this.showErrorPopup = true;
         this.errore = true;
         this.messaggio = (result as any).esito.target;
@@ -445,4 +357,47 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.ruoli = (result as any)['list'];
     });
   }
+
+
+  aggiungiCommessa() {
+    const commessaFormGroup = this.creaFormCommessa();
+    this.commesse.push(commessaFormGroup);
+    // this.isFormDuplicated = true;
+    this.formsDuplicati.push(true);
+
+
+  }
+
+  creaFormCommessa(): FormGroup {
+    return this.formBuilder.group({
+      cliente: new FormControl(''),
+      clienteFinale: new FormControl(''),
+      titoloPosizione: new FormControl(''),
+      distacco: new FormControl(''),
+      costoMese: new FormControl(''),
+      dataInizio: new FormControl(''),
+      dataFine: new FormControl(''),
+      tariffaGiornaliera: new FormControl(''),
+      nominativo: new FormControl(''),
+      azienda: new FormControl(''),
+      aziendaDiFatturazioneInterna: new FormControl(''),
+      stato: new FormControl(''),
+      attesaLavori: new FormControl('')
+    });
+  }
+
+  rimuoviCommessa(index: number) {
+    this.commesse.removeAt(index);
+    this.formsDuplicati.splice(index);
+    // console.log(index);
+    // const buttonDuplica = document.getElementById("button-duplica");
+    // if (buttonDuplica) {
+    //   if (index === 1) {
+    //     buttonDuplica.setAttribute("disabled", "false");
+    //   } else {
+    //     buttonDuplica.setAttribute("disabled", "true");
+    //   }
+    // }
+  }
+
 }
