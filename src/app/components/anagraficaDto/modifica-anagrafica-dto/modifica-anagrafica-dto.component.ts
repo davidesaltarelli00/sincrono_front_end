@@ -23,7 +23,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   tipiAziende: any = [];
   contrattiNazionali: any = [];
   ruoli:any=[];
-
+  currentStep = 1;
 
   anagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
