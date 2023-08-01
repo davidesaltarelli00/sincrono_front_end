@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  FormArray,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnagraficaDtoService } from './../anagraficaDto-service';
 
@@ -22,9 +28,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   livelliContratti: any = [];
   tipiAziende: any = [];
   contrattiNazionali: any = [];
-  ruoli:any=[];
+  ruoli: any = [];
   currentStep = 1;
-  anagraficaDto:FormGroup;
+  anagraficaDto: FormGroup;
   commesse!: FormArray;
   formsDuplicati: any;
 
@@ -33,21 +39,20 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     private activatedRouter: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router: Router,
-    private activatedRoute:ActivatedRoute
+    private activatedRoute: ActivatedRoute
   ) {
-
     this.anagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
         attivo: new FormControl(''),
         aziendaTipo: new FormControl(''),
-        nome: new FormControl('',Validators.required),
-        cognome: new FormControl('',Validators.required),
-        codiceFiscale: new FormControl('',Validators.required),
+        nome: new FormControl('', Validators.required),
+        cognome: new FormControl('', Validators.required),
+        codiceFiscale: new FormControl('', Validators.required),
         cellularePrivato: new FormControl(''),
         cellulareAziendale: new FormControl(''),
         mailPrivata: new FormControl(''),
         mailPec: new FormControl(''),
-        mailAziendale: new FormControl('',Validators.required),
+        mailAziendale: new FormControl('', Validators.required),
         titoliDiStudio: new FormControl(''),
         altriTitoli: new FormControl(''),
         comuneDiNascita: new FormControl(''),
@@ -57,21 +62,23 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         coniugato: new FormControl(''),
         figliACarico: new FormControl(''),
       }),
-      commesse: this.formBuilder.array([  this.formBuilder.group({
-        cliente: new FormControl(''),
-        clienteFinale: new FormControl(''),
-        titoloPosizione: new FormControl(''),
-        distacco: new FormControl(''),
-        costoMese: new FormControl(''),
-        dataInizio: new FormControl(''),
-        dataFine: new FormControl(''),
-        tariffaGiornaliera: new FormControl(''),
-        nominativo: new FormControl(''),
-        azienda: new FormControl(''),
-        aziendaDiFatturazioneInterna: new FormControl(''),
-        stato: new FormControl(''),
-        attesaLavori: new FormControl('')
-      }),]),
+      commesse: this.formBuilder.array([
+        this.formBuilder.group({
+          cliente: new FormControl(''),
+          clienteFinale: new FormControl(''),
+          titoloPosizione: new FormControl(''),
+          distacco: new FormControl(''),
+          costoMese: new FormControl(''),
+          dataInizio: new FormControl(''),
+          dataFine: new FormControl(''),
+          tariffaGiornaliera: new FormControl(''),
+          nominativo: new FormControl(''),
+          azienda: new FormControl(''),
+          aziendaDiFatturazioneInterna: new FormControl(''),
+          stato: new FormControl(''),
+          attesaLavori: new FormControl(''),
+        }),
+      ]),
 
       contratto: this.formBuilder.group({
         attivo: new FormControl(''),
@@ -124,8 +131,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       }),
     });
 
-  this.commesse = this.anagraficaDto.get('commesse') as FormArray;
-
+    this.commesse = this.anagraficaDto.get('commesse') as FormArray;
   }
 
   ngOnInit(): void {
@@ -137,14 +143,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.anagraficaDto.patchValue(this.data);
       });
 
-
-
     this.caricaListaUtenti();
     this.caricaTipoContratto();
     this.caricaLivelloContratto();
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
-
 
     this.caricaRuoli();
   }
@@ -281,26 +284,32 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         'contratto.tipoAzienda.id',
       ]);
     }
-    const body = JSON.stringify({
-      anagraficaDto: this.anagraficaDto.value,
-    });
-    console.log(body);
+    const body = { anagraficaDto: this.anagraficaDto.value };
 
-    this.anagraficaDtoService.update(body).subscribe((result) => {
-      console.log(result);
-      if ((result as any).esito.code != 0) {
-        alert('modifica non riuscita \n'+'target: '+(result as any).esito.target);
-        this.showErrorPopup = true;
-        this.errore = true;
-        this.messaggio = (result as any).esito.target;
-        return;
-      }else{
+    console.log("ANAGRAFICADTO: ", this.anagraficaDto, " BODY: ", body);
 
-        alert('modifica riuscita');
-
+    this.anagraficaDtoService.update(body).subscribe(
+      (result) => {
+        console.log(result);
+        if ((result as any).esito.code != 0) {
+          alert(
+            'modifica non riuscita \n' +
+              'target: ' +
+              (result as any).esito.target
+          );
+          this.showErrorPopup = true;
+          this.errore = true;
+          this.messaggio = (result as any).esito.target;
+          return;
+        } else {
+          alert('modifica riuscita');
+          this.anagraficaDto = result;
+        }
+      },
+      (error: string) => {
+        console.log('Si é verificato un errore durante la modifica: ' + error);
       }
-    });
-
+    );
   }
 
   transformDate(dateString: string): string {
@@ -356,14 +365,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     });
   }
 
-
   aggiungiCommessa() {
     const commessaFormGroup = this.creaFormCommessa();
     this.commesse.push(commessaFormGroup);
     // this.isFormDuplicated = true;
     this.formsDuplicati.push(true);
-
-
   }
 
   creaFormCommessa(): FormGroup {
@@ -380,7 +386,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       azienda: new FormControl(''),
       aziendaDiFatturazioneInterna: new FormControl(''),
       stato: new FormControl(''),
-      attesaLavori: new FormControl('')
+      attesaLavori: new FormControl(''),
     });
   }
 
@@ -388,5 +394,4 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.commesse.removeAt(index);
     this.formsDuplicati.splice(index);
   }
-
 }
