@@ -453,14 +453,14 @@
                               *ngFor="let livelloContratto of livelliContratti"
                               value="{{ livelloContratto.id }}"
                             >
-                              {{ livelloContratto.descrizione }}
+                              {{ livelloContratto.descrizione }}  <!--livello-->
                             </option>
                           </select>
                         </div>
                       </div>
 
                       <div class="col-md-3">
-                        <div formGroupName="contrattoNazionale">
+                        <div formGroupName="contrattoNazionale"> <!--tutto quello che ha contrattoNazionale diventa ccnl-->
                           <label for="filter-Tipo Contratto nazionale"
                             >Tipo Contratto nazionale:</label
                           >

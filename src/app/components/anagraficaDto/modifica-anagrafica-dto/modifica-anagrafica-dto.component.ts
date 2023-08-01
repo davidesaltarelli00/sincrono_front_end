@@ -92,7 +92,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         livelloContratto: new FormGroup({
           id: new FormControl(''),
         }),
-        contrattoNazionale: new FormGroup({
+        contrattoNazionale: new FormGroup({ //ccnl
           id: new FormControl(''),
         }),
         qualifica: new FormControl(''),
@@ -139,7 +139,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .detailAnagraficaDto(this.activatedRouter.snapshot.params['id'])
       .subscribe((resp: any) => {
         this.data = (resp as any)['anagraficaDto'];
-        console.log(this.data);
+        // console.log(this.data);
         this.anagraficaDto.patchValue(this.data);
       });
 
@@ -154,19 +154,19 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
   caricaTipoContratto() {
     this.anagraficaDtoService.getTipoContratto().subscribe((result: any) => {
-      console.log(result);
+      // console.log(result);
       this.tipiContratti = (result as any)['list'];
     });
   }
   caricaLivelloContratto() {
     this.anagraficaDtoService.getLivelloContratto().subscribe((result: any) => {
-      console.log(result);
+      // console.log(result);
       this.livelliContratti = (result as any)['list'];
     });
   }
   caricaTipoAzienda() {
     this.anagraficaDtoService.getTipoAzienda().subscribe((result: any) => {
-      console.log(result);
+      // console.log(result);
       this.tipiAziende = (result as any)['list'];
     });
   }
@@ -175,13 +175,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.anagraficaDtoService
       .getContrattoNazionale()
       .subscribe((result: any) => {
-        console.log(result);
+        // console.log(result);
         this.contrattiNazionali = (result as any)['list'];
       });
   }
   caricaListaUtenti() {
     this.anagraficaDtoService.getListaUtenti().subscribe((result: any) => {
-      console.log(result);
+      // console.log(result);
       this.utenti = (result as any)['list'];
     });
   }
@@ -286,7 +286,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     }
     const body = { anagraficaDto: this.anagraficaDto.value };
 
-    console.log("ANAGRAFICADTO: ", this.anagraficaDto, " BODY: ", body);
+    // console.log("ANAGRAFICADTO: ", this.anagraficaDto, " BODY: ", body);
 
     this.anagraficaDtoService.update(body).subscribe(
       (result) => {
@@ -307,7 +307,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         }
       },
       (error: string) => {
-        console.log('Si é verificato un errore durante la modifica: ' + error);
+        console.error('Si é verificato un errore durante la modifica: ' + error);
       }
     );
   }

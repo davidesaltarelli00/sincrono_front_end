@@ -121,7 +121,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     );
 
     // this.role = this.authService.getTokenAndRole();
-    console.log("Ruolo: " + this.role);
+    // console.log("Ruolo: " + this.role);
 
     this.mostraFiltri = false;
 

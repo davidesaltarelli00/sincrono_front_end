@@ -91,7 +91,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         livelloContratto: new FormGroup({
           id: new FormControl(''),
         }),
-        contrattoNazionale: new FormGroup({
+        contrattoNazionale: new FormGroup({ // ccnl
           id: new FormControl(''),
         }),
         qualifica: new FormControl(''),

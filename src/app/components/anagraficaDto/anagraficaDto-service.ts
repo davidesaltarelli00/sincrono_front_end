@@ -71,7 +71,7 @@ export class AnagraficaDtoService {
   }
 
   getContrattoNazionale(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/contratto-nazionale/map`);
+    return this.http.get<any>(`http://localhost:8085/contratto-nazionale/map`); //tipo-ccnl
   }
 
   getRuoli():Observable<any> {
