@@ -461,6 +461,9 @@
             <div formArrayName="commesse">
               <div *ngFor="let commessa of commesse.controls; let i = index" [formGroupName]="i" class="commessa-container">
                 <!-- Campo Cliente -->
+
+                <input type="text" hidden formControlName="id" id="idCommessa" value="{{data?.commessa?.id}}" >
+
                 <label for="cliente">Cliente</label>
                 <input type="text" class="form-control" formControlName="cliente" id="cliente" value="{{ data?.commessa?.cliente }}">
 

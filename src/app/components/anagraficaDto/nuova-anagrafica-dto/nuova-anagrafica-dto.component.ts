@@ -155,6 +155,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
   creaFormCommessa(): FormGroup {
     return this.formBuilder.group({
+      id:new FormControl(''),
       cliente: new FormControl(''),
       clienteFinale: new FormControl(''),
       titoloPosizione: new FormControl(''),
