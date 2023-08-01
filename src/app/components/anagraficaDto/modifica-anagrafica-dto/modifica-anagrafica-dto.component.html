@@ -492,114 +492,104 @@
                 <ng-template matStepLabel>Modifica commessa</ng-template>
                     <!---------commessa----------->
             <h1>Modifica Commessa</h1>
-            <div formGroupName="commessa">
+            <div formArrayName="commesse">
+              <!-- Loop attraverso le commesse esistenti -->
+              <div class="row" *ngFor="let commessa of commesse.controls; let i = index" [formGroupName]="i">
+                <div class="col-12">
+                  <strong><h1 style="text-align: center;"> Commessa {{ i + 1 }}</h1></strong>
+                </div>
+                <!-- Inserimento dei campi delle commesse -->
+                <div class="col-md-3">
+                  <label>Cliente: </label>
+                  <div class="form-group">
+                    <input type="text" class="form-control" formControlName="cliente" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label>Cliente Finale: </label>
+                  <div class="form-group">
+                    <input type="text" class="form-control" formControlName="clienteFinale" />
+                  </div>
+                </div>
+                <!-- Aggiungere gli altri campi della commessa simile a quanto fatto sopra -->
+                <div class="col-md-3">
+                  <label>Titolo Posizione: </label>
+                  <div class="form-group">
+                    <input type="text" class="form-control" formControlName="titoloPosizione" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label>Distacco: </label>
+                  <div class="form-group">
+                    <input type="text" class="form-control" formControlName="distacco" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label>Costo mese: </label>
+                  <div class="form-group">
+                    <input type="text" class="form-control" formControlName="costoMese" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label>Data Inizio: </label>
+                  <div class="form-group">
+                    <input type="date" class="form-control" formControlName="dataInizio" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label>Data Fine: </label>
+                  <div class="form-group">
+                    <input type="date" class="form-control" formControlName="dataFine" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label>Tariffa giornaliera: </label>
+                  <div class="form-group">
+                    <input type="text" class="form-control" formControlName="tariffaGiornaliera" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label>Nominativo: </label>
+                  <div class="form-group">
+                    <input type="text" class="form-control" formControlName="nominativo" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label>Azienda: </label>
+                  <div class="form-group">
+                    <input type="text" class="form-control" formControlName="azienda" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label>Azienda di fatturazione interna: </label>
+                  <div class="form-group">
+                    <input type="text" class="form-control" formControlName="aziendaDiFatturazioneInterna" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label>Attesa lavori: </label>
+                  <div class="form-group">
+                    <div class="form-check">
+                      <input
+                        style="border-color: black"
+                        class="form-check-input"
+                        type="checkbox"
+                        formControlName="attesaLavori"
+                      />
+                    </div>
+                  </div>
+                  <br>
+                </div>
+                <br>
                 <div class="row">
+                  <div class="col-12" style="text-align: center; margin: auto;">
+                    <button mat-flat-button color="primary" (click)="aggiungiCommessa()" id="button-duplica"  >Aggiungi Commessa</button> &nbsp;
+                    <button mat-flat-button color="accent" [disabled]="i === 0" (click)="rimuoviCommessa(i)" [matTooltip]="i === 0 ? 'La commessa uno non può essere eliminata' : ''">Rimuovi Commessa</button>
+                    </div>
 
-                    <div class="form-group">
-                        <input type="text" class="form-control" value="{{ data?.commessa?.id }}" formControlName="id"
-                            hidden />
-                    </div>
+                </div>
 
-                    <div class="col-md-3">
-                        <label>Cliente: </label>
-                        <div class="form-group">
-                            <input id="commessa.cliente" type="text" class="form-control"
-                                value="{{ data?.commessa?.cliente }}" formControlName="cliente" />
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Cliente Finale: </label>
-                        <div class="form-group">
-                            <input type="text" class="form-control" value="{{ data?.commessa?.clienteFinale }}"
-                                formControlName="clienteFinale" />
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <label>Titolo Posizione: </label>
-                        <div class="form-group">
-                            <input type="text" class="form-control" value="{{ data?.commessa?.titoloPosizione  }}"
-                                formControlName="titoloPosizione" />
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Distacco: </label>
-                        <div class="form-group">
-                            <input type="text" class="form-control" value="{{ data?.commessa?.distacco }}"
-                                formControlName="distacco" />
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Costo mese: </label>
-                        <div class="form-group">
-                            <input type="text" class="form-control" value="{{ data?.commessa?.costoMese }}"
-                                formControlName="costoMese" />
-                        </div>
-                    </div>
-                </div>
-                <legend>Date</legend>
-                <div class="row">
-                    <div class="col-md-3">
-                        <label>Data Inizio: </label>
-                        <div class="form-group">
-                            <input type="date" class="form-control" value="this.transformDate(data?.commessa?.dataInizio)"
-                                formControlName="dataInizio" id="commessa.dataInizio" />
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Data Fine: </label>
-                        <div class="form-group">
-                            <input type="date" class="form-control" value="this.transformDate(data?.commessa?.dataFine)"
-                                formControlName="dataFine" id="commessa.dataFine" />
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <label>Tariffa giornaliera: </label>
-                        <div class="form-group">
-                            <input type="text" class="form-control" value="{{ data?.commessa?.tariffaGiornaliera  }}"
-                                formControlName="tariffaGiornaliera" />
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <label>Nominativo: </label>
-                        <div class="form-group">
-                            <input id="commessa.nominativo" type="text" class="form-control"
-                                value="{{ data?.commessa?.nominativo }}" formControlName="nominativo" />
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Azienda: </label>
-                        <div class="form-group">
-                            <input type="text" class="form-control" value="{{ data?.commessa?.azienda }}"
-                                formControlName="azienda" />
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Azienda di fatturazione interna: </label>
-                        <div class="form-group">
-                            <input type="text" class="form-control"
-                                value="{{ data?.commessa?.aziendaDiFatturazioneInterna}}"
-                                formControlName="aziendaDiFatturazioneInterna" />
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-
-                    <div class="col-md-3">
-                        <label>Attesa lavori: </label>
-                        <div class="form-group">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" style="border-color:black;"
-                                    [checked]="data?.commessa?.attesaLavori === true" formControlName="attesaLavori" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
             <div class="row">
               <div class="col-12">

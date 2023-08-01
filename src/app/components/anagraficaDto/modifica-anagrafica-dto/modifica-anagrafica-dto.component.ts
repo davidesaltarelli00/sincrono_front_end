@@ -25,10 +25,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   ruoli:any=[];
   currentStep = 1;
   anagraficaDto:FormGroup;
-  commesse: FormArray<any>;
+  commesse!: FormArray;
   formsDuplicati: any;
-
-
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -389,15 +387,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   rimuoviCommessa(index: number) {
     this.commesse.removeAt(index);
     this.formsDuplicati.splice(index);
-    // console.log(index);
-    // const buttonDuplica = document.getElementById("button-duplica");
-    // if (buttonDuplica) {
-    //   if (index === 1) {
-    //     buttonDuplica.setAttribute("disabled", "false");
-    //   } else {
-    //     buttonDuplica.setAttribute("disabled", "true");
-    //   }
-    // }
   }
 
 }
