@@ -105,75 +105,151 @@
 
             <!-- Sezione delle commesse -->
 
-            <div formArrayName="commesse">
-              <div class="row">
-                <div class="col-12">
-                  <h1 style="text-align: center;">Commesse</h1>
+            <!-- <div formArrayName="commesse">
+              <div class="row" *ngFor="let commessa of elencoCommesse let i = index" [formGroupName]="i">
+                <div class="row">
+                  <div class="col-12">
+                    <h2>Commessa {{ i + 1 }}</h2>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-3">
+                    <label for="">Cliente</label>
+                    <input type="text" formControlName="cliente" id="cliente{{i}}" class="form-control">
+                  </div>
+                  <div class="col-3">
+                    <label for="">Cliente finale</label>
+                    <input type="text" formControlName="clienteFinale" id="clienteFinale{{i}}" class="form-control">
+                  </div>
+                  <div class="col-3">
+                    <label for="titoloPosizione">Titolo Posizione:</label>
+                    <input type="text" formControlName="titoloPosizione" id="titoloPosizione{{i}}" class="form-control">
+                  </div>
+                  <div class="col-3">
+                    <label for="distacco">Distacco:</label>
+                    <input type="text" formControlName="distacco" id="distacco{{i}}" class="form-control">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-3">
+                    <label for="dataInizio">Data Inizio:</label>
+                    <input type="text" formControlName="dataInizio" id="dataInizio{{i}}" class="form-control">
+                  </div>
+                  <div class="col-3">
+                    <label for="dataFine">Data Fine:</label>
+                    <input type="text" formControlName="dataFine" id="dataFine{{i}}" class="form-control">
+                  </div>
+                  <div class="col-3">
+                    <label for="costoMese">Costo Mese:</label>
+                    <input type="text" formControlName="costoMese" id="costoMese{{i}}" class="form-control">
+                  </div>
+                  <div class="col-3">
+                    <label for="tariffaGiornaliera">Tariffa Giornaliera:</label>
+                    <input type="text" formControlName="tariffaGiornaliera" id="tariffaGiornaliera{{i}}" class="form-control">
+                  </div>
+                  <div class="col-3">
+                    <label for="nominativo">nominativo</label>
+                    <input type="text" formControlName="nominativo" id="nominativo{{i}}" class="form-control">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-3">
+                    <label for="azienda">azienda</label>
+                    <input type="text" formControlName="azienda" id="azienda{{i}}" class="form-control">
+                  </div>
+                  <div class="col-3">
+                    <label for="azienda">aziendaDiFatturazioneInterna</label>
+                    <input type="text" formControlName="aziendaDiFatturazioneInterna" id="aziendaDiFatturazioneInterna{{i}}" class="form-control">                  </div>
+                  <div class="col-3">
+
+                <label for="stato">stato</label>
+                <input type="checkbox" formControlName="stato" id="stato{{i}}" >
+
+              </div>
+                  <div class="col-3">
+                    <label for="attesaLavori">Attesa lavori</label>
+                    <input type="checkbox" formControlName="attesaLavori" id="attesaLavori{{i}}" >                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-4">
+                    <button type="button" (click)="removeCommessa(i)">Rimuovi Commessa</button>
+                  </div>
                 </div>
               </div>
-                <div class="row" *ngFor="let commessa of elencoCommesse; let i = index" [formGroupName]="i">
+            </div> -->
 
+
+
+
+            <div class="row">
+              <div class="col-12"  *ngFor="let commessa of elencoCommesse; let i=index">
+
+
+                <form>
+                  <h1 style="text-align:center">Commessa {{i+1}}</h1>
+                  <div class="row">
+                    <div class="col-3">
+
+                      <input type="text" id="cliente{{i}}" name="cliente{{i}}" class="form-control" [value]="commessa.cliente">
+                    </div>
+                    <div class="col-3">
+                      <input type="text" class="form-control" name="clienteFinale{{i}}" id="clienteFinale{{i}}" [value]="commessa.clienteFinale">
+                    </div>
+                    <div class="col-3">
+                      <input type="text" id="titoloPosizione{{i}}" class="form-control" name="titoloPosizione{{i}}" [value]="commessa.titoloPosizione">
+                    </div>
+                    <div class="col-3">
+                      <input type="text" id="distacco{{i}}" name="distacco{{i}}" class="form-control" [value]="commessa.distacco">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-3">
+                      <input type="text" placeholder="Formato accettato: yyyy - mm - gg" class="form-control" name="dataInizio{{i}}" id="dataInizio{{i}}" [value]="commessa.dataInizio">
+                    </div>
+                    <div class="col-3">
+                      <input type="text" placeholder="Formato accettato: yyyy - mm - gg" class="form-control" name="dataFine{{i}}" id="dataInizio{{i}}" [value]="commessa.dataFine">
+                    </div>
+                    <div class="col-3">
+                      <input type="number" id="costoMese{{i}}" class="form-control" name="costoMese{{i}}" [value]="commessa.costoMese">
+                    </div>
+                    <div class="col-3">
+                      <input type="number" id="tariffaGiornaliera{{i}}" name="tariffaGiornaliera{{i}}" class="form-control" [value]="commessa.tariffaGiornaliera">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-3">
+                      <input type="text" id="nominativo{{i}}" name="nominativo{{i}}" class="form-control" [value]="commessa.nominativo">
+                    </div>
+                    <div class="col-3">
+                      <input type="text" id="azienda{{i}}" name="azienda{{i}}" class="form-control" [value]="commessa.azienda">
+                    </div>
+                    <div class="col-3">
+                      <input type="text" id="aziendaDiFatturazioneInterna{{i}}" name="aziendaDiFatturazioneInterna{{i}}" class="form-control" [value]="commessa.aziendaDiFatturazioneInterna">
+                    </div>
+
+                  </div>
+                  <div class="row">
+                    <div class="col-5">
+                      <input type="checkbox" id="stato{{i}}" name="stato{{i}}" [value]="commessa.stato" [checked]="commessa.stato==true">
+                    </div>
+                    <div class="col-5">
+                      <input type="checkbox" id="attesaLavori{{i}}" name="attesaLavori{{i}}" [value]="commessa.attesaLavori" [checked]="commessa.attesaLavori==true">
+                    </div>
+                  </div>
                   <div class="row">
                     <div class="col-12">
-                      <input type="hidden" formControlName="id" id="id{{i}}" [value]="commessa.id" class="form-control">
-
+                      <button mat-flat-button color="primary" (click)="creaFormCommessa(commessa)"> <i class="fa fa-plus" ></i> </button> &nbsp;
+                      <button mat-flat-button color="accent" type="button" (click)="removeCommessa(i)"> <i class="fa fa-trash" ></i> </button>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <label for="">Cliente</label>
-                      <input type="text" formControlName="cliente" id="cliente{{i}}" [value]="commessa.cliente" class="form-control">
-                    </div>
-                    <div class="col-3">
-                      <label for="">Cliente finale</label>
-                      <input type="text" formControlName="clienteFinale" id="clienteFinale{{i}}" [value]="commessa.clienteFinale" class="form-control">
-                    </div>
-                    <div class="col-3">
-                      <label for="titoloPosizione">Titolo Posizione:</label>
-                      <input type="text" formControlName="titoloPosizione" id="titoloPosizione{{i}}" [value]="commessa.titoloPosizione" class="form-control">
-                    </div>
-                    <div class="col-3">
-                      <label for="distacco">Distacco:</label>
-                      <input type="text" formControlName="distacco" id="distacco{{i}}" [value]="commessa.distacco" class="form-control">
-                    </div>
+                </form>
 
-                  </div>
-
-                  <div class="row">
-                    <div class="col-3">
-                      <label for="dataInizio">Data Inizio:</label>
-                      <input type="text" formControlName="dataInizio" id="dataInizio{{i}}" [value]="commessa.dataInizio" class="form-control">
-                    </div>
-                    <div class="col-3">
-                      <label for="dataFine">Data Fine:</label>
-                      <input type="text" formControlName="dataFine" id="dataFine{{i}}" [value]="commessa.dataFine" class="form-control">
-                    </div>
-                    <div class="col-3">
-                      <label for="costoMese">Costo Mese:</label>
-                      <input type="text" formControlName="costoMese" id="costoMese{{i}}" [value]="commessa.costoMese" class="form-control">
-                    </div>
-                    <div class="col-3">
-                      <label for="tariffaGiornaliera">Tariffa Giornaliera:</label>
-                      <input type="text" formControlName="tariffaGiornaliera" id="tariffaGiornaliera{{i}}" [value]="commessa.tariffaGiornaliera" class="form-control">
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-4">
-                  <button type="button" (click)="removeCommessa(i)">Rimuovi Commessa</button>
-                    </div>
-                  </div>
-                </div>
+              </div>
             </div>
-
-
-
-
-
-
-            <!-- Pulsante per aggiungere una nuova commessa -->
-            <button type="button" (click)="addCommessa()">Aggiungi Commessa</button>
-
+            <br>
             <div formGroupName="contratto">
 
               <div class="row">
@@ -606,6 +682,9 @@
 
             <!-- Pulsante per inviare il form -->
             <button mat-flat-button (click)="aggiorna()">Invia</button>
+            <br>
+            <br>
+            <br>
           </form>
 
 

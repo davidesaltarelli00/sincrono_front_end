@@ -6,3 +6,22 @@
 select{
   width: 50%;
 }
+
+/* Stili CSS per simulare una tabella */
+.commessa-list {
+  // list-style: none;
+  padding: 0;
+}
+
+.commessa-item {
+  // display: flex;
+  align-items: center;
+  // justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.commessa-cell {
+  flex: 1;
+  padding: 4px;
+  border: 1px solid #ccc;
+}
