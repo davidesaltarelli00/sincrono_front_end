@@ -187,65 +187,70 @@
             <div class="row">
               <div class="col-12"  *ngFor="let commessa of elencoCommesse; let i=index">
 
-
-                <form>
+                <!-- <button mat-flat-button *ngIf="elencoCommesse.length <1" color="primary" (click)="creaFormCommessa(commessa)" >Aggiungi commessa <i class="fa fa-plus" ></i> </button> -->
+                <form [formGroup]="getCommessaFormGroup(i)">
                   <h1 style="text-align:center">Commessa {{i+1}}</h1>
                   <div class="row">
                     <div class="col-3">
-
-                      <input type="text" id="cliente{{i}}" name="cliente{{i}}" class="form-control" [value]="commessa.cliente">
+                      <label for="cliente">Cliente</label> <br>
+                      <input type="text" id="cliente{{i}}" placeholder="Cliente" name="cliente{{i}}"  class="form-control" [value]="commessa.cliente">
                     </div>
                     <div class="col-3">
-                      <input type="text" class="form-control" name="clienteFinale{{i}}" id="clienteFinale{{i}}" [value]="commessa.clienteFinale">
+                      <label for="clienteFinale">Cliente finale</label> <br>
+                      <input type="text" class="form-control" placeholder="Cliente finale" name="clienteFinale{{i}}"  id="clienteFinale{{i}}" [value]="commessa.clienteFinale">
                     </div>
                     <div class="col-3">
-                      <input type="text" id="titoloPosizione{{i}}" class="form-control" name="titoloPosizione{{i}}" [value]="commessa.titoloPosizione">
+                      <label for="titoloPosizione">Titolo posizione</label> <br>
+                      <input type="text" id="titoloPosizione{{i}}" placeholder="Titolo posizione" class="form-control"  name="titoloPosizione{{i}}" [value]="commessa.titoloPosizione">
                     </div>
                     <div class="col-3">
-                      <input type="text" id="distacco{{i}}" name="distacco{{i}}" class="form-control" [value]="commessa.distacco">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <input type="text" placeholder="Formato accettato: yyyy - mm - gg" class="form-control" name="dataInizio{{i}}" id="dataInizio{{i}}" [value]="commessa.dataInizio">
-                    </div>
-                    <div class="col-3">
-                      <input type="text" placeholder="Formato accettato: yyyy - mm - gg" class="form-control" name="dataFine{{i}}" id="dataInizio{{i}}" [value]="commessa.dataFine">
-                    </div>
-                    <div class="col-3">
-                      <input type="number" id="costoMese{{i}}" class="form-control" name="costoMese{{i}}" [value]="commessa.costoMese">
-                    </div>
-                    <div class="col-3">
-                      <input type="number" id="tariffaGiornaliera{{i}}" name="tariffaGiornaliera{{i}}" class="form-control" [value]="commessa.tariffaGiornaliera">
+                      <label for="distacco">Distacco</label> <br>
+                      <input type="text" placeholder="Distacco" id="distacco{{i}}" name="distacco{{i}}" class="form-control"  [value]="commessa.distacco">
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <input type="text" id="nominativo{{i}}" name="nominativo{{i}}" class="form-control" [value]="commessa.nominativo">
+                      <input type="text" placeholder="Formato accettato: yyyy - mm - gg"  class="form-control" name="dataInizio{{i}}" id="dataInizio{{i}}" [value]="commessa.dataInizio">
                     </div>
                     <div class="col-3">
-                      <input type="text" id="azienda{{i}}" name="azienda{{i}}" class="form-control" [value]="commessa.azienda">
+                      <input type="text" placeholder="Formato accettato: yyyy - mm - gg" class="form-control"   name="dataFine{{i}}" id="dataInizio{{i}}" [value]="commessa.dataFine">
                     </div>
                     <div class="col-3">
-                      <input type="text" id="aziendaDiFatturazioneInterna{{i}}" name="aziendaDiFatturazioneInterna{{i}}" class="form-control" [value]="commessa.aziendaDiFatturazioneInterna">
+                      <input type="number" id="costoMese{{i}}" class="form-control" name="costoMese{{i}}" [value]="commessa.costoMese"  >
+                    </div>
+                    <div class="col-3">
+                      <input type="number" id="tariffaGiornaliera{{i}}" name="tariffaGiornaliera{{i}}" class="form-control" [value]="commessa.tariffaGiornaliera"  >
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-3">
+                      <input type="text" id="nominativo{{i}}" name="nominativo{{i}}" class="form-control" [value]="commessa.nominativo" >
+                    </div>
+                    <div class="col-3">
+                      <input type="text" id="azienda{{i}}" name="azienda{{i}}" class="form-control" [value]="commessa.azienda"  >
+                    </div>
+                    <div class="col-3">
+                      <input type="text" id="aziendaDiFatturazioneInterna{{i}}" name="aziendaDiFatturazioneInterna{{i}}" class="form-control" [value]="commessa.aziendaDiFatturazioneInterna"  >
                     </div>
 
                   </div>
                   <div class="row">
                     <div class="col-5">
-                      <input type="checkbox" id="stato{{i}}" name="stato{{i}}" [value]="commessa.stato" [checked]="commessa.stato==true">
+                      <input type="checkbox" id="stato{{i}}" name="stato{{i}}"  [value]="commessa.stato" [checked]="commessa.stato==true">
                     </div>
                     <div class="col-5">
-                      <input type="checkbox" id="attesaLavori{{i}}" name="attesaLavori{{i}}" [value]="commessa.attesaLavori" [checked]="commessa.attesaLavori==true">
+                      <input type="checkbox" id="attesaLavori{{i}}" name="attesaLavori{{i}}"  [value]="commessa.attesaLavori" [checked]="commessa.attesaLavori==true">
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-12">
                       <button mat-flat-button color="primary" (click)="creaFormCommessa(commessa)"> <i class="fa fa-plus" ></i> </button> &nbsp;
-                      <button mat-flat-button color="accent" type="button" (click)="removeCommessa(i)"> <i class="fa fa-trash" ></i> </button>
+                      <button mat-flat-button color="accent" type="button" [disabled]="elencoCommesse.length===1" (click)="removeCommessa(i)"> <i class="fa fa-trash" ></i> </button>
                     </div>
                   </div>
                 </form>
+
+
 
               </div>
             </div>

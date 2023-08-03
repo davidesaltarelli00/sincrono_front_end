@@ -9,6 +9,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnagraficaDtoService } from './../anagraficaDto-service';
 import { CommessaDuplicata } from './commessaDuplicata';
+import { Commessa } from '../nuova-anagrafica-dto/commessa';
 
 @Component({
   selector: 'app-modifica-anagrafica-dto',
@@ -24,7 +25,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   messaggio: any;
   showErrorPopup: any;
   showSuccessPopup: any;
-  commessaDuplicata=new CommessaDuplicata();
+  commessaDuplicata = new CommessaDuplicata();
 
   //TIPOLOGICHE
   tipiContratti: any = [];
@@ -35,7 +36,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   currentStep = 1;
   anagraficaDto: FormGroup;
   commessePresenti = false;
-  elencoCommesse: any[] = [];
+  elencoCommesse: CommessaDuplicata[] = [];
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -171,27 +172,46 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   removeCommessa(index: number): void {
     console.log('rimuovo la commessa numero ' + index);
     this.elencoCommesse.splice(index);
+    console.log(this.elencoCommesse.length);
   }
 
-  creaFormCommessa(commessa?: any): void {
+  creaFormCommessa(commessa: CommessaDuplicata): void {
+    const nuovaCommessa: CommessaDuplicata = {
+      id: this.elencoCommesse.length + 1,
+      cliente: '',
+      clienteFinale: '',
+      titoloPosizione: '',
+      distacco: '',
+      dataInizio: '',
+      dataFine: '',
+      costoMese: '',
+      tariffaGiornaliera: '',
+      nominativo: '',
+      azienda: '',
+      aziendaDiFatturazioneInterna: '',
+      stato: '',
+      attesaLavori: ''
+    };
+
     const commessaForm = this.formBuilder.group({
-      id: [commessa?.id+1 ],
-      cliente: [commessa?.cliente || '', Validators.required],
-      clienteFinale: [commessa?.clienteFinale || ''],
-      titoloPosizione: [commessa?.titoloPosizione || ''],
-      distacco: [commessa?.distacco || ''],
-      dataInizio: [commessa?.dataInizio || ''],
-      dataFine: [commessa?.dataFine || ''],
-      costoMese: [commessa?.costoMese || ''],
-      tariffaGiornaliera: [commessa?.tariffaGiornaliera || ''],
-      nominativo: [commessa?.nominativo || ''],
-      azienda: [commessa?.azienda || ''],
-      aziendaDiFatturazioneInterna: [commessa?.aziendaDiFatturazioneInterna || ''],
-      stato: [commessa?.stato || false],
-      attesaLavori: [commessa?.attesaLavori || false],
+      id: [nuovaCommessa.id],
+      cliente: [nuovaCommessa.cliente, Validators.required],
+      clienteFinale: [nuovaCommessa.clienteFinale],
+      // ... altri campi ...
+      attesaLavori: [nuovaCommessa.attesaLavori],
     });
 
-    this.elencoCommesse.push(commessaForm);
+    if (commessa) {
+      commessaForm.patchValue({
+        cliente: commessa.cliente,
+        clienteFinale: commessa.clienteFinale,
+        // ... altri campi ...
+        attesaLavori: commessa.attesaLavori,
+      });
+    }
+
+    this.elencoCommesse.push(nuovaCommessa);
+    this.getCommessas().push(commessaForm);
   }
 
   aggiorna() {
@@ -295,4 +315,3 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     });
   }
 }
-
