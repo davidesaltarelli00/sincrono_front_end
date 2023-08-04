@@ -36,7 +36,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   currentStep = 1;
   anagraficaDto: FormGroup;
   commessePresenti = false;
-  elencoCommesse: FormGroup[] = []; // Dichiarazione dell'array di FormGroup
+  elencoCommesse: any[] = []; // Dichiarazione dell'array di FormGroup
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -125,10 +125,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         descrizione: [''],
       }),
     });
-
-    // this.elencoCommesse.forEach((commessa) => {
-    //   this.addCommessa(commessa);
-    // });
   }
   getCommessas(): FormArray {
     return this.anagraficaDto.get('commesse') as FormArray;
@@ -151,7 +147,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe((resp: any) => {
         this.data = (resp as any)['anagraficaDto'];
         console.log(JSON.stringify(resp));
-        this.elencoCommesse = [this.data.commessa]; // Assegna i dati delle commesse all'array elencoCommesse
+        this.elencoCommesse = [this.data.commessa];
         this.anagraficaDto.patchValue(this.data);
         console.log(
           'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)
@@ -164,11 +160,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       index
     ] as FormGroup;
   }
-
-  // addCommessa(commessa?: any): void {
-  //   const commessaForm = this.creaFormCommessa(commessa);
-  //   this.getCommessas().push(commessaForm);
-  // }
 
   removeCommessa(index: number): void {
     console.log('rimuovo la commessa numero ' + index);
@@ -207,30 +198,14 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.elencoCommesse.push(nuovoFormGroup);
   }
 
-
-
-
-
-
   aggiorna() {
-    // Prendi solo i valori del primo form
-    // const primoFormValue = this.elencoCommesse[0].getRawValue();
-
-    // Crea una copia dell'array elencoCommesse per includere solo i valori dei form duplicati
-    // const commesseDuplicati = this.elencoCommesse.slice(1).map(form => form.getRawValue());
-
-    // Costruisci il payload includendo solo i valori necessari
     const payload = {
       anagrafica: this.anagraficaDto.get('anagrafica')?.value,
       commesse: this.elencoCommesse,
       contratto: this.anagraficaDto.get('contratto')?.value,
       ruolo: this.anagraficaDto.get('ruolo')?.value,
     };
-
-    // Ora puoi visualizzare il payload nell console come oggetto senza riferimenti circolari
     console.log('payload backend:', payload);
-
-    // Invia il payload al server
     this.anagraficaDtoService.update(payload).subscribe(
       (response) => {
         console.log('Payload inviato con successo al server:', response);
@@ -240,7 +215,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       }
     );
   }
-
 
   transformDate(dateString: string): string {
     const dateObject = new Date(dateString);
