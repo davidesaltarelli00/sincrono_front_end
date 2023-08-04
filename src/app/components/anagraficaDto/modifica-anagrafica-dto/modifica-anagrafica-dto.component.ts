@@ -223,6 +223,14 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     commesseFormArray.push(this.createCommessaFormGroup(nuovaCommessa));
   }
 
+  rimuoviCommessa(index: number): void {
+    const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+
+    // Rimuovi la commessa dal FormArray utilizzando l'indice
+    commesseFormArray.removeAt(index);
+  }
+
+
   aggiorna() {
     const payload = {
       anagrafica: this.anagraficaDto.get('anagrafica')?.value,

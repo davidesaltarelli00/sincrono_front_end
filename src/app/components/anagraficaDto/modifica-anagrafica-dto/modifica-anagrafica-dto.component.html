@@ -106,56 +106,99 @@
 
 
               <div *ngIf="commesseControls.length > 0">
-                <div formArrayName="commesse">
+                <div formArrayName="commesse" style="border: 1px solid #f1f1f1; padding: 5%;">
                   <ng-container *ngFor="let commessa of commesseControls; let i = index">
+                    <div class="row">
+                      <div class="col-12">
+                        <h1>Commessa {{i+1}}</h1>
+                      </div>
+                    </div>
                     <div [formGroupName]="i">
                       <!-- <label>id</label>
                       <input  formControlName="id" type="number" /> -->
-                      <label>Cliente</label>
-                      <input formControlName="cliente" type="text" />
 
-                      <label>Cliente Finale</label>
-                      <input formControlName="clienteFinale" type="text" />
+                      <div class="row">
+                        <div class="col-3">
+                          <label>Cliente</label> <br>
+                          <input class="form-control" formControlName="cliente" type="text" />
+                        </div>
+                        <div class="col-3">
+                          <label>Cliente Finale</label><br>
+                          <input class="form-control" formControlName="clienteFinale" type="text" />
+                        </div>
+                        <div class="col-3">
+                          <label>Titolo posizione</label><br>
+                          <input class="form-control" formControlName="titoloPosizione" type="text" />
 
-                      <label>Titolo posizione</label>
-                      <input formControlName="titoloPosizione" type="text" />
+                        </div>
+                        <div class="col-3">
+                          <label>Distacco</label><br>
+                          <input class="form-control" formControlName="distacco" type="text" />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-3">
+                          <label>dataInizio</label><br>
+                          <input class="form-control" formControlName="dataInizio" type="text" />
 
-                      <label>Distacco</label>
-                      <input formControlName="distacco" type="text" />
+                        </div>
+                        <div class="col-3">
+                          <label>dataFine</label><br>
+                          <input class="form-control" formControlName="dataFine" type="text" />
+                        </div>
+                        <div class="col-3">
+                          <label>costoMese</label><br>
+                          <input class="form-control" formControlName="costoMese" type="number" />
+                        </div>
+                        <div class="col-3">
+                          <label>tariffaGiornaliera</label><br>
+                          <input class="form-control" formControlName="tariffaGiornaliera" type="number" />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-3">
+                          <label>nominativo</label><br>
+                          <input class="form-control" formControlName="nominativo" type="text" />
 
-                      <label>dataInizio</label>
-                      <input formControlName="dataInizio" type="text" />
+                        </div>
+                        <div class="col-3">
+                          <label>azienda</label><br>
+                          <input class="form-control" formControlName="azienda" type="text" />
+                        </div>
+                        <div class="col-3">
+                          <label>aziendaDiFatturazioneInterna</label><br>
+                      <input class="form-control" formControlName="aziendaDiFatturazioneInterna" type="text" />
+                        </div>
 
-                      <label>dataFine</label>
-                      <input formControlName="dataFine" type="text" />
-
-                      <label>costoMese</label>
-                      <input formControlName="costoMese" type="number" />
-
-                      <label>tariffaGiornaliera</label>
-                      <input formControlName="tariffaGiornaliera" type="number" />
-
-                      <label>nominativo</label>
-                      <input formControlName="nominativo" type="text" />
-
-                      <label>azienda</label>
-                      <input formControlName="azienda" type="text" />
-
-                      <label>aziendaDiFatturazioneInterna</label>
-                      <input formControlName="aziendaDiFatturazioneInterna" type="text" />
-
-                      <label>stato</label>
-                      <input formControlName="stato"  type="checkbox" />
-
-                      <label>attesaLavori</label>
+                      </div>
+                      <div class="row">
+                        <div class="col-6">
+                          <label>stato</label>
+                          <input formControlName="stato"  type="checkbox" />
+                        </div>
+                        <div class="col-6">
+                          <label>attesaLavori</label>
                       <input formControlName="attesaLavori" type="checkbox" />
-
+                        </div>
+                      </div>
                     </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <button  mat-flat-button color="accent" type="button" [disabled]="i==0" (click)="rimuoviCommessa(i)" matTooltip="rimuovi commessa {{i+1}}">Rimuovi Commessa <i class="fa fa-trash" ></i> </button>
+                      </div>
+                    </div>
+
                   </ng-container>
                 </div>
               </div>
+              <br>
+              <div class="row">
+                <div class="col-12" style="margin: auto; text-align: center;">
+                  <button mat-flat-button color="primary" style="margin: auto; text-align: center;" (click)="aggiungiCommessa()">Aggiungi Commessa <i class="fa fa-plus" ></i> </button>
+                </div>
+              </div>
 
-              <button (click)="aggiungiCommessa()">Aggiungi Commessa</button>
+
 
 
 
