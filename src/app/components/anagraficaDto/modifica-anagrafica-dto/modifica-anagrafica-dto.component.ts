@@ -5,6 +5,7 @@ import {
   FormBuilder,
   FormArray,
   Validators,
+  AbstractControl,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnagraficaDtoService } from './../anagraficaDto-service';
@@ -141,6 +142,72 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.creaFormCommessa();
   }
 
+
+  initializeCommesse(): void {
+    const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+    this.elencoCommesse.forEach((commessa) => {
+      commesseFormArray.push(this.createCommessaFormGroup(commessa));
+    });
+  }
+
+
+   createCommessaFormGroup(commessa: any): FormGroup {
+    return this.formBuilder.group({
+      id: [commessa.id],
+      cliente: [commessa.cliente],
+      clienteFinale: [commessa.clienteFinale],
+      titoloPosizione: [commessa.titoloPosizione],
+      distacco: [commessa.distacco],
+      dataInizio: [commessa.dataInizio],
+      dataFine: [commessa.dataFine],
+      costoMese: [commessa.costoMese],
+      tariffaGiornaliera: [commessa.tariffaGiornaliera],
+      nominativo: [commessa.nominativo],
+      azienda: [commessa.azienda],
+      aziendaDiFatturazioneInterna: [commessa.aziendaDiFatturazioneInterna],
+      stato: [commessa.stato],
+      attesaLavori: [commessa.attesaLavori],
+    });
+  }
+
+  getCommesseControls(): AbstractControl[] {
+    const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+    return commesseFormArray.controls;
+  }
+
+  get commesseControls(): AbstractControl[] {
+    const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+    console.log("commesseFormArray: "+ commesseFormArray)
+    return commesseFormArray.controls;
+  }
+
+  aggiungiCommessa(): void {
+    const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+    commesseFormArray.push(this.createCommessaFormGroup({}));
+  }
+
+
+  aggiorna() {
+    const payload = {
+      anagrafica: this.anagraficaDto.get('anagrafica')?.value,
+      commesse: this.anagraficaDto.get('commesse')?.value, // Otteniamo il valore delle commesse
+      contratto: this.anagraficaDto.get('contratto')?.value,
+      ruolo: this.anagraficaDto.get('ruolo')?.value,
+    };
+    console.log('payload backend:', payload);
+    this.anagraficaDtoService.update(payload).subscribe(
+      (response) => {
+        console.log('Payload inviato con successo al server:', response);
+      },
+      (error) => {
+        console.error("Errore nell'invio del payload al server:", error);
+      }
+    );
+  }
+
+
+
+
   caricaDati(): void {
     this.anagraficaDtoService
       .detailAnagraficaDto(this.activatedRouter.snapshot.params['id'])
@@ -152,6 +219,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         console.log(
           'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)
         );
+        this.initializeCommesse();
       });
   }
 
@@ -198,23 +266,23 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.elencoCommesse.push(nuovoFormGroup);
   }
 
-  aggiorna() {
-    const payload = {
-      anagrafica: this.anagraficaDto.get('anagrafica')?.value,
-      commesse: this.elencoCommesse,
-      contratto: this.anagraficaDto.get('contratto')?.value,
-      ruolo: this.anagraficaDto.get('ruolo')?.value,
-    };
-    console.log('payload backend:', payload);
-    this.anagraficaDtoService.update(payload).subscribe(
-      (response) => {
-        console.log('Payload inviato con successo al server:', response);
-      },
-      (error) => {
-        console.error("Errore nell'invio del payload al server:", error);
-      }
-    );
-  }
+  // aggiorna() {
+  //   const payload = {
+  //     anagrafica: this.anagraficaDto.get('anagrafica')?.value,
+  //     commesse: this.elencoCommesse,
+  //     contratto: this.anagraficaDto.get('contratto')?.value,
+  //     ruolo: this.anagraficaDto.get('ruolo')?.value,
+  //   };
+  //   console.log('payload backend:', payload);
+  //   this.anagraficaDtoService.update(payload).subscribe(
+  //     (response) => {
+  //       console.log('Payload inviato con successo al server:', response);
+  //     },
+  //     (error) => {
+  //       console.error("Errore nell'invio del payload al server:", error);
+  //     }
+  //   );
+  // }
 
   transformDate(dateString: string): string {
     const dateObject = new Date(dateString);
@@ -298,3 +366,20 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     });
   }
 }
+
+/*
+      id: [commessa.id],
+      cliente: [commessa.cliente],
+      clienteFinale: [commessa.clienteFinale],
+      titoloPosizione: [commessa.titoloPosizione],
+      distacco: [commessa.distacco],
+      dataInizio: [commessa.dataInizio],
+      dataFine: [commessa.dataFine],
+      costoMese: [commessa.costoMese],
+      tariffaGiornaliera: [commessa.tariffaGiornaliera],
+      nominativo: [commessa.nominativo],
+      azienda: [commessa.azienda],
+      aziendaDiFatturazioneInterna: [commessa.aziendaDiFatturazioneInterna],
+      stato: [commessa.stato],
+      attesaLavori: [commessa.attesaLavori],
+*/

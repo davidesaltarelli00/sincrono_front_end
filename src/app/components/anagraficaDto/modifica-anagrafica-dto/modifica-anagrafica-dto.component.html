@@ -102,19 +102,76 @@
               </div>
             </div>
             </div>
+              <br>
 
-            <div class="row" formGroupName="commesse">
+
+              <div *ngIf="commesseControls.length > 0">
+                <div formArrayName="commesse">
+                  <ng-container *ngFor="let commessa of commesseControls; let i = index">
+                    <div [formGroupName]="i">
+                      <label>Cliente</label>
+                      <input formControlName="cliente" type="text" />
+
+                      <label>Cliente Finale</label>
+                      <input formControlName="clienteFinale" type="text" />
+
+                      <label>Titolo posizione</label>
+                      <input formControlName="titoloPosizione" type="text" />
+
+                      <label>Distacco</label>
+                      <input formControlName="distacco" type="text" />
+
+                      <label>dataInizio</label>
+                      <input formControlName="dataInizio" type="text" />
+
+                      <label>dataFine</label>
+                      <input formControlName="dataFine" type="text" />
+
+                      <label>costoMese</label>
+                      <input formControlName="costoMese" type="number" />
+
+                      <label>tariffaGiornaliera</label>
+                      <input formControlName="tariffaGiornaliera" type="number" />
+
+                      <label>nominativo</label>
+                      <input formControlName="nominativo" type="text" />
+
+                      <label>azienda</label>
+                      <input formControlName="azienda" type="text" />
+
+                      <label>aziendaDiFatturazioneInterna</label>
+                      <input formControlName="aziendaDiFatturazioneInterna" type="text" />
+
+                      <label>stato</label>
+                      <input formControlName="stato" type="checkbox" />
+
+                      <label>attesaLavori</label>
+                      <input formControlName="attesaLavori" type="checkbox" />
+
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
+              <button (click)="aggiungiCommessa()">Aggiungi Commessa</button>
+
+
+
+
+
+
+            <!-- <div class="row" formGroupName="commesse">
               <div class="col-12" *ngFor="let commessa of elencoCommesse; let i=index">
 
                   <h1 style="text-align:center">Commessa {{ i + 1 }}</h1>
                   <div class="row">
                     <div class="col-3">
                       <label for="cliente">Cliente</label><br>
-                      <input type="text" id="cliente{{ i }}" placeholder="Cliente" name="cliente{{ i }}" class="form-control" formControlName="cliente{{i}}">
+                      <input type="text" id="cliente{{ i }}" placeholder="Cliente" name="cliente{{ i }}" class="form-control" [formControlName]="'cliente'">
                     </div>
                     <div class="col-3">
                       <label for="clienteFinale">Cliente finale</label><br>
-                      <input type="text" class="form-control" placeholder="Cliente finale" name="clienteFinale{{ i }}" id="clienteFinale{{ i }}" formControlName="clienteFinale{{i}}">
+                      <input type="text" class="form-control" placeholder="Cliente finale" name="clienteFinale{{ i }}" id="clienteFinale{{ i }}" [formControlName]="'clienteFinale'">
                     </div>
                     <div class="col-3">
                       <label for="titoloPosizione">Titolo posizione</label><br>
@@ -180,7 +237,7 @@
                     </div>
                   </div>
               </div>
-            </div>
+            </div> -->
 
             <br>
             <div formGroupName="contratto">
