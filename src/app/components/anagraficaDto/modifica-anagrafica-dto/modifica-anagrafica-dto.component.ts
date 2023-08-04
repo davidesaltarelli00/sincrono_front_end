@@ -224,12 +224,15 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   rimuoviCommessa(index: number): void {
-    const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
-
-    // Rimuovi la commessa dal FormArray utilizzando l'indice
-    commesseFormArray.removeAt(index);
+    const conferma =
+      'Sei sicuro di voler eliminare la commmessa numero ' + index + '?';
+    if (confirm(conferma)) {
+      const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+      commesseFormArray.removeAt(index);
+    } else {
+      return;
+    }
   }
-
 
   aggiorna() {
     const payload = {
@@ -256,8 +259,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.data = (resp as any)['anagraficaDto'];
         console.log(JSON.stringify(resp));
         this.elencoCommesse = [this.data.commessa];
-        this.nuovoId=this.data.commessa.id;
-        console.log(this.nuovoId)
+        this.nuovoId = this.data.commessa.id;
+        console.log(this.nuovoId);
         this.anagraficaDto.patchValue(this.data);
         console.log(
           'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)
