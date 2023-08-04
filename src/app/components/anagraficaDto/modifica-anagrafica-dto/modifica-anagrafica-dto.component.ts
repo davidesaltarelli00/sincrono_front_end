@@ -19,6 +19,7 @@ import { Commessa } from '../nuova-anagrafica-dto/commessa';
 })
 export class ModificaAnagraficaDtoComponent implements OnInit {
   utenti: any = [];
+  maxCommessaId: any;
   data: any;
   id = this.activatedRouter.snapshot.params['id'];
   submitted = false;
@@ -38,6 +39,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   anagraficaDto: FormGroup;
   commessePresenti = false;
   elencoCommesse: any[] = []; // Dichiarazione dell'array di FormGroup
+  nuovoId: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -133,6 +135,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
   ngOnInit(): void {
     this.caricaListaUtenti();
+    this.maxCommessaId = Math.max(
+      ...this.elencoCommesse.map((commessa) => commessa.id),
+      0
+    );
     this.caricaTipoContratto();
     this.caricaLivelloContratto();
     this.caricaTipoAzienda();
@@ -142,7 +148,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.creaFormCommessa();
   }
 
-
   initializeCommesse(): void {
     const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
     this.elencoCommesse.forEach((commessa) => {
@@ -150,8 +155,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     });
   }
 
-
-   createCommessaFormGroup(commessa: any): FormGroup {
+  createCommessaFormGroup(commessa: any): FormGroup {
+    const maxId = Math.max(
+      ...this.elencoCommesse.map((commessa) => commessa.id),
+      0
+    );
+    console.log(maxId);
     return this.formBuilder.group({
       id: [commessa.id],
       cliente: [commessa.cliente],
@@ -165,8 +174,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       nominativo: [commessa.nominativo],
       azienda: [commessa.azienda],
       aziendaDiFatturazioneInterna: [commessa.aziendaDiFatturazioneInterna],
-      stato: [commessa.stato],
-      attesaLavori: [commessa.attesaLavori],
+      stato: [commessa.stato || false],
+      attesaLavori: [commessa.attesaLavori || false],
     });
   }
 
@@ -177,15 +186,42 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
   get commesseControls(): AbstractControl[] {
     const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
-    console.log("commesseFormArray: "+ commesseFormArray)
     return commesseFormArray.controls;
   }
 
   aggiungiCommessa(): void {
     const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
-    commesseFormArray.push(this.createCommessaFormGroup({}));
-  }
 
+    // Trova l'ID massimo tra le commesse esistenti
+    const maxId = Math.max(
+      ...this.elencoCommesse.map((commessa) => commessa.id),
+      0
+    );
+
+    // Incrementa l'ID massimo di uno per ottenere il nuovo ID
+    const nuovoId = maxId + 1;
+
+    // Crea un nuovo oggetto commessa con il nuovo ID
+    const nuovaCommessa = {
+      id: nuovoId,
+      cliente: '',
+      clienteFinale: '',
+      titoloPosizione: '',
+      distacco: '',
+      dataInizio: '',
+      dataFine: '',
+      costoMese: '',
+      tariffaGiornaliera: '',
+      nominativo: '',
+      azienda: '',
+      aziendaDiFatturazioneInterna: '',
+      stato: '',
+      attesaLavori: '',
+    };
+
+    // Aggiungi il nuovo form group al FormArray
+    commesseFormArray.push(this.createCommessaFormGroup(nuovaCommessa));
+  }
 
   aggiorna() {
     const payload = {
@@ -205,9 +241,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     );
   }
 
-
-
-
   caricaDati(): void {
     this.anagraficaDtoService
       .detailAnagraficaDto(this.activatedRouter.snapshot.params['id'])
@@ -215,6 +248,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.data = (resp as any)['anagraficaDto'];
         console.log(JSON.stringify(resp));
         this.elencoCommesse = [this.data.commessa];
+        this.nuovoId=this.data.commessa.id;
+        console.log(this.nuovoId)
         this.anagraficaDto.patchValue(this.data);
         console.log(
           'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)

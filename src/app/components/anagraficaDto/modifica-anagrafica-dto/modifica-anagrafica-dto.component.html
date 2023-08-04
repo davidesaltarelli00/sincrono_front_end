@@ -109,6 +109,8 @@
                 <div formArrayName="commesse">
                   <ng-container *ngFor="let commessa of commesseControls; let i = index">
                     <div [formGroupName]="i">
+                      <!-- <label>id</label>
+                      <input  formControlName="id" type="number" /> -->
                       <label>Cliente</label>
                       <input formControlName="cliente" type="text" />
 
@@ -143,7 +145,7 @@
                       <input formControlName="aziendaDiFatturazioneInterna" type="text" />
 
                       <label>stato</label>
-                      <input formControlName="stato" type="checkbox" />
+                      <input formControlName="stato"  type="checkbox" />
 
                       <label>attesaLavori</label>
                       <input formControlName="attesaLavori" type="checkbox" />
