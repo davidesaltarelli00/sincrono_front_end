@@ -16,7 +16,7 @@ export class AnagraficaDtoService {
 
   /*CRUD ANAGRAFICA*/
   listAnagraficaDto(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/anagraficaDto-list`); ///lista
+    return this.http.get<any>(`http://localhost:8085/list`); ///lista
   }
 
 
