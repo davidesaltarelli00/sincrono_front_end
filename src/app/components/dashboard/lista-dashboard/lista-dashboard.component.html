@@ -146,7 +146,7 @@
             <td>{{ data.commessa.nominativo }}</td>
             <td>{{ data.contratto.tipoContratto.descrizione }}</td>
             <td>{{ data.contratto.tipoAzienda.descrizione }}</td>
-            <td>{{ data.contratto.contrattoNazionale.descrizione }}</td>
+            <td>{{ data.contratto.tipoCcnl.descrizione }}</td>
             <td>{{ this.transformDate(data.commessa.dataInizio) }}</td>
             <td>{{ this.transformDate(data.commessa.dataFine) }}</td>
             <td>{{ data.contratto.mesiDurata }}</td>
@@ -159,9 +159,9 @@
                     data?.contratto.dataAssunzione,
                     this.calcolaPeriodi(
                       data.contratto.mesiDurata,
-                      data.contratto.contrattoNazionale.descrizione
+                      data.contratto.tipoCcnl.descrizione
                     ),
-                    this.data.contratto.contrattoNazionale.descrizione
+                    this.data.contratto.tipoCcnl.descrizione
                   ) == true;
                   else elseBlock1
                 "
@@ -170,7 +170,7 @@
                   {{
                     this.calcolaPeriodi(
                       data.contratto.mesiDurata,
-                      data.contratto.contrattoNazionale.descrizione
+                      data.contratto.tipoCcnl.descrizione
                     )
                   }}
                 </div>
@@ -179,7 +179,7 @@
                 {{
                   this.calcolaPeriodi(
                     data.contratto.mesiDurata,
-                    data.contratto.contrattoNazionale.descrizione
+                    data.contratto.tipoCcnl.descrizione
                   )
                 }}
               </ng-template>
@@ -192,9 +192,9 @@
                     data?.contratto.dataAssunzione,
                     this.calcolaPeriodi(
                       data.contratto.mesiDurata,
-                      data.contratto.contrattoNazionale.descrizione
+                      data.contratto.tipoCcnl.descrizione
                     ),
-                    this.data.contratto.contrattoNazionale.descrizione
+                    this.data.contratto.tipoCcnl.descrizione
                   ) == true;
                   else elseBlock2
                 "
@@ -203,7 +203,7 @@
                   {{
                     this.calcolaPeriodi(
                       data.contratto.mesiDurata,
-                      data.contratto.contrattoNazionale.descrizione
+                      data.contratto.tipoCcnl.descrizione
                     )
                   }}
                 </div>
@@ -212,7 +212,7 @@
                 {{
                   this.calcolaPeriodi(
                     data.contratto.mesiDurata,
-                    data.contratto.contrattoNazionale.descrizione
+                    data.contratto.tipoCcnl.descrizione
                   )
                 }}
               </ng-template>
@@ -221,7 +221,7 @@
             <td>
               <div
                 *ngIf="
-                  data.contratto.contrattoNazionale.descrizione ==
+                  data.contratto.tipoCcnl.descrizione ==
                     'METALMECCANICO PMI CONFAPI';
                   else elseBlock3
                 "
@@ -232,7 +232,7 @@
                       data?.contratto.dataAssunzione,
                       this.calcolaPeriodi(
                         data.contratto.mesiDurata,
-                        data.contratto.contrattoNazionale.descrizione
+                        data.contratto.tipoCcnl.descrizione
                       )
                     ) == true;
                     else elseBlock4
@@ -242,7 +242,7 @@
                     {{
                       this.calcolaPeriodi(
                         data.contratto.mesiDurata,
-                        data.contratto.contrattoNazionale.descrizione
+                        data.contratto.tipoCcnl.descrizione
                       )
                     }}
                   </div>
@@ -254,7 +254,7 @@
                 {{
                   this.calcolaPeriodi(
                     data.contratto.mesiDurata,
-                    data.contratto.contrattoNazionale.descrizione
+                    data.contratto.tipoCcnl.descrizione
                   )
                 }}
               </ng-template>
