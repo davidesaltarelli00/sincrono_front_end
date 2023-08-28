@@ -203,7 +203,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
     // Crea un nuovo oggetto commessa con il nuovo ID
     const nuovaCommessa = {
-      id: nuovoId,
+      // id: nuovoId,
       cliente: '',
       clienteFinale: '',
       titoloPosizione: '',
