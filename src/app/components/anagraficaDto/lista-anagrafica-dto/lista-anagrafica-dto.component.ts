@@ -17,7 +17,7 @@ declare var $: any;
 export class ListaAnagraficaDtoComponent implements OnInit {
   tipoContrattoFilter = this.activatedRoute.snapshot.params['tipoContratto'];
   tipoAziendaFilter = this.activatedRoute.snapshot.params['tipoAzienda'];
-
+  id = this.activatedRoute.snapshot.params['id'];
   lista: any;
   token: any;
   errore = false;
@@ -66,7 +66,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   role: any;
   anagrafica: any;
   idUtente: any;
-  id: any = this.activatedRoute.snapshot.params['id'];
+
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,

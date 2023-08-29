@@ -266,6 +266,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.anagraficaDtoService.update(payload).subscribe(
       (response) => {
         console.log('Payload inviato con successo al server:', response);
+        // location.reload();
+        this.router.navigate(['/dettaglio-anagrafica/'+this.id])
       },
       (error) => {
         console.error("Errore nell'invio del payload al server:", error);
