@@ -21,7 +21,7 @@ export class AnagraficaDtoService {
 
 
   detailAnagraficaDto(id: any): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/dettaglio-anagrafica/${id}`); //dettaglio/${id}
+    return this.http.get<any>(`http://localhost:8085/dettaglio/${id}`); //dettaglio/${id}
   }
 
   delete(body: any) {

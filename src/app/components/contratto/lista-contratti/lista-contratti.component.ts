@@ -28,12 +28,12 @@ export class ListaContrattiComponent {
       this.lista = resp.list;
       console.log(resp);
 
-      $(function () {
-        $('#table').DataTable({
-          autoWidth: false,
-          responsive: true,
-        });
-      });
+      // $(function () {
+      //   $('#table').DataTable({
+      //     autoWidth: false,
+      //     responsive: true,
+      //   });
+      // });
     });
   }
   delete(id: number) {

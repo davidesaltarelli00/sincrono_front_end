@@ -16,7 +16,7 @@ declare var $: any;
 
 export class StoricoContrattiComponent implements OnInit  {
 
-  
+
   lista: any;
   idAnagrafica:any;
 
@@ -36,16 +36,16 @@ export class StoricoContrattiComponent implements OnInit  {
 
       console.log("lista contratti:"+this.lista);
 
-      $(function () {
-        $('#table').DataTable({
-          autoWidth: false,
-          responsive: true,
-        });
-      });
+      // $(function () {
+      //   $('#table').DataTable({
+      //     autoWidth: false,
+      //     responsive: true,
+      //   });
+      // });
     });
   }
 
-  
+
 
 
 }

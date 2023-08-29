@@ -44,12 +44,12 @@ export class ListaDashboardComponent {
       this.lista = resp.list;
 
 
-      $(function () {
-        $('#table').DataTable({
-          "autoWidth": false,
-          "responsive": true,
-        });
-      });
+      // $(function () {
+      //   $('#table').DataTable({
+      //     "autoWidth": false,
+      //     "responsive": true,
+      //   });
+      // });
     });
 
 

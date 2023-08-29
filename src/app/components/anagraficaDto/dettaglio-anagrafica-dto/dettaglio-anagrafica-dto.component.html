@@ -609,9 +609,55 @@
             (click)="getStoricoCommessa(data?.anagrafica.id)">Storico Commesse</button>
         </div>
     </div>
+
+    <div class="row">
+      <div class="col-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Attesa lavori</th>
+              <th>Azienda</th>
+              <th>Azienda fatturaz.interna</th>
+              <th>Cliente</th>
+              <th>Cliente finale</th>
+              <th>Costo mese</th>
+              <th>Data inizio</th>
+              <th>Data fine</th>
+              <th>Distacco</th>
+              <th>Nominativo</th>
+              <th>Stato</th>
+              <th>Tariffa giornaliera</th>
+              <th>Titolo posizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let commessa of data?.commesse; let i = index">
+              <td *ngIf="commessa.attesaLavori">Si</td>
+              <td *ngIf="!commessa.attesaLavori">No</td>
+              <td>{{commessa.azienda}}</td>
+              <td>{{commessa.aziendaDiFatturazioneInterna}}</td>
+              <td>{{commessa.cliente}}</td>
+              <td>{{commessa.clienteFinale}}</td>
+              <td>{{commessa.costoMese}}</td>
+              <td>{{commessa.dataInizio}}</td>
+              <td>{{commessa.dataFine}}</td>
+              <td>{{commessa.distacco}}</td>
+              <td>{{commessa.nominativo}}</td>
+              <td *ngIf="commessa.stato" >Attivo</td>
+              <td *ngIf="!commessa.stato">Non attivo</td>
+              <td>{{commessa.tariffaGiornaliera}}</td>
+              <td>{{commessa.titoloPosizione}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="row">
 
-        <div class="col-md-3">
+
+
+        <!-- <div class="col-md-3">
             <label>Cliente: </label>
             <div class="form-group">
                 <input type="text" class="form-control" value="{{ data?.commessa?.cliente }}"
@@ -623,9 +669,9 @@
             <div class="form-group">
                 <input type="text" class="form-control" value="{{ data?.commessa?.clienteFinale }}" readonly />
             </div>
-        </div>
+        </div> -->
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-3">
             <label>Titolo Posizione: </label>
             <div class="form-group">
@@ -644,8 +690,8 @@
                 <input type="text" class="form-control" value="{{ data?.commessa?.costoMese }}" readonly />
             </div>
         </div>
-    </div>
-    <legend>Date</legend>
+    </div> -->
+    <!-- <legend>Date</legend>
     <div class="row">
         <div class="col-md-3">
             <label>Data Inizio: </label>
@@ -710,7 +756,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <button class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;"
         (click)="delete(data?.anagrafica.id,data?.contratto.id,data?.commessa.id)">Cancella</button>
     <button class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;"

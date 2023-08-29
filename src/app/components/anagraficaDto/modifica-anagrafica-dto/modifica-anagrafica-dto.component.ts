@@ -259,8 +259,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.data = (resp as any)['anagraficaDto'];
         console.log(JSON.stringify(resp));
         this.elencoCommesse = [this.data.commessa];
-        this.nuovoId = this.data.commessa.id;
-        console.log(this.nuovoId);
+        // this.nuovoId = this.data.commessa.id;
+        // console.log(this.nuovoId);
         this.anagraficaDto.patchValue(this.data);
         console.log(
           'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)
