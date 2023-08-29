@@ -31,7 +31,7 @@ export class AnagraficaDtoService {
   }
 
   update(body: any): Observable<any> {
-    return this.http.put<any>(`http://localhost:8085/modifica-anagrafica`, body, {
+    return this.http.put<any>(`http://localhost:8085/modifica`, body, {
       headers: headers,
     });
   }
@@ -71,7 +71,7 @@ export class AnagraficaDtoService {
   }
 
   getContrattoNazionale(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/contratto-nazionale/map`); //tipo-ccnl
+    return this.http.get<any>(`http://localhost:8085/tipo-ccnl/map`);
   }
 
   getRuoli():Observable<any> {

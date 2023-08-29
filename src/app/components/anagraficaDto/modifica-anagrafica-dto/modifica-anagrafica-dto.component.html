@@ -117,6 +117,11 @@
                       <!-- <label>id</label>
                       <input  formControlName="id" type="number" /> -->
 
+                      <!-- <div class="col-3">
+                        <label>ID</label> <br>
+                        <input class="form-control" formControlName="id" type="number" />
+                      </div> -->
+
                       <div class="row">
                         <div class="col-3">
                           <label>Cliente</label> <br>
@@ -324,7 +329,7 @@
                         *ngFor="let livelloContratto of livelliContratti"
                         [value]="livelloContratto.id"
                       >
-                        {{ livelloContratto.descrizione }}
+                        {{ livelloContratto.livello }}
                       </option>
                     </select>
                   </div>
@@ -349,12 +354,12 @@
                   </div>
                 </div>
                 <div class="col-3">
-                  <div formGroupName="ccnl">
-                    <label for="ccnl">Contratto Nazionale</label>
+                  <div formGroupName="tipoCcnl">
+                    <label for="tipoCcnl">Contratto Nazionale</label>
                     <select
                       class="form-control"
-                      id="contratto.ccnl.id"
-                      formControlName="id"
+                      id="contratto.tipoCcnl.id"
+                      formControlName="tipoCcnl"
                       type="number"
                     >
                       <option value="">--nessuna selezione--</option>
