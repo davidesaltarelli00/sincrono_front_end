@@ -63,6 +63,7 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
   ngOnInit(): void {
+    console.log(this.id);
     this.anagraficaDtoService
       .detailAnagraficaDto(this.id)
       .subscribe((resp: any) => {

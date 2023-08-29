@@ -19,9 +19,8 @@ export class AnagraficaDtoService {
     return this.http.get<any>(`http://localhost:8085/list`); ///lista
   }
 
-
   detailAnagraficaDto(id: any): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/dettaglio/${id}`); //dettaglio/${id}
+    return this.http.get<any>(`http://localhost:8085/dettaglio/${id}`);
   }
 
   delete(body: any) {
@@ -36,8 +35,14 @@ export class AnagraficaDtoService {
     });
   }
 
+  deleteCommessa(body: any): Observable<any> {
+    return this.http.put<any>(`http://localhost:8085/commessa`, body, {
+      headers: headers,
+    });
+  }
+
   insert(body: any): Observable<any> {
-    return this.http.post<any>(`http://localhost:8085/nuova-anagrafica`, body, {
+    return this.http.post<any>(`http://localhost:8085/inserisci`, body, {
       headers: headers,
     });
   }
@@ -51,12 +56,16 @@ export class AnagraficaDtoService {
 
   //FILTER ANAGRAFICA
   filter(body: any): Observable<any> {
-    return this.http.post<any>(`http://localhost:8085/anagrafica-list-filter`, body, {
-      headers: headers,
-    });
+    return this.http.post<any>(
+      `http://localhost:8085/anagrafica-list-filter`,
+      body,
+      {
+        headers: headers,
+      }
+    );
   }
-   //GET TIPOLOGICHE
-   getTipoContratto(): Observable<any> {
+  //GET TIPOLOGICHE
+  getTipoContratto(): Observable<any> {
     return this.http.get<any>(`http://localhost:8085/tipo-contratto/map`);
   }
 
@@ -74,9 +83,7 @@ export class AnagraficaDtoService {
     return this.http.get<any>(`http://localhost:8085/tipo-ccnl/map`);
   }
 
-  getRuoli():Observable<any> {
+  getRuoli(): Observable<any> {
     return this.http.get<any>(`http://localhost:8085/ruoli/map`);
   }
-
-
 }

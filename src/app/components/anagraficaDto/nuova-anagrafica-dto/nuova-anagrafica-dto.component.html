@@ -453,20 +453,20 @@
                               *ngFor="let livelloContratto of livelliContratti"
                               value="{{ livelloContratto.id }}"
                             >
-                              {{ livelloContratto.descrizione }}  <!--livello-->
+                              {{ livelloContratto.livello }}
                             </option>
                           </select>
                         </div>
                       </div>
 
                       <div class="col-md-3">
-                        <div formGroupName="contrattoNazionale"> <!--tutto quello che ha contrattoNazionale diventa ccnl-->
-                          <label for="filter-Tipo Contratto nazionale"
+                        <div formGroupName="tipoCcnl">
+                          <label for="tipoCcnl"
                             >Tipo Contratto nazionale:</label
                           >
                           <select
                             class="form-control"
-                            id="contratto.contrattoNazionale.id"
+                            id="contratto.tipoCcnl.id"
                             formControlName="id"
                           >
                             <option value="">--nessuna selezione--</option>
@@ -889,7 +889,7 @@
 
                       </div>
                       <div class="col-6" style="text-align: start;">
-                        <button class="btn btn-success" type="submit" [disabled]="AnagraficaDto.invalid" >
+                        <button class="btn btn-success"  [disabled]="AnagraficaDto.invalid" >
                           Salva
                         </button>
                       </div>

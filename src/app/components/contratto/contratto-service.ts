@@ -65,6 +65,6 @@ export class ContrattoService {
   }
 
   getContrattoNazionale(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/contratto-nazionale/map`); //tipo-ccnl
+    return this.http.get<any>(`http://localhost:8085/tipo-ccnl/map`);
   }
 }
