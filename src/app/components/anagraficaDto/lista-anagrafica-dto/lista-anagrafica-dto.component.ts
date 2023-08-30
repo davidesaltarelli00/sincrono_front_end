@@ -352,6 +352,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         this.anagraficaDtoService.delete(resp).subscribe(
           (deleted: any) => {
             console.log('eliminato con successo ' + deleted);
+            // location.reload();
+            this.ngOnInit();
           },
           (errorDeleted: any) => {
             console.log("Errore durante l'eliminazione: " + errorDeleted);
