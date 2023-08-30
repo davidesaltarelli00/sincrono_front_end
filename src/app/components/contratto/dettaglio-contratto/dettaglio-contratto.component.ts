@@ -29,7 +29,7 @@ export class DettaglioContrattoComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.contrattoService.detail(this.id).subscribe((resp: any) => {
+    this.contrattoService.detail(this.id,localStorage.getItem('token')).subscribe((resp: any) => {
       console.log(resp);
       this.data = (resp as any)['contratto'];
       console.log(this.data);

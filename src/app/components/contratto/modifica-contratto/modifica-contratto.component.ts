@@ -79,7 +79,7 @@ export class ModificaContrattoComponent {
   ) {}
 
   ngOnInit(): void {
-    this.contrattoService.detail(this.id).subscribe((resp: any) => {
+    this.contrattoService.detail(this.id,localStorage.getItem('token')).subscribe((resp: any) => {
       this.data = (resp as any)['contratto'];
       console.log(this.data);
     });
@@ -144,26 +144,26 @@ export class ModificaContrattoComponent {
   }
 
   caricaTipoContratto() {
-    this.contrattoService.getTipoContratto().subscribe((result: any) => {
+    this.contrattoService.getTipoContratto(localStorage.getItem('token')).subscribe((result: any) => {
       console.log(result);
       this.tipiContratti = (result as any)['list'];
     });
   }
   caricaLivelloContratto() {
-    this.contrattoService.getLivelloContratto().subscribe((result: any) => {
+    this.contrattoService.getLivelloContratto(localStorage.getItem('token')).subscribe((result: any) => {
       console.log(result);
       this.livelliContratti = (result as any)['list'];
     });
   }
   caricaTipoAzienda() {
-    this.contrattoService.getTipoAzienda().subscribe((result: any) => {
+    this.contrattoService.getTipoAzienda(localStorage.getItem('token')).subscribe((result: any) => {
       console.log(result);
       this.tipiAziende = (result as any)['list'];
     });
   }
 
   caricaContrattoNazionale() {
-    this.contrattoService.getContrattoNazionale().subscribe((result: any) => {
+    this.contrattoService.getContrattoNazionale(localStorage.getItem('token')).subscribe((result: any) => {
       console.log(result);
       this.contrattiNazionali = (result as any)['list'];
     });
@@ -189,7 +189,7 @@ export class ModificaContrattoComponent {
     });
     console.log(body);
 
-    this.contrattoService.update(body).subscribe((result) => {
+    this.contrattoService.update(body,localStorage.getItem('token')).subscribe((result) => {
       console.log(result);
     });
   }

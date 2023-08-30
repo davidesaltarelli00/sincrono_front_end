@@ -45,7 +45,7 @@ export class ListaOrganicoComponent implements OnInit {
     // this.role = this.authService.getTokenAndRole();
     console.log("Ruolo: " + this.role);
 
-    this.organicoService.listaOrganico().subscribe((resp: any) => {
+    this.organicoService.listaOrganico(localStorage.getItem('token')).subscribe((resp: any) => {
       this.lista = resp.list;
 
       $(function () {

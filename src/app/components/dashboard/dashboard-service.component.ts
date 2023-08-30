@@ -2,11 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const headers = new HttpHeaders()
-  .set('content-type', 'application/json')
-  .set('Access-Control-Allow-Origin', '*');
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -16,20 +11,35 @@ export class DashboardService {
 
   constructor(private http: HttpClient) { }
 
-  listaDashboard():Observable<any>{
-    return this.http.post<any>(`http://localhost:8085/dashboard`,{
+  listaDashboard(token: any):Observable<any>{
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<any>(`http://localhost:8080/services/dashboard`,{
       headers: headers,});
 
   }
 
-  listaScattiContratto():Observable<any>{
-    return this.http.get<any>(`http://localhost:8085/anagrafica-list-contratti`,{
+  listaScattiContratto(token: any):Observable<any>{
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(`http://localhost:8080/services/anagrafica-list-contratti`,{
       headers: headers,});
 
   }
 
-  deleteScattiContratto():Observable<any>{
-    return this.http.delete<any>(`http://localhost:8085/anagraficaDeleteScattoContratti`,{
+  deleteScattiContratto(token: any):Observable<any>{
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.delete<any>(`http://localhost:8080/services/anagraficaDeleteScattoContratti`,{
       headers: headers,});
 
   }

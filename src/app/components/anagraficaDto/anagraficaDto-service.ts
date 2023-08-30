@@ -2,10 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const headers = new HttpHeaders()
-  .set('content-type', 'application/json')
-  .set('Access-Control-Allow-Origin', '*');
-
 @Injectable({
   providedIn: 'root',
 })
@@ -15,68 +11,138 @@ export class AnagraficaDtoService {
   constructor(private http: HttpClient) {}
 
   /*CRUD ANAGRAFICA*/
-  listAnagraficaDto(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/anagraficaDto-list`); ///lista
-  }
-
-
-  detailAnagraficaDto(id: any): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/dettaglio-anagrafica/${id}`); //dettaglio/${id}
-  }
-
-  delete(body: any) {
-    return this.http.put<any>(`http://localhost:8085/delete-anagrafica`, body, {
+  listAnagraficaDto(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(`http://localhost:8080/services/list`, {
       headers: headers,
     });
   }
 
-  update(body: any): Observable<any> {
-    return this.http.put<any>(`http://localhost:8085/modifica-anagrafica`, body, {
+  detailAnagraficaDto(id: any, token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(
+      `http://localhost:8080/services/dettaglio/${id}`,
+      { headers: headers }
+    );
+  }
+
+  delete(body: any, token: any) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.put<any>(`http://localhost:8080/services/delete`, body, {
       headers: headers,
     });
   }
 
-  insert(body: any): Observable<any> {
-    return this.http.post<any>(`http://localhost:8085/nuova-anagrafica`, body, {
+  update(body: any, token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.put<any>(`http://localhost:8080/services/modifica`, body, {
       headers: headers,
     });
+  }
+
+  insert(body: any, token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<any>(
+      `http://localhost:8080/services/inserisci`,
+      body,
+      {
+        headers: headers,
+      }
+    );
   }
 
   //GET UTENTI LIST
-  getListaUtenti(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/utenti-list`, {
+  getListaUtenti(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(`http://localhost:8080/services/utenti-list`, {
       headers: headers,
     });
   }
 
   //FILTER ANAGRAFICA
-  filter(body: any): Observable<any> {
-    return this.http.post<any>(`http://localhost:8085/anagrafica-list-filter`, body, {
+  filter(body: any, token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<any>(`http://localhost:8080/services/list`, body, {
       headers: headers,
     });
   }
-   //GET TIPOLOGICHE
-   getTipoContratto(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/tipo-contratto/map`);
+  //GET TIPOLOGICHE
+  getTipoContratto(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(
+      `http://localhost:8080/services/tipo-contratto-map`
+    );
   }
 
   getLivelloContratto(): Observable<any> {
     return this.http.get<any>(
-      `http://localhost:8085/tipo-livelli-contrattuali/map`
+      `http://localhost:8080/services/tipo-livelli-contrattuali-map`
     );
   }
 
-  getTipoAzienda(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/tipo-azienda/map`);
+  getTipoAzienda(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(
+      `http://localhost:8080/services/tipo-azienda-map`,
+      { headers: headers }
+    );
   }
 
-  getContrattoNazionale(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/contratto-nazionale/map`); //tipo-ccnl
+  getContrattoNazionale(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(`http://localhost:8080/services/tipo-ccnl-map`, {
+      headers: headers,
+    }); //tipo-ccnl
   }
 
-  getRuoli():Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/ruoli/map`);
+  getRuoli(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(`http://localhost:8080/services/ruoli-map`, {
+      headers: headers,
+    });
   }
-
-
 }

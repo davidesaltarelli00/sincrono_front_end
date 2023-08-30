@@ -82,7 +82,7 @@ export class NuovoContrattoComponent implements OnInit{
   
   ngOnInit(): void {
     this.contrattoService
-      .detail(this.router.snapshot.params['id'])
+      .detail(this.router.snapshot.params['id'],localStorage.getItem('token'))
       .subscribe((result: any) => {
         this.data = result.anagrafica;
         console.log(this.data);
@@ -148,26 +148,26 @@ export class NuovoContrattoComponent implements OnInit{
   }
 
   caricaTipoContratto() {
-    this.contrattoService.getTipoContratto().subscribe((result: any) => {
+    this.contrattoService.getTipoContratto(localStorage.getItem('token')).subscribe((result: any) => {
       console.log(result);
       this.tipiContratti = (result as any)['list'];
     });
   }
   caricaLivelloContratto() {
-    this.contrattoService.getLivelloContratto().subscribe((result: any) => {
+    this.contrattoService.getLivelloContratto(localStorage.getItem('token')).subscribe((result: any) => {
       console.log(result);
       this.livelliContratti = (result as any)['list'];
     });
   }
   caricaTipoAzienda() {
-    this.contrattoService.getTipoAzienda().subscribe((result: any) => {
+    this.contrattoService.getTipoAzienda(localStorage.getItem('token')).subscribe((result: any) => {
       console.log(result);
       this.tipiAziende = (result as any)['list'];
     });
   }
 
   caricaContrattoNazionale() {
-    this.contrattoService.getContrattoNazionale().subscribe((result: any) => {
+    this.contrattoService.getContrattoNazionale(localStorage.getItem('token')).subscribe((result: any) => {
       console.log(result);
       this.contrattiNazionali = (result as any)['list'];
     });
@@ -201,7 +201,7 @@ export class NuovoContrattoComponent implements OnInit{
     });
     console.log(body);
 
-    this.contrattoService.insert(body).subscribe((result) => {
+    this.contrattoService.insert(body, localStorage.getItem('token')).subscribe((result) => {
       if ((result as any).esito.code != 0) {
         this.errore = true;
         this.messaggio = (result as any).esito.target;

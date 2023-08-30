@@ -5,7 +5,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { profileBoxService } from './components/profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -103,8 +103,13 @@ export class AppComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    const url = `http://localhost:8085/funzioni-ruolo/tree/${this.id}`;
-    this.http.get<MenuData>(url).subscribe(
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${this.token}`,
+    });
+    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.id}`;
+    this.http.get<MenuData>(url, {headers: headers}).subscribe(
       (data) => {
         this.jsonData = data;
         // console.log(this.jsonData);
@@ -118,8 +123,13 @@ export class AppComponent implements OnInit {
   }
 
   getPermissions(functionId: number) {
-    const url = `http://localhost:8085/operazioni/${functionId}`;
-    this.http.get(url).subscribe(
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${this.token}`,
+    });
+    const url = `http://localhost:8080/services/operazioni/${functionId}`;
+    this.http.get(url,{headers: headers}).subscribe(
       (data: any) => {
         // Qui puoi fare qualcosa con i permessi ottenuti dalla chiamata API
         console.log('Permessi ottenuti:', data);

@@ -24,7 +24,7 @@ export class ListaContrattiComponent {
     location.reload();
   }
   ngOnInit(): void {
-    this.contrattoService.list().subscribe((resp: any) => {
+    this.contrattoService.list(localStorage.getItem('token')).subscribe((resp: any) => {
       this.lista = resp.list;
       console.log(resp);
 
@@ -37,7 +37,7 @@ export class ListaContrattiComponent {
     });
   }
   delete(id: number) {
-    this.contrattoService.delete(id).subscribe(
+    this.contrattoService.delete(id, localStorage.getItem('token')).subscribe(
       () => {
         console.log('Contratto eliminato');
         this.reloadPage();

@@ -2,10 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const headers = new HttpHeaders()
-  .set('content-type', 'application/json')
-  .set('Access-Control-Allow-Origin', '*');
-
 @Injectable({
   providedIn: 'root',
 })
@@ -14,8 +10,13 @@ export class OrganicoService {
 
   constructor(private http: HttpClient) {}
 
-  listaOrganico(): Observable<any> {
-    return this.http.post<any>(`http://localhost:8085/organico`, {
+  listaOrganico(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<any>(`http://localhost:8080/services/organico`, {
       headers: headers,
     });
   }

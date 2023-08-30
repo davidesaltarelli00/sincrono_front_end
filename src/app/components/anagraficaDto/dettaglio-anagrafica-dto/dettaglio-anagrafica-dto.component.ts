@@ -32,7 +32,7 @@ export class DettaglioAnagraficaDtoComponent {
       livelloContratto: new FormGroup({
         descrizione: new FormControl(''),
       }),
-      contrattoNazionale: new FormGroup({
+      tipoCcnl: new FormGroup({
         descrizione: new FormControl(''),
       }),
       tipoContratto: new FormGroup({
@@ -62,7 +62,7 @@ export class DettaglioAnagraficaDtoComponent {
 
   ngOnInit(): void {
     this.anagraficaDtoService
-      .detailAnagraficaDto(this.id)
+      .detailAnagraficaDto(this.id, localStorage.getItem('token'))
       .subscribe((resp: any) => {
         console.log(resp);
         this.data = (resp as any)['anagraficaDto'];
@@ -96,7 +96,7 @@ export class DettaglioAnagraficaDtoComponent {
     const body = JSON.stringify({
       anagraficaDto: this.filterAnagraficaDto.value,
     });
-    this.anagraficaDtoService.delete(body).subscribe((result: any) => {
+    this.anagraficaDtoService.delete(body,localStorage.getItem('token')).subscribe((result: any) => {
       if ((result as any).esito.code != 0) {
         alert('cancellazione non riuscita\n'+'target: '+(result as any).esito.target);
         this.errore = true;
@@ -125,6 +125,6 @@ export class DettaglioAnagraficaDtoComponent {
     this.router.navigate(['/storico-contratti', idAnagrafica]);
   }
   getStoricoCommessa(idAnagrafica:any) {
-    this.router.navigate(['/storico-commesse-anagrafica', idAnagrafica]);
+    this.router.navigate(['/storico-commesse', idAnagrafica]);
   }
 }

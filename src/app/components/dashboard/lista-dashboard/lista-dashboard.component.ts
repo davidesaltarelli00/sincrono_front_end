@@ -40,7 +40,7 @@ export class ListaDashboardComponent {
 
   ngOnInit(): void {
 
-    this.dashboardService.listaDashboard().subscribe((resp: any) => {
+    this.dashboardService.listaDashboard(localStorage.getItem('token')).subscribe((resp: any) => {
       this.lista = resp.list;
 
 
@@ -53,7 +53,7 @@ export class ListaDashboardComponent {
     });
 
 
-    this.dashboardService.listaScattiContratto().subscribe((resp: any) => {
+    this.dashboardService.listaScattiContratto(localStorage.getItem('token')).subscribe((resp: any) => {
       this.data = resp.list;
 
 
@@ -236,7 +236,7 @@ profile(){
 
   resetTabella(){
 
-    this.dashboardService.deleteScattiContratto().subscribe((resp: any) => {
+    this.dashboardService.deleteScattiContratto(localStorage.getItem('token')).subscribe((resp: any) => {
 
       if ((resp as any).esito.code != 0) {
         alert('cancellazione non riuscita\n'+'target: '+(resp as any).esito.target);

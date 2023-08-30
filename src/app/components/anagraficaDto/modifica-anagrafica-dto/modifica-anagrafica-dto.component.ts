@@ -146,7 +146,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
   caricaDati(): void {
     this.anagraficaDtoService
-      .detailAnagraficaDto(this.activatedRouter.snapshot.params['id'])
+      .detailAnagraficaDto(
+        this.activatedRouter.snapshot.params['id'],
+        localStorage.getItem('token')
+      )
       .subscribe((resp: any) => {
         this.data = (resp as any)['anagraficaDto'];
         console.log(JSON.stringify(resp));
@@ -190,7 +193,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       azienda: '',
       aziendaDiFatturazioneInterna: '',
       stato: '',
-      attesaLavori: ''
+      attesaLavori: '',
     };
 
     const commessaForm = this.formBuilder.group({
@@ -223,7 +226,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     };
 
     console.log('payload backend:', payload);
-    this.anagraficaDtoService.update(payload).subscribe(
+    this.anagraficaDtoService.update(payload, localStorage.getItem('token')).subscribe(
       (response) => {
         console.log('Payload inviato con successo al server:', response);
       },
@@ -281,7 +284,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   caricaTipoContratto() {
-    this.anagraficaDtoService.getTipoContratto().subscribe((result: any) => {
+    this.anagraficaDtoService.getTipoContratto(localStorage.getItem('token')).subscribe((result: any) => {
       this.tipiContratti = (result as any)['list'];
     });
   }
@@ -291,26 +294,26 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     });
   }
   caricaTipoAzienda() {
-    this.anagraficaDtoService.getTipoAzienda().subscribe((result: any) => {
+    this.anagraficaDtoService.getTipoAzienda(localStorage.getItem('token')).subscribe((result: any) => {
       this.tipiAziende = (result as any)['list'];
     });
   }
 
   caricaContrattoNazionale() {
     this.anagraficaDtoService
-      .getContrattoNazionale()
+      .getContrattoNazionale(localStorage.getItem('token'))
       .subscribe((result: any) => {
         this.ccnl = (result as any)['list'];
       });
   }
   caricaListaUtenti() {
-    this.anagraficaDtoService.getListaUtenti().subscribe((result: any) => {
+    this.anagraficaDtoService.getListaUtenti(localStorage.getItem('token')).subscribe((result: any) => {
       this.utenti = (result as any)['list'];
     });
   }
 
   caricaRuoli() {
-    this.anagraficaDtoService.getRuoli().subscribe((result: any) => {
+    this.anagraficaDtoService.getRuoli(localStorage.getItem('token')).subscribe((result: any) => {
       this.ruoli = (result as any)['list'];
     });
   }

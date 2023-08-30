@@ -187,7 +187,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   caricaListaUtenti() {
-    this.anagraficaDtoService.getListaUtenti().subscribe((result: any) => {
+    this.anagraficaDtoService.getListaUtenti(localStorage.getItem('token')).subscribe((result: any) => {
       // console.log(result);
       this.utenti = (result as any)['list'];
     });
@@ -325,7 +325,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     });
     // console.log(body);
 
-    this.anagraficaDtoService.insert(body).subscribe((result) => {
+    this.anagraficaDtoService.insert(body, localStorage.getItem('token')).subscribe((result) => {
       if ((result as any).esito.code != 0) {
         alert(
           'inserimento non riuscito\n' +
@@ -349,26 +349,26 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }*/
 
   caricaTipoContratto() {
-    this.contrattoService.getTipoContratto().subscribe((result: any) => {
+    this.contrattoService.getTipoContratto(localStorage.getItem('token')).subscribe((result: any) => {
       // console.log(result);
       this.tipiContratti = (result as any)['list'];
     });
   }
   caricaLivelloContratto() {
-    this.contrattoService.getLivelloContratto().subscribe((result: any) => {
+    this.contrattoService.getLivelloContratto(localStorage.getItem('token')).subscribe((result: any) => {
       // console.log(result);
       this.livelliContratti = (result as any)['list'];
     });
   }
   caricaTipoAzienda() {
-    this.contrattoService.getTipoAzienda().subscribe((result: any) => {
+    this.contrattoService.getTipoAzienda(localStorage.getItem('token')).subscribe((result: any) => {
       // console.log(result);
       this.tipiAziende = (result as any)['list'];
     });
   }
 
   caricaContrattoNazionale() {
-    this.contrattoService.getContrattoNazionale().subscribe((result: any) => {
+    this.contrattoService.getContrattoNazionale(localStorage.getItem('token')).subscribe((result: any) => {
       // console.log(result);
       this.contrattiNazionali = (result as any)['list'];
     });
@@ -412,7 +412,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   caricaRuoli() {
-    this.anagraficaDtoService.getRuoli().subscribe((result: any) => {
+    this.anagraficaDtoService.getRuoli(localStorage.getItem('token')).subscribe((result: any) => {
       this.ruoli = (result as any)['list'];
     });
   }

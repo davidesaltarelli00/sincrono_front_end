@@ -2,13 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': 'AAAAAAAAAAAAAAAA',
-    'Acces-Control-Allow-Origin': '*',
-  }),
-};
 @Injectable({
   providedIn: 'root',
 })
@@ -18,53 +11,107 @@ export class ContrattoService {
   constructor(private http: HttpClient) {}
 
   /*CRUD CONTRATTO*/
-  list(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/contratto-list`);
+  list(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(`http://localhost:8080/services/contratto-list`, {
+      headers: headers,
+    });
   }
 
-  delete(id: any) {
-    return this.http.delete<any>(`http://localhost:8085/contratto/${id}`);
+  delete(id: any, token: any) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.delete<any>(`http://localhost:8085/contratto/${id}`, {
+      headers: headers,
+    });
   }
 
-  update(body: any): Observable<any> {
-    return this.http.put<any>(
-      `http://localhost:8085/contratto`,
-      body,
-      httpOptions
-    );
+  update(body: any, token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.put<any>(`http://localhost:8085/contratto`, body, {
+      headers: headers,
+    });
   }
 
-  insert(body: any): Observable<any> {
+  insert(body: any, token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
     return this.http.post<any>(
-      `http://localhost:8085/contratto`,
+      `http://localhost:8080/services/contratto`,
       body,
-      httpOptions
+      { headers: headers }
     );
   }
 
-  detail(id: any): Observable<any> {
+  detail(id: any, token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
     return this.http.get<any>(
-      `http://localhost:8085/contratto/${id}`,
-      httpOptions
+      `http://localhost:8080/services/contratto/${id}`,
+      { headers: headers }
     );
   }
 
   //GET TIPOLOGICHE
-  getTipoContratto(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/tipo-contratto/map`);
-  }
-
-  getLivelloContratto(): Observable<any> {
+  getTipoContratto(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
     return this.http.get<any>(
-      `http://localhost:8085/tipo-livelli-contrattuali/map`
+      `http://localhost:8080/services/tipo-contratto-map`,
+      { headers: headers }
     );
   }
 
-  getTipoAzienda(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/tipo-azienda/map`);
+  getLivelloContratto(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(
+      `http://localhost:8085/tipo-livelli-contrattuali-map`
+    );
   }
 
-  getContrattoNazionale(): Observable<any> {
-    return this.http.get<any>(`http://localhost:8085/contratto-nazionale/map`); //tipo-ccnl
+  getTipoAzienda(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(`http://localhost:8085/tipo-azienda-map`, {
+      headers: headers,
+    });
+  }
+
+  getContrattoNazionale(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(`http://localhost:8085/tipo-ccnl-map`, {
+      headers: headers,
+    });
   }
 }

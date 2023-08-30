@@ -21,7 +21,7 @@ export class StoricoCommesseComponent implements OnInit{
 
 ngOnInit(): void {
   var idAnagrafica = this.activatedRouter.snapshot.params['id'];
-  this.storicoService.getStoricoCommesse(idAnagrafica).subscribe((resp: any) => {
+  this.storicoService.getStoricoCommesse(idAnagrafica, localStorage.getItem('token')).subscribe((resp: any) => {
     this.lista = resp.list;
 
     $(function () {

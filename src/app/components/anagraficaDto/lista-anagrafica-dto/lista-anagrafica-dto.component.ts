@@ -134,7 +134,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     const body = JSON.stringify({
       anagraficaDto: this.filterAnagraficaDto.value,
     });*/
-    this.anagraficaDtoService.listAnagraficaDto().subscribe((resp: any) => {
+    this.anagraficaDtoService.listAnagraficaDto(localStorage.getItem('token')).subscribe((resp: any) => {
       this.originalLista = resp.list; // Memorizza la lista originale nella variabile 'originalLista'
       this.lista = this.originalLista;
       console.log(resp);
@@ -193,23 +193,23 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     }
   }
   caricaTipoContratto() {
-    this.contrattoService.getTipoContratto().subscribe((result: any) => {
+    this.contrattoService.getTipoContratto(localStorage.getItem('token')).subscribe((result: any) => {
       this.tipiContratti = (result as any)['list'];
     });
   }
   caricaLivelloContratto() {
-    this.contrattoService.getLivelloContratto().subscribe((result: any) => {
+    this.contrattoService.getLivelloContratto(localStorage.getItem('token')).subscribe((result: any) => {
       this.livelliContratti = (result as any)['list'];
     });
   }
   caricaTipoAzienda() {
-    this.contrattoService.getTipoAzienda().subscribe((result: any) => {
+    this.contrattoService.getTipoAzienda(localStorage.getItem('token')).subscribe((result: any) => {
       this.tipiAziende = (result as any)['list'];
     });
   }
 
   caricaContrattoNazionale() {
-    this.contrattoService.getContrattoNazionale().subscribe((result: any) => {
+    this.contrattoService.getContrattoNazionale(localStorage.getItem('token')).subscribe((result: any) => {
       this.contrattiNazionali = (result as any)['list'];
     });
   }
@@ -322,7 +322,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   annullaFiltri() {
 
-    this.anagraficaDtoService.listAnagraficaDto().subscribe((resp: any) => {
+    this.anagraficaDtoService.listAnagraficaDto(localStorage.getItem('token')).subscribe((resp: any) => {
       this.lista = resp.list;
       this.reset();
     });
@@ -339,7 +339,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     const body = JSON.stringify({
       anagraficaDto: this.filterAnagraficaDto.value,
     });
-    this.anagraficaDtoService.delete(body).subscribe((result: any) => {
+    this.anagraficaDtoService.delete(body, localStorage.getItem('token')).subscribe((result: any) => {
       if ((result as any).esito.code != 0) {
         alert('cancellazione non riuscita');
         this.errore = true;

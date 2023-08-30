@@ -31,7 +31,7 @@ export class StoricoContrattiComponent implements OnInit  {
 
     this.idAnagrafica = this.activatedRoute.snapshot.params['id'];
 
-    this.storicoService.getStoricoContratti(this.idAnagrafica).subscribe((resp: any) => {
+    this.storicoService.getStoricoContratti(this.idAnagrafica, localStorage.getItem("token")).subscribe((resp: any) => {
       this.lista = resp.list;
 
       console.log("lista contratti:"+this.lista);
