@@ -597,7 +597,14 @@
         </div>
     </div>
     <!---------commessa----------->
+
     <div class="row">
+      <div class="col-12" [hidden]="data?.commesse.length!=0">
+        <h1>Non sono presenti commesse.</h1>
+      </div>
+    </div>
+
+    <div class="row" [hidden]="data?.commesse.length===0" >
 
         <div class="col-md-3">
             <h1>Dettaglio Commessa</h1>
@@ -610,7 +617,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" [hidden]="data?.commesse.length===0">
       <div class="col-12">
         <table class="table table-bordered">
           <thead>
