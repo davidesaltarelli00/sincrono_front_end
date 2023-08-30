@@ -213,22 +213,102 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     commesseFormArray.push(this.createCommessaFormGroup(nuovaCommessa));
   }
 
+  // rimuoviCommessa(index: number): void {
+  //   let idCommessaDaEliminare: any;
+  //   this.anagraficaDtoService
+  //     .detailAnagraficaDto(this.activatedRoute.snapshot.params['id'])
+  //     .subscribe((resp: any) => {
+  //       idCommessaDaEliminare = (resp as any)['anagraficaDto']['commesse'][
+  //         'id'
+  //       ];
+  //       const conferma =
+  //         'Sei sicuro di voler eliminare la commmessa con id ' +
+  //         idCommessaDaEliminare +
+  //         '?';
+  //       if (confirm(conferma)) {
+  //         this.anagraficaDtoService
+  //           .deleteCommessa(idCommessaDaEliminare)
+  //           .subscribe(
+  //             (res: any) => {
+  //               console.log(
+  //                 'commessa con id' +
+  //                   idCommessaDaEliminare +
+  //                   ' eliminata correttamente.'
+  //               );
+  //             },
+  //             (error: any) => {
+  //               console.log(
+  //                 "Errore durante l'eliminazione della commessa con id " +
+  //                   idCommessaDaEliminare +
+  //                   ': ' +
+  //                   error
+  //               );
+  //             }
+  //           );
+  //       } else {
+  //         return;
+  //       }
+  //     });
+  // }
+
+  // rimuoviCommessa(index: number): void {
+  //   const conferma =
+  //     'Sei sicuro di voler eliminare la commessa con indice ' + index + '?';
+  //   if (confirm(conferma)) {
+  //     this.anagraficaDtoService
+  //       .deleteCommessa(this.elencoCommesse[index].id)
+  //       .subscribe(
+  //         (res: any) => {
+  //           console.log(
+  //             'Commessa con indice ' +
+  //               index +
+  //               ' eliminata correttamente. Risposta:',
+  //             res
+  //           );
+  //           // Rimuovi l'elemento dall'array locale
+  //           this.elencoCommesse.splice(index, 1);
+  //         },
+  //         (error: any) => {
+  //           console.log(
+  //             "Errore durante l'eliminazione della commessa con indice " +
+  //               index +
+  //               ': ' +
+  //               error
+  //           );
+  //         }
+  //       );
+  //   }
+  // }
+
   rimuoviCommessa(index: number): void {
     const conferma =
-      'Sei sicuro di voler eliminare la commmessa numero ' + index + '?';
+      'Sei sicuro di voler eliminare la commessa con indice ' + index + '?';
     if (confirm(conferma)) {
-      this.anagraficaDtoService.deleteCommessa(index).subscribe(
+      const body = JSON.stringify({
+        commessa: this.elencoCommesse[index],
+      });
+      console.log(body);
+      this.anagraficaDtoService.deleteCommessa(body).subscribe(
         (res: any) => {
-          console.log('Commessa numero' + index + 'eliminata: ' + res);
+          console.log(
+            'Commessa con indice ' +
+              index +
+              ' eliminata correttamente. Risposta:',
+            res
+          );
+          // Rimuovi l'elemento dall'array locale
+          this.elencoCommesse.splice(index, 1);
+          location.reload();
         },
         (error: any) => {
           console.log(
-            "Errore durante l'eliminazione della commessa numero " + index + ':'
+            "Errore durante l'eliminazione della commessa con indice " +
+              index +
+              ': ' +
+              error
           );
         }
       );
-    } else {
-      return;
     }
   }
 
@@ -250,7 +330,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       (response) => {
         console.log('Payload inviato con successo al server:', response);
         // location.reload();
-        // this.router.navigate(['/dettaglio-anagrafica/' + this.id]);
+        this.router.navigate(['/dettaglio-anagrafica/' + this.id]);
       },
       (error) => {
         console.error("Errore nell'invio del payload al server:", error);
