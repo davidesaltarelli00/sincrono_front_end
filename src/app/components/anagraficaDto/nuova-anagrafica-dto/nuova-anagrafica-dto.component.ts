@@ -290,7 +290,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       console.log(body);
 
       this.anagraficaDtoService.insert(body).subscribe((result) => {
-        if ((result as any).esito.code !== 0) {
+        if ((result as any).esito.code !== 200) {
           alert(
             'Inserimento non riuscito\n' +
               'Target: ' +
