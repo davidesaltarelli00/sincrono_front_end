@@ -7,7 +7,12 @@
 </head>
 <body>
   <div class="container-fluid">
-
+    <!-- <div class="alert alert-danger" *ngIf="showErrorAlert">
+      Alcuni campi obbligatori non sono stati compilati correttamente:
+      <ul>
+        <li *ngFor="let field of missingFields">{{ field }}</li>
+      </ul>
+    </div> -->
     <form [formGroup]="AnagraficaDto" (ngSubmit)="inserisci()">
       <!-- Step 1: Anagrafica -->
       <div *ngIf="currentStep === 1">
@@ -27,13 +32,16 @@
                     <div class="row">
                       <div class="col-md-3">
                         <div class="ruolo" formGroupName="ruolo">
-                          <label for="filter-ruoli">ruolo</label>
+                          <label for="filter-ruoli">Ruolo *</label>
                           <select class="form-control" formControlName="id" type="number">
                             <option value="">--nessuna selezione--</option>
                             <option *ngFor="let ruolo of ruoli" value="{{ ruolo.id }}">
                               {{ ruolo.nome }}
                             </option>
                           </select>
+                          <div *ngIf="AnagraficaDto.get('ruolo.id')?.invalid && AnagraficaDto.get('ruolo.id')?.touched" class="text-danger">
+                            Il campo ruolo è obbligatorio.
+                          </div>
                         </div>
                       </div>
                       <div class="col-md-3">
@@ -65,6 +73,10 @@
                               placeholder="Inserire il nome."
                               formControlName="nome"
                             />
+                            <div *ngIf="AnagraficaDto.get('anagrafica.nome')?.invalid && AnagraficaDto.get('anagrafica.nome')?.touched" class="text-danger">
+                              Il campo nome è obbligatorio.
+                            </div>
+
                           </div>
                         </div>
                         <div class="col-md-3">
@@ -77,6 +89,9 @@
                               placeholder="Inserire il cognome."
                               formControlName="cognome"
                             />
+                            <div *ngIf="AnagraficaDto.get('anagrafica.cognome')?.invalid && AnagraficaDto.get('anagrafica.cognome')?.touched" class="text-danger">
+                              Il campo cognome è obbligatorio.
+                            </div>
                           </div>
                         </div>
                         <br>
@@ -92,6 +107,9 @@
                               placeholder="Inserire il codice fiscale."
                               formControlName="codiceFiscale"
                             />
+                            <div *ngIf="AnagraficaDto.get('anagrafica.codiceFiscale')?.invalid && AnagraficaDto.get('anagrafica.codiceFiscale')?.touched" class="text-danger">
+                              Il campo codice fiscale è obbligatorio e deve essere lungo 16 caratteri.
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -152,6 +170,12 @@
                               formControlName="mailAziendale"
                               placeholder="Inserire mail aziendale."
                             />
+                            <div *ngIf="AnagraficaDto.get('anagrafica.mailAziendale')?.hasError('required') && AnagraficaDto.get('anagrafica.mailAziendale')?.hasError('touched') " class="text-danger">
+                              Il campo mail aziendale è obbligatorio.
+                            </div>
+                            <div *ngIf="AnagraficaDto.get('anagrafica.mailAziendale')?.hasError('pattern')" class="text-danger">
+                              Il formato della mail aziendale non è valido.
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -280,7 +304,14 @@
                     <mat-card>
                       <mat-card-content>
                         <!-- Utilizzo del formArrayName per le commesse -->
-                        <div formArrayName="commesse">
+                        <div formArrayName="commesse" >
+
+                          <div class="row" style="margin:auto; text-align:center;">
+                            <div class="col-12">
+                              <button mat-flat-button  color="primary" (click)="aggiungiCommessa()" id="button-duplica" *ngIf="commesse.length === 0" >Aggiungi Commessa</button> &nbsp;
+
+                            </div>
+                          </div>
                           <!-- Loop attraverso le commesse esistenti -->
                           <div class="row" *ngFor="let commessa of commesse.controls; let i = index" [formGroupName]="i">
                             <div class="col-12">
@@ -371,8 +402,8 @@
                             <br>
                             <div class="row">
                               <div class="col-12" style="text-align: center; margin: auto;">
-                                <button mat-flat-button color="primary" (click)="aggiungiCommessa()" id="button-duplica"  >Aggiungi Commessa</button> &nbsp;
-                                <button mat-flat-button color="accent" [disabled]="i === 0" (click)="rimuoviCommessa(i)" [matTooltip]="i === 0 ? 'La commessa uno non può essere eliminata' : ''">Rimuovi Commessa</button>
+                                <button mat-flat-button color="primary" (click)="aggiungiCommessa()" id="button-duplica" *ngIf="commesse.length != 0" >Aggiungi Commessa</button> &nbsp;
+                                <button mat-flat-button color="accent"  (click)="rimuoviCommessa(i)" [matTooltip]="i === 0 ? 'La commessa uno non può essere eliminata' : ''">Rimuovi Commessa</button>
                                 </div>
 
                             </div>
@@ -403,25 +434,24 @@
                    <strong><h1 style="text-align: center;" > Contratto</h1></strong>
                     <legend>Dati Tipologici</legend>
                     <div class="row">
-                      <div class="col-md-3">
-                        <div formGroupName="tipoAzienda">
-                          <label for="filter-Tipo Azienda">Tipo Azienda:</label>
-                          <select
-                            class="form-control"
-                            id="contratto.tipoAzienda.id"
-                            formControlName="id"
-                            type="number"
+                      <div class="col-md-3" formGroupName="tipoAzienda">
+                        <label for="filter-Tipo Azienda">Tipo Azienda:</label>
+                        <select
+                          class="form-control"
+                          id="contratto.tipoAzienda.id"
+                          formControlName="id"
+                          type="number"
+                        >
+                          <option value="">--nessuna selezione--</option>
+                          <option
+                            *ngFor="let tipoAzienda of tipiAziende"
+                            [value]="tipoAzienda.id"
                           >
-                            <option value="">--nessuna selezione--</option>
-                            <option
-                              *ngFor="let tipoAzienda of tipiAziende"
-                              value="{{ tipoAzienda.id }}"
-                            >
-                              {{ tipoAzienda.descrizione }}
-                            </option>
-                          </select>
-                        </div>
+                            {{ tipoAzienda.descrizione }}
+                          </option>
+                        </select>
                       </div>
+
                       <div class="col-md-3">
                         <div formGroupName="tipoContratto">
                           <label for="filter-TipoContratto">Tipo Contratto:</label>
@@ -438,6 +468,7 @@
                               {{ tipoContratto.descrizione }}
                             </option>
                           </select>
+
                         </div>
                       </div>
                       <div class="col-md-3">
@@ -510,7 +541,6 @@
                         </div>
                       </div>
                       <div class="col-md-3">
-                        <form>
                           <div class="form-group">
                             <label for="dataAssunzione">Data Assunzione</label>
                             <input
@@ -518,12 +548,11 @@
                               class="form-control"
                               name="dataInput"
                               formControlName="dataAssunzione"
+                              placeholder="Inserire data assunzione"
                             />
                           </div>
-                        </form>
                       </div>
                       <div class="col-md-3">
-                        <form>
                           <div class="form-group">
                             <label for="dataInizoProva">Data Inzio prova</label>
                             <input
@@ -533,7 +562,6 @@
                               formControlName="dataInizioProva"
                             />
                           </div>
-                        </form>
                       </div>
 
                     </div>
@@ -543,7 +571,6 @@
                     </div>
                     <div class="row">
                       <div class="col-md-3">
-                        <form>
                           <div class="form-group">
                             <label for="dataInizoProva">Data Fine prova</label>
                             <input
@@ -553,10 +580,8 @@
                               formControlName="dataFineProva"
                             />
                           </div>
-                        </form>
                       </div>
                       <div class="col-md-3">
-                        <form>
                           <div class="form-group">
                             <label for="dataFineRapporto">data Fine Rapporto</label>
                             <input
@@ -566,7 +591,6 @@
                               formControlName="dataFineRapporto"
                             />
                           </div>
-                        </form>
                       </div>
                       <div class="col-md-3">
                         <label>Mesi Durata: </label>
@@ -785,7 +809,6 @@
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
-                          <form>
                             <div class="form-group">
                               <label>Corso di Sicurezza: </label>
                               <input
@@ -795,7 +818,6 @@
                                 formControlName="corsoSicurezza"
                               />
                             </div>
-                          </form>
                         </div>
                       </div>
 
@@ -889,7 +911,7 @@
 
                       </div>
                       <div class="col-6" style="text-align: start;">
-                        <button class="btn btn-success"  [disabled]="AnagraficaDto.invalid" >
+                        <button class="btn btn-success"  >
                           Salva
                         </button>
                       </div>

@@ -47,9 +47,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   ruoli: any = [];
   userlogged: string = '';
   formsDuplicati: boolean[] = [];
-  AnagraficaDto: FormGroup; // Assicurati di avere dichiarato il FormGroup
-  commesse!: FormArray; // Assicurati di avere dichiarato il FormArray
-
+  AnagraficaDto: FormGroup;
+  commesse!: FormArray;
+  showErrorAlert: boolean = false;
+  missingFields: string[] = [];
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
@@ -62,12 +63,21 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         aziendaTipo: new FormControl(''),
         nome: new FormControl('', Validators.required),
         cognome: new FormControl('', Validators.required),
-        codiceFiscale: new FormControl('', Validators.required),
+        codiceFiscale: new FormControl('', [
+          Validators.required,
+          Validators.minLength(15),
+          Validators.maxLength(16),
+        ]),
         cellularePrivato: new FormControl(''),
         cellulareAziendale: new FormControl(''),
         mailPrivata: new FormControl(''),
         mailPec: new FormControl(''),
-        mailAziendale: new FormControl('', Validators.required),
+        mailAziendale: new FormControl('', [
+          Validators.required,
+          Validators.pattern(
+            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
+          ),
+        ]),
         titoliDiStudio: new FormControl(''),
         altriTitoli: new FormControl(''),
         comuneDiNascita: new FormControl(''),
@@ -77,7 +87,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         coniugato: new FormControl(''),
         figliACarico: new FormControl(''),
       }),
-      commesse: this.formBuilder.array([this.creaFormCommessa()]),
+      commesse: this.formBuilder.array([]),
 
       contratto: this.formBuilder.group({
         attivo: new FormControl(''),
@@ -96,11 +106,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         }),
         qualifica: new FormControl(''),
         sedeAssunzione: new FormControl(''),
-        dataAssunzione: new FormControl(''),
+        dataAssunzione: new FormControl('', Validators.required),
         dataInizioProva: new FormControl(''),
         dataFineProva: new FormControl(''),
         dataFineRapporto: new FormControl(''),
-        mesiDurata: new FormControl(''),
+        mesiDurata: new FormControl('', Validators.required),
         livelloIniziale: new FormControl(''),
         // livelloAttuale: new FormControl(''),
         // livelloFinale: new FormControl(''),
@@ -126,7 +136,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         canaleReclutamento: new FormControl(''),
       }),
       ruolo: this.formBuilder.group({
-        id: new FormControl('', Validators.required),
+        id: new FormControl(''),
       }),
     });
 
@@ -216,7 +226,166 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   inserisci() {
-    // this.submitted = true;
+    // //Form non valido:
+    // if (this.AnagraficaDto.invalid) {
+    //   this.showErrorAlert = true;
+    //   this.missingFields = [];
+
+    //   for (const field in this.AnagraficaDto.controls) {
+    //     if (this.AnagraficaDto.controls[field].invalid) {
+    //       this.missingFields.push(field);
+    //     }
+    //   }
+    // } else {
+    //   // form valido:
+    //   this.showErrorAlert = false;
+    //   this.missingFields = [];
+    //   const body = JSON.stringify({
+    //     anagraficaDto: this.AnagraficaDto.value,
+    //   });
+    //   console.log(body);
+
+    //   this.anagraficaDtoService.insert(body).subscribe((result) => {
+    //     if ((result as any).esito.code != 0) {
+    //       alert(
+    //         'inserimento non riuscito\n' +
+    //           'target: ' +
+    //           (result as any).esito.target
+    //       );
+    //       this.errore = true;
+    //       this.messaggio = (result as any).esito.target;
+    //       return;
+    //     } else {
+    //       alert('inserimento riuscito');
+    //       console.log(this.AnagraficaDto.value);
+    //     }
+    //     this.router.navigate(['/lista-anagrafica']);
+    //   });
+    // }
+    // // console.log(JSON.stringify(this.AnagraficaDto.value));
+
+    // Reset error state and missing fields array
+    this.showErrorAlert = false;
+    this.missingFields = [];
+
+    // Check for missing required fields
+    if (this.AnagraficaDto.invalid) {
+      // this.showErrorAlert = true;
+
+      // // Loop through form controls and identify missing fields
+      // Object.keys(this.AnagraficaDto.controls).forEach((field) => {
+      //   const control = this.AnagraficaDto.get(field);
+      //   if (control?.errors?.['required']) {
+      //     this.missingFields.push(field);
+      //   }
+      // });
+
+      console.log("Qualcosa e andato storto")
+    }
+    else{
+      const body = JSON.stringify({
+        anagraficaDto: this.AnagraficaDto.value,
+      });
+
+      console.log(body);
+
+      this.anagraficaDtoService.insert(body).subscribe((result) => {
+        if ((result as any).esito.code !== 0) {
+          alert(
+            'Inserimento non riuscito\n' +
+              'Target: ' +
+              (result as any).esito.target
+          );
+          this.errore = true;
+          this.messaggio = (result as any).esito.target;
+        } else {
+          alert('Inserimento riuscito');
+          console.log(this.AnagraficaDto.value);
+        }
+        // this.router.navigate(['/lista-anagrafica']);
+      });
+    }
+
+  }
+
+  /*chiudiPopup() {
+    this.showErrorPopup = false;
+    this.showSuccessPopup = false;
+  }*/
+
+  caricaTipoContratto() {
+    this.contrattoService.getTipoContratto().subscribe((result: any) => {
+      // console.log(result);
+      this.tipiContratti = (result as any)['list'];
+    });
+  }
+  caricaLivelloContratto() {
+    this.contrattoService.getLivelloContratto().subscribe((result: any) => {
+      // console.log(result);
+      this.livelliContratti = (result as any)['list'];
+    });
+  }
+  caricaTipoAzienda() {
+    this.contrattoService.getTipoAzienda().subscribe((result: any) => {
+      // console.log(result);
+      this.tipiAziende = (result as any)['list'];
+    });
+  }
+
+  caricaContrattoNazionale() {
+    this.contrattoService.getContrattoNazionale().subscribe((result: any) => {
+      console.log('caricaContrattoNazionale' + result);
+      this.contrattiNazionali = (result as any)['list'];
+    });
+  }
+
+  checkValid(myArray: string[]) {
+    let check = false;
+
+    for (let element of myArray) {
+      if (this.isControlInvalid(element)) {
+        check = true;
+      }
+    }
+
+    return check;
+  }
+
+  isControlInvalid(controlName: string): boolean {
+    const control = this.AnagraficaDto.get(controlName);
+    const inputElement = document.getElementById(controlName);
+
+    if (!(control?.dirty && control?.value != null && control?.value != '')) {
+      inputElement?.classList.add('invalid-field');
+      return true;
+    } else {
+      inputElement?.classList.remove('invalid-field');
+      return false;
+    }
+  }
+
+  reset(myArray: string[]) {
+    for (let element of myArray) {
+      const inputElement = document.getElementById(element);
+
+      inputElement?.classList.remove('invalid-field');
+    }
+  }
+
+  isEmpty(value: any): boolean {
+    return value === null || value === undefined || value === '';
+  }
+
+  caricaRuoli() {
+    this.anagraficaDtoService.getRuoli().subscribe((result: any) => {
+      this.ruoli = (result as any)['list'];
+    });
+  }
+}
+
+/*
+vecchio codice nel metodo inserisci:
+// this.submitted = true;
     // console.log('Inserisco');
     // const removeEmpty = (obj: any) => {
     //   Object.keys(obj).forEach((key) => {
@@ -316,102 +485,4 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     //     'contratto.tipoAzienda.id',
     //   ]);
     // }
-
-    // // console.log(JSON.stringify(this.AnagraficaDto.value));
-    const body = JSON.stringify({
-      anagraficaDto: this.AnagraficaDto.value,
-    });
-    console.log(body);
-
-    this.anagraficaDtoService.insert(body).subscribe((result) => {
-      if ((result as any).esito.code != 0) {
-        alert(
-          'inserimento non riuscito\n' +
-            'target: ' +
-            (result as any).esito.target
-        );
-        this.errore = true;
-        this.messaggio = (result as any).esito.target;
-        return;
-      } else {
-        alert('inserimento riuscito');
-        console.log(this.AnagraficaDto.value);
-      }
-      this.router.navigate(['/lista-anagrafica']);
-    });
-  }
-
-  /*chiudiPopup() {
-    this.showErrorPopup = false;
-    this.showSuccessPopup = false;
-  }*/
-
-  caricaTipoContratto() {
-    this.contrattoService.getTipoContratto().subscribe((result: any) => {
-      // console.log(result);
-      this.tipiContratti = (result as any)['list'];
-    });
-  }
-  caricaLivelloContratto() {
-    this.contrattoService.getLivelloContratto().subscribe((result: any) => {
-      // console.log(result);
-      this.livelliContratti = (result as any)['list'];
-    });
-  }
-  caricaTipoAzienda() {
-    this.contrattoService.getTipoAzienda().subscribe((result: any) => {
-      // console.log(result);
-      this.tipiAziende = (result as any)['list'];
-    });
-  }
-
-  caricaContrattoNazionale() {
-    this.contrattoService.getContrattoNazionale().subscribe((result: any) => {
-      console.log('caricaContrattoNazionale' + result);
-      this.contrattiNazionali = (result as any)['list'];
-    });
-  }
-
-  checkValid(myArray: string[]) {
-    let check = false;
-
-    for (let element of myArray) {
-      if (this.isControlInvalid(element)) {
-        check = true;
-      }
-    }
-
-    return check;
-  }
-
-  isControlInvalid(controlName: string): boolean {
-    const control = this.AnagraficaDto.get(controlName);
-    const inputElement = document.getElementById(controlName);
-
-    if (!(control?.dirty && control?.value != null && control?.value != '')) {
-      inputElement?.classList.add('invalid-field');
-      return true;
-    } else {
-      inputElement?.classList.remove('invalid-field');
-      return false;
-    }
-  }
-
-  reset(myArray: string[]) {
-    for (let element of myArray) {
-      const inputElement = document.getElementById(element);
-
-      inputElement?.classList.remove('invalid-field');
-    }
-  }
-
-  isEmpty(value: any): boolean {
-    return value === null || value === undefined || value === '';
-  }
-
-  caricaRuoli() {
-    this.anagraficaDtoService.getRuoli().subscribe((result: any) => {
-      this.ruoli = (result as any)['list'];
-    });
-  }
-}
+*/
