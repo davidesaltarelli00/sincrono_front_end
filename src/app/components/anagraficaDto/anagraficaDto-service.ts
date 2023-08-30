@@ -24,7 +24,7 @@ export class AnagraficaDtoService {
   }
 
   delete(body: any) {
-    return this.http.put<any>(`http://localhost:8085/delete-anagrafica`, body, {
+    return this.http.put<any>(`http://localhost:8085/delete`, body, {
       headers: headers,
     });
   }

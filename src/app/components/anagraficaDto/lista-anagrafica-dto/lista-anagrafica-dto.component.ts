@@ -36,7 +36,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       nome: new FormControl(''),
       cognome: new FormControl(''),
       attivo: new FormControl(''),
-      aziendaTipo: new FormControl(''),
     }),
     contratto: new FormGroup({
       ralAnnua: new FormControl(''),
@@ -66,7 +65,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   role: any;
   anagrafica: any;
   idUtente: any;
-
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -210,8 +208,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   vaiAModifica(idAnagrafica: number, idContratto: number, idCommessa: number) {
     console.log(idAnagrafica);
-    this.router.navigate(['/modifica-anagrafica/'+ idAnagrafica]);
-
+    this.router.navigate(['/modifica-anagrafica/' + idAnagrafica]);
   }
 
   filter() {
@@ -343,8 +340,48 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.filterAnagraficaDto.reset();
   }
 
-  delete(idAnagrafica: number, idContratto: number, idCommessa: number) {
+  elimina(idAnagrafica: number) {
+    console.log(idAnagrafica);
+    //mi prendo il dettaglio dell anagrafica della riga selezionata
+    this.anagraficaDtoService.detailAnagraficaDto(idAnagrafica).subscribe(
+      (resp: any) => {
+        //parseing json
+        // resp = (resp as any)['anagraficaDto'];
+        console.log(resp);
+        //se é ok parte l elimina
+        this.anagraficaDtoService.delete(resp).subscribe(
+          (deleted: any) => {
+            console.log('eliminato con successo ' + deleted);
+          },
+          (errorDeleted: any) => {
+            console.log("Errore durante l'eliminazione: " + errorDeleted);
+          }
+        );
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
+  }
+
+  delete(
+    idUtente: number,
+    idAnagrafica: number,
+    idContratto: number,
+    idCommessa: number
+  ) {
+    console.log('value:' + this.filterAnagraficaDto.value);
+    console.log(
+      'idAnagrafica: ' + this.filterAnagraficaDto.value.anagrafica.id
+    );
+    console.log(
+      'idUtente: ' + this.filterAnagraficaDto.value.anagrafica.utente.id
+    );
+    console.log('idCommessa: ' + this.filterAnagraficaDto.value.commessa.id);
+    console.log('idContratto: ' + this.filterAnagraficaDto.value.contratto.id);
+
     this.filterAnagraficaDto.value.anagrafica.id = idAnagrafica;
+    this.filterAnagraficaDto.value.anagrafica.utente.id = idUtente;
     this.filterAnagraficaDto.value.contratto.id = idContratto;
     this.filterAnagraficaDto.value.commessa.id = idCommessa;
     const body = JSON.stringify({
