@@ -433,29 +433,36 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   elimina(idAnagrafica: number) {
-    console.log(idAnagrafica);
-    //mi prendo il dettaglio dell anagrafica della riga selezionata
-    this.anagraficaDtoService.detailAnagraficaDto(idAnagrafica,localStorage.getItem('token')).subscribe(
-      (resp: any) => {
-        //parseing json
-        // resp = (resp as any)['anagraficaDto'];
-        console.log(resp);
-        //se é ok parte l elimina
-        this.anagraficaDtoService.delete(resp,localStorage.getItem('token')).subscribe(
-          (deleted: any) => {
-            console.log('eliminato con successo ' + deleted);
-            // location.reload();
-            this.ngOnInit();
-          },
-          (errorDeleted: any) => {
-            console.log("Errore durante l'eliminazione: " + errorDeleted);
-          }
-        );
-      },
-      (error: any) => {
-        console.log(error);
-      }
-    );
+    const confirmation = confirm('Sei sicuro di voler eliminare questo utente?');
+    if (confirmation) {
+      console.log(idAnagrafica);
+      //mi prendo il dettaglio dell anagrafica della riga selezionata
+      this.anagraficaDtoService.detailAnagraficaDto(idAnagrafica,localStorage.getItem('token')).subscribe(
+        (resp: any) => {
+          //parseing json
+          // resp = (resp as any)['anagraficaDto'];
+          console.log(resp);
+          //se é ok parte l elimina
+          this.anagraficaDtoService.delete(resp,localStorage.getItem('token')).subscribe(
+            (deleted: any) => {
+              console.log('eliminato con successo ' + deleted);
+              // location.reload();
+              this.ngOnInit();
+            },
+            (errorDeleted: any) => {
+              console.log("Errore durante l'eliminazione: " + errorDeleted);
+            }
+          );
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    }
+    else{
+      return;
+    }
+
   }
 
   delete(
