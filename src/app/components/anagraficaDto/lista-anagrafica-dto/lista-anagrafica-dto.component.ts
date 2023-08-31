@@ -33,31 +33,31 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
-      nome: new FormControl(''),
-      cognome: new FormControl(''),
-      attivo: new FormControl(''),
+      nome: new FormControl(null),
+      cognome: new FormControl(null),
+      attivo: new FormControl(null),
     }),
     contratto: new FormGroup({
-      ralAnnua: new FormControl(''),
-      dataAssunzione: new FormControl(''),
-      dataFineRapporto: new FormControl(''),
+      ralAnnua: new FormControl(null),
+      dataAssunzione: new FormControl(null),
+      dataFineRapporto: new FormControl(null),
       livelloContratto: new FormGroup({
-        ccnl: new FormControl(''),
+        ccnl: new FormControl(null),
       }),
       tipoCcnl: new FormGroup({
-        descrizione: new FormControl(''),
+        descrizione: new FormControl(null),
       }),
       tipoContratto: new FormGroup({
-        descrizione: new FormControl(''),
+        descrizione: new FormControl(null),
       }),
       tipoAzienda: new FormGroup({
-        descrizione: new FormControl(''),
+        descrizione: new FormControl(null),
       }),
     }),
     commessa: new FormGroup({
-      cliente: new FormControl(''),
-      azienda: new FormControl(''),
-      nominativo: new FormControl(''),
+      cliente: new FormControl(null),
+      azienda: new FormControl(null),
+      nominativo: new FormControl(null),
     }),
   });
 
@@ -142,32 +142,32 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
     this.filterAnagraficaDto = this.formBuilder.group({
       anagrafica: new FormGroup({
-        nome: new FormControl(''),
-        cognome: new FormControl(''),
-        attivo: new FormControl(''),
-        aziendaTipo: new FormControl(''),
+        nome: new FormControl(null),
+        cognome: new FormControl(null),
+        attivo: new FormControl(null),
+        aziendaTipo: new FormControl(null),
       }),
       contratto: new FormGroup({
-        ralAnnua: new FormControl(''),
-        dataAssunzione: new FormControl(''),
-        dataFineRapporto: new FormControl(''),
+        ralAnnua: new FormControl(null),
+        dataAssunzione: new FormControl(null),
+        dataFineRapporto: new FormControl(null),
         livelloContratto: new FormGroup({
-          ccnl: new FormControl(''),
+          ccnl: new FormControl(null),
         }),
         tipoCcnl: new FormGroup({
-          descrizione: new FormControl(''),
+          descrizione: new FormControl(null),
         }),
         tipoContratto: new FormGroup({
-          descrizione: new FormControl(''),
+          descrizione: new FormControl(null),
         }),
         tipoAzienda: new FormGroup({
-          descrizione: new FormControl(''),
+          descrizione: new FormControl(null),
         }),
       }),
       commessa: new FormGroup({
-        cliente: new FormControl(''),
-        azienda: new FormControl(''),
-        nominativo: new FormControl(''),
+        cliente: new FormControl(null),
+        azienda: new FormControl(null),
+        nominativo: new FormControl(null),
       }),
     });
     this.caricaTipoContratto();
@@ -269,14 +269,48 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         : '';
 
     this.lista = this.originalLista.filter((element: any) => {
-      const nome = element?.anagrafica.nome ?? 'undefined';
-      const cognome = (
-        element?.anagrafica.cognome ?? 'undefined'
-      ).toLowerCase();
-      const aziendaTipo = (
-        element?.anagrafica.aziendaTipo ?? 'undefined'
-      ).toLowerCase();
-      const attivo = element?.anagrafica.attivo ?? 'undefined';
+      var nome;
+
+      if(!element?.anagrafica.nome || element?.anagrafica.nome==""){
+        nome='undefined';
+      }else{
+
+        nome=element?.anagrafica.nome;
+
+      }
+
+
+      var cognome;
+
+      if(!element?.anagrafica.cognome || element?.anagrafica.cognome==""){
+        cognome='undefined';
+      }else{
+
+        cognome=element?.anagrafica.cognome;
+
+      }
+
+
+
+      var aziendaTipo;
+
+      if(!element?.anagrafica.aziendaTipo || element?.anagrafica.aziendaTipo==""){
+        aziendaTipo='undefined';
+      }else{
+
+        aziendaTipo=element?.anagrafica.aziendaTipo;
+
+      }
+
+      var attivo;
+
+      if(!element?.anagrafica.attivo || element?.anagrafica.attivo==""){
+        attivo='undefined';
+      }else{
+
+        attivo=element?.anagrafica.attivo;
+
+      }
 
       /*const nominativo = (
         element?.commessa.nominativo ?? 'undefined'
@@ -286,16 +320,29 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
       var commesse = [];
 
-      if (element?.commesse != null || element?.commesse.lenght > 0) {
+      if (!element?.commesse != null || element?.commesse.lenght > 0) {
         commesse = element?.commesse;
       }
 
-      const ralAnnua = (
-        element?.contratto.ralAnnua ?? 'undefined'
-      ).toLowerCase();
+      var ralAnnua;
+      if(!element?.contratto.ralAnnua || element?.contratto.ralAnnua==""){
+
+        ralAnnua="undefined";
+
+      }else{
+
+        var ralAnnua= element?.contratto.ralAnnua;
+
+
+      }
+
+
+
+
       const dataAssunzione = element?.contratto.dataAssunzione ?? 'undefined';
       const dataFineRapporto =
         element?.contratto.dataFineRapporto ?? 'undefined';
+
       var descrizioneTipoContratto = 'undefined';
       if (element?.contratto.tipoContratto != null) {
         descrizioneTipoContratto = (
@@ -370,6 +417,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
     return check;
   }
+
+
 
   annullaFiltri() {
 
