@@ -42,9 +42,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       dataAssunzione: new FormControl(''),
       dataFineRapporto: new FormControl(''),
       livelloContratto: new FormGroup({
-        descrizione: new FormControl(''),
+        ccnl: new FormControl(''),
       }),
-      contrattoNazionale: new FormGroup({
+      tipoCcnl: new FormGroup({
         descrizione: new FormControl(''),
       }),
       tipoContratto: new FormGroup({
@@ -152,9 +152,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         dataAssunzione: new FormControl(''),
         dataFineRapporto: new FormControl(''),
         livelloContratto: new FormGroup({
-          descrizione: new FormControl(''),
+          ccnl: new FormControl(''),
         }),
-        contrattoNazionale: new FormGroup({
+        tipoCcnl: new FormGroup({
           descrizione: new FormControl(''),
         }),
         tipoContratto: new FormGroup({
@@ -216,6 +216,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       this.filterAnagraficaDto.value.anagrafica.nome != null
         ? this.filterAnagraficaDto.value.anagrafica.nome.toLowerCase()
         : '';
+
     const filtroCognome =
       this.filterAnagraficaDto.value.anagrafica.cognome != null
         ? this.filterAnagraficaDto.value.anagrafica.cognome.toLowerCase()
@@ -259,9 +260,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         ? this.filterAnagraficaDto.value.contratto.tipoContratto.descrizione.toLowerCase()
         : '';
     const filtroDescrizioneContrattoNazionale =
-      this.filterAnagraficaDto.value.contratto.contrattoNazionale.descrizione !=
+      this.filterAnagraficaDto.value.contratto.tipoCcnl.descrizione !=
       null
-        ? this.filterAnagraficaDto.value.contratto.contrattoNazionale.descrizione.toLowerCase()
+        ? this.filterAnagraficaDto.value.contratto.tipoCcnl.descrizione.toLowerCase()
         : '';
     const filtroDescrizioneTipoAzienda =
       this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione != null
@@ -297,9 +298,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         ).toLowerCase();
       }
       var descrizioneContrattoNazionale = 'undefined';
-      if (element?.contratto.contrattoNazionale != null) {
+      if (element?.contratto.tipoCcnl != null) {
         descrizioneContrattoNazionale = (
-          element?.contratto.contrattoNazionale.descrizione ?? 'undefined'
+          element?.contratto.tipoCcnl.descrizione ?? 'undefined'
         ).toLowerCase();
       }
       var descrizioneTipoAzienda = 'undefined';
@@ -308,6 +309,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           element?.contratto.tipoAzienda.descrizione ?? 'undefined'
         ).toLowerCase();
       }
+
+      console.log(filtroNome,filtroCognome,filtroDescrizioneTipoContratto,filtroDescrizioneContrattoNazionale,filtroDescrizioneTipoAzienda)
 
       return (
         nome == filtroNome ||

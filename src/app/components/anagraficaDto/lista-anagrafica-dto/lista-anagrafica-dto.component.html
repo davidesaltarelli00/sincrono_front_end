@@ -114,10 +114,10 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div formGroupName="contrattoNazionale">
+                        <div formGroupName="tipoCcnl">
 
-                            <label for="filter-Tipo Contratto nazionale">Tipo Contratto nazionale:</label>
-                            <select class="form-control" id="tipoContrattoNazionale" formControlName="descrizione">
+                            <label for="filter-tipoCcnl">Tipo Contratto nazionale:</label>
+                            <select class="form-control" id="tipoCcnl" formControlName="descrizione">
                                 <option value="">--nessuna selezione--</option>
                                 <option *ngFor="let contrattiNazionale of contrattiNazionali"
                                     value="{{contrattiNazionale.descrizione}}" formControlName="descrizione">
