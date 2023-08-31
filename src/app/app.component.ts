@@ -6,6 +6,7 @@ import { profileBoxService } from './components/profile-box/profile-box.service'
 import { MatDialog } from '@angular/material/dialog';
 import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit {
   jsonData: any = {};
   idFunzione: any={};
   id: any;
+  currentDateTime: any;
 
   constructor(
     private router: Router,
@@ -30,11 +32,16 @@ export class AppComponent implements OnInit {
     private profileBoxService: profileBoxService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private http: HttpClient
+    private http: HttpClient,
+    private datePipe: DatePipe
   ) {
   }
 
   ngOnInit() {
+
+    const currentDate = new Date();
+    this.currentDateTime = this.datePipe.transform(currentDate, 'yyyy-MM-dd'); // HH:mm:ss
+
     this.token = localStorage.getItem('tokenProvvisorio');
     this.token = localStorage.getItem('token');
     this.router.events.subscribe((event) => {
