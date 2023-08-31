@@ -214,16 +214,16 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   filter() {
     const filtroNome =
       this.filterAnagraficaDto.value.anagrafica.nome != null
-        ? this.filterAnagraficaDto.value.anagrafica.nome.toLowerCase()
+        ? this.filterAnagraficaDto.value.anagrafica.nome
         : '';
 
     const filtroCognome =
       this.filterAnagraficaDto.value.anagrafica.cognome != null
-        ? this.filterAnagraficaDto.value.anagrafica.cognome.toLowerCase()
+        ? this.filterAnagraficaDto.value.anagrafica.cognome
         : '';
     const filtroAziendaTipo =
       this.filterAnagraficaDto.value.anagrafica.aziendaTipo != null
-        ? this.filterAnagraficaDto.value.anagrafica.aziendaTipo.toLowerCase()
+        ? this.filterAnagraficaDto.value.anagrafica.aziendaTipo
         : '';
     const filtroAttivo =
       this.filterAnagraficaDto.value.anagrafica.attivo != null
@@ -232,20 +232,20 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
     const filtroNominativo =
       this.filterAnagraficaDto.value.commessa.nominativo != null
-        ? this.filterAnagraficaDto.value.commessa.nominativo.toLowerCase()
+        ? this.filterAnagraficaDto.value.commessa.nominativo
         : '';
     const filtroCliente =
       this.filterAnagraficaDto.value.commessa.cliente != null
-        ? this.filterAnagraficaDto.value.commessa.cliente.toLowerCase()
+        ? this.filterAnagraficaDto.value.commessa.cliente
         : '';
     const filtroAzienda =
       this.filterAnagraficaDto.value.commessa.azienda != null
-        ? this.filterAnagraficaDto.value.commessa.azienda.toLowerCase()
+        ? this.filterAnagraficaDto.value.commessa.azienda
         : '';
 
     const filtroRalAnnua =
       this.filterAnagraficaDto.value.contratto.ralAnnua != null
-        ? this.filterAnagraficaDto.value.contratto.ralAnnua.toLowerCase()
+        ? this.filterAnagraficaDto.value.contratto.ralAnnua
         : '';
     const filtroDataAssunzione =
       this.filterAnagraficaDto.value.contratto.dataAssunzione != null
@@ -257,20 +257,19 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         : '';
     const filtroDescrizioneTipoContratto =
       this.filterAnagraficaDto.value.contratto.tipoContratto.descrizione != null
-        ? this.filterAnagraficaDto.value.contratto.tipoContratto.descrizione.toLowerCase()
+        ? this.filterAnagraficaDto.value.contratto.tipoContratto.descrizione
         : '';
     const filtroDescrizioneContrattoNazionale =
-      this.filterAnagraficaDto.value.contratto.tipoCcnl.descrizione !=
-      null
-        ? this.filterAnagraficaDto.value.contratto.tipoCcnl.descrizione.toLowerCase()
+      this.filterAnagraficaDto.value.contratto.tipoCcnl.descrizione != null
+        ? this.filterAnagraficaDto.value.contratto.tipoCcnl.descrizione
         : '';
     const filtroDescrizioneTipoAzienda =
       this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione != null
-        ? this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione.toLowerCase()
+        ? this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione
         : '';
 
     this.lista = this.originalLista.filter((element: any) => {
-      const nome = (element?.anagrafica.nome ?? 'undefined').toLowerCase();
+      const nome = element?.anagrafica.nome ?? 'undefined';
       const cognome = (
         element?.anagrafica.cognome ?? 'undefined'
       ).toLowerCase();
@@ -279,11 +278,17 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       ).toLowerCase();
       const attivo = element?.anagrafica.attivo ?? 'undefined';
 
-      const nominativo = (
+      /*const nominativo = (
         element?.commessa.nominativo ?? 'undefined'
       ).toLowerCase();
       const cliente = (element?.commessa.cliente ?? 'undefined').toLowerCase();
-      const azienda = (element?.commessa.azienda ?? 'undefined').toLowerCase();
+      const azienda = (element?.commessa.azienda ?? 'undefined').toLowerCase();*/
+
+      var commesse = [];
+
+      if (element?.commesse != null || element?.commesse.lenght > 0) {
+        commesse = element?.commesse;
+      }
 
       const ralAnnua = (
         element?.contratto.ralAnnua ?? 'undefined'
@@ -310,16 +315,19 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         ).toLowerCase();
       }
 
-      console.log(filtroNome,filtroCognome,filtroDescrizioneTipoContratto,filtroDescrizioneContrattoNazionale,filtroDescrizioneTipoAzienda)
+      console.log(
+        filtroNome,
+        filtroCognome,
+        filtroDescrizioneTipoContratto,
+        filtroDescrizioneContrattoNazionale,
+        filtroDescrizioneTipoAzienda
+      );
 
       return (
         nome == filtroNome ||
         cognome == filtroCognome ||
         aziendaTipo == filtroAziendaTipo ||
         attivo == filtroAttivo ||
-        nominativo == filtroNominativo ||
-        cliente == filtroCliente ||
-        azienda == filtroAzienda ||
         ralAnnua == filtroRalAnnua ||
         new Date(dataAssunzione).getTime() ==
           new Date(filtroDataAssunzione).getTime() ||
@@ -327,9 +335,40 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           new Date(filtroDataFineRapporto).getTime() ||
         descrizioneTipoContratto == filtroDescrizioneTipoContratto ||
         descrizioneContrattoNazionale == filtroDescrizioneContrattoNazionale ||
-        descrizioneTipoAzienda == filtroDescrizioneTipoAzienda
+        descrizioneTipoAzienda == filtroDescrizioneTipoAzienda ||
+        this.checkCommesse(
+          filtroCliente,
+          filtroAzienda,
+          filtroNominativo,
+          commesse
+        )
       );
     });
+  }
+
+  checkCommesse(
+    filtroCliente: any,
+    filtroAzienda: any,
+    filtroNominativo: any,
+    commesse: any
+  ) {
+    var check = false;
+
+    if (commesse.length == 0) {
+      return check;
+    } else {
+      for (const element of commesse) {
+        if (
+          element.cliente == filtroCliente ||
+          element.azienda == filtroAzienda ||
+          element.nominativo == filtroNominativo
+        ) {
+          check = true;
+        }
+      }
+    }
+
+    return check;
   }
 
   annullaFiltri() {

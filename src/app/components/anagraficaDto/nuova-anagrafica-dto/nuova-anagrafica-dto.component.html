@@ -287,6 +287,21 @@
                           <button mat-button matStepperNext>Avanti »</button>
                         </div>
                       </div> -->
+                      <div class="row">
+                        <div class="col-6" style="text-align: end;">
+
+                          <button class="btn btn-info" type="submit" [routerLink]="['/lista-anagrafica']">
+                            Annulla
+                          </button>
+
+                        </div>
+                        <div class="col-6" style="text-align: start;">
+                          <button class="btn btn-success"  >
+                            Salva
+                          </button>
+                        </div>
+
+                      </div>
                       <br>
                     </div>
                   </mat-card-content>
@@ -444,14 +459,15 @@
                           type="number"
                         >
                           <option value="">--nessuna selezione--</option>
-                          <option
-                            *ngFor="let tipoAzienda of tipiAziende"
-                            [value]="tipoAzienda.id"
-                          >
+                          <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
                             {{ tipoAzienda.descrizione }}
                           </option>
                         </select>
+                        <div *ngIf="AnagraficaDto.get('contratto.tipoAzienda.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoAzienda.id')?.touched" class="text-danger">
+                          Il campo Tipo azienda è obbligatorio.
+                        </div>
                       </div>
+
 
                       <div class="col-md-3">
                         <div formGroupName="tipoContratto">
@@ -464,14 +480,23 @@
                             <option value="">--nessuna selezione--</option>
                             <option
                               *ngFor="let tipoContratto of tipiContratti"
-                              value="{{ tipoContratto.id }}"
+                              [value]="tipoContratto.id"
                             >
                               {{ tipoContratto.descrizione }}
                             </option>
                           </select>
-
+                          <div
+                            *ngIf="AnagraficaDto.get('contratto.tipoContratto.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoContratto.id')?.touched"
+                            class="text-danger"
+                          >
+                            Il campo Tipo Contratto è obbligatorio.
+                          </div>
                         </div>
                       </div>
+
+
+
+
                       <div class="col-md-3">
                         <div formGroupName="livelloContratto">
                           <label for="filter-LivelloContratto">Livello Contratto:</label>
@@ -483,19 +508,24 @@
                             <option value="">--nessuna selezione--</option>
                             <option
                               *ngFor="let livelloContratto of livelliContratti"
-                              value="{{ livelloContratto.id }}"
+                              [value]="livelloContratto.id"
                             >
                               {{ livelloContratto.livello }}
                             </option>
                           </select>
+                          <div
+                            *ngIf="AnagraficaDto.get('contratto.livelloContratto.id')?.hasError('required') && AnagraficaDto.get('contratto.livelloContratto.id')?.touched"
+                            class="text-danger"
+                          >
+                            Il campo Livello Contratto è obbligatorio.
+                          </div>
                         </div>
                       </div>
 
+
                       <div class="col-md-3">
                         <div formGroupName="tipoCcnl">
-                          <label for="tipoCcnl"
-                            >Tipo Contratto nazionale:</label
-                          >
+                          <label for="tipoCcnl">Tipo Contratto nazionale:</label>
                           <select
                             class="form-control"
                             id="contratto.tipoCcnl.id"
@@ -504,13 +534,20 @@
                             <option value="">--nessuna selezione--</option>
                             <option
                               *ngFor="let contrattiNazionale of contrattiNazionali"
-                              value="{{ contrattiNazionale.id }}"
+                              [value]="contrattiNazionale.id"
                             >
                               {{ contrattiNazionale.descrizione }}
                             </option>
                           </select>
+                          <div
+                            *ngIf="AnagraficaDto.get('contratto.tipoCcnl.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoCcnl.id')?.touched"
+                            class="text-danger"
+                          >
+                            Il campo Tipo Contratto nazionale è obbligatorio.
+                          </div>
                         </div>
                       </div>
+
 
 
                     </div>
@@ -539,20 +576,28 @@
                             class="form-control"
                             formControlName="sedeAssunzione"
                           />
+
                         </div>
                       </div>
                       <div class="col-md-3">
-                          <div class="form-group">
-                            <label for="dataAssunzione">Data Assunzione</label>
-                            <input
-                              type="date"
-                              class="form-control"
-                              name="dataInput"
-                              formControlName="dataAssunzione"
-                              placeholder="Inserire data assunzione"
-                            />
+                        <div class="form-group">
+                          <label for="dataAssunzione">Data Assunzione</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            name="dataInput"
+                            formControlName="dataAssunzione"
+                            placeholder="Inserire data assunzione"
+                          />
+                          <div
+                            *ngIf="AnagraficaDto.get('contratto.dataAssunzione')?.hasError('required') && AnagraficaDto.get('contratto.dataAssunzione')?.touched"
+                            class="text-danger"
+                          >
+                            La data di assunzione è obbligatoria.
                           </div>
+                        </div>
                       </div>
+
                       <div class="col-md-3">
                           <div class="form-group">
                             <label for="dataInizoProva">Data Inzio prova</label>
@@ -600,7 +645,14 @@
                             type="text"
                             class="form-control"
                             formControlName="mesiDurata"
+                            placeholder="Inserire mesi durata."
                           />
+                          <div
+                          *ngIf="AnagraficaDto.get('contratto.mesiDurata')?.hasError('required') && AnagraficaDto.get('contratto.mesiDurata')?.touched"
+                          class="text-danger"
+                        >
+                          I mesi di durata sono obbligatori.
+                        </div>
                         </div>
                       </div>
                     </div>
@@ -908,7 +960,6 @@
                         <button class="btn btn-info" type="submit" [routerLink]="['/lista-anagrafica']">
                           Annulla
                         </button>
-                        <!--dark btn-sm rounded-pill shadow-sm  style="background-color: rgb(18, 0, 122); color: white"-->
 
                       </div>
                       <div class="col-6" style="text-align: start;">
@@ -917,7 +968,6 @@
                         </button>
                       </div>
 
-                      <!--dark btn-sm rounded-pill shadow-sm     style="background-color: rgb(24, 122, 0); color: white"-->
                     </div>
                   </div>
                 </div>
