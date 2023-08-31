@@ -82,6 +82,10 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
 
+  modificaCommessa(){
+    this.router.navigate(['/modifica-anagrafica/'+this.id]);
+  }
+
   modificaAnagrafica(){
     this.router.navigate(['/modifica-anagrafica/'+this.id]);
   }

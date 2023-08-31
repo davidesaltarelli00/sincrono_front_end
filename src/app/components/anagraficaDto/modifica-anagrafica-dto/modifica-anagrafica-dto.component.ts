@@ -298,7 +298,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           );
           // Rimuovi l'elemento dall'array locale
           this.elencoCommesse.splice(index, 1);
-          location.reload();
+          // this.caricaDati();
         },
         (error: any) => {
           console.log(

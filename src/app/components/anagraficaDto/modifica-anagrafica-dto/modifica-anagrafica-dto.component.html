@@ -16,10 +16,10 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-3">
+                <!-- <div class="col-3">
                   <label for="attivo">Attivo:</label>
-                  <input type="checkbox" id="attivo" formControlName="attivo" />
-                </div>
+                  <input type="hidden" id="attivo" formControlName="attivo" />
+                </div> -->
                 <div class="col-3">
                   <label for="aziendaTipo">Tipo Azienda:</label>
                   <input type="text" class="form-control" id="aziendaTipo" formControlName="aziendaTipo" />
@@ -32,13 +32,13 @@
                   <label for="cognome">Cognome:</label>
                   <input type="text" class="form-control" id="cognome" formControlName="cognome" />
                 </div>
-
+                <div class="col-3">
+                  <label for="codiceFiscale">Codice Fiscale:</label>
+                  <input type="text" class="form-control" id="codiceFiscale" formControlName="codiceFiscale" />
+                </div>
               </div>
             <div class="row">
-              <div class="col-3">
-                <label for="codiceFiscale">Codice Fiscale:</label>
-                <input type="text" class="form-control" id="codiceFiscale" formControlName="codiceFiscale" />
-              </div>
+
               <div  class="col-3">
                 <label for="comuneDiNascita">Comune di Nascita:</label>
                 <input type="text" class="form-control" id="comuneDiNascita" formControlName="comuneDiNascita" />
@@ -76,6 +76,11 @@
               <div class="col-3">
                 <label for="mailAziendale">Mail Aziendale:</label>
                 <input type="text" class="form-control" id="mailAziendale" formControlName="mailAziendale" />
+                <div
+                *ngIf="anagraficaDto.get('anagrafica.mailAziendale')?.hasError('required') && anagraficaDto.get('anagrafica.mailAziendale')?.hasError('touched') "
+                class="text-danger">
+                Il campo mail aziendale è obbligatorio.
+              </div>
               </div>
               <div class="col-3">
                 <label for="mailPec">Mail PEC:</label>
@@ -402,10 +407,11 @@
                     <label>Data Assunzione: </label>
                     <div class="form-group">
                       <input
-                        type="date"
+                        type="text"
                         class="form-control"
                         [value]="transformDate(data?.contratto?.dataAssunzione)"
                         formControlName="dataAssunzione"
+                        placeholder="Inserire data di assunzione, formato valido: Anno-Mese-Giorno"
                       />
                     </div>
                   </div>
@@ -709,7 +715,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-3">
+              <!-- <div class="col-md-3">
                 <label>Attivo: </label>
                 <div class="form-group">
                   <input
@@ -720,7 +726,7 @@
                     formControlName="attivo"
                   />
                 </div>
-              </div>
+              </div> -->
 
             </div>
 

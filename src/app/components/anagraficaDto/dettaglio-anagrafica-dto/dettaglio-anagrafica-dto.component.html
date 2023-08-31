@@ -165,7 +165,7 @@
         </div>
     -->
     <div class="row">
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
             <label>Attivo:</label>
             <div class="form-group">
                 <div class="form-check">
@@ -173,7 +173,7 @@
                         disabled />
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="row">
         <div class="col-md-3">
@@ -619,7 +619,7 @@
 
     <div class="row" [hidden]="data?.commesse.length===0">
       <div class="col-12">
-        <table class="table table-bordered">
+        <table class="table table-bordered" style="font-size: 10px;">
           <thead>
             <tr>
               <th>Attesa lavori</th>
@@ -632,9 +632,10 @@
               <th>Data fine</th>
               <th>Distacco</th>
               <th>Nominativo</th>
-              <th>Stato</th>
+              <!-- <th>Stato</th> -->
               <th>Tariffa giornaliera</th>
               <th>Titolo posizione</th>
+              <th>Modifica</th>
             </tr>
           </thead>
           <tbody>
@@ -646,14 +647,15 @@
               <td>{{commessa.cliente}}</td>
               <td>{{commessa.clienteFinale}}</td>
               <td>{{commessa.costoMese}}</td>
-              <td>{{commessa.dataInizio}}</td>
-              <td>{{commessa.dataFine}}</td>
+              <td>{{commessa.dataInizio| date:'short'}}</td>
+              <td>{{commessa.dataFine| date:'short'}}</td>
               <td>{{commessa.distacco}}</td>
               <td>{{commessa.nominativo}}</td>
-              <td *ngIf="commessa.stato" >Attivo</td>
-              <td *ngIf="!commessa.stato">Non attivo</td>
+              <!-- <td *ngIf="commessa.stato" >Attivo</td> -->
+              <!-- <td *ngIf="!commessa.stato">Non attivo</td> -->
               <td>{{commessa.tariffaGiornaliera}}</td>
               <td>{{commessa.titoloPosizione}}</td>
+              <td> <button class="btn btn-warning" (click)="modificaCommessa()" > <i class="fa fa-pencil"></i> </button> </td>
             </tr>
           </tbody>
         </table>
