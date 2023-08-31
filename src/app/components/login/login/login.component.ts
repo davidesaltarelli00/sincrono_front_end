@@ -11,7 +11,7 @@ import { AuthService } from '../login-service';
 export class LoginComponent implements OnInit {
 
   token: string | null = null;
-
+  passwordVisible = false;
   loginForm: FormGroup;
   recuperoPasswordInCorso: boolean = false;
   constructor(
@@ -25,6 +25,9 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
+  }
 
   ngOnInit() {
 
