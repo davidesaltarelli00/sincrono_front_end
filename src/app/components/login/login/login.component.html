@@ -28,11 +28,29 @@
                 </div>
                 <div>
                   <label for="password">Password:</label>
-                  <input class="form-control" type="password" placeholder="Inserisci la password." id="password" formControlName="password" required>
+                  <div class="input-with-icon">
+                    <input
+                      class="form-control"
+                      [type]="passwordVisible ? 'text' : 'password'"
+                      placeholder="Inserisci la password."
+                      id="password"
+                      formControlName="password"
+                      required
+                    />
+                    <span
+                      class="toggle-password"
+                      (click)="togglePasswordVisibility()"
+                      [class.active]="passwordVisible"
+                    >
+                      <i class="fa" [ngClass]="passwordVisible ? 'fa-eye-slash' : 'fa-eye'"></i>
+                    </span>
+                  </div>
                   <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
                     La password è obbligatoria.
                   </div>
                 </div>
+
+
                 <br>
                 <div class="col-3">
                   <button mat-flat-button class="btn btn success" type="submit" [disabled]="loginForm.invalid">Login</button>

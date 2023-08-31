@@ -114,20 +114,18 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div formGroupName="contrattoNazionale">
-
-                            <label for="filter-Tipo Contratto nazionale">Tipo Contratto nazionale:</label>
-                            <select class="form-control" id="tipoContrattoNazionale" formControlName="descrizione">
+                        <div formGroupName="tipoCcnl">
+                            <label for="filter-TipoCcnl">Tipo Contratto Nazionale:</label>
+                            <select class="form-control" id="tipoCcnl" formControlName="descrizione" type="number">
                                 <option value="">--nessuna selezione--</option>
-                                <option *ngFor="let contrattiNazionale of contrattiNazionali"
-                                    value="{{contrattiNazionale.descrizione}}" formControlName="descrizione">
-                                    {{contrattiNazionale.descrizione}}</option>
+                                <option *ngFor="let tipoCcnl of tipiCcnl" value="{{tipoCcnl.descrizione}}">
+                                    {{tipoCcnl.descrizione}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div formGroupName="tipoAzienda">
-                            <label for="filter-Tipo Azienda">Tipo Azienda:</label>
+                            <label for="filter-TipoAzienda">Tipo Azienda:</label>
                             <select class="form-control" id="tipoAzienda" formControlName="descrizione" type="number">
                                 <option value="">--nessuna selezione--</option>
                                 <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.descrizione}}">

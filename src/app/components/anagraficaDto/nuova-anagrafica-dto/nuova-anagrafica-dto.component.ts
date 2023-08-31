@@ -106,11 +106,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         }),
         qualifica: new FormControl(''),
         sedeAssunzione: new FormControl(''),
-        dataAssunzione: new FormControl('', Validators.required),
+        dataAssunzione: new FormControl(''),
         dataInizioProva: new FormControl(''),
         dataFineProva: new FormControl(''),
         dataFineRapporto: new FormControl(''),
-        mesiDurata: new FormControl('', Validators.required),
+        mesiDurata: new FormControl(''),
         livelloIniziale: new FormControl(''),
         // livelloAttuale: new FormControl(''),
         // livelloFinale: new FormControl(''),
@@ -228,85 +228,60 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   inserisci() {
-    // //Form non valido:
-    // if (this.AnagraficaDto.invalid) {
-    //   this.showErrorAlert = true;
-    //   this.missingFields = [];
+    const removeEmpty = (obj: any) => {
+      Object.keys(obj).forEach((key) => {
+        if (obj[key] && typeof obj[key] === 'object') {
+          removeEmpty(obj[key]);
+        } else if (obj[key] === '') {
+          delete obj[key];
+        }
+        if (obj.contratto && Object.keys(obj.contratto).length === 0) {
+          delete obj.contratto;
+        }
+        if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
+          delete obj.tipoContratto;
+        }
+        if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
+          delete obj.tipoAzienda;
+        }
+        if (obj.tipoCcnl && Object.keys(obj.tipoCcnl).length === 0) {
+          delete obj.tipoCcnl;
+        }
+        if (
+          obj.livelloContratto &&
+          Object.keys(obj.livelloContratto).length === 0
+        ) {
+          delete obj.livelloContratto;
+        }
+      });
+    };
+    removeEmpty(this.AnagraficaDto.value);
 
-    //   for (const field in this.AnagraficaDto.controls) {
-    //     if (this.AnagraficaDto.controls[field].invalid) {
-    //       this.missingFields.push(field);
-    //     }
-    //   }
-    // } else {
-    //   // form valido:
-    //   this.showErrorAlert = false;
-    //   this.missingFields = [];
-    //   const body = JSON.stringify({
-    //     anagraficaDto: this.AnagraficaDto.value,
-    //   });
-    //   console.log(body);
-
-    //   this.anagraficaDtoService.insert(body).subscribe((result) => {
-    //     if ((result as any).esito.code != 0) {
-    //       alert(
-    //         'inserimento non riuscito\n' +
-    //           'target: ' +
-    //           (result as any).esito.target
-    //       );
-    //       this.errore = true;
-    //       this.messaggio = (result as any).esito.target;
-    //       return;
-    //     } else {
-    //       alert('inserimento riuscito');
-    //       console.log(this.AnagraficaDto.value);
-    //     }
-    //     this.router.navigate(['/lista-anagrafica']);
-    //   });
-    // }
-    // // console.log(JSON.stringify(this.AnagraficaDto.value));
-
-    // Reset error state and missing fields array
     this.showErrorAlert = false;
     this.missingFields = [];
-
-    // Check for missing required fields
     if (this.AnagraficaDto.invalid) {
-      // this.showErrorAlert = true;
-
-      // // Loop through form controls and identify missing fields
-      // Object.keys(this.AnagraficaDto.controls).forEach((field) => {
-      //   const control = this.AnagraficaDto.get(field);
-      //   if (control?.errors?.['required']) {
-      //     this.missingFields.push(field);
-      //   }
-      // });
-
-      console.log('Qualcosa e andato storto');
+      alert('Qualcosa e andato storto');
     } else {
       const body = JSON.stringify({
         anagraficaDto: this.AnagraficaDto.value,
       });
+      console.log('Backend payload: ' + body);
 
-      console.log(body);
-
-      this.anagraficaDtoService
-        .insert(body, localStorage.getItem('token'))
-        .subscribe((result) => {
-          if ((result as any).esito.code !== 200) {
-            alert(
-              'Inserimento non riuscito\n' +
-                'Target: ' +
-                (result as any).esito.target
-            );
-            this.errore = true;
-            this.messaggio = (result as any).esito.target;
-          } else {
-            alert('Inserimento riuscito');
-            console.log(this.AnagraficaDto.value);
-          }
-          // this.router.navigate(['/lista-anagrafica']);
-        });
+      this.anagraficaDtoService.insert(body, localStorage.getItem('token')).subscribe((result) => {
+        if ((result as any).esito.code !== 200) {
+          alert(
+            'Inserimento non riuscito\n' +
+              'Target: ' +
+              (result as any).esito.target
+          );
+          this.errore = true;
+          this.messaggio = (result as any).esito.target;
+        } else {
+          alert('Inserimento riuscito');
+          console.log(this.AnagraficaDto.value);
+          this.router.navigate(['/lista-anagrafica']);
+        }
+      });
     }
   }
 
@@ -396,106 +371,104 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 }
 
-/*
-vecchio codice nel metodo inserisci:
+// vecchio codice nel metodo inserisci:
 // this.submitted = true;
-    // console.log('Inserisco');
-    // const removeEmpty = (obj: any) => {
-    //   Object.keys(obj).forEach((key) => {
-    //     if (obj[key] && typeof obj[key] === 'object') {
-    //       removeEmpty(obj[key]);
-    //     } else if (obj[key] === '') {
-    //       delete obj[key];
-    //     }
-    //     if (obj.anagrafica && Object.keys(obj.anagrafica).length === 0) {
-    //       delete obj.anagrafica;
-    //     }
-    //     if (obj.commessa && Object.keys(obj.commessa).length === 0) {
-    //       delete obj.commessa;
-    //     }
-    //     if (obj.contratto && Object.keys(obj.contratto).length === 0) {
-    //       delete obj.contratto;
-    //     }
-    //     if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
-    //       delete obj.tipoContratto;
-    //     }
-    //     if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
-    //       delete obj.tipoAzienda;
-    //     }
-    //     if (
-    //       obj.contrattoNazionale &&
-    //       Object.keys(obj.contrattoNazionale).length === 0
-    //     ) {
-    //       delete obj.contrattoNazionale;
-    //     }
-    //     if (
-    //       obj.livelloContratto &&
-    //       Object.keys(obj.livelloContratto).length === 0
-    //     ) {
-    //       delete obj.livelloContratto;
-    //     }
-    //     if (obj.ruolo && Object.keys(obj.ruolo).length === 0) {
-    //       delete obj.ruolo;
-    //     }
-    //   });
-    // };
+// console.log('Inserisco');
+// const removeEmpty = (obj: any) => {
+//   Object.keys(obj).forEach((key) => {
+//     if (obj[key] && typeof obj[key] === 'object') {
+//       removeEmpty(obj[key]);
+//     } else if (obj[key] === '') {
+//       delete obj[key];
+//     }
+//     if (obj.anagrafica && Object.keys(obj.anagrafica).length === 0) {
+//       delete obj.anagrafica;
+//     }
+//     if (obj.commessa && Object.keys(obj.commessa).length === 0) {
+//       delete obj.commessa;
+//     }
+//     if (obj.contratto && Object.keys(obj.contratto).length === 0) {
+//       delete obj.contratto;
+//     }
+//     if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
+//       delete obj.tipoContratto;
+//     }
+//     if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
+//       delete obj.tipoAzienda;
+//     }
+//     if (
+//       obj.contrattoNazionale &&
+//       Object.keys(obj.contrattoNazionale).length === 0
+//     ) {
+//       delete obj.contrattoNazionale;
+//     }
+//     if (
+//       obj.livelloContratto &&
+//       Object.keys(obj.livelloContratto).length === 0
+//     ) {
+//       delete obj.livelloContratto;
+//     }
+//     if (obj.ruolo && Object.keys(obj.ruolo).length === 0) {
+//       delete obj.ruolo;
+//     }
+//   });
+// };
 
-    // // removeEmpty(this.AnagraficaDto.value);
+// removeEmpty(this.AnagraficaDto.value);
 
-    // let check = true;
+// let check = true;
 
-    // if (this.AnagraficaDto.value.anagrafica != null) {
-    //   if (
-    //     this.checkValid([
-    //       'anagrafica.nome',
-    //       'anagrafica.cognome',
-    //       'anagrafica.codiceFiscale',
-    //       'anagrafica.mailAziendale',
-    //     ])
-    //   ) {
-    //     return;
-    //   }
-    // } else {
-    //   return;
-    // }
+// if (this.AnagraficaDto.value.anagrafica != null) {
+//   if (
+//     this.checkValid([
+//       'anagrafica.nome',
+//       'anagrafica.cognome',
+//       'anagrafica.codiceFiscale',
+//       'anagrafica.mailAziendale',
+//     ])
+//   ) {
+//     return;
+//   }
+// } else {
+//   return;
+// }
 
-    // if (this.AnagraficaDto.value.commessa != null) {
-    //   if (
-    //     this.checkValid([
-    //       'commessa.cliente',
-    //       'commessa.dataInizio',
-    //       'commessa.dataFine',
-    //       'commessa.nominativo',
-    //     ])
-    //   ) {
-    //     return;
-    //   }
-    // } else {
-    //   this.reset([
-    //     'commessa.cliente',
-    //     'commessa.dataInizio',
-    //     'commessa.dataFine',
-    //     'commessa.nominativo',
-    //   ]);
-    // }
+// if (this.AnagraficaDto.value.commessa != null) {
+//   if (
+//     this.checkValid([
+//       'commessa.cliente',
+//       'commessa.dataInizio',
+//       'commessa.dataFine',
+//       'commessa.nominativo',
+//     ])
+//   ) {
+//     return;
+//   }
+// } else {
+//   this.reset([
+//     'commessa.cliente',
+//     'commessa.dataInizio',
+//     'commessa.dataFine',
+//     'commessa.nominativo',
+//   ]);
+// }
 
-    // if (this.AnagraficaDto.value.contratto != null) {
-    //   if (
-    //     (check = this.checkValid([
-    //       'contratto.tipoContratto.id',
-    //       'contratto.livelloContratto.id',
-    //       'contratto.contrattoNazionale.id',
-    //       'contratto.tipoAzienda.id',
-    //     ]))
-    //   ) {
-    //     return;
-    //   }
-    // } else {
-    //   this.reset([
-    //     'contratto.tipoContratto.id',
-    //     'contratto.livelloContratto.id',
-    //     'contratto.contrattoNazionale.id',
-    //     'contratto.tipoAzienda.id',
-    //   ]);
-    // }
-*/
+// if (this.AnagraficaDto.value.contratto != null) {
+//   if (
+//     (check = this.checkValid([
+//       'contratto.tipoContratto.id',
+//       'contratto.livelloContratto.id',
+//       'contratto.contrattoNazionale.id',
+//       'contratto.tipoAzienda.id',
+//     ]))
+//   ) {
+//     return;
+//   }
+// } else {
+//   this.reset([
+//     'contratto.tipoContratto.id',
+//     'contratto.livelloContratto.id',
+//     'contratto.contrattoNazionale.id',
+//     'contratto.tipoAzienda.id',
+//   ]);
+// }

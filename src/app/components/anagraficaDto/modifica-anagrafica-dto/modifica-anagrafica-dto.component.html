@@ -359,15 +359,15 @@
                     <select
                       class="form-control"
                       id="contratto.tipoCcnl.id"
-                      formControlName="tipoCcnl"
+                      formControlName="id"
                       type="number"
                     >
                       <option value="">--nessuna selezione--</option>
                       <option
-                        *ngFor="let contrattoNazionale of ccnl"
-                        [value]="contrattoNazionale.id"
+                        *ngFor="let tipoCcnl of ccnl"
+                        [value]="tipoCcnl.id"
                       >
-                        {{ contrattoNazionale.descrizione }}
+                        {{ tipoCcnl.descrizione }}
                       </option>
                     </select>
                   </div>

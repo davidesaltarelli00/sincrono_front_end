@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { profileBoxService } from '../profile-box/profile-box.service';
 import { CambioPasswordService } from './cambio-password.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cambio-password',
@@ -23,7 +24,8 @@ export class CambioPasswordComponent {
   constructor(
     private formBuilder: FormBuilder,
     private profileBoxService: profileBoxService,
-    private cambioPasswordService:CambioPasswordService
+    private cambioPasswordService:CambioPasswordService,
+    private router:Router
   ) {
     this.passwordForm = this.formBuilder.group(
       {
@@ -108,7 +110,8 @@ export class CambioPasswordComponent {
         this.cambioPasswordService.cambioPassword().subscribe(
           (response: any) => {
             this.result = response;
-            // Puoi fare qualcosa con la risposta dal backend qui, se necessario.
+           alert("Cambio password avvenuto con successo.");
+           this.router.navigate(['/profile-box']);
           },
           (error: any) => {
             console.log("Errore durante il cambio password: " + error.message);
