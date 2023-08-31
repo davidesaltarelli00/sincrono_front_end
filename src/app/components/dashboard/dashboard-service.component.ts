@@ -17,7 +17,7 @@ export class DashboardService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(`http://localhost:8080/services/dashboard`,{
+    return this.http.get<any>(`http://localhost:8080/services/dashboard`,{
       headers: headers,});
 
   }

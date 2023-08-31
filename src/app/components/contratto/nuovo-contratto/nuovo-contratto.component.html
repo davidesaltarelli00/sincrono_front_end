@@ -27,7 +27,7 @@
                                         <option value="">--nessuna selezione--</option>
                                         <option *ngFor="let livelloContratto of livelliContratti"
                                             value="{{livelloContratto.id}}">
-                                            {{livelloContratto.descrizione}}</option>
+                                            {{livelloContratto.ccnl}}</option>
                                     </select>
                                 </div>
                                 <div formGroupName="tipoAzienda">
@@ -39,9 +39,9 @@
                                             {{tipoAzienda.descrizione}}</option>
                                     </select>
                                 </div>
-                                <div formGroupName="contrattoNazionale">
-                                    <label for="contrattoNazionale">Contratto Nazionale</label>
-                                    <select style="width: 100%;" id="contrattoNazionale" class="form-control select2"
+                                <div formGroupName="tipoCcnl">
+                                    <label for="tipoCcnl">Contratto Nazionale</label>
+                                    <select style="width: 100%;" id="tipoCcnl" class="form-control select2"
                                         formControlName="id">
                                         <option value="">--nessuna selezione--</option>
                                         <option *ngFor="let contrattoNazionale of contrattiNazionali"

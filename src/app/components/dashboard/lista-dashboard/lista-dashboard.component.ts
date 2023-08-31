@@ -42,14 +42,14 @@ export class ListaDashboardComponent {
 
     this.dashboardService.listaDashboard(localStorage.getItem('token')).subscribe((resp: any) => {
       this.lista = resp.list;
+      console.log(this.lista);
 
-
-      $(function () {
-        $('#table').DataTable({
-          "autoWidth": false,
-          "responsive": true,
-        });
-      });
+      // $(function () {
+      //   $('#table').DataTable({
+      //     "autoWidth": false,
+      //     "responsive": true,
+      //   });
+      // });
     });
 
 

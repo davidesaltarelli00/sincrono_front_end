@@ -47,9 +47,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   ruoli: any = [];
   userlogged: string = '';
   formsDuplicati: boolean[] = [];
-  AnagraficaDto: FormGroup; // Assicurati di avere dichiarato il FormGroup
-  commesse!: FormArray; // Assicurati di avere dichiarato il FormArray
-
+  AnagraficaDto: FormGroup;
+  commesse!: FormArray;
+  showErrorAlert: boolean = false;
+  missingFields: string[] = [];
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
@@ -60,14 +61,23 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       anagrafica: this.formBuilder.group({
         attivo: new FormControl(''),
         aziendaTipo: new FormControl(''),
-        nome: new FormControl('',Validators.required),
-        cognome: new FormControl('',Validators.required),
-        codiceFiscale: new FormControl('',Validators.required),
+        nome: new FormControl('', Validators.required),
+        cognome: new FormControl('', Validators.required),
+        codiceFiscale: new FormControl('', [
+          Validators.required,
+          Validators.minLength(15),
+          Validators.maxLength(16),
+        ]),
         cellularePrivato: new FormControl(''),
         cellulareAziendale: new FormControl(''),
         mailPrivata: new FormControl(''),
         mailPec: new FormControl(''),
-        mailAziendale: new FormControl('',Validators.required),
+        mailAziendale: new FormControl('', [
+          Validators.required,
+          Validators.pattern(
+            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
+          ),
+        ]),
         titoliDiStudio: new FormControl(''),
         altriTitoli: new FormControl(''),
         comuneDiNascita: new FormControl(''),
@@ -77,7 +87,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         coniugato: new FormControl(''),
         figliACarico: new FormControl(''),
       }),
-      commesse: this.formBuilder.array([this.creaFormCommessa()]),
+      commesse: this.formBuilder.array([]),
 
       contratto: this.formBuilder.group({
         attivo: new FormControl(''),
@@ -91,16 +101,16 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         livelloContratto: new FormGroup({
           id: new FormControl(''),
         }),
-        contrattoNazionale: new FormGroup({ // ccnl
+        tipoCcnl: new FormGroup({
           id: new FormControl(''),
         }),
         qualifica: new FormControl(''),
         sedeAssunzione: new FormControl(''),
-        dataAssunzione: new FormControl(''),
+        dataAssunzione: new FormControl('', Validators.required),
         dataInizioProva: new FormControl(''),
         dataFineProva: new FormControl(''),
         dataFineRapporto: new FormControl(''),
-        mesiDurata: new FormControl(''),
+        mesiDurata: new FormControl('', Validators.required),
         livelloIniziale: new FormControl(''),
         // livelloAttuale: new FormControl(''),
         // livelloFinale: new FormControl(''),
@@ -126,11 +136,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         canaleReclutamento: new FormControl(''),
       }),
       ruolo: this.formBuilder.group({
-        id: new FormControl('', Validators.required),
+        id: new FormControl(''),
       }),
     });
 
-  this.commesse = this.AnagraficaDto.get('commesse') as FormArray;
+    this.commesse = this.AnagraficaDto.get('commesse') as FormArray;
 
     this.caricaListaUtenti();
 
@@ -149,13 +159,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.commesse.push(commessaFormGroup);
     // this.isFormDuplicated = true;
     this.formsDuplicati.push(true);
-
-
   }
 
   creaFormCommessa(): FormGroup {
     return this.formBuilder.group({
-      id:new FormControl(''),
+      id: new FormControl(''),
       cliente: new FormControl(''),
       clienteFinale: new FormControl(''),
       titoloPosizione: new FormControl(''),
@@ -168,7 +176,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       azienda: new FormControl(''),
       aziendaDiFatturazioneInterna: new FormControl(''),
       stato: new FormControl(''),
-      attesaLavori: new FormControl('')
+      attesaLavori: new FormControl(''),
     });
   }
 
@@ -187,10 +195,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   caricaListaUtenti() {
-    this.anagraficaDtoService.getListaUtenti(localStorage.getItem('token')).subscribe((result: any) => {
-      // console.log(result);
-      this.utenti = (result as any)['list'];
-    });
+    this.anagraficaDtoService
+      .getListaUtenti(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        // console.log(result);
+        this.utenti = (result as any)['list'];
+      });
   }
 
   setStep1() {
@@ -218,129 +228,86 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   inserisci() {
-    this.submitted = true;
+    // //Form non valido:
+    // if (this.AnagraficaDto.invalid) {
+    //   this.showErrorAlert = true;
+    //   this.missingFields = [];
 
-    const removeEmpty = (obj: any) => {
-      Object.keys(obj).forEach((key) => {
-        if (obj[key] && typeof obj[key] === 'object') {
-          removeEmpty(obj[key]);
-        } else if (obj[key] === '') {
-          delete obj[key];
-        }
-        if (obj.anagrafica && Object.keys(obj.anagrafica).length === 0) {
-          delete obj.anagrafica;
-        }
-        if (obj.commessa && Object.keys(obj.commessa).length === 0) {
-          delete obj.commessa;
-        }
-        if (obj.contratto && Object.keys(obj.contratto).length === 0) {
-          delete obj.contratto;
-        }
-        if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
-          delete obj.tipoContratto;
-        }
-        if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
-          delete obj.tipoAzienda;
-        }
-        if (
-          obj.contrattoNazionale &&
-          Object.keys(obj.contrattoNazionale).length === 0
-        ) {
-          delete obj.contrattoNazionale;
-        }
-        if (
-          obj.livelloContratto &&
-          Object.keys(obj.livelloContratto).length === 0
-        ) {
-          delete obj.livelloContratto;
-        }
-        if (obj.ruolo && Object.keys(obj.ruolo).length === 0) {
-          delete obj.ruolo;
-        }
+    //   for (const field in this.AnagraficaDto.controls) {
+    //     if (this.AnagraficaDto.controls[field].invalid) {
+    //       this.missingFields.push(field);
+    //     }
+    //   }
+    // } else {
+    //   // form valido:
+    //   this.showErrorAlert = false;
+    //   this.missingFields = [];
+    //   const body = JSON.stringify({
+    //     anagraficaDto: this.AnagraficaDto.value,
+    //   });
+    //   console.log(body);
+
+    //   this.anagraficaDtoService.insert(body).subscribe((result) => {
+    //     if ((result as any).esito.code != 0) {
+    //       alert(
+    //         'inserimento non riuscito\n' +
+    //           'target: ' +
+    //           (result as any).esito.target
+    //       );
+    //       this.errore = true;
+    //       this.messaggio = (result as any).esito.target;
+    //       return;
+    //     } else {
+    //       alert('inserimento riuscito');
+    //       console.log(this.AnagraficaDto.value);
+    //     }
+    //     this.router.navigate(['/lista-anagrafica']);
+    //   });
+    // }
+    // // console.log(JSON.stringify(this.AnagraficaDto.value));
+
+    // Reset error state and missing fields array
+    this.showErrorAlert = false;
+    this.missingFields = [];
+
+    // Check for missing required fields
+    if (this.AnagraficaDto.invalid) {
+      // this.showErrorAlert = true;
+
+      // // Loop through form controls and identify missing fields
+      // Object.keys(this.AnagraficaDto.controls).forEach((field) => {
+      //   const control = this.AnagraficaDto.get(field);
+      //   if (control?.errors?.['required']) {
+      //     this.missingFields.push(field);
+      //   }
+      // });
+
+      console.log('Qualcosa e andato storto');
+    } else {
+      const body = JSON.stringify({
+        anagraficaDto: this.AnagraficaDto.value,
       });
-    };
 
-    removeEmpty(this.AnagraficaDto.value);
+      console.log(body);
 
-    let check = true;
-
-    if (this.AnagraficaDto.value.anagrafica != null) {
-      if (
-        this.checkValid([
-          'anagrafica.nome',
-          'anagrafica.cognome',
-          'anagrafica.codiceFiscale',
-          'anagrafica.mailAziendale',
-        ])
-      ) {
-        return;
-      }
-    } else {
-      return;
+      this.anagraficaDtoService
+        .insert(body, localStorage.getItem('token'))
+        .subscribe((result) => {
+          if ((result as any).esito.code !== 200) {
+            alert(
+              'Inserimento non riuscito\n' +
+                'Target: ' +
+                (result as any).esito.target
+            );
+            this.errore = true;
+            this.messaggio = (result as any).esito.target;
+          } else {
+            alert('Inserimento riuscito');
+            console.log(this.AnagraficaDto.value);
+          }
+          // this.router.navigate(['/lista-anagrafica']);
+        });
     }
-
-    if (this.AnagraficaDto.value.commessa != null) {
-      if (
-        this.checkValid([
-          'commessa.cliente',
-          'commessa.dataInizio',
-          'commessa.dataFine',
-          'commessa.nominativo',
-        ])
-      ) {
-        return;
-      }
-    } else {
-      this.reset([
-        'commessa.cliente',
-        'commessa.dataInizio',
-        'commessa.dataFine',
-        'commessa.nominativo',
-      ]);
-    }
-
-    if (this.AnagraficaDto.value.contratto != null) {
-      if (
-        (check = this.checkValid([
-          'contratto.tipoContratto.id',
-          'contratto.livelloContratto.id',
-          'contratto.contrattoNazionale.id',
-          'contratto.tipoAzienda.id',
-        ]))
-      ) {
-        return;
-      }
-    } else {
-      this.reset([
-        'contratto.tipoContratto.id',
-        'contratto.livelloContratto.id',
-        'contratto.contrattoNazionale.id',
-        'contratto.tipoAzienda.id',
-      ]);
-    }
-
-    // console.log(JSON.stringify(this.AnagraficaDto.value));
-    const body = JSON.stringify({
-      anagraficaDto: this.AnagraficaDto.value,
-    });
-    // console.log(body);
-
-    this.anagraficaDtoService.insert(body, localStorage.getItem('token')).subscribe((result) => {
-      if ((result as any).esito.code != 0) {
-        alert(
-          'inserimento non riuscito\n' +
-            'target: ' +
-            (result as any).esito.target
-        );
-        this.errore = true;
-        this.messaggio = (result as any).esito.target;
-        return;
-      } else {
-        alert('inserimento riuscito');
-        console.log(this.AnagraficaDto.value)
-      }
-      this.router.navigate(['/lista-anagrafica']);
-    });
   }
 
   /*chiudiPopup() {
@@ -349,29 +316,37 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }*/
 
   caricaTipoContratto() {
-    this.contrattoService.getTipoContratto(localStorage.getItem('token')).subscribe((result: any) => {
-      // console.log(result);
-      this.tipiContratti = (result as any)['list'];
-    });
+    this.contrattoService
+      .getTipoContratto(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        // console.log(result);
+        this.tipiContratti = (result as any)['list'];
+      });
   }
   caricaLivelloContratto() {
-    this.contrattoService.getLivelloContratto(localStorage.getItem('token')).subscribe((result: any) => {
-      // console.log(result);
-      this.livelliContratti = (result as any)['list'];
-    });
+    this.contrattoService
+      .getLivelloContratto(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        // console.log(result);
+        this.livelliContratti = (result as any)['list'];
+      });
   }
   caricaTipoAzienda() {
-    this.contrattoService.getTipoAzienda(localStorage.getItem('token')).subscribe((result: any) => {
-      // console.log(result);
-      this.tipiAziende = (result as any)['list'];
-    });
+    this.contrattoService
+      .getTipoAzienda(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        // console.log(result);
+        this.tipiAziende = (result as any)['list'];
+      });
   }
 
   caricaContrattoNazionale() {
-    this.contrattoService.getContrattoNazionale(localStorage.getItem('token')).subscribe((result: any) => {
-      // console.log(result);
-      this.contrattiNazionali = (result as any)['list'];
-    });
+    this.contrattoService
+      .getContrattoNazionale(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        console.log('caricaContrattoNazionale' + result);
+        this.contrattiNazionali = (result as any)['list'];
+      });
   }
 
   checkValid(myArray: string[]) {
@@ -412,8 +387,115 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   caricaRuoli() {
-    this.anagraficaDtoService.getRuoli(localStorage.getItem('token')).subscribe((result: any) => {
-      this.ruoli = (result as any)['list'];
-    });
+    this.anagraficaDtoService
+      .getRuoli(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        this.ruoli = (result as any)['list'];
+        console.log(this.ruoli)
+      });
   }
 }
+
+/*
+vecchio codice nel metodo inserisci:
+// this.submitted = true;
+    // console.log('Inserisco');
+    // const removeEmpty = (obj: any) => {
+    //   Object.keys(obj).forEach((key) => {
+    //     if (obj[key] && typeof obj[key] === 'object') {
+    //       removeEmpty(obj[key]);
+    //     } else if (obj[key] === '') {
+    //       delete obj[key];
+    //     }
+    //     if (obj.anagrafica && Object.keys(obj.anagrafica).length === 0) {
+    //       delete obj.anagrafica;
+    //     }
+    //     if (obj.commessa && Object.keys(obj.commessa).length === 0) {
+    //       delete obj.commessa;
+    //     }
+    //     if (obj.contratto && Object.keys(obj.contratto).length === 0) {
+    //       delete obj.contratto;
+    //     }
+    //     if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
+    //       delete obj.tipoContratto;
+    //     }
+    //     if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
+    //       delete obj.tipoAzienda;
+    //     }
+    //     if (
+    //       obj.contrattoNazionale &&
+    //       Object.keys(obj.contrattoNazionale).length === 0
+    //     ) {
+    //       delete obj.contrattoNazionale;
+    //     }
+    //     if (
+    //       obj.livelloContratto &&
+    //       Object.keys(obj.livelloContratto).length === 0
+    //     ) {
+    //       delete obj.livelloContratto;
+    //     }
+    //     if (obj.ruolo && Object.keys(obj.ruolo).length === 0) {
+    //       delete obj.ruolo;
+    //     }
+    //   });
+    // };
+
+    // // removeEmpty(this.AnagraficaDto.value);
+
+    // let check = true;
+
+    // if (this.AnagraficaDto.value.anagrafica != null) {
+    //   if (
+    //     this.checkValid([
+    //       'anagrafica.nome',
+    //       'anagrafica.cognome',
+    //       'anagrafica.codiceFiscale',
+    //       'anagrafica.mailAziendale',
+    //     ])
+    //   ) {
+    //     return;
+    //   }
+    // } else {
+    //   return;
+    // }
+
+    // if (this.AnagraficaDto.value.commessa != null) {
+    //   if (
+    //     this.checkValid([
+    //       'commessa.cliente',
+    //       'commessa.dataInizio',
+    //       'commessa.dataFine',
+    //       'commessa.nominativo',
+    //     ])
+    //   ) {
+    //     return;
+    //   }
+    // } else {
+    //   this.reset([
+    //     'commessa.cliente',
+    //     'commessa.dataInizio',
+    //     'commessa.dataFine',
+    //     'commessa.nominativo',
+    //   ]);
+    // }
+
+    // if (this.AnagraficaDto.value.contratto != null) {
+    //   if (
+    //     (check = this.checkValid([
+    //       'contratto.tipoContratto.id',
+    //       'contratto.livelloContratto.id',
+    //       'contratto.contrattoNazionale.id',
+    //       'contratto.tipoAzienda.id',
+    //     ]))
+    //   ) {
+    //     return;
+    //   }
+    // } else {
+    //   this.reset([
+    //     'contratto.tipoContratto.id',
+    //     'contratto.livelloContratto.id',
+    //     'contratto.contrattoNazionale.id',
+    //     'contratto.tipoAzienda.id',
+    //   ]);
+    // }
+*/

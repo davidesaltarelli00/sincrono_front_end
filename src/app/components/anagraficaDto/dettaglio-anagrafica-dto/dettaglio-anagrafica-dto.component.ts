@@ -16,6 +16,8 @@ export class DettaglioAnagraficaDtoComponent {
   errore = false;
   messaggio: any;
   role:any;
+  elencoCommesse=[];
+  commesseGroupedByIndex: any[] = [];
 
 
   filterAnagraficaDto: FormGroup = new FormGroup({
@@ -30,7 +32,7 @@ export class DettaglioAnagraficaDtoComponent {
       dataAssunzione: new FormControl(''),
       dataFineRapporto: new FormControl(''),
       livelloContratto: new FormGroup({
-        descrizione: new FormControl(''),
+        ccnl: new FormControl(''),
       }),
       tipoCcnl: new FormGroup({
         descrizione: new FormControl(''),
@@ -61,20 +63,22 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
   ngOnInit(): void {
+    console.log(this.id);
     this.anagraficaDtoService
       .detailAnagraficaDto(this.id, localStorage.getItem('token'))
       .subscribe((resp: any) => {
         console.log(resp);
         this.data = (resp as any)['anagraficaDto'];
         console.log(this.data);
-      });
+        this.elencoCommesse=(resp as any)['anagraficaDto']['commesse'];
+        console.log(this.elencoCommesse);
 
-      // this.role = this.authService.getTokenAndRole();
-      console.log("Ruolo: " + this.role);
+      });
       const userLogged = localStorage.getItem('userLogged');
       if (userLogged) {
         this.userlogged = userLogged;
       }
+
   }
 
 

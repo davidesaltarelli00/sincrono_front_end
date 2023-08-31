@@ -102,13 +102,19 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/tipo-contratto-map`
+      `http://localhost:8080/services/tipo-contratto-map`,{ headers: headers }
     );
   }
 
-  getLivelloContratto(): Observable<any> {
+  getLivelloContratto(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
     return this.http.get<any>(
-      `http://localhost:8080/services/tipo-livelli-contrattuali-map`
+      `http://localhost:8080/services/tipo-livelli-contrattuali-map`,
+      { headers: headers }
     );
   }
 
@@ -142,6 +148,17 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(`http://localhost:8080/services/ruoli-map`, {
+      headers: headers,
+    });
+  }
+
+  deleteCommessa(body: any, token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.put<any>('http://localhost:8085/commessa', body, {
       headers: headers,
     });
   }

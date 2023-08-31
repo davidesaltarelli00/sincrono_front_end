@@ -102,161 +102,200 @@
               </div>
             </div>
             </div>
+              <br>
 
-            <!-- Sezione delle commesse -->
 
-            <!-- <div formArrayName="commesse">
-              <div class="row" *ngFor="let commessa of elencoCommesse let i = index" [formGroupName]="i">
-                <div class="row">
-                  <div class="col-12">
-                    <h2>Commessa {{ i + 1 }}</h2>
-                  </div>
+              <div *ngIf="commesseControls.length > 0">
+                <div formArrayName="commesse" style="border: 1px solid #f1f1f1; padding: 5%;">
+                  <ng-container *ngFor="let commessa of commesseControls; let i = index">
+                    <div class="row">
+                      <div class="col-12">
+                        <h1>Commessa {{i+1}}</h1>
+                      </div>
+                    </div>
+                    <div [formGroupName]="i">
+                      <!-- <label>id</label>
+                      <input  formControlName="id" type="number" /> -->
+
+                      <!-- <div class="col-3">
+                        <label>ID</label> <br>
+                        <input class="form-control" formControlName="id" type="number" />
+                      </div> -->
+
+                      <div class="row">
+                        <div class="col-3">
+                          <label>Cliente</label> <br>
+                          <input class="form-control" formControlName="cliente" type="text" />
+                        </div>
+                        <div class="col-3">
+                          <label>Cliente Finale</label><br>
+                          <input class="form-control" formControlName="clienteFinale" type="text" />
+                        </div>
+                        <div class="col-3">
+                          <label>Titolo posizione</label><br>
+                          <input class="form-control" formControlName="titoloPosizione" type="text" />
+
+                        </div>
+                        <div class="col-3">
+                          <label>Distacco</label><br>
+                          <input class="form-control" formControlName="distacco" type="text" />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-3">
+                          <label>dataInizio</label><br>
+                          <input class="form-control" formControlName="dataInizio" type="text" />
+
+                        </div>
+                        <div class="col-3">
+                          <label>dataFine</label><br>
+                          <input class="form-control" formControlName="dataFine" type="text" />
+                        </div>
+                        <div class="col-3">
+                          <label>costoMese</label><br>
+                          <input class="form-control" formControlName="costoMese" type="number" />
+                        </div>
+                        <div class="col-3">
+                          <label>tariffaGiornaliera</label><br>
+                          <input class="form-control" formControlName="tariffaGiornaliera" type="number" />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-3">
+                          <label>nominativo</label><br>
+                          <input class="form-control" formControlName="nominativo" type="text" />
+
+                        </div>
+                        <div class="col-3">
+                          <label>azienda</label><br>
+                          <input class="form-control" formControlName="azienda" type="text" />
+                        </div>
+                        <div class="col-3">
+                          <label>aziendaDiFatturazioneInterna</label><br>
+                      <input class="form-control" formControlName="aziendaDiFatturazioneInterna" type="text" />
+                        </div>
+
+                      </div>
+                      <div class="row">
+                        <div class="col-6">
+                          <label>stato</label>
+                          <input formControlName="stato"  type="checkbox" />
+                        </div>
+                        <div class="col-6">
+                          <label>attesaLavori</label>
+                      <input formControlName="attesaLavori" type="checkbox" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <button  mat-flat-button color="accent" type="button" (click)="rimuoviCommessa(i)" matTooltip="rimuovi commessa {{i+1}}">Rimuovi Commessa <i class="fa fa-trash" ></i> </button> <!--[disabled]="i==0"-->
+                      </div>
+                    </div>
+
+                  </ng-container>
                 </div>
-                <div class="row">
-                  <div class="col-3">
-                    <label for="">Cliente</label>
-                    <input type="text" formControlName="cliente" id="cliente{{i}}" class="form-control">
-                  </div>
-                  <div class="col-3">
-                    <label for="">Cliente finale</label>
-                    <input type="text" formControlName="clienteFinale" id="clienteFinale{{i}}" class="form-control">
-                  </div>
-                  <div class="col-3">
-                    <label for="titoloPosizione">Titolo Posizione:</label>
-                    <input type="text" formControlName="titoloPosizione" id="titoloPosizione{{i}}" class="form-control">
-                  </div>
-                  <div class="col-3">
-                    <label for="distacco">Distacco:</label>
-                    <input type="text" formControlName="distacco" id="distacco{{i}}" class="form-control">
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-3">
-                    <label for="dataInizio">Data Inizio:</label>
-                    <input type="text" formControlName="dataInizio" id="dataInizio{{i}}" class="form-control">
-                  </div>
-                  <div class="col-3">
-                    <label for="dataFine">Data Fine:</label>
-                    <input type="text" formControlName="dataFine" id="dataFine{{i}}" class="form-control">
-                  </div>
-                  <div class="col-3">
-                    <label for="costoMese">Costo Mese:</label>
-                    <input type="text" formControlName="costoMese" id="costoMese{{i}}" class="form-control">
-                  </div>
-                  <div class="col-3">
-                    <label for="tariffaGiornaliera">Tariffa Giornaliera:</label>
-                    <input type="text" formControlName="tariffaGiornaliera" id="tariffaGiornaliera{{i}}" class="form-control">
-                  </div>
-                  <div class="col-3">
-                    <label for="nominativo">nominativo</label>
-                    <input type="text" formControlName="nominativo" id="nominativo{{i}}" class="form-control">
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-3">
-                    <label for="azienda">azienda</label>
-                    <input type="text" formControlName="azienda" id="azienda{{i}}" class="form-control">
-                  </div>
-                  <div class="col-3">
-                    <label for="azienda">aziendaDiFatturazioneInterna</label>
-                    <input type="text" formControlName="aziendaDiFatturazioneInterna" id="aziendaDiFatturazioneInterna{{i}}" class="form-control">                  </div>
-                  <div class="col-3">
-
-                <label for="stato">stato</label>
-                <input type="checkbox" formControlName="stato" id="stato{{i}}" >
-
               </div>
-                  <div class="col-3">
-                    <label for="attesaLavori">Attesa lavori</label>
-                    <input type="checkbox" formControlName="attesaLavori" id="attesaLavori{{i}}" >                  </div>
+              <br>
+              <div class="row">
+                <div class="col-12" style="margin: auto; text-align: center;">
+                  <button mat-flat-button color="primary" style="margin: auto; text-align: center;" (click)="aggiungiCommessa()">Aggiungi Commessa <i class="fa fa-plus" ></i> </button>
                 </div>
+              </div>
 
-                <div class="row">
-                  <div class="col-4">
-                    <button type="button" (click)="removeCommessa(i)">Rimuovi Commessa</button>
+
+
+
+
+
+
+
+            <!-- <div class="row" formGroupName="commesse">
+              <div class="col-12" *ngFor="let commessa of elencoCommesse; let i=index">
+
+                  <h1 style="text-align:center">Commessa {{ i + 1 }}</h1>
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="cliente">Cliente</label><br>
+                      <input type="text" id="cliente{{ i }}" placeholder="Cliente" name="cliente{{ i }}" class="form-control" [formControlName]="'cliente'">
+                    </div>
+                    <div class="col-3">
+                      <label for="clienteFinale">Cliente finale</label><br>
+                      <input type="text" class="form-control" placeholder="Cliente finale" name="clienteFinale{{ i }}" id="clienteFinale{{ i }}" [formControlName]="'clienteFinale'">
+                    </div>
+                    <div class="col-3">
+                      <label for="titoloPosizione">Titolo posizione</label><br>
+                      <input type="text" id="titoloPosizione{{ i }}" placeholder="Titolo posizione" class="form-control" name="titoloPosizione{{ i }}" formControlName="titoloPosizione{{i}}">
+                    </div>
+                    <div class="col-3">
+                      <label for="distacco">Distacco</label><br>
+                      <input type="text" placeholder="Distacco" id="distacco{{ i }}" name="distacco{{ i }}" class="form-control" formControlName="distacco{{i}}">
+                    </div>
                   </div>
-                </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="dataInizio">Data inizio</label><br>
+                      <input type="text" placeholder="Formato accettato: yyyy - mm - gg" class="form-control" name="dataInizio{{ i }}" id="dataInizio{{ i }}" formControlName="dataInizio{{i}}">
+                    </div>
+                    <div class="col-3">
+                      <label for="dataFine">Data fine</label><br>
+                      <input type="text" placeholder="Formato accettato: yyyy - mm - gg" class="form-control" name="dataFine{{ i }}" id="dataInizio{{ i }}" formControlName="dataFine{{i}}">
+                    </div>
+                    <div class="col-3">
+                      <label for="costoMese">Costo mese</label><br>
+                      <input type="number" id="costoMese{{ i }}" class="form-control" name="costoMese{{ i }}" formControlName="costoMese{{i}}" >
+                    </div>
+                    <div class="col-3">
+                      <label for="tariffaGiornaliera">Tariffa giornaliera</label><br>
+                      <input type="number" id="tariffaGiornaliera{{ i }}" name="tariffaGiornaliera{{ i }}" class="form-control" formControlName="tariffaGiornaliera{{i}}">
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="nominativo">Nominativo</label><br>
+                      <input type="text" id="nominativo{{ i }}" name="nominativo{{ i }}" class="form-control" formControlName="nominativo{{i}}" placeholder="Nominativo">
+                    </div>
+                    <div class="col-3">
+                      <label for="azienda">Azienda</label><br>
+                      <input type="text" id="azienda{{ i }}" name="azienda{{ i }}" class="form-control" formControlName="azienda{{i}}" placeholder="Azienda">
+                    </div>
+                    <div class="col-3">
+                      <label for="aziendaDiFatturazioneInterna">Azienda di fatturazione interna</label><br>
+                      <input type="text" id="aziendaDiFatturazioneInterna{{ i }}" name="aziendaDiFatturazioneInterna{{ i }}" class="form-control" formControlName="aziendaDiFatturazioneInterna{{i}}" placeholder="Azienda di fatturazione interna">
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-5">
+                      <label for="stato">Stato: </label>
+                      <input type="checkbox" id="stato{{ i }}" name="stato{{ i }}" formControlName="stato{{i}}">
+                    </div>
+                    <div class="col-5">
+                      <label for="attesaLavori">Attesa lavori</label>
+                      <input type="checkbox" id="attesaLavori{{ i }}" name="attesaLavori{{ i }}" formControlName="attesaLavori{{i}}">
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-12">
+                      <button mat-flat-button color="primary" (click)="creaFormCommessa()"> <i class="fa fa-plus"></i> </button> &nbsp;
+                      <button mat-flat-button color="accent" type="button" [disabled]="elencoCommesse.length === 1" (click)="removeCommessa(i)">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
               </div>
             </div> -->
 
-
-
-
-            <div class="row">
-              <div class="col-12"  *ngFor="let commessa of elencoCommesse; let i=index">
-
-                <!-- <button mat-flat-button *ngIf="elencoCommesse.length <1" color="primary" (click)="creaFormCommessa(commessa)" >Aggiungi commessa <i class="fa fa-plus" ></i> </button> -->
-                <form [formGroup]="getCommessaFormGroup(i)">
-                  <h1 style="text-align:center">Commessa {{i+1}}</h1>
-                  <div class="row">
-                    <div class="col-3">
-                      <label for="cliente">Cliente</label> <br>
-                      <input type="text" id="cliente{{i}}" placeholder="Cliente" name="cliente{{i}}"  class="form-control" [value]="commessa.cliente">
-                    </div>
-                    <div class="col-3">
-                      <label for="clienteFinale">Cliente finale</label> <br>
-                      <input type="text" class="form-control" placeholder="Cliente finale" name="clienteFinale{{i}}"  id="clienteFinale{{i}}" [value]="commessa.clienteFinale">
-                    </div>
-                    <div class="col-3">
-                      <label for="titoloPosizione">Titolo posizione</label> <br>
-                      <input type="text" id="titoloPosizione{{i}}" placeholder="Titolo posizione" class="form-control"  name="titoloPosizione{{i}}" [value]="commessa.titoloPosizione">
-                    </div>
-                    <div class="col-3">
-                      <label for="distacco">Distacco</label> <br>
-                      <input type="text" placeholder="Distacco" id="distacco{{i}}" name="distacco{{i}}" class="form-control"  [value]="commessa.distacco">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <input type="text" placeholder="Formato accettato: yyyy - mm - gg"  class="form-control" name="dataInizio{{i}}" id="dataInizio{{i}}" [value]="commessa.dataInizio">
-                    </div>
-                    <div class="col-3">
-                      <input type="text" placeholder="Formato accettato: yyyy - mm - gg" class="form-control"   name="dataFine{{i}}" id="dataInizio{{i}}" [value]="commessa.dataFine">
-                    </div>
-                    <div class="col-3">
-                      <input type="number" id="costoMese{{i}}" class="form-control" name="costoMese{{i}}" [value]="commessa.costoMese"  >
-                    </div>
-                    <div class="col-3">
-                      <input type="number" id="tariffaGiornaliera{{i}}" name="tariffaGiornaliera{{i}}" class="form-control" [value]="commessa.tariffaGiornaliera"  >
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <input type="text" id="nominativo{{i}}" name="nominativo{{i}}" class="form-control" [value]="commessa.nominativo" >
-                    </div>
-                    <div class="col-3">
-                      <input type="text" id="azienda{{i}}" name="azienda{{i}}" class="form-control" [value]="commessa.azienda"  >
-                    </div>
-                    <div class="col-3">
-                      <input type="text" id="aziendaDiFatturazioneInterna{{i}}" name="aziendaDiFatturazioneInterna{{i}}" class="form-control" [value]="commessa.aziendaDiFatturazioneInterna"  >
-                    </div>
-
-                  </div>
-                  <div class="row">
-                    <div class="col-5">
-                      <input type="checkbox" id="stato{{i}}" name="stato{{i}}"  [value]="commessa.stato" [checked]="commessa.stato==true">
-                    </div>
-                    <div class="col-5">
-                      <input type="checkbox" id="attesaLavori{{i}}" name="attesaLavori{{i}}"  [value]="commessa.attesaLavori" [checked]="commessa.attesaLavori==true">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12">
-                      <button mat-flat-button color="primary" (click)="creaFormCommessa(commessa)"> <i class="fa fa-plus" ></i> </button> &nbsp;
-                      <button mat-flat-button color="accent" type="button" [disabled]="elencoCommesse.length===1" (click)="removeCommessa(i)"> <i class="fa fa-trash" ></i> </button>
-                    </div>
-                  </div>
-                </form>
-
-
-
-              </div>
-            </div>
             <br>
             <div formGroupName="contratto">
-
+              <div class="roe">
+                <div class="col-12">
+                  <h1 style="text-align:center" >Contratto</h1>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-3">
                   <div formGroupName="tipoContratto">
@@ -290,7 +329,7 @@
                         *ngFor="let livelloContratto of livelliContratti"
                         [value]="livelloContratto.id"
                       >
-                        {{ livelloContratto.descrizione }}
+                        {{ livelloContratto.ccnl }}
                       </option>
                     </select>
                   </div>
@@ -315,12 +354,12 @@
                   </div>
                 </div>
                 <div class="col-3">
-                  <div formGroupName="ccnl">
-                    <label for="ccnl">Contratto Nazionale</label>
+                  <div formGroupName="tipoCcnl">
+                    <label for="tipoCcnl">Contratto Nazionale</label>
                     <select
                       class="form-control"
-                      id="contratto.ccnl.id"
-                      formControlName="id"
+                      id="contratto.tipoCcnl.id"
+                      formControlName="tipoCcnl"
                       type="number"
                     >
                       <option value="">--nessuna selezione--</option>

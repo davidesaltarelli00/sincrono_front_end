@@ -16,7 +16,7 @@ declare var $: any;
 
 export class StoricoContrattiComponent implements OnInit  {
 
-  
+
   lista: any;
   idAnagrafica:any;
 
@@ -30,22 +30,22 @@ export class StoricoContrattiComponent implements OnInit  {
   ngOnInit(): void {
 
     this.idAnagrafica = this.activatedRoute.snapshot.params['id'];
-
+//TO DO           DA CONTROLLARE
     this.storicoService.getStoricoContratti(this.idAnagrafica, localStorage.getItem("token")).subscribe((resp: any) => {
       this.lista = resp.list;
 
       console.log("lista contratti:"+this.lista);
 
-      $(function () {
-        $('#table').DataTable({
-          autoWidth: false,
-          responsive: true,
-        });
-      });
+      // $(function () {
+      //   $('#table').DataTable({
+      //     autoWidth: false,
+      //     responsive: true,
+      //   });
+      // });
     });
   }
 
-  
+
 
 
 }

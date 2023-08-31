@@ -14,13 +14,10 @@ declare var $: any;
   templateUrl: './lista-anagrafica-dto.component.html',
   styleUrls: ['./lista-anagrafica-dto.component.scss'],
 })
-
-
 export class ListaAnagraficaDtoComponent implements OnInit {
-
   tipoContrattoFilter = this.activatedRoute.snapshot.params['tipoContratto'];
   tipoAziendaFilter = this.activatedRoute.snapshot.params['tipoAzienda'];
-
+  id = this.activatedRoute.snapshot.params['id'];
   lista: any;
   token: any;
   errore = false;
@@ -34,13 +31,11 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   showErrorPopup: any;
   showSuccessPopup: any;
 
-
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
       nome: new FormControl(''),
       cognome: new FormControl(''),
       attivo: new FormControl(''),
-      aziendaTipo: new FormControl(''),
     }),
     contratto: new FormGroup({
       ralAnnua: new FormControl(''),
@@ -64,11 +59,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       azienda: new FormControl(''),
       nominativo: new FormControl(''),
     }),
-
   });
 
-  userlogged: string='';
-  role:any;
+  userlogged: string = '';
+  role: any;
   anagrafica: any;
   idUtente: any;
 
@@ -78,18 +72,18 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     private location: Location,
     private contrattoService: ContrattoService,
     private activatedRoute: ActivatedRoute,
-    public authService:AuthService,
-    private router:Router,
-    private profileBoxService:profileBoxService
+    public authService: AuthService,
+    private router: Router,
+    private profileBoxService: profileBoxService
   ) {
     const userLogged = localStorage.getItem('userLogged');
     if (userLogged) {
-      console.log("Utente loggato constructor: "+ this.userlogged)
+      console.log('Utente loggato constructor: ' + this.userlogged);
       this.userlogged = userLogged;
-    }
+    }
   }
-  profile(){
-    this.router.navigate(['/profile-box/',this.userlogged]);
+  profile() {
+    this.router.navigate(['/profile-box/', this.userlogged]);
   }
 
   logout() {
@@ -102,15 +96,13 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         this.anagrafica = response;
         const idUtente = response.anagraficaDto.anagrafica.utente.id;
         // console.log('ID UTENTE valorizzato : ' + idUtente);
-        this.idUtente=idUtente;
+        this.idUtente = idUtente;
         // console.log('ID UTENTE valorizzato globalmente: ' + this.idUtente);
-
       },
       (error: any) => {
         console.error(
@@ -189,7 +181,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         this.tipoContrattoFilter;
       this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione =
         this.tipoAziendaFilter;
-      this.filterAnagraficaDto.value.anagrafica.attivo=1;
+      this.filterAnagraficaDto.value.anagrafica.attivo = 1;
     }
   }
   caricaTipoContratto() {
@@ -214,50 +206,67 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     });
   }
 
-
-
+  vaiAModifica(idAnagrafica: number, idContratto: number, idCommessa: number) {
+    console.log(idAnagrafica);
+    this.router.navigate(['/modifica-anagrafica/' + idAnagrafica]);
+  }
 
   filter() {
     const filtroNome =
-      this.filterAnagraficaDto.value.anagrafica.nome!=null?
-      this.filterAnagraficaDto.value.anagrafica.nome.toLowerCase():"";
+      this.filterAnagraficaDto.value.anagrafica.nome != null
+        ? this.filterAnagraficaDto.value.anagrafica.nome.toLowerCase()
+        : '';
     const filtroCognome =
-      this.filterAnagraficaDto.value.anagrafica.cognome!=null?
-      this.filterAnagraficaDto.value.anagrafica.cognome.toLowerCase():"";
+      this.filterAnagraficaDto.value.anagrafica.cognome != null
+        ? this.filterAnagraficaDto.value.anagrafica.cognome.toLowerCase()
+        : '';
     const filtroAziendaTipo =
-      this.filterAnagraficaDto.value.anagrafica.aziendaTipo!=null?
-      this.filterAnagraficaDto.value.anagrafica.aziendaTipo.toLowerCase():"";
-    const filtroAttivo = this.filterAnagraficaDto.value.anagrafica.attivo!=null?
-    this.filterAnagraficaDto.value.anagrafica.attivo:false;
+      this.filterAnagraficaDto.value.anagrafica.aziendaTipo != null
+        ? this.filterAnagraficaDto.value.anagrafica.aziendaTipo.toLowerCase()
+        : '';
+    const filtroAttivo =
+      this.filterAnagraficaDto.value.anagrafica.attivo != null
+        ? this.filterAnagraficaDto.value.anagrafica.attivo
+        : false;
 
     const filtroNominativo =
-      this.filterAnagraficaDto.value.commessa.nominativo!=null?
-      this.filterAnagraficaDto.value.commessa.nominativo.toLowerCase():"";
+      this.filterAnagraficaDto.value.commessa.nominativo != null
+        ? this.filterAnagraficaDto.value.commessa.nominativo.toLowerCase()
+        : '';
     const filtroCliente =
-      this.filterAnagraficaDto.value.commessa.cliente!=null?
-      this.filterAnagraficaDto.value.commessa.cliente.toLowerCase():"";
+      this.filterAnagraficaDto.value.commessa.cliente != null
+        ? this.filterAnagraficaDto.value.commessa.cliente.toLowerCase()
+        : '';
     const filtroAzienda =
-      this.filterAnagraficaDto.value.commessa.azienda!=null?
-      this.filterAnagraficaDto.value.commessa.azienda.toLowerCase():"";
+      this.filterAnagraficaDto.value.commessa.azienda != null
+        ? this.filterAnagraficaDto.value.commessa.azienda.toLowerCase()
+        : '';
 
     const filtroRalAnnua =
-      this.filterAnagraficaDto.value.contratto.ralAnnua!=null?
-      this.filterAnagraficaDto.value.contratto.ralAnnua.toLowerCase():"";
+      this.filterAnagraficaDto.value.contratto.ralAnnua != null
+        ? this.filterAnagraficaDto.value.contratto.ralAnnua.toLowerCase()
+        : '';
     const filtroDataAssunzione =
-      this.filterAnagraficaDto.value.contratto.dataAssunzione!=null?
-      this.filterAnagraficaDto.value.contratto.dataAssunzione:"";
+      this.filterAnagraficaDto.value.contratto.dataAssunzione != null
+        ? this.filterAnagraficaDto.value.contratto.dataAssunzione
+        : '';
     const filtroDataFineRapporto =
-      this.filterAnagraficaDto.value.contratto.dataFineRapporto!=null?
-      this.filterAnagraficaDto.value.contratto.dataFineRapporto:"";
+      this.filterAnagraficaDto.value.contratto.dataFineRapporto != null
+        ? this.filterAnagraficaDto.value.contratto.dataFineRapporto
+        : '';
     const filtroDescrizioneTipoContratto =
-      this.filterAnagraficaDto.value.contratto.tipoContratto.descrizione!=null?
-      this.filterAnagraficaDto.value.contratto.tipoContratto.descrizione.toLowerCase():"";
+      this.filterAnagraficaDto.value.contratto.tipoContratto.descrizione != null
+        ? this.filterAnagraficaDto.value.contratto.tipoContratto.descrizione.toLowerCase()
+        : '';
     const filtroDescrizioneContrattoNazionale =
-      this.filterAnagraficaDto.value.contratto.contrattoNazionale.descrizione!=null?
-      this.filterAnagraficaDto.value.contratto.contrattoNazionale.descrizione.toLowerCase():"";
+      this.filterAnagraficaDto.value.contratto.contrattoNazionale.descrizione !=
+      null
+        ? this.filterAnagraficaDto.value.contratto.contrattoNazionale.descrizione.toLowerCase()
+        : '';
     const filtroDescrizioneTipoAzienda =
-      this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione!=null?
-      this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione.toLowerCase():"";
+      this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione != null
+        ? this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione.toLowerCase()
+        : '';
 
     this.lista = this.originalLista.filter((element: any) => {
       const nome = (element?.anagrafica.nome ?? 'undefined').toLowerCase();
@@ -332,8 +341,50 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.filterAnagraficaDto.reset();
   }
 
-  delete(idAnagrafica: number, idContratto: number, idCommessa: number) {
+  elimina(idAnagrafica: number) {
+    console.log(idAnagrafica);
+    //mi prendo il dettaglio dell anagrafica della riga selezionata
+    this.anagraficaDtoService.detailAnagraficaDto(idAnagrafica,localStorage.getItem('token')).subscribe(
+      (resp: any) => {
+        //parseing json
+        // resp = (resp as any)['anagraficaDto'];
+        console.log(resp);
+        //se é ok parte l elimina
+        this.anagraficaDtoService.delete(resp,localStorage.getItem('token')).subscribe(
+          (deleted: any) => {
+            console.log('eliminato con successo ' + deleted);
+            // location.reload();
+            this.ngOnInit();
+          },
+          (errorDeleted: any) => {
+            console.log("Errore durante l'eliminazione: " + errorDeleted);
+          }
+        );
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
+  }
+
+  delete(
+    idUtente: number,
+    idAnagrafica: number,
+    idContratto: number,
+    idCommessa: number
+  ) {
+    console.log('value:' + this.filterAnagraficaDto.value);
+    console.log(
+      'idAnagrafica: ' + this.filterAnagraficaDto.value.anagrafica.id
+    );
+    console.log(
+      'idUtente: ' + this.filterAnagraficaDto.value.anagrafica.utente.id
+    );
+    console.log('idCommessa: ' + this.filterAnagraficaDto.value.commessa.id);
+    console.log('idContratto: ' + this.filterAnagraficaDto.value.contratto.id);
+
     this.filterAnagraficaDto.value.anagrafica.id = idAnagrafica;
+    this.filterAnagraficaDto.value.anagrafica.utente.id = idUtente;
     this.filterAnagraficaDto.value.contratto.id = idContratto;
     this.filterAnagraficaDto.value.commessa.id = idCommessa;
     const body = JSON.stringify({

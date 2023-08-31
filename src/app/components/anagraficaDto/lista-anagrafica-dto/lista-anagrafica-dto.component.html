@@ -163,6 +163,7 @@
                 <th scope="col">Cognome</th>
                 <th scope="col">Codice Fiscale</th>
                 <th scope="col">Dettaglio</th>
+                <th scope="col">Modifica</th>
                 <th scope="col">Elimina</th>
             </tr>
         </thead>
@@ -172,13 +173,15 @@
                 <td>{{ element?.anagrafica.cognome }}</td>
                 <td>{{ element?.anagrafica.codiceFiscale }}</td>
                 <td>
-                    <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><img
-                            src="../../../../assets/images/dettagli.png" height="30px" width="45px"></a>
+                    <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"> <button class="btn btn-info" > <i class="fa fa-info" ></i>  </button> </a>
                 </td>
                 <td>
-                    <button class="btn btn-danger"
-                        (click)="delete(element?.anagrafica.id,element?.contratto.id,element?.commessa.id)">Elimina</button>
+                  <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element?.anagrafica.id]" > <i class="fa fa-pencil"></i> </button>
                 </td>
+                <td>
+                    <!-- <button class="btn btn-danger" (click)="delete(element?.anagrafica.id, element?.anagrafica?.utente.id, element?.contratto.id,element?.commessa.id )"> <i class="fa fa-trash" ></i> </button> -->
+                    <button class="btn btn-danger" (click)="elimina(element.anagrafica.id)" > <i class="fa fa-trash" > </i> </button> <!--, element.anagrafica.utente.id, element.contratto.id, element.commesse-->
+                  </td>
             </tr>
         </tbody>
 

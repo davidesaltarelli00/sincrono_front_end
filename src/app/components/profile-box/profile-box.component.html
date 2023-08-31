@@ -81,6 +81,14 @@
                     <strong>Mail privata:</strong>
                     {{ anagrafica?.anagraficaDto.anagrafica?.mailPrivata }}
                   </div>
+                  <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.mailPec!=null">
+                    <strong>Mail PEC:</strong>
+                    {{ anagrafica?.anagraficaDto.anagrafica?.mailPec }}
+                  </div>
+                  <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.mailPec==null">
+                    <strong>Mail PEC:</strong>
+                    Dato non inserito.
+                  </div>
                 </mat-card>
               </div>
             </div>
