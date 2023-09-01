@@ -79,6 +79,8 @@ export class DettaglioAnagraficaDtoComponent {
         this.userlogged = userLogged;
       }
 
+      this.uppercaseCodiceFiscale();
+
   }
 
 
@@ -135,4 +137,47 @@ export class DettaglioAnagraficaDtoComponent {
   getStoricoCommessa(idAnagrafica:any) {
     this.router.navigate(['/storico-commesse-anagrafica', idAnagrafica]);
   }
+
+  uppercaseCodiceFiscale(): string {
+    if (this.data?.anagrafica?.codiceFiscale) {
+      return this.data.anagrafica.codiceFiscale.toUpperCase();
+    } else {
+      return 'Dato non inserito';
+    }
+  }
+
+  rimuoviCommessa(index: number): void {
+    const conferma =
+      'Sei sicuro di voler eliminare la commessa con indice ' + index + '?';
+    if (confirm(conferma)) {
+      const body = JSON.stringify({
+        commessa: this.elencoCommesse[index],
+      });
+      console.log(body);
+      this.anagraficaDtoService
+        .deleteCommessa(body, localStorage.getItem('token'))
+        .subscribe(
+          (res: any) => {
+            console.log(
+              'Commessa con indice ' +
+                index +
+                ' eliminata correttamente. Risposta:',
+              res
+            );
+            // Rimuovi l'elemento dall'array locale
+            this.elencoCommesse.splice(index, 1);
+            // this.caricaDati();
+          },
+          (error: any) => {
+            console.log(
+              "Errore durante l'eliminazione della commessa con indice " +
+                index +
+                ': ' +
+                error
+            );
+          }
+        );
+    }
+  }
+
 }

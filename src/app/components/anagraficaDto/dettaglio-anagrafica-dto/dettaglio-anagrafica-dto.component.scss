@@ -1,39 +1,85 @@
-.form-group {
-    margin-bottom: 1rem;
+/* Stile generale */
+.container-fluid {
+  padding: 20px;
 }
 
-label {
-    font-weight: bold;
+/* Titolo principale */
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
-.form-check {
-    margin-bottom: 0.5rem;
+/* Sezioni */
+.row {
+  margin-bottom: 20px;
 }
 
-/* Stile per rendere i checkbox in sola lettura visivamente decorati */
-.form-check-input[disabled] {
-    pointer-events: none;
-    opacity: 0.6;
+/* Colonnes */
+.col-md-6 {
+  flex-basis: calc(50% - 20px);
+  padding: 10px;
 }
 
-/* Stile per rendere il bottone responsivo */
-.btn-primary {
-    margin-top: 1rem;
+/* Lista con titoli */
+ul {
+  list-style: none;
+  padding-left: 0;
 }
 
-.text-decoration-example {
-    font-size: 16px;
-    line-height: 1.5;
-    color: #333;
-    background-color: #ffffff;
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
+ul li {
+  margin-bottom: 10px;
 }
 
-@media (max-width: 768px) {
-    .text-decoration-example {
-        font-size: 14px;
-        padding: 8px;
-    }
+/* Tabella */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Pulsanti */
+.btn {
+  margin-right: 10px;
+}
+
+/* Responsività per schermi più piccoli */
+@media screen and (max-width: 768px) {
+  .col-md-6 {
+    flex-basis: 100%;
+  }
+
+  .btn {
+    margin-right: 0;
+    margin-bottom: 5px;
+    width: 100%;
+  }
+}
+
+/* Stile per la lista ul */
+ul {
+  list-style: none; /* Rimuove i bullet points predefiniti */
+  padding: 0;
+}
+
+/* Stile per gli elementi <li> all'interno della lista */
+ul li {
+  margin-bottom: 10px; /* Aggiunge uno spazio tra ciascun elemento della lista */
+}
+
+/* Stile per gli elementi <strong> all'interno degli elementi <li> */
+ul li strong {
+  font-weight: bold; /* Rende il testo in grassetto */
+  color: #333; /* Cambia il colore del testo in grigio scuro */
+}
+
+/* Stile per il testo "Dato non inserito" */
+ul li .no-data {
+  font-style: italic; /* Rende il testo in corsivo */
+  color: #888; /* Cambia il colore del testo in grigio scuro */
 }
