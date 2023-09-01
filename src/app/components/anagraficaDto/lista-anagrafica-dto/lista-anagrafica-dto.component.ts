@@ -30,6 +30,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   mostraFiltri = false;
   showErrorPopup: any;
   showSuccessPopup: any;
+  currentDate = new Date();
+  dataFineRapporto:any;
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -65,6 +67,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   role: any;
   anagrafica: any;
   idUtente: any;
+  contrattoInScadenza: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -131,14 +134,31 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       this.lista = this.originalLista;
       console.log(resp);
 
-      // $(function () {
-      //   $('#table').DataTable({
-      //     autoWidth: false,
-      //     responsive: true,
-      //   });
-      // }
-      // );
+      // Itera attraverso gli elementi nell'array 'list'
+      this.originalLista.forEach((element: any) => {
+        const dataFineRapporto = new Date(element.contratto.dataFineRapporto);
+        const currentDate = new Date(); // Assumendo che hai la data corrente
+
+        // Calcola la differenza tra le due date in millisecondi
+        const timeDifference = dataFineRapporto.getTime() - currentDate.getTime();
+
+        // Calcola il valore in millisecondi per 40 giorni
+        const millisecondiIn40Giorni = 40 * 24 * 60 * 60 * 1000;
+
+        // Confronta la differenza con 40 giorni
+        const isEntro40Giorni = timeDifference <= millisecondiIn40Giorni;
+
+        // Stampa il risultato per ciascun elemento
+        console.log(`Data fine rapporto: ${dataFineRapporto}`);
+        console.log(`Data corrente: ${currentDate}`);
+        console.log(`È entro 40 giorni: ${isEntro40Giorni}`);
+
+        this.contrattoInScadenza=isEntro40Giorni;
+
+      });
     });
+
+
 
     this.filterAnagraficaDto = this.formBuilder.group({
       anagrafica: new FormGroup({
