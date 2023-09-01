@@ -60,7 +60,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.AnagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
         attivo: new FormControl(''),
-        aziendaTipo: new FormControl(''),
+        aziendaTipo: new FormControl('', Validators.required),
         nome: new FormControl('', Validators.required),
         cognome: new FormControl('', Validators.required),
         codiceFiscale: new FormControl('', [

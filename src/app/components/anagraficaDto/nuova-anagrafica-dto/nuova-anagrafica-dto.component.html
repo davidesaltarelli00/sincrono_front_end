@@ -53,10 +53,15 @@
                       <br>
                     </div>
                     <div formGroupName="anagrafica">
-                      <label>Azienda: </label>
+                      <label>Nome azienda: </label>
                       <div class="form-group">
                         <input type="text" class="form-control" formControlName="aziendaTipo"
                           placeholder="Inserire azienda." />
+                          <div
+                          *ngIf="AnagraficaDto.get('anagrafica.aziendaTipo')?.invalid && AnagraficaDto.get('anagrafica.aziendaTipo')?.touched"
+                          class="text-danger">
+                          Il campo nome azienda è obbligatorio.
+                        </div>
                       </div>
                       <div class="row" id="nominativo">
                         <legend>Dati personali:</legend>
