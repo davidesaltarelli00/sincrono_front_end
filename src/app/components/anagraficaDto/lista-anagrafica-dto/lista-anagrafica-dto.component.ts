@@ -32,6 +32,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   showSuccessPopup: any;
   currentDate = new Date();
   dataFineRapporto:any;
+  inserimentoParziale: any;
+
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -147,14 +149,35 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
         // Confronta la differenza con 40 giorni e aggiungi il risultato come una nuova proprietà a ciascun elemento
         element.inScadenza = timeDifference <= millisecondiIn40Giorni;
-
-        // Stampa il risultato per ciascun elemento
-        console.log(`Data fine rapporto: ${dataFineRapporto}`);
-        console.log(`Data corrente: ${currentDate}`);
-        console.log(`È entro 40 giorni: ${element.inScadenza}`);
       });
 
-      // Adesso puoi utilizzare 'this.lista' nell'HTML per visualizzare i dati correttamente
+
+      //Inserimento parziale
+
+      this.originalLista.forEach((element: any) => {
+        const anagrafica = element.anagrafica;
+        const contratto = element.contratto;
+        const commesse=element.commesse;
+
+        // Verifica se uno qualsiasi dei campi nell'anagrafica è vuoto
+        if (!this.areFieldsNotEmpty(anagrafica) && !this.areFieldsNotEmpty(contratto) || !this.areFieldsNotEmpty(commesse)) {
+          console.log("Dati mancanti nell'anagrafica:", anagrafica);
+          console.log("Dati mancanti nel contratto:", contratto);
+          console.log("Dati mancanti nelle commesse:", commesse);
+          this.inserimentoParziale = true;
+          return;
+        }
+
+        // Verifica se uno qualsiasi dei campi nel contratto è vuoto
+        // if (!this.areFieldsNotEmpty(contratto)) {
+        //   this.inserimentoParziale = true;
+        //   console.log("Dati mancanti nel contratto:", contratto);
+        //   return; // Puoi uscire dal ciclo se hai trovato un campo vuoto nel contratto
+        // }
+      });
+
+      // Ora hai esaminato tutti gli elementi, inserimentoParziale è impostato in base ai risultati
+      console.log("Inserimento parziale:", this.inserimentoParziale);
     });
 
 
@@ -195,6 +218,22 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
   }
+
+
+  areFieldsNotEmpty(obj: any): boolean {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key];
+        // Verifica se il valore è null o una stringa vuota
+        if (value === null || value === "") {
+          return false; // Restituisce false se trovi un campo vuoto
+        }
+      }
+    }
+    return true; // Restituisce true se tutti i campi sono non vuoti
+  }
+
+
   setFilterFromOrganico(tipoContrattoFilter: any, tipoAziendaFilter: any) {
     if (tipoContrattoFilter != null && tipoAziendaFilter != null) {
       this.filterAnagraficaDto.value.contratto.tipoContratto.descrizione =
@@ -444,7 +483,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
     this.anagraficaDtoService.listAnagraficaDto(localStorage.getItem('token')).subscribe((resp: any) => {
       this.lista = resp.list;
-      this.reset();
+      location.reload()
     });
   }
 

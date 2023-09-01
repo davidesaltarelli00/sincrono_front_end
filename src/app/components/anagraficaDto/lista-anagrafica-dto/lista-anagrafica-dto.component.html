@@ -157,6 +157,7 @@
     <table id="table" class="table table-striped table-bordered">
       <thead class="thead-dark">
         <tr>
+          <th scope="col" >Inserimento parziale</th>
           <th scope="col">Nome</th>
           <th scope="col">Cognome</th>
           <th scope="col">Codice Fiscale</th>
@@ -168,6 +169,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let element of lista">
+          <td *ngIf="inserimentoParziale" style="background-color: rgb(243, 243, 143); color: black;" [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]" > Si </td>
+          <td  *ngIf="!inserimentoParziale" style="background-color: rgb(121, 216, 121); color: black;"> No </td>
           <td>{{ element?.anagrafica.nome |titlecase }}</td>
           <td>{{ element?.anagrafica.cognome |titlecase }}</td>
           <td>{{ element?.anagrafica.codiceFiscale |uppercase }}</td>
