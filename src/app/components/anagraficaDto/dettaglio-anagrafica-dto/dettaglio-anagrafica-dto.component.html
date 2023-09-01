@@ -314,8 +314,7 @@
 
 
         <div class="col-md-3">
-            <button class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;"
-            (click)="getStoricoContratti(data?.anagrafica.id)">storicoContratti</button>
+            <button class="btn btn-success" (click)="getStoricoContratti(data?.anagrafica.id)">Storico contratti</button>
         </div>
 
     </div>
@@ -612,8 +611,7 @@
 
 
         <div class="col-md-3">
-            <button class="btn btn-dark btn-sm rounded-pill shadow-sm" style="background-color: rgb(24, 122, 0); color: white;"
-            (click)="getStoricoCommessa(data?.anagrafica.id)">Storico Commesse</button>
+            <button class="btn btn-success" [disabled]="data?.commesse.length===0" (click)="getStoricoCommessa(data?.anagrafica.id)">Storico Commesse</button>
         </div>
     </div>
 

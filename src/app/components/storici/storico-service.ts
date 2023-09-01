@@ -17,7 +17,8 @@ export class StoricoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/storico-contratti/${id}`
+      `http://localhost:8080/services/storico-contratti/${id}`,
+      { headers: headers }
     );
   }
 
@@ -28,7 +29,8 @@ export class StoricoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:808/services/storico-commesse/${id}`
+      `http://localhost:8080/services/storico-commesse/${id}`,
+      { headers: headers }
     );
   }
 }

@@ -133,6 +133,6 @@ export class DettaglioAnagraficaDtoComponent {
     this.router.navigate(['/storico-contratti', idAnagrafica]);
   }
   getStoricoCommessa(idAnagrafica:any) {
-    this.router.navigate(['/storico-commesse', idAnagrafica]);
+    this.router.navigate(['/storico-commesse-anagrafica', idAnagrafica]);
   }
 }
