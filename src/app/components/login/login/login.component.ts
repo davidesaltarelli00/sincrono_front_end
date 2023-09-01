@@ -9,7 +9,6 @@ import { AuthService } from '../login-service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-
   token: string | null = null;
   passwordVisible = false;
   loginForm: FormGroup;
@@ -30,7 +29,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (localStorage.getItem('token') != null) {
+      this.router.navigate(['/home']);
+    } else{
+      this.router.navigate(['/login']);
 
+    }
   }
 
   avviaRecuperoPassword() {
@@ -41,13 +45,12 @@ export class LoginComponent implements OnInit {
     this.recuperoPasswordInCorso = false;
   }
 
-  reset(){
+  reset() {
     var username = this.loginForm.value.username;
     var password = this.loginForm.value.password;
-    username=null;
-    password=null;
+    username = null;
+    password = null;
   }
-
 
   login() {
     const username = this.loginForm.value.username;
@@ -81,5 +84,4 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-
 }

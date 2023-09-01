@@ -288,27 +288,29 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         commessa: this.elencoCommesse[index],
       });
       console.log(body);
-      this.anagraficaDtoService.deleteCommessa(body, localStorage.getItem('token')).subscribe(
-        (res: any) => {
-          console.log(
-            'Commessa con indice ' +
-              index +
-              ' eliminata correttamente. Risposta:',
-            res
-          );
-          // Rimuovi l'elemento dall'array locale
-          this.elencoCommesse.splice(index, 1);
-          // this.caricaDati();
-        },
-        (error: any) => {
-          console.log(
-            "Errore durante l'eliminazione della commessa con indice " +
-              index +
-              ': ' +
-              error
-          );
-        }
-      );
+      this.anagraficaDtoService
+        .deleteCommessa(body, localStorage.getItem('token'))
+        .subscribe(
+          (res: any) => {
+            console.log(
+              'Commessa con indice ' +
+                index +
+                ' eliminata correttamente. Risposta:',
+              res
+            );
+            // Rimuovi l'elemento dall'array locale
+            this.elencoCommesse.splice(index, 1);
+            // this.caricaDati();
+          },
+          (error: any) => {
+            console.log(
+              "Errore durante l'eliminazione della commessa con indice " +
+                index +
+                ': ' +
+                error
+            );
+          }
+        );
     }
   }
 
@@ -326,17 +328,44 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     const payloadJson = JSON.stringify(payload);
 
     console.log('Payload backend:', payloadJson);
-    this.anagraficaDtoService.update(payload,localStorage.getItem('token')).subscribe(
-      (response) => {
-        console.log('Payload inviato con successo al server:', response);
-        // location.reload();
-        this.router.navigate(['/dettaglio-anagrafica/' + this.id]);
-      },
-      (error) => {
-        console.error("Errore nell'invio del payload al server:", error);
-      }
-    );
+    this.anagraficaDtoService
+      .update(payload, localStorage.getItem('token'))
+      .subscribe(
+        (response) => {
+          if ((response as any).esito.code != 200) {
+            alert(
+              'Modifica non riuscita:\n' + (response as any).esito.target
+            );
+            this.errore = true;
+            this.messaggio = (response as any).esito.target;
+          } else {
+            console.log('Payload inviato con successo al server:', response);
+            // location.reload();
+            this.router.navigate(['/dettaglio-anagrafica/' + this.id]);
+          }
+        },
+        (error) => {
+          console.error("Errore nell'invio del payload al server:", error);
+        }
+      );
   }
+  /*
+   this.anagraficaDtoService.insert(body, localStorage.getItem('token')).subscribe((result) => {
+        if ((result as any).esito.code !== 200) {
+          alert(
+            'Inserimento non riuscito\n' +
+              'Target: ' +
+              (result as any).esito.target
+          );
+          this.errore = true;
+          this.messaggio = (result as any).esito.target;
+        } else {
+          alert('Inserimento riuscito');
+          console.log(this.AnagraficaDto.value);
+          this.router.navigate(['/lista-anagrafica']);
+        }
+      });
+*/
 
   caricaDati(): void {
     this.anagraficaDtoService
@@ -442,19 +471,25 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   caricaTipoContratto() {
-    this.anagraficaDtoService.getTipoContratto(localStorage.getItem('token')).subscribe((result: any) => {
-      this.tipiContratti = (result as any)['list'];
-    });
+    this.anagraficaDtoService
+      .getTipoContratto(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        this.tipiContratti = (result as any)['list'];
+      });
   }
   caricaLivelloContratto() {
-    this.anagraficaDtoService.getLivelloContratto(localStorage.getItem('token')).subscribe((result: any) => {
-      this.livelliContratti = (result as any)['list'];
-    });
+    this.anagraficaDtoService
+      .getLivelloContratto(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        this.livelliContratti = (result as any)['list'];
+      });
   }
   caricaTipoAzienda() {
-    this.anagraficaDtoService.getTipoAzienda(localStorage.getItem('token')).subscribe((result: any) => {
-      this.tipiAziende = (result as any)['list'];
-    });
+    this.anagraficaDtoService
+      .getTipoAzienda(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        this.tipiAziende = (result as any)['list'];
+      });
   }
 
   caricaContrattoNazionale() {
@@ -471,8 +506,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   // }
 
   caricaRuoli() {
-    this.anagraficaDtoService.getRuoli(localStorage.getItem('token')).subscribe((result: any) => {
-      this.ruoli = (result as any)['list'];
-    });
+    this.anagraficaDtoService
+      .getRuoli(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        this.ruoli = (result as any)['list'];
+      });
   }
 }

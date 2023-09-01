@@ -160,9 +160,10 @@
                 <th scope="col">Nome</th>
                 <th scope="col">Cognome</th>
                 <th scope="col">Codice Fiscale</th>
-                <th scope="col">Dettaglio</th>
-                <th scope="col">Modifica</th>
-                <th scope="col">Elimina</th>
+                <th scope="col">Azienda</th>
+                <th scope="col">Contratto attivo</th>
+                <th scope="col">Contratto in scadenza</th>
+                <th scope="col">Azioni</th>
             </tr>
         </thead>
         <tbody>
@@ -170,15 +171,24 @@
                 <td>{{ element?.anagrafica.nome }}</td>
                 <td>{{ element?.anagrafica.cognome }}</td>
                 <td>{{ element?.anagrafica.codiceFiscale }}</td>
+                <td>{{ element?.anagrafica.aziendaTipo }}</td>
+                <td *ngIf="element?.contratto.attivo" >Si</td>
+                <td *ngIf="!element?.contratto.attivo" >No</td>
+                <td *ngIf="contrattoInScadenza" matTooltip="{{element?.contratto.dataFineRapporto | date:'fullDate' }}" >Si ( {{element?.contratto.dataFineRapporto | date:'fullDate' }} ) </td>
+                <td *ngIf="!contrattoInScadenza" >No.</td>
                 <td>
+                  <span style="margin:5px;">
                     <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"> <button class="btn btn-info" > <i class="fa fa-info" ></i>  </button> </a>
-                </td>
-                <td>
-                  <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element?.anagrafica.id]" > <i class="fa fa-pencil"></i> </button>
-                </td>
-                <td>
-                    <!-- <button class="btn btn-danger" (click)="delete(element?.anagrafica.id, element?.anagrafica?.utente.id, element?.contratto.id,element?.commessa.id )"> <i class="fa fa-trash" ></i> </button> -->
+
+                  </span >
+                  <span style="margin:5px;">
+                    <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element?.anagrafica.id]" > <i class="fa fa-pencil"></i> </button>
+
+                  </span >
+                  <span style="margin:5px;">
                     <button class="btn btn-danger" (click)="elimina(element.anagrafica.id)" > <i class="fa fa-trash" > </i> </button> <!--, element.anagrafica.utente.id, element.contratto.id, element.commesse-->
+
+                  </span>
                   </td>
             </tr>
         </tbody>
