@@ -155,45 +155,43 @@
 <div class="col-12">
   <div class="table-responsive">
     <table id="table" class="table table-striped table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Nome</th>
-                <th scope="col">Cognome</th>
-                <th scope="col">Codice Fiscale</th>
-                <th scope="col">Azienda</th>
-                <th scope="col">Contratto attivo</th>
-                <th scope="col">Contratto in scadenza</th>
-                <th scope="col">Azioni</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let element of lista">
-                <td>{{ element?.anagrafica.nome }}</td>
-                <td>{{ element?.anagrafica.cognome }}</td>
-                <td>{{ element?.anagrafica.codiceFiscale }}</td>
-                <td>{{ element?.anagrafica.aziendaTipo }}</td>
-                <td *ngIf="element?.contratto.attivo" >Si</td>
-                <td *ngIf="!element?.contratto.attivo" >No</td>
-                <td *ngIf="contrattoInScadenza" matTooltip="{{element?.contratto.dataFineRapporto | date:'fullDate' }}" >Si ( {{element?.contratto.dataFineRapporto | date:'fullDate' }} ) </td>
-                <td *ngIf="!contrattoInScadenza" >No.</td>
-                <td>
-                  <span style="margin:5px;">
-                    <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"> <button class="btn btn-info" > <i class="fa fa-info" ></i>  </button> </a>
-
-                  </span >
-                  <span style="margin:5px;">
-                    <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element?.anagrafica.id]" > <i class="fa fa-pencil"></i> </button>
-
-                  </span >
-                  <span style="margin:5px;">
-                    <button class="btn btn-danger" (click)="elimina(element.anagrafica.id)" > <i class="fa fa-trash" > </i> </button> <!--, element.anagrafica.utente.id, element.contratto.id, element.commesse-->
-
-                  </span>
-                  </td>
-            </tr>
-        </tbody>
-
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">Cognome</th>
+          <th scope="col">Codice Fiscale</th>
+          <th scope="col">Azienda</th>
+          <th scope="col">Contratto attivo</th>
+          <th scope="col">Contratto in scadenza</th>
+          <th scope="col">Azioni</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let element of lista">
+          <td>{{ element?.anagrafica.nome }}</td>
+          <td>{{ element?.anagrafica.cognome }}</td>
+          <td>{{ element?.anagrafica.codiceFiscale }}</td>
+          <td>{{ element?.anagrafica.aziendaTipo }}</td>
+          <td style="background-color: rgb(121, 216, 121); color: black;" *ngIf="element?.contratto.attivo">Si</td>
+          <td style="background-color: rgb(242, 123, 123); color: white;" *ngIf="!element?.contratto.attivo">No</td>
+          <td style="background-color: rgb(242, 123, 123); color: white;" *ngIf="element?.inScadenza && element?.contratto.dataFineRapporto !=null" matTooltip="{{element?.contratto.dataFineRapporto | date:'fullDate' }}" [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]">Si   ({{ element?.contratto.dataFineRapporto | date:'fullDate' }})  </td> <!--style="background-color: rgb(225, 225, 120); color: black;" *ngIf="element?.contratto.dataFineRapporto ===null"-->
+          <td style="background-color: rgb(243, 243, 143); color: black;" *ngIf="element?.inScadenza && element?.contratto.dataFineRapporto ===null" [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]">Data fine rapporto non inserita.</td>
+          <td style="background-color: rgb(121, 216, 121); color: black;" *ngIf="!element?.inScadenza">No.</td>
+          <td>
+            <span style="margin:5px;">
+              <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button class="btn btn-info"><i class="fa fa-info"></i></button></a>
+            </span>
+            <span style="margin:5px;">
+              <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element?.anagrafica.id]"><i class="fa fa-pencil"></i></button>
+            </span>
+            <span style="margin:5px;">
+              <button class="btn btn-danger" (click)="elimina(element.anagrafica.id)"><i class="fa fa-trash"></i></button>
+            </span>
+          </td>
+        </tr>
+      </tbody>
     </table>
+
 </div>
 </div>
 </div>

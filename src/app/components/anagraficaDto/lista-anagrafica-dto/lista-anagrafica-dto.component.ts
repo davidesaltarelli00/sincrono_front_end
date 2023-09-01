@@ -137,7 +137,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       // Itera attraverso gli elementi nell'array 'list'
       this.originalLista.forEach((element: any) => {
         const dataFineRapporto = new Date(element.contratto.dataFineRapporto);
-        const currentDate = new Date(); // Assumendo che hai la data corrente
+        const currentDate = new Date();
 
         // Calcola la differenza tra le due date in millisecondi
         const timeDifference = dataFineRapporto.getTime() - currentDate.getTime();
@@ -145,18 +145,18 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         // Calcola il valore in millisecondi per 40 giorni
         const millisecondiIn40Giorni = 40 * 24 * 60 * 60 * 1000;
 
-        // Confronta la differenza con 40 giorni
-        const isEntro40Giorni = timeDifference <= millisecondiIn40Giorni;
+        // Confronta la differenza con 40 giorni e aggiungi il risultato come una nuova proprietà a ciascun elemento
+        element.inScadenza = timeDifference <= millisecondiIn40Giorni;
 
         // Stampa il risultato per ciascun elemento
         console.log(`Data fine rapporto: ${dataFineRapporto}`);
         console.log(`Data corrente: ${currentDate}`);
-        console.log(`È entro 40 giorni: ${isEntro40Giorni}`);
-
-        this.contrattoInScadenza=isEntro40Giorni;
-
+        console.log(`È entro 40 giorni: ${element.inScadenza}`);
       });
+
+      // Adesso puoi utilizzare 'this.lista' nell'HTML per visualizzare i dati correttamente
     });
+
 
 
 
