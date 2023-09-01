@@ -31,9 +31,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   showErrorPopup: any;
   showSuccessPopup: any;
   currentDate = new Date();
-  dataFineRapporto:any;
+  dataFineRapporto: any;
   inserimentoParziale: any;
-
+  contrattoScaduto: any;
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -131,57 +131,63 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     const body = JSON.stringify({
       anagraficaDto: this.filterAnagraficaDto.value,
     });*/
-    this.anagraficaDtoService.listAnagraficaDto(localStorage.getItem('token')).subscribe((resp: any) => {
-      this.originalLista = resp.list; // Memorizza la lista originale nella variabile 'originalLista'
-      this.lista = this.originalLista;
-      console.log(resp);
+    this.anagraficaDtoService
+      .listAnagraficaDto(localStorage.getItem('token'))
+      .subscribe((resp: any) => {
+        this.originalLista = resp.list; // Memorizza la lista originale nella variabile 'originalLista'
+        this.lista = this.originalLista;
+        console.log(resp);
 
-      // Itera attraverso gli elementi nell'array 'list'
-      this.originalLista.forEach((element: any) => {
-        const dataFineRapporto = new Date(element.contratto.dataFineRapporto);
-        const currentDate = new Date();
+        // Itera attraverso gli elementi nell'array 'list'
+        this.originalLista.forEach((element: any) => {
+          const dataFineRapporto = new Date(element.contratto.dataFineRapporto);
+          const currentDate = new Date();
 
-        // Calcola la differenza tra le due date in millisecondi
-        const timeDifference = dataFineRapporto.getTime() - currentDate.getTime();
+          // Controllo per verificare se il contratto è scaduto
+          element.contrattoScaduto = dataFineRapporto <= currentDate;
 
-        // Calcola il valore in millisecondi per 40 giorni
-        const millisecondiIn40Giorni = 40 * 24 * 60 * 60 * 1000;
+          // Calcola la differenza tra le due date in millisecondi
+          const timeDifference =
+            dataFineRapporto.getTime() - currentDate.getTime();
 
-        // Confronta la differenza con 40 giorni e aggiungi il risultato come una nuova proprietà a ciascun elemento
-        element.inScadenza = timeDifference <= millisecondiIn40Giorni;
+          // Calcola il valore in millisecondi per 40 giorni
+          const millisecondiIn40Giorni = 40 * 24 * 60 * 60 * 1000;
+
+          // Confronta la differenza con 40 giorni e aggiungi il risultato come una nuova proprietà a ciascun elemento
+          element.inScadenza = timeDifference <= millisecondiIn40Giorni;
+        });
+
+        //Inserimento parziale
+
+        this.originalLista.forEach((element: any) => {
+          const anagrafica = element.anagrafica;
+          const contratto = element.contratto;
+          const commesse = element.commesse;
+
+          // Verifica se uno qualsiasi dei campi nell'anagrafica è vuoto
+          if (
+            (!this.areFieldsNotEmpty(anagrafica) &&
+              !this.areFieldsNotEmpty(contratto)) ||
+            !this.areFieldsNotEmpty(commesse)
+          ) {
+            console.log("Dati mancanti nell'anagrafica:", anagrafica);
+            console.log('Dati mancanti nel contratto:', contratto);
+            console.log('Dati mancanti nelle commesse:', commesse);
+            this.inserimentoParziale = true;
+            return;
+          }
+
+          // Verifica se uno qualsiasi dei campi nel contratto è vuoto
+          // if (!this.areFieldsNotEmpty(contratto)) {
+          //   this.inserimentoParziale = true;
+          //   console.log("Dati mancanti nel contratto:", contratto);
+          //   return; // Puoi uscire dal ciclo se hai trovato un campo vuoto nel contratto
+          // }
+        });
+
+        // Ora hai esaminato tutti gli elementi, inserimentoParziale è impostato in base ai risultati
+        console.log('Inserimento parziale:', this.inserimentoParziale);
       });
-
-
-      //Inserimento parziale
-
-      this.originalLista.forEach((element: any) => {
-        const anagrafica = element.anagrafica;
-        const contratto = element.contratto;
-        const commesse=element.commesse;
-
-        // Verifica se uno qualsiasi dei campi nell'anagrafica è vuoto
-        if (!this.areFieldsNotEmpty(anagrafica) && !this.areFieldsNotEmpty(contratto) || !this.areFieldsNotEmpty(commesse)) {
-          console.log("Dati mancanti nell'anagrafica:", anagrafica);
-          console.log("Dati mancanti nel contratto:", contratto);
-          console.log("Dati mancanti nelle commesse:", commesse);
-          this.inserimentoParziale = true;
-          return;
-        }
-
-        // Verifica se uno qualsiasi dei campi nel contratto è vuoto
-        // if (!this.areFieldsNotEmpty(contratto)) {
-        //   this.inserimentoParziale = true;
-        //   console.log("Dati mancanti nel contratto:", contratto);
-        //   return; // Puoi uscire dal ciclo se hai trovato un campo vuoto nel contratto
-        // }
-      });
-
-      // Ora hai esaminato tutti gli elementi, inserimentoParziale è impostato in base ai risultati
-      console.log("Inserimento parziale:", this.inserimentoParziale);
-    });
-
-
-
 
     this.filterAnagraficaDto = this.formBuilder.group({
       anagrafica: new FormGroup({
@@ -219,20 +225,18 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.caricaContrattoNazionale();
   }
 
-
   areFieldsNotEmpty(obj: any): boolean {
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
         const value = obj[key];
         // Verifica se il valore è null o una stringa vuota
-        if (value === null || value === "") {
+        if (value === null || value === '') {
           return false; // Restituisce false se trovi un campo vuoto
         }
       }
     }
     return true; // Restituisce true se tutti i campi sono non vuoti
   }
-
 
   setFilterFromOrganico(tipoContrattoFilter: any, tipoAziendaFilter: any) {
     if (tipoContrattoFilter != null && tipoAziendaFilter != null) {
@@ -244,25 +248,33 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     }
   }
   caricaTipoContratto() {
-    this.contrattoService.getTipoContratto(localStorage.getItem('token')).subscribe((result: any) => {
-      this.tipiContratti = (result as any)['list'];
-    });
+    this.contrattoService
+      .getTipoContratto(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        this.tipiContratti = (result as any)['list'];
+      });
   }
   caricaLivelloContratto() {
-    this.contrattoService.getLivelloContratto(localStorage.getItem('token')).subscribe((result: any) => {
-      this.livelliContratti = (result as any)['list'];
-    });
+    this.contrattoService
+      .getLivelloContratto(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        this.livelliContratti = (result as any)['list'];
+      });
   }
   caricaTipoAzienda() {
-    this.contrattoService.getTipoAzienda(localStorage.getItem('token')).subscribe((result: any) => {
-      this.tipiAziende = (result as any)['list'];
-    });
+    this.contrattoService
+      .getTipoAzienda(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        this.tipiAziende = (result as any)['list'];
+      });
   }
 
   caricaContrattoNazionale() {
-    this.contrattoService.getContrattoNazionale(localStorage.getItem('token')).subscribe((result: any) => {
-      this.tipiCcnl = (result as any)['list'];
-    });
+    this.contrattoService
+      .getContrattoNazionale(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        this.tipiCcnl = (result as any)['list'];
+      });
   }
 
   vaiAModifica(idAnagrafica: number, idContratto: number, idCommessa: number) {
@@ -330,45 +342,37 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.lista = this.originalLista.filter((element: any) => {
       var nome;
 
-      if(!element?.anagrafica.nome || element?.anagrafica.nome==""){
-        nome='undefined';
-      }else{
-
-        nome=element?.anagrafica.nome;
-
+      if (!element?.anagrafica.nome || element?.anagrafica.nome == '') {
+        nome = 'undefined';
+      } else {
+        nome = element?.anagrafica.nome;
       }
-
 
       var cognome;
 
-      if(!element?.anagrafica.cognome || element?.anagrafica.cognome==""){
-        cognome='undefined';
-      }else{
-
-        cognome=element?.anagrafica.cognome;
-
+      if (!element?.anagrafica.cognome || element?.anagrafica.cognome == '') {
+        cognome = 'undefined';
+      } else {
+        cognome = element?.anagrafica.cognome;
       }
-
-
 
       var aziendaTipo;
 
-      if(!element?.anagrafica.aziendaTipo || element?.anagrafica.aziendaTipo==""){
-        aziendaTipo='undefined';
-      }else{
-
-        aziendaTipo=element?.anagrafica.aziendaTipo;
-
+      if (
+        !element?.anagrafica.aziendaTipo ||
+        element?.anagrafica.aziendaTipo == ''
+      ) {
+        aziendaTipo = 'undefined';
+      } else {
+        aziendaTipo = element?.anagrafica.aziendaTipo;
       }
 
       var attivo;
 
-      if(!element?.anagrafica.attivo || element?.anagrafica.attivo==""){
-        attivo='undefined';
-      }else{
-
-        attivo=element?.anagrafica.attivo;
-
+      if (!element?.anagrafica.attivo || element?.anagrafica.attivo == '') {
+        attivo = 'undefined';
+      } else {
+        attivo = element?.anagrafica.attivo;
       }
 
       /*const nominativo = (
@@ -384,19 +388,11 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       }
 
       var ralAnnua;
-      if(!element?.contratto.ralAnnua || element?.contratto.ralAnnua==""){
-
-        ralAnnua="undefined";
-
-      }else{
-
-        var ralAnnua= element?.contratto.ralAnnua;
-
-
+      if (!element?.contratto.ralAnnua || element?.contratto.ralAnnua == '') {
+        ralAnnua = 'undefined';
+      } else {
+        var ralAnnua = element?.contratto.ralAnnua;
       }
-
-
-
 
       const dataAssunzione = element?.contratto.dataAssunzione ?? 'undefined';
       const dataFineRapporto =
@@ -477,14 +473,13 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     return check;
   }
 
-
-
   annullaFiltri() {
-
-    this.anagraficaDtoService.listAnagraficaDto(localStorage.getItem('token')).subscribe((resp: any) => {
-      this.lista = resp.list;
-      location.reload()
-    });
+    this.anagraficaDtoService
+      .listAnagraficaDto(localStorage.getItem('token'))
+      .subscribe((resp: any) => {
+        this.lista = resp.list;
+        location.reload();
+      });
   }
 
   reset() {
@@ -492,36 +487,40 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   elimina(idAnagrafica: number) {
-    const confirmation = confirm('Sei sicuro di voler eliminare questo utente?');
+    const confirmation = confirm(
+      'Sei sicuro di voler eliminare questo utente?'
+    );
     if (confirmation) {
       console.log(idAnagrafica);
       //mi prendo il dettaglio dell anagrafica della riga selezionata
-      this.anagraficaDtoService.detailAnagraficaDto(idAnagrafica,localStorage.getItem('token')).subscribe(
-        (resp: any) => {
-          //parseing json
-          // resp = (resp as any)['anagraficaDto'];
-          console.log(resp);
-          //se é ok parte l elimina
-          this.anagraficaDtoService.delete(resp,localStorage.getItem('token')).subscribe(
-            (deleted: any) => {
-              console.log('eliminato con successo ' + deleted);
-              // location.reload();
-              this.ngOnInit();
-            },
-            (errorDeleted: any) => {
-              console.log("Errore durante l'eliminazione: " + errorDeleted);
-            }
-          );
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
-    }
-    else{
+      this.anagraficaDtoService
+        .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
+        .subscribe(
+          (resp: any) => {
+            //parseing json
+            // resp = (resp as any)['anagraficaDto'];
+            console.log(resp);
+            //se é ok parte l elimina
+            this.anagraficaDtoService
+              .delete(resp, localStorage.getItem('token'))
+              .subscribe(
+                (deleted: any) => {
+                  console.log('eliminato con successo ' + deleted);
+                  // location.reload();
+                  this.ngOnInit();
+                },
+                (errorDeleted: any) => {
+                  console.log("Errore durante l'eliminazione: " + errorDeleted);
+                }
+              );
+          },
+          (error: any) => {
+            console.log(error);
+          }
+        );
+    } else {
       return;
     }
-
   }
 
   delete(
@@ -547,17 +546,19 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     const body = JSON.stringify({
       anagraficaDto: this.filterAnagraficaDto.value,
     });
-    this.anagraficaDtoService.delete(body, localStorage.getItem('token')).subscribe((result: any) => {
-      if ((result as any).esito.code != 0) {
-        alert('cancellazione non riuscita');
-        this.errore = true;
-        this.messaggio = (result as any).esito.target;
-        return;
-      } else {
-        alert('cancellazione riuscita');
-        this.reloadPage();
-      }
-    });
+    this.anagraficaDtoService
+      .delete(body, localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        if ((result as any).esito.code != 0) {
+          alert('cancellazione non riuscita');
+          this.errore = true;
+          this.messaggio = (result as any).esito.target;
+          return;
+        } else {
+          alert('cancellazione riuscita');
+          this.reloadPage();
+        }
+      });
   }
 
   chiudiPopup() {

@@ -177,8 +177,10 @@
           <td>{{ element?.anagrafica.aziendaTipo |titlecase }}</td>
           <td style="background-color: rgb(121, 216, 121); color: black;" *ngIf="element?.contratto.attivo">Si</td>
           <td style="background-color: rgb(242, 123, 123); color: white;" *ngIf="!element?.contratto.attivo">No</td>
-          <td style="background-color: rgb(242, 123, 123); color: white;" *ngIf="element?.inScadenza && element?.contratto.dataFineRapporto !=null" matTooltip="{{element?.contratto.dataFineRapporto | date:'fullDate' }}" [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]">Si   ({{ element?.contratto.dataFineRapporto | date:'fullDate' }})  </td> <!--style="background-color: rgb(225, 225, 120); color: black;" *ngIf="element?.contratto.dataFineRapporto ===null"-->
+          <td style="background-color: rgb(242, 123, 123); color: white;" *ngIf="element?.inScadenza && element?.contratto.dataFineRapporto !=null" matTooltip="{{element?.contratto.dataFineRapporto | date:'fullDate' }}" [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]">Si   ({{ element?.contratto.dataFineRapporto | date:'fullDate' }})  </td>
           <td style="background-color: rgb(243, 243, 143); color: black;" *ngIf="element?.inScadenza && element?.contratto.dataFineRapporto ===null" [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]">Data fine rapporto non inserita.</td>
+          <td *ngIf="element?.contratto.dataFineRapporto <= currentDate && element?.contratto.dataFineRapporto != null" style="background-color: rgb(242, 123, 123); color: white;">Contratto scaduto il {{ element?.contratto.dataFineRapporto | date:'fullDate' }}
+          </td>
           <td style="background-color: rgb(121, 216, 121); color: black;" *ngIf="!element?.inScadenza">No.</td>
           <td>
             <span style="margin:5px;">
