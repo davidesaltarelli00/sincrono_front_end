@@ -168,7 +168,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let element of lista">
+        <tr *ngFor="let element of getCurrentPageItems()">
           <!-- <td *ngIf="inserimentoParziale" style="background-color: rgb(243, 243, 143); color: black;" [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]" > Si </td> -->
           <!-- <td  *ngIf="!inserimentoParziale" style="background-color: rgb(121, 216, 121); color: black;"> No </td> -->
           <td>{{ element?.anagrafica.nome |titlecase }}</td>
@@ -196,6 +196,19 @@
         </tr>
       </tbody>
     </table>
+    <div class="pagination">
+      <ul>
+        <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+          <span> <i class="fa fa-arrow-left" ></i> </span>
+        </li>
+        <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page" (click)="goToPage(page)">
+          <span>{{ page }}</span>
+        </li>
+        <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
+          <span> <i class="fa fa-arrow-right" ></i> </span>
+        </li>
+      </ul>
+    </div>
 
 </div>
 </div>

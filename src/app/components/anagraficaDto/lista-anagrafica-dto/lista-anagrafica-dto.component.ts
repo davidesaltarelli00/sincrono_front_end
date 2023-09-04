@@ -71,6 +71,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   idUtente: any;
   contrattoInScadenza: any;
 
+  // paginazione
+  currentPage: number = 1;
+  itemsPerPage: number = 5; // Numero di elementi per pagina
+
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
@@ -224,6 +228,30 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
   }
+
+  //paginazione
+  getCurrentPageItems(): any[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.lista.slice(startIndex, endIndex);
+  }
+
+  getTotalPages(): number {
+    return Math.ceil(this.lista.length / this.itemsPerPage);
+  }
+
+  getPaginationArray(): number[] {
+    const totalPages = this.getTotalPages();
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  goToPage(pageNumber: number) {
+    if (pageNumber >= 1 && pageNumber <= this.getTotalPages()) {
+      this.currentPage = pageNumber;
+    }
+  }
+
+  //fine paginazione
 
   areFieldsNotEmpty(obj: any): boolean {
     for (const key in obj) {
