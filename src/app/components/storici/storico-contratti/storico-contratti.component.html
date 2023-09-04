@@ -12,13 +12,14 @@
   </div>
 <div class="row">
   <div class="col-12">
-    <mat-card *ngFor="let data of lista">
+    <mat-card *ngFor="let data of lista; let i=index;">
       <mat-card-header>
-        <mat-card-title>{{ data.sedeAssunzione }}</mat-card-title>
+        <mat-card-title>Contratto {{i+1}}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <p>Qualifica: {{ data.qualifica }}</p>
         <p *ngIf="data.societa">Società: {{ data.societa }}</p>
+        <p *ngIf="data.societa">Sede assunzione: {{ data.sedeAssunzione }}</p>
         <p *ngIf="data.dataAssunzione">Data Assunzione: {{ data.dataAssunzione | date: 'dd/MM/yyyy' }}</p>
         <p *ngIf="data.dataInizioProva">Data Inizio Prova: {{ data.dataInizioProva | date: 'dd/MM/yyyy' }}</p>
         <p *ngIf="data.dataFineProva">Data Fine Prova: {{ data.dataFineProva | date: 'dd/MM/yyyy' }}</p>
@@ -37,13 +38,15 @@
         <p *ngIf="data.diariaGg">Diaria Gg: {{ data.diariaGg }}</p>
         <p *ngIf="data.ticket">Ticket: {{ data.ticket }}</p>
         <p *ngIf="data.valoreTicket">Valore Ticket: {{ data.valoreTicket }}</p>
-        <p *ngIf="data.categoriaProtetta">Categoria Protetta: {{ data.categoriaProtetta }}</p>
+        <p *ngIf="data.categoriaProtetta">Categoria Protetta: Si</p>
+        <p *ngIf="!data.categoriaProtetta">Categoria Protetta: No</p>
         <p *ngIf="data.tutor">Tutor: {{ data.tutor }}</p>
         <p *ngIf="data.pfi">PFI: {{ data.pfi }}</p>
         <p *ngIf="data.assicurazioneObbligatoria">Assicurazione Obbligatoria: {{ data.assicurazioneObbligatoria }}</p>
         <p *ngIf="data.corsoSicurezza">Corso Sicurezza: {{ data.corsoSicurezza }}</p>
         <p *ngIf="data.motivazioneFineRapporto">Motivazione Fine Rapporto: {{ data.motivazioneFineRapporto }}</p>
-        <p *ngIf="data.pc">PC: {{ data.pc }}</p>
+        <p *ngIf="data.pc">PC: Si</p>
+        <p *ngIf="!data.pc">PC: No</p>
         <p *ngIf="data.scattiAnzianita">Scatti Anzianità: {{ data.scattiAnzianita }}</p>
         <p *ngIf="data.tariffaPartitaIva">Tariffa Partita IVA: {{ data.tariffaPartitaIva }}</p>
         <p *ngIf="data.canaleReclutamento">Canale Reclutamento: {{ data.canaleReclutamento }}</p>
