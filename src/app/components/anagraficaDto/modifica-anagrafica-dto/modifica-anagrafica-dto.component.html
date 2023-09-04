@@ -581,9 +581,10 @@
                   <label>Ticket: </label>
                   <div class="form-group">
                     <input
-                      type="text"
-                      class="form-control"
+                      type="checkbox"
+                      class="form-check-input"
                       value="{{ data?.contratto?.ticket }}"
+                      [checked]="data?.contratto?.ticket"
                       formControlName="ticket"
                     />
                   </div>
@@ -655,12 +656,8 @@
                 <div class="col-md-3">
                   <label>Motivazione Fine Rapporto: </label>
                   <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="{{ data?.contratto?.motivazioneFineRapporto }}"
-                      formControlName="motivazioneFineRapporto"
-                    />
+                    <textarea  class="form-control"   value="{{ data?.contratto?.motivazioneFineRapporto }}" formControlName="motivazioneFineRapporto" name="motivazioneFineRapporto" id="motivazioneFineRapporto" cols="30" rows="10"></textarea>
+
                   </div>
                 </div>
               </div>
@@ -669,7 +666,7 @@
                   <label>Scatti Anzianita: </label>
                   <div class="form-group">
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       value="{{ data?.contratto?.scattiAnzianita }}"
                       formControlName="scattiAnzianita"
@@ -694,7 +691,7 @@
                   <label>Tariffa Partita IVA: </label>
                   <div class="col-md-3">
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       value="{{ data?.contratto?.tariffaPartitaIva }}"
                       formControlName="tariffaPartitaIva"
