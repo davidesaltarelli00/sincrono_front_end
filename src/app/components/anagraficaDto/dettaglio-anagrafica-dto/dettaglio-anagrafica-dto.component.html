@@ -99,7 +99,9 @@
 
   <h4>Commessa</h4>
 
-  <div class="table-responsive">
+  <p *ngIf="data?.commesse.length==0" >Commesse non presenti.</p>
+
+  <div class="table-responsive" *ngIf="data?.commesse.length!=0" >
     <table id="commessaTable" class="table table-striped">
       <thead class="thead-dark">
         <tr>

@@ -1,0 +1,39 @@
+/* Stili per il grafico a torta */
+.pie-chart {
+  width: 200px; /* Regola le dimensioni a tuo piacimento */
+  height: 200px; /* Regola le dimensioni a tuo piacimento */
+  border-radius: 50%;
+  position: relative;
+  background-color: #f0f0f0; /* Colore di sfondo del grafico a torta */
+}
+
+.slice {
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  position: absolute;
+  transform-origin: center center;
+}
+
+.inner-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+}
+
+/* Stili per il grafico a barre orizzontale */
+.bar-chart {
+  margin-top: 20px; /* Spazio tra i grafici */
+}
+
+.bar {
+  background-color: #007BFF; /* Colore delle barre, puoi personalizzarlo */
+  color: white;
+  padding: 10px;
+  margin-bottom: 5px; /* Spazio tra le barre */
+  border-radius: 5px;
+}
+
+/* Aggiungi altri stili CSS a tuo piacimento */

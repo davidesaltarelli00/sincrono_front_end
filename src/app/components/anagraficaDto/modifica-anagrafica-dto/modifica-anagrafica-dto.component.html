@@ -45,7 +45,7 @@
               </div>
               <div class="col-3">
                 <label for="dataDiNascita">Data di Nascita:</label>
-                <input type="text" class="form-control" id="dataDiNascita" formControlName="dataDiNascita" />
+                <input type="date" class="form-control" id="dataDiNascita" formControlName="dataDiNascita" />
               </div>
               <div class="col-3">
                 <label for="residenza">Residenza:</label>
@@ -149,12 +149,12 @@
                       <div class="row">
                         <div class="col-3">
                           <label>dataInizio</label><br>
-                          <input class="form-control" formControlName="dataInizio" type="text" />
+                          <input class="form-control" formControlName="dataInizio" type="date" />
 
                         </div>
                         <div class="col-3">
                           <label>dataFine</label><br>
-                          <input class="form-control" formControlName="dataFine" type="text" />
+                          <input class="form-control" formControlName="dataFine" type="date" />
                         </div>
                         <div class="col-3">
                           <label>costoMese</label><br>
@@ -407,7 +407,7 @@
                     <label>Data Assunzione: </label>
                     <div class="form-group">
                       <input
-                        type="text"
+                        type="date"
                         class="form-control"
                         [value]="transformDate(data?.contratto?.dataAssunzione)"
                         formControlName="dataAssunzione"

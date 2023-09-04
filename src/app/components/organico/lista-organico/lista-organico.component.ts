@@ -42,22 +42,41 @@ export class ListaOrganicoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.role = this.authService.getTokenAndRole();
-    console.log("Ruolo: " + this.role);
-
     this.organicoService.listaOrganico(localStorage.getItem('token')).subscribe((resp: any) => {
+      const jsonResp = JSON.stringify(resp);
+      console.log(jsonResp);
       this.lista = resp.list;
+    },
+    (error:string)=>{
+      console.log("errore durante il caricamento dei dati dell'organico:"+error)
+    }
+    );
 
-      // $(function () {
-      //   $('#table').DataTable({
-      //     autoWidth: false,
-      //     responsive: true,
-      //   });
-      // });
-    });
   }
 
   filter(tipoContratto: any, tipoAzienda: any) {
     this.router.navigate(['/lista-anagrafica', { tipoContratto, tipoAzienda }]);
   }
+
+  calculateSliceRotation(element: any): number {
+    const total = element.numeroDipendenti + element.indeterminati + element.determinati +
+                  element.apprendistato + element.consulenza + element.stage +
+                  element.partitaIva + element.potenzialeStage + element.slotStage +
+                  element.potenzialeApprendistato + element.slotApprendistato;
+
+    const percentage = (element.numeroDipendenti / total) * 360;
+    return percentage;
+  }
+
+  calculatePercentage(element: any): number {
+    const total = element.numeroDipendenti + element.indeterminati + element.determinati +
+                  element.apprendistato + element.consulenza + element.stage +
+                  element.partitaIva + element.potenzialeStage + element.slotStage +
+                  element.potenzialeApprendistato + element.slotApprendistato;
+
+    const percentage = (element.numeroDipendenti / total) * 100;
+    return Math.round(percentage);
+  }
+
+
 }

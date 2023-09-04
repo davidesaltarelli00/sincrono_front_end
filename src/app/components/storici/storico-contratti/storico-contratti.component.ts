@@ -34,7 +34,7 @@ export class StoricoContrattiComponent implements OnInit  {
     this.storicoService.getStoricoContratti(this.idAnagrafica, localStorage.getItem("token")).subscribe((resp: any) => {
       this.lista = resp.list;
 
-      console.log("lista contratti:"+this.lista);
+      console.log("lista contratti:"+ resp.list);
 
       // $(function () {
       //   $('#table').DataTable({

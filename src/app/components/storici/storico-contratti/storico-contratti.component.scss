@@ -1,30 +1,56 @@
-th,td{
-  font-size: 12px;
+/* Stile per il corpo della pagina */
+body {
+  margin: 0;
+  padding: 0;
 }
 
-/* Stile per la tabella */
-.table {
-  display: flex;
-  flex-direction: column;
-  max-height: 500px; /* Specifica un'altezza massima per evitare che la tabella diventi troppo alta */
-  overflow-y: auto; /* Aggiunge una scrollbar verticale se la tabella è troppo alta */
+/* Stile per l'intestazione della pagina */
+header {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  text-align: center;
 }
 
-/* Stile per le righe della tabella */
-tr {
-  display: flex;
-  width: 100%;
+/* Stile per la Mat Card */
+mat-card {
+  width: 80%;
+  margin: 20px auto;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
 }
 
-/* Stile per le celle della tabella */
-td, th {
-  flex: 1;
-  padding: 8px;
+/* Stile per i paragrafi all'interno della Mat Card */
+mat-card p {
+  margin: 5px 0;
+}
+
+/* Stile per il titolo nella Mat Card */
+mat-card-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* Stile per i th nella tabella */
+th {
+  background-color: #333;
+  color: white;
+}
+
+/* Stile per le td nella tabella */
+td {
+  background-color: #fff;
+  color: #333;
+  padding: 5px;
   border: 1px solid #ccc;
-  word-wrap: break-word; /* Per evitare che il testo vada oltre i limiti delle celle */
 }
 
-/* Opzionale: Aggiungi uno sfondo alternato per migliorare la leggibilità */
-tr:nth-child(even) {
+/* Stile per le righe dispari nella tabella */
+tbody tr:nth-child(odd) {
   background-color: #f2f2f2;
+}
+
+h2{
+  text-align: center;
 }
