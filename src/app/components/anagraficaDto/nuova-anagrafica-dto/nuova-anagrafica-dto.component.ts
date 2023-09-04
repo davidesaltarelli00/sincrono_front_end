@@ -63,21 +63,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         aziendaTipo: new FormControl('', Validators.required),
         nome: new FormControl('', Validators.required),
         cognome: new FormControl('', Validators.required),
-        codiceFiscale: new FormControl('', [
-          Validators.required,
-          Validators.minLength(15),
-          Validators.maxLength(16),
-        ]),
-        cellularePrivato: new FormControl(''),
-        cellulareAziendale: new FormControl(''),
-        mailPrivata: new FormControl(''),
-        mailPec: new FormControl(''),
-        mailAziendale: new FormControl('', [
-          Validators.required,
-          Validators.pattern(
-            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
-          ),
-        ]),
+        codiceFiscale: new FormControl('', [Validators.required,Validators.minLength(15),Validators.maxLength(16),]),
+        cellularePrivato: new FormControl('', [Validators.pattern(/^[0-9]{10}$/),Validators.minLength(10),Validators.maxLength(10)]),
+        cellulareAziendale: new FormControl('',[Validators.pattern(/^[0-9]{10}$/),Validators.minLength(10),Validators.maxLength(10)]),
+        mailPrivata: new FormControl('', Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),),
+        mailPec: new FormControl('',Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')),
+        mailAziendale: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$' ),]),
         titoliDiStudio: new FormControl(''),
         altriTitoli: new FormControl(''),
         comuneDiNascita: new FormControl(''),
@@ -260,28 +251,30 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.showErrorAlert = false;
     this.missingFields = [];
     if (this.AnagraficaDto.invalid) {
-      alert('Qualcosa e andato storto');
+      alert('Qualcosa e andato storto, controlla i campi e riprova.');
     } else {
       const body = JSON.stringify({
         anagraficaDto: this.AnagraficaDto.value,
       });
       console.log('Backend payload: ' + body);
 
-      this.anagraficaDtoService.insert(body, localStorage.getItem('token')).subscribe((result) => {
-        if ((result as any).esito.code !== 200) {
-          alert(
-            'Inserimento non riuscito\n' +
-              'Target: ' +
-              (result as any).esito.target
-          );
-          this.errore = true;
-          this.messaggio = (result as any).esito.target;
-        } else {
-          alert('Inserimento riuscito');
-          console.log(this.AnagraficaDto.value);
-          this.router.navigate(['/lista-anagrafica']);
-        }
-      });
+      this.anagraficaDtoService
+        .insert(body, localStorage.getItem('token'))
+        .subscribe((result) => {
+          if ((result as any).esito.code !== 200) {
+            alert(
+              'Inserimento non riuscito\n' +
+                'Target: ' +
+                (result as any).esito.target
+            );
+            this.errore = true;
+            this.messaggio = (result as any).esito.target;
+          } else {
+            alert('Inserimento riuscito');
+            console.log(this.AnagraficaDto.value);
+            this.router.navigate(['/lista-anagrafica']);
+          }
+        });
     }
   }
 
@@ -366,7 +359,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       .getRuoli(localStorage.getItem('token'))
       .subscribe((result: any) => {
         this.ruoli = (result as any)['list'];
-        console.log(this.ruoli)
+        console.log(this.ruoli);
       });
   }
 }

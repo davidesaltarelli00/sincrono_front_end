@@ -3,8 +3,6 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../login/login-service';
 
-declare var $: any;
-
 @Component({
   selector: 'app-lista-organico',
   templateUrl: './lista-organico.component.html',
