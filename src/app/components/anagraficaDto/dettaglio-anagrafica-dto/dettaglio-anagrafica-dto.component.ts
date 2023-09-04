@@ -51,6 +51,9 @@ export class DettaglioAnagraficaDtoComponent {
     }),
   });
   userlogged: any;
+    // paginazione
+    currentPage: number = 1;
+    itemsPerPage: number = 5; // Numero di elementi per pagina
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -179,5 +182,32 @@ export class DettaglioAnagraficaDtoComponent {
         );
     }
   }
+
+
+
+
+  //paginazione
+  getCurrentPageItems(): any[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.elencoCommesse.slice(startIndex, endIndex);
+  }
+
+  getTotalPages(): number {
+    return Math.ceil(this.elencoCommesse.length / this.itemsPerPage);
+  }
+
+  getPaginationArray(): number[] {
+    const totalPages = this.getTotalPages();
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  goToPage(pageNumber: number) {
+    if (pageNumber >= 1 && pageNumber <= this.getTotalPages()) {
+      this.currentPage = pageNumber;
+    }
+  }
+
+  //fine paginazione
 
 }
