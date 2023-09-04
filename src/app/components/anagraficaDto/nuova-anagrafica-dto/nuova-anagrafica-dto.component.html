@@ -55,12 +55,12 @@
                     <div formGroupName="anagrafica">
                       <div class="row">
                         <div class="col-4">
-                          <label>Nome azienda: </label>
+                          <label>Nome azienda* </label>
                           <div class="form-group">
-                            <input type="text" class="form-control" formControlName="aziendaTipo"
+                            <input type="text" class="form-control" formControlName="nomeAzienda"
                               placeholder="Inserire azienda." />
                               <div
-                              *ngIf="AnagraficaDto.get('anagrafica.aziendaTipo')?.invalid && AnagraficaDto.get('anagrafica.aziendaTipo')?.touched"
+                              *ngIf="AnagraficaDto.get('anagrafica.nomeAzienda')?.invalid && AnagraficaDto.get('anagrafica.nomeAzienda')?.touched"
                               class="text-danger">
                               Il campo nome azienda è obbligatorio.
                             </div>
@@ -95,9 +95,6 @@
                             </div>
                           </div>
                         </div>
-                        <br>
-                      </div>
-                      <div class="row">
                         <div class="col-md-6">
                           <label>Codice Fiscale* </label>
                           <div class="form-group">
@@ -110,7 +107,9 @@
                             </div>
                           </div>
                         </div>
+                        <br>
                       </div>
+
                       <br>
                       <legend>Recapiti</legend>
                       <div class="row">
@@ -542,7 +541,7 @@
                       </div>
                       <div class="col-md-3">
                           <div class="form-group">
-                            <label for="dataAssunzione">Data Assunzione</label>
+                            <label for="dataAssunzione">Data Assunzione*</label>
                             <input
                               type="date"
                               class="form-control"
@@ -550,6 +549,12 @@
                               formControlName="dataAssunzione"
                               placeholder="Inserire data assunzione"
                             />
+                            <div
+                            *ngIf="AnagraficaDto.get('contratto.dataAssunzione')?.hasError('required') && AnagraficaDto.get('contratto.dataAssunzione')?.touched"
+                            class="text-danger"
+                          >
+                            Il campo Data assunzione è obbligatorio.
+                          </div>
                           </div>
                       </div>
                       <div class="col-md-3">
@@ -578,13 +583,20 @@
                         </div>
                       </div>
                       <div class="col-md-3">
-                        <label>Mesi Durata: </label>
+                        <label>Mesi Durata* </label>
                         <div class="form-group">
                           <input
                             type="text"
                             class="form-control"
                             formControlName="mesiDurata"
+                            placeholder="Inserire mesi durata"
                           />
+                          <div
+                          *ngIf="AnagraficaDto.get('contratto.mesiDurata')?.hasError('required') && AnagraficaDto.get('contratto.mesiDurata')?.touched"
+                          class="text-danger"
+                        >
+                          Il campo mesi durata è obbligatorio.
+                        </div>
                         </div>
                       </div>
                     </div>

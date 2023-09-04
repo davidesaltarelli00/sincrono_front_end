@@ -60,7 +60,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.AnagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
         attivo: new FormControl(''),
-        aziendaTipo: new FormControl('', Validators.required),
+        nomeAzienda: new FormControl('', Validators.required),
         nome: new FormControl('', Validators.required),
         cognome: new FormControl('', Validators.required),
         codiceFiscale: new FormControl('', [Validators.required,Validators.minLength(15),Validators.maxLength(16),]),
@@ -103,8 +103,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         dataFineRapporto: new FormControl(''),
         mesiDurata: new FormControl(''),
         livelloIniziale: new FormControl(''),
-        // livelloAttuale: new FormControl(''),
-        // livelloFinale: new FormControl(''),
         dimissioni: new FormControl(''),
         partTime: new FormControl(''),
         partTimeA: new FormControl(''),
@@ -115,7 +113,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         diariaMese: new FormControl(''),
         diariaGg: new FormControl(''),
         ticket: new FormControl(''),
-        valoreTicket: new FormControl(''),
+        valoreTicket: new FormControl('', Validators.maxLength(50)),
         categoriaProtetta: new FormControl(''),
         tutor: new FormControl(''),
         pfi: new FormControl(''),
