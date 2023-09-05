@@ -13,6 +13,7 @@ import { Chart } from 'chart.js/auto';
 export class ListaOrganicoComponent implements OnInit {
   lista: any;
   token: any;
+  labelsX: string[] = [];
 
   submitted = false;
   errore = false;
@@ -82,7 +83,6 @@ export class ListaOrganicoComponent implements OnInit {
 
 
 
- 
   createBarChart() {
   const labels = this.lista.map((item: any) => item.azienda);
   const dataNumeroDipendenti = this.lista.map((item: any) => item.numeroDipendenti);
@@ -99,8 +99,135 @@ export class ListaOrganicoComponent implements OnInit {
 
   const ctx = document.getElementById('barChart') as HTMLCanvasElement;
   const myChart = new Chart(ctx, {
-    type: 'bar', 
-    /* 
+    type: 'bar',
+
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Numero Dipendenti',
+          data: dataNumeroDipendenti,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+        },
+        {
+          label: 'Contratti Indeterminati',
+          data: dataIndeterminati,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1,
+        },
+        {
+          label: 'Contratti determinati',
+          data: dataDeterminati,
+          backgroundColor: 'rgb(243, 243, 143)',
+          borderColor: 'rgb(243, 243, 143)',
+          borderWidth: 1,
+        },
+        {
+          label: 'Contratti apprendistato',
+          data: dataApprendistato,
+          backgroundColor: '#82FF00',
+          borderColor: '#82FF00',
+          borderWidth: 1,
+        },
+        {
+          label: 'Contratti consulenza',
+          data: dataConsulenza,
+          backgroundColor: '#FF8C00',
+          borderColor: '#FF8C00',
+          borderWidth: 1,
+        },
+        {
+          label: 'Contratti stage',
+          data: dataStage,
+          backgroundColor: '#00FFAA',
+          borderColor: '#00FFAA',
+          borderWidth: 1,
+        },
+        {
+          label: 'Partita iva',
+          data: dataPartitaIva,
+          backgroundColor: '#00A0FF',
+          borderColor: '#00A0FF',
+          borderWidth: 1,
+        },
+        {
+          label: 'Potenziale stage',
+          data: dataPotenzialeStage,
+          backgroundColor: '#E600FF',
+          borderColor: '#E600FF',
+          borderWidth: 1,
+        },
+        {
+          label: 'Slot stage',
+          data: dataSlotStage,
+          backgroundColor: '#7F8C83',
+          borderColor: '#7F8C83',
+          borderWidth: 1,
+        },
+        {
+          label: 'Potenziale apprendistato',
+          data: dataPotenzialeApprendistato,
+          backgroundColor: '#FF8FBA',
+          borderColor: '#FF8FBA',
+          borderWidth: 1,
+        },
+        {
+          label: 'Slot apprendistato',
+          data: dataSlotApprendistato,
+          backgroundColor: '#B1983E',
+          borderColor: '#B1983E',
+          borderWidth: 1,
+
+        },
+      ],
+    },
+    options: {
+      scales: {
+        x: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Aziende',
+          },
+        },
+        y: {
+          beginAtZero: true,
+        },
+      },
+
+
+      onClick: (event, elements) => {
+        if (elements.length > 0) {
+          const clickedIndex = elements[0].index;
+          const clickedLabel = labels[clickedIndex];
+          const tipoContratto = myChart.data.datasets[elements[0].datasetIndex].label;
+
+          // Verifica se il tipo di contratto è uno di quelli desiderati
+          if (tipoContratto === 'Numero Dipendenti' || tipoContratto === 'Contratti Indeterminati' || tipoContratto === 'Contratti determinati') {
+            // Modifica il tipo di contratto in "Determinato" se necessario
+            const tipoContrattoCorretto1 = tipoContratto === 'Contratti determinati' ? 'Determinato' : tipoContratto;
+            const tipoContrattoCorretto2 = tipoContratto === 'Contratti Indeterminati' ? 'Indeterminato' : tipoContratto;
+            if(tipoContrattoCorretto1){
+              this.filter(tipoContrattoCorretto1, clickedLabel);
+            }  if(tipoContrattoCorretto2){
+              this.filter(tipoContrattoCorretto2, clickedLabel);
+            }
+          }
+        }
+      },
+
+
+    },
+  });
+}
+
+}
+
+
+ /*
     possibili tipi:
     -bar:a barre
     -pie:torta
@@ -111,7 +238,7 @@ export class ListaOrganicoComponent implements OnInit {
     -scatterPlot:Non funziona
     -bubble:puntini
     -mixed:Non funziona
-    -histogram:Non funziona 
+    -histogram:Non funziona
     -Gauge:Non funziona
     -Heatmap: Non funziona
     Line Chart (Grafico a Linee): Questo tipo di grafico è utile per mostrare tendenze o variazioni nel tempo. È spesso utilizzato per rappresentare dati continui come serie temporali.
@@ -136,98 +263,11 @@ Heatmap (Mappa di Calore): Una mappa di calore è utilizzata per rappresentare d
 
 Questi sono solo alcuni esempi dei tipi di grafico supportati da Chart.js. Puoi trovare ulteriori tipi di grafico e opzioni di personalizzazione nella documentazione ufficiale di Chart.js, e puoi selezionare il tipo di grafico più adatto ai tuoi dati e alle tue esigenze specifiche.
 
+altri attrivuti di stile per le barre del grafico:
+ /*
+           hoverBackgroundColor: '#FFD700', // Colore quando passi sopra con il mouse
+          hoverBorderColor: '#FFD700', // Colore dei bordi quando passi sopra con il mouse
+          borderRadius: 10, // Angoli arrotondati
+          maxBarThickness: 30, // Larghezza massima delle barre
 
     */
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Numero Dipendenti',
-          data: dataNumeroDipendenti,
-          backgroundColor: 'rgba(75, 192, 192, 0.2)', // Colore delle barre
-          borderColor: 'rgba(75, 192, 192, 1)', // Colore dei bordi delle barre
-          borderWidth: 1, // Spessore dei bordi delle barre
-        },
-        {
-          label: 'Contratti Indeterminati',
-          data: dataIndeterminati,
-          backgroundColor: 'rgba(255, 99, 132, 0.2)', // Colore delle barre per i contratti indeterminati
-          borderColor: 'rgba(255, 99, 132, 1)', // Colore dei bordi delle barre per i contratti indeterminati
-          borderWidth: 1, // Spessore dei bordi delle barre per i contratti indeterminati
-        },
-        {
-          label: 'Contratti determinati',
-          data: dataDeterminati,
-          backgroundColor: 'rgb(243, 243, 143)', // Colore delle barre per i contratti indeterminati
-          borderColor: 'rgb(243, 243, 143)', // Colore dei bordi delle barre per i contratti indeterminati
-          borderWidth: 1, // Spessore dei bordi delle barre per i contratti indeterminati
-        },
-        {
-          label: 'Contratti apprendistato',
-          data: dataApprendistato,
-          backgroundColor: '#82FF00', // Colore delle barre per i contratti indeterminati
-          borderColor: '#82FF00', // Colore dei bordi delle barre per i contratti indeterminati
-          borderWidth: 1, // Spessore dei bordi delle barre per i contratti indeterminati
-        },
-        {
-          label: 'Contratti consulenza',
-          data: dataConsulenza,
-          backgroundColor: '#FF8C00', // Colore delle barre per i contratti indeterminati
-          borderColor: '#FF8C00', // Colore dei bordi delle barre per i contratti indeterminati
-          borderWidth: 1, // Spessore dei bordi delle barre per i contratti indeterminati
-        },
-        {
-          label: 'Contratti stage',
-          data: dataStage,
-          backgroundColor: '#00FFAA', // Colore delle barre per i contratti indeterminati
-          borderColor: '#00FFAA', // Colore dei bordi delle barre per i contratti indeterminati
-          borderWidth: 1, // Spessore dei bordi delle barre per i contratti indeterminati
-        },
-        {
-          label: 'Partita iva',
-          data: dataPartitaIva,
-          backgroundColor: '#00A0FF', // Colore delle barre per i contratti indeterminati
-          borderColor: '#00A0FF', // Colore dei bordi delle barre per i contratti indeterminati
-          borderWidth: 1, // Spessore dei bordi delle barre per i contratti indeterminati
-        },
-        {
-          label: 'Potenziale stage',
-          data: dataPotenzialeStage,
-          backgroundColor: '#E600FF', // Colore delle barre per i contratti indeterminati
-          borderColor: '#E600FF', // Colore dei bordi delle barre per i contratti indeterminati
-          borderWidth: 1, // Spessore dei bordi delle barre per i contratti indeterminati
-        },
-        {
-          label: 'Slot stage',
-          data: dataSlotStage,
-          backgroundColor: '#7F8C83', // Colore delle barre per i contratti indeterminati
-          borderColor: '#7F8C83', // Colore dei bordi delle barre per i contratti indeterminati
-          borderWidth: 1, // Spessore dei bordi delle barre per i contratti indeterminati
-        },
-        {
-          label: 'Potenziale apprendistato',
-          data: dataPotenzialeApprendistato,
-          backgroundColor: '#FF8FBA', // Colore delle barre per i contratti indeterminati
-          borderColor: '#FF8FBA', // Colore dei bordi delle barre per i contratti indeterminati
-          borderWidth: 1, // Spessore dei bordi delle barre per i contratti indeterminati
-        },
-        {
-          label: 'Slot apprendistato',
-          data: dataSlotApprendistato,
-          backgroundColor: '#B1983E', // Colore delle barre per i contratti indeterminati
-          borderColor: '#B1983E', // Colore dei bordi delle barre per i contratti indeterminati
-          borderWidth: 1, // Spessore dei bordi delle barre per i contratti indeterminati
-        },
-      ],
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-        },
-      },
-    },
-  });
-}
-
-}
