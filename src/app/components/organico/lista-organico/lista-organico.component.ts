@@ -99,7 +99,22 @@ export class ListaOrganicoComponent implements OnInit {
 
   const ctx = document.getElementById('barChart') as HTMLCanvasElement;
   const myChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'bar', 
+    /* 
+    possibili tipi:
+    -bar:a barre
+    -pie:torta
+    -line:linee
+    -radar: triangoli (?)
+    -polarArea:semicerchio
+    -doughnut:cerchi separati
+    -scatterPlot:Non funziona
+    -bubble:puntini
+    -mixed:Non funziona
+    -histogram:Non funziona 
+    -Gauge:Non funziona
+    -Heatmap: Non funziona
+    */
     data: {
       labels: labels,
       datasets: [
