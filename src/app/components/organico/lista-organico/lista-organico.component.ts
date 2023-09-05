@@ -114,6 +114,29 @@ export class ListaOrganicoComponent implements OnInit {
     -histogram:Non funziona 
     -Gauge:Non funziona
     -Heatmap: Non funziona
+    Line Chart (Grafico a Linee): Questo tipo di grafico è utile per mostrare tendenze o variazioni nel tempo. È spesso utilizzato per rappresentare dati continui come serie temporali.
+
+Radar Chart (Grafico Radar): Questo grafico viene utilizzato per mostrare dati multipli su diverse categorie in un formato radiale. È adatto per confrontare più categorie su diverse variabili.
+
+Polar Area Chart (Grafico ad Area Polare): Simile al grafico a torta, questo tipo di grafico mostra dati percentuali su una scala circolare, ma può avere più categorie e rappresentare valori in una scala radiale.
+
+Doughnut Chart (Grafico a Ciambella): Questo è un altro tipo di grafico circolare simile al grafico a torta, ma ha un foro al centro. Puoi utilizzarlo per rappresentare percentuali di contributi di varie categorie.
+
+Scatter Plot (Grafico a Dispersione): Questo tipo di grafico viene utilizzato per visualizzare la relazione tra due variabili numeriche. Ogni punto rappresenta una coppia di valori.
+
+Bubble Chart (Grafico a Bolle): È simile al grafico a dispersione, ma include una terza dimensione, rappresentata dalle dimensioni delle bolle. Le bolle più grandi rappresentano valori più grandi.
+
+Mixed Charts (Grafici Misti): Puoi combinare diversi tipi di grafico in un'unica visualizzazione. Ad esempio, un grafico a barre e un grafico a linee possono essere combinati in un unico grafico.
+
+Histogram (Istogramma): Questo grafico è utilizzato per visualizzare la distribuzione di dati in bin o intervalli. È particolarmente utile per dati numerici continui.
+
+Gauge Chart (Grafico Gauge): Questo tipo di grafico è utilizzato per mostrare una singola misura rispetto a una scala fissa, ad esempio per rappresentare un livello di completamento.
+
+Heatmap (Mappa di Calore): Una mappa di calore è utilizzata per rappresentare dati in una matrice attraverso colori. È spesso utilizzata per evidenziare modelli o tendenze in dati complessi.
+
+Questi sono solo alcuni esempi dei tipi di grafico supportati da Chart.js. Puoi trovare ulteriori tipi di grafico e opzioni di personalizzazione nella documentazione ufficiale di Chart.js, e puoi selezionare il tipo di grafico più adatto ai tuoi dati e alle tue esigenze specifiche.
+
+
     */
     data: {
       labels: labels,
