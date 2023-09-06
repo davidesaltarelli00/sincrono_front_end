@@ -65,10 +65,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         mailPrivata: ['', Validators.required],
         mailAziendale: ['', Validators.required],
         mailPec: [''],
-        titoloDiStudio: [''],
+        titoliDiStudio: [''],
         altriTitoli: [''],
         coniugato: [''],
-        figliAcarico: [''],
+        figliAcarico: [false],
       }),
       commesse: this.formBuilder.array([]),
       contratto: this.formBuilder.group({

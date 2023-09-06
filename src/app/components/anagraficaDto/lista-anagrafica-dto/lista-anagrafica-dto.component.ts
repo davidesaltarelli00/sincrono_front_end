@@ -161,7 +161,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           element.inScadenza = timeDifference <= millisecondiIn40Giorni;
         });
 
-        //Inserimento parziale
+        //Inserimento parziale: filtro tutta la lista
 
         this.originalLista.forEach((element: any) => {
           const anagrafica = element.anagrafica;
@@ -181,16 +181,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
             return;
           }
 
-          // Verifica se uno qualsiasi dei campi nel contratto è vuoto
-          // if (!this.areFieldsNotEmpty(contratto)) {
-          //   this.inserimentoParziale = true;
-          //   console.log("Dati mancanti nel contratto:", contratto);
-          //   return; // Puoi uscire dal ciclo se hai trovato un campo vuoto nel contratto
-          // }
         });
 
-        // Ora hai esaminato tutti gli elementi, inserimentoParziale è impostato in base ai risultati
-        console.log('Inserimento parziale:', this.inserimentoParziale);
       });
 
     this.filterAnagraficaDto = this.formBuilder.group({
@@ -227,6 +219,35 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.caricaLivelloContratto();
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
+  }
+
+
+
+  campiMancanti(id: any) {
+    console.log(id);
+
+    // Trova l'elemento con l'ID desiderato nella lista originale
+    const elementoDaFiltrare = this.originalLista.find((element: any) => element.anagrafica.id === id);
+
+    if (!elementoDaFiltrare) {
+      console.log("Elemento non trovato nella lista.");
+      return;
+    }
+
+    const anagrafica = elementoDaFiltrare.anagrafica;
+    const contratto = elementoDaFiltrare.contratto;
+    const commesse = elementoDaFiltrare.commesse;
+
+    // Verifica se uno qualsiasi dei campi nell'anagrafica è vuoto
+    if (
+      (!this.areFieldsNotEmpty(anagrafica) && !this.areFieldsNotEmpty(contratto)) ||
+      !this.areFieldsNotEmpty(commesse)
+    ) {
+      console.log("Dati mancanti nell'anagrafica:", anagrafica);
+      console.log('Dati mancanti nel contratto:', contratto);
+      console.log('Dati mancanti nelle commesse:', commesse);
+      this.inserimentoParziale = true;
+    }
   }
 
   //paginazione

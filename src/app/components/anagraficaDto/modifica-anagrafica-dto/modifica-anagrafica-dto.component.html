@@ -87,8 +87,8 @@
                 <input type="text" class="form-control" id="mailPec" formControlName="mailPec" />
               </div>
               <div class="col-3">
-                <label for="titoloDiStudio">Titolo di Studio:</label>
-                <input type="text" class="form-control" id="titoloDiStudio" formControlName="titoloDiStudio" />
+                <label for="titoliDiStudio">Titolo di Studio:</label>
+                <input type="text" class="form-control" id="titoliDiStudio" formControlName="titoliDiStudio" />
               </div>
               <div class="col-3">
                 <label for="altriTitoli">Altri Titoli:</label>
@@ -103,7 +103,7 @@
               </div>
               <div class="col-6">
                 <label for="figliAcarico">Figli a Carico:</label>
-                <input type="checkbox" id="figliAcarico" formControlName="figliAcarico" />
+                <input type="checkbox" [checked]="data?.anagrafica?.figliAcarico === true" id="figliAcarico" formControlName="figliAcarico" />
               </div>
             </div>
             </div>
@@ -644,7 +644,7 @@
                   <label>Corso di Sicurezza: </label>
                   <div class="form-group">
                     <input
-                      type="text"
+                      type="date"
                       class="form-control"
                       value="{{ data?.contratto?.corsoSicurezza }}"
                       formControlName="corsoSicurezza"

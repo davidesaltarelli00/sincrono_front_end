@@ -149,7 +149,7 @@
         </tr>
       </tbody>
     </table>
-    <div class="pagination" [hidden]="data?.commesse.length<=5" >
+    <div class="pagination" >
       <ul>
         <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
           <span> <i class="fa fa-arrow-left" ></i> </span>

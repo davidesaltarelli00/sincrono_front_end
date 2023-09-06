@@ -53,7 +53,7 @@ export class DettaglioAnagraficaDtoComponent {
   userlogged: any;
     // paginazione
     currentPage: number = 1;
-    itemsPerPage: number = 5; // Numero di elementi per pagina
+    itemsPerPage: number = 3; // Numero di elementi per pagina
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,

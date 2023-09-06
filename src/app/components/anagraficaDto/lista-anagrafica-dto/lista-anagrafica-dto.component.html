@@ -170,7 +170,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let element of getCurrentPageItems()">
-          <td *ngIf="inserimentoParziale" style="background-color: rgb(243, 243, 143); color: black;" [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]" > Si </td>
+          <td (click)="campiMancanti(element?.anagrafica.id)" *ngIf="inserimentoParziale" style="background-color: rgb(243, 243, 143); color: black;"  > Si </td> <!--[routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"-->
           <td  *ngIf="!inserimentoParziale" style="background-color: rgb(121, 216, 121); color: black;"> No </td>
           <td>{{ element?.anagrafica.nome |titlecase }}</td>
           <td>{{ element?.anagrafica.cognome |titlecase }}</td>
