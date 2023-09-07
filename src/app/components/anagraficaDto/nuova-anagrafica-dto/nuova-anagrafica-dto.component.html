@@ -824,11 +824,20 @@
                           <input type="number" class="form-control" formControlName="tariffaPartitaIva" />
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <!-- <div class="col-md-3">
                         <label>Canale Reclutamento: </label>
                         <div class="form-group">
                           <input type="text" class="form-control" formControlName="canaleReclutamento" />
                         </div>
+                      </div> -->
+                      <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
+                        <label for="filter-tipoCanaleReclutamento">Canale reclutamento:</label>
+                        <select class="form-control" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
+                          <option value="">--nessuna selezione--</option>
+                          <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.id">
+                            {{ tipoCanaleReclutamento.descrizione }}
+                          </option>
+                        </select>
                       </div>
 
 
@@ -840,17 +849,21 @@
                       </div>
                     </div>
                     <div class="row">
-                      <label>Visita medica: </label>
+                      <div class="col-md-3">
+                        <label>Visita medica: </label>
                       <div class="form-group">
                         <input style="border-color: black"  class="form-check-input" type="checkbox" [checked]="variabileGenerica?.contratto?.visitaMedica"
                           formControlName="visitaMedica" /> <!--[checked]="AnagraficaDto.contratto.visitaMedica"-->
                       </div>
+                      </div>
                     </div>
                     <div class="row">
+                    <div class="col-md-3">
                       <label for="dataVisitaMedica">Data visita medica</label>
                       <div class="form-group">
                         <input type="date" class="form-control" formControlName="dataVisitaMedica">
                       </div>
+                    </div>
                     </div>
                   </div>
                   <br>

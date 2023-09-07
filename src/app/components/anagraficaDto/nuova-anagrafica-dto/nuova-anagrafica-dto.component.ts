@@ -36,6 +36,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   isFormDuplicated: boolean = false;
   currentStep = 1;
   motivazioniFineRapporto: any[]=[];
+  tipologicaCanaliReclutamento: any[]=[];
   submitted = false;
   errore = false;
   messaggio: any;
@@ -148,15 +149,21 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         categoriaProtetta: new FormControl(''),
         tutor: new FormControl(''),
         pfi: new FormControl(''),
-        corsoSicurezza: new FormControl(''),
+        corsoSicurezza: new FormControl(false),
+        dataCorsoSicurezza: new FormControl(''),
         tipoCausaFineRapporto: new FormGroup({
           id: new FormControl(''),
           descrizione: new FormControl(''),
         }),
         scattiAnzianita: new FormControl(''),
+        assicurazioneObbligatoria: new FormControl(''),
+        // contrattoScaduto:new FormControl(''),
         pc: new FormControl(false),
         tariffaPartitaIva: new FormControl(''),
-        canaleReclutamento: new FormControl(''),
+        tipoCanaleReclutamento: new FormGroup({
+          id:new FormControl(''),
+          descrizione: new FormControl(''),
+        }),
         visitaMedica:new FormControl(false),
         dataVisitaMedica: new FormControl(''),
 
@@ -176,6 +183,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.caricaContrattoNazionale();
     this.caricaTipoCausaFineRapporto();
     this.caricaRuoli();
+    this.caricaTipoCanaleReclutamento();
   }
 
   ngOnInit(): void {}
@@ -230,6 +238,25 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           this.motivazioniFineRapporto = (res as any)['list'];
           console.log(
             'Elenco motivazioni fine rapporto:' + JSON.stringify(res)
+          );
+        },
+        (error: any) => {
+          console.log(
+            'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+  caricaTipoCanaleReclutamento() {
+    this.anagraficaDtoService
+      .caricaTipoCanaleReclutamento(localStorage.getItem('token'))
+      .subscribe(
+        (res: any) => {
+          this.tipologicaCanaliReclutamento = (res as any)['list'];
+          console.log(
+            'ElencoCanali reclutamento:' + JSON.stringify(res)
           );
         },
         (error: any) => {

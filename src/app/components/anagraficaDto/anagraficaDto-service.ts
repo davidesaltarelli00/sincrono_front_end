@@ -94,6 +94,18 @@ export class AnagraficaDtoService {
     });
   }
 
+
+  caricaTipoCanaleReclutamento(token:any){
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(`http://localhost:8080/services/tipo-canale-reclutamento-map`, {
+      headers: headers,
+    });
+  }
+
   //FILTER ANAGRAFICA
   filter(body: any, token: any): Observable<any> {
     const headers = new HttpHeaders({
