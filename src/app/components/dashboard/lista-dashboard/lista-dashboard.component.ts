@@ -32,9 +32,9 @@ export class ListaDashboardComponent {
   // paginazione
   currentPage: number = 1;
   itemsPerPage: number = 5; // Numero di elementi per pagina
-  listaCommesseInScadenza: any=[]; //array 2.0
-  listaContrattiInScadenza:any=[] ; //array 2.0
-  listaCommesseScadute:any=[]; //array 2.0
+  listaCommesseInScadenza: any[]=[]; //array 2.0
+  listaContrattiInScadenza:any[]=[] ; //array 2.0
+  listaCommesseScadute:any[]=[]; //array 2.0
   mostraFiltri = false;
   originalLista: any;
   tipiAziende: any = [];
@@ -58,7 +58,7 @@ export class ListaDashboardComponent {
       dataFine: new FormControl(null),
     }),
   });
-  
+
   constructor(
     private dashboardService: DashboardService,
     private router: Router,
@@ -93,7 +93,7 @@ export class ListaDashboardComponent {
     //     this.data = resp.list;
     //   });
 
-    this.dashboardService.getListaCommesseInScadenza(localStorage.getItem('token')).subscribe( 
+    this.dashboardService.getListaCommesseInScadenza(localStorage.getItem('token')).subscribe(
       (resp: any) => {
         this.listaCommesseInScadenza=(resp as any)['commesse'];
         console.log('Lista commesse in scadenza: ' + JSON.stringify(resp));
@@ -119,16 +119,22 @@ export class ListaDashboardComponent {
     );
     this.dashboardService.getAllCommesseScadute(localStorage.getItem('token')).subscribe(
       (resp: any) => {
-        this.listaCommesseScadute=(resp as any)['commesse'];
-        console.log('Lista commesse scadute: ' + JSON.stringify(resp));
+        this.listaCommesseScadute = [];
+        for (const item of resp.list) {
+          for (const commessa of item.commesse) {
+            this.listaCommesseScadute.push(commessa);
+          }
+        }
+        console.log('Lista commesse scadute: ' + JSON.stringify(this.listaCommesseScadute));
       },
       (error: any) => {
         console.error(
-          'Si é verificato un errore durante il recupero della lista delle commesse: ' +
+          'Si è verificato un errore durante il recupero della lista delle commesse: ' +
             error
         );
       }
     );
+
 
     this.mostraFiltri = false;
 
@@ -184,9 +190,9 @@ export class ListaDashboardComponent {
       this.filterAnagraficaDto.value.commessa.dataFine != null
         ? this.filterAnagraficaDto.value.commessa.dataFine
         : '';
-   
-    
-   
+
+
+
 
     this.lista = this.originalLista.filter((element: any) => {
       var nome;
@@ -223,7 +229,7 @@ export class ListaDashboardComponent {
       } else {
         attivo = element?.anagrafica.attivo;
       }
- 
+
       var aziendaCliente;
 
      if (!element?.commessa.aziendaCliente || element?.commessa.aziendaCliente == '') {
@@ -232,14 +238,14 @@ export class ListaDashboardComponent {
       aziendaCliente = element?.commessa.aziendaCliente;
     }
 
-    const dataFineCommessa = 
+    const dataFineCommessa =
     element?.commessa.dataFine ?? 'undefined';
-      
+
     const dataFineRapporto =
     element?.contratto.dataFineRapporto ?? 'undefined';
 
 
-    
+
 
       return (
         nome == filtroNome ||
@@ -248,8 +254,8 @@ export class ListaDashboardComponent {
         attivo == filtroAttivo ||
         new Date(dataFineRapporto).getTime() ==
         new Date(filtroDataFineRapporto).getTime() ||
-        new Date(dataFineCommessa).getTime() == 
-        new Date(filtroDataFineCommessa).getTime() || 
+        new Date(dataFineCommessa).getTime() ==
+        new Date(filtroDataFineCommessa).getTime() ||
         aziendaCliente==filtroAziendaCliente
       );
     });

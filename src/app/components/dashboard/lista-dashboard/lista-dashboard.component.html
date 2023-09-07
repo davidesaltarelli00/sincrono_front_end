@@ -14,31 +14,31 @@
     </div>
     <mat-expansion-panel>
       <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri">
-      
+
             {{ mostraFiltri ? 'Nascondi filtri' : 'Mostra filtri' }}
            </mat-expansion-panel-header>
-      
+
       <ng-template matExpansionPanelContent>
         <div *ngIf="mostraFiltri">
           <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter()">
               <div class="container">
                   <div formGroupName="anagrafica">
                       <div class="row">
-                          <div class="col-md-3">  
+                          <div class="col-md-3">
                             <div class="form-group" >
                               <label for="filter-name">Nome:</label>
                               <input type="text" id="filter-Nome" class="form-control" formControlName="nome">
                             </div>
-      
+
                           </div>
                           <div class="col-md-3">
                             <div class="form-group" >
                               <label for="filter-name">Cognome:</label>
                               <input type="text" id="filter-Nome" class="form-control" formControlName="cognome">
                             </div>
-      
+
                           </div>
-                          
+
                             <div class="col-md-3">
                               <div formGroupName="tipoAzienda">
                                   <label for="filter-TipoAzienda">Tipo Azienda:</label>
@@ -48,8 +48,8 @@
                                           {{tipoAzienda.descrizione}}</option>
                                   </select>
                               </div>
-                          
-      
+
+
                           </div>
                           <div class="col-md-3">
                             <div class="form-group" >
@@ -59,14 +59,14 @@
                               Attivo
                           </label>
                             </div>
-      
+
                           </div>
                       </div>
                   </div>
-      
+
                   <div formGroupName="commessa">
                       <div class="row">
-                          
+
                           <div class="col-md-3">
                               <label for="filter-name">Azienda Cliente:</label>
                               <input type="text" id="filter-Nome" class="form-control" formControlName="aziendaCliente">
@@ -79,8 +79,8 @@
                   </div>
                   <div formGroupName="contratto">
                       <div class="row">
-                          
-                        
+
+
                           <div class="col-md-3">
                               <label for="dataFineRapporto">Data Fine Rapporto</label>
                               <mat-form-field appearance="outline">
@@ -92,8 +92,8 @@
                               </mat-form-field>
                           </div>
                       </div>
-                      <div class="row"> 
-                          
+                      <div class="row">
+
                           <br>
                           <div class="row">
                               <div class="col-md-3">
@@ -168,47 +168,53 @@
               <td></td>
             </tr>
           </table>
-        </div>  
-      </div>     
+        </div>
+      </div>
     </div>
     <div class="row">
     <div class="col-12">
       <h3>Lista Commesse Scadute </h3>
       <div class="table-responsive">
-        
+
         <table class="table table-striped">
           <thead>
-          <tr>
-            <th>Azienda Cliente</th>
-            <th>Cliente finale</th>
-            <th>Titolo posizione</th>
-            <th>Distacco</th>
-            <th>Distacco azienda</th>
-            <th>Distacco data</th>
-            <th>Tariffa giornaliera</th>
-            <th>Azienda di fatturazione interna</th>
-            <th>Data inizio</th>
-            <th>Data fine</th>
-            <th>Attivo</th>
-            <th>Attesa lavori</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let element of listaCommesseScadute">
-            <td>{{element?.commesse.aziendaCliente}}</td>
-            <td>{{element?.commesse.clienteFinale}}</td>
-            <td>{{element?.commesse.titoloPosizione}}</td>
-            <td>{{element?.commesse.distacco}}</td>
-            <td>{{element?.commesse.distaccoAzienda}}</td>
-            <td>{{element?.commesse.distaccoData}}</td>
-            <td>{{element?.commesse.tariffaGiornaliera}}</td>
-            <td>{{element?.commesse.aziendaDiFatturazioneInterna}}</td>
-            <td>{{element?.commesse.dataInizio}}</td>
-            <td>{{element?.commesse.datafine}}</td>
-            <td>{{element?.commesse?.attesaLavori}}</td>
-          </tr>
+            <tr>
+              <th>Azienda Cliente</th>
+              <th>Cliente Finale</th>
+              <th>Titolo Posizione</th>
+              <th>Distacco</th>
+              <th>Distacco Azienda</th>
+              <th>Distacco Data</th>
+              <th>Tariffa Giornaliera</th>
+              <th>Azienda di Fatturazione Interna</th>
+              <th>Data Inizio</th>
+              <th>Data Fine</th>
+              <th>Attivo</th>
+              <th>Attesa Lavori</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let commessa of listaCommesseScadute">
+              <td>{{ commessa.aziendaCliente }}</td>
+              <td>{{ commessa.clienteFinale }}</td>
+              <td>{{ commessa.titoloPosizione }}</td>
+              <td *ngIf="commessa.distacco">Si</td>
+              <td *ngIf="!commessa.distacco" >No</td>
+              <td>{{ commessa.distaccoAzienda }}</td>
+              <td>{{ commessa.distaccoData | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ commessa.tariffaGiornaliera }}</td>
+              <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
+              <td>{{ commessa.dataInizio | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ commessa.dataFine | date: 'dd/MM/yyyy' }}</td>
+              <td *ngIf="commessa.attivo" >Attivo</td>
+              <td *ngIf="!commessa.attivo" >Non attivo</td>
+              <td *ngIf="commessa.attesaLavori" >Si</td>
+              <td *ngIf="!commessa.attesaLavori" >No</td>
+            </tr>
           </tbody>
         </table>
+
+
       </div>
     </div>
   </div>
