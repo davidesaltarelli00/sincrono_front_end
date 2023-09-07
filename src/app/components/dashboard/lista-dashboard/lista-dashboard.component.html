@@ -12,24 +12,129 @@
         <h1>Dashboard</h1>
       </div>
     </div>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri">
+      
+            {{ mostraFiltri ? 'Nascondi filtri' : 'Mostra filtri' }}
+           </mat-expansion-panel-header>
+      
+      <ng-template matExpansionPanelContent>
+        <div *ngIf="mostraFiltri">
+          <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter()">
+              <div class="container">
+                  <div formGroupName="anagrafica">
+                      <div class="row">
+                          <div class="col-md-3">  
+                            <div class="form-group" >
+                              <label for="filter-name">Nome:</label>
+                              <input type="text" id="filter-Nome" class="form-control" formControlName="nome">
+                            </div>
+      
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group" >
+                              <label for="filter-name">Cognome:</label>
+                              <input type="text" id="filter-Nome" class="form-control" formControlName="cognome">
+                            </div>
+      
+                          </div>
+                          
+                            <div class="col-md-3">
+                              <div formGroupName="tipoAzienda">
+                                  <label for="filter-TipoAzienda">Tipo Azienda:</label>
+                                  <select class="form-control" id="tipoAzienda" formControlName="descrizione" type="number">
+                                      <option value="">--nessuna selezione--</option>
+                                      <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.descrizione}}">
+                                          {{tipoAzienda.descrizione}}</option>
+                                  </select>
+                              </div>
+                          
+      
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group" >
+                              <input class="form-check-input" type="checkbox" id="exampleCheckbox"
+                              formControlName="attivo">
+                          <label class="form-check-label" for="exampleCheckbox">
+                              Attivo
+                          </label>
+                            </div>
+      
+                          </div>
+                      </div>
+                  </div>
+      
+                  <div formGroupName="commessa">
+                      <div class="row">
+                          
+                          <div class="col-md-3">
+                              <label for="filter-name">Azienda Cliente:</label>
+                              <input type="text" id="filter-Nome" class="form-control" formControlName="aziendaCliente">
+                          </div>
+                          <div class="col-md-3">
+                              <label for="filter-name">Data fine:</label>
+                              <input type="text" id="filter-Nome" class="form-control" formControlName="dataFine">
+                          </div>
+                      </div>
+                  </div>
+                  <div formGroupName="contratto">
+                      <div class="row">
+                          
+                        
+                          <div class="col-md-3">
+                              <label for="dataFineRapporto">Data Fine Rapporto</label>
+                              <mat-form-field appearance="outline">
+                                  <input matInput [matDatepicker]="picker1" formControlName="dataFineRapporto"
+                                      placeholder="Inserisci la data di fine rapporto" class="form-control"
+                                      formControlName="dataFineRapporto" />
+                                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                  <mat-datepicker #picker1></mat-datepicker>
+                              </mat-form-field>
+                          </div>
+                      </div>
+                      <div class="row"> 
+                          
+                          <br>
+                          <div class="row">
+                              <div class="col-md-3">
+                                <br>
+                                  <button id="filter-Button" class="btn btn-success"
+                                      style="background-color: rgb(24, 122, 0); color: white;">Filtra</button> &nbsp; <!--dark btn-sm rounded-pill shadow-sm-->
+                                  <button (click)="annullaFiltri()" id="filter-Button"
+                                      class="btn btn-info">Annulla filtri </button>
+                              </div> <!--dark btn-sm rounded-pill shadow-sm  style="background-color: rgb(24, 122, 0); color: white;"-->
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+      </div>      </ng-template>
+      </mat-expansion-panel>
+      <br>
+
     <div class="row">
       <div class="col-12">
         <h3>Commesse in scadenza (40 giorni)</h3>
         <div class="table-responsive">
           <table class="table table-striped">
             <tr>
-              <th>Cliente</th>
+              <th>Azienda Cliente</th>
               <th>Cliente finale</th>
+              <th>Titolo posizione</th>
               <th>Distacco</th>
-              <th>Nominativo</th>
+              <th>Distacco azienda</th>
+              <th>Distacco data</th>
+              <th>Tariffa giornaliera</th>
               <th>Azienda di fatturazione interna</th>
               <th>Data inizio</th>
               <th>Data fine</th>
+              <th>Attivo</th>
+              <th>Attesa lavori</th>
             </tr>
             <tr *ngFor="let element of listaCommesseInScadenza">
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{{element?.commessa.aziendaCliente}}</td>
+              <td>{{element?.commessa.clienteFinale}}</td>
+              <td>{{element?.commessa.titoloPosizione}}</td>
               <td></td>
               <td></td>
               <td></td>
@@ -63,9 +168,50 @@
               <td></td>
             </tr>
           </table>
-        </div>
+        </div>  
+      </div>     
+    </div>
+    <div class="row">
+    <div class="col-12">
+      <h3>Lista Commesse Scadute </h3>
+      <div class="table-responsive">
+        
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Azienda Cliente</th>
+            <th>Cliente finale</th>
+            <th>Titolo posizione</th>
+            <th>Distacco</th>
+            <th>Distacco azienda</th>
+            <th>Distacco data</th>
+            <th>Tariffa giornaliera</th>
+            <th>Azienda di fatturazione interna</th>
+            <th>Data inizio</th>
+            <th>Data fine</th>
+            <th>Attivo</th>
+            <th>Attesa lavori</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let element of listaCommesseScadute">
+            <td>{{element?.commesse.aziendaCliente}}</td>
+            <td>{{element?.commesse.clienteFinale}}</td>
+            <td>{{element?.commesse.titoloPosizione}}</td>
+            <td>{{element?.commesse.distacco}}</td>
+            <td>{{element?.commesse.distaccoAzienda}}</td>
+            <td>{{element?.commesse.distaccoData}}</td>
+            <td>{{element?.commesse.tariffaGiornaliera}}</td>
+            <td>{{element?.commesse.aziendaDiFatturazioneInterna}}</td>
+            <td>{{element?.commesse.dataInizio}}</td>
+            <td>{{element?.commesse.datafine}}</td>
+            <td>{{element?.commesse?.attesaLavori}}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
   </div>
 </body>
 </html>

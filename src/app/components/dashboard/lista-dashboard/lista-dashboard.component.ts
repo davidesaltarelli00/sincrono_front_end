@@ -1,3 +1,4 @@
+import { AnagraficaDtoService } from '../../anagraficaDto/anagraficaDto-service';
 import { ContrattoService } from './../../contratto/contratto-service';
 import { DashboardService } from './../dashboard-service.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -31,15 +32,41 @@ export class ListaDashboardComponent {
   // paginazione
   currentPage: number = 1;
   itemsPerPage: number = 5; // Numero di elementi per pagina
-  listaCommesseInScadenza: any; //array 2.0
-  listaContrattiInScadenza:any; //array 2.0
-  listaCommesse:any; //array 2.0
+  listaCommesseInScadenza: any=[]; //array 2.0
+  listaContrattiInScadenza:any=[] ; //array 2.0
+  listaCommesseScadute:any=[]; //array 2.0
+  mostraFiltri = false;
+  originalLista: any;
+  tipiAziende: any = [];
 
+
+
+  filterAnagraficaDto: FormGroup = new FormGroup({
+    anagrafica: new FormGroup({
+      nome: new FormControl(null),
+      cognome: new FormControl(null),
+      attivo: new FormControl(null),
+      tipoAzienda: new FormGroup({
+        descrizione: new FormControl(null),
+      }),
+    }),
+    contratto: new FormGroup({
+      dataFineRapporto: new FormControl(null),
+    }),
+    commessa: new FormGroup({
+      aziendaCliente: new FormControl(null),
+      dataFine: new FormControl(null),
+    }),
+  });
+  
   constructor(
     private dashboardService: DashboardService,
     private router: Router,
     private contrattoService: ContrattoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private anagraficaDtoService :AnagraficaDtoService,
+    private formBuilder: FormBuilder
+
   ) {
     this.userlogged = localStorage.getItem('userLogged');
 
@@ -66,9 +93,9 @@ export class ListaDashboardComponent {
     //     this.data = resp.list;
     //   });
 
-    this.dashboardService.getListaCommesseInScadenza().subscribe( //localStorage.getItem('token')
+    this.dashboardService.getListaCommesseInScadenza(localStorage.getItem('token')).subscribe( 
       (resp: any) => {
-        this.listaCommesseInScadenza=resp.list;
+        this.listaCommesseInScadenza=(resp as any)['commesse'];
         console.log('Lista commesse in scadenza: ' + JSON.stringify(resp));
       },
       (error: any) => {
@@ -78,9 +105,9 @@ export class ListaDashboardComponent {
         );
       }
     );
-    this.dashboardService.getListaContrattiInScadenza().subscribe(
+    this.dashboardService.getListaContrattiInScadenza(localStorage.getItem('token')).subscribe(
       (resp: any) => {
-        this.listaContrattiInScadenza=resp
+        this.listaContrattiInScadenza=(resp as any)['commesse'];
         console.log('Lista contratti in scadenza: ' + JSON.stringify(resp));
       },
       (error: any) => {
@@ -90,10 +117,10 @@ export class ListaDashboardComponent {
         );
       }
     );
-    this.dashboardService.getAllCommesseScadute().subscribe(
+    this.dashboardService.getAllCommesseScadute(localStorage.getItem('token')).subscribe(
       (resp: any) => {
-        this.listaCommesse=resp
-        console.log('Lista ccommesse: ' + JSON.stringify(resp));
+        this.listaCommesseScadute=(resp as any)['commesse'];
+        console.log('Lista commesse scadute: ' + JSON.stringify(resp));
       },
       (error: any) => {
         console.error(
@@ -102,6 +129,139 @@ export class ListaDashboardComponent {
         );
       }
     );
+
+    this.mostraFiltri = false;
+
+    this.filterAnagraficaDto = this.formBuilder.group({
+      anagrafica: new FormGroup({
+        nome: new FormControl(null),
+        cognome: new FormControl(null),
+        attivo: new FormControl(null),
+        tipoAzienda: new FormGroup({
+        descrizione: new FormControl(null),
+        }),
+      }),
+      contratto: new FormGroup({
+        dataFineRapporto: new FormControl(null),
+      }),
+      commessa: new FormGroup({
+        aziendaCliente: new FormControl(null),
+        dataFine: new FormControl(null),
+      }),
+    });
+
+  }
+  filter() {
+    const filtroNome =
+      this.filterAnagraficaDto.value.anagrafica.nome != null
+        ? this.filterAnagraficaDto.value.anagrafica.nome
+        : '';
+
+    const filtroCognome =
+      this.filterAnagraficaDto.value.anagrafica.cognome != null
+        ? this.filterAnagraficaDto.value.anagrafica.cognome
+        : '';
+    const filtroTipoAzienda =
+      this.filterAnagraficaDto.value.anagrafica.tipoAzienda.descrizione != null
+        ? this.filterAnagraficaDto.value.anagrafica.tipoAzienda.descrizione
+        : '';
+    const filtroAttivo =
+      this.filterAnagraficaDto.value.anagrafica.attivo != null
+        ? this.filterAnagraficaDto.value.anagrafica.attivo
+        : false;
+
+    const filtroDataFineRapporto =
+      this.filterAnagraficaDto.value.contratto.dataFineRapporto != null
+        ? this.filterAnagraficaDto.value.contratto.dataFineRapporto
+        : '';
+
+    const filtroAziendaCliente =
+      this.filterAnagraficaDto.value.commessa.aziendaCliente != null
+        ? this.filterAnagraficaDto.value.commessa.aziendaCliente
+        : '';
+
+        const filtroDataFineCommessa =
+      this.filterAnagraficaDto.value.commessa.dataFine != null
+        ? this.filterAnagraficaDto.value.commessa.dataFine
+        : '';
+   
+    
+   
+
+    this.lista = this.originalLista.filter((element: any) => {
+      var nome;
+
+      if (!element?.anagrafica.nome || element?.anagrafica.nome == '') {
+        nome = 'undefined';
+      } else {
+        nome = element?.anagrafica.nome;
+      }
+
+      var cognome;
+
+      if (!element?.anagrafica.cognome || element?.anagrafica.cognome == '') {
+        cognome = 'undefined';
+      } else {
+        cognome = element?.anagrafica.cognome;
+      }
+
+      var aziendaTipo;
+
+      if (
+        !element?.anagrafica.aziendaTipo.descrizione ||
+        element?.anagrafica.aziendaTipo.descrizione == ''
+      ) {
+        aziendaTipo = 'undefined';
+      } else {
+        aziendaTipo = element?.anagrafica.aziendaTipo.descrizione;
+      }
+
+      var attivo;
+
+      if (!element?.anagrafica.attivo || element?.anagrafica.attivo == '') {
+        attivo = 'undefined';
+      } else {
+        attivo = element?.anagrafica.attivo;
+      }
+ 
+      var aziendaCliente;
+
+     if (!element?.commessa.aziendaCliente || element?.commessa.aziendaCliente == '') {
+      aziendaCliente = 'undefined';
+    } else {
+      aziendaCliente = element?.commessa.aziendaCliente;
+    }
+
+    const dataFineCommessa = 
+    element?.commessa.dataFine ?? 'undefined';
+      
+    const dataFineRapporto =
+    element?.contratto.dataFineRapporto ?? 'undefined';
+
+
+    
+
+      return (
+        nome == filtroNome ||
+        cognome == filtroCognome ||
+        aziendaTipo == filtroTipoAzienda ||
+        attivo == filtroAttivo ||
+        new Date(dataFineRapporto).getTime() ==
+        new Date(filtroDataFineRapporto).getTime() ||
+        new Date(dataFineCommessa).getTime() == 
+        new Date(filtroDataFineCommessa).getTime() || 
+        aziendaCliente==filtroAziendaCliente
+      );
+    });
+  }
+
+  annullaFiltri() {
+    this.anagraficaDtoService
+      .listAnagraficaDto(localStorage.getItem('token'))
+      .subscribe((resp: any) => {
+        this.lista = resp.list;
+        location.reload();
+      });
   }
 
   logout() {
