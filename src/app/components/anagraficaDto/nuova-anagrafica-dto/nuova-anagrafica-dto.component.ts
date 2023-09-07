@@ -31,10 +31,11 @@ export const MY_DATE_FORMATS = {
 })
 export class NuovaAnagraficaDtoComponent implements OnInit {
   data: any = [];
+  variabileGenerica:any;
   utenti: any = [];
   isFormDuplicated: boolean = false;
   currentStep = 1;
-
+  motivazioniFineRapporto: any[]=[];
   submitted = false;
   errore = false;
   messaggio: any;
@@ -60,15 +61,45 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.AnagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
         attivo: new FormControl(''),
-        nomeAzienda: new FormControl('', Validators.required),
+        // nomeAzienda: new FormControl('', Validators.required),
+        tipoAzienda: new FormGroup({
+          id: new FormControl('', Validators.required),
+        }),
         nome: new FormControl('', Validators.required),
         cognome: new FormControl('', Validators.required),
-        codiceFiscale: new FormControl('', [Validators.required,Validators.minLength(15),Validators.maxLength(16),]),
-        cellularePrivato: new FormControl('', [Validators.pattern(/^[0-9]{10}$/),Validators.minLength(10),Validators.maxLength(10)]),
-        cellulareAziendale: new FormControl('',[Validators.pattern(/^[0-9]{10}$/),Validators.minLength(10),Validators.maxLength(10)]),
-        mailPrivata: new FormControl('', Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),),
-        mailPec: new FormControl('',Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')),
-        mailAziendale: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$' ),]),
+        codiceFiscale: new FormControl('', [
+          Validators.required,
+          Validators.minLength(15),
+          Validators.maxLength(16),
+        ]),
+        cellularePrivato: new FormControl('', [
+          Validators.pattern(/^[0-9]{10}$/),
+          Validators.minLength(10),
+          Validators.maxLength(10),
+        ]),
+        cellulareAziendale: new FormControl('', [
+          Validators.pattern(/^[0-9]{10}$/),
+          Validators.minLength(10),
+          Validators.maxLength(10),
+        ]),
+        mailPrivata: new FormControl(
+          '',
+          Validators.pattern(
+            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
+          )
+        ),
+        mailPec: new FormControl(
+          '',
+          Validators.pattern(
+            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
+          )
+        ),
+        mailAziendale: new FormControl('', [
+          Validators.required,
+          Validators.pattern(
+            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
+          ),
+        ]),
         titoliDiStudio: new FormControl(''),
         altriTitoli: new FormControl(''),
         comuneDiNascita: new FormControl(''),
@@ -89,7 +120,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         tipoContratto: new FormGroup({
           id: new FormControl(''),
         }),
-        livelloContratto: new FormGroup({
+        tipoLivelloContratto: new FormGroup({
           id: new FormControl(''),
         }),
         tipoCcnl: new FormGroup({
@@ -97,11 +128,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         }),
         qualifica: new FormControl(''),
         sedeAssunzione: new FormControl(''),
-        dataAssunzione: new FormControl(''),
+        dataAssunzione: new FormControl('', Validators.required),
         dataInizioProva: new FormControl(''),
         dataFineProva: new FormControl(''),
         dataFineRapporto: new FormControl(''),
-        mesiDurata: new FormControl(''),
+        mesiDurata: new FormControl('', Validators.required),
         livelloIniziale: new FormControl(''),
         dimissioni: new FormControl(''),
         partTime: new FormControl(''),
@@ -118,11 +149,17 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         tutor: new FormControl(''),
         pfi: new FormControl(''),
         corsoSicurezza: new FormControl(''),
-        motivazioneFineRapporto: new FormControl(''),
+        tipoCausaFineRapporto: new FormGroup({
+          id: new FormControl(''),
+          descrizione: new FormControl(''),
+        }),
         scattiAnzianita: new FormControl(''),
-        pc: new FormControl(''),
+        pc: new FormControl(false),
         tariffaPartitaIva: new FormControl(''),
         canaleReclutamento: new FormControl(''),
+        visitaMedica:new FormControl(false),
+        dataVisitaMedica: new FormControl(''),
+
       }),
       ruolo: this.formBuilder.group({
         id: new FormControl(''),
@@ -137,7 +174,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.caricaLivelloContratto();
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
-
+    this.caricaTipoCausaFineRapporto();
     this.caricaRuoli();
   }
 
@@ -153,19 +190,21 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   creaFormCommessa(): FormGroup {
     return this.formBuilder.group({
       id: new FormControl(''),
-      cliente: new FormControl(''),
+      aziendaCliente: new FormControl(''),
       clienteFinale: new FormControl(''),
       titoloPosizione: new FormControl(''),
-      distacco: new FormControl(''),
+      distacco: new FormControl(false),
+      distaccoAzienda: new FormControl(''),
+      distaccoData: new FormControl(''),
       costoMese: new FormControl(''),
       dataInizio: new FormControl(''),
       dataFine: new FormControl(''),
       tariffaGiornaliera: new FormControl(''),
       nominativo: new FormControl(''),
-      azienda: new FormControl(''),
+      // azienda: new FormControl(''),
       aziendaDiFatturazioneInterna: new FormControl(''),
-      stato: new FormControl(''),
-      attesaLavori: new FormControl(''),
+      attivo: new FormControl(true),
+      attesaLavori: new FormControl(false),
     });
   }
 
@@ -181,6 +220,25 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     //     buttonDuplica.setAttribute("disabled", "true");
     //   }
     // }
+  }
+
+  caricaTipoCausaFineRapporto() {
+    this.anagraficaDtoService
+      .caricaTipoCausaFineRapporto(localStorage.getItem('token'))
+      .subscribe(
+        (res: any) => {
+          this.motivazioniFineRapporto = (res as any)['list'];
+          console.log(
+            'Elenco motivazioni fine rapporto:' + JSON.stringify(res)
+          );
+        },
+        (error: any) => {
+          console.log(
+            'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
   }
 
   caricaListaUtenti() {
@@ -237,10 +295,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           delete obj.tipoCcnl;
         }
         if (
-          obj.livelloContratto &&
-          Object.keys(obj.livelloContratto).length === 0
+          obj.tipoLivelloContratto &&
+          Object.keys(obj.tipoLivelloContratto).length === 0
         ) {
-          delete obj.livelloContratto;
+          delete obj.tipoLivelloContratto;
         }
       });
     };

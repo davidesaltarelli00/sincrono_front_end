@@ -55,15 +55,24 @@
                     <div formGroupName="anagrafica">
                       <div class="row">
                         <div class="col-4">
-                          <label>Nome azienda* </label>
-                          <div class="form-group">
-                            <input type="text" class="form-control" formControlName="nomeAzienda"
+                          <div class="form-group" formGroupName="tipoAzienda">
+                            <!-- <input type="text" class="form-control" formControlName="nomeAzienda"
                               placeholder="Inserire azienda." />
                               <div
                               *ngIf="AnagraficaDto.get('anagrafica.nomeAzienda')?.invalid && AnagraficaDto.get('anagrafica.nomeAzienda')?.touched"
                               class="text-danger">
                               Il campo nome azienda è obbligatorio.
-                            </div>
+                            </div> -->
+                              <label for="filter-Tipo Azienda">Tipo Azienda:</label>
+                              <select class="form-control" id="contratto.tipoAzienda.id" formControlName="id" type="number">
+                                <option value="" selected>--nessuna selezione--</option>
+                                <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                                  {{ tipoAzienda.descrizione }}
+                                </option>
+                              </select>
+                              <div *ngIf="AnagraficaDto.get('contratto.tipoAzienda.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoAzienda.id')?.touched" class="text-danger">
+                                Il campo Tipo azienda è obbligatorio.
+                              </div>
                           </div>
                         </div>
                       </div>
@@ -310,9 +319,9 @@
                             </div>
                             <!-- Inserimento dei campi delle commesse -->
                             <div class="col-md-3">
-                              <label>Cliente: </label>
+                              <label>Azienda cliente: </label>
                               <div class="form-group">
-                                <input type="text" class="form-control" formControlName="cliente" />
+                                <input type="text" class="form-control" formControlName="aziendaCliente" />
                               </div>
                             </div>
                             <div class="col-md-3">
@@ -331,7 +340,21 @@
                             <div class="col-md-3">
                               <label>Distacco: </label>
                               <div class="form-group">
-                                <input type="text" class="form-control" formControlName="distacco" />
+                                <!-- <input type="text" class="form-control" formControlName="distacco" /> -->
+                                <input  style="border-color: black" class="form-check-input" type="checkbox"
+                                formControlName="distacco" /> <!--[checked]="anagraficaDto.anagrafica.distacco===true"-->
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label for="distaccoAzienda">Distacco azienda</label>
+                                <input type="text" class="form-control" formControlName="distaccoAzienda" placeholder="Inserire distacco azienda.">
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label for="distaccoData">Data distacco</label>
+                                <input type="date" class="form-control" formControlName="distaccoData" placeholder="Inserire data distacco.">
                               </div>
                             </div>
                             <div class="col-md-3">
@@ -365,16 +388,23 @@
                               </div>
                             </div>
                             <div class="col-md-3">
-                              <label>Azienda: </label>
+                              <!-- <label>Azienda: </label>
                               <div class="form-group">
                                 <input type="text" class="form-control" formControlName="azienda" />
-                              </div>
-                            </div>
-                            <div class="col-md-3">
+                              </div> -->
                               <label>Azienda di fatturazione interna: </label>
                               <div class="form-group">
                                 <input type="text" class="form-control"
                                   formControlName="aziendaDiFatturazioneInterna" />
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <label>Stato</label>
+                              <div class="form-group">
+                                <div class="form-check">
+                                  <input style="border-color: black" class="form-check-input" type="checkbox"
+                                    formControlName="attivo" />
+                                </div>
                               </div>
                             </div>
                             <div class="col-md-3">
@@ -384,7 +414,9 @@
                                   <input style="border-color: black" class="form-check-input" type="checkbox"
                                     formControlName="attesaLavori" />
                                 </div>
+
                               </div>
+
                               <br>
                             </div>
                             <br>
@@ -466,22 +498,22 @@
 
 
                       <div class="col-md-3">
-                        <div formGroupName="livelloContratto">
-                          <label for="filter-LivelloContratto">Livello Contratto:</label>
-                          <select class="form-control" id="contratto.livelloContratto.id" formControlName="id">
+                        <div formGroupName="tipoLivelloContratto">
+                          <label for="filter-LivelloContratto">Tipo livello Contratto:</label>
+                          <select class="form-control" id="contratto.tipoLivelloContratto.id" formControlName="id">
                             <option value="">--nessuna selezione--</option>
                             <option
-                              *ngFor="let livelloContratto of livelliContratti"
-                              [value]="livelloContratto.id"
+                              *ngFor="let tipoLivelloContratto of livelliContratti"
+                              [value]="tipoLivelloContratto.id"
                             >
-                              {{ livelloContratto.livello }}
+                              {{ tipoLivelloContratto.livello }}
                             </option>
                           </select>
                           <div
-                            *ngIf="AnagraficaDto.get('contratto.livelloContratto.id')?.hasError('required') && AnagraficaDto.get('contratto.livelloContratto.id')?.touched"
+                            *ngIf="AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.touched"
                             class="text-danger"
                           >
-                            Il campo Livello Contratto è obbligatorio.
+                            Il campo tipo livello contratto è obbligatorio.
                           </div>
                         </div>
                       </div>
@@ -757,25 +789,20 @@
                       </div>
 
                       <div class="col-md-3">
-                        <label>Motivazione Fine Rapporto: </label>
+                        <label>Causa Fine Rapporto: </label>
                         <div class="form-group">
-                          <textarea  class="form-control" formControlName="motivazioneFineRapporto" name="motivazioneFineRapporto" id="motivazioneFineRapporto" cols="30" rows="10"></textarea>
+                            <div formGroupName="tipoCausaFineRapporto">
+                              <select class="form-control" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
+                              <option value="">--nessuna selezione--</option>
+                              <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto" [value]="tipoCausaFineRapporto.id">
+                              {{ tipoCausaFineRapporto.descrizione }}
+                              </option>
+                          </select>
+                          </div>
                         </div>
                       </div>
-
-
-
-
                     </div>
-                    <div class="row">
 
-                    </div>
-                    <div class="row">
-
-                    </div>
-                    <div class="row">
-
-                    </div>
                     <div class="row">
                       <div class="col-md-3">
                         <label>Scatti Anzianita: </label>
@@ -808,7 +835,22 @@
                     </div>
 
                     <div class="row">
-
+                      <div class="col-12">
+                        <h3>Dati medici</h3>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label>Visita medica: </label>
+                      <div class="form-group">
+                        <input style="border-color: black"  class="form-check-input" type="checkbox" [checked]="variabileGenerica?.contratto?.visitaMedica"
+                          formControlName="visitaMedica" /> <!--[checked]="AnagraficaDto.contratto.visitaMedica"-->
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label for="dataVisitaMedica">Data visita medica</label>
+                      <div class="form-group">
+                        <input type="date" class="form-control" formControlName="dataVisitaMedica">
+                      </div>
                     </div>
                   </div>
                   <br>

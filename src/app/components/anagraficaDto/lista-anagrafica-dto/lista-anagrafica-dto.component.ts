@@ -190,7 +190,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         nome: new FormControl(null),
         cognome: new FormControl(null),
         attivo: new FormControl(null),
-        aziendaTipo: new FormControl(null), //tipoAzienda
+        tipoAzienda: new FormControl(null),
       }),
       contratto: new FormGroup({
         ralAnnua: new FormControl(null),

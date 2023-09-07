@@ -175,7 +175,7 @@
           <td>{{ element?.anagrafica.nome |titlecase }}</td>
           <td>{{ element?.anagrafica.cognome |titlecase }}</td>
           <td>{{ element?.anagrafica.codiceFiscale |uppercase }}</td>
-          <td>{{ element?.anagrafica.aziendaTipo |titlecase }}</td>
+          <td>{{ element?.anagrafica.tipoAzienda.descrizione |titlecase }}</td>
           <td style="background-color: rgb(121, 216, 121); color: black;" *ngIf="element?.contratto.attivo">Si</td>
           <td  *ngIf="element?.commesse.length>0">Si</td>
           <td  *ngIf="element?.commesse.length==0">No</td>
