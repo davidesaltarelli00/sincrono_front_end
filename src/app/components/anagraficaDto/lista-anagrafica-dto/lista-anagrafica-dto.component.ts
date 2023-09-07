@@ -18,11 +18,11 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   tipoContrattoFilter = this.activatedRoute.snapshot.params['tipoContratto'];
   tipoAziendaFilter = this.activatedRoute.snapshot.params['tipoAzienda'];
   id = this.activatedRoute.snapshot.params['id'];
-  lista: any;
+  lista: any[] = [];
   token: any;
   errore = false;
   messaggio: any;
-  originalLista: any;
+  originalLista: any[] = [];
   tipiContratti: any = [];
   livelliContratti: any = [];
   tipiAziende: any = [];
@@ -74,6 +74,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   // paginazione
   currentPage: number = 1;
   itemsPerPage: number = 5; // Numero di elementi per pagina
+  pageData: any[] = [];
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -131,16 +132,17 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       this.tipoAziendaFilter
     );
 
-    /*console.log(this.filterAnagraficaDto.value);
-    const body = JSON.stringify({
-      anagraficaDto: this.filterAnagraficaDto.value,
-    });*/
+
     this.anagraficaDtoService
       .listAnagraficaDto(localStorage.getItem('token'))
       .subscribe((resp: any) => {
-        this.originalLista = resp.list; // Memorizza la lista originale nella variabile 'originalLista'
+        this.originalLista = resp.list;
         this.lista = this.originalLista;
-        console.log(resp);
+        console.log("Elenco record: "+JSON.stringify(this.lista));
+
+        // Inizializza la pagina corrente e i dati della pagina
+        this.currentPage = 1;
+        this.pageData = this.getCurrentPageItems();
 
         // Itera attraverso gli elementi nell'array 'list'
         this.originalLista.forEach((element: any) => {
@@ -180,9 +182,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
             this.inserimentoParziale = true;
             return;
           }
-
         });
-
       });
 
     this.filterAnagraficaDto = this.formBuilder.group({
@@ -221,16 +221,16 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.caricaContrattoNazionale();
   }
 
-
-
   campiMancanti(id: any) {
     console.log(id);
 
     // Trova l'elemento con l'ID desiderato nella lista originale
-    const elementoDaFiltrare = this.originalLista.find((element: any) => element.anagrafica.id === id);
+    const elementoDaFiltrare = this.originalLista.find(
+      (element: any) => element.anagrafica.id === id
+    );
 
     if (!elementoDaFiltrare) {
-      console.log("Elemento non trovato nella lista.");
+      console.log('Elemento non trovato nella lista.');
       return;
     }
 
@@ -240,7 +240,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
     // Verifica se uno qualsiasi dei campi nell'anagrafica è vuoto
     if (
-      (!this.areFieldsNotEmpty(anagrafica) && !this.areFieldsNotEmpty(contratto)) ||
+      (!this.areFieldsNotEmpty(anagrafica) &&
+        !this.areFieldsNotEmpty(contratto)) ||
       !this.areFieldsNotEmpty(commesse)
     ) {
       console.log("Dati mancanti nell'anagrafica:", anagrafica);
@@ -252,24 +253,29 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   //paginazione
   getCurrentPageItems(): any[] {
+    if (!this.lista) {
+      return [];
+    }
+
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     return this.lista.slice(startIndex, endIndex);
   }
 
+  goToPage(pageNumber: number) {
+    if (pageNumber >= 1 && pageNumber <= this.getTotalPages()) {
+      this.currentPage = pageNumber;
+      this.pageData = this.getCurrentPageItems();
+    }
+  }
+
   getTotalPages(): number {
-    return Math.ceil(this.lista.length / this.itemsPerPage);
+    return Math.ceil((this.lista?.length || 0) / this.itemsPerPage);
   }
 
   getPaginationArray(): number[] {
     const totalPages = this.getTotalPages();
     return Array.from({ length: totalPages }, (_, i) => i + 1);
-  }
-
-  goToPage(pageNumber: number) {
-    if (pageNumber >= 1 && pageNumber <= this.getTotalPages()) {
-      this.currentPage = pageNumber;
-    }
   }
 
   //fine paginazione
