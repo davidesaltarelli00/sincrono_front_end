@@ -80,7 +80,6 @@ import { DatePipe } from '@angular/common';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    ReactiveFormsModule,
     MaterialModule,
   ],
   providers: [DatePipe],

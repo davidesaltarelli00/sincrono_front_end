@@ -64,13 +64,13 @@
                               Il campo nome azienda è obbligatorio.
                             </div> -->
                               <label for="filter-Tipo Azienda">Tipo Azienda:</label>
-                              <select class="form-control" id="contratto.tipoAzienda.id" formControlName="id" type="number">
+                              <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
                                 <option value="" selected>--nessuna selezione--</option>
                                 <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
                                   {{ tipoAzienda.descrizione }}
                                 </option>
                               </select>
-                              <div *ngIf="AnagraficaDto.get('contratto.tipoAzienda.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoAzienda.id')?.touched" class="text-danger">
+                              <div *ngIf="AnagraficaDto.get('anagrafica.tipoAzienda.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoAzienda.id')?.touched" class="text-danger">
                                 Il campo Tipo azienda è obbligatorio.
                               </div>
                           </div>
@@ -321,20 +321,26 @@
                             <div class="col-md-3">
                               <label>Azienda cliente: </label>
                               <div class="form-group">
-                                <input type="text" class="form-control" formControlName="aziendaCliente" />
+                                <input
+                                [ngStyle]="{
+                                  'border': commessa.get('aziendaCliente')?.value.trim() === '' ? '1px solid red' : ''}"
+                                type="text" class="form-control" placeholder="Inserire azienda cliente" formControlName="aziendaCliente"
+                              />
                               </div>
                             </div>
                             <div class="col-md-3">
                               <label>Cliente Finale: </label>
                               <div class="form-group">
-                                <input type="text" class="form-control" formControlName="clienteFinale" />
+                                <input type="text" [ngStyle]="{'border': commessa.get('clienteFinale')?.value.trim() === '' ? '1px solid red' : ''}"
+                                  class="form-control" placeholder="Inserire cliente finale" formControlName="clienteFinale" />
                               </div>
                             </div>
                             <!-- Aggiungere gli altri campi della commessa simile a quanto fatto sopra -->
                             <div class="col-md-3">
                               <label>Titolo Posizione: </label>
                               <div class="form-group">
-                                <input type="text" class="form-control" formControlName="titoloPosizione" />
+                                <input placeholder="Inserire titolo posizione" [ngStyle]="{'border': commessa.get('titoloPosizione')?.value.trim() === '' ? '1px solid red' : ''}"
+                                 type="text" class="form-control" formControlName="titoloPosizione" />
                               </div>
                             </div>
                             <div class="col-md-3">
@@ -342,13 +348,14 @@
                               <div class="form-group">
                                 <!-- <input type="text" class="form-control" formControlName="distacco" /> -->
                                 <input  style="border-color: black" class="form-check-input" type="checkbox"
-                                formControlName="distacco" /> <!--[checked]="anagraficaDto.anagrafica.distacco===true"-->
+                                formControlName="distacco" /> <!--[checked]="commessa.get('distacco')?.value==true"-->
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="form-group">
                                 <label for="distaccoAzienda">Distacco azienda</label>
-                                <input type="text" class="form-control" formControlName="distaccoAzienda" placeholder="Inserire distacco azienda.">
+                                <input type="text" class="form-control" formControlName="distaccoAzienda" placeholder="Inserire distacco azienda."> <!--[disabled]="!commessa.get('distacco')?.value==false"-->
+
                               </div>
                             </div>
                             <div class="col-md-3">
