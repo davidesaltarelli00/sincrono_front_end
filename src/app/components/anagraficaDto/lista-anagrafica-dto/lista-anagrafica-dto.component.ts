@@ -182,6 +182,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
             this.inserimentoParziale = true;
             return;
           }
+
         });
       });
 

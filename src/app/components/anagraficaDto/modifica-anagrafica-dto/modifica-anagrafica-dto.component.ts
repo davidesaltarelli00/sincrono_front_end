@@ -41,6 +41,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   elencoCommesse: any[] = []; // Dichiarazione dell'array di FormGroup
   nuovoId: any;
 
+
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private activatedRouter: ActivatedRoute,
@@ -52,7 +53,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       anagrafica: this.formBuilder.group({
         id: [this.id],
         attivo: [true],
-        aziendaTipo: [''],
+        tipoAzienda:  this.formBuilder.group({
+          id: [''],
+        }),
         nome: ['', Validators.required],
         cognome: ['', Validators.required],
         codiceFiscale: ['', Validators.required],
@@ -60,11 +63,28 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         dataDiNascita: [''],
         residenza: [''],
         domicilio: [''],
-        cellularePrivato: ['', Validators.required],
-        cellulareAziendale: ['', Validators.required],
-        mailPrivata: ['', Validators.required],
-        mailAziendale: ['', Validators.required],
-        mailPec: [''],
+        cellularePrivato: ['', Validators.pattern(/^[0-9]{10}$/)],
+        cellulareAziendale: ['', Validators.pattern(/^[0-9]{10}$/)],
+        mailPrivata: [
+          '',
+          Validators.pattern(
+            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
+          ),
+        ],
+        mailAziendale: [
+          '',
+          Validators.required,
+          Validators.pattern(
+            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
+          ),
+        ],
+        mailPec: [
+          '',
+          Validators.required,
+          Validators.pattern(
+            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
+          ),
+        ],
         titoliDiStudio: [''],
         altriTitoli: [''],
         coniugato: [''],
@@ -333,9 +353,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe(
         (response) => {
           if ((response as any).esito.code != 200) {
-            alert(
-              'Modifica non riuscita:\n' + (response as any).esito.target
-            );
+            alert('Modifica non riuscita:\n' + (response as any).esito.target);
             this.errore = true;
             this.messaggio = (response as any).esito.target;
           } else {

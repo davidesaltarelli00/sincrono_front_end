@@ -161,7 +161,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         pc: new FormControl(false),
         tariffaPartitaIva: new FormControl(''),
         tipoCanaleReclutamento: new FormGroup({
-          id:new FormControl(''),
+          id:new FormControl('', Validators.required),
           descrizione: new FormControl(''),
         }),
         visitaMedica:new FormControl(false),
@@ -327,6 +327,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         ) {
           delete obj.tipoLivelloContratto;
         }
+        if (
+          obj.tipoCausaFineRapporto &&
+          Object.keys(obj.tipoCausaFineRapporto).length === 0
+        ) {
+          delete obj.tipoCausaFineRapporto;
+        }
       });
     };
     removeEmpty(this.AnagraficaDto.value);
@@ -334,7 +340,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.showErrorAlert = false;
     this.missingFields = [];
     if (this.AnagraficaDto.invalid) {
-      alert('Qualcosa e andato storto, controlla i campi e riprova.');
+      console.log('Qualcosa e andato storto, controlla i campi e riprova.');
     } else {
       const body = JSON.stringify({
         anagraficaDto: this.AnagraficaDto.value,

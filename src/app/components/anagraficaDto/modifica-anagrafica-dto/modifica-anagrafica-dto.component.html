@@ -22,7 +22,12 @@
                 </div> -->
                 <div class="col-3">
                   <label for="aziendaTipo">Tipo Azienda:</label>
-                  <input type="text" class="form-control" id="aziendaTipo" formControlName="aziendaTipo" />
+                  <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
+                    <option value="">--nessuna selezione--</option>
+                    <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                      {{ tipoAzienda.descrizione }}
+                    </option>
+                  </select>
                 </div>
                 <div class="col-3">
                   <label for="nome">Nome:</label>
