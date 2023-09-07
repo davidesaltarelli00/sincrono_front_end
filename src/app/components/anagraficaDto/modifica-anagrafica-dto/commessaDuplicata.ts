@@ -1,17 +1,18 @@
 export class CommessaDuplicata {
   id: any;
-  cliente: any;
+  aziendaCliente: any;
   clienteFinale: any;
   titoloPosizione:any;
   distacco: any;
+  distaccoAzienda:any;
+  distaccoData:any;
   dataInizio: any;
   dataFine: any;
-  costoMese: any;
   tariffaGiornaliera: any;
   nominativo: any;
   azienda:any;
   aziendaDiFatturazioneInterna: any;
-  stato: any;
+  attivo: any;
   attesaLavori: any;
 
   constructor(){

@@ -124,18 +124,12 @@
                       </div>
                     </div>
                     <div [formGroupName]="i">
-                      <!-- <label>id</label>
-                      <input  formControlName="id" type="number" /> -->
 
-                      <!-- <div class="col-3">
-                        <label>ID</label> <br>
-                        <input class="form-control" formControlName="id" type="number" />
-                      </div> -->
 
                       <div class="row">
                         <div class="col-3">
-                          <label>Cliente</label> <br>
-                          <input class="form-control" formControlName="cliente" type="text" />
+                          <label>Azienda Cliente</label> <br>
+                          <input class="form-control" formControlName="aziendaCliente" type="text" />
                         </div>
                         <div class="col-3">
                           <label>Cliente Finale</label><br>
@@ -148,7 +142,20 @@
                         </div>
                         <div class="col-3">
                           <label>Distacco</label><br>
-                          <input class="form-control" formControlName="distacco" type="text" />
+                          <input  style="border-color: black" class="form-check-input" type="checkbox" formControlName="distacco" />
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="distaccoAzienda">Distacco azienda</label>
+                            <input type="text" class="form-control" formControlName="distaccoAzienda" placeholder="Inserire distacco azienda."> <!--[disabled]="!commessa.get('distacco')?.value==false"-->
+
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="distaccoData">Data distacco</label>
+                            <input type="date" class="form-control" formControlName="distaccoData" placeholder="Inserire data distacco.">
+                          </div>
                         </div>
                       </div>
                       <div class="row">
@@ -161,10 +168,7 @@
                           <label>dataFine</label><br>
                           <input class="form-control" formControlName="dataFine" type="date" />
                         </div>
-                        <div class="col-3">
-                          <label>costoMese</label><br>
-                          <input class="form-control" formControlName="costoMese" type="number" />
-                        </div>
+
                         <div class="col-3">
                           <label>tariffaGiornaliera</label><br>
                           <input class="form-control" formControlName="tariffaGiornaliera" type="number" />
@@ -184,15 +188,19 @@
                           <label>aziendaDiFatturazioneInterna</label><br>
                       <input class="form-control" formControlName="aziendaDiFatturazioneInterna" type="text" />
                         </div>
-
                       </div>
                       <div class="row">
                         <div class="col-6">
-                          <label>stato</label>
-                          <input formControlName="stato"  type="checkbox" />
+                          <label>Stato</label>
+                          <div class="form-group">
+                            <div class="form-check">
+                              <input style="border-color: black" class="form-check-input" type="checkbox"
+                                formControlName="attivo" />
+                            </div>
+                          </div>
                         </div>
                         <div class="col-6">
-                          <label>attesaLavori</label>
+                          <label>Attesa Lavori</label>
                       <input formControlName="attesaLavori" type="checkbox" />
                         </div>
                       </div>
@@ -659,10 +667,16 @@
               </div>
               <div class="row">
                 <div class="col-md-3">
-                  <label>Motivazione Fine Rapporto: </label>
                   <div class="form-group">
-                    <textarea  class="form-control"   value="{{ data?.contratto?.motivazioneFineRapporto }}" formControlName="motivazioneFineRapporto" name="motivazioneFineRapporto" id="motivazioneFineRapporto" cols="30" rows="10"></textarea>
-
+                  <label>Motivazione Fine Rapporto: </label>
+                    <div formGroupName="tipoCausaFineRapporto">
+                      <select class="form-control" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
+                      <option value="">--nessuna selezione--</option>
+                      <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto" [value]="tipoCausaFineRapporto.id">
+                      {{ tipoCausaFineRapporto.descrizione }}
+                      </option>
+                  </select>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -708,28 +722,37 @@
                 <div class="col-md-3">
                   <label>Canale Reclutamento: </label>
                   <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="{{ data?.contratto?.canaleReclutamento }}"
-                      formControlName="canaleReclutamento"
-                    />
+                    <select class="form-control" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
+                      <option value="">--nessuna selezione--</option>
+                      <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.id">
+                        {{ tipoCanaleReclutamento.descrizione }}
+                      </option>
+                    </select>
                   </div>
                 </div>
               </div>
-              <!-- <div class="col-md-3">
-                <label>Attivo: </label>
-                <div class="form-group">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    style="border-color: black"
-                    [checked]="data?.contratto?.attivo"
-                    formControlName="attivo"
-                  />
+              <div class="row">
+                <div class="col-12">
+                  <h3>Dati medici</h3>
                 </div>
-              </div> -->
-
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <label>Visita medica: </label>
+                <div class="form-group">
+                  <input style="border-color: black"  class="form-check-input" type="checkbox" [checked]="variabileGenerica?.contratto?.visitaMedica"
+                    formControlName="visitaMedica" /> <!--[checked]="AnagraficaDto.contratto.visitaMedica"-->
+                </div>
+                </div>
+              </div>
+              <div class="row">
+              <div class="col-md-3">
+                <label for="dataVisitaMedica">Data visita medica</label>
+                <div class="form-group">
+                  <input type="date" class="form-control" formControlName="dataVisitaMedica">
+                </div>
+              </div>
+              </div>
             </div>
 
             <!-- Pulsante per inviare il form -->

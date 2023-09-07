@@ -40,7 +40,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   commessePresenti = false;
   elencoCommesse: any[] = []; // Dichiarazione dell'array di FormGroup
   nuovoId: any;
-
+  tipologicaCanaliReclutamento: any[] = [];
+  motivazioniFineRapporto: any[] = [];
+  variabileGenerica: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -53,7 +55,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       anagrafica: this.formBuilder.group({
         id: [this.id],
         attivo: [true],
-        tipoAzienda:  this.formBuilder.group({
+        tipoAzienda: this.formBuilder.group({
           id: [''],
         }),
         nome: ['', Validators.required],
@@ -137,11 +139,19 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         pfi: [''],
         assicurazioneObbligatoria: [''],
         corsoSicurezza: [''],
-        motivazioneFineRapporto: [''],
+        visitaMedica: [false],
+        dataVisitaMedica: [''],
+        tipoCausaFineRapporto: this.formBuilder.group({
+          id: [''],
+          descrizione: [''],
+        }),
         pc: [''],
         scattiAnzianita: [''],
         tariffaPartitaIva: [''],
-        canaleReclutamento: [''],
+        tipoCanaleReclutamento: this.formBuilder.group({
+          id: [''],
+          descrizione: [''],
+        }),
       }),
       ruolo: this.formBuilder.group({
         id: [''],
@@ -155,11 +165,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.caricaListaUtenti();
-    // this.maxCommessaId = Math.max(
-    //   ...this.elencoCommesse.map((commessa) => commessa.id),
-    //   0
-    // );
     this.caricaTipoContratto();
     this.caricaLivelloContratto();
     this.caricaTipoAzienda();
@@ -167,6 +172,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.caricaDati();
     this.caricaRuoli();
     this.creaFormCommessa();
+    this.caricaTipoCanaleReclutamento();
+    this.caricaTipoCausaFineRapporto();
   }
 
   initializeCommesse(): void {
@@ -177,27 +184,45 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   createCommessaFormGroup(commessa: any): FormGroup {
-    // const maxId = Math.max(
-    //   ...this.elencoCommesse.map((commessa) => commessa.id),
-    //   0
-    // );
-    // console.log(maxId);
+    /*
+    [{"id":9,"aziendaCliente":"test","clienteFinale":"test","titoloPosizione":"test","distacco":true,"distaccoAzienda":"test","distaccoData":"2023-01-12T00:00:00.000+00:00","dataInizio":"2020-01-10T00:00:00.000+00:00","dataFine":"2020-01-10T00:00:00.000+00:00","tariffaGiornaliera":"1200","aziendaDiFatturazioneInterna":"test","attivo":true,"attesaLavori":false}]
+    */
     return this.formBuilder.group({
       id: [commessa.id],
-      cliente: [commessa.cliente],
+      aziendaCliente: [commessa.aziendaCliente],
       clienteFinale: [commessa.clienteFinale],
       titoloPosizione: [commessa.titoloPosizione],
       distacco: [commessa.distacco],
+      distaccoAzienda: [commessa.distaccoAzienda],
+      distaccoData: [commessa.distaccoData],
       dataInizio: [commessa.dataInizio],
       dataFine: [commessa.dataFine],
-      costoMese: [commessa.costoMese],
       tariffaGiornaliera: [commessa.tariffaGiornaliera],
       nominativo: [commessa.nominativo],
       azienda: [commessa.azienda],
       aziendaDiFatturazioneInterna: [commessa.aziendaDiFatturazioneInterna],
-      stato: [commessa.stato || false],
+      attivo: [commessa.attivo || false],
       attesaLavori: [commessa.attesaLavori || false],
     });
+  }
+
+  caricaTipoCausaFineRapporto() {
+    this.anagraficaDtoService
+      .caricaTipoCausaFineRapporto(localStorage.getItem('token'))
+      .subscribe(
+        (res: any) => {
+          this.motivazioniFineRapporto = (res as any)['list'];
+          console.log(
+            'Elenco motivazioni fine rapporto:' + JSON.stringify(res)
+          );
+        },
+        (error: any) => {
+          console.log(
+            'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
   }
 
   getCommesseControls(): AbstractControl[] {
@@ -212,93 +237,26 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
   aggiungiCommessa(): void {
     const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
-
     const nuovaCommessa = {
       id: '',
-      cliente: '',
+      aziendaCliente: '',
       clienteFinale: '',
       titoloPosizione: '',
       distacco: '',
+      distaccoAzienda: '',
+      distaccoData: '',
       dataInizio: '',
       dataFine: '',
-      costoMese: '',
       tariffaGiornaliera: '',
       nominativo: '',
       azienda: '',
       aziendaDiFatturazioneInterna: '',
-      stato: true,
+      attivo: '',
       attesaLavori: '',
     };
 
     commesseFormArray.push(this.createCommessaFormGroup(nuovaCommessa));
   }
-
-  // rimuoviCommessa(index: number): void {
-  //   let idCommessaDaEliminare: any;
-  //   this.anagraficaDtoService
-  //     .detailAnagraficaDto(this.activatedRoute.snapshot.params['id'])
-  //     .subscribe((resp: any) => {
-  //       idCommessaDaEliminare = (resp as any)['anagraficaDto']['commesse'][
-  //         'id'
-  //       ];
-  //       const conferma =
-  //         'Sei sicuro di voler eliminare la commmessa con id ' +
-  //         idCommessaDaEliminare +
-  //         '?';
-  //       if (confirm(conferma)) {
-  //         this.anagraficaDtoService
-  //           .deleteCommessa(idCommessaDaEliminare)
-  //           .subscribe(
-  //             (res: any) => {
-  //               console.log(
-  //                 'commessa con id' +
-  //                   idCommessaDaEliminare +
-  //                   ' eliminata correttamente.'
-  //               );
-  //             },
-  //             (error: any) => {
-  //               console.log(
-  //                 "Errore durante l'eliminazione della commessa con id " +
-  //                   idCommessaDaEliminare +
-  //                   ': ' +
-  //                   error
-  //               );
-  //             }
-  //           );
-  //       } else {
-  //         return;
-  //       }
-  //     });
-  // }
-
-  // rimuoviCommessa(index: number): void {
-  //   const conferma =
-  //     'Sei sicuro di voler eliminare la commessa con indice ' + index + '?';
-  //   if (confirm(conferma)) {
-  //     this.anagraficaDtoService
-  //       .deleteCommessa(this.elencoCommesse[index].id)
-  //       .subscribe(
-  //         (res: any) => {
-  //           console.log(
-  //             'Commessa con indice ' +
-  //               index +
-  //               ' eliminata correttamente. Risposta:',
-  //             res
-  //           );
-  //           // Rimuovi l'elemento dall'array locale
-  //           this.elencoCommesse.splice(index, 1);
-  //         },
-  //         (error: any) => {
-  //           console.log(
-  //             "Errore durante l'eliminazione della commessa con indice " +
-  //               index +
-  //               ': ' +
-  //               error
-  //           );
-  //         }
-  //       );
-  //   }
-  // }
 
   rimuoviCommessa(index: number): void {
     const conferma =
@@ -332,6 +290,23 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           }
         );
     }
+  }
+
+  caricaTipoCanaleReclutamento() {
+    this.anagraficaDtoService
+      .caricaTipoCanaleReclutamento(localStorage.getItem('token'))
+      .subscribe(
+        (res: any) => {
+          this.tipologicaCanaliReclutamento = (res as any)['list'];
+          console.log('ElencoCanali reclutamento:' + JSON.stringify(res));
+        },
+        (error: any) => {
+          console.log(
+            'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
   }
 
   aggiorna() {
@@ -385,6 +360,24 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       });
 */
 
+  // caricaDati(): void {
+  //   this.anagraficaDtoService
+  //     .detailAnagraficaDto(
+  //       this.activatedRouter.snapshot.params['id'],
+  //       localStorage.getItem('token')
+  //     )
+  //     .subscribe((resp: any) => {
+  //       console.log(this.activatedRouter.snapshot.params['id']);
+  //       this.data = (resp as any)['anagraficaDto'];
+  //       console.log(JSON.stringify(resp));
+  //       this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
+  //       this.anagraficaDto.patchValue(this.data);
+  //       console.log(
+  //         'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)
+  //       );
+  //       this.initializeCommesse();
+  //     });
+  // }
   caricaDati(): void {
     this.anagraficaDtoService
       .detailAnagraficaDto(
@@ -396,11 +389,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.data = (resp as any)['anagraficaDto'];
         console.log(JSON.stringify(resp));
         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
-        this.anagraficaDto.patchValue(this.data);
+        console.log('Dati delle commesse:', this.elencoCommesse);
         console.log(
           'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)
         );
         this.initializeCommesse();
+        this.anagraficaDto.patchValue(this.data);
       });
   }
 
@@ -413,18 +407,19 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   creaFormCommessa(): void {
     const nuovaCommessa: CommessaDuplicata = {
       id: this.elencoCommesse.length + 1,
-      cliente: '',
+      aziendaCliente: '',
       clienteFinale: '',
       titoloPosizione: '',
       distacco: '',
+      distaccoAzienda: '',
+      distaccoData: '',
       dataInizio: '',
       dataFine: '',
-      costoMese: '',
       tariffaGiornaliera: '',
       nominativo: '',
       azienda: '',
       aziendaDiFatturazioneInterna: '',
-      stato: '',
+      attivo: '',
       attesaLavori: '',
     };
 
