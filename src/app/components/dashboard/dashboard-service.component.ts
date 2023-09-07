@@ -3,46 +3,78 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DashboardService {
+  token: any;
 
-  token:any;
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  listaDashboard(token: any):Observable<any>{
+  listaDashboard(token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/dashboard`,{
-      headers: headers,});
-
+    return this.http.get<any>(`http://localhost:8080/services/dashboard`, {
+      headers: headers,
+    });
   }
 
-  listaScattiContratto(token: any):Observable<any>{
+  listaScattiContratto(token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/anagrafica-list-contratti`,{
-      headers: headers,});
-
+    return this.http.get<any>(
+      `http://localhost:8080/services/anagrafica-list-contratti`,
+      {
+        headers: headers,
+      }
+    );
   }
 
-  deleteScattiContratto(token: any):Observable<any>{
+  deleteScattiContratto(token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.delete<any>(`http://localhost:8080/services/anagraficaDeleteScattoContratti`,{
-      headers: headers,});
-
+    return this.http.delete<any>(
+      `http://localhost:8080/services/anagraficaDeleteScattoContratti`,
+      {
+        headers: headers,
+      }
+    );
   }
 
+  //lista commesse in scadenza 2.0
 
+  getListaCommesseInScadenza(): Observable<any> {
+    return this.http.get<any>('http://localhost:8080/services/listCommesse');
+  }
+
+  /*
+   getListaCommesseInScadenza(token:any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>('http://localhost:8080/services/listCommesse',{
+      headers: headers,
+    });
+  } questo é bono
+  */
+
+  //lista contratti in scadenza 2.0
+
+  getListaContrattiInScadenza(): Observable<any> {
+    return this.http.get<any>('http://localhost:8080/services/listContratti');
+  }
+
+  getAllCommesseScadute(): Observable<any> {
+    return this.http.get<any>('http://localhost:8085/listAllCommesse');
+  }
 }

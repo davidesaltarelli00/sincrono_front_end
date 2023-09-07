@@ -70,6 +70,7 @@ export class AppComponent implements OnInit {
     // console.log('TOKEN PROFILE BOX APP COMPONENT: ' + token);
     this.profileBoxService.getData().subscribe(
       (response: any) => {
+        console.log("RESPONSE PROFILE BOX: " + JSON.stringify(response));
         this.userLoggedMail = response.anagraficaDto.anagrafica.mailAziendale;
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;

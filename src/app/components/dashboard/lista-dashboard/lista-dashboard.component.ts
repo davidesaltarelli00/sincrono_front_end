@@ -31,6 +31,9 @@ export class ListaDashboardComponent {
   // paginazione
   currentPage: number = 1;
   itemsPerPage: number = 5; // Numero di elementi per pagina
+  listaCommesseInScadenza: any; //array 2.0
+  listaContrattiInScadenza:any; //array 2.0
+  listaCommesse:any; //array 2.0
 
   constructor(
     private dashboardService: DashboardService,
@@ -50,25 +53,55 @@ export class ListaDashboardComponent {
   isTableVisible1: boolean = false;
 
   ngOnInit(): void {
-    this.dashboardService
-      .listaDashboard(localStorage.getItem('token'))
-      .subscribe((resp: any) => {
-        this.lista = resp.list;
-        console.log(this.lista);
+    // this.dashboardService
+    //   .listaDashboard(localStorage.getItem('token'))
+    //   .subscribe((resp: any) => {
+    //     this.lista = resp.list;
+    //     console.log(this.lista);
+    //   });
 
-        // $(function () {
-        //   $('#table').DataTable({
-        //     "autoWidth": false,
-        //     "responsive": true,
-        //   });
-        // });
-      });
+    // this.dashboardService
+    //   .listaScattiContratto(localStorage.getItem('token'))
+    //   .subscribe((resp: any) => {
+    //     this.data = resp.list;
+    //   });
 
-    this.dashboardService
-      .listaScattiContratto(localStorage.getItem('token'))
-      .subscribe((resp: any) => {
-        this.data = resp.list;
-      });
+    this.dashboardService.getListaCommesseInScadenza().subscribe( //localStorage.getItem('token')
+      (resp: any) => {
+        this.listaCommesseInScadenza=resp.list;
+        console.log('Lista commesse in scadenza: ' + JSON.stringify(resp));
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato un errore durante il recupero della lista delle commesse in scadenza: ' +
+            error
+        );
+      }
+    );
+    this.dashboardService.getListaContrattiInScadenza().subscribe(
+      (resp: any) => {
+        this.listaContrattiInScadenza=resp
+        console.log('Lista contratti in scadenza: ' + JSON.stringify(resp));
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato un errore durante il recupero della lista dei contratti in scadenza: ' +
+            error
+        );
+      }
+    );
+    this.dashboardService.getAllCommesseScadute().subscribe(
+      (resp: any) => {
+        this.listaCommesse=resp
+        console.log('Lista ccommesse: ' + JSON.stringify(resp));
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato un errore durante il recupero della lista delle commesse: ' +
+            error
+        );
+      }
+    );
   }
 
   logout() {
@@ -241,7 +274,6 @@ export class ListaDashboardComponent {
         }
       });
   }
-
 
   //paginazione
   getCurrentPageItems(): any[] {
