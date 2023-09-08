@@ -101,7 +101,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         qualifica: [''],
         sedeAssunzione: [''],
         dataAssunzione: ['', Validators.required],
-        dataInizioProva: [''],
+        dataInizioProva: ['', Validators.required],
         dataFineProva: [''],
         dataFineRapporto: [''],
         mesiDurata: ['', Validators.required],
