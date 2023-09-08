@@ -233,7 +233,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       nominativo: '',
       azienda: '',
       aziendaDiFatturazioneInterna: '',
-      attivo: '',
+      attivo: true,
       attesaLavori: '',
     };
 

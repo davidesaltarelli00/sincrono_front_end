@@ -117,30 +117,43 @@
         <h3>Commesse in scadenza (40 giorni)</h3>
         <div class="table-responsive">
           <table class="table table-striped">
-            <tr>
-              <th>Azienda Cliente</th>
-              <th>Cliente finale</th>
-              <th>Titolo posizione</th>
-              <th>Distacco</th>
-              <th>Distacco azienda</th>
-              <th>Distacco data</th>
-              <th>Tariffa giornaliera</th>
-              <th>Azienda di fatturazione interna</th>
-              <th>Data inizio</th>
-              <th>Data fine</th>
-              <th>Attivo</th>
-              <th>Attesa lavori</th>
-            </tr>
-            <tr *ngFor="let element of listaCommesseInScadenza">
-              <td>{{element?.commessa.aziendaCliente}}</td>
-              <td>{{element?.commessa.clienteFinale}}</td>
-              <td>{{element?.commessa.titoloPosizione}}</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+            <thead>
+              <tr>
+                <th>Azienda Cliente</th>
+                <th>Cliente finale</th>
+                <th>Titolo posizione</th>
+                <th>Distacco</th>
+                <th>Distacco azienda</th>
+                <th>Distacco data</th>
+                <th>Tariffa giornaliera</th>
+                <th>Azienda di fatturazione interna</th>
+                <th>Data inizio</th>
+                <th>Data fine</th>
+                <th>Attivo</th>
+                <th>Attesa lavori</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let element of listaCommesseInScadenza">
+                <tr *ngFor="let commessa of element.commesse">
+                  <td>{{ commessa.aziendaCliente }}</td>
+                  <td>{{ commessa.clienteFinale }}</td>
+                  <td>{{ commessa.titoloPosizione }}</td>
+                  <td>{{ commessa.distacco ? 'Sì' : 'No' }}</td>
+                  <td>{{ commessa.distaccoAzienda ? 'Sì' : 'No' }}</td>
+                  <td>{{ commessa.distaccoData || '' }}</td>
+                  <td>{{ commessa.tariffaGiornaliera || '' }}</td>
+                  <td>{{ commessa.aziendaDiFatturazioneInterna || '' }}</td>
+                  <td>{{ commessa.dataInizio || '' }}</td>
+                  <td>{{ commessa.dataFine || '' }}</td>
+                  <td>{{ commessa.attivo ? 'Sì' : 'No' }}</td>
+                  <td>{{ commessa.attesaLavori ? 'Sì' : 'No' }}</td>
+                </tr>
+              </ng-container>
+            </tbody>
           </table>
+
+
         </div>
       </div>
     </div>

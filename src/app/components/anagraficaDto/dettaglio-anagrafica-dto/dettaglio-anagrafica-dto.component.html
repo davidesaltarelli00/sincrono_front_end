@@ -111,10 +111,10 @@
           <th scope="col">Distacco</th>
           <th scope="col">Data Inizio</th>
           <th scope="col">Data Fine</th>
-          <th scope="col">Costo Mese</th>
+          <!-- <th scope="col">Costo Mese</th> -->
           <th scope="col">Tariffa Giornaliera</th>
-          <th scope="col">Nominativo</th>
-          <th scope="col">Azienda</th>
+          <!-- <th scope="col">Nominativo</th> -->
+          <!-- <th scope="col">Azienda</th> -->
           <th scope="col">Azienda di Fatturazione Interna</th>
           <th scope="col">Stato</th>
           <th scope="col">Attesa Lavori</th>
@@ -124,18 +124,18 @@
       </thead>
       <tbody>
         <tr *ngFor="let commessa of getCurrentPageItems() ; let i = index">
-          <td>{{ commessa.cliente }}</td>
+          <td>{{ commessa.aziendaCliente }}</td>
           <td>{{ commessa.clienteFinale }}</td>
           <td>{{ commessa.titoloPosizione }}</td>
           <td>{{ commessa.distacco }}</td>
           <td>{{ commessa.dataInizio | date: 'dd/MM/yyyy' }}</td>
           <td>{{ commessa.dataFine | date: 'dd/MM/yyyy' }}</td>
-          <td>{{ commessa.costoMese }}</td>
+          <!-- <td>{{ commessa.costoMese }}</td> -->
           <td>{{ commessa.tariffaGiornaliera }}</td>
-          <td>{{ commessa.nominativo }}</td>
-          <td>{{ commessa.azienda }}</td>
+          <!-- <td>{{ commessa.nominativo }}</td> -->
+          <!-- <td>{{ commessa.azienda }}</td> -->
           <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
-          <td>{{ commessa.stato ? 'Attiva' : 'Inattiva' }}</td>
+          <td>{{ commessa.attivo ? 'Attiva' : 'Inattiva' }}</td>
           <td>{{ commessa.attesaLavori ? 'Sì' : 'No' }}</td>
           <td>
             <button class="btn btn-warning" (click)="modificaCommessa()" > <i class="fa fa-pencil"></i> </button>
