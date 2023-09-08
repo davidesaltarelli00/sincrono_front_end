@@ -95,7 +95,7 @@ export class ListaDashboardComponent {
 
     this.dashboardService.getListaCommesseInScadenza(localStorage.getItem('token')).subscribe(
       (resp: any) => {
-        this.listaCommesseInScadenza=(resp as any)['commesse'];
+        this.listaCommesseInScadenza=(resp as any)['list'];
         console.log('Lista commesse in scadenza: ' + JSON.stringify(resp));
       },
       (error: any) => {
