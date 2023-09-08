@@ -30,6 +30,7 @@ export class StoricoCommesseComponent implements OnInit {
       .getStoricoCommesse(idAnagrafica, localStorage.getItem('token'))
       .subscribe((resp: any) => {
         this.lista = resp.list;
+        console.log(JSON.stringify(resp.list));
       });
   }
   getStoricoCommesse(idAnagrafica: number): any {

@@ -151,10 +151,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         pfi: new FormControl(''),
         corsoSicurezza: new FormControl(false),
         dataCorsoSicurezza: new FormControl(''),
-        tipoCausaFineRapporto: new FormGroup({
-          id: new FormControl(''),
-          descrizione: new FormControl(''),
-        }),
+        // tipoCausaFineRapporto: new FormGroup({
+        //   id: new FormControl(''),
+        //   descrizione: new FormControl(''),
+        // }),
         scattiAnzianita: new FormControl(''),
         assicurazioneObbligatoria: new FormControl(''),
         // contrattoScaduto:new FormControl(''),
@@ -181,7 +181,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.caricaLivelloContratto();
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
-    this.caricaTipoCausaFineRapporto();
+    // this.caricaTipoCausaFineRapporto();
     this.caricaRuoli();
     this.caricaTipoCanaleReclutamento();
   }
@@ -230,24 +230,24 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     // }
   }
 
-  caricaTipoCausaFineRapporto() {
-    this.anagraficaDtoService
-      .caricaTipoCausaFineRapporto(localStorage.getItem('token'))
-      .subscribe(
-        (res: any) => {
-          this.motivazioniFineRapporto = (res as any)['list'];
-          console.log(
-            'Elenco motivazioni fine rapporto:' + JSON.stringify(res)
-          );
-        },
-        (error: any) => {
-          console.log(
-            'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
-              JSON.stringify(error)
-          );
-        }
-      );
-  }
+  // caricaTipoCausaFineRapporto() {
+  //   this.anagraficaDtoService
+  //     .caricaTipoCausaFineRapporto(localStorage.getItem('token'))
+  //     .subscribe(
+  //       (res: any) => {
+  //         this.motivazioniFineRapporto = (res as any)['list'];
+  //         console.log(
+  //           'Elenco motivazioni fine rapporto:' + JSON.stringify(res)
+  //         );
+  //       },
+  //       (error: any) => {
+  //         console.log(
+  //           'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
+  //             JSON.stringify(error)
+  //         );
+  //       }
+  //     );
+  // }
 
   caricaTipoCanaleReclutamento() {
     this.anagraficaDtoService
@@ -327,12 +327,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         ) {
           delete obj.tipoLivelloContratto;
         }
-        if (
-          obj.tipoCausaFineRapporto &&
-          Object.keys(obj.tipoCausaFineRapporto).length === 0
-        ) {
-          delete obj.tipoCausaFineRapporto;
-        }
+        // if (
+        //   obj.tipoCausaFineRapporto &&
+        //   Object.keys(obj.tipoCausaFineRapporto).length === 0
+        // ) {
+        //   delete obj.tipoCausaFineRapporto;
+        // }
       });
     };
     removeEmpty(this.AnagraficaDto.value);

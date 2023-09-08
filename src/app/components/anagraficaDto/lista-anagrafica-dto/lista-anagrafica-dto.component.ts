@@ -145,45 +145,45 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         this.pageData = this.getCurrentPageItems();
 
         // Itera attraverso gli elementi nell'array 'list'
-        // this.originalLista.forEach((element: any) => {
-        //   const dataFineRapporto = new Date(element.contratto.dataFineRapporto);
-        //   const currentDate = new Date();
+        this.originalLista.forEach((element: any) => {
+          const dataFineRapporto = new Date(element.contratto.dataFineRapporto);
+          const currentDate = new Date();
 
-        //   // Controllo per verificare se il contratto è scaduto
-        //   element.contrattoScaduto = dataFineRapporto <= currentDate;
+          // Controllo per verificare se il contratto è scaduto
+          element.contrattoScaduto = dataFineRapporto <= currentDate;
 
-        //   // Calcola la differenza tra le due date in millisecondi
-        //   const timeDifference =
-        //     dataFineRapporto.getTime() - currentDate.getTime();
+          // Calcola la differenza tra le due date in millisecondi
+          const timeDifference =
+            dataFineRapporto.getTime() - currentDate.getTime();
 
-        //   // Calcola il valore in millisecondi per 40 giorni
-        //   const millisecondiIn40Giorni = 40 * 24 * 60 * 60 * 1000;
+          // Calcola il valore in millisecondi per 40 giorni
+          const millisecondiIn40Giorni = 40 * 24 * 60 * 60 * 1000;
 
-        //   // Confronta la differenza con 40 giorni e aggiungi il risultato come una nuova proprietà a ciascun elemento
-        //   element.inScadenza = timeDifference <= millisecondiIn40Giorni;
-        // });
+          // Confronta la differenza con 40 giorni e aggiungi il risultato come una nuova proprietà a ciascun elemento
+          element.inScadenza = timeDifference <= millisecondiIn40Giorni;
+        });
 
-        //Inserimento parziale: filtro tutta la lista
+        // Inserimento parziale: filtro tutta la lista
 
-        // this.originalLista.forEach((element: any) => {
-        //   const anagrafica = element.anagrafica;
-        //   const contratto = element.contratto;
-        //   const commesse = element.commesse;
+        this.originalLista.forEach((element: any) => {
+          const anagrafica = element.anagrafica;
+          const contratto = element.contratto;
+          const commesse = element.commesse;
 
-        //   // Verifica se uno qualsiasi dei campi nell'anagrafica è vuoto
-        //   if (
-        //     (!this.areFieldsNotEmpty(anagrafica) &&
-        //       !this.areFieldsNotEmpty(contratto)) ||
-        //     !this.areFieldsNotEmpty(commesse)
-        //   ) {
-        //     console.log("Dati mancanti nell'anagrafica:", anagrafica);
-        //     console.log('Dati mancanti nel contratto:', contratto);
-        //     console.log('Dati mancanti nelle commesse:', commesse);
-        //     this.inserimentoParziale = true;
-        //     return;
-        //   }
+          // Verifica se uno qualsiasi dei campi nell'anagrafica è vuoto
+          if (
+            (!this.areFieldsNotEmpty(anagrafica) &&
+              !this.areFieldsNotEmpty(contratto)) ||
+            !this.areFieldsNotEmpty(commesse)
+          ) {
+            console.log("Dati mancanti nell'anagrafica:", anagrafica);
+            console.log('Dati mancanti nel contratto:', contratto);
+            console.log('Dati mancanti nelle commesse:', commesse);
+            this.inserimentoParziale = true;
+            return;
+          }
 
-        // });
+        });
       },
       (error:any)=>{
         console.log("Si é verificato un errore durante il caricamento dei dait: "+ error)
