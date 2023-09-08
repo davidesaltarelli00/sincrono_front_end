@@ -309,7 +309,7 @@
 
             <br>
             <div formGroupName="contratto">
-              <div class="roe">
+              <div class="row">
                 <div class="col-12">
                   <h1 style="text-align:center" >Contratto</h1>
                 </div>
@@ -334,20 +334,20 @@
                   </div>
                 </div>
                 <div class="col-3">
-                  <div formGroupName="livelloContratto">
-                    <label for="livelloContratto">Livello Contratto</label>
+                  <div formGroupName="tipoLivelloContratto">
+                    <label for="tipoLivelloContratto">Livello Contratto</label>
                     <select
                       class="form-control"
-                      id="contratto.livelloContratto.id"
+                      id="contratto.tipoLivelloContratto.id"
                       formControlName="id"
                       type="number"
                     >
                       <option value="">--nessuna selezione--</option>
                       <option
-                        *ngFor="let livelloContratto of livelliContratti"
-                        [value]="livelloContratto.id"
+                        *ngFor="let tipoLivelloContratto of livelliContratti"
+                        [value]="tipoLivelloContratto.id"
                       >
-                        {{ livelloContratto.ccnl }}
+                        {{ tipoLivelloContratto.ccnl }}
                       </option>
                     </select>
                   </div>
@@ -355,17 +355,9 @@
                 <div class="col-3">
                   <div formGroupName="tipoAzienda">
                     <label for="tipoAzienda">Tipo Azienda</label>
-                    <select
-                      class="form-control"
-                      id="contratto.tipoAzienda.id"
-                      formControlName="id"
-                      type="number"
-                    >
+                    <select class="form-control" id="contratto.tipoAzienda.id" formControlName="id" type="number">
                       <option value="">--nessuna selezione--</option>
-                      <option
-                        *ngFor="let tipoAzienda of tipiAziende"
-                        [value]="tipoAzienda.id"
-                      >
+                      <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
                         {{ tipoAzienda.descrizione }}
                       </option>
                     </select>

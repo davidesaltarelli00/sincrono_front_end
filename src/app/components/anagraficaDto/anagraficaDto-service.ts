@@ -83,7 +83,7 @@ export class AnagraficaDtoService {
     });
   }
 
-  caricaTipoCausaFineRapporto(token:any){
+  caricaTipoCausaFineRapporto(token:any): Observable<any>{
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -95,7 +95,7 @@ export class AnagraficaDtoService {
   }
 
 
-  caricaTipoCanaleReclutamento(token:any){
+  caricaTipoCanaleReclutamento(token:any): Observable<any>{
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',

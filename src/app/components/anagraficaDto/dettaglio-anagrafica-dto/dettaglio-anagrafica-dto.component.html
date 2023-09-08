@@ -7,7 +7,7 @@
         <li><strong>Nome:</strong> {{ data?.anagrafica?.nome ? data.anagrafica.nome : 'Dato non inserito' | titlecase  }}</li>
         <li><strong>Cognome:</strong> {{ data?.anagrafica?.cognome ? data.anagrafica.cognome : 'Dato non inserito' | titlecase }}</li>
         <li><strong>Codice Fiscale:</strong> {{ data?.anagrafica?.codiceFiscale  ? data.anagrafica.codiceFiscale : 'Dato non inserito' | uppercase  }}</li>
-        <li><strong>Azienda:</strong> {{ data?.anagrafica?.aziendaTipo ? data.anagrafica.aziendaTipo : 'Dato non inserito' | titlecase }}</li>
+        <li><strong>Azienda:</strong> {{ data?.anagrafica?.tipoAzienda ? data.anagrafica.tipoAzienda.descrizione : 'Dato non inserito' | titlecase }}</li>
         <li><strong>Attivo:</strong> {{ data?.anagrafica?.attivo ? 'Sì' : 'No' }}</li>
         <li><strong>Mail Aziendale:</strong> {{ data?.anagrafica?.mailAziendale ? data.anagrafica.mailAziendale : 'Dato non inserito' }}</li>
         <li><strong>Mail PEC:</strong> {{ data?.anagrafica?.mailPec ? data.anagrafica.mailPec : 'Dato non inserito' }}</li>
@@ -58,7 +58,7 @@
       <h4>Contratto</h4>
       <ul>
         <li><strong>Tipo Contratto:</strong> {{ data?.contratto?.tipoContratto?.descrizione  }}</li>
-        <li><strong>Livello Contratto:</strong> {{ data?.contratto?.livelloContratto?.livello }}</li>
+        <li><strong>Livello Contratto:</strong> {{ data?.contratto?.tipoLivelloContratto?.livello }}</li>
         <li><strong>Tipo Azienda:</strong> {{ data?.contratto?.tipoAzienda?.descrizione }}</li>
         <li><strong>Tipo CCNL:</strong> {{ data?.contratto?.tipoCcnl?.descrizione }}</li>
         <li><strong>Attivo:</strong> {{ data?.contratto?.attivo ? 'Sì' : 'No' }}</li>
@@ -87,11 +87,11 @@
         <li><strong>PFI:</strong> {{ data?.contratto?.pfi }}</li>
         <li><strong>Assicurazione Obbligatoria:</strong> {{ data?.contratto?.assicurazioneObbligatoria }}</li>
         <li><strong>Corso Sicurezza:</strong> {{ data?.contratto?.corsoSicurezza }}</li>
-        <li><strong>Motivazione Fine Rapporto:</strong> {{ data?.contratto?.motivazioneFineRapporto }}</li>
+        <li><strong>Motivazione Fine Rapporto:</strong> {{ data?.contratto?.tipoCausaFineRapporto.descrizione }}</li>
         <li><strong>PC:</strong> {{ data?.contratto?.pc }}</li>
         <li><strong>Scatti Anzianità:</strong> {{ data?.contratto?.scattiAnzianita }}</li>
         <li><strong>Tariffa Partita IVA:</strong> {{ data?.contratto?.tariffaPartitaIva }}</li>
-        <li><strong>Canale Reclutamento:</strong> {{ data?.contratto?.canaleReclutamento }}</li>
+        <li><strong>Canale Reclutamento:</strong> {{ data?.contratto?.tipoCanaleReclutamento.descrizione }}</li>
       </ul>
 
     </div>

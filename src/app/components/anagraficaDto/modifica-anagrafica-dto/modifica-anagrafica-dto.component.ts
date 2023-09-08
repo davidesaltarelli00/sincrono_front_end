@@ -73,56 +73,39 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
           ),
         ],
-        mailAziendale: [
-          '',
-          Validators.required,
-          Validators.pattern(
-            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
-          ),
-        ],
-        mailPec: [
-          '',
-          Validators.required,
-          Validators.pattern(
-            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
-          ),
-        ],
+        mailAziendale: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')] , ],
+        mailPec: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')],],
         titoliDiStudio: [''],
         altriTitoli: [''],
         coniugato: [''],
-        figliAcarico: [false],
+        figliAcarico: [''],
       }),
       commesse: this.formBuilder.array([]),
+
       contratto: this.formBuilder.group({
         id: [''],
-        tipoContratto: this.formBuilder.group({
-          id: [''],
-          descrizione: [''],
-        }),
-        livelloContratto: this.formBuilder.group({
-          id: [''],
-          ccnl: [''],
-          livello: [''],
-          minimiRet23: [''],
-        }),
+        attivo: [''],
+        aziendaDiFatturazioneInterna: [''],
         tipoAzienda: this.formBuilder.group({
           id: [''],
-          descrizione: [''],
+        }),
+        tipoContratto: this.formBuilder.group({
+          id: [''],
+        }),
+        tipoLivelloContratto: this.formBuilder.group({
+          id: [''],
         }),
         tipoCcnl: this.formBuilder.group({
           id: [''],
-          descrizione: [''],
-        }),
-        attivo: [true],
-        sedeAssunzione: [''],
+        }), //diariaAnnua
         qualifica: [''],
-        dataAssunzione: [''],
+        sedeAssunzione: [''],
+        dataAssunzione: ['', Validators.required],
         dataInizioProva: [''],
         dataFineProva: [''],
         dataFineRapporto: [''],
-        mesiDurata: [''],
-        livelloAttuale: [''],
-        livelloFinale: [''],
+        mesiDurata: ['', Validators.required],
+        livelloIniziale: [''],
         dimissioni: [''],
         partTime: [''],
         partTimeA: [''],
@@ -133,26 +116,28 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         diariaMese: [''],
         diariaGg: [''],
         ticket: [''],
-        valoreTicket: [''],
+        valoreTicket: ['', Validators.maxLength(50)],
         categoriaProtetta: [''],
         tutor: [''],
         pfi: [''],
-        assicurazioneObbligatoria: [''],
         corsoSicurezza: [''],
-        visitaMedica: [false],
-        dataVisitaMedica: [''],
+        dataCorsoSicurezza: [''],
         tipoCausaFineRapporto: this.formBuilder.group({
           id: [''],
           descrizione: [''],
         }),
-        pc: [''],
         scattiAnzianita: [''],
+        assicurazioneObbligatoria: [''],
+        pc: [''],
         tariffaPartitaIva: [''],
         tipoCanaleReclutamento: this.formBuilder.group({
-          id: [''],
+          id: ['', Validators.required],
           descrizione: [''],
         }),
+        visitaMedica: [''],
+        dataVisitaMedica: [''],
       }),
+
       ruolo: this.formBuilder.group({
         id: [''],
         nome: [''],
@@ -184,9 +169,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   createCommessaFormGroup(commessa: any): FormGroup {
-    /*
-    [{"id":9,"aziendaCliente":"test","clienteFinale":"test","titoloPosizione":"test","distacco":true,"distaccoAzienda":"test","distaccoData":"2023-01-12T00:00:00.000+00:00","dataInizio":"2020-01-10T00:00:00.000+00:00","dataFine":"2020-01-10T00:00:00.000+00:00","tariffaGiornaliera":"1200","aziendaDiFatturazioneInterna":"test","attivo":true,"attesaLavori":false}]
-    */
     return this.formBuilder.group({
       id: [commessa.id],
       aziendaCliente: [commessa.aziendaCliente],
