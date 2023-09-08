@@ -207,7 +207,8 @@
                     </div>
                     <div class="row">
                       <div class="col-12">
-                        <button  mat-flat-button color="accent" type="button" (click)="rimuoviCommessa(i)" matTooltip="rimuovi commessa {{i+1}}">Rimuovi Commessa <i class="fa fa-trash" ></i> </button> <!--[disabled]="i==0"-->
+                        <button  mat-flat-button color="accent" type="button" (click)="rimuoviCommessa(i)" matTooltip="rimuovi commessa {{i+1}}">Rimuovi Commessa <i class="fa fa-trash" ></i> </button> &nbsp; <!--[disabled]="i==0"-->
+                        <button class="btn btn-success" matTooltip="Premendo questo pulsante disattiverai la commessa numero {{i+1}} e potrai recuperarla nello storico" (click)="storicizza(i)" >Storicizza commessa  <i class="fa fa-file" ></i></button>
                       </div>
                     </div>
 

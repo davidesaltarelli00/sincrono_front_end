@@ -240,6 +240,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     commesseFormArray.push(this.createCommessaFormGroup(nuovaCommessa));
   }
 
+  storicizza(index:number){
+    console.log("ID COMMESSA: "+ JSON.stringify(this.elencoCommesse[index]));
+  }
+
   rimuoviCommessa(index: number): void {
     const conferma =
       'Sei sicuro di voler eliminare la commessa con indice ' + index + '?';
