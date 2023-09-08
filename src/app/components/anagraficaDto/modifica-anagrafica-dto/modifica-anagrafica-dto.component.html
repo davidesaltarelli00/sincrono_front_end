@@ -157,6 +157,10 @@
                             <input type="date" class="form-control" formControlName="distaccoData" placeholder="Inserire data distacco.">
                           </div>
                         </div>
+                        <div class="col-3">
+                          <label>aziendaDiFatturazioneInterna</label><br>
+                      <input class="form-control" formControlName="aziendaDiFatturazioneInterna" type="text" />
+                        </div>
                       </div>
                       <div class="row">
                         <div class="col-3">
@@ -173,23 +177,24 @@
                           <label>tariffaGiornaliera</label><br>
                           <input class="form-control" formControlName="tariffaGiornaliera" type="number" />
                         </div>
+                        <div class="col-3">
+                          <label>Attesa Lavori</label> <br>
+                      <input formControlName="attesaLavori" type="checkbox" />
+                        </div>
                       </div>
                       <div class="row">
-                        <div class="col-3">
+                        <!-- <div class="col-3">
                           <label>nominativo</label><br>
                           <input class="form-control" formControlName="nominativo" type="text" />
 
-                        </div>
-                        <div class="col-3">
+                        </div> -->
+                        <!-- <div class="col-3">
                           <label>azienda</label><br>
                           <input class="form-control" formControlName="azienda" type="text" />
-                        </div>
-                        <div class="col-3">
-                          <label>aziendaDiFatturazioneInterna</label><br>
-                      <input class="form-control" formControlName="aziendaDiFatturazioneInterna" type="text" />
-                        </div>
+                        </div> -->
+
                       </div>
-                      <div class="row">
+
                         <!-- <div class="col-6">
                           <label>Stato</label>
                           <div class="form-group">
@@ -199,12 +204,9 @@
                             </div>
                           </div>
                         </div> -->
-                        <div class="col-6">
-                          <label>Attesa Lavori</label>
-                      <input formControlName="attesaLavori" type="checkbox" />
-                        </div>
-                      </div>
+
                     </div>
+                    <br>
                     <div class="row">
                       <div class="col-12">
                         <button  mat-flat-button color="accent" type="button" (click)="rimuoviCommessa(i)" matTooltip="rimuovi commessa {{i+1}}">Rimuovi Commessa <i class="fa fa-trash" ></i> </button> &nbsp; <!--[disabled]="i==0"-->
