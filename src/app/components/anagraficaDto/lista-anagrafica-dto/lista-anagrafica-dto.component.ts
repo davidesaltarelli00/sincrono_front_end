@@ -73,7 +73,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   // paginazione
   currentPage: number = 1;
-  itemsPerPage: number = 5; // Numero di elementi per pagina
+  itemsPerPage: number = 20; // Numero di elementi per pagina
   pageData: any[] = [];
 
   constructor(

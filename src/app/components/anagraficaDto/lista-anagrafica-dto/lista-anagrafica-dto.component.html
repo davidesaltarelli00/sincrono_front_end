@@ -160,7 +160,10 @@
           <th scope="col">Nome</th>
           <th scope="col">Cognome</th>
           <th scope="col">Codice Fiscale</th>
-          <th scope="col">Azienda</th>
+          <th scope="col">Mail aziendale</th>
+          <th scope="col">Cell privato</th>
+          <th scope="col">Nome azienda</th>
+          <th scope="col">Contratto</th>
           <th scope="col">Contratto attivo</th>
           <th scope="col">Contratto in scadenza</th>
           <th scope="col">Azioni</th>
@@ -172,7 +175,10 @@
           <td>{{ element.anagrafica.nome |titlecase }}</td>
           <td>{{ element.anagrafica.cognome |titlecase }}</td>
           <td>{{ element.anagrafica.codiceFiscale |uppercase }}</td>
+          <td>{{ element.anagrafica.mailAziendale  }}</td>
+          <td>{{ element.anagrafica.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non presente'  }}</td>
           <td>{{ element.anagrafica.tipoAzienda.descrizione |titlecase }}</td>
+          <td> {{element.contratto.tipoContratto.descrizione}} </td>
           <td style="background-color: rgb(121, 216, 121); color: black;" *ngIf="element.contratto.attivo">Si</td>
           <td style="background-color: rgb(242, 123, 123); color: white;" *ngIf="!element.contratto.attivo">No</td>
           <td style="background-color: rgb(242, 123, 123); color: white;" *ngIf="element.inScadenza && element.contratto.dataFineRapporto !=null" matTooltip="{{element.contratto.dataFineRapporto | date:'fullDate' }}" [routerLink]="['/dettaglio-anagrafica', element.anagrafica.id]">Si   ({{ element.contratto.dataFineRapporto | date:'fullDate' }})  </td>
