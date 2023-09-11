@@ -38,7 +38,9 @@ export class ListaDashboardComponent {
   mostraFiltri = false;
   originalLista: any;
   tipiAziende: any = [];
-
+  idutenteCommessaInScadenza :any
+  idContrattoInScadenza = this.activatedRouter.snapshot.params['id'];
+  idCommessaScaduta = this.activatedRouter.snapshot.params['id'];
 
 
   filterAnagraficaDto: FormGroup = new FormGroup({
@@ -65,7 +67,8 @@ export class ListaDashboardComponent {
     private contrattoService: ContrattoService,
     private authService: AuthService,
     private anagraficaDtoService :AnagraficaDtoService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private activatedRouter: ActivatedRoute,
 
   ) {
     this.userlogged = localStorage.getItem('userLogged');
@@ -96,6 +99,13 @@ export class ListaDashboardComponent {
     this.dashboardService.getListaCommesseInScadenza(localStorage.getItem('token')).subscribe(
       (resp: any) => {
         this.listaCommesseInScadenza=(resp as any)['list'];
+        (resp.list || []).forEach((item:any) => {
+          if (item.anagrafica && item.anagrafica.id) {
+            this. idutenteCommessaInScadenza = item.anagrafica.id;
+            return;
+          }
+        });
+        console.log("UTENTE CON LA COMMESSA IN SCADENZA:"+ this.idutenteCommessaInScadenza);
         console.log('Lista commesse in scadenza: ' + JSON.stringify(resp));
       },
       (error: any) => {

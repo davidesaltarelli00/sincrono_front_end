@@ -229,7 +229,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   elimina(idAnagrafica: number) {
     const confirmation = confirm(
-      'Sei sicuro di voler eliminare questo utente?'
+      'Sei sicuro di voler disattivare questo utente?'
     );
     if (confirmation) {
       console.log(idAnagrafica);
@@ -245,10 +245,14 @@ export class ListaAnagraficaDtoComponent implements OnInit {
             this.anagraficaDtoService
               .delete(resp, localStorage.getItem('token'))
               .subscribe(
-                (deleted: any) => {
-                  console.log('eliminato con successo ' + deleted);
-                  // location.reload();
+                (response: any) => {
+                  if ((response as any).esito.code != 200) {
+                    alert('Disattivazione non riuscita:\n' + (response as any).esito.target);
+                  } else{
+                    alert("Disattivato correttamente "+ response);
                   this.ngOnInit();
+
+                  }
                 },
                 (errorDeleted: any) => {
                   console.log("Errore durante l'eliminazione: " + errorDeleted);
@@ -264,29 +268,40 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-  riattivaAnagrafica(attivo:any){
-    this.anagraficaDtoService
-    .detailAnagraficaDto(attivo, localStorage.getItem('token'))
-    .subscribe(
-      (resp: any) => {
-        console.log("UTENTE DA RIATTIVARE: "+JSON.stringify(resp));
-        //se é ok parte la riattivazione
-        this.anagraficaDtoService
-          .riattivaUtente(resp, localStorage.getItem('token'))
-          .subscribe(
-            (response: any) => {
-              console.log('storicizzato con successo: ' + JSON.stringify(response));
-              this.ngOnInit();
-            },
-            (errorDeleted: any) => {
-              console.log("Errore durante la riattivazione: " + errorDeleted);
-            }
-          );
-      },
-      (error: any) => {
-        console.log(error);
-      }
+  riattivaAnagrafica(id:any){
+    const confirmation = confirm(
+      'Sei sicuro di voler riattivare questo utente?'
     );
+    if(confirmation){
+      this.anagraficaDtoService
+      .detailAnagraficaDto(id, localStorage.getItem('token'))
+      .subscribe(
+        (resp: any) => {
+          console.log("UTENTE DA RIATTIVARE: "+JSON.stringify(resp));
+          //se é ok parte la riattivazione
+          this.anagraficaDtoService
+            .riattivaUtente(resp, localStorage.getItem('token'))
+            .subscribe(
+              (response: any) => {
+                if ((response as any).esito.code != 200) {
+                  alert('Riattivazione non riuscita:\n' + (response as any).esito.target);
+                } else{
+                  console.log('riattivato con successo: ' + JSON.stringify(response));
+                  this.ngOnInit();
+                }
+
+              },
+              (errorDeleted: any) => {
+                console.log("Errore durante la riattivazione: " + errorDeleted);
+              }
+            );
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    }
+
   }
 
   campiMancanti(id: any) {

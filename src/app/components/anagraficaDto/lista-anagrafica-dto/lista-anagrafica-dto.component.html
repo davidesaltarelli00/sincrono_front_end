@@ -190,7 +190,7 @@
               <button class="btn btn-danger" matTooltip="Disattiva anagrafica" (click)="elimina(element.anagrafica.id)"><i class="fa fa-minus"></i></button>
             </span>
             <span style="margin:5px;" *ngIf="element.anagrafica.attivo==false">
-              <button class="btn btn-success"  (click)="riattivaAnagrafica(element.anagrafica.attivo)" matTooltip="Riattiva anagrafica" > <i class="fa fa-plus" ></i> </button>
+              <button class="btn btn-success"  (click)="riattivaAnagrafica(element.anagrafica.id)" matTooltip="Riattiva anagrafica" > <i class="fa fa-plus" ></i> </button>
             </span>
           </td>
         </tr>
