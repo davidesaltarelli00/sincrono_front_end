@@ -52,6 +52,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
+    console.log(this.id);
     this.anagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
         id: [this.id],
@@ -365,6 +366,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     };
     removeEmpty(this.anagraficaDto.value);
 
+    console.log("Valore di anagrafica: "+JSON.stringify(this.anagraficaDto.get('anagrafica')?.value));
     const payload = {
       anagraficaDto: {
         anagrafica: this.anagraficaDto.get('anagrafica')?.value,
@@ -384,7 +386,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             this.messaggio = (response as any).esito.target;
           } else {
             console.log('Payload inviato con successo al server:', response);
-            // location.reload();
             this.router.navigate(['/dettaglio-anagrafica/' + this.id]);
           }
         },

@@ -8,7 +8,7 @@
             <div formGroupName="anagrafica">
               <div class="col-12">
                 <label for="id" hidden>ID:</label>
-                <input type="hidden" id="id" formControlName="id" />
+                <input type="hidden" class="form-control" readonly id="id" formControlName="id" />
               </div>
               <div class="row">
                 <div class="col-12">
@@ -20,15 +20,31 @@
                   <label for="attivo">Attivo:</label>
                   <input type="hidden" id="attivo" formControlName="attivo" />
                 </div> -->
-                <div class="col-3">
-                  <label for="aziendaTipo">Tipo Azienda:</label>
-                  <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
+              <div class="col-3">
+                <div class="form-group" formGroupName="ruolo">
+                  <label for="filter-ruoli">Ruolo *</label>
+                  <select class="form-control" formControlName="id" type="number">
                     <option value="">--nessuna selezione--</option>
-                    <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
-                      {{ tipoAzienda.descrizione }}
+                    <option *ngFor="let ruolo of ruoli" value="{{ ruolo.id }}">
+                      {{ ruolo.nome }}
                     </option>
                   </select>
+
                 </div>
+              </div>
+
+                <div class="form-group" formGroupName="tipoAzienda">
+                  <div class="col-3">
+                    <label for="tipoAzienda">Tipo Azienda:</label>
+                    <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
+                      <option value="">--nessuna selezione--</option>
+                      <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                        {{ tipoAzienda.descrizione }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
                 <div class="col-3">
                   <label for="nome">Nome:</label>
                   <input type="text" class="form-control" id="nome" formControlName="nome" />

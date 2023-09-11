@@ -110,7 +110,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       (response: any) => {
         this.anagrafica = response;
         const idUtente = response.anagraficaDto.anagrafica.utente.id;
-        const utenteLoggato=response.anagraficaDto.anagrafica.id;
+        const utenteLoggato = response.anagraficaDto.anagrafica.id;
         // console.log('ID UTENTE valorizzato : ' + idUtente);
         this.idUtente = utenteLoggato;
         // console.log('ID UTENTE valorizzato globalmente: ' + this.idUtente);
@@ -133,62 +133,66 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       this.tipoAziendaFilter
     );
 
-
     this.anagraficaDtoService
       .listAnagraficaDto(localStorage.getItem('token'))
-      .subscribe((resp: any) => {
-        this.originalLista = resp.list;
-        this.lista = this.originalLista;
-        console.log("Elenco record: "+JSON.stringify(this.lista));
+      .subscribe(
+        (resp: any) => {
+          this.originalLista = resp.list;
+          this.lista = this.originalLista;
+          console.log('Elenco record: ' + JSON.stringify(this.lista));
 
-        // Inizializza la pagina corrente e i dati della pagina
-        this.currentPage = 1;
-        this.pageData = this.getCurrentPageItems();
+          // Inizializza la pagina corrente e i dati della pagina
+          this.currentPage = 1;
+          this.pageData = this.getCurrentPageItems();
 
-        // Itera attraverso gli elementi nell'array 'list'
-        this.originalLista.forEach((element: any) => {
-          const dataFineRapporto = new Date(element.contratto.dataFineRapporto);
-          const currentDate = new Date();
+          // Itera attraverso gli elementi nell'array 'list'
+          this.originalLista.forEach((element: any) => {
+            const dataFineRapporto = new Date(
+              element.contratto.dataFineRapporto
+            );
+            const currentDate = new Date();
 
-          // Controllo per verificare se il contratto è scaduto
-          element.contrattoScaduto = dataFineRapporto <= currentDate;
+            // Controllo per verificare se il contratto è scaduto
+            element.contrattoScaduto = dataFineRapporto <= currentDate;
 
-          // Calcola la differenza tra le due date in millisecondi
-          const timeDifference =
-            dataFineRapporto.getTime() - currentDate.getTime();
+            // Calcola la differenza tra le due date in millisecondi
+            const timeDifference =
+              dataFineRapporto.getTime() - currentDate.getTime();
 
-          // Calcola il valore in millisecondi per 40 giorni
-          const millisecondiIn40Giorni = 40 * 24 * 60 * 60 * 1000;
+            // Calcola il valore in millisecondi per 40 giorni
+            const millisecondiIn40Giorni = 40 * 24 * 60 * 60 * 1000;
 
-          // Confronta la differenza con 40 giorni e aggiungi il risultato come una nuova proprietà a ciascun elemento
-          element.inScadenza = timeDifference <= millisecondiIn40Giorni;
-        });
+            // Confronta la differenza con 40 giorni e aggiungi il risultato come una nuova proprietà a ciascun elemento
+            element.inScadenza = timeDifference <= millisecondiIn40Giorni;
+          });
 
-        // Inserimento parziale: filtro tutta la lista
+          // Inserimento parziale: filtro tutta la lista
 
-        this.originalLista.forEach((element: any) => {
-          const anagrafica = element.anagrafica;
-          const contratto = element.contratto;
-          const commesse = element.commesse;
+          this.originalLista.forEach((element: any) => {
+            const anagrafica = element.anagrafica;
+            const contratto = element.contratto;
+            const commesse = element.commesse;
 
-          // Verifica se uno qualsiasi dei campi nell'anagrafica è vuoto
-          if (
-            (!this.areFieldsNotEmpty(anagrafica) &&
-              !this.areFieldsNotEmpty(contratto)) ||
-            !this.areFieldsNotEmpty(commesse)
-          ) {
-            console.log("Dati mancanti nell'anagrafica:", anagrafica);
-            console.log('Dati mancanti nel contratto:', contratto);
-            console.log('Dati mancanti nelle commesse:', commesse);
-            this.inserimentoParziale = true;
-            return;
-          }
-
-        });
-      },
-      (error:any)=>{
-        console.log("Si é verificato un errore durante il caricamento dei dait: "+ error)
-      }
+            // Verifica se uno qualsiasi dei campi nell'anagrafica è vuoto
+            if (
+              (!this.areFieldsNotEmpty(anagrafica) &&
+                !this.areFieldsNotEmpty(contratto)) ||
+              !this.areFieldsNotEmpty(commesse)
+            ) {
+              console.log("Dati mancanti nell'anagrafica:", anagrafica);
+              console.log('Dati mancanti nel contratto:', contratto);
+              console.log('Dati mancanti nelle commesse:', commesse);
+              this.inserimentoParziale = true;
+              return;
+            }
+          });
+        },
+        (error: any) => {
+          console.log(
+            'Si é verificato un errore durante il caricamento dei dait: ' +
+              error
+          );
+        }
       );
 
     this.filterAnagraficaDto = this.formBuilder.group({
@@ -247,11 +251,13 @@ export class ListaAnagraficaDtoComponent implements OnInit {
               .subscribe(
                 (response: any) => {
                   if ((response as any).esito.code != 200) {
-                    alert('Disattivazione non riuscita:\n' + (response as any).esito.target);
-                  } else{
-                    alert("Disattivato correttamente "+ response);
-                  this.ngOnInit();
-
+                    alert(
+                      'Disattivazione non riuscita:\n' +
+                        (response as any).esito.target
+                    );
+                  } else {
+                    alert('Utente disattivato correttamente. ');
+                    this.ngOnInit();
                   }
                 },
                 (errorDeleted: any) => {
@@ -268,40 +274,43 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-  riattivaAnagrafica(id:any){
+  riattivaAnagrafica(id: any) {
     const confirmation = confirm(
       'Sei sicuro di voler riattivare questo utente?'
     );
-    if(confirmation){
+    if (confirmation) {
       this.anagraficaDtoService
-      .detailAnagraficaDto(id, localStorage.getItem('token'))
-      .subscribe(
-        (resp: any) => {
-          console.log("UTENTE DA RIATTIVARE: "+JSON.stringify(resp));
-          //se é ok parte la riattivazione
-          this.anagraficaDtoService
-            .riattivaUtente(resp, localStorage.getItem('token'))
-            .subscribe(
-              (response: any) => {
-                if ((response as any).esito.code != 200) {
-                  alert('Riattivazione non riuscita:\n' + (response as any).esito.target);
-                } else{
-                  console.log('riattivato con successo: ' + JSON.stringify(response));
-                  this.ngOnInit();
+        .detailAnagraficaDto(id, localStorage.getItem('token'))
+        .subscribe(
+          (resp: any) => {
+            console.log('UTENTE DA RIATTIVARE: ' + JSON.stringify(resp));
+            //se é ok parte la riattivazione
+            this.anagraficaDtoService
+              .riattivaUtente(resp, localStorage.getItem('token'))
+              .subscribe(
+                (response: any) => {
+                  if ((response as any).esito.code != 200) {
+                    alert(
+                      'Riattivazione non riuscita:\n' +
+                        (response as any).esito.target
+                    );
+                  } else {
+                    alert('Utente riattivato correttamente.');
+                    this.ngOnInit();
+                  }
+                },
+                (errorDeleted: any) => {
+                  console.log(
+                    'Errore durante la riattivazione: ' + errorDeleted
+                  );
                 }
-
-              },
-              (errorDeleted: any) => {
-                console.log("Errore durante la riattivazione: " + errorDeleted);
-              }
-            );
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
+              );
+          },
+          (error: any) => {
+            console.log(error);
+          }
+        );
     }
-
   }
 
   campiMancanti(id: any) {
@@ -623,8 +632,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   reset() {
     this.filterAnagraficaDto.reset();
   }
-
-
 
   // delete(
   //   idUtente: number,

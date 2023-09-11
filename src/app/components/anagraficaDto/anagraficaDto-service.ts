@@ -76,6 +76,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
+    console.log("BODY SERVICE:"+ JSON.stringify(body));
     return this.http.put<any>(`http://localhost:8080/services/modifica`, body, {
       headers: headers,
     });
