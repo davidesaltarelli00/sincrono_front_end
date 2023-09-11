@@ -110,8 +110,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       (response: any) => {
         this.anagrafica = response;
         const idUtente = response.anagraficaDto.anagrafica.utente.id;
+        const utenteLoggato=response.anagraficaDto.anagrafica.id;
         // console.log('ID UTENTE valorizzato : ' + idUtente);
-        this.idUtente = idUtente;
+        this.idUtente = utenteLoggato;
         // console.log('ID UTENTE valorizzato globalmente: ' + this.idUtente);
       },
       (error: any) => {
@@ -224,6 +225,68 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.caricaLivelloContratto();
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
+  }
+
+  elimina(idAnagrafica: number) {
+    const confirmation = confirm(
+      'Sei sicuro di voler eliminare questo utente?'
+    );
+    if (confirmation) {
+      console.log(idAnagrafica);
+      //mi prendo il dettaglio dell anagrafica della riga selezionata
+      this.anagraficaDtoService
+        .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
+        .subscribe(
+          (resp: any) => {
+            //parseing json
+            // resp = (resp as any)['anagraficaDto'];
+            console.log(resp);
+            //se é ok parte l elimina
+            this.anagraficaDtoService
+              .delete(resp, localStorage.getItem('token'))
+              .subscribe(
+                (deleted: any) => {
+                  console.log('eliminato con successo ' + deleted);
+                  // location.reload();
+                  this.ngOnInit();
+                },
+                (errorDeleted: any) => {
+                  console.log("Errore durante l'eliminazione: " + errorDeleted);
+                }
+              );
+          },
+          (error: any) => {
+            console.log(error);
+          }
+        );
+    } else {
+      return;
+    }
+  }
+
+  riattivaAnagrafica(attivo:any){
+    this.anagraficaDtoService
+    .detailAnagraficaDto(attivo, localStorage.getItem('token'))
+    .subscribe(
+      (resp: any) => {
+        console.log("UTENTE DA RIATTIVARE: "+JSON.stringify(resp));
+        //se é ok parte la riattivazione
+        this.anagraficaDtoService
+          .riattivaUtente(resp, localStorage.getItem('token'))
+          .subscribe(
+            (response: any) => {
+              console.log('storicizzato con successo: ' + JSON.stringify(response));
+              this.ngOnInit();
+            },
+            (errorDeleted: any) => {
+              console.log("Errore durante la riattivazione: " + errorDeleted);
+            }
+          );
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
   }
 
   campiMancanti(id: any) {
@@ -546,80 +609,45 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.filterAnagraficaDto.reset();
   }
 
-  elimina(idAnagrafica: number) {
-    const confirmation = confirm(
-      'Sei sicuro di voler eliminare questo utente?'
-    );
-    if (confirmation) {
-      console.log(idAnagrafica);
-      //mi prendo il dettaglio dell anagrafica della riga selezionata
-      this.anagraficaDtoService
-        .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
-        .subscribe(
-          (resp: any) => {
-            //parseing json
-            // resp = (resp as any)['anagraficaDto'];
-            console.log(resp);
-            //se é ok parte l elimina
-            this.anagraficaDtoService
-              .delete(resp, localStorage.getItem('token'))
-              .subscribe(
-                (deleted: any) => {
-                  console.log('eliminato con successo ' + deleted);
-                  // location.reload();
-                  this.ngOnInit();
-                },
-                (errorDeleted: any) => {
-                  console.log("Errore durante l'eliminazione: " + errorDeleted);
-                }
-              );
-          },
-          (error: any) => {
-            console.log(error);
-          }
-        );
-    } else {
-      return;
-    }
-  }
 
-  delete(
-    idUtente: number,
-    idAnagrafica: number,
-    idContratto: number,
-    idCommessa: number
-  ) {
-    console.log('value:' + this.filterAnagraficaDto.value);
-    console.log(
-      'idAnagrafica: ' + this.filterAnagraficaDto.value.anagrafica.id
-    );
-    console.log(
-      'idUtente: ' + this.filterAnagraficaDto.value.anagrafica.utente.id
-    );
-    console.log('idCommessa: ' + this.filterAnagraficaDto.value.commessa.id);
-    console.log('idContratto: ' + this.filterAnagraficaDto.value.contratto.id);
 
-    this.filterAnagraficaDto.value.anagrafica.id = idAnagrafica;
-    this.filterAnagraficaDto.value.anagrafica.utente.id = idUtente;
-    this.filterAnagraficaDto.value.contratto.id = idContratto;
-    this.filterAnagraficaDto.value.commessa.id = idCommessa;
-    const body = JSON.stringify({
-      anagraficaDto: this.filterAnagraficaDto.value,
-    });
-    this.anagraficaDtoService
-      .delete(body, localStorage.getItem('token'))
-      .subscribe((result: any) => {
-        if ((result as any).esito.code != 0) {
-          alert('cancellazione non riuscita');
-          this.errore = true;
-          this.messaggio = (result as any).esito.target;
-          return;
-        } else {
-          alert('cancellazione riuscita');
-          this.reloadPage();
-        }
-      });
-  }
+  // delete(
+  //   idUtente: number,
+  //   idAnagrafica: number,
+  //   idContratto: number,
+  //   idCommessa: number
+  // ) {
+  //   console.log('value:' + this.filterAnagraficaDto.value);
+  //   console.log(
+  //     'idAnagrafica: ' + this.filterAnagraficaDto.value.anagrafica.id
+  //   );
+  //   console.log(
+  //     'idUtente: ' + this.filterAnagraficaDto.value.anagrafica.utente.id
+  //   );
+  //   console.log('idCommessa: ' + this.filterAnagraficaDto.value.commessa.id);
+  //   console.log('idContratto: ' + this.filterAnagraficaDto.value.contratto.id);
+
+  //   this.filterAnagraficaDto.value.anagrafica.id = idAnagrafica;
+  //   this.filterAnagraficaDto.value.anagrafica.utente.id = idUtente;
+  //   this.filterAnagraficaDto.value.contratto.id = idContratto;
+  //   this.filterAnagraficaDto.value.commessa.id = idCommessa;
+  //   const body = JSON.stringify({
+  //     anagraficaDto: this.filterAnagraficaDto.value,
+  //   });
+  //   this.anagraficaDtoService
+  //     .delete(body, localStorage.getItem('token'))
+  //     .subscribe((result: any) => {
+  //       if ((result as any).esito.code != 0) {
+  //         alert('cancellazione non riuscita');
+  //         this.errore = true;
+  //         this.messaggio = (result as any).esito.target;
+  //         return;
+  //       } else {
+  //         alert('cancellazione riuscita');
+  //         this.reloadPage();
+  //       }
+  //     });
+  // }
 
   chiudiPopup() {
     this.showErrorPopup = false;

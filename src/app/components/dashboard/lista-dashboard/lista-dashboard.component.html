@@ -161,26 +161,83 @@
       <div class="col-12">
         <h3>Contratti in scadenza (40 giorni)</h3>
         <div class="table-responsive">
-          <table class="table table-striped">
-            <tr>
-              <th>Tipo</th>
-              <th>CCNL</th>
-              <th>Tipo livello contrattuale</th>
-              <th>Tipo azienda</th>
-              <th>Data assunzione</th>
-              <th>Data Fine rapporto</th>
-              <th>Motivazione fine rapporto</th>
-            </tr>
-            <tr *ngFor="let element of listaContrattiInScadenza">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+          <table class="table table-striped" >
+            <thead>
+              <tr>
+                <th>Tipo Contratto</th>
+                <th>Tipo Livello Contratto</th>
+                <th>Sede Assunzione</th>
+                <th>Data Assunzione</th>
+                <th>Data Inizio Prova</th>
+                <th>Data Fine Prova</th>
+                <th>Data Fine Rapporto</th>
+                <th>Mesi Durata</th>
+                <th>Livello Attuale</th>
+                <th>Livello Finale</th>
+                <th>Retribuzione Mensile Lorda</th>
+                <th>Superminimo Mensile</th>
+                <th>RAL Annuale</th>
+                <th>Superminimo RAL</th>
+                <th>Diaria Mensile</th>
+                <th>Diaria Giornaliera</th>
+                <th>Ticket</th>
+                <th>Valore Ticket</th>
+                <th>Categoria Protetta</th>
+                <th>Tutor</th>
+                <th>PFI</th>
+                <th>Corso Sicurezza</th>
+                <th>Data Corso Sicurezza</th>
+                <th>PC</th>
+                <th>Visita Medica</th>
+                <th>Data Visita Medica</th>
+                <th>Scatti Anzianità</th>
+                <th>Tariffa Partita IVA</th>
+                <th>Assicurazione Obbligatoria</th>
+                <th>Retribuzione Netta Giornaliera</th>
+                <th>Retribuzione Netta Mensile</th>
+                <th>Diaria Annua</th>
+                <th>RAL Part-Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let contratto of listaContrattiInScadenza">
+                <td>{{ contratto.contratto.tipoContratto.descrizione }}</td>
+                <td>{{ contratto.contratto.tipoLivelloContratto.ccnl }} - {{ contratto.contratto.tipoLivelloContratto.livello }}</td>
+                <td>{{ contratto.contratto.sedeAssunzione }}</td>
+                <td>{{ contratto.contratto.dataAssunzione | date:'dd/MM/yyyy' }}</td>
+                <td>{{ contratto.contratto.dataInizioProva | date:'dd/MM/yyyy' }}</td>
+                <td>{{ contratto.contratto.dataFineProva | date:'dd/MM/yyyy' }}</td>
+                <td>{{ contratto.contratto.dataFineRapporto | date:'dd/MM/yyyy' }}</td>
+                <td>{{ contratto.contratto.mesiDurata }}</td>
+                <td>{{ contratto.contratto.livelloAttuale }}</td>
+                <td>{{ contratto.contratto.livelloFinale }}</td>
+                <td>{{ contratto.contratto.retribuzioneMensileLorda }}</td>
+                <td>{{ contratto.contratto.superminimoMensile }}</td>
+                <td>{{ contratto.contratto.ralAnnua }}</td>
+                <td>{{ contratto.contratto.superminimoRal }}</td>
+                <td>{{ contratto.contratto.diariaMensile }}</td>
+                <td>{{ contratto.contratto.diariaGiornaliera }}</td>
+                <td>{{ contratto.contratto.ticket }}</td>
+                <td>{{ contratto.contratto.valoreTicket }}</td>
+                <td>{{ contratto.contratto.categoriaProtetta }}</td>
+                <td>{{ contratto.contratto.tutor }}</td>
+                <td>{{ contratto.contratto.pfi }}</td>
+                <td>{{ contratto.contratto.corsoSicurezza }}</td>
+                <td>{{ contratto.contratto.dataCorsoSicurezza | date:'dd/MM/yyyy' }}</td>
+                <td>{{ contratto.contratto.pc }}</td>
+                <td>{{ contratto.contratto.visitaMedica }}</td>
+                <td>{{ contratto.contratto.dataVisitaMedica | date:'dd/MM/yyyy' }}</td>
+                <td>{{ contratto.contratto.scattiAnzianita }}</td>
+                <td>{{ contratto.contratto.tariffaPartitaIva }}</td>
+                <td>{{ contratto.contratto.assicurazioneObbligatoria }}</td>
+                <td>{{ contratto.contratto.retribuzioneNettaGiornaliera }}</td>
+                <td>{{ contratto.contratto.retribuzioneNettaMensile }}</td>
+                <td>{{ contratto.contratto.diariaAnnua }}</td>
+                <td>{{ contratto.contratto.ralPartTime }}</td>
+              </tr>
+            </tbody>
           </table>
+
         </div>
       </div>
     </div>

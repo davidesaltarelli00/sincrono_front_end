@@ -107,7 +107,7 @@ export class ListaDashboardComponent {
     );
     this.dashboardService.getListaContrattiInScadenza(localStorage.getItem('token')).subscribe(
       (resp: any) => {
-        this.listaContrattiInScadenza=(resp as any)['commesse'];
+        this.listaContrattiInScadenza=(resp as any)['list'];
         console.log('Lista contratti in scadenza: ' + JSON.stringify(resp));
       },
       (error: any) => {

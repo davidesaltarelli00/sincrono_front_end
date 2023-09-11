@@ -47,7 +47,17 @@ export class AnagraficaDtoService {
     );
   }
 
-
+  riattivaUtente(body:any, token:any):Observable<any>{
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.put<any>(
+      `http://localhost:8080/services/retain`,body,
+      { headers: headers }
+    );
+  }
 
   delete(body: any, token: any) {
     const headers = new HttpHeaders({
