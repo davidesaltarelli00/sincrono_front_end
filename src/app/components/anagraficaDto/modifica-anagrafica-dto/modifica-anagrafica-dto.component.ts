@@ -25,6 +25,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   submitted = false;
   errore = false;
   messaggio: any;
+  selectedTipoCausaFineRapporto: any; // o il tipo appropriato per il valore selezionato
   showErrorPopup: any;
   showSuccessPopup: any;
   commessaDuplicata = new CommessaDuplicata();
@@ -73,8 +74,24 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
           ),
         ],
-        mailAziendale: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')] , ],
-        mailPec: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')],],
+        mailAziendale: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
+            ),
+          ],
+        ],
+        mailPec: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
+            ),
+          ],
+        ],
         titoliDiStudio: [''],
         altriTitoli: [''],
         coniugato: [''],
@@ -108,7 +125,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         livelloIniziale: [''],
         dimissioni: [''],
         partTime: [''],
-        partTimeA: [''],
+        percentualePartTime: [''],
         retribuzioneMensileLorda: [''],
         superminimoMensile: [''],
         ralAnnua: [''],
@@ -188,24 +205,43 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     });
   }
 
-  caricaTipoCausaFineRapporto() {
+  // caricaTipoCausaFineRapporto(event:any) {
+  //   console.log('Funzione caricaTipoCausaFineRapporto chiamata');
+  //   const selectedValue = event.target.value;
+  //   console.log('Valore selezionato:', selectedValue);
+  //   this.anagraficaDtoService
+  //     .caricaTipoCausaFineRapporto(localStorage.getItem('token'))
+  //     .subscribe(
+  //       (res: any) => {
+  //         this.motivazioniFineRapporto = (res as any)['list'];
+  //         console.log(
+  //           'Elenco motivazioni fine rapporto:' + JSON.stringify(res)
+  //         );
+
+  //       },
+  //       (error: any) => {
+  //         console.log(
+  //           'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
+  //             JSON.stringify(error)
+  //         );
+  //       }
+  //     );
+  // }
+
+ caricaTipoCausaFineRapporto() {
     this.anagraficaDtoService
       .caricaTipoCausaFineRapporto(localStorage.getItem('token'))
       .subscribe(
         (res: any) => {
           this.motivazioniFineRapporto = (res as any)['list'];
-          console.log(
-            'Elenco motivazioni fine rapporto:' + JSON.stringify(res)
-          );
+          console.log('Elenco motivazioni fine rapporto:', JSON.stringify(res));
         },
         (error: any) => {
-          console.log(
-            'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
-              JSON.stringify(error)
-          );
+          console.log('Errore durante il caricamento della tipologica Motivazione fine rapporto:', JSON.stringify(error));
         }
       );
   }
+
 
   getCommesseControls(): AbstractControl[] {
     const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
@@ -238,8 +274,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     commesseFormArray.push(this.createCommessaFormGroup(nuovaCommessa));
   }
 
-  storicizza(index:number){
-    console.log("ID COMMESSA: "+ JSON.stringify(this.elencoCommesse[index]));
+  storicizza(index: number) {
+    console.log('ID COMMESSA: ' + JSON.stringify(this.elencoCommesse[index]));
   }
 
   rimuoviCommessa(index: number): void {
@@ -294,6 +330,41 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   aggiorna() {
+    const removeEmpty = (obj: any) => {
+      Object.keys(obj).forEach((key) => {
+        if (obj[key] && typeof obj[key] === 'object') {
+          removeEmpty(obj[key]);
+        } else if (obj[key] === '' || obj[key] === null) {
+          delete obj[key];
+        }
+        if (obj.contratto && Object.keys(obj.contratto).length === 0) {
+          delete obj.contratto;
+        }
+        if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
+          delete obj.tipoContratto;
+        }
+        if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
+          delete obj.tipoAzienda;
+        }
+        if (obj.tipoCcnl && Object.keys(obj.tipoCcnl).length === 0) {
+          delete obj.tipoCcnl;
+        }
+        if (
+          obj.tipoLivelloContratto &&
+          Object.keys(obj.tipoLivelloContratto).length === 0
+        ) {
+          delete obj.tipoLivelloContratto;
+        }
+        if (
+          obj.tipoCausaFineRapporto &&
+          Object.keys(obj.tipoCausaFineRapporto).length === 0
+        ) {
+          delete obj.tipoCausaFineRapporto;
+        }
+      });
+    };
+    removeEmpty(this.anagraficaDto.value);
+
     const payload = {
       anagraficaDto: {
         anagrafica: this.anagraficaDto.get('anagrafica')?.value,
@@ -302,11 +373,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         ruolo: this.anagraficaDto.get('ruolo')?.value,
       },
     };
-
-    // Converti l'oggetto payload in una stringa JSON formattata
-    const payloadJson = JSON.stringify(payload);
-
-    console.log('Payload backend:', payloadJson);
+    console.log('Payload backend:', payload);
     this.anagraficaDtoService
       .update(payload, localStorage.getItem('token'))
       .subscribe(
@@ -326,42 +393,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         }
       );
   }
-  /*
-   this.anagraficaDtoService.insert(body, localStorage.getItem('token')).subscribe((result) => {
-        if ((result as any).esito.code !== 200) {
-          alert(
-            'Inserimento non riuscito\n' +
-              'Target: ' +
-              (result as any).esito.target
-          );
-          this.errore = true;
-          this.messaggio = (result as any).esito.target;
-        } else {
-          alert('Inserimento riuscito');
-          console.log(this.AnagraficaDto.value);
-          this.router.navigate(['/lista-anagrafica']);
-        }
-      });
-*/
 
-  // caricaDati(): void {
-  //   this.anagraficaDtoService
-  //     .detailAnagraficaDto(
-  //       this.activatedRouter.snapshot.params['id'],
-  //       localStorage.getItem('token')
-  //     )
-  //     .subscribe((resp: any) => {
-  //       console.log(this.activatedRouter.snapshot.params['id']);
-  //       this.data = (resp as any)['anagraficaDto'];
-  //       console.log(JSON.stringify(resp));
-  //       this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
-  //       this.anagraficaDto.patchValue(this.data);
-  //       console.log(
-  //         'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)
-  //       );
-  //       this.initializeCommesse();
-  //     });
-  // }
   caricaDati(): void {
     this.anagraficaDtoService
       .detailAnagraficaDto(
@@ -418,14 +450,23 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.elencoCommesse.push(nuovoFormGroup);
   }
 
+  // transformDate(dateString: string): string {
+  //   const dateObject = new Date(dateString);
+  //   return dateObject.toLocaleDateString('en-GB', {
+  //     day: '2-digit',
+  //     month: 'numeric',
+  //     year: 'numeric',
+  //   });
+  // }
   transformDate(dateString: string): string {
     const dateObject = new Date(dateString);
-    return dateObject.toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: 'numeric',
-      year: 'numeric',
-    });
-  }
+    const year = dateObject.getFullYear();
+    const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObject.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
 
   chiudiPopup() {
     this.showErrorPopup = false;

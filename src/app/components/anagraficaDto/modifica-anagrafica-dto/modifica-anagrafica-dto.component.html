@@ -427,7 +427,7 @@
               </div>
               <div class="row">
                 <div class="col-md-3">
-                  <label>Data inizio prova *:</label>
+                  <label>Data inizio prova *</label>
                   <div class="form-group">
                     <input
                       type="date"
@@ -505,8 +505,8 @@
                       class="form-check-input"
                       type="checkbox"
                       style="border-color: black"
-                      [checked]="data?.contratto?.partTimeA === true"
-                      formControlName="partTimeA"
+                      [checked]="data?.contratto?.percentualePartTime === true"
+                      formControlName="percentualePartTime"
                     />
                   </div>
                 </div>
@@ -665,12 +665,14 @@
                   <div class="form-group">
                   <label>Motivazione Fine Rapporto: </label>
                     <div formGroupName="tipoCausaFineRapporto">
-                      <select class="form-control" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
-                      <option value="">--nessuna selezione--</option>
-                      <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto" [value]="tipoCausaFineRapporto.id">
+
+                  <select  class="form-control" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
+                    <option value="">--nessuna selezione--</option>
+                    <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto" [value]="tipoCausaFineRapporto.id">
                       {{ tipoCausaFineRapporto.descrizione }}
-                      </option>
+                    </option>
                   </select>
+
                   </div>
                   </div>
                 </div>

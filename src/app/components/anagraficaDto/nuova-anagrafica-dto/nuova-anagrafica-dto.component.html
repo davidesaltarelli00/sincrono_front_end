@@ -63,7 +63,7 @@
                               class="text-danger">
                               Il campo nome azienda è obbligatorio.
                             </div> -->
-                              <label for="filter-Tipo Azienda">Tipo Azienda:</label>
+                              <label for="filter-Tipo Azienda">Tipo Azienda*</label>
                               <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
                                 <option value="" selected>--nessuna selezione--</option>
                                 <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
@@ -78,7 +78,7 @@
                       </div>
 
                       <div class="row" id="nominativo">
-                        <legend>Dati personali:</legend>
+                        <legend>Dati personali</legend>
                         <div class="col-md-3">
                           <label for="nome">Nome* </label>
                           <div class="form-group">
@@ -123,7 +123,7 @@
                       <legend>Recapiti</legend>
                       <div class="row">
                         <div class="col-md-3">
-                          <label>Cellulare Privato: </label>
+                          <label>Cellulare Privato </label>
                           <div class="form-group">
                             <input type="text" class="form-control" formControlName="cellularePrivato"
                               placeholder="Inserire cellulare privato." />
@@ -142,7 +142,7 @@
                           </div>
                         </div>
                         <div class="col-md-3">
-                          <label>Cellulare Aziendale: </label>
+                          <label>Cellulare Aziendale </label>
                           <div class="form-group">
                             <input type="text" class="form-control" formControlName="cellulareAziendale"
                               placeholder="Inserire cellulare aziendale." />
@@ -155,7 +155,7 @@
                       </div>
                       <div class="row">
                         <div class="col-md-3">
-                          <label>Email Privata: </label>
+                          <label>Email Privata </label>
                           <div class="form-group">
                             <input type="text" class="form-control" formControlName="mailPrivata"
                               placeholder="Inserire mail privata." />
@@ -164,7 +164,7 @@
                               Il formato della mail privata non è valido.
                             </div>
                           </div>
-                          <label>Email Pec: </label>
+                          <label>Email Pec </label>
                           <div class="form-group">
                             <input type="text" class="form-control" formControlName="mailPec"
                               placeholder="Inserire PEC." />
@@ -202,7 +202,7 @@
                           </div>
                         </div>
                         <div class="col-md-3">
-                          <label>Altri Titoli: </label>
+                          <label>Altri Titoli </label>
                           <div class="form-group">
                             <input type="text" class="form-control" formControlName="altriTitoli"
                               placeholder="Inserire altri titoli conseguiti." />
@@ -213,21 +213,21 @@
                       <legend>Info Extra</legend>
                       <div class="row">
                         <div class="col-md-3">
-                          <label>Comune di Nascita: </label>
+                          <label>Comune di Nascita </label>
                           <div class="form-group">
                             <input type="text" class="form-control" formControlName="comuneDiNascita"
                               placeholder="Inserire comune di nascita." />
                           </div>
                         </div>
                         <div class="col-md-3">
-                          <label>Residenza: </label>
+                          <label>Residenza </label>
                           <div class="form-group">
                             <input type="text" class="form-control" formControlName="residenza"
                               placeholder="Inserire residenza." />
                           </div>
                         </div>
                         <div class="col-md-3">
-                          <label>Domicilio: </label>
+                          <label>Domicilio </label>
                           <div class="form-group">
                             <input type="text" class="form-control" formControlName="domicilio"
                               placeholder="Inserire domicilio." />
@@ -236,21 +236,21 @@
                       </div>
                       <div class="row">
                         <div class="col-md-3">
-                          <label>Data di Nascita: </label>
+                          <label>Data di Nascita </label>
                           <div class="form-group">
                             <input type="date" placeholder="Data di nascita (Anno-mese-giorno)" class="form-control"
                               formControlName="dataDiNascita" />
                           </div>
                         </div>
                         <div class="col-md-3">
-                          <label>Coniugato: </label>
+                          <label>Coniugato </label>
                           <div class="form-group">
                             <input style="border-color: black" class="form-check-input" type="checkbox"
                               formControlName="coniugato" />
                           </div>
                         </div>
                         <div class="col-md-3">
-                          <label>Figli a Carico: </label>
+                          <label>Figli a Carico</label>
                           <div class="form-group">
                             <input style="border-color: black" class="form-check-input" type="checkbox"
                               formControlName="figliACarico" />
@@ -474,9 +474,9 @@
                             {{ tipoAzienda.descrizione }}
                           </option>
                         </select>
-                        <div *ngIf="AnagraficaDto.get('contratto.tipoAzienda.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoAzienda.id')?.touched" class="text-danger">
+                        <!-- <div *ngIf="AnagraficaDto.get('contratto.tipoAzienda.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoAzienda.id')?.touched" class="text-danger">
                           Il campo Tipo azienda è obbligatorio.
-                        </div>
+                        </div> -->
                       </div>
 
 
@@ -492,12 +492,12 @@
                               {{ tipoContratto.descrizione }}
                             </option>
                           </select>
-                          <div
+                          <!-- <div
                             *ngIf="AnagraficaDto.get('contratto.tipoContratto.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoContratto.id')?.touched"
                             class="text-danger"
                           >
                             Il campo Tipo Contratto è obbligatorio.
-                          </div>
+                          </div> -->
                         </div>
                       </div>
 
@@ -516,12 +516,12 @@
                               {{ tipoLivelloContratto.livello }}
                             </option>
                           </select>
-                          <div
+                          <!-- <div
                             *ngIf="AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.touched"
                             class="text-danger"
                           >
                             Il campo tipo livello contratto è obbligatorio.
-                          </div>
+                          </div> -->
                         </div>
                       </div>
 
@@ -542,12 +542,12 @@
                               {{ contrattiNazionale.descrizione }}
                             </option>
                           </select>
-                          <div
+                          <!-- <div
                             *ngIf="AnagraficaDto.get('contratto.tipoCcnl.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoCcnl.id')?.touched"
                             class="text-danger"
                           >
                             Il campo Tipo Contratto nazionale è obbligatorio.
-                          </div>
+                          </div> -->
                         </div>
                       </div>
 
@@ -838,7 +838,7 @@
                         </div>
                       </div> -->
                       <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
-                        <label for="filter-tipoCanaleReclutamento">Canale reclutamento:</label>
+                        <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
                         <select class="form-control" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
                           <option value="">--nessuna selezione--</option>
                           <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.id">

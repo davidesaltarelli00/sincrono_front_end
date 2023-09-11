@@ -31,12 +31,12 @@ export const MY_DATE_FORMATS = {
 })
 export class NuovaAnagraficaDtoComponent implements OnInit {
   data: any = [];
-  variabileGenerica:any;
+  variabileGenerica: any;
   utenti: any = [];
   isFormDuplicated: boolean = false;
   currentStep = 1;
-  motivazioniFineRapporto: any[]=[];
-  tipologicaCanaliReclutamento: any[]=[];
+  motivazioniFineRapporto: any[] = [];
+  tipologicaCanaliReclutamento: any[] = [];
   submitted = false;
   errore = false;
   messaggio: any;
@@ -61,8 +61,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   ) {
     this.AnagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
-        // attivo: new FormControl(''),
-        // nomeAzienda: new FormControl('', Validators.required),
         tipoAzienda: new FormGroup({
           id: new FormControl('', Validators.required),
         }),
@@ -129,11 +127,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         }),
         qualifica: new FormControl(''),
         sedeAssunzione: new FormControl(''),
-        dataAssunzione: new FormControl('', Validators.required),
+        dataAssunzione: new FormControl(''), //, Validators.required
         dataInizioProva: new FormControl(''),
         dataFineProva: new FormControl(''),
         dataFineRapporto: new FormControl(''),
-        mesiDurata: new FormControl('', Validators.required),
+        mesiDurata: new FormControl(''), //, Validators.required
         livelloIniziale: new FormControl(''),
         dimissioni: new FormControl(''),
         partTime: new FormControl(''),
@@ -149,24 +147,18 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         categoriaProtetta: new FormControl(''),
         tutor: new FormControl(''),
         pfi: new FormControl(''),
-        corsoSicurezza: new FormControl(false),
+        corsoSicurezza: new FormControl(''),
         dataCorsoSicurezza: new FormControl(''),
-        // tipoCausaFineRapporto: new FormGroup({
-        //   id: new FormControl(''),
-        //   descrizione: new FormControl(''),
-        // }),
         scattiAnzianita: new FormControl(''),
         assicurazioneObbligatoria: new FormControl(''),
-        // contrattoScaduto:new FormControl(''),
-        pc: new FormControl(false),
+        pc: new FormControl(''),
         tariffaPartitaIva: new FormControl(''),
         tipoCanaleReclutamento: new FormGroup({
-          id:new FormControl('', Validators.required),
+          id: new FormControl(''),
           descrizione: new FormControl(''),
         }),
-        visitaMedica:new FormControl(false),
+        visitaMedica: new FormControl(''),
         dataVisitaMedica: new FormControl(''),
-
       }),
       ruolo: this.formBuilder.group({
         id: new FormControl(''),
@@ -212,7 +204,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       // azienda: new FormControl(''),
       aziendaDiFatturazioneInterna: new FormControl(''),
       attivo: new FormControl(true),
-      attesaLavori: new FormControl(false),
+      attesaLavori: new FormControl(''),
     });
   }
 
@@ -255,9 +247,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.tipologicaCanaliReclutamento = (res as any)['list'];
-          console.log(
-            'ElencoCanali reclutamento:' + JSON.stringify(res)
-          );
+          console.log('ElencoCanali reclutamento:' + JSON.stringify(res));
         },
         (error: any) => {
           console.log(
@@ -306,7 +296,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       Object.keys(obj).forEach((key) => {
         if (obj[key] && typeof obj[key] === 'object') {
           removeEmpty(obj[key]);
-        } else if (obj[key] === '') {
+        } else if (obj[key] === '' || obj[key] === null) {
           delete obj[key];
         }
         if (obj.contratto && Object.keys(obj.contratto).length === 0) {
@@ -327,12 +317,18 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         ) {
           delete obj.tipoLivelloContratto;
         }
-        // if (
-        //   obj.tipoCausaFineRapporto &&
-        //   Object.keys(obj.tipoCausaFineRapporto).length === 0
-        // ) {
-        //   delete obj.tipoCausaFineRapporto;
-        // }
+        if (
+          obj.tipoCausaFineRapporto &&
+          Object.keys(obj.tipoCausaFineRapporto).length === 0
+        ) {
+          delete obj.tipoCausaFineRapporto;
+        }
+        if (
+          obj.tipoCanaleReclutamento &&
+          Object.keys(obj.tipoCanaleReclutamento).length === 0
+        ) {
+          delete obj.tipoCanaleReclutamento;
+        }
       });
     };
     removeEmpty(this.AnagraficaDto.value);

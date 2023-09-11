@@ -8,7 +8,8 @@
         <li><strong>Cognome:</strong> {{ data?.anagrafica?.cognome ? data.anagrafica.cognome : 'Dato non inserito' | titlecase }}</li>
         <li><strong>Codice Fiscale:</strong> {{ data?.anagrafica?.codiceFiscale  ? data.anagrafica.codiceFiscale : 'Dato non inserito' | uppercase  }}</li>
         <li><strong>Azienda:</strong> {{ data?.anagrafica?.tipoAzienda ? data.anagrafica.tipoAzienda.descrizione : 'Dato non inserito' | titlecase }}</li>
-        <li><strong>Attivo:</strong> {{ data?.anagrafica?.attivo ? 'Sì' : 'No' }}</li>
+        <li  [ngStyle]="{'color': data?.anagrafica?.attivo ? 'green' : 'red'}"><strong>Attivo:</strong> {{ data?.anagrafica?.attivo ? 'Sì' : 'No' }}</li>
+        <li><strong>Mail Privata:</strong> {{ data?.anagrafica?.mailPrivata ? data.anagrafica.mailPrivata : 'Dato non inserito' }}</li>
         <li><strong>Mail Aziendale:</strong> {{ data?.anagrafica?.mailAziendale ? data.anagrafica.mailAziendale : 'Dato non inserito' }}</li>
         <li><strong>Mail PEC:</strong> {{ data?.anagrafica?.mailPec ? data.anagrafica.mailPec : 'Dato non inserito' }}</li>
         <li><strong>Titoli di Studio:</strong> {{ data?.anagrafica?.titoliDiStudio ? data.anagrafica.titoliDiStudio : 'Dato non inserito' | titlecase }}</li>
