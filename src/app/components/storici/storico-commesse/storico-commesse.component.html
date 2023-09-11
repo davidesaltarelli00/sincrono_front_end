@@ -31,11 +31,12 @@
                     <th scope="col">Azienda di fatturazione interna</th>
                     <th scope="col">Stato</th>
                     <th scope="col">Attesa lavori</th>
+                    <th scope="col" >Riattiva commessa</th>
 
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let data of lista">
+                <tr *ngFor="let data of lista; let i=index">
                     <td>{{ data.aziendaCliente ? data.aziendaCliente : 'Dato non inserito' }}</td>
                     <td>{{ data.clienteFinale ? data.clienteFinale : 'Dato non inserito' }}</td>
                     <td>{{ data.titoloPosizione  ? data.titoloPosizione : 'Dato non inserito' }}</td>
@@ -46,6 +47,7 @@
                     <td>{{ data.aziendaDiFatturazioneInterna  ? data.aziendaDiFatturazioneInterna : 'Dato non inserito'  }}</td>
                     <td>{{data.attivo ? 'Si' : 'No'}}</td>
                    <td> {{data.attesaLavori ? 'Sì' : 'No'}}</td>
+                   <td> <button class="btn btn-success" (click)="riattivaCommessa(data.id, i)" > <i class="fa fa-file"></i> </button> </td>
 
             </tbody>
         </table>

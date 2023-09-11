@@ -28,10 +28,15 @@ export class StoricoCommesseComponent implements OnInit {
     var idAnagrafica = this.activatedRouter.snapshot.params['id'];
     this.storicoService
       .getStoricoCommesse(idAnagrafica, localStorage.getItem('token'))
-      .subscribe((resp: any) => {
-        this.lista = resp.list;
-        console.log(JSON.stringify(resp.list));
-      });
+      .subscribe(
+        (resp: any) => {
+          this.lista = resp.list;
+          console.log(JSON.stringify(resp.list));
+        },
+        (error: any) => {
+          console.error('Errore durante il caricamento dei dati: ' + error);
+        }
+      );
   }
   getStoricoCommesse(idAnagrafica: number): any {
     this.router.navigate(['/storico-commesse', idAnagrafica]);
@@ -44,6 +49,38 @@ export class StoricoCommesseComponent implements OnInit {
       month: 'numeric',
       year: 'numeric',
     });
+  }
+
+  riattivaCommessa(id: number, posizione: number) {
+    console.log('ID COMMESSA DA RIATTIVARE: ' + id);
+    console.log("Posizione nell'array: " + posizione);
+
+    const payload = {
+      anagraficaDto: {
+        anagrafica: null,
+        contratto: null,
+        commesse: [this.lista[posizione]],
+        ruolo: null,
+      },
+    };
+
+    console.log(JSON.stringify(payload));
+
+    this.storicoService
+      .riattivaCommessa(payload, localStorage.getItem('token'))
+      .subscribe(
+        (res: any) => {
+          console.log(
+            'Commessa storicizzata correttamente: ' + JSON.stringify(res)
+          );
+        },
+        (error: any) => {
+          alert(
+            'Si è verificato un errore durante la storicizzazione della commessa selezionata: ' +
+              error
+          );
+        }
+      );
   }
 
   //paginazione

@@ -36,7 +36,7 @@
           </td>
           <td>
             <div class="col-md-3">
-              <button class="btn btn-success" [disabled]="data?.commesse.length===0" (click)="getStoricoCommessa(data?.anagrafica.id)">Storico Commesse</button>
+              <button class="btn btn-success"  (click)="getStoricoCommessa(data?.anagrafica.id)">Storico Commesse</button> <!--[disabled]="data?.commesse.length===0"-->
           </div>
           </td>
         </tr>
@@ -119,6 +119,7 @@
           <th scope="col">Azienda di Fatturazione Interna</th>
           <th scope="col">Stato</th>
           <th scope="col">Attesa Lavori</th>
+          <th>Storicizza</th>
           <th>Modifica</th>
           <th>Elimina</th>
         </tr>
@@ -138,6 +139,9 @@
           <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
           <td>{{ commessa.attivo ? 'Attiva' : 'Inattiva' }}</td>
           <td>{{ commessa.attesaLavori ? 'Sì' : 'No' }}</td>
+          <td>
+            <button class="btn btn-success" matTooltip="Storicizza commessa" (click)="storicizzaCommessa(commessa.id,i)" > <i class="fa fa-file " ></i> </button>
+          </td>
           <td>
             <button class="btn btn-warning" (click)="modificaCommessa()" > <i class="fa fa-pencil"></i> </button>
 
