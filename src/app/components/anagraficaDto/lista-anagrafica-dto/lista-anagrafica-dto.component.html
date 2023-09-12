@@ -157,6 +157,7 @@
     <table id="table" class="table table-striped table-bordered">
       <thead class="thead-dark">
         <tr>
+          <th scope="col">Campi non compilati</th>
           <th scope="col">Nome</th>
           <th scope="col">Cognome</th>
           <th scope="col">Codice Fiscale</th>
@@ -171,7 +172,11 @@
       </thead>
       <tbody>
         <tr *ngFor="let element of pageData">
-
+          <td [routerLink]="['/dettaglio-anagrafica/',element.anagrafica.id]" >
+            <span *ngIf="inserimentoParziale">
+              <i [ngStyle]="{'color': inserimentoParziale ? 'red' : 'green'}" class="fa fa-exclamation-triangle" matTooltip="Campi non compilati in: {{ getNullFieldsInfo(element) }}"></i>
+            </span>
+          </td>
           <td>{{ element.anagrafica.nome |titlecase }}</td>
           <td>{{ element.anagrafica.cognome |titlecase }}</td>
           <td>{{ element.anagrafica.codiceFiscale |uppercase }}</td>

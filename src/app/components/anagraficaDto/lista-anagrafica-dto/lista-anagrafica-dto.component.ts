@@ -183,13 +183,14 @@ export class ListaAnagraficaDtoComponent implements OnInit {
               console.log('Dati mancanti nel contratto:', contratto);
               console.log('Dati mancanti nelle commesse:', commesse);
               this.inserimentoParziale = true;
-              return;
+            } else{
+              this.inserimentoParziale=false;
             }
           });
         },
         (error: any) => {
           console.log(
-            'Si é verificato un errore durante il caricamento dei dait: ' +
+            'Si é verificato un errore durante il caricamento dei dati: ' +
               error
           );
         }
@@ -372,6 +373,26 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   //fine paginazione
 
+  getNullFieldsInfo(element: any): string {
+    const anagrafica = element.anagrafica;
+    const contratto = element.contratto;
+    const commesse = element.commesse;
+    const nullFields = [];
+
+    if (!this.areFieldsNotEmpty(anagrafica) && !this.areFieldsNotEmpty(contratto)) {
+      nullFields.push("Anagrafica e Contratto");
+    } else if (!this.areFieldsNotEmpty(anagrafica)) {
+      nullFields.push("Anagrafica");
+    }
+
+    if (!this.areFieldsNotEmpty(commesse)) {
+      nullFields.push("Commesse");
+    }
+
+    return nullFields.length > 0 ? nullFields.join(", ") : "Nessun campo nullo";
+  }
+
+  //campi vuoti
   areFieldsNotEmpty(obj: any): boolean {
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
