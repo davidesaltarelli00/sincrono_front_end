@@ -280,8 +280,14 @@ export class ListaDashboardComponent {
       });
   }
 
-  logout() {
-    // this.authService.logout();
+  dettaglioAnagrafica(idAnagrafica:number){
+    idAnagrafica=this.idutenteCommessaInScadenza;
+    this.anagraficaDtoService
+    .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
+    .subscribe((resp: any) => {
+      console.log(resp);
+      this.router.navigate(['/dettaglio-anagrafica/'+ idAnagrafica])
+    });
   }
 
   profile() {

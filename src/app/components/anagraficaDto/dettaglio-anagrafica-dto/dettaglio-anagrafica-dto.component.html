@@ -1,175 +1,206 @@
-<div class="container-fluid">
-  <h2>Dettaglio di {{ data?.anagrafica?.nome | titlecase  }} {{ data?.anagrafica?.cognome | titlecase  }}   <button class="btn btn-primary" (click)=" modificaAnagrafica()" matTooltip="Modifica anagrafica" > <i class="fa fa-pencil"></i> </button> </h2>
-  <div class="row">
-    <div class="col-md-6">
-      <h4>Anagrafica</h4>
-      <ul>
-        <li><strong>Nome:</strong> {{ data?.anagrafica?.nome ? data.anagrafica.nome : 'Dato non inserito' | titlecase  }}</li>
-        <li><strong>Cognome:</strong> {{ data?.anagrafica?.cognome ? data.anagrafica.cognome : 'Dato non inserito' | titlecase }}</li>
-        <li><strong>Codice Fiscale:</strong> {{ data?.anagrafica?.codiceFiscale  ? data.anagrafica.codiceFiscale : 'Dato non inserito' | uppercase  }}</li>
-        <li><strong>Azienda:</strong> {{ data?.anagrafica?.tipoAzienda ? data.anagrafica.tipoAzienda.descrizione : 'Dato non inserito' | titlecase }}</li>
-        <li  [ngStyle]="{'color': data?.anagrafica?.attivo ? 'green' : 'red'}"><strong>Attivo:</strong> {{ data?.anagrafica?.attivo ? 'Sì' : 'No' }}</li>
-        <li><strong>Mail Privata:</strong> {{ data?.anagrafica?.mailPrivata ? data.anagrafica.mailPrivata : 'Dato non inserito' }}</li>
-        <li><strong>Mail Aziendale:</strong> {{ data?.anagrafica?.mailAziendale ? data.anagrafica.mailAziendale : 'Dato non inserito' }}</li>
-        <li><strong>Mail PEC:</strong> {{ data?.anagrafica?.mailPec ? data.anagrafica.mailPec : 'Dato non inserito' }}</li>
-        <li><strong>Titoli di Studio:</strong> {{ data?.anagrafica?.titoliDiStudio ? data.anagrafica.titoliDiStudio : 'Dato non inserito' | titlecase }}</li>
-        <li><strong>Altri Titoli:</strong> {{ data?.anagrafica?.altriTitoli ? data.anagrafica.altriTitoli : 'Dato non inserito'  | titlecase  }}</li>
-        <li><strong>Coniugato:</strong> {{ data?.anagrafica?.coniugato  ? 'Sì' : 'No' }}</li>
-        <li><strong>Figli a Carico:</strong> {{ data?.anagrafica?.figliACarico  ? 'Sì' : 'No' }}</li>
-      </ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <header>
+          <h3> {{ data?.anagrafica?.nome ? data.anagrafica.nome : 'Dato non inserito' | titlecase  }} {{ data?.anagrafica?.cognome ? data.anagrafica.cognome : 'Dato non inserito' | titlecase }} ( {{ data?.ruolo?.nome ? data.ruolo.nome : 'Dato non inserito' | titlecase  }} )  <i style="float: right;" (click)=" modificaAnagrafica()" matTooltip="Modifica anagrafica" class="fa fa-pencil btn btn-primary"></i> </h3>
+        </header>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <mat-card>
+          <mat-card-title>
+            Dati anagrafici <i class="fa fa-address-card"></i>
+          </mat-card-title>
+          <mat-card-content>
+            <table class="table table-bordered" >
+              <tr>
+                <td> <strong>Codice Fiscale: </strong></td>
+                <td>{{ data?.anagrafica?.codiceFiscale  ? (data.anagrafica.codiceFiscale | uppercase ) : 'Dato non inserito'  }}</td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Data di nascita: </strong>
+                </td>
+                <td>
+                  {{ data?.anagrafica?.dataDiNascita ? (data?.anagrafica?.dataDiNascita | date : "dd/MM/yyyy") : 'Dato non inserito' }}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Comune nascita:</strong>
+                </td>
+                <td>
+                  {{ data?.anagrafica?.comuneDiNascita ? data.anagrafica.comuneDiNascita : 'Dato non inserito' | titlecase }}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Coniugato: </strong>
+                </td>
+                <td >
+                  {{ data?.anagrafica?.coniugato === true ? 'Si' : (data?.anagrafica?.coniugato === false ? 'No' : 'Dato non inserito') | titlecase }}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Figli a carico: </strong>
+                </td>
+                <td>
+                  {{ data?.anagrafica?.figliACarico === true ? 'Si' : (data?.anagrafica?.figliACarico === false ? 'No' : 'Dato non inserito') | titlecase }}
+                </td>
+              </tr>
+            </table>
 
-      <h4>Storici</h4>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Storico contratti</th>
-            <th>Storico commesse</th>
-          </tr>
-        </thead>
 
-       <tbody>
-        <tr>
-          <td>
-            <div class="col-md-3">
-              <button class="btn btn-success" (click)="getStoricoContratti(data?.anagrafica.id)">Storico contratti</button>
-          </div>
-          </td>
-          <td>
-            <div class="col-md-3">
-              <button class="btn btn-success"  (click)="getStoricoCommessa(data?.anagrafica.id)">Storico Commesse</button> <!--[disabled]="data?.commesse.length===0"-->
-          </div>
-          </td>
-        </tr>
-       </tbody>
-      </table>
 
-      <h4>Ruolo</h4>
-      <ul>
-        <li><strong>Nome:</strong> {{ data?.ruolo?.nome ? data.ruolo.nome : 'Dato non inserito'  }}</li>
-        <li><strong>Descrizione:</strong> {{ data?.ruolo?.descrizione ? data.ruolo.descrizione : 'Dato non inserito'  }}</li>
-      </ul>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-6">
+        <mat-card>
+          <mat-card-title>Contatti <i class="fa-sharp fa-solid fa-phone-volume"></i> &nbsp;  <i class="fa-sharp fa-regular fa-envelope"></i></mat-card-title>
+          <mat-card-content>
+
+            <table class="table table-striped" >
+              <tr>
+                <td> <strong>Mail Privata: <i *ngIf="data?.anagrafica?.mailPrivata!=null" style="cursor: pointer;" matTooltip="Copia" class="fa-solid fa-copy" (click)="copy(data?.anagrafica?.mailPrivata)"></i></strong></td>
+                <td> {{ data?.anagrafica?.mailPrivata ? data.anagrafica.mailPrivata : 'Dato non inserito' }}</td>
+              </tr>
+              <tr>
+                <td> <strong>Mail Aziendale: <i *ngIf="data?.anagrafica?.mailAziendale!=null" style="cursor: pointer;" matTooltip="Copia" class="fa-solid fa-copy" (click)="copy(data?.anagrafica?.mailAziendale)"></i></strong> </td>
+                <td> {{ data?.anagrafica?.mailAziendale ? data.anagrafica.mailAziendale : 'Dato non inserito' }}</td>
+              </tr>
+              <tr>
+                <td> <strong>Mail PEC: <i *ngIf="data?.anagrafica?.mailPec!=null" style="cursor: pointer;" matTooltip="Copia" class="fa-solid fa-copy" (click)="copy(data?.anagrafica?.mailPec)"></i></strong></td>
+                <td>  {{ data?.anagrafica?.mailPec ? data.anagrafica.mailPec : 'Dato non inserito' }}</td>
+              </tr>
+              <tr>
+                <td> <strong>Cellulare privato:</strong></td>
+                <td>{{ data?.anagrafica?.cellularePrivato ? data.anagrafica.cellularePrivato : 'Dato non inserito' }}</td>
+              </tr>
+              <tr>
+                <td> <strong>Cellulare aziendale:</strong> </td>
+                <td> {{ data?.anagrafica?.cellulareAziendale ? data.anagrafica.cellulareAziendale : 'Dato non inserito' }} </td>
+              </tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </div>
 
     </div>
 
+    <div class="row">
+      <div class="col-6">
+        <mat-card>
+          <mat-card-title>
+            Dati aziendali <i class="fa-solid fa-briefcase"></i>
+          </mat-card-title>
+          <mat-card-content>
+            <table class="table table-bordered">
+              <tr>
+                <td><strong>Nome azienda:</strong></td>
+                <td>{{ data?.anagrafica?.tipoAzienda ? data.anagrafica.tipoAzienda.descrizione : 'Dato non inserito' | titlecase }}</td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Ruolo:</strong>
+                </td>
+                <td> {{ data?.ruolo?.nome ? data.ruolo.nome : 'Dato non inserito'  }}</td>
+              </tr>
+              <!-- <tr>
+                <td>
+                  <strong>Contratto attivo:</strong>
+                </td>
+                <td>
+                  {{ data?.contratto?.attivo ? 'Sì' : 'No' }}
+                </td>
+              </tr> -->
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-6">
+        <mat-card>
+          <mat-card-title>Storici</mat-card-title>
+          <mat-card-content>
+            <table class="table table-bordered">
 
+             <tbody >
+              <tr>
+                <td>
+                  <div style="text-align: center;  margin: auto;" class="col-md-3">
+                    <button style="text-align: center; margin: auto;" class="btn btn-success" (click)="getStoricoContratti(data?.anagrafica.id)">Storico contratti</button>
+                </div>
+                </td>
+                <td>
+                  <div style="text-align: center;  margin: auto;" class="col-md-3">
+                    <button style="text-align: center;  margin: auto;" class="btn btn-success"  (click)="getStoricoCommessa(data?.anagrafica.id)">Storico Commesse</button> <!--[disabled]="data?.commesse.length===0"-->
+                </div>
+                </td>
+              </tr>
+             </tbody>
+            </table>
 
-
-
-    <div class="col-md-6">
-      <h4>Contratto</h4>
-      <ul>
-        <li><strong>Tipo Contratto:</strong> {{ data?.contratto?.tipoContratto?.descrizione  }}</li>
-        <li><strong>Livello Contratto:</strong> {{ data?.contratto?.tipoLivelloContratto?.livello }}</li>
-        <li><strong>Tipo Azienda:</strong> {{ data?.contratto?.tipoAzienda?.descrizione }}</li>
-        <li><strong>Tipo CCNL:</strong> {{ data?.contratto?.tipoCcnl?.descrizione }}</li>
-        <li><strong>Attivo:</strong> {{ data?.contratto?.attivo ? 'Sì' : 'No' }}</li>
-        <li><strong>Sede Assunzione:</strong> {{ data?.contratto?.sedeAssunzione }}</li>
-        <li><strong>Qualifica:</strong> {{ data?.contratto?.qualifica }}</li>
-        <li><strong>Data Assunzione:</strong> {{ data?.contratto?.dataAssunzione | date: 'dd/MM/yyyy' }}</li>
-        <li><strong>Data Inizio Prova:</strong> {{ data?.contratto?.dataInizioProva | date: 'dd/MM/yyyy' }}</li>
-        <li><strong>Data Fine Prova:</strong> {{ data?.contratto?.dataFineProva | date: 'dd/MM/yyyy' }}</li>
-        <li><strong>Data Fine Rapporto:</strong> {{ data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy' }}</li>
-        <li><strong>Mesi Durata:</strong> {{ data?.contratto?.mesiDurata }}</li>
-        <li><strong>Livello Attuale:</strong> {{ data?.contratto?.livelloAttuale }}</li>
-        <li><strong>Livello Finale:</strong> {{ data?.contratto?.livelloFinale }}</li>
-        <li><strong>Dimissioni:</strong> {{ data?.contratto?.dimissioni }}</li>
-        <li><strong>Part Time:</strong> {{ data?.contratto?.partTime }}</li>
-        <li><strong>Part Time A:</strong> {{ data?.contratto?.partTimeA }}</li>
-        <li><strong>Retribuzione Mensile Lorda:</strong> {{ data?.contratto?.retribuzioneMensileLorda }}</li>
-        <li><strong>Superminimo Mensile:</strong> {{ data?.contratto?.superminimoMensile }}</li>
-        <li><strong>RAL Annuale:</strong> {{ data?.contratto?.ralAnnua }}</li>
-        <li><strong>Superminimo RAL:</strong> {{ data?.contratto?.superminimoRal }}</li>
-        <li><strong>Diaria Mese:</strong> {{ data?.contratto?.diariaMese }}</li>
-        <li><strong>Diaria Giorno:</strong> {{ data?.contratto?.diariaGg }}</li>
-        <li><strong>Ticket:</strong> {{ data?.contratto?.ticket }}</li>
-        <li><strong>Valore Ticket:</strong> {{ data?.contratto?.valoreTicket }}</li>
-        <li><strong>Categoria Protetta:</strong> {{ data?.contratto?.categoriaProtetta }}</li>
-        <li><strong>Tutor:</strong> {{ data?.contratto?.tutor }}</li>
-        <li><strong>PFI:</strong> {{ data?.contratto?.pfi }}</li>
-        <li><strong>Assicurazione Obbligatoria:</strong> {{ data?.contratto?.assicurazioneObbligatoria }}</li>
-        <li><strong>Corso Sicurezza:</strong> {{ data?.contratto?.corsoSicurezza }}</li>
-        <li><strong>Motivazione Fine Rapporto:</strong> {{ data?.contratto?.tipoCausaFineRapporto.descrizione }}</li>
-        <li><strong>PC:</strong> {{ data?.contratto?.pc }}</li>
-        <li><strong>Scatti Anzianità:</strong> {{ data?.contratto?.scattiAnzianita }}</li>
-        <li><strong>Tariffa Partita IVA:</strong> {{ data?.contratto?.tariffaPartitaIva }}</li>
-        <li><strong>Canale Reclutamento:</strong> {{ data?.contratto?.tipoCanaleReclutamento.descrizione }}</li>
-      </ul>
-
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
+
+    <div class="row">
+      <div class="col-6">
+        <mat-card>
+          <mat-card-title>
+            Dati contrattuali <i class="fa-solid fa-file-contract"></i>
+          </mat-card-title>
+          <mat-card-content>
+            <table class="table table-bordered">
+              <tr>
+                <td><strong><strong>Tipo Azienda:</strong> </strong> </td>
+                <td>{{ data?.contratto?.tipoAzienda?.descrizione }}</td>
+              </tr>
+              <tr>
+                <td><strong>Tipo CCNL:</strong> </td>
+                <td>{{ data?.contratto?.tipoCcnl?.descrizione }}</td>
+              </tr>
+              <tr>
+                <td><strong>Tipo Contratto:</strong> </td>
+                <td>{{ data?.contratto?.tipoContratto?.descrizione  }}</td>
+              </tr>
+              <tr>
+                <td><strong>Livello Contratto:</strong> </td>
+                <td>{{ data?.contratto?.tipoLivelloContratto?.livello }}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+              </tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
   </div>
-
-  <h4>Commessa</h4>
-
-  <p *ngIf="data?.commesse.length==0" >Commesse non presenti.</p>
-
-  <div class="table-responsive" *ngIf="data?.commesse.length!=0" >
-    <table id="commessaTable" class="table table-striped">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">Cliente</th>
-          <th scope="col">Cliente Finale</th>
-          <th scope="col">Titolo Posizione</th>
-          <th scope="col">Distacco</th>
-          <th scope="col">Data Inizio</th>
-          <th scope="col">Data Fine</th>
-          <!-- <th scope="col">Costo Mese</th> -->
-          <th scope="col">Tariffa Giornaliera</th>
-          <!-- <th scope="col">Nominativo</th> -->
-          <!-- <th scope="col">Azienda</th> -->
-          <th scope="col">Azienda di Fatturazione Interna</th>
-          <th scope="col">Stato</th>
-          <th scope="col">Attesa Lavori</th>
-          <th>Storicizza</th>
-          <th>Modifica</th>
-          <th>Elimina</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let commessa of getCurrentPageItems() ; let i = index">
-          <td>{{ commessa.aziendaCliente }}</td>
-          <td>{{ commessa.clienteFinale }}</td>
-          <td>{{ commessa.titoloPosizione }}</td>
-          <td>{{ commessa.distacco }}</td>
-          <td>{{ commessa.dataInizio | date: 'dd/MM/yyyy' }}</td>
-          <td>{{ commessa.dataFine | date: 'dd/MM/yyyy' }}</td>
-          <!-- <td>{{ commessa.costoMese }}</td> -->
-          <td>{{ commessa.tariffaGiornaliera }}</td>
-          <!-- <td>{{ commessa.nominativo }}</td> -->
-          <!-- <td>{{ commessa.azienda }}</td> -->
-          <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
-          <td>{{ commessa.attivo ? 'Attiva' : 'Inattiva' }}</td>
-          <td>{{ commessa.attesaLavori ? 'Sì' : 'No' }}</td>
-          <td>
-            <button class="btn btn-success" matTooltip="Storicizza commessa" (click)="storicizzaCommessa(commessa.id,i)" > <i class="fa fa-file " ></i> </button>
-          </td>
-          <td>
-            <button class="btn btn-warning" (click)="modificaCommessa()" > <i class="fa fa-pencil"></i> </button>
-
-         </td>
-         <td>
-          <button class="btn btn-danger" (click)="rimuoviCommessa(i)" >
-            <i class="fa fa-trash" ></i>
-           </button>
-         </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="pagination" >
-      <ul>
-        <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-          <span> <i class="fa fa-arrow-left" ></i> </span>
-        </li>
-        <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page" (click)="goToPage(page)">
-          <span>{{ page }}</span>
-        </li>
-        <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
-          <span> <i class="fa fa-arrow-right" ></i> </span>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-
-</div>
-
-
+</body>
+</html>

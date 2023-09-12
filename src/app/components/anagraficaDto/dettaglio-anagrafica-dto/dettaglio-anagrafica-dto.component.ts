@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
 import { AuthService } from '../../login/login-service';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-dettaglio-anagrafica-dto',
   templateUrl: './dettaglio-anagrafica-dto.component.html',
@@ -60,7 +62,9 @@ export class DettaglioAnagraficaDtoComponent {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private location: Location,
-    private authService:AuthService
+    private authService:AuthService,
+    private clipboard: Clipboard,
+    private snackBar: MatSnackBar,
   ) {
 
   }
@@ -86,6 +90,13 @@ export class DettaglioAnagraficaDtoComponent {
 
   }
 
+  copy(data:any) {
+    this.clipboard.copy(data);
+    this.snackBar.open('Dato '+ data +' copiata negli appunti', '', {
+      duration: 3000,
+    });
+
+  }
 
   storicizzaCommessa(id: number, posizione: number) {
     console.log("ID COMMESSA DA STORICIZZARE: " + id);

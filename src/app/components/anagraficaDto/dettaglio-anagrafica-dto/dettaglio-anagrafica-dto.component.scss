@@ -84,6 +84,16 @@ ul li .no-data {
   color: #888; /* Cambia il colore del testo in grigio scuro */
 }
 
+.card{
+  text-align: center;
+}
+
+img{
+  border-radius: 300px 300px 300px 300px;
+  width: 30%;
+  height: 30%;
+  margin: auto;
+}
 
   // paginazione
   .pagination {
@@ -127,3 +137,35 @@ ul li .no-data {
     color: #333;
     border: 1px solid #333;
   }
+
+
+  /* Stile dell'header */
+header {
+  background-color: #333; /* Colore di sfondo */
+  color: #fff; /* Colore del testo */
+  padding: 10px; /* Spaziatura interna */
+  text-align: center; /* Allineamento del testo al centro */
+}
+
+/* Stile del titolo dell'header */
+header h1 {
+  margin: 0; /* Rimuove il margine predefinito */
+  font-size: 36px; /* Dimensione del carattere del titolo */
+}
+
+/* Stile per i link del menu di navigazione */
+header a {
+  color: #fff; /* Colore dei link */
+  text-decoration: none; /* Rimuove la sottolineatura dei link */
+  margin-right: 20px; /* Spaziatura tra i link */
+}
+
+/* Stile per i link del menu di navigazione al passaggio del mouse */
+header a:hover {
+  text-decoration: underline; /* Sottolinea il link al passaggio del mouse */
+}
+
+mat-card-title{
+  text-align: center;
+  padding: 5px;
+}
