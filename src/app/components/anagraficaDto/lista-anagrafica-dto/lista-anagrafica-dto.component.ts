@@ -379,10 +379,11 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     const commesse = element.commesse;
     const nullFields = [];
 
-    if (!this.areFieldsNotEmpty(anagrafica) && !this.areFieldsNotEmpty(contratto)) {
-      nullFields.push("Anagrafica e Contratto");
-    } else if (!this.areFieldsNotEmpty(anagrafica)) {
+    if (!this.areFieldsNotEmpty(anagrafica) ) {
       nullFields.push("Anagrafica");
+    }
+     if (!this.areFieldsNotEmpty(contratto)) {
+      nullFields.push("Contratto");
     }
 
     if (!this.areFieldsNotEmpty(commesse)) {
