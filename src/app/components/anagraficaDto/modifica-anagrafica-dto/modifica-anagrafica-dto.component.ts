@@ -57,9 +57,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       anagrafica: this.formBuilder.group({
         id: [this.id],
         attivo: [true],
-        tipoAzienda: this.formBuilder.group({
-          id: [''],
-        }),
+        tipoAzienda: this.formBuilder.group({id: [''],}),
         nome: ['', Validators.required],
         cognome: ['', Validators.required],
         codiceFiscale: ['', Validators.required],
@@ -69,30 +67,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         domicilio: [''],
         cellularePrivato: ['', Validators.pattern(/^[0-9]{10}$/)],
         cellulareAziendale: ['', Validators.pattern(/^[0-9]{10}$/)],
-        mailPrivata: [
-          '',
-          Validators.pattern(
-            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
-          ),
-        ],
-        mailAziendale: [
-          '',
-          [
-            Validators.required,
-            Validators.pattern(
-              '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
-            ),
-          ],
-        ],
-        mailPec: [
-          '',
-          [
-            Validators.required,
-            Validators.pattern(
-              '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
-            ),
-          ],
-        ],
+        mailPrivata: [ '', Validators.pattern( '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$' ),],
+        mailAziendale: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),],],
+        mailPec: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),],],
         titoliDiStudio: [''],
         altriTitoli: [''],
         coniugato: [''],
@@ -158,8 +135,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
       ruolo: this.formBuilder.group({
         id: [''],
-        nome: [''],
-        descrizione: [''],
+        // nome: [''],
+        // descrizione: [''],
       }),
     });
   }
