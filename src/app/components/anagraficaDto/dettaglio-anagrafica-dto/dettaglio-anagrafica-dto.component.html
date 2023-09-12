@@ -133,17 +133,22 @@
           <mat-card-title>Storici</mat-card-title>
           <mat-card-content>
             <table class="table table-bordered">
-
+              <!-- <thead>
+                <tr>
+                  <th>Storico contratti</th>
+                  <th>Storico commesse</th>
+                </tr>
+              </thead> -->
              <tbody >
               <tr>
                 <td>
-                  <div style="text-align: center;  margin: auto;" class="col-md-3">
-                    <button style="text-align: center; margin: auto;" class="btn btn-success" (click)="getStoricoContratti(data?.anagrafica.id)">Storico contratti</button>
+                  <div  class="col-md-3">
+                    <button  class="btn btn-success" (click)="getStoricoContratti(data?.anagrafica.id)">Storico contratti</button>
                 </div>
                 </td>
                 <td>
-                  <div style="text-align: center;  margin: auto;" class="col-md-3">
-                    <button style="text-align: center;  margin: auto;" class="btn btn-success"  (click)="getStoricoCommessa(data?.anagrafica.id)">Storico Commesse</button> <!--[disabled]="data?.commesse.length===0"-->
+                  <div  class="col-md-3">
+                    <button class="btn btn-success"  (click)="getStoricoCommessa(data?.anagrafica.id)">Storico Commesse</button> <!--[disabled]="data?.commesse.length===0"-->
                 </div>
                 </td>
               </tr>
@@ -154,15 +159,20 @@
         </mat-card>
       </div>
     </div>
-
     <div class="row">
-      <div class="col-6">
+      <div class="col-12">
+        <h2 style="text-align: center;">Dati contrattuali <i class="fa-solid fa-file-contract"></i></h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
         <mat-card>
           <mat-card-title>
-            Dati contrattuali <i class="fa-solid fa-file-contract"></i>
+            Tipologiche contrattuali <i class="fa-solid fa-file-contract"></i>
           </mat-card-title>
           <mat-card-content>
-            <table class="table table-bordered">
+
+            <table class="table table-bordered" >
               <tr>
                 <td><strong><strong>Tipo Azienda:</strong> </strong> </td>
                 <td>{{ data?.contratto?.tipoAzienda?.descrizione }}</td>
@@ -179,27 +189,231 @@
                 <td><strong>Livello Contratto:</strong> </td>
                 <td>{{ data?.contratto?.tipoLivelloContratto?.livello }}</td>
               </tr>
+            </table>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-4">
+        <mat-card >
+          <mat-card-title>Date contratto <i class="fa fa-calendar"></i> </mat-card-title>
+
+          <table class="table table-bordered">
+            <tr>
+              <td><strong>Data assunzione:</strong></td>
+              <td>{{ data?.contratto?.dataAssunzione | date: 'dd/MM/yyyy' }}</td>
+            </tr>
+            <tr>
+              <td><strong>Data Inizio Prova:</strong> </td>
+              <td>{{ data?.contratto?.dataInizioProva | date: 'dd/MM/yyyy' }}</td>
+            </tr>
+            <tr>
+              <td><strong>Data Fine Prova:</strong> </td>
+              <td>{{ data?.contratto?.dataFineProva ? (data.contratto.dataFineProva | date: 'dd/MM/yyyy') : 'Dato non inserito' | titlecase }}</td>
+            </tr>
+            <tr>
+              <td><strong>Data Fine Rapporto:</strong></td>
+              <td>{{ data?.contratto?.dataFineRapporto ? (data.contratto.dataFineRapporto | date: 'dd/MM/yyyy') : 'Dato non inserito' | titlecase }}</td>
+            </tr>
+            <tr>
+              <td><strong>Mesi Durata:</strong> </td>
+              <td>{{ data?.contratto?.mesiDurata }}</td>
+            </tr>
+          </table>
+        </mat-card>
+      </div>
+      <div class="col-4">
+        <mat-card>
+          <mat-card-title>
+            Altri dati
+          </mat-card-title>
+          <mat-card-content>
+            <table class="table table-bordered">
               <tr>
-                <td></td>
-                <td></td>
+                <td><strong>Sede Assunzione:</strong> </td>
+                <td>{{ data?.contratto?.sedeAssunzione ? data.contratto.sedeAssunzione : 'Dato non inserito' }}</td>
               </tr>
               <tr>
-                <td></td>
-                <td></td>
+                <td><strong>Qualifica:</strong> </td>
+                <td>{{ data?.contratto?.qualifica ? data.contratto.qualifica : 'Dato non inserito' }}</td>
               </tr>
               <tr>
-                <td></td>
-                <td></td>
+                <td><strong>Contratto attivo:</strong> </td>
+                <td [ngStyle]="{'color': data?.contratto?.attivo ? 'green' : 'red'}"> {{ data?.contratto?.attivo ? 'Sì' : 'No' }}</td>
               </tr>
               <tr>
-                <td></td>
-                <td></td>
+                <td><strong>Canale Reclutamento:</strong> </td>
+                <td >{{ data?.contratto?.tipoCanaleReclutamento.descrizione }}</td>
+              </tr>
+              <tr>
+             <td><strong>Categoria Protetta:</strong></td>
+              <td > {{ data?.contratto?.categoriaProtetta === true ? 'Si' : (data?.contratto?.categoriaProtetta  === false ? 'No' : 'Dato non inserito') | titlecase }}</td>
+
+              </tr>
+              <tr>
+                <td><strong>PC:</strong></td>
+                <td> {{ data?.contratto?.pc ?  'Sì' : 'No' }}</td>
+              </tr>
+              <tr>
+                <td><strong>Tutor:</strong> </td>
+                <td>{{ data?.contratto?.tutor ?  data?.contratto?.tutor : 'Dato non inserito' }}</td>
               </tr>
             </table>
           </mat-card-content>
         </mat-card>
       </div>
     </div>
+    <div class="row">
+      <div class="col-6">
+        <mat-card>
+          <mat-card-title>
+            Dati economici <i class="fa-solid fa-euro-sign"></i>
+          </mat-card-title>
+          <mat-card-content>
+
+            <table class="table table-bordered">
+              <tr>
+                <td><strong>Retribuzione Mensile Lorda:</strong></td>
+                <td>{{ data?.contratto?.retribuzioneMensileLorda ? data.contratto.retribuzioneMensileLorda : 'Dato non inserito' }}</td>
+              </tr>
+              <tr>
+                <td><strong>Superminimo Mensile:</strong> </td>
+                <td>{{ data?.contratto?.superminimoMensile ? data?.contratto?.superminimoMensile: 'Dato non inserito' }}</td>
+              </tr>
+              <tr>
+                <td><strong>RAL Annuale:</strong> </td>
+                <td>{{ data?.contratto?.ralAnnua ? data?.contratto?.ralAnnua : 'Dato non inserito' }}</td>
+              </tr>
+              <tr>
+                <td><strong>Superminimo RAL:</strong> </td>
+                <td>{{ data?.contratto?.superminimoRal ? data?.contratto?.superminimoRal : 'Dato non inserito' }}</td>
+              </tr>
+              <tr>
+                <td><strong>Diaria Mese:</strong> </td>
+                <td>{{ data?.contratto?.diariaMese ? data?.contratto?.diariaMese : 'Dato non inserito' }}</td>
+              </tr>
+              <tr>
+                <td><strong>Diaria Giorno:</strong> </td>
+                <td>{{ data?.contratto?.diariaGg ? data?.contratto?.diariaGg : 'Dato non inserito' }}</td>
+              </tr>
+              <tr>
+                <td><strong>Diaria Giorno:</strong> </td>
+                <td>{{ data?.contratto?.diariaGg ? data?.contratto?.diariaGg : 'Dato non inserito' }}</td>
+              </tr>
+              <tr>
+                <td> <strong>Ticket:</strong> </td>
+                <td>{{ data?.contratto?.ticket ? data?.contratto?.ticket : 'Dato non inserito' }}</td>
+              </tr>
+              <tr>
+                <td> <strong>Valore Ticket:</strong> </td>
+                <td>{{ data?.contratto?.valoreTicket ? data?.contratto?.valoreTicket: 'Dato non inserito' }}</td>
+              </tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </div>
+        <div class="col-6">
+          <mat-card>
+            <mat-card-title>
+              Dimissioni <i class="fa fa-close"></i>
+            </mat-card-title>
+            <mat-card-content>
+              <table class="table table-bordered">
+                <tr>
+                  <td><strong>Dimissioni:</strong> </td>
+                  <td>{{ data?.contratto?.dimissioni ?  'Sì' : 'No' }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Motivazione Fine Rapporto:</strong> </td>
+                  <td>{{ data?.contratto?.tipoCausaFineRapporto.descrizione ? data?.contratto?.tipoCausaFineRapporto.descrizione : 'Dato non inserito' }}</td>
+                </tr>
+              </table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+    </div>
+
+   <div class="row"  *ngIf="data?.commesse.length==0">
+      <div class="col-12">
+      <h2 style="text-align: center;">Commessa <i class="fa-solid fa-computer"></i></h2>
+      </div>
+    <div class="col-12">
+      <p style="text-align: center;">Commesse non presenti.</p>
+    </div>
+   </div>
+
+    <div class="table-responsive" *ngIf="data?.commesse.length!=0" >
+      <div class="row" >
+        <div class="col-12">
+          <h2 style="text-align: center;">Commessa <i class="fa-solid fa-computer"></i></h2>
+        </div>
+       </div>
+      <table id="commessaTable" class="table table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Cliente</th>
+            <th scope="col">Cliente Finale</th>
+            <th scope="col">Titolo Posizione</th>
+            <th scope="col">Distacco</th>
+            <th scope="col">Data Inizio</th>
+            <th scope="col">Data Fine</th>
+            <th scope="col">Costo Mese</th>
+            <th scope="col">Tariffa Giornaliera</th>
+            <!-- <th scope="col">Nominativo</th> -->
+            <!-- <th scope="col">Azienda</th> -->
+            <th scope="col">Azienda di Fatturazione Interna</th>
+            <th scope="col">Stato</th>
+            <th scope="col">Attesa Lavori</th>
+            <th>Storicizza</th>
+            <th>Modifica</th>
+            <th>Elimina</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let commessa of getCurrentPageItems() ; let i = index">
+            <td>{{ commessa.aziendaCliente }}</td>
+            <td>{{ commessa.clienteFinale }}</td>
+            <td>{{ commessa.titoloPosizione }}</td>
+            <td>{{ commessa.distacco === true ? 'Si' : (commessa.distacco  === false ? 'No' : 'Dato non inserito') | titlecase }}</td>
+            <td>{{ commessa.dataInizio | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ commessa.dataFine | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ commessa.costoMese }}</td>
+            <td>{{ commessa.tariffaGiornaliera }}  <i class="fa-solid fa-euro-sign"></i> </td>
+            <!-- <td>{{ commessa.nominativo }}</td> -->
+            <!-- <td>{{ commessa.azienda }}</td> -->
+            <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
+            <td>{{ commessa.attivo ? 'Attiva' : 'Inattiva' }}</td>
+            <td>{{ commessa.attesaLavori ? 'Sì' : 'No' }}</td>
+            <td>
+              <button class="btn btn-success" matTooltip="Storicizza commessa" (click)="storicizzaCommessa(commessa.id,i)" > <i class="fa fa-file " ></i> </button>
+            </td>
+            <td>
+              <button class="btn btn-warning" (click)="modificaCommessa()" > <i class="fa fa-pencil"></i> </button>
+
+           </td>
+           <td>
+            <button class="btn btn-danger" (click)="rimuoviCommessa(i)" >
+              <i class="fa fa-trash" ></i>
+             </button>
+           </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination" >
+        <ul>
+          <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+            <span> <i class="fa fa-arrow-left" ></i> </span>
+          </li>
+          <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page" (click)="goToPage(page)">
+            <span>{{ page }}</span>
+          </li>
+          <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
+            <span> <i class="fa fa-arrow-right" ></i> </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
 
   </div>
 </body>
