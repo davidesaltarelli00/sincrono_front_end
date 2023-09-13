@@ -565,9 +565,9 @@
                   <label>PFI: </label>
                   <div class="form-group">
                     <input
-                      type="text"
-                      class="form-control"
-                      value="{{ data?.contratto?.pfi }}"
+                      type="checkbox"
+                      class="form-check-input"
+                      [checked]="data?.contratto?.pfi"
                       formControlName="pfi"
                     />
                   </div>
@@ -640,7 +640,7 @@
               <div class="row">
                 <div class="col-md-3">
                   <label>Canale Reclutamento * </label>
-                  <div class="form-group">
+                  <div class="form-group" formGroupName="tipoCanaleReclutamento">
                     <select class="form-control" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
                       <option value="">--nessuna selezione--</option>
                       <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.id">

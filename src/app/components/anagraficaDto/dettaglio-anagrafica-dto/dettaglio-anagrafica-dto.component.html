@@ -159,183 +159,200 @@
         </mat-card>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12">
-        <h2 style="text-align: center;">Dati contrattuali <i class="fa-solid fa-file-contract"></i></h2>
+
+    <div class="container-contratto-non-presente" *ngIf="data?.contratto===null" >
+      <div class="row">
+        <div class="col-12">
+          <h2 style="text-align: center;">Dati contrattuali <i class="fa-solid fa-file-contract"></i></h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p style="text-align: center;">Contratto non presente. <button class="btn btn-primary" matTooltip="Aggiungi un contratto a {{data?.anagrafica?.nome}} {{data?.anagrafica?.cognome}}" [routerLink]="['/modifica-anagrafica', data?.anagrafica.id]" > <i class="fa fa-plus" ></i> </button> </p>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-4">
-        <mat-card>
-          <mat-card-title>
-            Tipologiche contrattuali <i class="fa-solid fa-file-contract"></i>
-          </mat-card-title>
-          <mat-card-content>
 
-            <table class="table table-bordered" >
-              <tr>
-                <td><strong><strong>Tipo Azienda:</strong> </strong> </td>
-                <td>{{ data?.contratto?.tipoAzienda?.descrizione }}</td>
-              </tr>
-              <tr>
-                <td><strong>Tipo CCNL:</strong> </td>
-                <td>{{ data?.contratto?.tipoCcnl?.descrizione }}</td>
-              </tr>
-              <tr>
-                <td><strong>Tipo Contratto:</strong> </td>
-                <td>{{ data?.contratto?.tipoContratto?.descrizione  }}</td>
-              </tr>
-              <tr>
-                <td><strong>Livello Contratto:</strong> </td>
-                <td>{{ data?.contratto?.tipoLivelloContratto?.livello }}</td>
-              </tr>
-            </table>
-
-          </mat-card-content>
-        </mat-card>
+    <div class="container-contratto" [hidden]="data?.contratto===null" >
+      <div class="row">
+        <div class="col-12">
+          <h2 style="text-align: center;">Dati contrattuali <i class="fa-solid fa-file-contract"></i></h2>
+        </div>
       </div>
-      <div class="col-4">
-        <mat-card >
-          <mat-card-title>Date contratto <i class="fa fa-calendar"></i> </mat-card-title>
-
-          <table class="table table-bordered">
-            <tr>
-              <td><strong>Data assunzione:</strong></td>
-              <td>{{ data?.contratto?.dataAssunzione | date: 'dd/MM/yyyy' }}</td>
-            </tr>
-            <tr>
-              <td><strong>Data Inizio Prova:</strong> </td>
-              <td>{{ data?.contratto?.dataInizioProva | date: 'dd/MM/yyyy' }}</td>
-            </tr>
-            <tr>
-              <td><strong>Data Fine Prova:</strong> </td>
-              <td>{{ data?.contratto?.dataFineProva ? (data.contratto.dataFineProva | date: 'dd/MM/yyyy') : 'Dato non inserito' | titlecase }}</td>
-            </tr>
-            <tr>
-              <td><strong>Data Fine Rapporto:</strong></td>
-              <td>{{ data?.contratto?.dataFineRapporto ? (data.contratto.dataFineRapporto | date: 'dd/MM/yyyy') : 'Dato non inserito' | titlecase }}</td>
-            </tr>
-            <tr>
-              <td><strong>Mesi Durata:</strong> </td>
-              <td>{{ data?.contratto?.mesiDurata }}</td>
-            </tr>
-          </table>
-        </mat-card>
-      </div>
-      <div class="col-4">
-        <mat-card>
-          <mat-card-title>
-            Altri dati
-          </mat-card-title>
-          <mat-card-content>
-            <table class="table table-bordered">
-              <tr>
-                <td><strong>Sede Assunzione:</strong> </td>
-                <td>{{ data?.contratto?.sedeAssunzione ? data.contratto.sedeAssunzione : 'Dato non inserito' }}</td>
-              </tr>
-              <tr>
-                <td><strong>Qualifica:</strong> </td>
-                <td>{{ data?.contratto?.qualifica ? data.contratto.qualifica : 'Dato non inserito' }}</td>
-              </tr>
-              <tr>
-                <td><strong>Contratto attivo:</strong> </td>
-                <td [ngStyle]="{'color': data?.contratto?.attivo ? 'green' : 'red'}"> {{ data?.contratto?.attivo ? 'Sì' : 'No' }}</td>
-              </tr>
-              <tr>
-                <td><strong>Canale Reclutamento:</strong> </td>
-                <td >{{ data?.contratto?.tipoCanaleReclutamento.descrizione }}</td>
-              </tr>
-              <tr>
-             <td><strong>Categoria Protetta:</strong></td>
-              <td > {{ data?.contratto?.categoriaProtetta === true ? 'Si' : (data?.contratto?.categoriaProtetta  === false ? 'No' : 'Dato non inserito') | titlecase }}</td>
-
-              </tr>
-              <tr>
-                <td><strong>PC:</strong></td>
-                <td> {{ data?.contratto?.pc ?  'Sì' : 'No' }}</td>
-              </tr>
-              <tr>
-                <td><strong>Tutor:</strong> </td>
-                <td>{{ data?.contratto?.tutor ?  data?.contratto?.tutor : 'Dato non inserito' }}</td>
-              </tr>
-              <tr>
-                <td><strong>PFI:</strong></td>
-                <td>{{data?.contratto.pfi ? 'Si': 'No' }}</td>
-              </tr>
-            </table>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-6">
-        <mat-card>
-          <mat-card-title>
-            Dati economici <i class="fa-solid fa-euro-sign"></i>
-          </mat-card-title>
-          <mat-card-content>
-
-            <table class="table table-bordered">
-              <tr>
-                <td><strong>Retribuzione Mensile Lorda:</strong></td>
-                <td>{{ data?.contratto?.retribuzioneMensileLorda ? data.contratto.retribuzioneMensileLorda : 'Dato non inserito' }}</td>
-              </tr>
-              <tr>
-                <td><strong>Superminimo Mensile:</strong> </td>
-                <td>{{ data?.contratto?.superminimoMensile ? data?.contratto?.superminimoMensile: 'Dato non inserito' }}</td>
-              </tr>
-              <tr>
-                <td><strong>RAL Annuale:</strong> </td>
-                <td>{{ data?.contratto?.ralAnnua ? data?.contratto?.ralAnnua : 'Dato non inserito' }}</td>
-              </tr>
-              <tr>
-                <td><strong>Superminimo RAL:</strong> </td>
-                <td>{{ data?.contratto?.superminimoRal ? data?.contratto?.superminimoRal : 'Dato non inserito' }}</td>
-              </tr>
-              <tr>
-                <td><strong>Diaria Mese:</strong> </td>
-                <td>{{ data?.contratto?.diariaMese ? data?.contratto?.diariaMese : 'Dato non inserito' }}</td>
-              </tr>
-              <tr>
-                <td><strong>Diaria Giorno:</strong> </td>
-                <td>{{ data?.contratto?.diariaGg ? data?.contratto?.diariaGg : 'Dato non inserito' }}</td>
-              </tr>
-              <tr>
-                <td><strong>Diaria Giorno:</strong> </td>
-                <td>{{ data?.contratto?.diariaGg ? data?.contratto?.diariaGg : 'Dato non inserito' }}</td>
-              </tr>
-              <tr>
-                <td> <strong>Ticket:</strong> </td>
-                <td>{{ data?.contratto?.ticket  ?  'Sì' : 'No'  }}</td>
-              </tr>
-              <tr>
-                <td> <strong>Valore Ticket:</strong> </td>
-                <td>{{ data?.contratto?.valoreTicket ? data?.contratto?.valoreTicket: 'Dato non inserito' }}</td>
-              </tr>
-            </table>
-          </mat-card-content>
-        </mat-card>
-      </div>
-        <div class="col-6">
+      <div class="row">
+        <div class="col-4">
           <mat-card>
             <mat-card-title>
-              Dimissioni <i class="fa fa-close"></i>
+              Tipologiche contrattuali <i class="fa-solid fa-file-contract"></i>
+            </mat-card-title>
+            <mat-card-content>
+
+              <table class="table table-bordered" >
+                <tr>
+                  <td><strong><strong>Tipo Azienda:</strong> </strong> </td>
+                  <td>{{ data?.contratto?.tipoAzienda?.descrizione }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Tipo CCNL:</strong> </td>
+                  <td>{{ data?.contratto?.tipoCcnl?.descrizione }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Tipo Contratto:</strong> </td>
+                  <td>{{ data?.contratto?.tipoContratto?.descrizione  }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Livello Contratto:</strong> </td>
+                  <td>{{ data?.contratto?.tipoLivelloContratto?.livello }}</td>
+                </tr>
+              </table>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-4">
+          <mat-card >
+            <mat-card-title>Date contratto <i class="fa fa-calendar"></i> </mat-card-title>
+
+            <table class="table table-bordered">
+              <tr>
+                <td><strong>Data assunzione:</strong></td>
+                <td>{{ data?.contratto?.dataAssunzione | date: 'dd/MM/yyyy' }}</td>
+              </tr>
+              <tr>
+                <td><strong>Data Inizio Prova:</strong> </td>
+                <td>{{ data?.contratto?.dataInizioProva | date: 'dd/MM/yyyy' }}</td>
+              </tr>
+              <tr>
+                <td><strong>Data Fine Prova:</strong> </td>
+                <td>{{ data?.contratto?.dataFineProva ? (data.contratto.dataFineProva | date: 'dd/MM/yyyy') : 'Dato non inserito' | titlecase }}</td>
+              </tr>
+              <tr>
+                <td><strong>Data Fine Rapporto:</strong></td>
+                <td>{{ data?.contratto?.dataFineRapporto ? (data.contratto.dataFineRapporto | date: 'dd/MM/yyyy') : 'Dato non inserito' | titlecase }}</td>
+              </tr>
+              <tr>
+                <td><strong>Mesi Durata:</strong> </td>
+                <td>{{ data?.contratto?.mesiDurata }}</td>
+              </tr>
+            </table>
+          </mat-card>
+        </div>
+        <div class="col-4">
+          <mat-card>
+            <mat-card-title>
+              Altri dati
             </mat-card-title>
             <mat-card-content>
               <table class="table table-bordered">
                 <tr>
-                  <td><strong>Dimissioni:</strong> </td>
-                  <td>{{ data?.contratto?.dimissioni ?  'Sì' : 'No' }}</td>
+                  <td><strong>Sede Assunzione:</strong> </td>
+                  <td>{{ data?.contratto?.sedeAssunzione ? data.contratto.sedeAssunzione : 'Dato non inserito' }}</td>
                 </tr>
                 <tr>
-                  <td><strong>Motivazione Fine Rapporto:</strong> </td>
-                  <td>{{ data?.contratto?.tipoCausaFineRapporto.descrizione ? data?.contratto?.tipoCausaFineRapporto.descrizione : 'Dato non inserito' }}</td>
+                  <td><strong>Qualifica:</strong> </td>
+                  <td>{{ data?.contratto?.qualifica ? data.contratto.qualifica : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Contratto attivo:</strong> </td>
+                  <td [ngStyle]="{'color': data?.contratto?.attivo ? 'green' : 'red'}"> {{ data?.contratto?.attivo ? 'Sì' : 'No' }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Canale Reclutamento:</strong> </td>
+                  <td >{{ data?.contratto?.tipoCanaleReclutamento.descrizione }}</td>
+                </tr>
+                <tr>
+               <td><strong>Categoria Protetta:</strong></td>
+                <td > {{ data?.contratto?.categoriaProtetta === true ? 'Si' : (data?.contratto?.categoriaProtetta  === false ? 'No' : 'Dato non inserito') | titlecase }}</td>
+
+                </tr>
+                <tr>
+                  <td><strong>PC:</strong></td>
+                  <td> {{ data?.contratto?.pc ?  'Sì' : 'No' }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Tutor:</strong> </td>
+                  <td>{{ data?.contratto?.tutor ?  data?.contratto?.tutor : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <td><strong>PFI:</strong></td>
+                  <td>{{data?.contratto?.pfi ? 'Si': 'No' }}</td>
                 </tr>
               </table>
             </mat-card-content>
           </mat-card>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <mat-card>
+            <mat-card-title>
+              Dati economici <i class="fa-solid fa-euro-sign"></i>
+            </mat-card-title>
+            <mat-card-content>
+
+              <table class="table table-bordered">
+                <tr>
+                  <td><strong>Retribuzione Mensile Lorda:</strong></td>
+                  <td>{{ data?.contratto?.retribuzioneMensileLorda ? data.contratto.retribuzioneMensileLorda : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Superminimo Mensile:</strong> </td>
+                  <td>{{ data?.contratto?.superminimoMensile ? data?.contratto?.superminimoMensile: 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <td><strong>RAL Annuale:</strong> </td>
+                  <td>{{ data?.contratto?.ralAnnua ? data?.contratto?.ralAnnua : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Superminimo RAL:</strong> </td>
+                  <td>{{ data?.contratto?.superminimoRal ? data?.contratto?.superminimoRal : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Diaria Mese:</strong> </td>
+                  <td>{{ data?.contratto?.diariaMese ? data?.contratto?.diariaMese : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Diaria Giorno:</strong> </td>
+                  <td>{{ data?.contratto?.diariaGg ? data?.contratto?.diariaGg : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Diaria Giorno:</strong> </td>
+                  <td>{{ data?.contratto?.diariaGg ? data?.contratto?.diariaGg : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <td> <strong>Ticket:</strong> </td>
+                  <td>{{ data?.contratto?.ticket  ?  'Sì' : 'No'  }}</td>
+                </tr>
+                <tr>
+                  <td> <strong>Valore Ticket:</strong> </td>
+                  <td>{{ data?.contratto?.valoreTicket ? data?.contratto?.valoreTicket: 'Dato non inserito' }}</td>
+                </tr>
+              </table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+          <div class="col-6">
+            <mat-card>
+              <mat-card-title>
+                Dimissioni <i class="fa fa-close"></i>
+              </mat-card-title>
+              <mat-card-content>
+                <table class="table table-bordered">
+                  <tr>
+                    <td><strong>Dimissioni:</strong> </td>
+                    <td>{{ data?.contratto?.dimissioni ?  'Sì' : 'No' }}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Motivazione Fine Rapporto:</strong> </td>
+                    <td>{{ data?.contratto?.tipoCausaFineRapporto.descrizione ? data?.contratto?.tipoCausaFineRapporto.descrizione : 'Dato non inserito' }}</td>
+                  </tr>
+                </table>
+              </mat-card-content>
+            </mat-card>
+          </div>
+      </div>
     </div>
+
 
    <div class="row"  *ngIf="data?.commesse.length==0">
       <div class="col-12">

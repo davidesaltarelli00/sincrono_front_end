@@ -67,3 +67,24 @@ table,th,td{
     color: #333;
     border: 1px solid #333;
   }
+
+  /* Stili per il check giallo */
+.yellow-check {
+  background-color: yellow;
+  width: 20px; /* Larghezza personalizzabile */
+  height: 20px; /* Altezza personalizzabile */
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px;
+}
+
+/* Stili per il check verde */
+.green-check {
+  background-color: green;
+  width: 20px; /* Larghezza personalizzabile */
+  height: 20px; /* Altezza personalizzabile */
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px;
+  color: white; /* Colore del testo */
+}

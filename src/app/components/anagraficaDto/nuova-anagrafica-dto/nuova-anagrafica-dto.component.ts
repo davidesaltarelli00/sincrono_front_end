@@ -135,7 +135,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         livelloIniziale: new FormControl(''),
         dimissioni: new FormControl(''),
         partTime: new FormControl(''),
-        partTimeA: new FormControl(''),
+        percentualePartTime: new FormControl(''),
         retribuzioneMensileLorda: new FormControl(''),
         superminimoMensile: new FormControl(''),
         ralAnnua: new FormControl(''),

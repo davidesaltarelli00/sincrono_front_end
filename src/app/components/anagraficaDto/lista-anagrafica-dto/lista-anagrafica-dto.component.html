@@ -157,39 +157,38 @@
     <table id="table" class="table table-striped table-bordered">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">Campi non compilati</th>
+          <th scope="col">Inserimento parziale</th>
           <th scope="col">Nome</th>
           <th scope="col">Cognome</th>
           <th scope="col">Codice Fiscale</th>
           <th scope="col">Nome azienda</th>
           <th scope="col">Mail aziendale</th>
           <th scope="col">Cell privato</th>
-          <th scope="col">Contratto</th>
-          <th scope="col">Contratto attivo</th>
-          <th scope="col">Contratto in scadenza</th>
+          <th scope="col" >Contratto</th>
           <th scope="col">Azioni</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let element of pageData">
           <td [routerLink]="['/dettaglio-anagrafica/',element.anagrafica.id]" >
-            <span *ngIf="inserimentoParziale">
-              <i [ngStyle]="{'color': inserimentoParziale ? 'red' : 'green'}" class="fa fa-exclamation-triangle" matTooltip="Campi non compilati in: {{ getNullFieldsInfo(element) }}"></i>
-            </span>
+            <div>
+              <span [ngClass]="{'text-danger': isCampoVuoto(element), 'text-success': !isCampoVuoto(element)}">
+                {{ isCampoVuoto(element) ? 'Si' : 'No' }}
+              </span>
+            </div>
           </td>
-          <td>{{ element.anagrafica.nome |titlecase }}</td>
-          <td>{{ element.anagrafica.cognome |titlecase }}</td>
-          <td>{{ element.anagrafica.codiceFiscale |uppercase }}</td>
-          <td>{{ element.anagrafica.tipoAzienda.descrizione |titlecase }}</td>
-          <td>{{ element.anagrafica.mailAziendale  }}</td>
-          <td>{{ element.anagrafica.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non presente'  }}</td>
-          <td> {{element.contratto.tipoContratto.descrizione}} </td>
-          <td  *ngIf="element.contratto.attivo"> <i style="color: rgb(121, 216, 121);" class="fa fa-check"></i> </td>
-          <td *ngIf="!element.contratto.attivo"> <i class="fa fa-close" style="color: rgb(242, 123, 123)" ></i> </td>
-          <td style="background-color: rgb(242, 123, 123); color: white;" *ngIf="element.inScadenza && element.contratto.dataFineRapporto !=null" matTooltip="{{element.contratto.dataFineRapporto | date:'fullDate' }}" [routerLink]="['/dettaglio-anagrafica', element.anagrafica.id]">Si   ({{ element.contratto.dataFineRapporto | date:'fullDate' }})  </td>
-          <td style="background-color: rgb(243, 243, 143); color: black;" *ngIf="element.inScadenza && element.contratto.dataFineRapporto ===null" [routerLink]="['/dettaglio-anagrafica', element.anagrafica.id]">Data fine rapporto non inserita.</td>
-
-          <td style="background-color: rgb(121, 216, 121); color: black;" *ngIf="!element.inScadenza">No.</td>
+          <td>{{ element.anagrafica?.nome |titlecase }}</td>
+          <td>{{ element.anagrafica?.cognome |titlecase }}</td>
+          <td>{{ element.anagrafica?.codiceFiscale |uppercase }}</td>
+          <td>{{ element.anagrafica?.tipoAzienda?.descrizione |titlecase }}</td>
+          <td>{{ element.anagrafica?.mailAziendale  }}</td>
+          <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non presente'  }}</td>
+          <td *ngIf="element.contratto?.tipoContratto?.descrizione!='#'">
+            {{element.contratto?.tipoContratto?.descrizione ? element.contratto?.tipoContratto?.descrizione : 'Non inserito'}}
+          </td>
+          <td *ngIf="element.contratto?.tipoContratto?.descrizione==='#'" >
+            Generico
+          </td>
           <td>
             <span style="margin:5px;">
               <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button class="btn btn-info"><i class="fa fa-info"></i></button></a>

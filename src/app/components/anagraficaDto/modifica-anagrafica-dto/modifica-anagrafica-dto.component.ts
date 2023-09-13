@@ -339,6 +339,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         ) {
           delete obj.tipoCausaFineRapporto;
         }
+        if (
+          obj.tipoCanaleReclutamento &&
+          Object.keys(obj.tipoCanaleReclutamento).length === 0
+        ) {
+          delete obj.tipoCanaleReclutamento;
+        }
       });
     };
     removeEmpty(this.anagraficaDto.value);

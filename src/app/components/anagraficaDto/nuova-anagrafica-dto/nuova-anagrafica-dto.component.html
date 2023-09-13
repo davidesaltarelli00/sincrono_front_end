@@ -53,29 +53,6 @@
                       <br>
                     </div>
                     <div formGroupName="anagrafica">
-                      <div class="row">
-                        <div class="col-4">
-                          <div class="form-group" formGroupName="tipoAzienda">
-                            <!-- <input type="text" class="form-control" formControlName="nomeAzienda"
-                              placeholder="Inserire azienda." />
-                              <div
-                              *ngIf="AnagraficaDto.get('anagrafica.nomeAzienda')?.invalid && AnagraficaDto.get('anagrafica.nomeAzienda')?.touched"
-                              class="text-danger">
-                              Il campo nome azienda è obbligatorio.
-                            </div> -->
-                              <label for="filter-Tipo Azienda">Tipo Azienda*</label>
-                              <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
-                                <option value="" selected>--nessuna selezione--</option>
-                                <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
-                                  {{ tipoAzienda.descrizione }}
-                                </option>
-                              </select>
-                              <div *ngIf="AnagraficaDto.get('anagrafica.tipoAzienda.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoAzienda.id')?.touched" class="text-danger">
-                                Il campo Tipo azienda è obbligatorio.
-                              </div>
-                          </div>
-                        </div>
-                      </div>
 
                       <div class="row" id="nominativo">
                         <legend>Dati personali</legend>
@@ -104,7 +81,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                           <label>Codice Fiscale* </label>
                           <div class="form-group">
                             <input id="anagrafica.codiceFiscale" type="text" class="form-control"
@@ -116,6 +93,21 @@
                             </div>
                           </div>
                         </div>
+
+                        <div class="col-3">
+                          <label for="filter-Tipo Azienda">Tipo Azienda*</label>
+                          <div class="form-group" formGroupName="tipoAzienda">
+                              <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
+                                <option value="" selected>--nessuna selezione--</option>
+                                <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                                  {{ tipoAzienda.descrizione }}
+                                </option>
+                              </select>
+                          </div>
+                        </div>
+
+
+
                         <br>
                       </div>
 
@@ -152,8 +144,7 @@
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="row">
+
                         <div class="col-md-3">
                           <label>Email Privata </label>
                           <div class="form-group">
@@ -164,24 +155,15 @@
                               Il formato della mail privata non è valido.
                             </div>
                           </div>
-                          <label>Email Pec </label>
-                          <div class="form-group">
-                            <input type="text" class="form-control" formControlName="mailPec"
-                              placeholder="Inserire PEC." />
-                              <div *ngIf="AnagraficaDto.get('anagrafica.mailPec')?.hasError('pattern')"
-                              class="text-danger">
-                              Il formato della PEC non è valido.
-                            </div>
-                          </div>
+
                         </div>
+
                         <div class="col-md-3">
                           <label>Email Aziendale* </label>
                           <div class="form-group">
-                            <input id="anagrafica.mailAziendale" type="text" class="form-control"
-                              formControlName="mailAziendale" placeholder="Inserire mail aziendale." />
-                            <div
-                              *ngIf="AnagraficaDto.get('anagrafica.mailAziendale')?.hasError('required') && AnagraficaDto.get('anagrafica.mailAziendale')?.hasError('touched') "
-                              class="text-danger">
+                            <input id="anagrafica.mailAziendale" type="text" class="form-control" formControlName="mailAziendale" placeholder="Inserire mail aziendale." />
+                            <div *ngIf="AnagraficaDto.get('anagrafica.mailAziendale')?.hasError('required') && AnagraficaDto.get('anagrafica.mailAziendale')?.hasError('touched')"
+                             class="text-danger">
                               Il campo mail aziendale è obbligatorio.
                             </div>
                             <div *ngIf="AnagraficaDto.get('anagrafica.mailAziendale')?.hasError('pattern')"
@@ -190,6 +172,21 @@
                             </div>
                           </div>
                         </div>
+
+                      </div>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label>Email Pec </label>
+                        <div class="form-group">
+                          <input type="text" class="form-control" formControlName="mailPec"
+                            placeholder="Inserire PEC." />
+                            <div *ngIf="AnagraficaDto.get('anagrafica.mailPec')?.hasError('pattern')"
+                            class="text-danger">
+                            Il formato della PEC non è valido.
+                          </div>
+                        </div>
+                        </div>
+
                       </div>
                       <br>
                       <legend>Competenze</legend>
@@ -233,8 +230,7 @@
                               placeholder="Inserire domicilio." />
                           </div>
                         </div>
-                      </div>
-                      <div class="row">
+
                         <div class="col-md-3">
                           <label>Data di Nascita </label>
                           <div class="form-group">
@@ -242,35 +238,38 @@
                               formControlName="dataDiNascita" />
                           </div>
                         </div>
-                        <div class="col-md-3">
-                          <label>Coniugato </label>
+
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
                           <div class="form-group">
-                            <input style="border-color: black" class="form-check-input" type="checkbox"
+                            <label>Coniugato </label>
+                            <input style="border-color: black;" class="form-check-input" type="checkbox"
                               formControlName="coniugato" />
                           </div>
                         </div>
-                        <div class="col-md-3">
-                          <label>Figli a Carico</label>
+                        <div class="col-md-6">
                           <div class="form-group">
+                            <label>Figli a Carico</label>
                             <input style="border-color: black" class="form-check-input" type="checkbox"
                               formControlName="figliACarico" />
                           </div>
                         </div>
                       </div>
                       <br>
-                      <!-- <div class="row">
+                      <div class="row">
                         <div class="col-6" style="text-align: end;">
-                          <button hidden mat-button matStepperPrevious>« Indietro</button>
-
+                          <button  hidden mat-button matStepperPrevious>« Indietro</button>
                         </div>
                         <div class="col-6" style="text-align: start;">
-                          <button mat-button matStepperNext>Avanti »</button>
+                          <button matTooltip="Avanti" mat-button matStepperNext> »</button>
                         </div>
-                      </div> -->
+                      </div>
+                      <br>
                       <div class="row">
                         <div class="col-6" style="text-align: end;">
 
-                          <button class="btn btn-info" type="submit" [routerLink]="['/lista-anagrafica']">
+                          <button class="btn btn-info" matTooltip="Annulla la creazione dell'anagrafica e torna alla lista." [routerLink]="['/lista-anagrafica']">
                             Annulla
                           </button>
 
@@ -441,14 +440,14 @@
                           </div>
                         </div>
                         <br>
-                        <!-- <div class="row">
+                        <div class="row">
                           <div class="col-6" style="text-align: end;">
                             <button mat-button matStepperPrevious>« Indietro</button>
                           </div>
                           <div class="col-6" style="text-align: start;">
                             <button mat-button matStepperNext>Avanti »</button>
                           </div>
-                        </div> -->
+                        </div>
                       </mat-card-content>
                     </mat-card>
                   </div>
@@ -692,10 +691,9 @@
                         </div>
                       </div>
                       <div class="col-md-3">
-                        <label class="form-check-label">Part Time A: </label>
+                        <label class="form-check-label">% Part time : </label>
                         <div class="form-check">
-                          <input style="border-color: black" class="form-check-input" type="checkbox"
-                            formControlName="partTimeA" />
+                          <input class="form-control" type="number" placeholder="Inserire % part time" formControlName="percentualePartTime" />
                         </div>
                       </div>
                     </div>
@@ -751,13 +749,13 @@
                       <div class="col-md-3">
                         <label>Ticket: </label>
                         <div class="form-group">
-                          <input type="checkbox" class="form-check-input" formControlName="ticket" />
+                          <input style="border-color: black" type="checkbox" class="form-check-input" formControlName="ticket" />
                         </div>
                       </div>
                       <div class="col-md-3">
                         <label>Valore Ticket: </label>
                         <div class="form-group">
-                          <input type="text" class="form-control" formControlName="valoreTicket" />
+                          <input type="number" placeholder="Inserire valore ticket" class="form-control" formControlName="valoreTicket" />
                         </div>
                       </div>
 
@@ -783,31 +781,28 @@
                       <div class="col-md-3">
                         <label>PFI: </label>
                         <div class="form-group">
-                          <input type="text" class="form-control" formControlName="pfi" />
+                          <input type="checkbox" style="border-color: black" class="form-check-input" [checked]="variabileGenerica?.contratto?.pfi" formControlName="pfi" />
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
                           <div class="form-group">
                             <label>Corso di Sicurezza: </label>
-                            <input type="date" class="form-control" name="dataInput" formControlName="corsoSicurezza" />
+                            <input type="checkbox" style="border-color: black" class="form-check-input" [checked]="variabileGenerica?.contratto?.corsoSicurezza" name="corsoSicurezza" formControlName="corsoSicurezza" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <div class="form-group">
+                            <label>Data corso di Sicurezza: </label>
+                            <input type="date" class="form-control" name="dataCorsoSicurezza" formControlName="dataCorsoSicurezza" />
                           </div>
                         </div>
                       </div>
 
-                      <!-- <div class="col-md-3">
-                        <label>Causa Fine Rapporto: </label>
-                        <div class="form-group">
-                            <div formGroupName="tipoCausaFineRapporto">
-                              <select class="form-control" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
-                              <option value="">--nessuna selezione--</option>
-                              <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto" [value]="tipoCausaFineRapporto.id">
-                              {{ tipoCausaFineRapporto.descrizione }}
-                              </option>
-                          </select>
-                          </div>
-                        </div>
-                      </div> -->
+
+
                     </div>
 
                     <div class="row">
@@ -875,9 +870,13 @@
                   </div>
                   <br>
                   <div class="row">
-                    <!-- <div class="col-6">
-                      <button id="indietro" type="button" class="btn btn-primary" (click)="prevStep()">Indietro</button>
-                    </div> -->
+                      <div class="col-6" style="text-align: end;">
+                        <button mat-button matStepperPrevious>« Indietro</button>
+                      </div>
+                      <div class="col-6" style="text-align: start;">
+                        <button hidden mat-button matStepperNext>Avanti »</button>
+                      </div>
+                      <br>
                     <div class="row">
                       <div class="col-6" style="text-align: end;">
 

@@ -145,48 +145,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           this.currentPage = 1;
           this.pageData = this.getCurrentPageItems();
 
-          // Itera attraverso gli elementi nell'array 'list'
-          this.originalLista.forEach((element: any) => {
-            const dataFineRapporto = new Date(
-              element.contratto.dataFineRapporto
-            );
-            const currentDate = new Date();
-
-            // Controllo per verificare se il contratto è scaduto
-            element.contrattoScaduto = dataFineRapporto <= currentDate;
-
-            // Calcola la differenza tra le due date in millisecondi
-            const timeDifference =
-              dataFineRapporto.getTime() - currentDate.getTime();
-
-            // Calcola il valore in millisecondi per 40 giorni
-            const millisecondiIn40Giorni = 40 * 24 * 60 * 60 * 1000;
-
-            // Confronta la differenza con 40 giorni e aggiungi il risultato come una nuova proprietà a ciascun elemento
-            element.inScadenza = timeDifference <= millisecondiIn40Giorni;
-          });
-
-          // Inserimento parziale: filtro tutta la lista
-
-          this.originalLista.forEach((element: any) => {
-            const anagrafica = element.anagrafica;
-            const contratto = element.contratto;
-            const commesse = element.commesse;
-
-            // Verifica se uno qualsiasi dei campi nell'anagrafica è vuoto
-            if (
-              (!this.areFieldsNotEmpty(anagrafica) &&
-                !this.areFieldsNotEmpty(contratto)) ||
-              !this.areFieldsNotEmpty(commesse)
-            ) {
-              console.log("Dati mancanti nell'anagrafica:", anagrafica);
-              console.log('Dati mancanti nel contratto:', contratto);
-              console.log('Dati mancanti nelle commesse:', commesse);
-              this.inserimentoParziale = true;
-            } else{
-              this.inserimentoParziale=false;
-            }
-          });
+          this.verificaCampiVuoti();
         },
         (error: any) => {
           console.log(
@@ -231,6 +190,37 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
   }
+
+
+
+// Metodo per verificare campi vuoti
+verificaCampiVuoti() {
+  for (const record of this.originalLista) {
+    // Verifica se ci sono campi vuoti in questo record
+    for (const key in record) {
+      if (record.hasOwnProperty(key)) {
+        const value = record[key];
+        if (value === null || value === undefined || value === '') {
+          // Hai un campo vuoto in questo record
+          console.log(`Campo vuoto trovato in record con ID ${record.anagrafica.id}`+`: ${value}`);
+        }
+      }
+    }
+  }
+}
+
+isCampoVuoto(record: any): boolean {
+  for (const key in record) {
+    if (record.hasOwnProperty(key)) {
+      const value = record[key];
+      if (value === null || value === undefined || value === '') {
+        return true; // Ci sono campi vuoti in questo record
+      }
+    }
+  }
+  return false; // Nessun campo vuoto trovato
+}
+
 
   elimina(idAnagrafica: number) {
     const confirmation = confirm(
@@ -314,35 +304,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-  campiMancanti(id: any) {
-    console.log(id);
 
-    // Trova l'elemento con l'ID desiderato nella lista originale
-    const elementoDaFiltrare = this.originalLista.find(
-      (element: any) => element.anagrafica.id === id
-    );
-
-    if (!elementoDaFiltrare) {
-      console.log('Elemento non trovato nella lista.');
-      return;
-    }
-
-    const anagrafica = elementoDaFiltrare.anagrafica;
-    const contratto = elementoDaFiltrare.contratto;
-    const commesse = elementoDaFiltrare.commesse;
-
-    // Verifica se uno qualsiasi dei campi nell'anagrafica è vuoto
-    if (
-      (!this.areFieldsNotEmpty(anagrafica) &&
-        !this.areFieldsNotEmpty(contratto)) ||
-      !this.areFieldsNotEmpty(commesse)
-    ) {
-      console.log("Dati mancanti nell'anagrafica:", anagrafica);
-      console.log('Dati mancanti nel contratto:', contratto);
-      console.log('Dati mancanti nelle commesse:', commesse);
-      this.inserimentoParziale = true;
-    }
-  }
 
   //paginazione
   getCurrentPageItems(): any[] {
@@ -375,25 +337,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   //controllo campi nulli
 
-  getNullFieldsInfo(element: any): string {
-    const anagrafica = element.anagrafica;
-    const contratto = element.contratto;
-    const commesse = element.commesse;
-    const nullFields = [];
 
-    if (!this.areFieldsNotEmpty(anagrafica) ) {
-      nullFields.push("Anagrafica");
-    }
-     if (!this.areFieldsNotEmpty(contratto)) {
-      nullFields.push("Contratto");
-    }
-
-    if (!this.areFieldsNotEmpty(commesse)) {
-      nullFields.push("Commesse");
-    }
-
-    return nullFields.length > 0 ? nullFields.join(", ") : "Nessun campo nullo";
-  }
 
   //campi vuoti
   areFieldsNotEmpty(obj: any): boolean {
