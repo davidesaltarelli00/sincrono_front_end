@@ -373,6 +373,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   //fine paginazione
 
+  //controllo campi nulli
+
   getNullFieldsInfo(element: any): string {
     const anagrafica = element.anagrafica;
     const contratto = element.contratto;

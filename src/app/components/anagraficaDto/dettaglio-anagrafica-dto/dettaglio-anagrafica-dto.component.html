@@ -258,6 +258,10 @@
                 <td><strong>Tutor:</strong> </td>
                 <td>{{ data?.contratto?.tutor ?  data?.contratto?.tutor : 'Dato non inserito' }}</td>
               </tr>
+              <tr>
+                <td><strong>PFI:</strong></td>
+                <td>{{data?.contratto.pfi ? 'Si': 'No' }}</td>
+              </tr>
             </table>
           </mat-card-content>
         </mat-card>
@@ -302,7 +306,7 @@
               </tr>
               <tr>
                 <td> <strong>Ticket:</strong> </td>
-                <td>{{ data?.contratto?.ticket ? data?.contratto?.ticket : 'Dato non inserito' }}</td>
+                <td>{{ data?.contratto?.ticket  ?  'Sì' : 'No'  }}</td>
               </tr>
               <tr>
                 <td> <strong>Valore Ticket:</strong> </td>
