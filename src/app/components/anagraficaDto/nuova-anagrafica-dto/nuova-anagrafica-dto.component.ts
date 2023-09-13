@@ -149,7 +149,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         superminimoMensile: new FormControl(''),
         ralAnnua: new FormControl(''),
         superminimoRal: new FormControl(''),
-        diariaMese: new FormControl(''),
+        diariaMensile: new FormControl(''),
         diariaGiornaliera: new FormControl(''),
         ticket: new FormControl(''),
         valoreTicket: new FormControl('', Validators.maxLength(50)),

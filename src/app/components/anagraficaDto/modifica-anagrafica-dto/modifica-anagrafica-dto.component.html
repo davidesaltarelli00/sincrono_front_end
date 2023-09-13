@@ -115,13 +115,17 @@
             </div>
             <br>
             <div class="row">
-              <div class="col-6">
+              <div class="col-3">
                 <label for="coniugato">Coniugato:</label>
                 <input type="checkbox" id="coniugato" formControlName="coniugato" />
               </div>
-              <div class="col-6">
+              <div class="col-3">
                 <label for="figliAcarico">Figli a Carico:</label>
                 <input type="checkbox" [checked]="data?.anagrafica?.figliAcarico === true" id="figliAcarico" formControlName="figliAcarico" />
+              </div>
+              <div class="col-3">
+                <label>Attesa Lavori</label> <br>
+            <input formControlName="attesaLavori" [checked]="data?.anagrafica?.attesaLavori === true" type="checkbox" />
               </div>
             </div>
             </div>
@@ -190,10 +194,7 @@
                           <label>tariffaGiornaliera</label><br>
                           <input class="form-control" formControlName="tariffaGiornaliera" type="number" />
                         </div>
-                        <div class="col-3">
-                          <label>Attesa Lavori</label> <br>
-                      <input formControlName="attesaLavori" type="checkbox" />
-                        </div>
+
                       </div>
                       <div class="row">
                         <!-- <div class="col-3">
@@ -400,7 +401,34 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-3">
+                <legend>Livelli</legend>
+                <div class="col-3">
+                  <label for="livelloAttuale">Livello attuale</label>
+                  <div class="form-group">
+                    <input
+                    type="text"
+                    class="form-control"
+                    value="{{ data?.contratto?.livelloAttuale }}"
+                    formControlName="livelloAttuale"
+                    placeholder="Inserire livello attuale"
+                  />
+                  </div>
+                </div>
+                <div class="col-3">
+                  <label for="livelloAttuale">Livello finale</label>
+                  <div class="form-group">
+                    <input
+                    type="text"
+                    class="form-control"
+                    value="{{ data?.contratto?.livelloFinale }}"
+                    formControlName="livelloFinale"
+                    placeholder="Inserire livello finale"
+                  />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <!-- <div class="col-md-3">
                   <label class="form-check-label">Dimissioni: </label>
                   <div class="form-check">
                     <input
@@ -411,27 +439,39 @@
                       formControlName="dimissioni"
                     />
                   </div>
-                </div>
+                </div> -->
+
                 <div class="col-md-3">
-                  <label class="form-check-label">Part Time: </label>
-                  <div class="form-check">
+                  <div class="form-group"  formGroupName="tipoCausaFineRapporto">
+                  <label>Motivazione Fine Rapporto: </label>
+                  <select  class="form-control" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
+                    <option value="">--nessuna selezione--</option>
+                    <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto" [value]="tipoCausaFineRapporto.id">
+                      {{ tipoCausaFineRapporto.descrizione }}
+                    </option>
+                  </select>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-check-label">Part time: </label>
+                  <div class="form-group">
                     <input
                       class="form-check-input"
                       type="checkbox"
                       style="border-color: black"
-                      [checked]="data?.contratto?.partTime === true"
+                      [checked]="data?.contratto?.partTime"
                       formControlName="partTime"
                     />
                   </div>
                 </div>
                 <div class="col-md-3">
-                  <label class="form-check-label">Part Time A: </label>
-                  <div class="form-check">
+                  <label class="form-check-label">% Part time: </label>
+                  <div class="form-group">
                     <input
-                      class="form-check-input"
-                      type="checkbox"
-                      style="border-color: black"
-                      [checked]="data?.contratto?.percentualePartTime === true"
+                      class="form-control"
+                      type="text"
+                      value="{{data?.contratto?.percentualePartTime}}"
                       formControlName="percentualePartTime"
                     />
                   </div>
@@ -493,8 +533,8 @@
                     <input
                       type="text"
                       class="form-control"
-                      value="{{ data?.contratto?.diariaMese }}"
-                      formControlName="diariaMese"
+                      value="{{ data?.contratto?.diariaMensile }}"
+                      formControlName="diariaMensile"
                     />
                   </div>
                 </div>
@@ -504,8 +544,8 @@
                     <input
                       type="text"
                       class="form-control"
-                      value="{{ data?.contratto?.diariaGg }}"
-                      formControlName="diariaGg"
+                      value="{{ data?.contratto?.diariaGiornaliera }}"
+                      formControlName="diariaGiornaliera"
                     />
                   </div>
                 </div>
@@ -587,17 +627,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-3">
-                  <div class="form-group"  formGroupName="tipoCausaFineRapporto">
-                  <label>Motivazione Fine Rapporto: </label>
-                  <select  class="form-control" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
-                    <option value="">--nessuna selezione--</option>
-                    <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto" [value]="tipoCausaFineRapporto.id">
-                      {{ tipoCausaFineRapporto.descrizione }}
-                    </option>
-                  </select>
-                  </div>
-                </div>
+
               </div>
               <div class="row">
                 <div class="col-md-3">

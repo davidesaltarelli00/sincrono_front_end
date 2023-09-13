@@ -62,6 +62,106 @@
             </div>
            </div>
           </div>
+          <br>
+          <br>
+          <div formGroupName="contratto" >
+            <p>Filtri disponibili per il contratto:</p>
+            <div class="row">
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="ralAnnua">RAL Annua</label>
+                  <input type="text" id="contratto.ralAnnua" class="form-control" name="ralAnnua" formControlName="ralAnnua" placeholder="Inserire RAL annua" >
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="dataAssunzione">Data assunzione</label>
+                  <input type="date" id="contratto.dataAssunzione" class="form-control" name="dataAssunzione" formControlName="dataAssunzione" placeholder="Inserire data assunzione" >
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="dataFineRapporto">Data fine rapporto</label>
+                  <input type="date" id="contratto.dataFineRapporto" class="form-control" name="dataFineRapporto" formControlName="dataFineRapporto" placeholder="Inserire data fine rapporto" >
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <div formGroupName="tipoLivelloContratto">
+                  <label for="filter-LivelloContratto">Tipo livello Contratto</label>
+                  <select class="form-control" id="contratto.tipoLivelloContratto.id" formControlName="id">
+                    <option value="">--nessuna selezione--</option>
+                    <option
+                      *ngFor="let tipoLivelloContratto of livelliContratti"
+                      [value]="tipoLivelloContratto.id"
+                    >
+                      {{ tipoLivelloContratto.livello }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div formGroupName="tipoContratto">
+                  <label for="filter-TipoContratto">Tipo Contratto</label>
+                  <select class="form-control" id="contratto.tipoContratto.id" formControlName="id" >
+                    <option value="">--nessuna selezione--</option>
+                    <option *ngFor="let tipoContratto of tipiContratti" [value]="tipoContratto.id">
+                      {{ tipoContratto.descrizione }}
+                    </option>
+                  </select>
+                </div>
+
+              </div>
+
+              <div class="col-md-3">
+                <div formGroupName="tipoCcnl">
+                  <label for="tipoCcnl">Tipo Contratto nazionale</label>
+                  <select
+                    class="form-control"
+                    id="contratto.tipoCcnl.id"
+                    formControlName="id"
+                  >
+                    <option value="">--nessuna selezione--</option>
+                    <option
+                      *ngFor="let contrattiNazionale of tipiCcnl"
+                      [value]="contrattiNazionale.id"
+                    >
+                      {{ contrattiNazionale.descrizione }}
+                    </option>
+                  </select>
+
+                </div>
+              </div>
+              <div class="col-md-3" formGroupName="tipoAzienda">
+                <label for="tipoAzienda">Tipo Azienda</label>
+                <select class="form-control" id="contratto.tipoAzienda.id" formControlName="id" type="number">
+                  <option value="">--nessuna selezione--</option>
+                  <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                    {{ tipoAzienda.descrizione }}
+                  </option>
+                </select>
+
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
+                <div class="form-group">
+                  <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
+                  <select class="form-control" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
+                    <option value="">--nessuna selezione--</option>
+                    <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.id">
+                      {{ tipoCanaleReclutamento.descrizione }}
+                    </option>
+                  </select>
+                </div>
+
+              </div>
+            </div>
+          </div>
         </div>
     </form>
 </div>

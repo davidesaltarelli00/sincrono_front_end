@@ -78,6 +78,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   anagrafica: any;
   idUtente: any;
   contrattoInScadenza: any;
+  contrattiNazionali: any = [];
+  tipologicaCanaliReclutamento: any[] = [];
+
 
   // paginazione
   currentPage: number = 1;
@@ -145,6 +148,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     location.reload();
   }
 
+
+
+
   ngOnInit(): void {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
@@ -195,6 +201,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.caricaLivelloContratto();
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
+    this.caricaTipoCanaleReclutamento();
   }
 
   // Metodo per verificare campi vuoti
@@ -215,6 +222,25 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       }
     }
   }
+
+
+  caricaTipoCanaleReclutamento() {
+    this.anagraficaDtoService
+      .caricaTipoCanaleReclutamento(localStorage.getItem('token'))
+      .subscribe(
+        (res: any) => {
+          this.tipologicaCanaliReclutamento = (res as any)['list'];
+          console.log('ElencoCanali reclutamento:' + JSON.stringify(res));
+        },
+        (error: any) => {
+          console.log(
+            'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
+
 
   isCampoVuoto(record: any): boolean {
     for (const key in record) {

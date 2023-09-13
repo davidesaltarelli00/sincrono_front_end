@@ -207,7 +207,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>('http://localhost:8085/commessa', body, {
+    return this.http.put<any>('http://localhost:8080/services/commessa', body, {
       headers: headers,
     });
   }

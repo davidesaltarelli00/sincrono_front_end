@@ -10,8 +10,6 @@ export class CommessaDuplicata {
   dataFine: any;
   tariffaGiornaliera: any;
   aziendaDiFatturazioneInterna: any;
-  attivo: any;
-  attesaLavori: any;
 
   constructor(){
 

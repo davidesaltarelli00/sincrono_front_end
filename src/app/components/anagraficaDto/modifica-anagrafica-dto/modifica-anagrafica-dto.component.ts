@@ -56,7 +56,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.anagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
         id: [this.id],
-        attivo: [true],
+        // attivo: [true],
         tipoAzienda: this.formBuilder.group({id: [''],}),
         nome: ['', Validators.required],
         cognome: ['', Validators.required],
@@ -74,13 +74,14 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         altriTitoli: [''],
         coniugato: [''],
         figliAcarico: [''],
+        attesaLavori:[''],
       }),
       commesse: this.formBuilder.array([]),
 
       contratto: this.formBuilder.group({
         id: [''],
-        attivo: [''],
-        aziendaDiFatturazioneInterna: [''],
+        // attivo: [''],
+        // aziendaDiFatturazioneInterna: [''],
         tipoAzienda: this.formBuilder.group({
           id: [''],
         }),
@@ -92,24 +93,27 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         }),
         tipoCcnl: this.formBuilder.group({
           id: [''],
-        }), //diariaAnnua
+        }),
         qualifica: [''],
         sedeAssunzione: [''],
-        dataAssunzione: ['', Validators.required],
-        dataInizioProva: ['', Validators.required],
+        dataAssunzione: [''],
+        dataInizioProva: [''],
         dataFineProva: [''],
         dataFineRapporto: [''],
-        mesiDurata: ['', Validators.required],
-        livelloIniziale: [''],
-        dimissioni: [''],
+        mesiDurata: [''],
+        livelloAttuale: [''],
+        livelloFinale: [''],
+        // dimissioni: [''],
         partTime: [''],
         percentualePartTime: [''],
         retribuzioneMensileLorda: [''],
         superminimoMensile: [''],
         ralAnnua: [''],
+        diariaAnnua:[''],
+        ralPartTime:[''], //da non mettere nel form, sara un campo calcolato
         superminimoRal: [''],
-        diariaMese: [''],
-        diariaGg: [''],
+        diariaMensile: [''],
+        diariaGiornaliera: [''],
         ticket: [''],
         valoreTicket: ['', Validators.maxLength(50)],
         categoriaProtetta: [''],
@@ -119,15 +123,15 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         dataCorsoSicurezza: [''],
         tipoCausaFineRapporto: this.formBuilder.group({
           id: [''],
-          descrizione: [''],
+          // descrizione: [''],
         }),
         scattiAnzianita: [''],
         assicurazioneObbligatoria: [''],
         pc: [''],
         tariffaPartitaIva: [''],
         tipoCanaleReclutamento: this.formBuilder.group({
-          id: ['', Validators.required],
-          descrizione: [''],
+          id: [''],
+          // descrizione: [''],
         }),
         visitaMedica: [''],
         dataVisitaMedica: [''],
@@ -135,8 +139,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
       ruolo: this.formBuilder.group({
         id: [''],
-        // nome: [''],
-        // descrizione: [''],
       }),
     });
   }
@@ -175,36 +177,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       dataInizio: [commessa.dataInizio],
       dataFine: [commessa.dataFine],
       tariffaGiornaliera: [commessa.tariffaGiornaliera],
-      // nominativo: [commessa.nominativo],
-      // azienda: [commessa.azienda],
       aziendaDiFatturazioneInterna: [commessa.aziendaDiFatturazioneInterna],
-      attivo: [commessa.attivo || false],
-      attesaLavori: [commessa.attesaLavori || false],
     });
   }
 
-  // caricaTipoCausaFineRapporto(event:any) {
-  //   console.log('Funzione caricaTipoCausaFineRapporto chiamata');
-  //   const selectedValue = event.target.value;
-  //   console.log('Valore selezionato:', selectedValue);
-  //   this.anagraficaDtoService
-  //     .caricaTipoCausaFineRapporto(localStorage.getItem('token'))
-  //     .subscribe(
-  //       (res: any) => {
-  //         this.motivazioniFineRapporto = (res as any)['list'];
-  //         console.log(
-  //           'Elenco motivazioni fine rapporto:' + JSON.stringify(res)
-  //         );
-
-  //       },
-  //       (error: any) => {
-  //         console.log(
-  //           'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
-  //             JSON.stringify(error)
-  //         );
-  //       }
-  //     );
-  // }
 
  caricaTipoCausaFineRapporto() {
     this.anagraficaDtoService
@@ -245,8 +221,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       dataFine: '',
       tariffaGiornaliera: '',
       aziendaDiFatturazioneInterna: '',
-      attivo: true,
-      attesaLavori: '',
     };
 
     commesseFormArray.push(this.createCommessaFormGroup(nuovaCommessa));
@@ -255,6 +229,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   storicizza(index: number) {
     console.log('ID COMMESSA: ' + JSON.stringify(this.elencoCommesse[index]));
   }
+
+
 
   rimuoviCommessa(index: number): void {
     const conferma =
@@ -268,15 +244,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         .deleteCommessa(body, localStorage.getItem('token'))
         .subscribe(
           (res: any) => {
-            console.log(
-              'Commessa con indice ' +
-                index +
-                ' eliminata correttamente. Risposta:',
-              res
-            );
-            // Rimuovi l'elemento dall'array locale
+            console.log('Commessa con indice ' + index + ' eliminata correttamente. Risposta:',JSON.stringify(res) );
             this.elencoCommesse.splice(index, 1);
-            // this.caricaDati();
+            location.reload();
           },
           (error: any) => {
             console.log(
@@ -318,6 +288,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         if (obj.contratto && Object.keys(obj.contratto).length === 0) {
           delete obj.contratto;
         }
+        if (obj.commesse && Object.keys(obj.commesse).length === 0) {
+          delete obj.commesse;
+        }
         if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
           delete obj.tipoContratto;
         }
@@ -351,12 +324,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
     console.log("Valore di anagrafica: "+JSON.stringify(this.anagraficaDto.get('anagrafica')?.value));
     const payload = {
-      anagraficaDto: {
-        anagrafica: this.anagraficaDto.get('anagrafica')?.value,
-        contratto: this.anagraficaDto.get('contratto')?.value,
-        commesse: this.anagraficaDto.get('commesse')?.value,
-        ruolo: this.anagraficaDto.get('ruolo')?.value,
-      },
+        anagraficaDto: this.anagraficaDto.value
+        // anagrafica: this.anagraficaDto.get('anagrafica')?.value,
+        // contratto: this.anagraficaDto.get('contratto')?.value,
+        // commesse: this.anagraficaDto.get('commesse')?.value,
+        // ruolo: this.anagraficaDto.get('ruolo')?.value,
+
     };
     console.log('Payload backend:', payload);
     this.anagraficaDtoService
@@ -417,8 +390,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       dataFine: '',
       tariffaGiornaliera: '',
       aziendaDiFatturazioneInterna: '',
-      attivo: '',
-      attesaLavori: '',
     };
 
     const nuovoFormGroup = this.formBuilder.group(nuovaCommessa);
@@ -434,14 +405,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.elencoCommesse.push(nuovoFormGroup);
   }
 
-  // transformDate(dateString: string): string {
-  //   const dateObject = new Date(dateString);
-  //   return dateObject.toLocaleDateString('en-GB', {
-  //     day: '2-digit',
-  //     month: 'numeric',
-  //     year: 'numeric',
-  //   });
-  // }
+
   transformDate(dateString: string): string {
     const dateObject = new Date(dateString);
     const year = dateObject.getFullYear();
@@ -519,11 +483,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.ccnl = (result as any)['list'];
       });
   }
-  // caricaListaUtenti() {
-  //   this.anagraficaDtoService.getListaUtenti().subscribe((result: any) => {
-  //     this.utenti = (result as any)['list'];
-  //   });
-  // }
 
   caricaRuoli() {
     this.anagraficaDtoService
