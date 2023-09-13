@@ -105,9 +105,6 @@
                               </select>
                           </div>
                         </div>
-
-
-
                         <br>
                       </div>
 
@@ -257,16 +254,16 @@
                         </div>
                       </div>
                       <br>
-                      <div class="row">
+                      <!-- <div class="row">
                         <div class="col-6" style="text-align: end;">
                           <button  hidden mat-button matStepperPrevious>« Indietro</button>
                         </div>
                         <div class="col-6" style="text-align: start;">
                           <button matTooltip="Avanti" mat-button matStepperNext> »</button>
                         </div>
-                      </div>
+                      </div> -->
                       <br>
-                      <div class="row">
+                      <!-- <div class="row">
                         <div class="col-6" style="text-align: end;">
 
                           <button class="btn btn-info" matTooltip="Annulla la creazione dell'anagrafica e torna alla lista." [routerLink]="['/lista-anagrafica']">
@@ -275,12 +272,12 @@
 
                         </div>
                         <div class="col-6" style="text-align: start;">
-                          <button class="btn btn-success" [disabled]="AnagraficaDto.invalid" >
+                          <button class="btn btn-success" (click)="inserisci()" [disabled]="AnagraficaDto.invalid" >
                             Salva
                           </button>
                         </div>
 
-                      </div>
+                      </div> -->
                       <br>
                     </div>
                   </mat-card-content>
@@ -440,14 +437,14 @@
                           </div>
                         </div>
                         <br>
-                        <div class="row">
+                        <!-- <div class="row">
                           <div class="col-6" style="text-align: end;">
                             <button mat-button matStepperPrevious>« Indietro</button>
                           </div>
                           <div class="col-6" style="text-align: start;">
                             <button mat-button matStepperNext>Avanti »</button>
                           </div>
-                        </div>
+                        </div> -->
                       </mat-card-content>
                     </mat-card>
                   </div>
@@ -482,26 +479,15 @@
                       <div class="col-md-3">
                         <div formGroupName="tipoContratto">
                           <label for="filter-TipoContratto">Tipo Contratto:</label>
-                          <select class="form-control" id="contratto.tipoContratto.id" formControlName="id">
+                          <select class="form-control" id="contratto.tipoContratto.id" formControlName="id" (change)="onTipoContrattoChange($event)">
                             <option value="">--nessuna selezione--</option>
-                            <option
-                              *ngFor="let tipoContratto of tipiContratti"
-                              [value]="tipoContratto.id"
-                            >
+                            <option *ngFor="let tipoContratto of tipiContratti" [value]="tipoContratto.id">
                               {{ tipoContratto.descrizione }}
                             </option>
                           </select>
-                          <!-- <div
-                            *ngIf="AnagraficaDto.get('contratto.tipoContratto.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoContratto.id')?.touched"
-                            class="text-danger"
-                          >
-                            Il campo Tipo Contratto è obbligatorio.
-                          </div> -->
                         </div>
+
                       </div>
-
-
-
 
                       <div class="col-md-3">
                         <div formGroupName="tipoLivelloContratto">
@@ -549,20 +535,14 @@
                           </div> -->
                         </div>
                       </div>
-
-
-
                     </div>
-                    <div class="row">
-
-                    </div>
-
-                    <legend>Dettagli</legend>
+                    <br>
+                    <legend>Dettagli e date </legend>
                     <div class="row">
                       <div class="col-md-3">
                         <label>Qualifica: </label>
                         <div class="form-group">
-                          <input type="text" class="form-control" formControlName="qualifica" />
+                          <input type="text" class="form-control" placeholder="Inserire qualifica" formControlName="qualifica" />
                         </div>
                       </div>
 
@@ -571,7 +551,7 @@
                         <div class="form-group">
                           <input
                             type="text"
-                            class="form-control"
+                            class="form-control" placeholder="Inserire la sede di assunzione"
                             formControlName="sedeAssunzione"
                           />
 
@@ -614,15 +594,15 @@
                           <input type="date" class="form-control" name="dataInput" formControlName="dataFineProva" />
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-3" *ngIf="inseritoContrattoIndeterminato" >
                         <div class="form-group">
                           <label for="dataFineRapporto">data Fine Rapporto</label>
-                          <input type="date" class="form-control" name="dataInput" formControlName="dataFineRapporto" />
+                          <input type="date" class="form-control" name="dataInput"  formControlName="dataFineRapporto" /> <!--[disabled]="AnagraficaDto.get('contratto.tipoContratto.id')?.value === '4'"-->
                         </div>
                       </div>
-                      <div class="col-md-3">
-                        <label>Mesi Durata* </label>
+                      <div class="col-md-3" *ngIf="inseritoContrattoIndeterminato">
                         <div class="form-group">
+                        <label>Mesi Durata* </label>
                           <input
                             type="text"
                             class="form-control"
@@ -721,10 +701,6 @@
                     </div>
 
                     <div class="row">
-
-
-                    </div>
-                    <div class="row">
                       <div class="col-md-3">
                         <label>Superminimo RAL: </label>
                         <div class="form-group">
@@ -767,9 +743,7 @@
                             formControlName="categoriaProtetta" />
                         </div>
                       </div>
-
                     </div>
-
                     <legend>Altro</legend>
                     <div class="row">
                       <div class="col-md-3">
@@ -800,9 +774,6 @@
                           </div>
                         </div>
                       </div>
-
-
-
                     </div>
 
                     <div class="row">
@@ -819,19 +790,13 @@
                             formControlName="pc" />
                         </div>
                       </div>
-
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Tariffa Partita IVA: </label>
                           <input type="number" class="form-control" formControlName="tariffaPartitaIva" />
                         </div>
                       </div>
-                      <!-- <div class="col-md-3">
-                        <label>Canale Reclutamento: </label>
-                        <div class="form-group">
-                          <input type="text" class="form-control" formControlName="canaleReclutamento" />
-                        </div>
-                      </div> -->
+
                       <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
                         <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
                         <select class="form-control" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
@@ -841,10 +806,7 @@
                           </option>
                         </select>
                       </div>
-
-
                     </div>
-
                     <div class="row">
                       <div class="col-12">
                         <h3>Dati medici</h3>
@@ -869,33 +831,28 @@
                     </div>
                   </div>
                   <br>
-                  <div class="row">
-                      <div class="col-6" style="text-align: end;">
-                        <button mat-button matStepperPrevious>« Indietro</button>
-                      </div>
-                      <div class="col-6" style="text-align: start;">
-                        <button hidden mat-button matStepperNext>Avanti »</button>
-                      </div>
-                      <br>
-                    <div class="row">
-                      <div class="col-6" style="text-align: end;">
-
-                        <button class="btn btn-info" type="submit" [routerLink]="['/lista-anagrafica']">
-                          Annulla
-                        </button>
-
-                      </div>
-                      <div class="col-6" style="text-align: start;">
-                        <button class="btn btn-success" [disabled]="AnagraficaDto.invalid" >
-                          Salva
-                        </button>
-                      </div>
-
+                  <!-- <div class="row">
+                    <div class="col-6" style="text-align: end; ">
+                      <button mat-button matStepperPrevious>« Indietro</button>
                     </div>
+                  </div> -->
+
                   </div>
-                </div>
               </mat-step>
             </mat-stepper>
+            <div class="row">
+              <div class="col-6" style="text-align: end;">
+                <button class="btn btn-info" type="submit" [routerLink]="['/lista-anagrafica']">
+                  Annulla
+                </button>
+              </div>
+              <div class="col-6" style="text-align: start;">
+                <button class="btn btn-success" [disabled]="AnagraficaDto.invalid" >
+                  Salva
+                </button>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

@@ -359,7 +359,7 @@
       <h2 style="text-align: center;">Commessa <i class="fa-solid fa-computer"></i></h2>
       </div>
     <div class="col-12">
-      <p style="text-align: center;">Commesse non presenti.</p>
+      <p style="text-align: center;">Commesse non presenti. <button class="btn btn-primary" matTooltip="Aggiungi una commessa a {{data?.anagrafica?.nome}} {{data?.anagrafica?.cognome}}" [routerLink]="['/modifica-anagrafica', data?.anagrafica.id]" > <i class="fa fa-plus" ></i> </button></p>
     </div>
    </div>
 

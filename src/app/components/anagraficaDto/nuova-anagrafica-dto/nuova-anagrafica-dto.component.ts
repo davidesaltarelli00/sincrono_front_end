@@ -53,6 +53,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   commesse!: FormArray;
   showErrorAlert: boolean = false;
   missingFields: string[] = [];
+  isDataFineRapportoDisabled: any;
+
+  //dati per i controlli nei form
+  inseritoContrattoIndeterminato=true;
+
+
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
@@ -130,7 +136,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         dataAssunzione: new FormControl(''), //, Validators.required
         dataInizioProva: new FormControl(''),
         dataFineProva: new FormControl(''),
-        dataFineRapporto: new FormControl(''),
+        dataFineRapporto: new FormControl(''), //, Validators.required
         mesiDurata: new FormControl(''), //, Validators.required
         livelloIniziale: new FormControl(''),
         dimissioni: new FormControl(''),
@@ -186,6 +192,29 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     // this.isFormDuplicated = true;
     this.formsDuplicati.push(true);
   }
+
+  //se il tipo di contratto é indeterminato (id 4) il campo data fine rapporto viene disabilitato
+  onTipoContrattoChange(event: Event) {
+    const selectedTipoContrattoId = parseInt((event.target as HTMLSelectElement).value, 10);
+    const dataFineRapportoControl = this.AnagraficaDto.get('contratto.dataFineRapporto');
+    const mesiDurataControl = this.AnagraficaDto.get('contratto.mesiDurata');
+
+    if (dataFineRapportoControl && mesiDurataControl) {
+      if (selectedTipoContrattoId === 4 || selectedTipoContrattoId===2 ) {
+        this.inseritoContrattoIndeterminato = false;
+        dataFineRapportoControl.disable();
+        mesiDurataControl.disable();
+      } else {
+        dataFineRapportoControl.enable();
+        mesiDurataControl.enable();
+        this.inseritoContrattoIndeterminato = true;
+      }
+    }
+  }
+
+
+
+
 
   creaFormCommessa(): FormGroup {
     return this.formBuilder.group({
@@ -372,10 +401,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.contrattoService
       .getTipoContratto(localStorage.getItem('token'))
       .subscribe((result: any) => {
-        // console.log(result);
+        console.log("TIPI DI CONTRATTI: "+ JSON.stringify(result));
         this.tipiContratti = (result as any)['list'];
       });
   }
+
   caricaLivelloContratto() {
     this.contrattoService
       .getLivelloContratto(localStorage.getItem('token'))
