@@ -113,12 +113,13 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         dataDiNascita: new FormControl(''),
         coniugato: new FormControl(''),
         figliACarico: new FormControl(''),
+        attesaLavori: new FormControl(''),
       }),
       commesse: this.formBuilder.array([]),
 
       contratto: this.formBuilder.group({
         attivo: new FormControl(''),
-        aziendaDiFatturazioneInterna: new FormControl(''),
+        // aziendaDiFatturazioneInterna: new FormControl(''),
         tipoAzienda: new FormGroup({
           id: new FormControl(''),
         }),
@@ -138,8 +139,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         dataFineProva: new FormControl(''),
         dataFineRapporto: new FormControl(''), //, Validators.required
         mesiDurata: new FormControl(''), //, Validators.required
-        livelloIniziale: new FormControl(''),
-        dimissioni: new FormControl(''),
+        livelloAttuale: new FormControl(''), // +
+        livelloFinale: new FormControl(''),//+
+        ralPartTime: new FormControl(''),
+        diariaAnnua: new FormControl(''), //+
         partTime: new FormControl(''),
         percentualePartTime: new FormControl(''),
         retribuzioneMensileLorda: new FormControl(''),
@@ -147,7 +150,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         ralAnnua: new FormControl(''),
         superminimoRal: new FormControl(''),
         diariaMese: new FormControl(''),
-        diariaGg: new FormControl(''),
+        diariaGiornaliera: new FormControl(''),
         ticket: new FormControl(''),
         valoreTicket: new FormControl('', Validators.maxLength(50)),
         categoriaProtetta: new FormControl(''),
@@ -163,6 +166,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           id: new FormControl(''),
           descrizione: new FormControl(''),
         }),
+        // tipoCausaFineRapporto: new FormGroup({
+        //   id: new FormControl(''),
+        //   descrizione: new FormControl(''),
+        // }),
         visitaMedica: new FormControl(''),
         dataVisitaMedica: new FormControl(''),
       }),
@@ -213,9 +220,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
 
-
-
-
   creaFormCommessa(): FormGroup {
     return this.formBuilder.group({
       id: new FormControl(''),
@@ -225,15 +229,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       distacco: new FormControl(false),
       distaccoAzienda: new FormControl(''),
       distaccoData: new FormControl(''),
-      costoMese: new FormControl(''),
       dataInizio: new FormControl(''),
       dataFine: new FormControl(''),
       tariffaGiornaliera: new FormControl(''),
-      nominativo: new FormControl(''),
-      // azienda: new FormControl(''),
       aziendaDiFatturazioneInterna: new FormControl(''),
-      attivo: new FormControl(true),
-      attesaLavori: new FormControl(''),
+      // attivo: new FormControl(true),
     });
   }
 
@@ -346,12 +346,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         ) {
           delete obj.tipoLivelloContratto;
         }
-        if (
-          obj.tipoCausaFineRapporto &&
-          Object.keys(obj.tipoCausaFineRapporto).length === 0
-        ) {
-          delete obj.tipoCausaFineRapporto;
-        }
+        // if (
+        //   obj.tipoCausaFineRapporto &&
+        //   Object.keys(obj.tipoCausaFineRapporto).length === 0
+        // ) {
+        //   delete obj.tipoCausaFineRapporto;
+        // }
         if (
           obj.tipoCanaleReclutamento &&
           Object.keys(obj.tipoCanaleReclutamento).length === 0

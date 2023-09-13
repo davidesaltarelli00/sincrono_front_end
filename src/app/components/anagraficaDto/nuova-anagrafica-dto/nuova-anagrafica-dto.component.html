@@ -238,18 +238,25 @@
 
                       </div>
                       <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label>Coniugato </label>
                             <input style="border-color: black;" class="form-check-input" type="checkbox"
                               formControlName="coniugato" />
                           </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label>Figli a Carico</label>
                             <input style="border-color: black" class="form-check-input" type="checkbox"
                               formControlName="figliACarico" />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label>Attesa lavori</label>
+                            <input style="border-color: black" class="form-check-input" type="checkbox"
+                              formControlName="attesaLavori" />
                           </div>
                         </div>
                       </div>
@@ -360,12 +367,12 @@
                                 <input type="date" class="form-control" formControlName="distaccoData" placeholder="Inserire data distacco.">
                               </div>
                             </div>
-                            <div class="col-md-3">
+                            <!-- <div class="col-md-3">
                               <label>Costo mese: </label>
                               <div class="form-group">
                                 <input type="text" class="form-control" formControlName="costoMese" />
                               </div>
-                            </div>
+                            </div> -->
                             <div class="col-md-3">
                               <label>Data Inizio: </label>
                               <div class="form-group">
@@ -384,12 +391,12 @@
                                 <input type="text" class="form-control" formControlName="tariffaGiornaliera" />
                               </div>
                             </div>
-                            <div class="col-md-3">
+                            <!-- <div class="col-md-3">
                               <label>Nominativo: </label>
                               <div class="form-group">
                                 <input type="text" class="form-control" formControlName="nominativo" />
                               </div>
-                            </div>
+                            </div> -->
                             <div class="col-md-3">
                               <!-- <label>Azienda: </label>
                               <div class="form-group">
@@ -409,8 +416,9 @@
                                     formControlName="attivo" />
                                 </div>
                               </div>
+                              se la commessa ha l id vuol dire che esisteva gia e puo essere storicizzata
                             </div> -->
-                            <div class="col-md-3">
+                            <!-- <div class="col-md-3">
                               <label>Attesa lavori: </label>
                               <div class="form-group">
                                 <div class="form-check">
@@ -421,7 +429,7 @@
                               </div>
 
                               <br>
-                            </div>
+                            </div> -->
                             <br>
                             <div class="row">
                               <div class="col-12" style="text-align: center; margin: auto;">
@@ -617,52 +625,50 @@
                         </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="row">
+                      <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
+                        <div class="form-group">
+                          <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
+                          <select class="form-control" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
+                            <option value="">--nessuna selezione--</option>
+                            <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.id">
+                              {{ tipoCanaleReclutamento.descrizione }}
+                            </option>
+                          </select>
+                        </div>
 
+                      </div>
                     </div>
+
                     <br>
                     <legend>Livello Dipendente</legend>
 
                     <div class="row">
                       <div class="col-md-3">
                         <div class="form-group">
-                          <label>Livello Iniziale: </label>
+                          <label>Livello attuale: </label>
                           <div class="form-group">
-                            <input type="text" class="form-control" formControlName="livelloIniziale" />
+                            <input type="text" class="form-control" placeholder="Inserire livello attuale" formControlName="livelloAttuale" />
                           </div>
                         </div>
                       </div>
-                      <!-- <div class="col-md-3">
-                        <label>Livello Attuale: </label>
+                      <div class="col-md-3">
                         <div class="form-group">
-                          <input
-                            type="text"
-                            class="form-control"
-                            formControlName="livelloAttuale"
-                          />
+                          <label>Livello finale: </label>
+                          <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Inserire livello finale" formControlName="livelloFinale" />
+                          </div>
                         </div>
-                      </div> -->
-                      <!-- <div class="col-md-3">
-                        <label>Livello Finale: </label>
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            class="form-control"
-                            formControlName="livelloFinale"
-                          />
-                        </div>
-                      </div> -->
+                      </div>
                     </div>
                     <legend>Info Generali</legend>
                     <div class="row">
-                      <div class="col-md-3">
+                      <!-- <div class="col-md-3">
                         <label class="form-check-label">Dimissioni: </label>
                         <div class="form-check">
                           <input style="border-color: black" class="form-check-input" type="checkbox"
                             formControlName="dimissioni" />
                         </div>
-                      </div>
+                      </div> -->
                       <div class="col-md-3">
                         <label class="form-check-label">Part Time: </label>
                         <div class="form-check">
@@ -716,7 +722,7 @@
                       <div class="col-md-3">
                         <label>Diaria Giornaliera: </label>
                         <div class="form-group">
-                          <input type="text" class="form-control" formControlName="diariaGg" />
+                          <input type="text" class="form-control" formControlName="diariaGiornaliera" />
                         </div>
                       </div>
                     </div>
@@ -797,15 +803,7 @@
                         </div>
                       </div>
 
-                      <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
-                        <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
-                        <select class="form-control" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
-                          <option value="">--nessuna selezione--</option>
-                          <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.id">
-                            {{ tipoCanaleReclutamento.descrizione }}
-                          </option>
-                        </select>
-                      </div>
+
                     </div>
                     <div class="row">
                       <div class="col-12">

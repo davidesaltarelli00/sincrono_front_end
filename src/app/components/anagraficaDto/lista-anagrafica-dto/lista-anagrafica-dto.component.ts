@@ -40,12 +40,16 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       nome: new FormControl(null),
       cognome: new FormControl(null),
       attivo: new FormControl(null),
+      attesaLavori: new FormControl(null),
+      tipoAzienda: new FormGroup({
+        descrizione: new FormControl(null),
+      }),
     }),
     contratto: new FormGroup({
       ralAnnua: new FormControl(null),
       dataAssunzione: new FormControl(null),
       dataFineRapporto: new FormControl(null),
-      livelloContratto: new FormGroup({
+      tipoLivelloContratto: new FormGroup({
         ccnl: new FormControl(null),
       }),
       tipoCcnl: new FormGroup({
@@ -57,11 +61,15 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       tipoAzienda: new FormGroup({
         descrizione: new FormControl(null),
       }),
+      tipoCanaleReclutamento: new FormGroup({
+        descrizione: new FormControl(null),
+      }),
+      tipoCausaFineRapporto: new FormGroup({
+        descrizione: new FormControl(null),
+      }),
     }),
     commessa: new FormGroup({
-      cliente: new FormControl(null),
-      azienda: new FormControl(null),
-      nominativo: new FormControl(null),
+      aziendaCliente: new FormControl(null),
     }),
   });
 
@@ -86,11 +94,43 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     private router: Router,
     private profileBoxService: profileBoxService
   ) {
-    const userLogged = localStorage.getItem('userLogged');
-    if (userLogged) {
-      console.log('Utente loggato constructor: ' + this.userlogged);
-      this.userlogged = userLogged;
-    }
+    this.filterAnagraficaDto = this.formBuilder.group({
+      anagrafica: new FormGroup({
+        nome: new FormControl(null),
+        cognome: new FormControl(null),
+        attivo: new FormControl(null),
+        attesaLavori: new FormControl(null),
+        tipoAzienda: new FormGroup({
+          descrizione: new FormControl(null),
+        }),
+      }),
+      contratto: new FormGroup({
+        ralAnnua: new FormControl(null),
+        dataAssunzione: new FormControl(null),
+        dataFineRapporto: new FormControl(null),
+        tipoLivelloContratto: new FormGroup({
+          ccnl: new FormControl(null),
+        }),
+        tipoCcnl: new FormGroup({
+          descrizione: new FormControl(null),
+        }),
+        tipoContratto: new FormGroup({
+          descrizione: new FormControl(null),
+        }),
+        tipoAzienda: new FormGroup({
+          descrizione: new FormControl(null),
+        }),
+        tipoCanaleReclutamento: new FormGroup({
+          descrizione: new FormControl(null),
+        }),
+        tipoCausaFineRapporto: new FormGroup({
+          descrizione: new FormControl(null),
+        }),
+      }),
+      commessa: new FormGroup({
+        aziendaCliente: new FormControl(null),
+      }),
+    });
   }
   profile() {
     this.router.navigate(['/profile-box/', this.userlogged]);
@@ -122,10 +162,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         );
       }
     );
-
-    // this.role = this.authService.getTokenAndRole();
-    // console.log("Ruolo: " + this.role);
-
     this.mostraFiltri = false;
 
     this.setFilterFromOrganico(
@@ -155,72 +191,42 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         }
       );
 
-    this.filterAnagraficaDto = this.formBuilder.group({
-      anagrafica: new FormGroup({
-        nome: new FormControl(null),
-        cognome: new FormControl(null),
-        attivo: new FormControl(null),
-        tipoAzienda: new FormControl(null),
-      }),
-      contratto: new FormGroup({
-        ralAnnua: new FormControl(null),
-        dataAssunzione: new FormControl(null),
-        dataFineRapporto: new FormControl(null),
-        livelloContratto: new FormGroup({
-          ccnl: new FormControl(null),
-        }),
-        tipoCcnl: new FormGroup({
-          descrizione: new FormControl(null),
-        }),
-        tipoContratto: new FormGroup({
-          descrizione: new FormControl(null),
-        }),
-        tipoAzienda: new FormGroup({
-          descrizione: new FormControl(null),
-        }),
-      }),
-      commessa: new FormGroup({
-        cliente: new FormControl(null),
-        azienda: new FormControl(null),
-        nominativo: new FormControl(null),
-      }),
-    });
     this.caricaTipoContratto();
     this.caricaLivelloContratto();
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
   }
 
-
-
-// Metodo per verificare campi vuoti
-verificaCampiVuoti() {
-  for (const record of this.originalLista) {
-    // Verifica se ci sono campi vuoti in questo record
-    for (const key in record) {
-      if (record.hasOwnProperty(key)) {
-        const value = record[key];
-        if (value === null || value === undefined || value === '') {
-          // Hai un campo vuoto in questo record
-          console.log(`Campo vuoto trovato in record con ID ${record.anagrafica.id}`+`: ${value}`);
+  // Metodo per verificare campi vuoti
+  verificaCampiVuoti() {
+    for (const record of this.originalLista) {
+      // Verifica se ci sono campi vuoti in questo record
+      for (const key in record) {
+        if (record.hasOwnProperty(key)) {
+          const value = record[key];
+          if (value === null || value === undefined || value === '') {
+            // Hai un campo vuoto in questo record
+            console.log(
+              `Campo vuoto trovato in record con ID ${record.anagrafica.id}` +
+                `: ${value}`
+            );
+          }
         }
       }
     }
   }
-}
 
-isCampoVuoto(record: any): boolean {
-  for (const key in record) {
-    if (record.hasOwnProperty(key)) {
-      const value = record[key];
-      if (value === null || value === undefined || value === '') {
-        return true; // Ci sono campi vuoti in questo record
+  isCampoVuoto(record: any): boolean {
+    for (const key in record) {
+      if (record.hasOwnProperty(key)) {
+        const value = record[key];
+        if (value === null || value === undefined || value === '') {
+          return true; // Ci sono campi vuoti in questo record
+        }
       }
     }
+    return false; // Nessun campo vuoto trovato
   }
-  return false; // Nessun campo vuoto trovato
-}
-
 
   elimina(idAnagrafica: number) {
     const confirmation = confirm(
@@ -304,8 +310,6 @@ isCampoVuoto(record: any): boolean {
     }
   }
 
-
-
   //paginazione
   getCurrentPageItems(): any[] {
     if (!this.lista) {
@@ -336,8 +340,6 @@ isCampoVuoto(record: any): boolean {
   //fine paginazione
 
   //controllo campi nulli
-
-
 
   //campi vuoti
   areFieldsNotEmpty(obj: any): boolean {
@@ -397,172 +399,6 @@ isCampoVuoto(record: any): boolean {
     this.router.navigate(['/modifica-anagrafica/' + idAnagrafica]);
   }
 
-  filter() {
-    const filtroNome =
-      this.filterAnagraficaDto.value.anagrafica.nome != null
-        ? this.filterAnagraficaDto.value.anagrafica.nome
-        : '';
-
-    const filtroCognome =
-      this.filterAnagraficaDto.value.anagrafica.cognome != null
-        ? this.filterAnagraficaDto.value.anagrafica.cognome
-        : '';
-    const filtroAziendaTipo =
-      this.filterAnagraficaDto.value.anagrafica.aziendaTipo != null
-        ? this.filterAnagraficaDto.value.anagrafica.aziendaTipo
-        : '';
-    const filtroAttivo =
-      this.filterAnagraficaDto.value.anagrafica.attivo != null
-        ? this.filterAnagraficaDto.value.anagrafica.attivo
-        : false;
-
-    const filtroNominativo =
-      this.filterAnagraficaDto.value.commessa.nominativo != null
-        ? this.filterAnagraficaDto.value.commessa.nominativo
-        : '';
-    const filtroCliente =
-      this.filterAnagraficaDto.value.commessa.cliente != null
-        ? this.filterAnagraficaDto.value.commessa.cliente
-        : '';
-    const filtroAzienda =
-      this.filterAnagraficaDto.value.commessa.azienda != null
-        ? this.filterAnagraficaDto.value.commessa.azienda
-        : '';
-
-    const filtroRalAnnua =
-      this.filterAnagraficaDto.value.contratto.ralAnnua != null
-        ? this.filterAnagraficaDto.value.contratto.ralAnnua
-        : '';
-    const filtroDataAssunzione =
-      this.filterAnagraficaDto.value.contratto.dataAssunzione != null
-        ? this.filterAnagraficaDto.value.contratto.dataAssunzione
-        : '';
-    const filtroDataFineRapporto =
-      this.filterAnagraficaDto.value.contratto.dataFineRapporto != null
-        ? this.filterAnagraficaDto.value.contratto.dataFineRapporto
-        : '';
-    const filtroDescrizioneTipoContratto =
-      this.filterAnagraficaDto.value.contratto.tipoContratto.descrizione != null
-        ? this.filterAnagraficaDto.value.contratto.tipoContratto.descrizione
-        : '';
-    const filtroDescrizioneContrattoNazionale =
-      this.filterAnagraficaDto.value.contratto.tipoCcnl.descrizione != null
-        ? this.filterAnagraficaDto.value.contratto.tipoCcnl.descrizione
-        : '';
-    const filtroDescrizioneTipoAzienda =
-      this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione != null
-        ? this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione
-        : '';
-
-    this.lista = this.originalLista.filter((element: any) => {
-      var nome;
-
-      if (!element?.anagrafica.nome || element?.anagrafica.nome == '') {
-        nome = 'undefined';
-      } else {
-        nome = element?.anagrafica.nome;
-      }
-
-      var cognome;
-
-      if (!element?.anagrafica.cognome || element?.anagrafica.cognome == '') {
-        cognome = 'undefined';
-      } else {
-        cognome = element?.anagrafica.cognome;
-      }
-
-      var aziendaTipo;
-
-      if (
-        !element?.anagrafica.aziendaTipo ||
-        element?.anagrafica.aziendaTipo == ''
-      ) {
-        aziendaTipo = 'undefined';
-      } else {
-        aziendaTipo = element?.anagrafica.aziendaTipo;
-      }
-
-      var attivo;
-
-      if (!element?.anagrafica.attivo || element?.anagrafica.attivo == '') {
-        attivo = 'undefined';
-      } else {
-        attivo = element?.anagrafica.attivo;
-      }
-
-      /*const nominativo = (
-        element?.commessa.nominativo ?? 'undefined'
-      ).toLowerCase();
-      const cliente = (element?.commessa.cliente ?? 'undefined').toLowerCase();
-      const azienda = (element?.commessa.azienda ?? 'undefined').toLowerCase();*/
-
-      var commesse = [];
-
-      if (!element?.commesse != null || element?.commesse.lenght > 0) {
-        commesse = element?.commesse;
-      }
-
-      var ralAnnua;
-      if (!element?.contratto.ralAnnua || element?.contratto.ralAnnua == '') {
-        ralAnnua = 'undefined';
-      } else {
-        var ralAnnua = element?.contratto.ralAnnua;
-      }
-
-      const dataAssunzione = element?.contratto.dataAssunzione ?? 'undefined';
-      const dataFineRapporto =
-        element?.contratto.dataFineRapporto ?? 'undefined';
-
-      var descrizioneTipoContratto = 'undefined';
-      if (element?.contratto.tipoContratto != null) {
-        descrizioneTipoContratto = (
-          element?.contratto.tipoContratto.descrizione ?? 'undefined'
-        ).toLowerCase();
-      }
-      var descrizioneContrattoNazionale = 'undefined';
-      if (element?.contratto.tipoCcnl != null) {
-        descrizioneContrattoNazionale = (
-          element?.contratto.tipoCcnl.descrizione ?? 'undefined'
-        ).toLowerCase();
-      }
-      var descrizioneTipoAzienda = 'undefined';
-      if (element?.contratto.tipoAzienda != null) {
-        descrizioneTipoAzienda = (
-          element?.contratto.tipoAzienda.descrizione ?? 'undefined'
-        ).toLowerCase();
-      }
-
-      console.log(
-        filtroNome,
-        filtroCognome,
-        filtroDescrizioneTipoContratto,
-        filtroDescrizioneContrattoNazionale,
-        filtroDescrizioneTipoAzienda
-      );
-
-      return (
-        nome == filtroNome ||
-        cognome == filtroCognome ||
-        aziendaTipo == filtroAziendaTipo ||
-        attivo == filtroAttivo ||
-        ralAnnua == filtroRalAnnua ||
-        new Date(dataAssunzione).getTime() ==
-          new Date(filtroDataAssunzione).getTime() ||
-        new Date(dataFineRapporto).getTime() ==
-          new Date(filtroDataFineRapporto).getTime() ||
-        descrizioneTipoContratto == filtroDescrizioneTipoContratto ||
-        descrizioneContrattoNazionale == filtroDescrizioneContrattoNazionale ||
-        descrizioneTipoAzienda == filtroDescrizioneTipoAzienda ||
-        this.checkCommesse(
-          filtroCliente,
-          filtroAzienda,
-          filtroNominativo,
-          commesse
-        )
-      );
-    });
-  }
-
   checkCommesse(
     filtroCliente: any,
     filtroAzienda: any,
@@ -601,44 +437,6 @@ isCampoVuoto(record: any): boolean {
     this.filterAnagraficaDto.reset();
   }
 
-  // delete(
-  //   idUtente: number,
-  //   idAnagrafica: number,
-  //   idContratto: number,
-  //   idCommessa: number
-  // ) {
-  //   console.log('value:' + this.filterAnagraficaDto.value);
-  //   console.log(
-  //     'idAnagrafica: ' + this.filterAnagraficaDto.value.anagrafica.id
-  //   );
-  //   console.log(
-  //     'idUtente: ' + this.filterAnagraficaDto.value.anagrafica.utente.id
-  //   );
-  //   console.log('idCommessa: ' + this.filterAnagraficaDto.value.commessa.id);
-  //   console.log('idContratto: ' + this.filterAnagraficaDto.value.contratto.id);
-
-  //   this.filterAnagraficaDto.value.anagrafica.id = idAnagrafica;
-  //   this.filterAnagraficaDto.value.anagrafica.utente.id = idUtente;
-  //   this.filterAnagraficaDto.value.contratto.id = idContratto;
-  //   this.filterAnagraficaDto.value.commessa.id = idCommessa;
-  //   const body = JSON.stringify({
-  //     anagraficaDto: this.filterAnagraficaDto.value,
-  //   });
-  //   this.anagraficaDtoService
-  //     .delete(body, localStorage.getItem('token'))
-  //     .subscribe((result: any) => {
-  //       if ((result as any).esito.code != 0) {
-  //         alert('cancellazione non riuscita');
-  //         this.errore = true;
-  //         this.messaggio = (result as any).esito.target;
-  //         return;
-  //       } else {
-  //         alert('cancellazione riuscita');
-  //         this.reloadPage();
-  //       }
-  //     });
-  // }
-
   chiudiPopup() {
     this.showErrorPopup = false;
     this.showSuccessPopup = false;
@@ -654,4 +452,6 @@ isCampoVuoto(record: any): boolean {
       alertElement.remove();
     }, 3000); // Rimuovi l'alert dopo 3 secondi (puoi modificare il valore in base alle tue esigenze)
   }
+
+  filter() {}
 }

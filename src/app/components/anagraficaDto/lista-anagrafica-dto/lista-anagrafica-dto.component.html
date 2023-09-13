@@ -21,133 +21,51 @@
 <ng-template matExpansionPanelContent>
   <div *ngIf="mostraFiltri">
     <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter()">
-        <div class="container">
-            <div formGroupName="anagrafica">
-                <div class="row">
-                    <div class="col-md-3">
-                      <div class="form-group" >
-                        <label for="filter-name">Nome:</label>
-                        <input type="text" id="filter-Nome" class="form-control" formControlName="nome">
-                      </div>
-
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group" >
-                        <label for="filter-name">Cognome:</label>
-                        <input type="text" id="filter-Nome" class="form-control" formControlName="cognome">
-                      </div>
-
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group" >
-                        <label for="filter-name">Tipo Azienda:</label>
-                        <input type="text" id="filter-Nome" class="form-control" formControlName="aziendaTipo">
-                      </div>
-
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group" >
-                        <input class="form-check-input" type="checkbox" id="exampleCheckbox"
-                        formControlName="attivo">
-                    <label class="form-check-label" for="exampleCheckbox">
-                        Attivo
-                    </label>
-                      </div>
-
-                    </div>
-                </div>
+        <div class="row">
+          <div formGroupName="anagrafica">
+            <p>Filtri disponibili per l'anagrafica:</p>
+           <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" class="form-control" id="anagrafica.nome" name="nome" placeholder="Inserire il nome." formControlName="nome">
+              </div>
             </div>
-
-            <div formGroupName="commessa">
-                <div class="row">
-                    <div class="col-md-3">
-                        <label for="filter-name">Nominativo:</label>
-                        <input type="text" id="filter-Nome" class="form-control" formControlName="nominativo">
-                    </div>
-                    <div class="col-md-3">
-                        <label for="filter-name">Cliente:</label>
-                        <input type="text" id="filter-Nome" class="form-control" formControlName="cliente">
-                    </div>
-                    <div class="col-md-3">
-                        <label for="filter-name">Azienda:</label>
-                        <input type="text" id="filter-Nome" class="form-control" formControlName="azienda">
-                    </div>
-                </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="cognome">Cognome</label>
+                <input type="text" class="form-control" id="anagrafica.cognome" name="cognome" placeholder="Inserire il cognome." formControlName="cognome">
+              </div>
             </div>
-            <div formGroupName="contratto">
-                <div class="row">
-                    <div class="col-md-3">
-                        <label for="filter-name">ralAnnua:</label>
-                        <input type="text" id="filter-Nome" class="form-control" formControlName="ralAnnua">
-                    </div>
-                    <div class="col-md-3">
-                        <label for="dataAssunzione">Data Assunzione</label>
-                        <mat-form-field appearance="outline">
-                            <input matInput [matDatepicker]="picker" formControlName="dataAssunzione"
-                                placeholder="Inserisci la data di assunzione" class="form-control"
-                                formControlName="dataAssunzione" />
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="dataFineRapporto">Data Fine Rapporto</label>
-                        <mat-form-field appearance="outline">
-                            <input matInput [matDatepicker]="picker1" formControlName="dataFineRapporto"
-                                placeholder="Inserisci la data di fine rapporto" class="form-control"
-                                formControlName="dataFineRapporto" />
-                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                            <mat-datepicker #picker1></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <div formGroupName="tipoContratto">
-                            <label for="filter-TipoContratto">Tipo Contratto:</label>
-                            <select class="form-control" id="tipoContratto" formControlName="descrizione">
-                                <option value="">--nessuna selezione--</option>
-                                <option *ngFor="let tipoContratto of tipiContratti"
-                                    value="{{tipoContratto.descrizione}}">
-                                    {{tipoContratto.descrizione}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div formGroupName="tipoCcnl">
-                            <label for="filter-TipoCcnl">Tipo Contratto Nazionale:</label>
-                            <select class="form-control" id="tipoCcnl" formControlName="descrizione" type="number">
-                                <option value="">--nessuna selezione--</option>
-                                <option *ngFor="let tipoCcnl of tipiCcnl" value="{{tipoCcnl.descrizione}}">
-                                    {{tipoCcnl.descrizione}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div formGroupName="tipoAzienda">
-                            <label for="filter-TipoAzienda">Tipo Azienda:</label>
-                            <select class="form-control" id="tipoAzienda" formControlName="descrizione" type="number">
-                                <option value="">--nessuna selezione--</option>
-                                <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.descrizione}}">
-                                    {{tipoAzienda.descrizione}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-3">
-                          <br>
-                            <button id="filter-Button" class="btn btn-success"
-                                style="background-color: rgb(24, 122, 0); color: white;">Filtra</button> &nbsp; <!--dark btn-sm rounded-pill shadow-sm-->
-                            <button (click)="annullaFiltri()" id="filter-Button"
-                                class="btn btn-info">Annulla filtri </button>
-                        </div> <!--dark btn-sm rounded-pill shadow-sm  style="background-color: rgb(24, 122, 0); color: white;"-->
-                    </div>
-                </div>
+            <div class="col-md-1">
+              <div class="form-group">
+                <label for="attivo">Attivo</label> <br>
+                <input type="checkbox" class="form-check-input" style="border: 1px solid black;" id="anagrafica.attivo" name="attivo"  formControlName="attivo">
+              </div>
             </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label for="attivo">Attesa lavori</label> <br>
+                <input type="checkbox" class="form-check-input" style="border: 1px solid black;" id="anagrafica.attesaLavori" name="attesaLavori"  formControlName="attesaLavori">
+              </div>
+            </div>
+            <div class="col-3">
+              <label for="filter-Tipo Azienda">Tipo Azienda</label>
+              <div class="form-group" formGroupName="tipoAzienda">
+                  <select class="form-control" id="anagrafica.tipoAzienda.descrizione" formControlName="descrizione" type="number">
+                    <option value="" selected>--nessuna selezione--</option>
+                    <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                      {{ tipoAzienda.descrizione }}
+                    </option>
+                  </select>
+              </div>
+            </div>
+           </div>
+          </div>
         </div>
     </form>
-</div>      </ng-template>
+</div>
+  </ng-template>
 </mat-expansion-panel>
 <br>
 
