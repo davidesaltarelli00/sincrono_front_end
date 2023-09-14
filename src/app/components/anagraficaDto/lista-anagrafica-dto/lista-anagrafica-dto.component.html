@@ -40,7 +40,8 @@
             <div class="col-md-1">
               <div class="form-group">
                 <label for="attivo">Attivo</label> <br>
-                <input type="checkbox" class="form-check-input" style="border: 1px solid black;" id="anagrafica.attivo" name="attivo"  formControlName="attivo">
+                <input type="checkbox" class="form-check-input" style="border: 1px solid black;" id="anagrafica.attivo" name="attivo" (change)="onChangeAttivo($event)"  formControlName="attivo" checked>
+
               </div>
             </div>
             <div class="col-md-2">

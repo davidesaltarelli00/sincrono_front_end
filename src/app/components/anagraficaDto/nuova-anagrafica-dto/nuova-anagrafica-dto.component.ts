@@ -111,9 +111,9 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         residenza: new FormControl(''),
         domicilio: new FormControl(''),
         dataDiNascita: new FormControl(''),
-        coniugato: new FormControl(''),
-        figliACarico: new FormControl(''),
-        attesaLavori: new FormControl(''),
+        coniugato: new FormControl(false),
+        figliACarico: new FormControl(false),
+        attesaLavori: new FormControl(false),
       }),
       commesse: this.formBuilder.array([]),
 
@@ -218,6 +218,44 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       }
     }
   }
+
+  onConiugatoChange(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      // Adesso puoi usare isChecked in modo sicuro
+      if (isChecked) {
+        console.log("Checkbox selezionata, il valore è true");
+      } else {
+        console.log("Checkbox deselezionata, il valore è false");
+      }
+    }
+  }
+
+
+  onFigliACaricoChange(event:any){
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      if (isChecked) {
+        console.log("Checkbox selezionata, il valore è true");
+      } else {
+        console.log("Checkbox deselezionata, il valore è false");
+      }
+    }
+  }
+  onAttesaLavoriChange(event:any){
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      if (isChecked) {
+        console.log("Checkbox selezionata, il valore è true");
+      } else {
+        console.log("Checkbox deselezionata, il valore è false");
+      }
+    }
+  }
+
 
 
   creaFormCommessa(): FormGroup {

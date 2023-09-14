@@ -39,7 +39,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     anagrafica: new FormGroup({
       nome: new FormControl(null),
       cognome: new FormControl(null),
-      attivo: new FormControl(null),
+      attivo: new FormControl(true),
       attesaLavori: new FormControl(null),
       tipoAzienda: new FormGroup({
         descrizione: new FormControl(null),
@@ -104,7 +104,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       anagrafica: new FormGroup({
         nome: new FormControl(null),
         cognome: new FormControl(null),
-        attivo: new FormControl(null),
+        attivo: new FormControl(true),
         attesaLavori: new FormControl(null),
         tipoAzienda: new FormGroup({
           descrizione: new FormControl(null),
@@ -170,6 +170,18 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         console.log("Selezionato contratto: "+selectedTipoContratto)
         dataFineRapportoControl.enable();
         this.inseritoContrattoIndeterminato = true;
+      }
+    }
+  }
+
+  onChangeAttivo(event:any){
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      if (isChecked) {
+        console.log("Checkbox selezionata, il valore è true");
+      } else {
+        console.log("Checkbox deselezionata, il valore è false");
       }
     }
   }

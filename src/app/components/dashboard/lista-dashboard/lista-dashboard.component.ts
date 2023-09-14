@@ -31,7 +31,7 @@ export class ListaDashboardComponent {
   userlogged: any;
   // paginazione
   currentPage: number = 1;
-  itemsPerPage: number = 5; // Numero di elementi per pagina
+  itemsPerPage: number = 20; // Numero di elementi per pagina
   listaCommesseInScadenza: any[]=[]; //array 2.0
   listaContrattiInScadenza:any[]=[] ; //array 2.0
   listaCommesseScadute:any[]=[]; //array 2.0
@@ -41,6 +41,7 @@ export class ListaDashboardComponent {
   idutenteCommessaInScadenza :any
   idContrattoInScadenza = this.activatedRouter.snapshot.params['id'];
   idCommessaScaduta = this.activatedRouter.snapshot.params['id'];
+  pageData:any[]=[];
 
 
   filterAnagraficaDto: FormGroup = new FormGroup({
@@ -136,6 +137,8 @@ export class ListaDashboardComponent {
           }
         }
         console.log('Lista commesse scadute: ' + JSON.stringify(this.listaCommesseScadute));
+        this.currentPage = 1;
+        this.pageData = this.getCurrentPageItems();
       },
       (error: any) => {
         console.error(
@@ -278,6 +281,15 @@ export class ListaDashboardComponent {
         this.lista = resp.list;
         location.reload();
       });
+  }
+
+  dettaglioAnagraficaContrattoInScadenza(idAnagrafica:number){
+    this.anagraficaDtoService
+    .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
+    .subscribe((resp: any) => {
+      console.log(resp);
+      this.router.navigate(['/dettaglio-anagrafica/'+ idAnagrafica])
+    });
   }
 
   dettaglioAnagrafica(idAnagrafica:number){
@@ -461,11 +473,11 @@ export class ListaDashboardComponent {
   getCurrentPageItems(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    return this.lista.slice(startIndex, endIndex);
+    return this.listaCommesseScadute.slice(startIndex, endIndex);
   }
 
   getTotalPages(): number {
-    return Math.ceil(this.lista.length / this.itemsPerPage);
+    return Math.ceil(this.listaCommesseScadute.length / this.itemsPerPage);
   }
 
   getPaginationArray(): number[] {
