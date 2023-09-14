@@ -54,7 +54,7 @@
               <div class="form-group" formGroupName="tipoAzienda">
                   <select class="form-control" id="anagrafica.tipoAzienda.descrizione" formControlName="descrizione" type="number">
                     <option value="" selected>--nessuna selezione--</option>
-                    <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                    <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.descrizione">
                       {{ tipoAzienda.descrizione }}
                     </option>
                   </select>
