@@ -1,6 +1,6 @@
 import { AnagraficaDtoService } from './../anagraficaDto-service';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ContrattoService } from '../../contratto/contratto-service';
@@ -80,12 +80,14 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   contrattoInScadenza: any;
   contrattiNazionali: any = [];
   tipologicaCanaliReclutamento: any[] = [];
-
+  motivazioniFineRapporto:any[]=[];
+  commesse!: FormArray;
 
   // paginazione
   currentPage: number = 1;
   itemsPerPage: number = 20; // Numero di elementi per pagina
   pageData: any[] = [];
+  risultatiFilter: any[]=[];
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -112,28 +114,34 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         dataAssunzione: new FormControl(null),
         dataFineRapporto: new FormControl(null),
         tipoLivelloContratto: new FormGroup({
-          ccnl: new FormControl(null),
+          id:new FormControl(),
+          livello: new FormControl(null),
         }),
         tipoCcnl: new FormGroup({
+          id:new FormControl(),
           descrizione: new FormControl(null),
         }),
         tipoContratto: new FormGroup({
+          id:new FormControl(),
           descrizione: new FormControl(null),
         }),
         tipoAzienda: new FormGroup({
+          id:new FormControl(),
           descrizione: new FormControl(null),
         }),
         tipoCanaleReclutamento: new FormGroup({
+          id:new FormControl(),
           descrizione: new FormControl(null),
         }),
         tipoCausaFineRapporto: new FormGroup({
+          id:new FormControl(),
           descrizione: new FormControl(null),
         }),
       }),
-      commessa: new FormGroup({
-        aziendaCliente: new FormControl(null),
-      }),
+      commesse: this.formBuilder.array([]),
     });
+
+    this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
   }
   profile() {
     this.router.navigate(['/profile-box/', this.userlogged]);
@@ -152,6 +160,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
 
   ngOnInit(): void {
+    const commessaFormGroup = this.creaFormCommessa();
+    this.commesse.push(commessaFormGroup);
+
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         this.anagrafica = response;
@@ -202,6 +213,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
     this.caricaTipoCanaleReclutamento();
+    this.caricaTipoCausaFineRapporto();
   }
 
   // Metodo per verificare campi vuoti
@@ -221,6 +233,26 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         }
       }
     }
+  }
+
+  creaFormCommessa(): FormGroup {
+    return this.formBuilder.group({
+      aziendaCliente: new FormControl(''),
+    });
+  }
+
+  caricaTipoCausaFineRapporto() {
+    this.anagraficaDtoService
+      .caricaTipoCausaFineRapporto(localStorage.getItem('token'))
+      .subscribe(
+        (res: any) => {
+          this.motivazioniFineRapporto = (res as any)['list'];
+          console.log('Elenco motivazioni fine rapporto:', JSON.stringify(res));
+        },
+        (error: any) => {
+          console.log('Errore durante il caricamento della tipologica Motivazione fine rapporto:', JSON.stringify(error));
+        }
+      );
   }
 
 
@@ -479,5 +511,78 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     }, 3000); // Rimuovi l'alert dopo 3 secondi (puoi modificare il valore in base alle tue esigenze)
   }
 
-  filter() {}
+  filter(value:any) {
+    const removeEmpty = (obj: any) => {
+      Object.keys(obj).forEach((key) => {
+        if (obj[key] && typeof obj[key] === 'object') {
+          removeEmpty(obj[key]);
+        } else if (obj[key] === '' || obj[key] === null) {
+          delete obj[key];
+        }
+        if (obj.anagrafica && Object.keys(obj.anagrafica).length === 0) {
+          delete obj.anagrafica;
+        }
+        if (obj.contratto && Object.keys(obj.contratto).length === 0) {
+          delete obj.contratto;
+        }
+        if (obj.commesse && Object.keys(obj.commesse).length === 0) {
+          delete obj.commesse;
+        }
+        if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
+          delete obj.tipoContratto;
+        }
+        if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
+          delete obj.tipoAzienda;
+        }
+        if (obj.tipoCcnl && Object.keys(obj.tipoCcnl).length === 0) {
+          delete obj.tipoCcnl;
+        }
+        if (
+          obj.tipoLivelloContratto &&
+          Object.keys(obj.tipoLivelloContratto).length === 0
+        ) {
+          delete obj.tipoLivelloContratto;
+        }
+
+        if (
+          obj.tipoCanaleReclutamento &&
+          Object.keys(obj.tipoCanaleReclutamento).length === 0
+        ) {
+          delete obj.tipoCanaleReclutamento;
+        }
+        if (
+          obj.tipoCausaFineRapporto &&
+          Object.keys(obj.tipoCausaFineRapporto).length === 0
+        ) {
+          delete obj.tipoCausaFineRapporto;
+        }
+      });
+    };
+    removeEmpty(this.filterAnagraficaDto.value);
+    const body ={
+      anagraficaDto: this.filterAnagraficaDto.value,
+    };
+    console.log("PAYLOAD BACKEND FILTER: "+JSON.stringify(body));
+
+    this.anagraficaDtoService.filterAnagrafica(localStorage.getItem('token'), body).subscribe((result) => {
+      if ((result as any).esito.code !== 200) {
+        alert(
+          'Qualcosa é andato storto\n' + ': ' +
+            (result as any).esito.target
+        );
+      } else {
+        if (Array.isArray(result.list)) {
+          this.pageData = result.list;
+        } else {
+          this.pageData = [];
+          this.messaggio="Nessun risultato trovato per i filtri inseriti, riprova."
+        }
+        console.log("Trovati i seguenti risultati: " + JSON.stringify(result));
+      }
+    },
+    (error:any)=>{
+      console.log("Si é verificato un errore: "+ error);
+    }
+    );
+  }
 }

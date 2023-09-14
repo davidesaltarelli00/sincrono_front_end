@@ -97,6 +97,21 @@ export class AnagraficaDtoService {
     );
   }
 
+  filterAnagrafica(token:any, body:any) :Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<any>(
+      `http://localhost:8080/services/filter`,
+      body,
+      {
+        headers: headers,
+      }
+    );
+  }
+
   //GET UTENTI LIST
   getListaUtenti(token: any): Observable<any> {
     const headers = new HttpHeaders({

@@ -20,8 +20,8 @@
 
 <ng-template matExpansionPanelContent>
   <div *ngIf="mostraFiltri">
-    <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter()">
-        <div class="row">
+    <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter(filterAnagraficaDto.value)">
+        <div class="container-filtri">
           <div formGroupName="anagrafica">
             <p>Filtri disponibili per l'anagrafica:</p>
            <div class="row">
@@ -85,19 +85,19 @@
                   <input type="date" id="contratto.dataFineRapporto" class="form-control" name="dataFineRapporto" formControlName="dataFineRapporto" placeholder="Inserire data fine rapporto" >
                 </div>
               </div>
-
             </div>
+            <br>
             <div class="row">
               <div class="col-md-3">
                 <div formGroupName="tipoLivelloContratto">
                   <label for="filter-LivelloContratto">Tipo livello Contratto</label>
-                  <select class="form-control" id="contratto.tipoLivelloContratto.id" formControlName="id">
+                  <select class="form-control" id="contratto.tipoLivelloContratto.livello" formControlName="livello">
                     <option value="">--nessuna selezione--</option>
                     <option
-                      *ngFor="let tipoLivelloContratto of livelliContratti"
-                      [value]="tipoLivelloContratto.id"
+                      *ngFor="let livello of livelliContratti"
+                      [value]="livello.livello"
                     >
-                      {{ tipoLivelloContratto.livello }}
+                      {{ livello.livello }}
                     </option>
                   </select>
                 </div>
@@ -106,9 +106,9 @@
               <div class="col-md-3">
                 <div formGroupName="tipoContratto">
                   <label for="filter-TipoContratto">Tipo Contratto</label>
-                  <select class="form-control" id="contratto.tipoContratto.id" formControlName="id" >
+                  <select class="form-control" id="contratto.tipoContratto.descrizione" formControlName="descrizione" >
                     <option value="">--nessuna selezione--</option>
-                    <option *ngFor="let tipoContratto of tipiContratti" [value]="tipoContratto.id">
+                    <option *ngFor="let tipoContratto of tipiContratti" [value]="tipoContratto.descrizione">
                       {{ tipoContratto.descrizione }}
                     </option>
                   </select>
@@ -121,13 +121,13 @@
                   <label for="tipoCcnl">Tipo Contratto nazionale</label>
                   <select
                     class="form-control"
-                    id="contratto.tipoCcnl.id"
-                    formControlName="id"
+                    id="contratto.tipoCcnl.descrizione"
+                    formControlName="descrizione"
                   >
                     <option value="">--nessuna selezione--</option>
                     <option
                       *ngFor="let contrattiNazionale of tipiCcnl"
-                      [value]="contrattiNazionale.id"
+                      [value]="contrattiNazionale.descrizione"
                     >
                       {{ contrattiNazionale.descrizione }}
                     </option>
@@ -137,31 +137,70 @@
               </div>
               <div class="col-md-3" formGroupName="tipoAzienda">
                 <label for="tipoAzienda">Tipo Azienda</label>
-                <select class="form-control" id="contratto.tipoAzienda.id" formControlName="id" type="number">
+                <select class="form-control" id="contratto.tipoAzienda.descrizione" formControlName="descrizione" type="number">
                   <option value="">--nessuna selezione--</option>
-                  <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                  <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.descrizione">
                     {{ tipoAzienda.descrizione }}
                   </option>
                 </select>
-
               </div>
-
             </div>
+            <br>
             <div class="row">
               <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
                 <div class="form-group">
                   <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
-                  <select class="form-control" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
+                  <select class="form-control" id="contratto.tipoCanaleReclutamento.descrizione" formControlName="descrizione" type="number">
                     <option value="">--nessuna selezione--</option>
-                    <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.id">
+                    <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.descrizione">
                       {{ tipoCanaleReclutamento.descrizione }}
                     </option>
                   </select>
                 </div>
 
               </div>
+
+              <div class="col-md-3">
+                <div class="form-group"  formGroupName="tipoCausaFineRapporto">
+                <label>Motivazione Fine Rapporto: </label>
+                <select  class="form-control" id="contratto.tipoCausaFineRapporto.descrizione" formControlName="descrizione">
+                  <option value="">--nessuna selezione--</option>
+                  <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto" [value]="tipoCausaFineRapporto.descrizione">
+                    {{ tipoCausaFineRapporto.descrizione }}
+                  </option>
+                </select>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+          <br>
+          <br>
+          <div class="row">
+            <p>Filtri per commesse</p>
+            <div class="col-3">
+              <div formArrayName="commesse">
+                <div *ngFor="let commessa of commesse.controls; let i = index">
+                  <div [formGroupName]="i">
+                    <div class="form-group">
+                      <label for="aziendaCliente">Azienda cliente</label>
+                    <input type="text" formControlName="aziendaCliente" class="form-control" id="commesse.aziendaCliente" name="aziendaCliente">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
+
+          <div class="row">
+            <div class="col-12" style="margin: auto; text-align: center;" >
+              <button class="btn btn-success"  >Cerca <i class="fa fa-search" ></i> </button> &nbsp;
+              <button class="btn btn-info" (click)="reset()" >Annulla<i class="fa fa-reset" ></i> </button>
+            </div>
+          </div>
+
         </div>
     </form>
 </div>
@@ -183,6 +222,7 @@
           <th scope="col">Mail aziendale</th>
           <th scope="col">Cell privato</th>
           <th scope="col" >Contratto</th>
+          <th scope="col" >Commessa</th>
           <th scope="col">Azioni</th>
         </tr>
       </thead>
@@ -200,9 +240,12 @@
           <td>{{ element.anagrafica?.codiceFiscale |uppercase }}</td>
           <td>{{ element.anagrafica?.tipoAzienda?.descrizione |titlecase }}</td>
           <td>{{ element.anagrafica?.mailAziendale  }}</td>
-          <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non presente'  }}</td>
+          <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non inserito'  }}</td>
           <td *ngIf="element.contratto?.tipoContratto?.descrizione!='#'">
             {{element.contratto?.tipoContratto?.descrizione ? element.contratto?.tipoContratto?.descrizione : 'Non inserito'}}
+          </td>
+          <td>
+            {{element?.commessa?.aziendaCliente ? element?.commessa?.aziendaCliente: 'Non inserita'}}
           </td>
           <td *ngIf="element.contratto?.tipoContratto?.descrizione==='#'" >
             Generico
@@ -224,6 +267,7 @@
         </tr>
       </tbody>
     </table>
+    <div *ngIf="messaggio!=null">{{messaggio}}</div>
     <div class="pagination">
       <ul>
         <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
