@@ -88,6 +88,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   itemsPerPage: number = 20; // Numero di elementi per pagina
   pageData: any[] = [];
   risultatiFilter: any[]=[];
+  inseritoContrattoIndeterminato=true;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -156,7 +157,22 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     location.reload();
   }
 
+  onTipoContrattoChange(event: Event) {
+    const selectedTipoContratto = (event.target as HTMLSelectElement).value;
+    const dataFineRapportoControl = this.filterAnagraficaDto.get('contratto.dataFineRapporto');
 
+    if (dataFineRapportoControl) {
+      if (selectedTipoContratto === 'Indeterminato') {
+        console.log("Selezionato contratto: "+selectedTipoContratto)
+        this.inseritoContrattoIndeterminato = false;
+        dataFineRapportoControl.disable();
+      } else {
+        console.log("Selezionato contratto: "+selectedTipoContratto)
+        dataFineRapportoControl.enable();
+        this.inseritoContrattoIndeterminato = true;
+      }
+    }
+  }
 
 
   ngOnInit(): void {
