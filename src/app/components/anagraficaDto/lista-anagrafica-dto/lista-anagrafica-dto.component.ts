@@ -75,7 +75,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   userlogged: string = '';
   role: any;
-  anagrafica: any;
+  anagraficaLoggata: any;
   idUtente: any;
   contrattoInScadenza: any;
   contrattiNazionali: any = [];
@@ -174,6 +174,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     }
   }
 
+  isGreenBackground(anagraficaId: number): boolean {
+    return this.anagraficaLoggata === anagraficaId;
+  }
 
   ngOnInit(): void {
     const commessaFormGroup = this.creaFormCommessa();
@@ -181,12 +184,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
     this.profileBoxService.getData().subscribe(
       (response: any) => {
-        this.anagrafica = response;
-        const idUtente = response.anagraficaDto.anagrafica.utente.id;
-        const utenteLoggato = response.anagraficaDto.anagrafica.id;
-        // console.log('ID UTENTE valorizzato : ' + idUtente);
-        this.idUtente = utenteLoggato;
-        // console.log('ID UTENTE valorizzato globalmente: ' + this.idUtente);
+        this.anagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        console.log("ID UTENTE LOGGATO: "+JSON.stringify(this.anagraficaLoggata));
+        this.isGreenBackground(this.anagraficaLoggata);
       },
       (error: any) => {
         console.error(
