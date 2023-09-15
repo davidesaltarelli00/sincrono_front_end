@@ -29,3 +29,15 @@ select{
 ng-container{
   border: 1px solid #f1f1f1;
 }
+
+select{
+  width: 100%;
+}
+
+.campo-nullo {
+  border-color: red;
+}
+
+mat-card-title{
+  text-align: center;
+}

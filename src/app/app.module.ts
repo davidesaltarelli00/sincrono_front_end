@@ -43,6 +43,7 @@ import { AlertLogoutComponent } from './components/alert-logout/alert-logout.com
 import { UtenteComponent } from './components/utente/utente.component';
 import { GiornoComponent } from './components/giorno/giorno.component';
 import { DatePipe } from '@angular/common';
+import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirective';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { DatePipe } from '@angular/common';
     NuovoContrattoComponent,
     ListaContrattiComponent,
     ListaDashboardComponent,
+    HighlightNullFieldDirective,
     ListaOrganicoComponent,
     HomeComponent,
     ListaAnagraficaDtoComponent,
@@ -81,6 +83,7 @@ import { DatePipe } from '@angular/common';
     ReactiveFormsModule,
     FormsModule,
     MaterialModule,
+
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],

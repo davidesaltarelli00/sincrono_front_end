@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -40,24 +40,32 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   anagraficaDto: FormGroup;
   commessePresenti = false;
   elencoCommesse: any[] = []; // Dichiarazione dell'array di FormGroup
+  commesseVuote:any;
+  contratto:any;
+  contrattoVuoto:any;
   nuovoId: any;
   tipologicaCanaliReclutamento: any[] = [];
   motivazioniFineRapporto: any[] = [];
   variabileGenerica: any;
+  inseritoContrattoIndeterminato: boolean = false;
+  contrattoStageOApprendistato: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private activatedRouter: ActivatedRoute,
     private formBuilder: FormBuilder,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private renderer: Renderer2
   ) {
-    console.log(this.id);
+    console.log(
+      '+++++++++++++++++++++++++++ID ANAGRAFICA CORRENTE: ' + this.id
+    );
     this.anagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
         id: [this.id],
         // attivo: [true],
-        tipoAzienda: this.formBuilder.group({id: [''],}),
+        tipoAzienda: this.formBuilder.group({ id: [''] }),
         nome: ['', Validators.required],
         cognome: ['', Validators.required],
         codiceFiscale: ['', Validators.required],
@@ -67,14 +75,35 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         domicilio: [''],
         cellularePrivato: ['', Validators.pattern(/^[0-9]{10}$/)],
         cellulareAziendale: ['', Validators.pattern(/^[0-9]{10}$/)],
-        mailPrivata: [ '', Validators.pattern( '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$' ),],
-        mailAziendale: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),],],
-        mailPec: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),],],
+        mailPrivata: [
+          '',
+          Validators.pattern(
+            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
+          ),
+        ],
+        mailAziendale: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
+            ),
+          ],
+        ],
+        mailPec: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
+            ),
+          ],
+        ],
         titoliDiStudio: [''],
         altriTitoli: [''],
         coniugato: [''],
         figliAcarico: [''],
-        attesaLavori:[''],
+        attesaLavori: [''],
       }),
       commesse: this.formBuilder.array([]),
 
@@ -106,14 +135,17 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         // dimissioni: [''],
         partTime: [''],
         percentualePartTime: [''],
-        retribuzioneMensileLorda: [''],
-        superminimoMensile: [''],
-        ralAnnua: [''],
-        diariaAnnua:[''],
-        ralPartTime:[''], //da non mettere nel form, sara un campo calcolato
-        superminimoRal: [''],
-        diariaMensile: [''],
-        diariaGiornaliera: [''],
+        retribuzioneMensileLorda: [
+          '',
+          [Validators.pattern('[0-9]+(.[0-9][0-9]?)?')],
+        ],
+        superminimoMensile: ['', [Validators.pattern('[0-9]+(.[0-9][0-9]?)?')]],
+        ralAnnua: ['', [Validators.pattern('[0-9]+(.[0-9][0-9]?)?')]],
+        diariaAnnua: ['', [Validators.pattern('[0-9]+(.[0-9][0-9]?)?')]],
+        ralPartTime: [''], //da non mettere nel form, sara un campo calcolato
+        superminimoRal: ['', [Validators.pattern('[0-9]+(.[0-9][0-9]?)?')]],
+        diariaMensile: ['', [Validators.pattern('[0-9]+(.[0-9][0-9]?)?')]],
+        diariaGiornaliera: ['', [Validators.pattern('[0-9]+(.[0-9][0-9]?)?')]],
         ticket: [''],
         valoreTicket: ['', Validators.maxLength(50)],
         categoriaProtetta: [''],
@@ -158,6 +190,383 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.caricaTipoCausaFineRapporto();
   }
 
+  onPartTimeChange(event: any) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+
+      if (isChecked) {
+        console.log('Checkbox selezionata, il valore è true');
+      } else {
+        console.log('Checkbox deselezionata, il valore è false');
+      }
+
+      const partTimeControl = this.anagraficaDto.get('contratto.partTime');
+      const percentualePartTimeControl = this.anagraficaDto.get(
+        'contratto.percentualePartTime'
+      );
+
+      if (partTimeControl && percentualePartTimeControl) {
+        if (isChecked) {
+          percentualePartTimeControl.enable();
+        } else {
+          percentualePartTimeControl.disable();
+        }
+      }
+    }
+  }
+
+  /* Questo metodo gestisce il valore della  */
+  onChangeDistaccoCommessa(event: Event, commessaIndex: number) {
+    const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+    const commessaFormGroup = commesseFormArray.at(commessaIndex) as FormGroup;
+
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      let isChecked = target.checked;
+
+      if (isChecked) {
+        console.log('Checkbox selezionata, il valore è true');
+      } else {
+        console.log('Checkbox deselezionata, il valore è false');
+      }
+
+      const distaccoControl = commessaFormGroup.get('distacco');
+      const distaccoAziendaControl = commessaFormGroup.get('distaccoAzienda');
+      const distaccoDataControl = commessaFormGroup.get('distaccoData');
+
+      if (distaccoControl && distaccoAziendaControl && distaccoDataControl) {
+        if (isChecked) {
+          distaccoAziendaControl.enable();
+          distaccoDataControl.enable();
+        } else {
+          distaccoAziendaControl.disable();
+          distaccoDataControl.disable();
+        }
+      }
+
+      if (distaccoControl === null) {
+        isChecked = false;
+      }
+    }
+  }
+
+  omTicketChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+
+      if (isChecked) {
+        console.log('Checkbox selezionata, il valore è true');
+      } else {
+        console.log('Checkbox deselezionata, il valore è false');
+      }
+
+      const ticketControl = this.anagraficaDto.get('contratto.ticket');
+      const valoreTicketControl = this.anagraficaDto.get(
+        'contratto.valoreTicket'
+      );
+
+      if (ticketControl && valoreTicketControl) {
+        if (isChecked) {
+          valoreTicketControl.enable();
+        } else {
+          valoreTicketControl.disable();
+        }
+      }
+    }
+  }
+
+
+  onTipoContrattoChange(event: Event) {
+    const selectedTipoContrattoId = parseInt(
+      (event.target as HTMLSelectElement).value,
+      10
+    );
+    console.log('SELEZIONATO DEFAULT:' + selectedTipoContrattoId);
+    const dataFineRapportoControl = this.anagraficaDto.get(
+      'contratto.dataFineRapporto'
+    );
+    const mesiDurataControl = this.anagraficaDto.get('contratto.mesiDurata');
+    const tutorControl = this.anagraficaDto.get('contratto.tutor');
+    const PFIcontrol = this.anagraficaDto.get('contratto.pfi');
+    const superminimoMensileControl = this.anagraficaDto.get(
+      'contratto.superminimoMensile'
+    );
+    const ralAnnuaControl = this.anagraficaDto.get('contratto.ralAnnua');
+    const superminimoRalControl = this.anagraficaDto.get(
+      'contratto.superminimoRal'
+    );
+    const diariaMensileControl = this.anagraficaDto.get(
+      'contratto.diariaMensile'
+    );
+    const diariaGiornalieraControl = this.anagraficaDto.get(
+      'contratto.diariaGiornaliera'
+    );
+    const scattiAnzianitaControl = this.anagraficaDto.get(
+      'contratto.scattiAnzianita'
+    );
+    const retribuzioneMensileLordaControl = this.anagraficaDto.get(
+      'contratto.retribuzioneMensileLorda'
+    );
+    const tariffaPartitaIvaControl = this.anagraficaDto.get(
+      'contratto.tariffaPartitaIva'
+    );
+
+    switch (selectedTipoContrattoId) {
+      case 1: // Contratto STAGE
+        if (
+          mesiDurataControl &&
+          retribuzioneMensileLordaControl &&
+          PFIcontrol &&
+          tutorControl &&
+          superminimoMensileControl &&
+          ralAnnuaControl &&
+          superminimoRalControl &&
+          diariaMensileControl &&
+          diariaGiornalieraControl &&
+          scattiAnzianitaControl &&
+          tariffaPartitaIvaControl
+        ) {
+          retribuzioneMensileLordaControl.enable();
+          retribuzioneMensileLordaControl.setValue(600);
+
+          PFIcontrol.enable();
+          tutorControl.enable();
+
+          superminimoMensileControl.disable();
+          superminimoMensileControl.setValue('');
+
+          ralAnnuaControl.disable();
+          ralAnnuaControl.setValue('');
+
+          superminimoRalControl.disable();
+          superminimoRalControl.setValue('');
+
+          diariaMensileControl.disable();
+          diariaMensileControl.setValue('');
+
+          diariaGiornalieraControl.disable();
+          diariaGiornalieraControl.setValue('');
+
+          scattiAnzianitaControl.disable();
+          scattiAnzianitaControl.setValue('');
+
+          tariffaPartitaIvaControl.disable();
+          tariffaPartitaIvaControl.setValue('');
+
+          mesiDurataControl.setValue(6);
+          mesiDurataControl.enable();
+
+          dataFineRapportoControl?.enable();
+          dataFineRapportoControl?.setValue(null);
+        }
+        break;
+
+      case 2: // Contratto PARTITA IVA
+        if (
+          tariffaPartitaIvaControl &&
+          PFIcontrol &&
+          tutorControl &&
+          superminimoMensileControl &&
+          ralAnnuaControl &&
+          retribuzioneMensileLordaControl &&
+          dataFineRapportoControl &&
+          mesiDurataControl
+        ) {
+          tariffaPartitaIvaControl.enable();
+          tariffaPartitaIvaControl.setValue('');
+
+          retribuzioneMensileLordaControl.enable();
+          retribuzioneMensileLordaControl.setValue(null);
+
+          PFIcontrol.disable();
+          PFIcontrol.setValue('');
+
+          tutorControl.disable();
+          tutorControl.setValue('');
+
+          superminimoMensileControl.disable();
+          superminimoMensileControl.setValue('');
+
+          ralAnnuaControl.disable();
+          ralAnnuaControl.setValue('');
+
+          dataFineRapportoControl.disable();
+          dataFineRapportoControl.setValue('');
+
+          mesiDurataControl.disable();
+          mesiDurataControl.setValue('');
+        }
+        break;
+
+      case 3: // Contratto a tempo determinato
+        if (
+          mesiDurataControl &&
+          superminimoMensileControl &&
+          ralAnnuaControl &&
+          superminimoRalControl &&
+          PFIcontrol &&
+          tutorControl &&
+          diariaMensileControl &&
+          diariaGiornalieraControl &&
+          scattiAnzianitaControl &&
+          tariffaPartitaIvaControl &&
+          retribuzioneMensileLordaControl &&
+          dataFineRapportoControl
+        ) {
+          mesiDurataControl.enable();
+          mesiDurataControl.setValue('');
+
+          dataFineRapportoControl.enable();
+          dataFineRapportoControl.setValue(null);
+
+          PFIcontrol.disable();
+          PFIcontrol.setValue('');
+
+          tutorControl.disable();
+          tutorControl.setValue('');
+
+          retribuzioneMensileLordaControl.enable();
+          retribuzioneMensileLordaControl.setValue(null);
+
+          superminimoMensileControl.enable();
+          superminimoMensileControl.setValue('');
+
+          ralAnnuaControl.enable();
+          ralAnnuaControl.setValue('');
+
+          superminimoRalControl.enable();
+          superminimoRalControl.setValue('');
+
+          diariaMensileControl.enable();
+          diariaMensileControl.setValue('');
+
+          diariaGiornalieraControl.enable();
+          diariaGiornalieraControl.setValue('');
+
+          scattiAnzianitaControl.enable();
+          scattiAnzianitaControl.setValue('');
+
+          tariffaPartitaIvaControl.disable();
+          tariffaPartitaIvaControl.setValue('');
+
+        }
+        break;
+        case 4: // Contratto a tempo indeterminato
+  if (
+    mesiDurataControl &&
+    dataFineRapportoControl &&
+    tariffaPartitaIvaControl &&
+    tutorControl &&
+    PFIcontrol &&
+    superminimoMensileControl &&
+    ralAnnuaControl &&
+    superminimoRalControl &&
+    diariaMensileControl &&
+    diariaGiornalieraControl &&
+    scattiAnzianitaControl &&
+    retribuzioneMensileLordaControl
+  ) {
+    mesiDurataControl.disable();
+    mesiDurataControl.setValue('');
+
+    dataFineRapportoControl.disable();
+    dataFineRapportoControl.setValue(null);
+
+    tariffaPartitaIvaControl.disable();
+    tariffaPartitaIvaControl.setValue('');
+
+    tutorControl.disable();
+    tutorControl.setValue('');
+
+    PFIcontrol.disable();
+    PFIcontrol.setValue('');
+
+    superminimoMensileControl.enable();
+    superminimoMensileControl.setValue('');
+
+    ralAnnuaControl.enable();
+    ralAnnuaControl.setValue('');
+
+    superminimoRalControl.enable();
+    superminimoRalControl.setValue('');
+
+    diariaMensileControl.enable();
+    diariaMensileControl.setValue('');
+
+    diariaGiornalieraControl.enable();
+    diariaGiornalieraControl.setValue('');
+
+    scattiAnzianitaControl.enable();
+    scattiAnzianitaControl.setValue('');
+
+    retribuzioneMensileLordaControl.enable();
+    retribuzioneMensileLordaControl.setValue(null);
+
+  }
+  break;
+
+  case 5: // Contratto di apprendistato
+  if (
+    mesiDurataControl &&
+    dataFineRapportoControl &&
+    tariffaPartitaIvaControl &&
+    tutorControl &&
+    PFIcontrol &&
+    superminimoMensileControl &&
+    ralAnnuaControl &&
+    superminimoRalControl &&
+    diariaMensileControl &&
+    diariaGiornalieraControl &&
+    scattiAnzianitaControl &&
+    retribuzioneMensileLordaControl
+  ) {
+    mesiDurataControl.enable();
+    mesiDurataControl.setValue(36);
+
+    dataFineRapportoControl.enable();
+    dataFineRapportoControl.setValue(null);
+
+    tariffaPartitaIvaControl.enable();
+    tariffaPartitaIvaControl.setValue('');
+
+    tutorControl.enable();
+    tutorControl.setValue('');
+
+    PFIcontrol.enable();
+    PFIcontrol.setValue('');
+
+    superminimoMensileControl.enable();
+    superminimoMensileControl.setValue('');
+
+    ralAnnuaControl.enable();
+    ralAnnuaControl.setValue('');
+
+    superminimoRalControl.enable();
+    superminimoRalControl.setValue('');
+
+    diariaMensileControl.enable();
+    diariaMensileControl.setValue('');
+
+    diariaGiornalieraControl.enable();
+    diariaGiornalieraControl.setValue('');
+
+    scattiAnzianitaControl.enable();
+    scattiAnzianitaControl.setValue('');
+
+    retribuzioneMensileLordaControl.enable();
+    retribuzioneMensileLordaControl.setValue(null);
+
+    this.anagraficaDto.updateValueAndValidity();
+  }
+  break;
+
+      default:
+        break;
+    }
+  }
+
   initializeCommesse(): void {
     const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
     this.elencoCommesse.forEach((commessa) => {
@@ -181,8 +590,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     });
   }
 
-
- caricaTipoCausaFineRapporto() {
+  caricaTipoCausaFineRapporto() {
     this.anagraficaDtoService
       .caricaTipoCausaFineRapporto(localStorage.getItem('token'))
       .subscribe(
@@ -191,11 +599,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           console.log('Elenco motivazioni fine rapporto:', JSON.stringify(res));
         },
         (error: any) => {
-          console.log('Errore durante il caricamento della tipologica Motivazione fine rapporto:', JSON.stringify(error));
+          console.log(
+            'Errore durante il caricamento della tipologica Motivazione fine rapporto:',
+            JSON.stringify(error)
+          );
         }
       );
   }
-
 
   getCommesseControls(): AbstractControl[] {
     const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
@@ -230,8 +640,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     console.log('ID COMMESSA: ' + JSON.stringify(this.elencoCommesse[index]));
   }
 
-
-
   rimuoviCommessa(index: number): void {
     const conferma =
       'Sei sicuro di voler eliminare la commessa con indice ' + index + '?';
@@ -244,7 +652,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         .deleteCommessa(body, localStorage.getItem('token'))
         .subscribe(
           (res: any) => {
-            console.log('Commessa con indice ' + index + ' eliminata correttamente. Risposta:',JSON.stringify(res) );
+            console.log(
+              'Commessa con indice ' +
+                index +
+                ' eliminata correttamente. Risposta:',
+              JSON.stringify(res)
+            );
             this.elencoCommesse.splice(index, 1);
             location.reload();
           },
@@ -322,14 +735,16 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     };
     removeEmpty(this.anagraficaDto.value);
 
-    console.log("Valore di anagrafica: "+JSON.stringify(this.anagraficaDto.get('anagrafica')?.value));
+    console.log(
+      'Valore di anagrafica: ' +
+        JSON.stringify(this.anagraficaDto.get('anagrafica')?.value)
+    );
     const payload = {
-        anagraficaDto: this.anagraficaDto.value
-        // anagrafica: this.anagraficaDto.get('anagrafica')?.value,
-        // contratto: this.anagraficaDto.get('contratto')?.value,
-        // commesse: this.anagraficaDto.get('commesse')?.value,
-        // ruolo: this.anagraficaDto.get('ruolo')?.value,
-
+      anagraficaDto: this.anagraficaDto.value,
+      // anagrafica: this.anagraficaDto.get('anagrafica')?.value,
+      // contratto: this.anagraficaDto.get('contratto')?.value,
+      // commesse: this.anagraficaDto.get('commesse')?.value,
+      // ruolo: this.anagraficaDto.get('ruolo')?.value,
     };
     console.log('Payload backend:', payload);
     this.anagraficaDtoService
@@ -362,13 +777,45 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.data = (resp as any)['anagraficaDto'];
         console.log(JSON.stringify(resp));
         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
-        console.log('Dati delle commesse:', this.elencoCommesse);
-        console.log(
-          'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)
-        );
+        this.contratto = (resp as any)['anagraficaDto']['contratto'];
+        if(this.contratto==null){
+          console.log("Niente contratto.");
+          this.contrattoVuoto=true;
+        }else{
+          this.contrattoVuoto=false;
+          console.log("Dati del contratto: " + JSON.stringify(this.contratto));
+        }
+        if(this.elencoCommesse===null){
+          console.log("Niente commesse.");
+          this.commesseVuote=true;
+        } else{
+          this.commesseVuote=false;
+          console.log('Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse));
+        }
         this.initializeCommesse();
         this.anagraficaDto.patchValue(this.data);
+
+        // Iteriamo attraverso le chiavi dell'oggetto
+        for (const key in resp) {
+          if (resp.hasOwnProperty(key)) {
+            // Verifichiamo se il valore associato alla chiave è null
+            if (resp[key] === null) {
+              // Applichiamo una classe CSS per evidenziare il campo con bordo rosso
+              console.log(`Campo "${key}" è null.`);
+              // Trova l'elemento HTML corrispondente al campo
+              const element = document.querySelector(`[name="${key}"]`);
+              if (element) {
+                // Applica una classe CSS usando Renderer2
+                this.renderer.addClass(element, 'campo-nullo');
+              }
+            }
+          }
+        }
       });
+  }
+
+  insertContratto(){
+    this.contrattoVuoto=!this.contrattoVuoto;
   }
 
   getCommessaFormGroup(index: number): FormGroup {
@@ -405,7 +852,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.elencoCommesse.push(nuovoFormGroup);
   }
 
-
   transformDate(dateString: string): string {
     const dateObject = new Date(dateString);
     const year = dateObject.getFullYear();
@@ -413,8 +859,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     const day = String(dateObject.getDate()).padStart(2, '0');
 
     return `${year}-${month}-${day}`;
-}
-
+  }
 
   chiudiPopup() {
     this.showErrorPopup = false;
@@ -446,49 +891,102 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-  reset(myArray: string[]) {
-    for (let element of myArray) {
-      const inputElement = document.getElementById(element);
+  // reset(myArray: string[]) {
+  //   for (let element of myArray) {
+  //     const inputElement = document.getElementById(element);
 
-      inputElement?.classList.remove('invalid-field');
-    }
+  //     inputElement?.classList.remove('invalid-field');
+  //   }
+  // }
+
+  reset() {
+    this.router.navigate(['/lista-anagrafica']);
   }
 
   caricaTipoContratto() {
     this.anagraficaDtoService
       .getTipoContratto(localStorage.getItem('token'))
-      .subscribe((result: any) => {
-        this.tipiContratti = (result as any)['list'];
-      });
+      .subscribe(
+        (result: any) => {
+          this.tipiContratti = (result as any)['list'];
+          console.log(
+            '------------------------TIPI DI CONTRATTI CARICATI:------------------------ ' +
+              JSON.stringify(result)
+          );
+        },
+        (error: any) => {
+          console.log(
+            'Errore durante il caricamento dei tipi di contratto : ' + error
+          );
+        }
+      );
   }
   caricaLivelloContratto() {
     this.anagraficaDtoService
       .getLivelloContratto(localStorage.getItem('token'))
-      .subscribe((result: any) => {
-        this.livelliContratti = (result as any)['list'];
-      });
+      .subscribe(
+        (result: any) => {
+          this.livelliContratti = (result as any)['list'];
+          console.log(
+            '------------------------LIVELLI CONTRATTO CARICATI:------------------------ ' +
+              JSON.stringify(result)
+          );
+        },
+        (error: any) => {
+          console.log(
+            'Errore durante il caricamento dei livelli contrattuali: ' + error
+          );
+        }
+      );
   }
   caricaTipoAzienda() {
     this.anagraficaDtoService
       .getTipoAzienda(localStorage.getItem('token'))
-      .subscribe((result: any) => {
-        this.tipiAziende = (result as any)['list'];
-      });
+      .subscribe(
+        (result: any) => {
+          this.tipiAziende = (result as any)['list'];
+          console.log(
+            '------------------------AZIENDE CARICATE:------------------------ ' +
+              JSON.stringify(result)
+          );
+        },
+        (error: any) => {
+          console.log('Errore durante il caricamento delle aziende: ' + error);
+        }
+      );
   }
 
   caricaContrattoNazionale() {
     this.anagraficaDtoService
       .getContrattoNazionale(localStorage.getItem('token'))
-      .subscribe((result: any) => {
-        this.ccnl = (result as any)['list'];
-      });
+      .subscribe(
+        (result: any) => {
+          this.ccnl = (result as any)['list'];
+          console.log(
+            '------------------------CCNL CARICATI:------------------------ ' +
+              JSON.stringify(result)
+          );
+        },
+        (error: any) => {
+          console.log(
+            'Errore durante il caricamento dei contratti nazionali: ' + error
+          );
+        }
+      );
   }
 
   caricaRuoli() {
-    this.anagraficaDtoService
-      .getRuoli(localStorage.getItem('token'))
-      .subscribe((result: any) => {
+    this.anagraficaDtoService.getRuoli(localStorage.getItem('token')).subscribe(
+      (result: any) => {
         this.ruoli = (result as any)['list'];
-      });
+        console.log(
+          '------------------------RUOLI CARICATI:------------------------ ' +
+            JSON.stringify(result)
+        );
+      },
+      (error: any) => {
+        console.log('Errore durante il caricamento dei ruoli : ' + error);
+      }
+    );
   }
 }

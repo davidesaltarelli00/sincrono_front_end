@@ -4,24 +4,35 @@
       <div class="row">
         <div class="col-12">
           <form [formGroup]="anagraficaDto">
-            <div class="row">
-              <div class="col-12">
-                <h1 style="text-align: center;">Anagrafica</h1>
-              </div>
-            </div>
-            <div class="form-group" formGroupName="ruolo">
-              <div class="col-6">
-                <label for="ruolo">Ruolo *</label>
-                <select class="form-control" id="ruolo.id" formControlName="id" type="number">
-                  <option value="">--nessuna selezione--</option>
-                  <option *ngFor="let ruolo of ruoli" value="{{ ruolo.id }}">
-                    {{ ruolo.nome }}
-                  </option>
-                </select>
-              </div>
-              </div>
 
-            <!-- Campi dell'anagrafica -->
+
+
+         <div class="row">
+          <div class="col-12">
+            <mat-card>
+              <mat-card-title>
+                <div class="row">
+                  <div class="col-12">
+                    <h1 style="text-align: center;">Anagrafica</h1>
+                  </div>
+                </div>
+              </mat-card-title>
+              <mat-card-subtitle style="text-align: center;">Dati anagrafici</mat-card-subtitle>
+              <mat-card-content>
+                <div class="row">
+                  <div class="form-group" formGroupName="ruolo">
+                    <div class="col-4">
+                      <label for="ruolo">Ruolo *</label>
+                      <select class="form-control" id="ruolo.id" formControlName="id" type="number">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let ruolo of ruoli" value="{{ ruolo.id }}">
+                          {{ ruolo.nome }}
+                        </option>
+                      </select>
+                    </div>
+                    </div>
+                </div>
+                   <!-- Campi dell'anagrafica -->
             <div formGroupName="anagrafica">
               <div class="col-12">
                 <label for="id" hidden>ID:</label>
@@ -130,593 +141,656 @@
             </div>
             </div>
               <br>
+              </mat-card-content>
+            </mat-card>
+          </div>
+         </div>
 
-
-              <div *ngIf="commesseControls.length > 0">
-                <div formArrayName="commesse" style="border: 1px solid #f1f1f1; padding: 5%;">
-                  <ng-container *ngFor="let commessa of commesseControls; let i = index">
-                    <div class="row">
-                      <div class="col-12">
-                        <h1>Commessa {{i+1}}</h1>
-                      </div>
+          <div class="row">
+            <div class="col-12">
+              <mat-card>
+                <mat-card-title>
+                  <div class="row">
+                    <div class="col-12">
+                      <h1 style="text-align:center" >Contratto</h1>
                     </div>
-                    <div [formGroupName]="i">
-
-
-                      <div class="row">
-                        <div class="col-3">
-                          <label>Azienda Cliente</label> <br>
-                          <input class="form-control" formControlName="aziendaCliente" type="text" />
-                        </div>
-                        <div class="col-3">
-                          <label>Cliente Finale</label><br>
-                          <input class="form-control" formControlName="clienteFinale" type="text" />
-                        </div>
-                        <div class="col-3">
-                          <label>Titolo posizione</label><br>
-                          <input class="form-control" formControlName="titoloPosizione" type="text" />
-
-                        </div>
-                        <div class="col-3">
-                          <label>Distacco</label><br>
-                          <input  style="border-color: black" class="form-check-input" type="checkbox" formControlName="distacco" />
-                        </div>
-                        <div class="col-md-3">
-                          <div class="form-group">
-                            <label for="distaccoAzienda">Distacco azienda</label>
-                            <input type="text" class="form-control" formControlName="distaccoAzienda" placeholder="Inserire distacco azienda."> <!--[disabled]="!commessa.get('distacco')?.value==false"-->
-
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <div class="form-group">
-                            <label for="distaccoData">Data distacco</label>
-                            <input type="date" class="form-control" formControlName="distaccoData" placeholder="Inserire data distacco.">
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <label>aziendaDiFatturazioneInterna</label><br>
-                      <input class="form-control" formControlName="aziendaDiFatturazioneInterna" type="text" />
+                  </div>
+                </mat-card-title>
+                <mat-card-subtitle>
+                  <legend style="text-align:center">Dati contrattuali</legend>
+                </mat-card-subtitle>
+                <mat-card-content>
+                  <div class="contratto-vuoto" *ngIf="contrattoVuoto==true">
+                    <p style="text-align: center;" >Contratto non presente per {{data?.anagrafica.nome}} {{data.anagrafica.cognome}} <button class="btn btn-primary" (click)="insertContratto()" > <i class="fa fa-plus" ></i> </button> </p>
+                  </div>
+                  <div formGroupName="contratto" *ngIf="contrattoVuoto==false" >
+                    <div class="row">
+                      <legend>Tipologiche</legend>
+                      <div class="col-3">
+                        <div formGroupName="tipoContratto">
+                          <label for="tipoContratto">Tipo Contratto</label>
+                          <select (change)="onTipoContrattoChange($event)"
+                            class="form-control"
+                            id="contratto.tipoContratto.id"
+                            formControlName="id"
+                          >
+                            <option value="">--nessuna selezione--</option>
+                            <option
+                              *ngFor="let tipoContratto of tipiContratti"
+                              [value]="tipoContratto.id"
+                            >
+                              {{ tipoContratto.descrizione }}
+                            </option>
+                          </select>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-3">
-                          <label>dataInizio</label><br>
-                          <input class="form-control" formControlName="dataInizio" type="date" />
 
+                      <div class="col-md-3" >
+                        <label>Mesi Durata: </label>
+                        <div class="form-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            value="{{ data?.contratto?.mesiDurata }}"
+                            formControlName="mesiDurata"
+                            [ngClass]="{'field-error': anagraficaDto.get('contratto.mesiDurata')?.invalid && anagraficaDto.get('contratto.mesiDurata')?.touched}"
+                            placeholder="Inserire mesi durata"
+                          />
                         </div>
-                        <div class="col-3">
-                          <label>dataFine</label><br>
-                          <input class="form-control" formControlName="dataFine" type="date" />
-                        </div>
-
-                        <div class="col-3">
-                          <label>tariffaGiornaliera</label><br>
-                          <input class="form-control" formControlName="tariffaGiornaliera" type="number" />
-                        </div>
-
-                      </div>
-                      <div class="row">
-                        <!-- <div class="col-3">
-                          <label>nominativo</label><br>
-                          <input class="form-control" formControlName="nominativo" type="text" />
-
-                        </div> -->
-                        <!-- <div class="col-3">
-                          <label>azienda</label><br>
-                          <input class="form-control" formControlName="azienda" type="text" />
-                        </div> -->
-
                       </div>
 
-                        <!-- <div class="col-6">
-                          <label>Stato</label>
-                          <div class="form-group">
-                            <div class="form-check">
-                              <input style="border-color: black" class="form-check-input" type="checkbox"
-                                formControlName="attivo" />
-                            </div>
-                          </div>
-                        </div> -->
-
+                      <div class="col-3">
+                        <div formGroupName="tipoLivelloContratto">
+                          <label for="tipoLivelloContratto">Livello Contratto</label>
+                          <select
+                            class="form-control"
+                            id="contratto.tipoLivelloContratto.id"
+                            formControlName="id"
+                            type="number"
+                          >
+                            <option value="">--nessuna selezione--</option>
+                            <option
+                              *ngFor="let tipoLivelloContratto of livelliContratti"
+                              [value]="tipoLivelloContratto.id"
+                            >
+                              {{ tipoLivelloContratto.ccnl }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <div formGroupName="tipoAzienda">
+                          <label for="tipoAzienda">Tipo Azienda</label>
+                          <select class="form-control" id="contratto.tipoAzienda.id" formControlName="id" type="number">
+                            <option value="">--nessuna selezione--</option>
+                            <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                              {{ tipoAzienda.descrizione }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
                     </div>
                     <br>
                     <div class="row">
-                      <div class="col-12">
-                        <button  mat-flat-button color="accent" type="button" (click)="rimuoviCommessa(i)" matTooltip="rimuovi commessa {{i+1}}">Rimuovi Commessa <i class="fa fa-trash" ></i> </button> &nbsp; <!--[disabled]="i==0"-->
-                        <button class="btn btn-success" matTooltip="Premendo questo pulsante disattiverai la commessa numero {{i+1}} e potrai recuperarla nello storico" (click)="storicizza(i)" >Storicizza commessa  <i class="fa fa-file" ></i></button>
+                      <div class="col-4">
+                        <div formGroupName="tipoCcnl">
+                          <label for="tipoCcnl">Contratto Nazionale</label>
+                          <select
+                            class="form-control"
+                            id="contratto.tipoCcnl.id"
+                            formControlName="id"
+                            type="number"
+                          >
+                            <option value="">--nessuna selezione--</option>
+                            <option
+                              *ngFor="let tipoCcnl of ccnl"
+                              [value]="tipoCcnl.id"
+                            >
+                              {{ tipoCcnl.descrizione }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                        <div class="row">
+                          <legend>Date</legend>
+                          <div class="col-md-3">
+                            <label>Data Assunzione: </label>
+                            <div class="form-group">
+                              <input
+                                type="date"
+                                class="form-control"
+                                [value]="transformDate(data?.contratto?.dataAssunzione)"
+                                formControlName="dataAssunzione"
+                                placeholder="Inserire data di assunzione, formato valido: Anno-Mese-Giorno"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Data inizio prova *</label>
+                            <div class="form-group">
+                              <input
+                                type="date"
+                                class="form-control"
+                                [value]="transformDate(data?.contratto?.dataInizioProva)"
+                                formControlName="dataInizioProva"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="col-md-3">
+                            <label>Data fine Prova: </label>
+                            <div class="form-group">
+                              <input
+                                type="date"
+                                class="form-control"
+                                [value]="transformDate(data?.contratto?.dataFineProva)"
+                                formControlName="dataFineProva"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="col-md-3">
+                            <label>Data Fine Rapporto: </label>
+                            <div class="form-group">
+                              <input
+                                type="date"
+                                class="form-control"
+                                [value]="transformDate(data?.contratto?.dataFineRapporto)"
+                                formControlName="dataFineRapporto"
+                              />
+                            </div>
+                          </div>
+
+                        </div>
+                        <br>
+                        <div class="row">
+                          <legend>Dettagli assunzione</legend>
+                          <div class="col-md-4">
+                            <label>Qualifica: </label>
+                            <div class="form-group">
+                              <input
+                                type="text"
+                                class="form-control"
+                                value="{{ data?.contratto?.qualifica }}"
+                                formControlName="qualifica"
+                                placeholder="Inserire qualifica (Ex:Programmatore)"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <label>Sede Assunzione: </label>
+                            <div class="form-group">
+                              <input
+                                type="text"
+                                class="form-control"
+                                value="{{ data?.contratto?.sedeAssunzione }}"
+                                formControlName="sedeAssunzione"
+                                placeholder="Inserire indirizzo sede assunzione"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-4">
+                              <label>Canale Reclutamento * </label>
+                              <div class="form-group" formGroupName="tipoCanaleReclutamento">
+                                <select class="form-control" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
+                                  <option value="">--nessuna selezione--</option>
+                                  <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.id">
+                                    {{ tipoCanaleReclutamento.descrizione }}
+                                  </option>
+                                </select>
+                            </div>
+                          </div>
+
+                        </div>
+                        <br>
+                        <div class="row">
+                          <div class="col-md-3">
+                            <label class="form-check-label">Categoria Protetta: </label>
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                style="border-color: black"
+                                [checked]="data?.contratto?.categoriaProtetta === true"
+                                formControlName="categoriaProtetta"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>PC: </label>
+                            <div class="form-group">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                style="border-color: black"
+                                [checked]="data?.contratto?.pc"
+                                formControlName="pc"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+
+                    <br>
+                    <div class="row">
+                      <legend>Livelli</legend>
+                      <div class="col-6">
+                        <label for="livelloAttuale">Livello attuale</label>
+                        <div class="form-group">
+                          <input
+                          type="text"
+                          class="form-control"
+                          value="{{ data?.contratto?.livelloAttuale }}"
+                          formControlName="livelloAttuale"
+                          placeholder="Inserire livello attuale"
+                        />
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <label for="livelloAttuale">Livello finale</label>
+                        <div class="form-group">
+                          <input
+                          type="text"
+                          class="form-control"
+                          value="{{ data?.contratto?.livelloFinale }}"
+                          formControlName="livelloFinale"
+                          placeholder="Inserire livello finale"
+                        />
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <legend>Part time</legend>
+                      <div class="col-md-3">
+                        <label class="form-check-label">Part time: </label>
+                        <div class="form-group">
+                          <input (change)="onPartTimeChange($event)"
+                            class="form-check-input"
+                            type="checkbox"
+                            style="border-color: black"
+                            [checked]="data?.contratto?.partTime"
+                            formControlName="partTime"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label class="form-check-label">% Part time: </label>
+                        <div class="form-group">
+                          <input
+                            class="form-control"
+                            type="text"
+                            value="{{data?.contratto?.percentualePartTime}}"
+                            formControlName="percentualePartTime"
+                            placeholder="Percentuale part time (da 40% a 80%)"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <label for="ral part time">RAL Part time</label>
+                        <input type="text" class="form-control" disabled value="{{data?.contratto?.ralPartTime}}" >
+                      </div>
+                    </div>
+                    <br>
+
+                    <div class="row">
+                      <legend>Dati economici </legend>
+                      <div class="col-md-3">
+                        <label>Retribuzione Mensile Lorda: </label>
+                        <div class="form-group">
+                          <input
+                            type="number"
+                            step="0.01"
+                            class="form-control"
+                            value="{{ data?.contratto?.retribuzioneMensileLorda }}"
+                            formControlName="retribuzioneMensileLorda"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Superminimo Mensile: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            value="{{ data?.contratto?.superminimoMensile }}"
+                            formControlName="superminimoMensile"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>RAL Annua: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            value="{{ data?.contratto?.ralAnnua }}"
+                            formControlName="ralAnnua"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Superminimo RAL: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            value="{{ data?.contratto?.superminimoRal }}"
+                            formControlName="superminimoRal"
+                          />
+                        </div>
                       </div>
                     </div>
 
-                  </ng-container>
-                </div>
-              </div>
-              <br>
-              <div class="row">
-                <div class="col-12" style="margin: auto; text-align: center;">
-                  <button mat-flat-button color="primary" style="margin: auto; text-align: center;" (click)="aggiungiCommessa()">Aggiungi Commessa <i class="fa fa-plus" ></i> </button>
-                </div>
-              </div>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label>Diaria Mensile: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            value="{{ data?.contratto?.diariaMensile }}"
+                            formControlName="diariaMensile"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Diaria Giornaliera: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            value="{{ data?.contratto?.diariaGiornaliera }}"
+                            formControlName="diariaGiornaliera"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Scatti Anzianita: </label>
+                        <div class="form-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            value="{{ data?.contratto?.scattiAnzianita }}"
+                            formControlName="scattiAnzianita"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <legend>Ticket</legend>
+                      <div class="col-md-3">
+                        <label>Ticket: </label>
+                        <div class="form-group">
+                          <input (change)="omTicketChange($event)"
+                            type="checkbox" style="border:1px solid black;"
+                            [ngStyle]="{ 'border': anagraficaDto.get('contratto.ticket')?.value=='' || anagraficaDto.get('contratto.ticket')?.value==null ? '1px solid red' : ''}"
+                            class="form-check-input"
+                            value="{{ data?.contratto?.ticket }}"
+                            [checked]="data?.contratto?.ticket"
+                            formControlName="ticket"
+                          />
+                          <!-- <span *ngIf="anagraficaDto.get('contratto.ticket')?.value=='' || anagraficaDto.get('contratto.ticket')?.value==null && anagraficaDto.get('contratto.ticket')?.value!=false" >Valore non inserito</span> -->
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Valore Ticket: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            value="{{ data?.contratto?.valoreTicket }}"
+                            formControlName="valoreTicket"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <!--Campi da compilare solo se il contratto é uno stage o un apprendistato-->
+                    <div class="row" >
+                      <div class="col-md-3">
+                        <label>Tutor: </label>
+                        <div class="form-group">
+                          <input type="text" class="form-control" value="{{ data?.contratto?.tutor }}" formControlName="tutor" />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>PFI: </label>
+                        <div class="form-group">
+                          <input type="checkbox" class="form-check-input" [checked]="data?.contratto?.pfi" formControlName="pfi" />
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <legend>Corso di sicurezza</legend>
+                      <div class="col-md-3">
+                        <label>Corso di Sicurezza: </label>
+                        <div class="form-group">
+                          <input
+                            type="checkbox" style="border:1px solid black;"
+                            class="form-check-input"
+                            value="{{ data?.contratto?.corsoSicurezza }}"
+                            formControlName="corsoSicurezza"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Data corso di Sicurezza: </label>
+                        <div class="form-group">
+                          <input
+                            type="date"
+                            class="form-control"
+                            value="{{ data?.contratto?.dataCorsoSicurezza }}"
+                            formControlName="dataCorsoSicurezza"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+
+                    <div class="row">
+                     <legend>Dati economici partita iva</legend>
+                      <div class="form-group">
+                        <label>Tariffa Partita IVA: </label>
+                        <div class="col-md-3">
+                          <input
+                            type="number"
+                            class="form-control"
+                            value="{{ data?.contratto?.tariffaPartitaIva }}"
+                            formControlName="tariffaPartitaIva"
+                          />
+                        </div>
+                     </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-12">
+                        <legend>Dati medici</legend>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label>Visita medica: </label>
+                      <div class="form-group">
+                        <input style="border-color: black"  class="form-check-input" type="checkbox" [checked]="variabileGenerica?.contratto?.visitaMedica"
+                          formControlName="visitaMedica" /> <!--[checked]="AnagraficaDto.contratto.visitaMedica"-->
+                      </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label for="dataVisitaMedica">Data visita medica</label>
+                        <div class="form-group">
+                          <input type="date" class="form-control" formControlName="dataVisitaMedica">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <!-- <div class="col-md-3">
+                        <label class="form-check-label">Dimissioni: </label>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            style="border-color: black"
+                            [checked]="data?.contratto?.dimissioni === true"
+                            formControlName="dimissioni"
+                          />
+                        </div>
+                      </div> -->
+
+                      <legend>Dimissioni</legend>
+
+                      <div class="col-md-5">
+                        <div class="form-group"  formGroupName="tipoCausaFineRapporto">
+                        <label>Motivazione Fine Rapporto: </label>
+                        <select  class="form-control" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
+                          <option value="">--nessuna selezione--</option>
+                          <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto" [value]="tipoCausaFineRapporto.id">
+                            {{ tipoCausaFineRapporto.descrizione }}
+                          </option>
+                        </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
             <br>
-            <div formGroupName="contratto">
-              <div class="row">
-                <div class="col-12">
-                  <h1 style="text-align:center" >Contratto</h1>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-3">
-                  <div formGroupName="tipoContratto">
-                    <label for="tipoContratto">Tipo Contratto</label>
-                    <select
-                      class="form-control"
-                      id="contratto.tipoContratto.id"
-                      formControlName="id"
-                    >
-                      <option value="">--nessuna selezione--</option>
-                      <option
-                        *ngFor="let tipoContratto of tipiContratti"
-                        [value]="tipoContratto.id"
-                      >
-                        {{ tipoContratto.descrizione }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-3">
-                  <div formGroupName="tipoLivelloContratto">
-                    <label for="tipoLivelloContratto">Livello Contratto</label>
-                    <select
-                      class="form-control"
-                      id="contratto.tipoLivelloContratto.id"
-                      formControlName="id"
-                      type="number"
-                    >
-                      <option value="">--nessuna selezione--</option>
-                      <option
-                        *ngFor="let tipoLivelloContratto of livelliContratti"
-                        [value]="tipoLivelloContratto.id"
-                      >
-                        {{ tipoLivelloContratto.ccnl }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-3">
-                  <div formGroupName="tipoAzienda">
-                    <label for="tipoAzienda">Tipo Azienda</label>
-                    <select class="form-control" id="contratto.tipoAzienda.id" formControlName="id" type="number">
-                      <option value="">--nessuna selezione--</option>
-                      <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
-                        {{ tipoAzienda.descrizione }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-3">
-                  <div formGroupName="tipoCcnl">
-                    <label for="tipoCcnl">Contratto Nazionale</label>
-                    <select
-                      class="form-control"
-                      id="contratto.tipoCcnl.id"
-                      formControlName="id"
-                      type="number"
-                    >
-                      <option value="">--nessuna selezione--</option>
-                      <option
-                        *ngFor="let tipoCcnl of ccnl"
-                        [value]="tipoCcnl.id"
-                      >
-                        {{ tipoCcnl.descrizione }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <br>
-              <div class="row">
-                <div class="row">
-                  <div class="col-md-3">
-                    <label>Qualifica: </label>
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="{{ data?.contratto?.qualifica }}"
-                        formControlName="qualifica"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <label>Sede Assunzione: </label>
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        value="{{ data?.contratto?.sedeAssunzione }}"
-                        formControlName="sedeAssunzione"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <label>Data Assunzione: </label>
-                    <div class="form-group">
-                      <input
-                        type="date"
-                        class="form-control"
-                        [value]="transformDate(data?.contratto?.dataAssunzione)"
-                        formControlName="dataAssunzione"
-                        placeholder="Inserire data di assunzione, formato valido: Anno-Mese-Giorno"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <label>Data inizio prova *</label>
-                  <div class="form-group">
-                    <input
-                      type="date"
-                      class="form-control"
-                      [value]="transformDate(data?.contratto?.dataInizioProva)"
-                      formControlName="dataInizioProva"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <label>Data fine Prova: </label>
-                  <div class="form-group">
-                    <input
-                      type="date"
-                      class="form-control"
-                      [value]="transformDate(data?.contratto?.dataFineProva)"
-                      formControlName="dataFineProva"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <label>Data Fine Rapporto: </label>
-                  <div class="form-group">
-                    <input
-                      type="date"
-                      class="form-control"
-                      [value]="transformDate(data?.contratto?.dataFineRapporto)"
-                      formControlName="dataFineRapporto"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <label>Mesi Durata: </label>
-                  <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="{{ data?.contratto?.mesiDurata }}"
-                      formControlName="mesiDurata"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <legend>Livelli</legend>
-                <div class="col-3">
-                  <label for="livelloAttuale">Livello attuale</label>
-                  <div class="form-group">
-                    <input
-                    type="text"
-                    class="form-control"
-                    value="{{ data?.contratto?.livelloAttuale }}"
-                    formControlName="livelloAttuale"
-                    placeholder="Inserire livello attuale"
-                  />
-                  </div>
-                </div>
-                <div class="col-3">
-                  <label for="livelloAttuale">Livello finale</label>
-                  <div class="form-group">
-                    <input
-                    type="text"
-                    class="form-control"
-                    value="{{ data?.contratto?.livelloFinale }}"
-                    formControlName="livelloFinale"
-                    placeholder="Inserire livello finale"
-                  />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <!-- <div class="col-md-3">
-                  <label class="form-check-label">Dimissioni: </label>
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      style="border-color: black"
-                      [checked]="data?.contratto?.dimissioni === true"
-                      formControlName="dimissioni"
-                    />
-                  </div>
-                </div> -->
+            <div *ngIf="commesseControls.length > 0">
+              <mat-card>
+                <mat-card-title><h1>Commesse</h1></mat-card-title>
+                <mat-card-content>
+                  <div formArrayName="commesse" style="padding: 5%;">
+                    <ng-container *ngFor="let commessa of commesseControls; let i = index">
+                      <div class="row"  style="text-align: center; margin: auto;">
+                        <div class="col-12">
+                          <legend>Commessa {{i+1}}</legend>
+                        </div>
+                      </div>
+                      <div [formGroupName]="i">
 
-                <div class="col-md-3">
-                  <div class="form-group"  formGroupName="tipoCausaFineRapporto">
-                  <label>Motivazione Fine Rapporto: </label>
-                  <select  class="form-control" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
-                    <option value="">--nessuna selezione--</option>
-                    <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto" [value]="tipoCausaFineRapporto.id">
-                      {{ tipoCausaFineRapporto.descrizione }}
-                    </option>
-                  </select>
-                  </div>
-                </div>
 
-                <div class="col-md-3">
-                  <label class="form-check-label">Part time: </label>
-                  <div class="form-group">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      style="border-color: black"
-                      [checked]="data?.contratto?.partTime"
-                      formControlName="partTime"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <label class="form-check-label">% Part time: </label>
-                  <div class="form-group">
-                    <input
-                      class="form-control"
-                      type="text"
-                      value="{{data?.contratto?.percentualePartTime}}"
-                      formControlName="percentualePartTime"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <label>Retribuzione Mensile Lorda: </label>
-                  <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="{{ data?.contratto?.retribuzioneMensileLorda }}"
-                      formControlName="retribuzioneMensileLorda"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <label>Superminimo Mensile: </label>
-                  <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="{{ data?.contratto?.superminimoMensile }}"
-                      formControlName="superminimoMensile"
-                    />
-                  </div>
-                </div>
-              </div>
+                        <div class="row">
+                          <div class="col-3">
+                            <label>Azienda Cliente</label> <br>
+                            <input class="form-control" placeholder="Inserire l' azienda cliente" [ngStyle]="{ 'border': commessa.get('aziendaCliente')?.value=='' ? '1px solid red' : ''}" formControlName="aziendaCliente" type="text" />
+                          </div>
+                          <div class="col-3">
+                            <label>Cliente Finale</label><br>
+                            <input class="form-control"  [ngStyle]="{ 'border': commessa.get('clienteFinale')?.value=='' ? '1px solid red' : ''}"  placeholder="Inserire l' azienda cliente finale" formControlName="clienteFinale" type="text" />
+                          </div>
+                          <div class="col-3">
+                            <label>Titolo posizione</label><br>
+                            <input class="form-control" formControlName="titoloPosizione"  [ngStyle]="{ 'border': commessa.get('titoloPosizione')?.value=='' ? '1px solid red' : ''}"  placeholder="Aggiungere la posizione da ricoprire." type="text" />
 
-              <div class="row">
-                <div class="col-md-3">
-                  <label>RAL Annua: </label>
-                  <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="{{ data?.contratto?.ralAnnua }}"
-                      formControlName="ralAnnua"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <label>Supermionimo RAL: </label>
-                  <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="{{ data?.contratto?.superminimoRal }}"
-                      formControlName="superminimoRal"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <label>Diaria Mensile: </label>
-                  <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="{{ data?.contratto?.diariaMensile }}"
-                      formControlName="diariaMensile"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <label>Diaria Giornaliera: </label>
-                  <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="{{ data?.contratto?.diariaGiornaliera }}"
-                      formControlName="diariaGiornaliera"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <label>Ticket: </label>
-                  <div class="form-group">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      value="{{ data?.contratto?.ticket }}"
-                      [checked]="data?.contratto?.ticket"
-                      formControlName="ticket"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <label>Valore Ticket: </label>
-                  <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="{{ data?.contratto?.valoreTicket }}"
-                      formControlName="valoreTicket"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <label class="form-check-label">Categoria Protetta: </label>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    style="border-color: black"
-                    [checked]="data?.contratto?.categoriaProtetta === true"
-                    formControlName="categoriaProtetta"
-                  />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <label>Tutor: </label>
-                  <div class="form-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="{{ data?.contratto?.tutor }}"
-                      formControlName="tutor"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <label>PFI: </label>
-                  <div class="form-group">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      [checked]="data?.contratto?.pfi"
-                      formControlName="pfi"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <label>Corso di Sicurezza: </label>
-                  <div class="form-group">
-                    <input
-                      type="date"
-                      class="form-control"
-                      value="{{ data?.contratto?.corsoSicurezza }}"
-                      formControlName="corsoSicurezza"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
+                          </div>
+                          <div class="col-3">
+                            <label>Distacco</label><br>
+                            <input (change)="onChangeDistaccoCommessa($event, i)" style="border-color: black" class="form-check-input" type="checkbox" formControlName="distacco" />
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label for="distaccoAzienda">Distacco azienda</label>
+                              <input type="text" class="form-control" placeholder="Inserire distacco azienda"  [ngStyle]="{ 'border': commessa.get('distaccoAzienda')?.value=='' ? '1px solid red' : ''}" formControlName="distaccoAzienda" placeholder="Inserire distacco azienda."> <!--[disabled]="!commessa.get('distacco')?.value==false"-->
 
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <label>Scatti Anzianita: </label>
-                  <div class="form-group">
-                    <input
-                      type="number"
-                      class="form-control"
-                      value="{{ data?.contratto?.scattiAnzianita }}"
-                      formControlName="scattiAnzianita"
-                    />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label for="distaccoData">Data distacco</label>
+                              <input type="date" class="form-control" formControlName="distaccoData"  [ngStyle]="{ 'border': commessa.get('dataDistacco')?.value==null ? '1px solid red' : ''}" placeholder="Inserire data distacco.">
+                            </div>
+                          </div>
+                          <div class="col-3">
+                            <label>aziendaDiFatturazioneInterna</label><br>
+                        <input class="form-control" formControlName="aziendaDiFatturazioneInterna"  [ngStyle]="{ 'border': commessa.get('aziendaDiFatturazioneInterna')?.value=='' ? '1px solid red' : ''}" placeholder="Inserire azienda di fatturazione interna" type="text" />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-3">
+                            <label>dataInizio</label><br>
+                            <input class="form-control" formControlName="dataInizio" [ngStyle]="{ 'border': commessa.get('dataInizio')?.value=='' ? '1px solid red' : ''}" type="date" />
+
+                          </div>
+                          <div class="col-3">
+                            <label>dataFine</label><br>
+                            <input class="form-control" [ngStyle]="{ 'border': commessa.get('dataFine')?.value=='' ? '1px solid red' : ''}" formControlName="dataFine" type="date" />
+                          </div>
+
+                          <div class="col-3">
+                            <label>tariffaGiornaliera</label><br>
+                            <input class="form-control" formControlName="tariffaGiornaliera" [ngStyle]="{ 'border': commessa.get('tariffaGiornaliera')?.value=='' ? '1px solid red' : ''}" placeholder="Inserire la tariffa giornaliera" type="number" />
+                          </div>
+
+                        </div>
+                        <div class="row">
+                          <!-- <div class="col-3">
+                            <label>nominativo</label><br>
+                            <input class="form-control" formControlName="nominativo" type="text" />
+
+                          </div> -->
+                          <!-- <div class="col-3">
+                            <label>azienda</label><br>
+                            <input class="form-control" formControlName="azienda" type="text" />
+                          </div> -->
+
+                        </div>
+
+                          <!-- <div class="col-6">
+                            <label>Stato</label>
+                            <div class="form-group">
+                              <div class="form-check">
+                                <input style="border-color: black" class="form-check-input" type="checkbox"
+                                  formControlName="attivo" />
+                              </div>
+                            </div>
+                          </div> -->
+
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-12">
+                          <button  mat-flat-button color="accent" type="button" (click)="rimuoviCommessa(i)" matTooltip="rimuovi commessa {{i+1}}">Rimuovi Commessa <i class="fa fa-trash" ></i> </button> &nbsp; <!--[disabled]="i==0"-->
+                          <button class="btn btn-success" matTooltip="Premendo questo pulsante disattiverai la commessa numero {{i+1}} e potrai recuperarla nello storico" (click)="storicizza(i)" >Storicizza commessa  <i class="fa fa-file" ></i></button>
+                        </div>
+                      </div>
+
+                    </ng-container>
                   </div>
-                </div>
-                <div class="col-md-3">
-                  <label>PC: </label>
-                  <div class="form-group">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      style="border-color: black"
-                      [checked]="data?.contratto?.pc"
-                      formControlName="pc"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="form-group">
-                  <label>Tariffa Partita IVA: </label>
-                  <div class="col-md-3">
-                    <input
-                      type="number"
-                      class="form-control"
-                      value="{{ data?.contratto?.tariffaPartitaIva }}"
-                      formControlName="tariffaPartitaIva"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <label>Canale Reclutamento * </label>
-                  <div class="form-group" formGroupName="tipoCanaleReclutamento">
-                    <select class="form-control" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
-                      <option value="">--nessuna selezione--</option>
-                      <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.id">
-                        {{ tipoCanaleReclutamento.descrizione }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <h3>Dati medici</h3>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <label>Visita medica: </label>
-                <div class="form-group">
-                  <input style="border-color: black"  class="form-check-input" type="checkbox" [checked]="variabileGenerica?.contratto?.visitaMedica"
-                    formControlName="visitaMedica" /> <!--[checked]="AnagraficaDto.contratto.visitaMedica"-->
-                </div>
-                </div>
-              </div>
-              <div class="row">
-              <div class="col-md-3">
-                <label for="dataVisitaMedica">Data visita medica</label>
-                <div class="form-group">
-                  <input type="date" class="form-control" formControlName="dataVisitaMedica">
-                </div>
-              </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+            <br>
+            <div class="row"  *ngIf="commesseControls.length=== 0" >
+              <div class="col-12" style="margin: auto; text-align: center;">
+                <p>L'utente {{data?.anagrafica.nome}} {{data?.anagrafica.cognome}} non ha commesse al momento. <br> <button mat-flat-button color="primary" style="margin: auto; text-align: center;" (click)="aggiungiCommessa()">Aggiungi Commessa <i class="fa fa-plus" ></i> </button> </p>
               </div>
             </div>
-
+            <div class="row"  *ngIf="commesseControls.length > 0">
+              <div class="col-12" style="margin: auto; text-align: center;">
+                <button mat-flat-button color="primary" style="margin: auto; text-align: center;" (click)="aggiungiCommessa()">Aggiungi Commessa <i class="fa fa-plus" ></i> </button>
+              </div>
+            </div>
+            <br>
             <!-- Pulsante per inviare il form -->
-            <button mat-flat-button (click)="aggiorna()">Invia</button>
+            <div class="row">
+              <div class="col-12" style="text-align: center; margin: auto;">
+                <button class="btn btn-success" (click)="aggiorna()">Salva modifiche <i class="fa fa-save" ></i> </button> &nbsp;
+                <button class="btn btn-info" (click)="reset()">Annulla <i class="fa fa-undo" ></i> </button>
+              </div>
+            </div>
             <br>
             <br>
             <br>
           </form>
-
-
-
-
         </div>
       </div>
     </div>
   </body>
 </html>
-<!--tutto quello che ha contrattoNazionale diventa ccnl-->
