@@ -227,7 +227,7 @@
                               *ngFor="let tipoLivelloContratto of livelliContratti"
                               [value]="tipoLivelloContratto.id"
                             >
-                              {{ tipoLivelloContratto.ccnl }}
+                              {{ tipoLivelloContratto.livello }}
                             </option>
                           </select>
                         </div>
@@ -248,8 +248,8 @@
                     <div class="row">
                       <div class="col-4">
                         <div formGroupName="tipoCcnl">
-                          <label for="tipoCcnl">Contratto Nazionale</label>
-                          <select
+                          <label for="tipoCcnl">CCNL</label>
+                          <select (change)="onChangeCCNL($event)"
                             class="form-control"
                             id="contratto.tipoCcnl.id"
                             formControlName="id"
