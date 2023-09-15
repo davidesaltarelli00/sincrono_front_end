@@ -42,7 +42,8 @@ export class ListaDashboardComponent {
   idContrattoInScadenza = this.activatedRouter.snapshot.params['id'];
   idCommessaScaduta = this.activatedRouter.snapshot.params['id'];
   pageData:any[]=[];
-
+  messaggio:any;
+  
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -50,16 +51,20 @@ export class ListaDashboardComponent {
       cognome: new FormControl(null),
       attivo: new FormControl(null),
       tipoAzienda: new FormGroup({
-        descrizione: new FormControl(null),
+        id: new FormControl(null),
       }),
     }),
     contratto: new FormGroup({
       dataFineRapporto: new FormControl(null),
     }),
-    commessa: new FormGroup({
+    commesse: new FormGroup({
       aziendaCliente: new FormControl(null),
-      dataFine: new FormControl(null),
+      
     }),
+    annoDataFine:new FormControl(null),
+    meseDataFine:new FormControl(null),
+    annoDataInizio:new FormControl(null),
+    meseDataInizio:new FormControl(null)
   });
 
   constructor(
@@ -97,6 +102,8 @@ export class ListaDashboardComponent {
     //     this.data = resp.list;
     //   });
 
+    this.caricaTipoAzienda();
+
     this.dashboardService.getListaCommesseInScadenza(localStorage.getItem('token')).subscribe(
       (resp: any) => {
         this.listaCommesseInScadenza=(resp as any)['list'];
@@ -132,8 +139,8 @@ export class ListaDashboardComponent {
       (resp: any) => {
         this.listaCommesseScadute = [];
         for (const item of resp.list) {
-          for (const commessa of item.commesse) {
-            this.listaCommesseScadute.push(commessa);
+          for (const commesse of item.commesse) {
+            this.listaCommesseScadute.push(commesse);
           }
         }
         console.log('Lista commesse scadute: ' + JSON.stringify(this.listaCommesseScadute));
@@ -148,7 +155,6 @@ export class ListaDashboardComponent {
       }
     );
 
-
     this.mostraFiltri = false;
 
     this.filterAnagraficaDto = this.formBuilder.group({
@@ -157,121 +163,96 @@ export class ListaDashboardComponent {
         cognome: new FormControl(null),
         attivo: new FormControl(null),
         tipoAzienda: new FormGroup({
-        descrizione: new FormControl(null),
+        id: new FormControl(null),
         }),
       }),
       contratto: new FormGroup({
         dataFineRapporto: new FormControl(null),
       }),
-      commessa: new FormGroup({
+      commesse: new FormGroup({
         aziendaCliente: new FormControl(null),
         dataFine: new FormControl(null),
       }),
+      annoDataFine:new FormControl(null),
+      meseDataFine:new FormControl(null),
+      annoDataInizio:new FormControl(null),
+      meseDataInizio:new FormControl(null)
     });
 
   }
-  filter() {
-    const filtroNome =
-      this.filterAnagraficaDto.value.anagrafica.nome != null
-        ? this.filterAnagraficaDto.value.anagrafica.nome
-        : '';
+  filter(value:any) {
+    const removeEmpty = (obj: any) => {
+      Object.keys(obj).forEach((key) => {
+        if (obj[key] && typeof obj[key] === 'object') {
+          removeEmpty(obj[key]);
+        } else if (obj[key] === '' || obj[key] === null) {
+          delete obj[key];
+        }
+        if (obj.anagrafica && Object.keys(obj.anagrafica).length === 0) {
+          delete obj.anagrafica;
+        }
+        if (obj.contratto && Object.keys(obj.contratto).length === 0) {
+          delete obj.contratto;
+        }
+        if (obj.commesse && Object.keys(obj.commesse).length === 0) {
+          delete obj.commesse;
+        }
+        if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
+          delete obj.tipoContratto;
+        }
+        if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
+          delete obj.tipoAzienda;
+        }
+        if (obj.tipoCcnl && Object.keys(obj.tipoCcnl).length === 0) {
+          delete obj.tipoCcnl;
+        }
+        if (
+          obj.tipoLivelloContratto &&
+          Object.keys(obj.tipoLivelloContratto).length === 0
+        ) {
+          delete obj.tipoLivelloContratto;
+        }
 
-    const filtroCognome =
-      this.filterAnagraficaDto.value.anagrafica.cognome != null
-        ? this.filterAnagraficaDto.value.anagrafica.cognome
-        : '';
-    const filtroTipoAzienda =
-      this.filterAnagraficaDto.value.anagrafica.tipoAzienda.descrizione != null
-        ? this.filterAnagraficaDto.value.anagrafica.tipoAzienda.descrizione
-        : '';
-    const filtroAttivo =
-      this.filterAnagraficaDto.value.anagrafica.attivo != null
-        ? this.filterAnagraficaDto.value.anagrafica.attivo
-        : false;
+        if (
+          obj.tipoCanaleReclutamento &&
+          Object.keys(obj.tipoCanaleReclutamento).length === 0
+        ) {
+          delete obj.tipoCanaleReclutamento;
+        }
+        if (
+          obj.tipoCausaFineRapporto &&
+          Object.keys(obj.tipoCausaFineRapporto).length === 0
+        ) {
+          delete obj.tipoCausaFineRapporto;
+        }
+      });
+    };
+    removeEmpty(this.filterAnagraficaDto.value);
+    const body ={
+      anagraficaDto: this.filterAnagraficaDto.value,
+    };
+    console.log("PAYLOAD BACKEND FILTER: "+JSON.stringify(body));
 
-    const filtroDataFineRapporto =
-      this.filterAnagraficaDto.value.contratto.dataFineRapporto != null
-        ? this.filterAnagraficaDto.value.contratto.dataFineRapporto
-        : '';
-
-    const filtroAziendaCliente =
-      this.filterAnagraficaDto.value.commessa.aziendaCliente != null
-        ? this.filterAnagraficaDto.value.commessa.aziendaCliente
-        : '';
-
-        const filtroDataFineCommessa =
-      this.filterAnagraficaDto.value.commessa.dataFine != null
-        ? this.filterAnagraficaDto.value.commessa.dataFine
-        : '';
-
-
-
-
-    this.lista = this.originalLista.filter((element: any) => {
-      var nome;
-
-      if (!element?.anagrafica.nome || element?.anagrafica.nome == '') {
-        nome = 'undefined';
+    this.dashboardService.commesseListFilter(localStorage.getItem('token'), body).subscribe((result) => {
+      if ((result as any).esito.code !== 200) {
+        alert(
+          'Qualcosa é andato storto\n' + ': ' +
+            (result as any).esito.target
+        );
       } else {
-        nome = element?.anagrafica.nome;
+        if (Array.isArray(result.list)) {
+          this.pageData = result.list;
+        } else {
+          this.pageData = [];
+          this.messaggio="Nessun risultato trovato per i filtri inseriti, riprova."
+        }
+        console.log("Trovati i seguenti risultati: " + JSON.stringify(result));
       }
-
-      var cognome;
-
-      if (!element?.anagrafica.cognome || element?.anagrafica.cognome == '') {
-        cognome = 'undefined';
-      } else {
-        cognome = element?.anagrafica.cognome;
-      }
-
-      var aziendaTipo;
-
-      if (
-        !element?.anagrafica.aziendaTipo.descrizione ||
-        element?.anagrafica.aziendaTipo.descrizione == ''
-      ) {
-        aziendaTipo = 'undefined';
-      } else {
-        aziendaTipo = element?.anagrafica.aziendaTipo.descrizione;
-      }
-
-      var attivo;
-
-      if (!element?.anagrafica.attivo || element?.anagrafica.attivo == '') {
-        attivo = 'undefined';
-      } else {
-        attivo = element?.anagrafica.attivo;
-      }
-
-      var aziendaCliente;
-
-     if (!element?.commessa.aziendaCliente || element?.commessa.aziendaCliente == '') {
-      aziendaCliente = 'undefined';
-    } else {
-      aziendaCliente = element?.commessa.aziendaCliente;
+    },
+    (error:any)=>{
+      console.log("Si é verificato un errore: "+ error);
     }
-
-    const dataFineCommessa =
-    element?.commessa.dataFine ?? 'undefined';
-
-    const dataFineRapporto =
-    element?.contratto.dataFineRapporto ?? 'undefined';
-
-
-
-
-      return (
-        nome == filtroNome ||
-        cognome == filtroCognome ||
-        aziendaTipo == filtroTipoAzienda ||
-        attivo == filtroAttivo ||
-        new Date(dataFineRapporto).getTime() ==
-        new Date(filtroDataFineRapporto).getTime() ||
-        new Date(dataFineCommessa).getTime() ==
-        new Date(filtroDataFineCommessa).getTime() ||
-        aziendaCliente==filtroAziendaCliente
-      );
-    });
+    );
   }
 
   annullaFiltri() {
@@ -451,6 +432,17 @@ export class ListaDashboardComponent {
     this.isTableVisible1 = !this.isTableVisible1;
   }
 
+  onChangeAttivo(event:any){
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      if (isChecked) {
+        console.log("Checkbox selezionata, il valore è true");
+      } else {
+        console.log("Checkbox deselezionata, il valore è false");
+      }
+    }
+  }
   resetTabella() {
     this.dashboardService
       .deleteScattiContratto(localStorage.getItem('token'))
@@ -491,5 +483,13 @@ export class ListaDashboardComponent {
     }
   }
 
+
+  caricaTipoAzienda() {
+    this.contrattoService
+      .getTipoAzienda(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        this.tipiAziende = (result as any)['list'];
+      });
+  }
   //fine paginazione
 }

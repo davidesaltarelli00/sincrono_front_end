@@ -180,63 +180,73 @@
 
         <ng-template matExpansionPanelContent>
           <div *ngIf="mostraFiltri">
-            <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter()">
+            <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter(filterAnagraficaDto.value)">
                 <div class="container">
                     <div formGroupName="anagrafica">
                         <div class="row">
                             <div class="col-md-3">
                               <div class="form-group" >
-                                <label for="filter-name">Nome:</label>
-                                <input type="text" id="filter-Nome" class="form-control" formControlName="nome">
+                                <label for="nome">Nome:</label>
+                                <input type="text" id="anagrafica.nome" class="form-control" formControlName="nome">
                               </div>
 
                             </div>
                             <div class="col-md-3">
                               <div class="form-group" >
-                                <label for="filter-name">Cognome:</label>
-                                <input type="text" id="filter-Nome" class="form-control" formControlName="cognome">
+                                <label for="cognome">Cognome:</label>
+                                <input type="text" id="anagrafica.cognome" class="form-control" formControlName="cognome">
                               </div>
-
                             </div>
 
-                              <div class="col-md-3">
-                                <div formGroupName="tipoAzienda">
-                                    <label for="filter-TipoAzienda">Tipo Azienda:</label>
-                                    <select class="form-control" id="tipoAzienda" formControlName="descrizione" type="number">
-                                        <option value="">--nessuna selezione--</option>
-                                        <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.descrizione}}">
-                                            {{tipoAzienda.descrizione}}</option>
-                                    </select>
-                                </div>
-
-
-                            </div>
-                            <div class="col-md-3">
-                              <div class="form-group" >
-                                <input class="form-check-input" type="checkbox" id="exampleCheckbox"
-                                formControlName="attivo">
-                            <label class="form-check-label" for="exampleCheckbox">
-                                Attivo
-                            </label>
+                            <div class="col-3">
+                              <label for="filter-Tipo Azienda">Nome azienda</label>
+                              <div class="form-group" formGroupName="tipoAzienda">
+                                  <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
+                                    <option value="" selected>--nessuna selezione--</option>
+                                    <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                                      {{ tipoAzienda.descrizione }}
+                                    </option>
+                                  </select>
                               </div>
+                            </div>
 
+                            <div class="col-md-1">
+                              <div class="form-group">
+                                <label for="attivo">Attivo</label> <br>
+                                <input type="checkbox" class="form-check-input" style="border: 1px solid black;" id="anagrafica.attivo" name="attivo" (change)="onChangeAttivo($event)"  formControlName="attivo" checked>              
+                              </div>
                             </div>
                         </div>
                     </div>
 
-                    <div formGroupName="commessa">
+                    <div formGroupName="commesse">
                         <div class="row">
 
                             <div class="col-md-3">
-                                <label for="filter-name">Azienda Cliente:</label>
-                                <input type="text" id="filter-Nome" class="form-control" formControlName="aziendaCliente">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="filter-name">Data fine:</label>
-                                <input type="text" id="filter-Nome" class="form-control" formControlName="dataFine">
-                            </div>
+                                <label for="aziendaCliente">Azienda Cliente:</label>
+                                <input type="text" id="commesse.aziendaCliente" class="form-control" formControlName="aziendaCliente">
+                            </div>                           
                         </div>
                     </div>
+                    <div>
+                      <div class="col-md-3">
+                        <label for="annoInizioCommessa">Anno di inizio commessa:</label>
+                        <input type="number" id="annoDataInizio" class="form-control" formControlName="annoDataInizio">
+                    </div>
+                    <div class="col-md-3">
+                      <label for="meseInizioCommessa">mese di inizio commessa:</label>
+                      <input type="number" id="meseDataInizio" class="form-control" formControlName="meseDataInizio">
+                  </div>
+                      <div class="col-md-3">
+                          <label for="annoFineCommessa">Anno di fine commessa:</label>
+                          <input type="number" id="annoDataFine" class="form-control" formControlName="annoDataFine">
+                      </div>
+                      <div class="col-md-3">
+                        <label for="meseFineCommessa">Mese di fine commessa:</label>
+                        <input type="number" id="meseDataFine" class="form-control" formControlName="meseDataFine">
+                    </div>
+                    </div>
+
                     <div formGroupName="contratto">
                         <div class="row">
 
@@ -300,7 +310,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let commessa of pageData">
+              <tr *ngFor="let commessa of pageData;
+              let i =index">
                 <td>{{ commessa.aziendaCliente }}</td>
                 <td>{{ commessa.clienteFinale }}</td>
                 <td>{{ commessa.titoloPosizione }}</td>
