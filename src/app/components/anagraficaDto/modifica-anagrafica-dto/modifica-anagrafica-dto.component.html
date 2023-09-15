@@ -17,8 +17,9 @@
                   </div>
                 </div>
               </mat-card-title>
-              <mat-card-subtitle style="text-align: center;">Dati anagrafici</mat-card-subtitle>
+              <mat-card-subtitle style="text-align: center;">Dati anagrafici</mat-card-subtitle> <br>
               <mat-card-content>
+                <legend>Ruolo e dati anagrafici</legend>
                 <div class="row">
                   <div class="form-group" formGroupName="ruolo">
                     <div class="col-4">
@@ -32,6 +33,7 @@
                     </div>
                     </div>
                 </div>
+                <br>
                    <!-- Campi dell'anagrafica -->
             <div formGroupName="anagrafica">
               <div class="col-12">
@@ -43,15 +45,15 @@
 
                 <div class="col-3">
                   <label for="nome">Nome:</label>
-                  <input type="text" class="form-control" id="nome" formControlName="nome" />
+                  <input placeholder="Inserire nome" type="text" class="form-control" id="nome" formControlName="nome" />
                 </div>
                 <div class="col-3">
                   <label for="cognome">Cognome:</label>
-                  <input type="text" class="form-control" id="cognome" formControlName="cognome" />
+                  <input placeholder="Inserire cognome" type="text" class="form-control" id="cognome" formControlName="cognome" />
                 </div>
                 <div class="col-3">
                   <label for="codiceFiscale">Codice Fiscale:</label>
-                  <input type="text" class="form-control" id="codiceFiscale" formControlName="codiceFiscale" />
+                  <input placeholder="Inserire codice fiscale" type="text" class="form-control" id="codiceFiscale" formControlName="codiceFiscale" />
                 </div>
 
                 <div class="col-3">
@@ -66,77 +68,89 @@
                   </div>
                 </div>
               </div>
+              <br>
             <div class="row">
-
+              <legend>Dati di nascita e residenza/domicilio</legend>
+              <br>
               <div  class="col-3">
                 <label for="comuneDiNascita">Comune di Nascita:</label>
-                <input type="text" class="form-control" id="comuneDiNascita" formControlName="comuneDiNascita" />
+                <input placeholder="Inserire comune di nascita" type="text" class="form-control" id="comuneDiNascita" formControlName="comuneDiNascita" />
               </div>
               <div class="col-3">
                 <label for="dataDiNascita">Data di Nascita:</label>
-                <input type="date" class="form-control" id="dataDiNascita" formControlName="dataDiNascita" />
+                <input placeholder="Inserire data di nascita" type="date" class="form-control" id="dataDiNascita" formControlName="dataDiNascita" />
               </div>
               <div class="col-3">
                 <label for="residenza">Residenza:</label>
-                <input type="text" class="form-control" id="residenza" formControlName="residenza" />
+                <input placeholder="Inserire indirizzo di residenza" type="text" class="form-control" id="residenza" formControlName="residenza" />
               </div>
-            </div>
-
-            <div class="row">
               <div class="col-3">
                 <label for="domicilio">Domicilio:</label>
-                <input type="text" class="form-control" id="domicilio" formControlName="domicilio" />
+                <input placeholder="Inserire indirizzo di domicilio" type="text" class="form-control" id="domicilio" formControlName="domicilio" />
               </div>
+            </div>
+            <br>
+            <div class="row">
+              <legend>Recapiti</legend> <br>
               <div class="col-3">
                 <label for="cellularePrivato">Cellulare Privato:</label>
-                <input type="text" class="form-control" id="cellularePrivato" formControlName="cellularePrivato" />
+                <input placeholder="Inserire cellulare privato" type="text" class="form-control" id="cellularePrivato" formControlName="cellularePrivato" />
               </div>
               <div class="col-3">
                 <label for="cellulareAziendale">Cellulare Aziendale:</label>
-                <input type="text" class="form-control" id="cellulareAziendale" formControlName="cellulareAziendale" />
+                <input placeholder="Inserire cellulare aziendale" type="text" class="form-control" id="cellulareAziendale" formControlName="cellulareAziendale" />
               </div>
               <div class="col-3">
                 <label for="mailPrivata">Mail Privata:</label>
-                <input type="text" class="form-control" id="mailPrivata" formControlName="mailPrivata" />
+                <input type="text"placeholder="Inserire mail privata" class="form-control" id="mailPrivata" formControlName="mailPrivata" />
               </div>
-            </div>
-
-            <div class="row">
               <div class="col-3">
                 <label for="mailAziendale">Mail Aziendale:</label>
-                <input type="text" class="form-control" id="mailAziendale" formControlName="mailAziendale" />
+                <input type="text" placeholder="Inserire mail aziendale" class="form-control" id="mailAziendale" formControlName="mailAziendale" />
                 <div
                 *ngIf="anagraficaDto.get('anagrafica.mailAziendale')?.hasError('required') && anagraficaDto.get('anagrafica.mailAziendale')?.hasError('touched') "
                 class="text-danger">
                 Il campo mail aziendale è obbligatorio.
               </div>
               </div>
-              <div class="col-3">
-                <label for="mailPec">Mail PEC:</label>
-                <input type="text" class="form-control" id="mailPec" formControlName="mailPec" />
-              </div>
-              <div class="col-3">
-                <label for="titoliDiStudio">Titolo di Studio:</label>
-                <input type="text" class="form-control" id="titoliDiStudio" formControlName="titoliDiStudio" />
-              </div>
-              <div class="col-3">
-                <label for="altriTitoli">Altri Titoli:</label>
-                <input type="text" class="form-control" id="altriTitoli" formControlName="altriTitoli" />
-              </div>
             </div>
             <br>
             <div class="row">
               <div class="col-3">
-                <label for="coniugato">Coniugato:</label>
+                <label for="mailPec">Mail PEC:</label>
+                <input type="text" placeholder="Inserire PEC" class="form-control" id="mailPec" formControlName="mailPec" />
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <legend>Titoli</legend> <br>
+              <div class="col-3">
+                <label for="titoliDiStudio">Titolo di Studio:</label>
+                <input type="text" placeholder="Inserire titolo di studio conseguito" class="form-control" id="titoliDiStudio" formControlName="titoliDiStudio" />
+              </div>
+              <div class="col-3">
+                <label for="altriTitoli">Altri Titoli:</label>
+                <input type="text" class="form-control" placeholder="Inserire eventuali altri titoli conseguiti" id="altriTitoli" formControlName="altriTitoli" />
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <legend>Info familiari</legend>
+              <div class="col-3">
+                <label for="coniugato">Coniugato:</label> <br>
                 <input type="checkbox" id="coniugato" formControlName="coniugato" />
               </div>
               <div class="col-3">
-                <label for="figliAcarico">Figli a Carico:</label>
+                <label for="figliAcarico">Figli a Carico:</label> <br>
                 <input type="checkbox" [checked]="data?.anagrafica?.figliAcarico === true" id="figliAcarico" formControlName="figliAcarico" />
               </div>
+            </div>
+            <br>
+            <div class="row">
+              <legend>Attesa lavori</legend> <br>
               <div class="col-3">
                 <label>Attesa Lavori</label> <br>
-            <input formControlName="attesaLavori" [checked]="data?.anagrafica?.attesaLavori === true" type="checkbox" />
+                <input formControlName="attesaLavori" [checked]="data?.anagrafica?.attesaLavori === true" type="checkbox" />
               </div>
             </div>
             </div>
@@ -145,7 +159,7 @@
             </mat-card>
           </div>
          </div>
-
+         <br>
           <div class="row">
             <div class="col-12">
               <mat-card>
@@ -769,7 +783,17 @@
             <br>
             <div class="row"  *ngIf="commesseControls.length=== 0" >
               <div class="col-12" style="margin: auto; text-align: center;">
-                <p>L'utente {{data?.anagrafica.nome}} {{data?.anagrafica.cognome}} non ha commesse al momento. <br> <button mat-flat-button color="primary" style="margin: auto; text-align: center;" (click)="aggiungiCommessa()">Aggiungi Commessa <i class="fa fa-plus" ></i> </button> </p>
+                <mat-card>
+                  <mat-card-title>
+                    <h1>Commesse</h1>
+                  </mat-card-title>
+                  <mat-card-subtitle>
+                <p>L'utente {{data?.anagrafica.nome}} {{data?.anagrafica.cognome}} non ha commesse al momento.  </p>
+                  </mat-card-subtitle>
+                  <mat-card-content>
+                     <button mat-flat-button color="primary" style="margin: auto; text-align: center;" (click)="aggiungiCommessa()">Aggiungi Commessa <i class="fa fa-plus" ></i> </button>
+                  </mat-card-content>
+                </mat-card>
               </div>
             </div>
             <div class="row"  *ngIf="commesseControls.length > 0">

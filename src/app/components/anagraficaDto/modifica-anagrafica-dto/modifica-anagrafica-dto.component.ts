@@ -188,6 +188,14 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.creaFormCommessa();
     this.caricaTipoCanaleReclutamento();
     this.caricaTipoCausaFineRapporto();
+
+    this.anagraficaDto.get('contratto.dataAssunzione')?.valueChanges.subscribe(() => {
+      this.calculateDataFineRapporto();
+    });
+
+    this.anagraficaDto.get('contratto.mesiDurata')?.valueChanges.subscribe(() => {
+      this.calculateDataFineRapporto();
+    });
   }
 
   onPartTimeChange(event: any) {
@@ -989,4 +997,33 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       }
     );
   }
+
+  calculateDataFineRapporto() {
+    const mesiDurataControl = this.anagraficaDto.get('contratto.mesiDurata');
+    const dataFineRapportoControl = this.anagraficaDto.get('contratto.dataFineRapporto');
+    const dataAssunzioneControl = this.anagraficaDto.get('contratto.dataAssunzione');
+
+    // Verifica se tutti i controlli necessari esistono
+    if (mesiDurataControl && dataFineRapportoControl && dataAssunzioneControl) {
+      // Ottieni i valori dei controlli
+      const mesiDurata = mesiDurataControl.value;
+      const dataAssunzione = dataAssunzioneControl.value;
+
+      if (mesiDurata && dataAssunzione) {
+        // Calcola la data di fine rapporto aggiungendo i mesi di durata alla data di assunzione
+        const dataFineRapporto = new Date(dataAssunzione);
+        dataFineRapporto.setMonth(dataFineRapporto.getMonth() + mesiDurata);
+
+        // Imposta il valore calcolato nel controllo 'dataFineRapporto'
+        dataFineRapportoControl.setValue(dataFineRapporto);
+      } else {
+        // Alcuni dei valori necessari sono mancanti, gestisci di conseguenza
+        console.error('Impossibile calcolare la data di fine rapporto. Mancano dati.');
+      }
+    } else {
+      console.error('I controlli necessari non esistono.');
+    }
+  }
+
+
 }
