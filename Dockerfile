@@ -1,3 +1,4 @@
-FROM jenkins/jenkins:2.414.1-jdk17
+FROM node:latest
 USER root
-RUN npm install -g @angular/cli
+RUN npm install
+RUN npm install -g @angular/cli 
