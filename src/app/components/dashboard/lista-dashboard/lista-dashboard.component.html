@@ -218,15 +218,18 @@
                             </div>
                         </div>
                     </div>
-
-                    <div formGroupName="commesse">
+                    <p>Filtri per commesse</p>
+                    <div formArrayName="commesse">
+                      <div *ngFor="let commessa of commesse.controls; let i = index">
+                        <div [formGroupName]="i">
                         <div class="row">
-
-                            <div class="col-md-3">
+                            <div class="form-group">
                                 <label for="aziendaCliente">Azienda Cliente:</label>
                                 <input type="text" id="commesse.aziendaCliente" class="form-control" formControlName="aziendaCliente">
-                            </div>                           
+                            </div>  
+                          </div>                         
                         </div>
+                      </div>
                     </div>
                     <div>
                       <div class="col-md-3">
@@ -246,11 +249,9 @@
                         <input type="number" id="meseDataFine" class="form-control" formControlName="meseDataFine">
                     </div>
                     </div>
-
+                    <p>Filtri per contratto</p>
                     <div formGroupName="contratto">
                         <div class="row">
-
-
                             <div class="col-md-3">
                                 <label for="dataFineRapporto">Data Fine Rapporto</label>
                                 <mat-form-field appearance="outline">
@@ -263,7 +264,6 @@
                             </div>
                         </div>
                         <div class="row">
-
                             <br>
                             <div class="row">
                                 <div class="col-md-3">

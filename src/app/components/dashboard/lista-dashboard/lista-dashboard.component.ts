@@ -7,6 +7,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  FormArray,
   Validators,
 } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
@@ -43,7 +44,7 @@ export class ListaDashboardComponent {
   idCommessaScaduta = this.activatedRouter.snapshot.params['id'];
   pageData:any[]=[];
   messaggio:any;
-  
+  commesse!: FormArray;
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -58,8 +59,7 @@ export class ListaDashboardComponent {
       dataFineRapporto: new FormControl(null),
     }),
     commesse: new FormGroup({
-      aziendaCliente: new FormControl(null),
-      
+      aziendaCliente: new FormControl(null),     
     }),
     annoDataFine:new FormControl(null),
     meseDataFine:new FormControl(null),
@@ -102,6 +102,28 @@ export class ListaDashboardComponent {
     //     this.data = resp.list;
     //   });
 
+    this.filterAnagraficaDto = this.formBuilder.group({
+      anagrafica: new FormGroup({
+        nome: new FormControl(null),
+        cognome: new FormControl(null),
+        attivo: new FormControl(null),
+        tipoAzienda: new FormGroup({
+        id: new FormControl(null),
+        }),
+      }),
+      contratto: new FormGroup({
+        dataFineRapporto: new FormControl(null),
+      }),
+      commesse: this.formBuilder.array([]),
+      annoDataFine:new FormControl(null),
+      meseDataFine:new FormControl(null),
+      annoDataInizio:new FormControl(null),
+      meseDataInizio:new FormControl(null),     
+    });
+    this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
+
+    const commessaFormGroup = this.creaFormCommessa();
+    this.commesse.push(commessaFormGroup);
     this.caricaTipoAzienda();
 
     this.dashboardService.getListaCommesseInScadenza(localStorage.getItem('token')).subscribe(
@@ -157,28 +179,7 @@ export class ListaDashboardComponent {
 
     this.mostraFiltri = false;
 
-    this.filterAnagraficaDto = this.formBuilder.group({
-      anagrafica: new FormGroup({
-        nome: new FormControl(null),
-        cognome: new FormControl(null),
-        attivo: new FormControl(null),
-        tipoAzienda: new FormGroup({
-        id: new FormControl(null),
-        }),
-      }),
-      contratto: new FormGroup({
-        dataFineRapporto: new FormControl(null),
-      }),
-      commesse: new FormGroup({
-        aziendaCliente: new FormControl(null),
-        dataFine: new FormControl(null),
-      }),
-      annoDataFine:new FormControl(null),
-      meseDataFine:new FormControl(null),
-      annoDataInizio:new FormControl(null),
-      meseDataInizio:new FormControl(null)
-    });
-
+    
   }
   filter(value:any) {
     const removeEmpty = (obj: any) => {
@@ -242,11 +243,16 @@ export class ListaDashboardComponent {
       } else {
         if (Array.isArray(result.list)) {
           this.pageData = result.list;
+          for (const item of result.list) {
+            for (const commesse of item.commesse) {
+              this.pageData.push(commesse);
+            }
+          }
         } else {
           this.pageData = [];
           this.messaggio="Nessun risultato trovato per i filtri inseriti, riprova."
         }
-        console.log("Trovati i seguenti risultati: " + JSON.stringify(result));
+        console.log("Trovati i seguenti risultati: " + JSON.stringify(result.list));
       }
     },
     (error:any)=>{
@@ -482,8 +488,11 @@ export class ListaDashboardComponent {
       this.currentPage = pageNumber;
     }
   }
-
-
+  creaFormCommessa(): FormGroup {
+    return this.formBuilder.group({
+      aziendaCliente: new FormControl(''),
+    });
+  }
   caricaTipoAzienda() {
     this.contrattoService
       .getTipoAzienda(localStorage.getItem('token'))
