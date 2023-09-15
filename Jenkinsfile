@@ -6,7 +6,7 @@ pipeline {
     stage('Install') {
       steps { 
             sh 'npm install'
-            sh 'npm install -g @angular/cli@1.0.2'
+            sh 'su -c "npm install -g @angular/cli"'
             sh 'ng --version' 
       }
     }
