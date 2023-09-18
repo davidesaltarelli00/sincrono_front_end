@@ -13,6 +13,7 @@ pipeline {
                 docker { image 'nginx' }
             }
             steps {
+              sh 'nginx --version'
             }
         }
     }
