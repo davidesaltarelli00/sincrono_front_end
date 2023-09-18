@@ -6,6 +6,7 @@ pipeline {
             steps {
                 sh 'node --version'
                 sh 'ng build'
+                sh 'pwd && ls'
             }
         }
         stage('Front-end') {
@@ -13,7 +14,7 @@ pipeline {
                 docker { image 'nginx' }
             }
             steps {
-              sh 'nginx --version'
+              sh 'nginx -v'
             }
         }
     }
