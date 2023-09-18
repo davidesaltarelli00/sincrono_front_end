@@ -1,10 +1,18 @@
 pipeline {
-    agent { dockerfile true }
+    agent none
     stages {
-        stage('Test') {
+        stage('Back-end') {
+            agent { dockerfile true }
             steps {
                 sh 'node --version'
-                sh 'ng build --prod'
+                sh 'ng build'
+            }
+        }
+        stage('Front-end') {
+            agent {
+                docker { image 'nginx' }
+            }
+            steps {
             }
         }
     }
