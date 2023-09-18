@@ -4,7 +4,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'node --version'
-                sh 'ng serve'
+                sh 'ng build --prod'
             }
         }
     }
