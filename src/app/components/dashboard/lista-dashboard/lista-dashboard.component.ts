@@ -234,30 +234,32 @@ export class ListaDashboardComponent {
     };
     console.log("PAYLOAD BACKEND FILTER: "+JSON.stringify(body));
 
-    this.dashboardService.commesseListFilter(localStorage.getItem('token'), body).subscribe((result) => {
-      if ((result as any).esito.code !== 200) {
-        alert(
-          'Qualcosa é andato storto\n' + ': ' +
-            (result as any).esito.target
-        );
-      } else {
-        if (Array.isArray(result.list)) {
-          this.pageData = result.list;
-          for (const item of result.list) {
-            for (const commesse of item.commesse) {
-              this.pageData.push(commesse);
-            }
-          }
+    this.dashboardService.commesseListFilter(localStorage.getItem('token'), body).subscribe(
+      (result) => {
+        if ((result as any).esito.code !== 200) {
+          alert('Qualcosa è andato storto\n' + ': ' + (result as any).esito.target);
         } else {
-          this.pageData = [];
-          this.messaggio="Nessun risultato trovato per i filtri inseriti, riprova."
+          if (Array.isArray(result.list)) {
+            this.pageData = result.list;
+            for (const item of result.list) {
+              if (Array.isArray(item.commesse)) {
+                for (const commesse of item.commesse) {
+                  this.pageData.push(commesse);
+                }
+              } else if (typeof item.commesse === 'object') {
+                // Gestisci il caso in cui item.commesse è un oggetto
+              }
+            }
+          } else {
+            this.pageData = [];
+            this.messaggio = "Nessun risultato trovato per i filtri inseriti, riprova.";
+          }
+          console.log("Trovati i seguenti risultati: " + JSON.stringify(result.list));
         }
-        console.log("Trovati i seguenti risultati: " + JSON.stringify(result.list));
+      },
+      (error: any) => {
+        console.log("Si è verificato un errore: " + error);
       }
-    },
-    (error:any)=>{
-      console.log("Si é verificato un errore: "+ error);
-    }
     );
   }
 
