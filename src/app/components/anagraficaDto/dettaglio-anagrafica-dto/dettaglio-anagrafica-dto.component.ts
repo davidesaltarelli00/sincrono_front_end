@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AnagraficaDtoService } from '../anagraficaDto-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Location } from '@angular/common';
+import { CurrencyPipe, Location } from '@angular/common';
 import { AuthService } from '../../login/login-service';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -65,6 +65,7 @@ export class DettaglioAnagraficaDtoComponent {
     private authService:AuthService,
     private clipboard: Clipboard,
     private snackBar: MatSnackBar,
+    private currencyPipe: CurrencyPipe
   ) {
 
   }
@@ -89,6 +90,8 @@ export class DettaglioAnagraficaDtoComponent {
       this.uppercaseCodiceFiscale();
 
   }
+
+
 
   copy(data:any) {
     this.clipboard.copy(data);
@@ -159,14 +162,25 @@ export class DettaglioAnagraficaDtoComponent {
       }
     });
   }
+  // transformDate(dateString: string): string {
+  //   const dateObject = new Date(dateString);
+  //   return dateObject.toLocaleDateString('en-US', {
+  //     day: '2-digit',
+  //     month: 'numeric',
+  //     year: 'numeric',
+  //   });
+  // }
+
   transformDate(dateString: string): string {
     const dateObject = new Date(dateString);
-    return dateObject.toLocaleDateString('en-US', {
-      day: '2-digit',
-      month: 'numeric',
-      year: 'numeric',
-    });
+    const year = dateObject.getFullYear();
+    const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObject.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
   }
+
+
   reloadPage(): void {
     this.location.go(this.location.path());
     location.reload();

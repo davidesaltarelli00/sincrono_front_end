@@ -42,7 +42,7 @@ import { FormRecuperoPasswordComponent } from './components/form-recupero-passwo
 import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
 import { UtenteComponent } from './components/utente/utente.component';
 import { GiornoComponent } from './components/giorno/giorno.component';
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirective';
 
 @NgModule({
@@ -84,8 +84,9 @@ import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirec
     FormsModule,
     MaterialModule,
 
+
   ],
-  providers: [DatePipe],
+  providers: [DatePipe,CurrencyPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

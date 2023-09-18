@@ -209,8 +209,12 @@
   </ng-template>
 </mat-expansion-panel>
 <br>
-
-<div class="row">
+<div class="row" *ngIf="pageData.length===0" >
+  <div class="col-12">
+    <h3 style="text-align: center; padding: 20px;">La ricerca non ha prodotto risultati.</h3>
+  </div>
+</div>
+<div class="row" *ngIf="pageData.length>0" >
 <div class="col-12">
   <div class="table-responsive">
     <table id="table" class="table table-bordered">

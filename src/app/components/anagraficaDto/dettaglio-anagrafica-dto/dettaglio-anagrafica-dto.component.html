@@ -126,7 +126,7 @@
               </tr>
               <tr>
                 <td><strong>PC:</strong></td>
-                <td> {{ data?.contratto?.pc ?  'Sì' : 'No' }}</td>
+                <td> {{ data?.contratto?.pc ?  'Sì' : 'No' }} <i class="fa fa-computer" *ngIf="data?.contratto?.pc" ></i> <i class="fa fa-close" *ngIf="!data?.contratto?.pc" ></i>  </td>
               </tr>
             </table>
           </mat-card-content>
@@ -259,35 +259,35 @@
           <table class="table table-bordered">
             <tr>
             <td><strong>Retribuzione Mensile Lorda:</strong></td>
-            <td>{{ data?.contratto?.retribuzioneMensileLorda ? data.contratto.retribuzioneMensileLorda : 'Dato non inserito' }}</td>
+            <td>{{ (data?.contratto?.retribuzioneMensileLorda | currency:'EUR') ? data.contratto.retribuzioneMensileLorda : 'Dato non inserito' }} <i *ngIf="data?.contratto?.retribuzioneMensileLorda!=null" class="fa-solid fa-euro-sign"></i>  </td>
           </tr>
           <tr>
             <td><strong>Superminimo Mensile:</strong> </td>
-            <td>{{ data?.contratto?.superminimoMensile ? data?.contratto?.superminimoMensile: 'Dato non inserito' }}</td>
+            <td>{{ data?.contratto?.superminimoMensile ? data?.contratto?.superminimoMensile: 'Dato non inserito' }} <i *ngIf="data?.contratto?.superminimoMensile!=null" class="fa-solid fa-euro-sign"></i> </td>
           </tr>
           <tr>
             <td><strong>RAL Annuale:</strong> </td>
-            <td>{{ data?.contratto?.ralAnnua ? data?.contratto?.ralAnnua : 'Dato non inserito' }}</td>
+            <td>{{ data?.contratto?.ralAnnua ? data?.contratto?.ralAnnua : 'Dato non inserito' }} <i *ngIf="data?.contratto?.ralAnnua!=null" class="fa-solid fa-euro-sign"></i> </td>
           </tr>
           <tr>
             <td><strong>Superminimo RAL:</strong> </td>
-            <td>{{ data?.contratto?.superminimoRal ? data?.contratto?.superminimoRal : 'Dato non inserito' }}</td>
+            <td>{{ data?.contratto?.superminimoRal ? data?.contratto?.superminimoRal : 'Dato non inserito' }} <i *ngIf="data?.contratto?.superminimoRal!=null" class="fa-solid fa-euro-sign"></i> </td>
           </tr>
           </table>
         </div>
         <div class="col-6">
           <table class="table table-bordered" >
             <tr>
+              <td><strong>Diaria annua:</strong> </td>
+              <td>{{ data?.contratto?.diariaAnnua ? data?.contratto?.diariaAnnua : 'Dato non inserito' }} <i *ngIf="data?.contratto?.diariaAnnua!=null" class="fa-solid fa-euro-sign"></i> </td>
+            </tr>
+            <tr>
               <td><strong>Diaria Mese:</strong> </td>
-              <td>{{ data?.contratto?.diariaMese ? data?.contratto?.diariaMese : 'Dato non inserito' }}</td>
+              <td>{{ data?.contratto?.diariaMensile ? data?.contratto?.diariaMensile : 'Dato non inserito' }} <i *ngIf="data?.contratto?.diariaMensile!=null" class="fa-solid fa-euro-sign"></i> </td>
             </tr>
             <tr>
               <td><strong>Diaria Giorno:</strong> </td>
-              <td>{{ data?.contratto?.diariaGg ? data?.contratto?.diariaGg : 'Dato non inserito' }}</td>
-            </tr>
-            <tr>
-              <td><strong>Diaria Giorno:</strong> </td>
-              <td>{{ data?.contratto?.diariaGg ? data?.contratto?.diariaGg : 'Dato non inserito' }}</td>
+              <td>{{ data?.contratto?.diariaGiornaliera ? data?.contratto?.diariaGiornaliera : 'Dato non inserito' }} <i *ngIf="data?.contratto?.diariaGiornaliera!=null" class="fa-solid fa-euro-sign"></i> </td>
             </tr>
             <tr>
               <td> <strong>Ticket:</strong> </td>
@@ -300,6 +300,31 @@
           </table>
         </div>
       </div>
+
+      <div class="row" *ngIf="data?.contratto.partTime===true" >
+        <div class="col-12">
+          <mat-card>
+            <mat-card-title>Dati part time</mat-card-title>
+            <mat-card-content>
+              <table class="table table-bordered">
+                <tr>
+                  <td><strong>Part time: </strong></td>
+                  <td>{{data?.contratto.partTime ? 'Si' : 'No'}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Percentuale part time: </strong></td>
+                  <td>{{data?.contratto.percentualePartTime ? data?.contratto.percentualePartTime : 'Dato non inserito' }} <i class="fa fa-percent" aria-hidden="true" *ngIf="data?.contratto.percentualePartTime!=null" ></i> </td>
+                </tr>
+                <tr>
+                  <td><strong>RAL part time: </strong></td>
+                  <td>{{data?.contratto.ralPartTime ? data?.contratto.ralPartTime : 'Dato non inserito' }} <i *ngIf="data?.contratto?.ralPartTime!=null" class="fa-solid fa-euro-sign"></i> </td>
+                </tr>
+              </table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
     </div>
 
 
@@ -357,7 +382,7 @@
             <th scope="col">Distacco</th>
             <th scope="col">Data Inizio</th>
             <th scope="col">Data Fine</th>
-            <th scope="col">Costo Mese</th>
+            <!-- <th scope="col">Costo Mese</th> -->
             <th scope="col">Tariffa Giornaliera</th>
             <!-- <th scope="col">Nominativo</th> -->
             <!-- <th scope="col">Azienda</th> -->
@@ -377,7 +402,7 @@
             <td>{{ commessa.distacco === true ? 'Si' : (commessa.distacco  === false ? 'No' : 'Dato non inserito') | titlecase }}</td>
             <td>{{ commessa.dataInizio | date: 'dd/MM/yyyy' }}</td>
             <td>{{ commessa.dataFine | date: 'dd/MM/yyyy' }}</td>
-            <td>{{ commessa.costoMese }}</td>
+            <!-- <td>{{ commessa.costoMese }}</td> -->
             <td>{{ commessa.tariffaGiornaliera }}  <i class="fa-solid fa-euro-sign"></i> </td>
             <!-- <td>{{ commessa.nominativo }}</td> -->
             <!-- <td>{{ commessa.azienda }}</td> -->

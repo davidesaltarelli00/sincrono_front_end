@@ -417,39 +417,6 @@
                     </div>
                     <br>
                     <div class="row">
-                      <legend>Part time</legend>
-                      <div class="col-md-3">
-                        <label class="form-check-label">Part time: </label>
-                        <div class="form-group">
-                          <input (change)="onPartTimeChange($event)"
-                            class="form-check-input"
-                            type="checkbox"
-                            style="border-color: black"
-                            [checked]="data?.contratto?.partTime"
-                            formControlName="partTime"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <label class="form-check-label">% Part time: </label>
-                        <div class="form-group">
-                          <input
-                            class="form-control"
-                            type="text"
-                            value="{{data?.contratto?.percentualePartTime}}"
-                            formControlName="percentualePartTime"
-                            placeholder="Percentuale part time (da 40% a 80%)"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-3">
-                        <label for="ral part time">RAL Part time</label>
-                        <input type="text" class="form-control" disabled value="{{data?.contratto?.ralPartTime}}" >
-                      </div>
-                    </div>
-                    <br>
-
-                    <div class="row">
                       <legend>Dati economici </legend>
                       <div class="col-md-3">
                         <label>Retribuzione Mensile Lorda: </label>
@@ -481,7 +448,7 @@
                             type="text"
                             class="form-control"
                             value="{{ data?.contratto?.ralAnnua }}"
-                            formControlName="ralAnnua"
+                            formControlName="ralAnnua"  (input)="calculateRalPartTime()"
                           />
                         </div>
                       </div>
@@ -499,6 +466,17 @@
                     </div>
 
                     <div class="row">
+                      <div class="col-md-3">
+                        <label>Diaria Annua: </label>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            value="{{ data?.contratto?.diariaAnnua }}"
+                            formControlName="diariaAnnua"
+                          />
+                        </div>
+                      </div>
                       <div class="col-md-3">
                         <label>Diaria Mensile: </label>
                         <div class="form-group">
@@ -563,6 +541,40 @@
                       </div>
                     </div>
                     <br>
+
+                    <div class="row">
+                      <legend>Part time</legend>
+                      <div class="col-md-3">
+                        <label class="form-check-label">Part time: </label>
+                        <div class="form-group">
+                          <input (change)="onPartTimeChange($event)"
+                            class="form-check-input"
+                            type="checkbox"
+                            style="border-color: black"
+                            [checked]="data?.contratto?.partTime"
+                            formControlName="partTime"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label class="form-check-label">% Part time: </label>
+                        <div class="form-group">
+                          <input
+                          class="form-control"
+                          type="number"
+                          formControlName="percentualePartTime"
+                          placeholder="Percentuale part time (da 40% a 80%)"
+                          (input)="calculateRalPartTime()"
+                        />
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <label for="ral part time">RAL Part time</label>
+                        <input type="text" class="form-control" formControlName="ralPartTime" [(ngModel)]="percentualePartTimeValue" >
+                      </div>
+                    </div>
+                    <br>
+
                     <!--Campi da compilare solo se il contratto é uno stage o un apprendistato-->
                     <div class="row" >
                       <div class="col-md-3">
@@ -706,12 +718,12 @@
                           </div>
                           <div class="col-3">
                             <label>Distacco</label><br>
-                            <input (change)="onChangeDistaccoCommessa($event, i)" style="border-color: black" class="form-check-input" type="checkbox" formControlName="distacco" />
+                            <input  (change)="onChangeDistaccoCommessa($event, i)" style="border-color: black" class="form-check-input" type="checkbox" formControlName="distacco" />
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
                               <label for="distaccoAzienda">Distacco azienda</label>
-                              <input type="text" class="form-control" placeholder="Inserire distacco azienda"  [ngStyle]="{ 'border': commessa.get('distaccoAzienda')?.value=='' ? '1px solid red' : ''}" formControlName="distaccoAzienda" placeholder="Inserire distacco azienda."> <!--[disabled]="!commessa.get('distacco')?.value==false"-->
+                              <input type="text" class="form-control" placeholder="Inserire distacco azienda" [ngStyle]="{ 'border': commessa.get('distaccoAzienda')?.value=='' ? '1px solid red' : ''}" formControlName="distaccoAzienda" placeholder="Inserire distacco azienda."> <!--[disabled]="!commessa.get('distacco')?.value==false"-->
 
                             </div>
                           </div>

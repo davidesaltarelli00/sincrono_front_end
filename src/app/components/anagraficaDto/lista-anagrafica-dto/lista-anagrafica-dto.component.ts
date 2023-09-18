@@ -327,10 +327,14 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           (resp: any) => {
             //parseing json
             // resp = (resp as any)['anagraficaDto'];
-            console.log(resp);
+            console.log("Dettaglio prima dell eliminazione: "+JSON.stringify(resp));
+            let body={
+              anagraficaDto: resp.anagraficaDto
+            }
+            console.log("PAYLOAD BACKEND PER L'ELIMINAZIONE: "+ JSON.stringify(body));
             //se é ok parte l elimina
             this.anagraficaDtoService
-              .delete(resp, localStorage.getItem('token'))
+              .delete(body, localStorage.getItem('token'))
               .subscribe(
                 (response: any) => {
                   if ((response as any).esito.code != 200) {
@@ -339,7 +343,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
                         (response as any).esito.target
                     );
                   } else {
-                    alert('Utente disattivato correttamente. ');
+                    alert('Utente disattivato correttamente. '+ response);
                     this.ngOnInit();
                   }
                 },
@@ -521,6 +525,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   reset() {
     this.filterAnagraficaDto.reset();
+    location.reload();
   }
 
   chiudiPopup() {

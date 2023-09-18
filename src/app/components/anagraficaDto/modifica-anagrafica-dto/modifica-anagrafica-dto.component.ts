@@ -49,6 +49,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   variabileGenerica: any;
   inseritoContrattoIndeterminato: boolean = false;
   contrattoStageOApprendistato: any;
+  percentualePartTimeValue: number | null = null;
+
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -184,10 +186,15 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
     this.caricaDati();
+    this.calculateRalPartTime();
     this.caricaRuoli();
     this.creaFormCommessa();
     this.caricaTipoCanaleReclutamento();
     this.caricaTipoCausaFineRapporto();
+    const ralPartTimeControl=this.anagraficaDto.get('contratto.ralPartTime');
+    if(ralPartTimeControl){
+      ralPartTimeControl.disable();
+    }
 
     this.anagraficaDto
       .get('contratto.dataAssunzione')
@@ -207,61 +214,94 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     if (target) {
       const isChecked = target.checked;
 
-      if (isChecked) {
-        console.log('Checkbox selezionata, il valore è true');
-      } else {
-        console.log('Checkbox deselezionata, il valore è false');
-      }
+      const percentualePartTimeControl = this.anagraficaDto.get('contratto.percentualePartTime');
+      const ralAnnuaControl = this.anagraficaDto.get('contratto.ralAnnua');
+      const ralPartTimeControl = this.anagraficaDto.get('contratto.ralPartTime');
 
-      const partTimeControl = this.anagraficaDto.get('contratto.partTime');
-      const percentualePartTimeControl = this.anagraficaDto.get(
-        'contratto.percentualePartTime'
-      );
-
-      if (partTimeControl && percentualePartTimeControl) {
+      if (percentualePartTimeControl && ralAnnuaControl && ralPartTimeControl) {
         if (isChecked) {
           percentualePartTimeControl.enable();
+          ralAnnuaControl.enable();
+          this.calculateRalPartTime();
         } else {
           percentualePartTimeControl.disable();
+          percentualePartTimeControl.setValue('');
+          ralAnnuaControl.disable();
+          ralAnnuaControl.setValue('');
+          ralPartTimeControl.disable();
+          ralPartTimeControl.setValue('');
         }
       }
     }
   }
+
+  calculateRalPartTime() {
+    const percentualePartTimeControl = this.anagraficaDto.get('contratto.percentualePartTime');
+    const ralAnnuaControl = this.anagraficaDto.get('contratto.ralAnnua');
+    const ralPartTimeControl = this.anagraficaDto.get('contratto.ralPartTime');
+
+    if (percentualePartTimeControl && ralAnnuaControl && ralPartTimeControl) {
+      const percentualePartTime = percentualePartTimeControl.value || 0;
+      const ralAnnua = ralAnnuaControl.value || 0;
+
+      const percentualeDecimal = percentualePartTime / 100;
+      const ralPartTime = ralAnnua * percentualeDecimal;
+
+      ralPartTimeControl.setValue(ralPartTime.toFixed(2)); // Formattato a due decimali
+    }
+  }
+
+
+
 
   /* Questo metodo gestisce il valore della  */
   onChangeDistaccoCommessa(event: Event, commessaIndex: number) {
     const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
     const commessaFormGroup = commesseFormArray.at(commessaIndex) as FormGroup;
-
+    const distaccoControl = commessaFormGroup.get('distacco');
+    const distaccoAziendaControl = commessaFormGroup.get('distaccoAzienda');
+    const distaccoDataControl = commessaFormGroup.get('distaccoData');
     const target = event.target as HTMLInputElement;
+    console.log("TARGET: "+ target)
     if (target) {
       let isChecked = target.checked;
-
       if (isChecked) {
         console.log('Checkbox selezionata, il valore è true');
+        if (distaccoControl && distaccoAziendaControl && distaccoDataControl) {
+          if (isChecked) {
+            distaccoAziendaControl.enable();
+            distaccoDataControl.enable();
+          } else {
+            distaccoAziendaControl.disable();
+            distaccoDataControl.disable();
+          }
+        }
+        if (distaccoControl === null) {
+          isChecked = false;
+        }
       } else {
         console.log('Checkbox deselezionata, il valore è false');
-      }
+        if (distaccoControl && distaccoAziendaControl && distaccoDataControl) {
+          if (isChecked) {
+            distaccoAziendaControl.enable();
+            distaccoDataControl.enable();
+          } else {
+            distaccoAziendaControl.disable();
+            distaccoDataControl.disable();
+          }
+        }
 
-      const distaccoControl = commessaFormGroup.get('distacco');
-      const distaccoAziendaControl = commessaFormGroup.get('distaccoAzienda');
-      const distaccoDataControl = commessaFormGroup.get('distaccoData');
-
-      if (distaccoControl && distaccoAziendaControl && distaccoDataControl) {
-        if (isChecked) {
-          distaccoAziendaControl.enable();
-          distaccoDataControl.enable();
-        } else {
-          distaccoAziendaControl.disable();
-          distaccoDataControl.disable();
+        if (distaccoControl === null) {
+          isChecked = false;
         }
       }
 
-      if (distaccoControl === null) {
-        isChecked = false;
-      }
+
     }
   }
+
+
+
 
   omTicketChange(event: Event) {
     const target = event.target as HTMLInputElement;
@@ -647,7 +687,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       aziendaCliente: '',
       clienteFinale: '',
       titoloPosizione: '',
-      distacco: '',
+      distacco: false,
       distaccoAzienda: '',
       distaccoData: '',
       dataInizio: '',
