@@ -162,6 +162,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         assicurazioneObbligatoria: new FormControl(''),
         pc: new FormControl(''),
         tariffaPartitaIva: new FormControl(''),
+        retribuzioneNettaGiornaliera: new FormControl(''),
+        retribuzioneNettaMensile: new FormControl(''),
         tipoCanaleReclutamento: new FormGroup({
           id: new FormControl(''),
           descrizione: new FormControl(''),

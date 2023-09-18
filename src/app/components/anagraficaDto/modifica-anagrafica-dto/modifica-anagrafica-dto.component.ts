@@ -153,6 +153,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         categoriaProtetta: [''],
         tutor: [''],
         pfi: [''],
+        retribuzioneNettaGiornaliera: [''],
+        retribuzioneNettaMensile: [''],
         corsoSicurezza: [''],
         dataCorsoSicurezza: [''],
         tipoCausaFineRapporto: this.formBuilder.group({
@@ -235,6 +237,19 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     }
   }
 
+  onChangeAssicurazioneObbligatoria(event:Event){
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+
+      if (isChecked) {
+        console.log('Checkbox selezionata, il valore è true');
+      } else {
+        console.log('Checkbox deselezionata, il valore è false');
+      }
+    }
+  }
+
   calculateRalPartTime() {
     const percentualePartTimeControl = this.anagraficaDto.get('contratto.percentualePartTime');
     const ralAnnuaControl = this.anagraficaDto.get('contratto.ralAnnua');
@@ -303,7 +318,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
 
 
-  omTicketChange(event: Event) {
+  onTicketChange(event: Event) {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
@@ -342,6 +357,18 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
   }
 
+  onChangePFI(event:Event){
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+
+      if (isChecked) {
+        console.log('Checkbox selezionata, il valore è true');
+      } else {
+        console.log('Checkbox deselezionata, il valore è false');
+      }
+    }
+  }
 
   onTipoContrattoChange(event: Event) {
     const selectedTipoContrattoId = parseInt(
@@ -838,7 +865,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe((resp: any) => {
         console.log(this.activatedRouter.snapshot.params['id']);
         this.data = (resp as any)['anagraficaDto'];
-        console.log(JSON.stringify(resp));
+        console.log("++++++++++++++++++++++++++++++++++++++++++++++++++ELENCO DEI DATI CARICATI: +++++++++++++++++++++++++++++++++++++++++++++++++ "+JSON.stringify(resp));
         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
         this.contratto = (resp as any)['anagraficaDto']['contratto'];
         if (this.contratto == null) {

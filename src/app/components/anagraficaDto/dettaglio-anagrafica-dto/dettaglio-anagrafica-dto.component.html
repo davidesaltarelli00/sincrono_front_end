@@ -232,10 +232,10 @@
                <td><strong>Categoria Protetta:</strong></td>
                 <td > {{ data?.contratto?.categoriaProtetta ?  'Sì' : 'No' }}</td>
                 </tr>
-                <!-- <tr>
+                <tr>
                   <td><strong>Assicurazione obbligatoria</strong></td>
-                  <td> {{data?.contratto?.assicurazioneObbligatoria ? data?.contratto?.assicurazioneObbligatoria : 'Dato non inserito' }} </td>
-                </tr> -->
+                  <td> {{data?.contratto?.assicurazioneObbligatoria ? 'Si' : 'No' }} </td>
+                </tr>
                 <tr [hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' && data?.contratto?.tipoContratto?.descrizione!='Apprendistato'" >
                   <td><strong>Tutor:</strong> </td>
                   <td>{{ data?.contratto?.tutor ?  data?.contratto?.tutor : 'Dato non inserito' }}</td>
@@ -295,7 +295,23 @@
             </tr>
             <tr>
               <td> <strong>Valore Ticket:</strong> </td>
-              <td>{{ data?.contratto?.valoreTicket ? data?.contratto?.valoreTicket: 'Dato non inserito' }}</td>
+              <td>{{ data?.contratto?.valoreTicket ? data?.contratto?.valoreTicket: 'Dato non inserito' }} <i class="fa fa-euro-sign" *ngIf="data?.contratto?.valoreTicket!=null" ></i></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="row">
+        <strong style="text-align: center;">Retribuzione netta</strong>
+        <div class="col-12">
+          <table class="table table-bordered">
+            <tr>
+              <td><strong>Retribuzione netta mensile:</strong></td>
+              <td>{{data?.contratto?.retribuzioneNettaMensile ? data?.contratto?.retribuzioneNettaMensile: 'Dato non inserito.'  }} <i *ngIf="data?.contratto?.retribuzioneNettaMensile!=null" class="fa-solid fa-euro-sign"></i> </td>
+            </tr>
+            <tr>
+              <td><strong>Retribuzione netta giornaliera:</strong></td>
+              <td>{{data?.contratto?.retribuzioneNettaGiornaliera ? data?.contratto?.retribuzioneNettaGiornaliera: 'Dato non inserito.'}} <i *ngIf="data?.contratto?.retribuzioneNettaGiornaliera!=null" class="fa-solid fa-euro-sign"></i></td>
             </tr>
           </table>
         </div>

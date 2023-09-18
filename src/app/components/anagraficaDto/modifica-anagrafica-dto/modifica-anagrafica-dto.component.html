@@ -136,21 +136,57 @@
             <br>
             <div class="row">
               <legend>Info familiari</legend>
-              <div class="col-3">
+              <div class="col-md-3">
                 <label for="coniugato">Coniugato:</label> <br>
-                <input type="checkbox" id="coniugato" formControlName="coniugato" />
+                <label class="toggle-switch">
+
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      style="border-color: black"
+                      [checked]="data?.contratto?.coniugato === true"
+                      formControlName="coniugato"
+                    />
+                    <span class="slider"></span>
+                  </div>
+                </label>
               </div>
-              <div class="col-3">
-                <label for="figliAcarico">Figli a Carico:</label> <br>
-                <input type="checkbox" [checked]="data?.anagrafica?.figliACarico === true" id="figliAcarico" formControlName="figliACarico" />
+              <div class="col-md-3">
+                <label for="figliACarico">Figli a carico:</label> <br>
+                <label class="toggle-switch">
+
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      style="border-color: black"
+                      [checked]="data?.contratto?.figliACarico === true"
+                      formControlName="figliACarico"
+                    />
+                    <span class="slider"></span>
+                  </div>
+                </label>
               </div>
             </div>
             <br>
             <div class="row">
               <legend>Attesa lavori</legend> <br>
-              <div class="col-3">
-                <label>Attesa Lavori</label> <br>
-                <input formControlName="attesaLavori" [checked]="data?.anagrafica?.attesaLavori === true" type="checkbox" />
+              <div class="col-md-3">
+                <label for="attesaLavori">Attesa lavori:</label> <br>
+                <label class="toggle-switch">
+
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      style="border-color: black"
+                      [checked]="data?.contratto?.attesaLavori === true"
+                      formControlName="attesaLavori"
+                    />
+                    <span class="slider"></span>
+                  </div>
+                </label>
               </div>
             </div>
             </div>
@@ -359,30 +395,57 @@
 
                         </div>
                         <br>
+                        <legend>Altri dati</legend>
                         <div class="row">
                           <div class="col-md-3">
-                            <label class="form-check-label">Categoria Protetta: </label>
-                            <div class="form-check">
-                              <input
-                                class="form-check-input"
-                                type="checkbox"
-                                style="border-color: black"
-                                [checked]="data?.contratto?.categoriaProtetta === true"
-                                formControlName="categoriaProtetta"
-                              />
-                            </div>
+                            <label for="categoriaProtetta">Categoria Protetta:</label> <br>
+                            <label class="toggle-switch">
+
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  style="border-color: black"
+                                  [checked]="data?.contratto?.categoriaProtetta === true"
+                                  formControlName="categoriaProtetta"
+                                />
+                                <span class="slider"></span>
+                              </div>
+                            </label>
+                          </div>
+
+                          <div class="col-md-3">
+                            <label for="pc">Computer:</label> <br>
+                            <label class="toggle-switch">
+
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  style="border-color: black"
+                                  [checked]="data?.contratto?.pc === true"
+                                  formControlName="pc"
+                                />
+                                <span class="slider"></span>
+                              </div>
+                            </label>
                           </div>
                           <div class="col-md-3">
-                            <label>PC: </label>
-                            <div class="form-group">
-                              <input
-                                class="form-check-input"
-                                type="checkbox"
-                                style="border-color: black"
-                                [checked]="data?.contratto?.pc"
-                                formControlName="pc"
-                              />
-                            </div>
+                            <label for="assicurazioneObbligatoria">Assicurazione obbligatoria:</label> <br>
+                            <label class="toggle-switch">
+
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  (change)="onChangeAssicurazioneObbligatoria($event)"
+                                  style="border-color: black"
+                                  [checked]="data?.contratto?.assicurazioneObbligatoria === true"
+                                  formControlName="assicurazioneObbligatoria"
+                                />
+                                <span class="slider"></span>
+                              </div>
+                            </label>
                           </div>
                         </div>
                         <br>
@@ -511,31 +574,50 @@
                         </div>
                       </div>
                     </div>
+                    <div class="row">
+                      <legend>Retribuzione netta</legend>
+                      <div class="col-3">
+                        <div class="form-group">
+                          <label for="retribuzioneNettaMensile">Retribuzione netta mensile</label>
+                          <input type="number" formControlName="retribuzioneNettaMensile" class="form-control" value="{{data?.contratto?.retribuzioneNettaMensile}}">
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <div class="form-group">
+                          <label for="retribuzioneNettaGiornaliera">Retribuzione netta giornaliera</label>
+                          <input type="number" formControlName="retribuzioneNettaGiornaliera" class="form-control" value="{{data?.contratto?.retribuzioneNettaGiornaliera}}">
+                        </div>
+                      </div>
+                    </div>
                     <br>
                     <div class="row">
                       <legend>Ticket</legend>
-                      <div class="col-md-3">
-                        <label>Ticket: </label>
-                        <div class="form-group">
-                          <input (change)="omTicketChange($event)"
-                            type="checkbox" style="border:1px solid black;"
-                            [ngStyle]="{ 'border': anagraficaDto.get('contratto.ticket')?.value=='' || anagraficaDto.get('contratto.ticket')?.value==null ? '1px solid red' : ''}"
-                            class="form-check-input"
-                            value="{{ data?.contratto?.ticket }}"
-                            [checked]="data?.contratto?.ticket"
-                            formControlName="ticket"
-                          />
-                          <!-- <span *ngIf="anagraficaDto.get('contratto.ticket')?.value=='' || anagraficaDto.get('contratto.ticket')?.value==null && anagraficaDto.get('contratto.ticket')?.value!=false" >Valore non inserito</span> -->
-                        </div>
+                      <div class="col-3">
+                        <label for="ticket">Ticket:</label> <br>
+                        <label class="toggle-switch">
+
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              style="border-color: black"
+                              [checked]="data?.contratto?.ticket === true"
+                              (change)="onTicketChange($event)"
+                              formControlName="ticket"
+                            />
+                            <span class="slider"></span>
+                          </div>
+                        </label>
                       </div>
+
                       <div class="col-md-3">
                         <label>Valore Ticket: </label>
                         <div class="form-group">
                           <input
-                            type="text"
+                            type="number"
                             class="form-control"
                             value="{{ data?.contratto?.valoreTicket }}"
-                            formControlName="valoreTicket"
+                            formControlName="valoreTicket" placeholder="Inserire valore ticket"
                           />
                         </div>
                       </div>
@@ -544,17 +626,22 @@
 
                     <div class="row">
                       <legend>Part time</legend>
-                      <div class="col-md-3">
-                        <label class="form-check-label">Part time: </label>
-                        <div class="form-group">
-                          <input (change)="onPartTimeChange($event)"
-                            class="form-check-input"
-                            type="checkbox"
-                            style="border-color: black"
-                            [checked]="data?.contratto?.partTime"
-                            formControlName="partTime"
-                          />
-                        </div>
+                      <div class="col-3">
+                        <label for="partTime">Part time:</label> <br>
+                        <label class="toggle-switch">
+
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              style="border-color: black"
+                              [checked]="data?.contratto?.partTime === true"
+                              (change)="onPartTimeChange($event)"
+                              formControlName="partTime"
+                            />
+                            <span class="slider"></span>
+                          </div>
+                        </label>
                       </div>
                       <div class="col-md-3">
                         <label class="form-check-label">% Part time: </label>
@@ -573,8 +660,7 @@
                         <input type="text" class="form-control" formControlName="ralPartTime" [(ngModel)]="percentualePartTimeValue" >
                       </div>
                     </div>
-                    <br>
-
+                    <br> <br>
                     <!--Campi da compilare solo se il contratto é uno stage o un apprendistato-->
                     <div class="row" >
                       <div class="col-md-3">
@@ -583,26 +669,42 @@
                           <input type="text" class="form-control" value="{{ data?.contratto?.tutor }}" formControlName="tutor" />
                         </div>
                       </div>
-                      <div class="col-md-3">
-                        <label>PFI: </label>
-                        <div class="form-group">
-                          <input type="checkbox" class="form-check-input" [checked]="data?.contratto?.pfi" formControlName="pfi" />
-                        </div>
+                      <div class="col-3">
+                        <label for="partTime">Piano formativo individuale:</label> <br>
+                        <label class="toggle-switch">
+
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              style="border-color: black"
+                              [checked]="data?.contratto?.pfi === true"
+                              (change)="onChangePFI($event)"
+                              formControlName="pfi"
+                            />
+                            <span class="slider"></span>
+                          </div>
+                        </label>
                       </div>
                     </div>
                     <br>
                     <div class="row">
                       <legend>Corso di sicurezza</legend>
                       <div class="col-md-3">
-                        <label>Corso di Sicurezza: </label>
-                        <div class="form-group">
-                          <input
-                            type="checkbox" style="border:1px solid black;"
-                            class="form-check-input"
-                            value="{{ data?.contratto?.corsoSicurezza }}"
-                            formControlName="corsoSicurezza"
-                          />
-                        </div>
+                        <label for="corsoDiSicurezza">Corso di sicurezza:</label> <br>
+                        <label class="toggle-switch">
+
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              style="border-color: black"
+                              [checked]="data?.contratto?.corsoSicurezza === true"
+                              formControlName="corsoSicurezza"
+                            />
+                            <span class="slider"></span>
+                          </div>
+                        </label>
                       </div>
                       <div class="col-md-3">
                         <label>Data corso di Sicurezza: </label>
@@ -632,7 +734,7 @@
                         </div>
                      </div>
                     </div>
-
+                    <br>
                     <div class="row">
                       <div class="col-12">
                         <legend>Dati medici</legend>
@@ -640,11 +742,20 @@
                     </div>
                     <div class="row">
                       <div class="col-md-3">
-                        <label>Visita medica: </label>
-                      <div class="form-group">
-                        <input style="border-color: black"  class="form-check-input" type="checkbox" [checked]="variabileGenerica?.contratto?.visitaMedica"
-                          formControlName="visitaMedica" /> <!--[checked]="AnagraficaDto.contratto.visitaMedica"-->
-                      </div>
+                        <label for="visitaMedica">Visita medica:</label> <br>
+                        <label class="toggle-switch">
+
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              style="border-color: black"
+                              [checked]="data?.contratto?.visitaMedica === true"
+                              formControlName="visitaMedica"
+                            />
+                            <span class="slider"></span>
+                          </div>
+                        </label>
                       </div>
                       <div class="col-md-3">
                         <label for="dataVisitaMedica">Data visita medica</label>
