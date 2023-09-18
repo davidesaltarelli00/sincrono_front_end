@@ -6,7 +6,7 @@ pipeline {
             steps {
                 sh 'node --version'
                 sh 'ng build'
-                sh 'pwd && ls'
+                sh 'pwd && ls dists'
             }
         }
         stage('Front-end') {
