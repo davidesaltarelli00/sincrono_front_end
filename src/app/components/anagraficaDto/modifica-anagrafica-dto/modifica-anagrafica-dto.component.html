@@ -481,115 +481,220 @@
                     <br>
                     <div class="row">
                       <legend>Dati economici </legend>
-                      <div class="col-md-3">
-                        <label>Retribuzione Mensile Lorda: </label>
-                        <div class="form-group">
-                          <input
-                            type="number"
-                            step="0.01"
-                            class="form-control"
-                            value="{{ data?.contratto?.retribuzioneMensileLorda }}"
-                            formControlName="retribuzioneMensileLorda"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <label>Superminimo Mensile: </label>
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            class="form-control"
-                            value="{{ data?.contratto?.superminimoMensile }}"
-                            formControlName="superminimoMensile"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <label>RAL Annua: </label>
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            class="form-control"
-                            value="{{ data?.contratto?.ralAnnua }}"
-                            formControlName="ralAnnua"  (input)="calculateRalPartTime()"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <label>Superminimo RAL: </label>
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            class="form-control"
-                            value="{{ data?.contratto?.superminimoRal }}"
-                            formControlName="superminimoRal"
-                          />
-                        </div>
-                      </div>
-                    </div>
 
-                    <div class="row">
+                      <p>Retribuzione</p>
                       <div class="col-md-3">
-                        <label>Diaria Annua: </label>
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            class="form-control"
-                            value="{{ data?.contratto?.diariaAnnua }}"
-                            formControlName="diariaAnnua"
+                        <label>Retribuzione Mensile Lorda:</label>
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text prefix" style="background-color: black; color: white;">€</div>
+                          </div>
+                          <input matInput
+                                 type="number"
+                                 step="0.01"
+                                 min="0"
+                                 class="form-control"
+                                 [value]="data?.contratto?.retribuzioneMensileLorda"
+                                 formControlName="retribuzioneMensileLorda"
+                                 placeholder="Inserire retribuzione mensile lorda"
                           />
                         </div>
                       </div>
                       <div class="col-md-3">
-                        <label>Diaria Mensile: </label>
+                        <label>Retribuzione netta mensile:</label>
                         <div class="form-group">
-                          <input
-                            type="text"
-                            class="form-control"
-                            value="{{ data?.contratto?.diariaMensile }}"
-                            formControlName="diariaMensile"
-                          />
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text custom-prefix">€</span>
+                            </div>
+                            <input
+                              type="number"
+                              class="form-control"
+                              value="{{ data?.contratto?.retribuzioneNettaMensile }}"
+                              formControlName="retribuzioneNettaMensile"
+                              step="0.01"
+                              min="0"
+                              placeholder="Inserire retribuzione netta mensile"
+                            />
+                          </div>
                         </div>
                       </div>
                       <div class="col-md-3">
-                        <label>Diaria Giornaliera: </label>
+                        <label>Retribuzione netta giornaliera:</label>
                         <div class="form-group">
-                          <input
-                            type="text"
-                            class="form-control"
-                            value="{{ data?.contratto?.diariaGiornaliera }}"
-                            formControlName="diariaGiornaliera"
-                          />
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text custom-prefix">€</span>
+                            </div>
+                            <input
+                              type="number"
+                              class="form-control"
+                              value="{{ data?.contratto?.retribuzioneNettaGiornaliera }}"
+                              formControlName="retribuzioneNettaGiornaliera"
+                              step="0.01"
+                              min="0"
+                              placeholder="Inserire retribuzione netta giornaliera"
+                            />
+                          </div>
                         </div>
                       </div>
+
                       <div class="col-md-3">
-                        <label>Scatti Anzianita: </label>
+                        <label>Superminimo Mensile:</label>
                         <div class="form-group">
-                          <input
-                            type="number"
-                            class="form-control"
-                            value="{{ data?.contratto?.scattiAnzianita }}"
-                            formControlName="scattiAnzianita"
-                          />
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text custom-prefix">€</span>
+                            </div>
+                            <input
+                              type="number"
+                              class="form-control"
+                              value="{{ data?.contratto?.superminimoMensile }}"
+                              formControlName="superminimoMensile"
+                              step="0.01"
+                              min="0"
+                              placeholder="Inserire Superminimo mensile"
+                            />
+                          </div>
                         </div>
                       </div>
+
+
                     </div>
+                    <br>
                     <div class="row">
-                      <legend>Retribuzione netta</legend>
-                      <div class="col-3">
+
+                      <legend>RAL</legend>
+
+                      <div class="col-md-6">
+                        <label>RAL Annua:</label>
                         <div class="form-group">
-                          <label for="retribuzioneNettaMensile">Retribuzione netta mensile</label>
-                          <input type="number" formControlName="retribuzioneNettaMensile" class="form-control" value="{{data?.contratto?.retribuzioneNettaMensile}}">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text custom-prefix">€</span>
+                            </div>
+                            <input
+                              type="number"
+                              class="form-control"
+                              value="{{ data?.contratto?.ralAnnua }}"
+                              formControlName="superminimoMensile"
+                              step="0.01"
+                              min="0"
+                              placeholder="Inserire RAL annua"
+                              (input)="calculateRalPartTime()"
+                            />
+                          </div>
                         </div>
                       </div>
-                      <div class="col-3">
+
+
+                      <div class="col-md-6">
+                        <label>Superminimo RAL:</label>
                         <div class="form-group">
-                          <label for="retribuzioneNettaGiornaliera">Retribuzione netta giornaliera</label>
-                          <input type="number" formControlName="retribuzioneNettaGiornaliera" class="form-control" value="{{data?.contratto?.retribuzioneNettaGiornaliera}}">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text custom-prefix">€</span>
+                            </div>
+                            <input
+                              type="number"
+                              class="form-control"
+                              value="{{ data?.contratto?.superminimoRal }}"
+                              formControlName="superminimoRal"
+                              step="0.01"
+                              min="0"
+                              placeholder="Inserire superminimo RAL"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
                     <br>
+                    <div class="row">
+                      <legend>Diaria</legend>
+                      <div class="col-md-4">
+                        <label>Diaria annua:</label>
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text custom-prefix">€</span>
+                            </div>
+                            <input
+                              type="number"
+                              class="form-control"
+                              value="{{ data?.contratto?.diariaAnnua }}"
+                              formControlName="diariaAnnua"
+                              step="0.01"
+                              min="0"
+                              placeholder="Inserire diaria annua"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                        <div class="col-md-4">
+                        <label>Diaria mensile:</label>
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text custom-prefix">€</span>
+                            </div>
+                            <input
+                              type="number"
+                              class="form-control"
+                              value="{{ data?.contratto?.diariaMensile }}"
+                              formControlName="diariaMensile"
+                              step="0.01"
+                              min="0"
+                              placeholder="Inserire diaria mensile"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-4">
+                        <label>Diaria giornaliera:</label>
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text custom-prefix">€</span>
+                            </div>
+                            <input
+                              type="number"
+                              class="form-control"
+                              value="{{ data?.contratto?.diariaGiornaliera }}"
+                              formControlName="diariaGiornaliera"
+                              step="0.01"
+                              min="0"
+                              placeholder="Inserire diaria giornaliera"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <br>
+                    <div class="row">
+                      <legend>Scatti anzianitá</legend>
+                      <div class="col-md-4">
+                        <label>Scatti anzianitá:</label>
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text custom-prefix">€</span>
+                            </div>
+                            <input
+                              type="number"
+                              class="form-control"
+                              value="{{ data?.contratto?.scattiAnzianita }}"
+                              formControlName="scattiAnzianita"
+                              step="0.01"
+                              min="0"
+                              placeholder="Inserire scatti anzianitá"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <div class="row">
                       <legend>Ticket</legend>
                       <div class="col-3">
@@ -784,7 +889,7 @@
                       <div class="col-md-5">
                         <div class="form-group"  formGroupName="tipoCausaFineRapporto">
                         <label>Motivazione Fine Rapporto: </label>
-                        <select  class="form-control" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
+                        <select (change)="onChangeCausaFineRapporto($event)" class="form-control" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
                           <option value="">--nessuna selezione--</option>
                           <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto" [value]="tipoCausaFineRapporto.id">
                             {{ tipoCausaFineRapporto.descrizione }}
