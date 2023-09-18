@@ -50,7 +50,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   inseritoContrattoIndeterminato: boolean = false;
   contrattoStageOApprendistato: any;
   percentualePartTimeValue: number | null = null;
-
+  dataOdierna = new Date();
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -193,8 +193,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.creaFormCommessa();
     this.caricaTipoCanaleReclutamento();
     this.caricaTipoCausaFineRapporto();
-    const ralPartTimeControl=this.anagraficaDto.get('contratto.ralPartTime');
-    if(ralPartTimeControl){
+    const ralPartTimeControl = this.anagraficaDto.get('contratto.ralPartTime');
+    if (ralPartTimeControl) {
       ralPartTimeControl.disable();
     }
 
@@ -216,9 +216,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     if (target) {
       const isChecked = target.checked;
 
-      const percentualePartTimeControl = this.anagraficaDto.get('contratto.percentualePartTime');
+      const percentualePartTimeControl = this.anagraficaDto.get(
+        'contratto.percentualePartTime'
+      );
       const ralAnnuaControl = this.anagraficaDto.get('contratto.ralAnnua');
-      const ralPartTimeControl = this.anagraficaDto.get('contratto.ralPartTime');
+      const ralPartTimeControl = this.anagraficaDto.get(
+        'contratto.ralPartTime'
+      );
 
       if (percentualePartTimeControl && ralAnnuaControl && ralPartTimeControl) {
         if (isChecked) {
@@ -237,7 +241,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-  onChangeAssicurazioneObbligatoria(event:Event){
+  onChangeAssicurazioneObbligatoria(event: Event) {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
@@ -251,7 +255,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   calculateRalPartTime() {
-    const percentualePartTimeControl = this.anagraficaDto.get('contratto.percentualePartTime');
+    const percentualePartTimeControl = this.anagraficaDto.get(
+      'contratto.percentualePartTime'
+    );
     const ralAnnuaControl = this.anagraficaDto.get('contratto.ralAnnua');
     const ralPartTimeControl = this.anagraficaDto.get('contratto.ralPartTime');
 
@@ -266,9 +272,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-
-
-
   /* Questo metodo gestisce il valore della  */
   onChangeDistaccoCommessa(event: Event, commessaIndex: number) {
     const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
@@ -277,7 +280,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     const distaccoAziendaControl = commessaFormGroup.get('distaccoAzienda');
     const distaccoDataControl = commessaFormGroup.get('distaccoData');
     const target = event.target as HTMLInputElement;
-    console.log("TARGET: "+ target)
+    console.log('TARGET: ' + target);
     if (target) {
       let isChecked = target.checked;
       if (isChecked) {
@@ -310,13 +313,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           isChecked = false;
         }
       }
-
-
     }
   }
-
-
-
 
   onTicketChange(event: Event) {
     const target = event.target as HTMLInputElement;
@@ -354,10 +352,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     const retribuzioneMensileLordaControl = this.anagraficaDto.get(
       'contratto.retribuzioneMensileLorda'
     );
-
   }
 
-  onChangePFI(event:Event){
+  onChangePFI(event: Event) {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
@@ -370,7 +367,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-  onTipoContrattoChange(event: Event) {
+  onTipoContrattoChange(event: any) {
     const selectedTipoContrattoId = parseInt(
       (event.target as HTMLSelectElement).value,
       10
@@ -680,6 +677,36 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     });
   }
 
+  // Dichiarazione di una variabile per il valore precedente
+  valorePrecedenteDataFineRapporto: any;
+
+  onChangeCausaFineRapporto(event: any) {
+    const target = event.target as HTMLInputElement;
+    const value = target.value;
+    console.log(value);
+
+    const dataFineRapportoControl = this.anagraficaDto.get(
+      'contratto.dataFineRapporto'
+    );
+
+    if (value && dataFineRapportoControl) {
+      this.valorePrecedenteDataFineRapporto = dataFineRapportoControl.value;
+      dataFineRapportoControl.setValue(this.dataOdierna);
+      dataFineRapportoControl.disable();
+      alert("La data di fine rapporto é stata impostata a oggi." + this.dataOdierna+ " Per reimpostare la vecchia data, elimina la causa di fine rapporto.")
+    } else {
+      // Ripristina il valore precedente
+      if (this.valorePrecedenteDataFineRapporto !== undefined) {
+        dataFineRapportoControl?.setValue(
+          this.valorePrecedenteDataFineRapporto
+        );
+      } else {
+        dataFineRapportoControl?.setValue(null); // Se non esiste un valore precedente, impostalo su null o su quello che desideri
+      }
+      dataFineRapportoControl?.enable();
+    }
+  }
+
   caricaTipoCausaFineRapporto() {
     this.anagraficaDtoService
       .caricaTipoCausaFineRapporto(localStorage.getItem('token'))
@@ -865,7 +892,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe((resp: any) => {
         console.log(this.activatedRouter.snapshot.params['id']);
         this.data = (resp as any)['anagraficaDto'];
-        console.log("++++++++++++++++++++++++++++++++++++++++++++++++++ELENCO DEI DATI CARICATI: +++++++++++++++++++++++++++++++++++++++++++++++++ "+JSON.stringify(resp));
+        console.log(
+          '++++++++++++++++++++++++++++++++++++++++++++++++++ELENCO DEI DATI CARICATI: +++++++++++++++++++++++++++++++++++++++++++++++++ ' +
+            JSON.stringify(resp)
+        );
         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
         this.contratto = (resp as any)['anagraficaDto']['contratto'];
         if (this.contratto == null) {
@@ -1082,11 +1112,14 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     );
   }
 
-
   calculateDataFineRapporto() {
     const mesiDurataControl = this.anagraficaDto.get('contratto.mesiDurata');
-    const dataFineRapportoControl = this.anagraficaDto.get('contratto.dataFineRapporto');
-    const dataAssunzioneControl = this.anagraficaDto.get('contratto.dataAssunzione');
+    const dataFineRapportoControl = this.anagraficaDto.get(
+      'contratto.dataFineRapporto'
+    );
+    const dataAssunzioneControl = this.anagraficaDto.get(
+      'contratto.dataAssunzione'
+    );
 
     // Verifica se mesiDurataControl e dataAssunzioneControl esistono e non sono nulli
     if (
@@ -1109,11 +1142,14 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         dataFineRapportoControl?.setValue(dataFineRapporto);
       } else {
         // Alcuni dei valori necessari sono mancanti, gestisci di conseguenza
-        console.error('Impossibile calcolare la data di fine rapporto. Mancano dati.');
+        console.error(
+          'Impossibile calcolare la data di fine rapporto. Mancano dati.'
+        );
       }
     } else {
-      console.error('I controlli necessari non esistono o alcuni valori sono nulli.');
+      console.error(
+        'I controlli necessari non esistono o alcuni valori sono nulli.'
+      );
     }
   }
-
 }
