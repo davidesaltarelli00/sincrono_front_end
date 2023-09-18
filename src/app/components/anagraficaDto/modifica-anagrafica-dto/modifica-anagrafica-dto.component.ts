@@ -102,7 +102,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         titoliDiStudio: [''],
         altriTitoli: [''],
         coniugato: [''],
-        figliAcarico: [''],
+        figliACarico: [''],
         attesaLavori: [''],
       }),
       commesse: this.formBuilder.array([]),
@@ -1018,34 +1018,35 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
   calculateDataFineRapporto() {
     const mesiDurataControl = this.anagraficaDto.get('contratto.mesiDurata');
-    const dataFineRapportoControl = this.anagraficaDto.get(
-      'contratto.dataFineRapporto'
-    );
-    const dataAssunzioneControl = this.anagraficaDto.get(
-      'contratto.dataAssunzione'
-    );
+    const dataFineRapportoControl = this.anagraficaDto.get('contratto.dataFineRapporto');
+    const dataAssunzioneControl = this.anagraficaDto.get('contratto.dataAssunzione');
 
-    // Verifica se tutti i controlli necessari esistono
-    if (mesiDurataControl && dataFineRapportoControl && dataAssunzioneControl) {
+    // Verifica se mesiDurataControl e dataAssunzioneControl esistono e non sono nulli
+    if (
+      mesiDurataControl &&
+      dataAssunzioneControl &&
+      mesiDurataControl.value !== null &&
+      dataAssunzioneControl.value !== null
+    ) {
       // Ottieni i valori dei controlli
       const mesiDurata = mesiDurataControl.value;
       const dataAssunzione = dataAssunzioneControl.value;
 
+      // Verifica se i valori ottenuti sono validi
       if (mesiDurata && dataAssunzione) {
         // Calcola la data di fine rapporto aggiungendo i mesi di durata alla data di assunzione
         const dataFineRapporto = new Date(dataAssunzione);
         dataFineRapporto.setMonth(dataFineRapporto.getMonth() + mesiDurata);
 
         // Imposta il valore calcolato nel controllo 'dataFineRapporto'
-        dataFineRapportoControl.setValue(dataFineRapporto);
+        dataFineRapportoControl?.setValue(dataFineRapporto);
       } else {
         // Alcuni dei valori necessari sono mancanti, gestisci di conseguenza
-        console.error(
-          'Impossibile calcolare la data di fine rapporto. Mancano dati.'
-        );
+        console.error('Impossibile calcolare la data di fine rapporto. Mancano dati.');
       }
     } else {
-      console.error('I controlli necessari non esistono.');
+      console.error('I controlli necessari non esistono o alcuni valori sono nulli.');
     }
   }
+
 }

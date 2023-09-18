@@ -142,7 +142,7 @@
               </div>
               <div class="col-3">
                 <label for="figliAcarico">Figli a Carico:</label> <br>
-                <input type="checkbox" [checked]="data?.anagrafica?.figliAcarico === true" id="figliAcarico" formControlName="figliAcarico" />
+                <input type="checkbox" [checked]="data?.anagrafica?.figliACarico === true" id="figliAcarico" formControlName="figliACarico" />
               </div>
             </div>
             <br>
@@ -273,7 +273,7 @@
                             <label>Data Assunzione: </label>
                             <div class="form-group">
                               <input
-                                type="date"
+                                type="text"
                                 class="form-control"
                                 [value]="transformDate(data?.contratto?.dataAssunzione)"
                                 formControlName="dataAssunzione"
@@ -285,7 +285,7 @@
                             <label>Data inizio prova *</label>
                             <div class="form-group">
                               <input
-                                type="date"
+                                type="text"
                                 class="form-control"
                                 [value]="transformDate(data?.contratto?.dataInizioProva)"
                                 formControlName="dataInizioProva"
@@ -297,7 +297,7 @@
                             <label>Data fine Prova: </label>
                             <div class="form-group">
                               <input
-                                type="date"
+                                type="text"
                                 class="form-control"
                                 [value]="transformDate(data?.contratto?.dataFineProva)"
                                 formControlName="dataFineProva"
@@ -309,7 +309,7 @@
                             <label>Data Fine Rapporto: </label>
                             <div class="form-group">
                               <input
-                                type="date"
+                                type="text"
                                 class="form-control"
                                 [value]="transformDate(data?.contratto?.dataFineRapporto)"
                                 formControlName="dataFineRapporto"
