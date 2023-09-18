@@ -2,17 +2,17 @@ pipeline {
     agent none
     stages {
         stage('Back-end') {
-            agent { dockerfile true }
+            agent {dockerfile { filename 'Dockerfile.node' }}
             steps {
                 sh 'node --version'
                 sh 'ng build'
                 sh 'pwd && ls dist'
             }
         }
+
+      
         stage('Front-end') {
-            agent {
-                docker { image 'nginx' }
-            }
+            agent {dockerfile { filename 'Dockerfile.nginx' }}
             steps {
               sh 'nginx -v'
             }
