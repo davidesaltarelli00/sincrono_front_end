@@ -9,7 +9,8 @@ pipeline {
                   }
             steps {
                 sh 'node --version'
-                sh 'ng build --base-href=/home/html'
+                sh 'ng build'
+                sh 'cp -rvv /var/jenkins_home/workspace/sincronofe_master/dist/sincrono/* /home/html'
                 sh 'pwd'
                 sh 'ls /home/html'
             }
