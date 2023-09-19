@@ -9,7 +9,9 @@ pipeline {
                   }
             steps {
                 sh 'node --version'
-                sh 'ng build --base-href=/home/sviluppo/nginx/server1'
+                sh 'ng build'
+                sh 'pwd'
+                sh 'ls'
             }
         }
     }
