@@ -5,7 +5,7 @@ pipeline {
             agent {dockerfile { filename 'Dockerfile' }}
             steps {
                 sh 'node --version'
-                sh 'ng build --base-href=/usr/share/nginx/html'
+                sh 'ng build --base-href=/home/sviluppo/nginx/server1'
             }
         }
     }
