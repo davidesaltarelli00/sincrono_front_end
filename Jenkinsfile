@@ -6,8 +6,6 @@ pipeline {
             steps {
                 sh 'node --version'
                 sh 'ng build --base-href=/usr/share/nginx/html'
-                sh 'pwd && ls dist'
-                sh 'dpkg -L nginx'
             }
         }
     }
