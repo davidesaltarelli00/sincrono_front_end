@@ -9,9 +9,9 @@ pipeline {
                   }
             steps {
                 sh 'node --version'
-                sh 'ng build'
+                sh 'ng build --base-href=/home/html'
                 sh 'pwd'
-                sh 'ls'
+                sh 'ls /home/html'
             }
         }
     }
