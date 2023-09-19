@@ -58,8 +58,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   percentualePartTimeValue: number | null = null;
 
   //dati per i controlli nei form
-  inseritoContrattoIndeterminato=true;
-
+  inseritoContrattoIndeterminato = true;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -67,7 +66,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     private router: Router,
     private contrattoService: ContrattoService,
     private datePipe: DatePipe
-
   ) {
     this.AnagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
@@ -79,7 +77,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         codiceFiscale: new FormControl('', [
           Validators.required,
           Validators.minLength(15),
-          Validators.maxLength(16),
+          Validators.maxLength(15),
+          Validators.pattern(/^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$/),
         ]),
         cellularePrivato: new FormControl('', [
           Validators.pattern(/^[0-9]{10}$/),
@@ -144,7 +143,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         dataFineRapporto: new FormControl(''), //, Validators.required
         mesiDurata: new FormControl(''), //, Validators.required
         livelloAttuale: new FormControl(''), // +
-        livelloFinale: new FormControl(''),//+
+        livelloFinale: new FormControl(''), //+
         ralPartTime: new FormControl(''),
         diariaAnnua: new FormControl(''), //+
         partTime: new FormControl(''),
@@ -198,22 +197,109 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const distaccoAziendaControl = this.AnagraficaDto.get(
+      'commesse.distaccoAzienda'
+    );
+    const distaccoDataControl = this.AnagraficaDto.get('commesse.distaccoData');
+
+    if (distaccoAziendaControl && distaccoDataControl) {
+      distaccoAziendaControl.disable();
+      distaccoDataControl.disable();
+    }
+
+    const dataCorsoSicurezzaControl = this.AnagraficaDto.get(
+      'contratto.dataCorsoSicurezza'
+    );
+    if (dataCorsoSicurezzaControl) {
+      dataCorsoSicurezzaControl.disable();
+    }
+
+    const tutorControl = this.AnagraficaDto.get('contratto.tutor');
+    if (tutorControl) {
+      tutorControl.disable();
+    }
+
     const ralPartTimeControl = this.AnagraficaDto.get('contratto.ralPartTime');
     if (ralPartTimeControl) {
       ralPartTimeControl.disable();
     }
 
-    this.AnagraficaDto
-      .get('contratto.dataAssunzione')
-      ?.valueChanges.subscribe(() => {
-        this.calculateDataFineRapporto();
-      });
+    const tipoAziendaControlAnagrafica = this.AnagraficaDto.get(
+      'anagrafica.tipoAzienda.id'
+    );
+    const tipoAziendaControlContratto = this.AnagraficaDto.get(
+      'contratto.tipoAzienda.id'
+    );
 
-    this.AnagraficaDto
-      .get('contratto.mesiDurata')
-      ?.valueChanges.subscribe(() => {
+    const valoreTicketControl = this.AnagraficaDto.get(
+      'contratto.valoreTicket'
+    );
+    if (valoreTicketControl) {
+      valoreTicketControl.disable();
+    }
+
+    const dataVisitaMedicaControl = this.AnagraficaDto.get(
+      'contratto.dataVisitaMedica'
+    );
+    if (dataVisitaMedicaControl) {
+      dataVisitaMedicaControl.disable();
+    }
+
+    // Aggiungi un listener valueChanges per il controllo tipoAzienda in anagrafica
+    tipoAziendaControlAnagrafica?.valueChanges.subscribe((value) => {
+      tipoAziendaControlContratto?.setValue(value, { emitEvent: false });
+    });
+
+    // Aggiungi un listener valueChanges per il controllo tipoAzienda in contratto
+    tipoAziendaControlContratto?.valueChanges.subscribe((value) => {
+      tipoAziendaControlAnagrafica?.setValue(value, { emitEvent: false });
+    });
+
+    this.AnagraficaDto.get('contratto.dataAssunzione')?.valueChanges.subscribe(
+      () => {
         this.calculateDataFineRapporto();
-      });
+      }
+    );
+
+    this.AnagraficaDto.get('contratto.mesiDurata')?.valueChanges.subscribe(
+      () => {
+        this.calculateDataFineRapporto();
+      }
+    );
+  }
+
+  onChangeConiugato(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+
+      if (isChecked) {
+        console.log('Checkbox selezionata, il valore è true');
+      } else {
+        console.log('Checkbox deselezionata, il valore è false');
+      }
+    }
+  }
+
+  onDistaccoChange(event: Event) {
+    const distaccoAziendaControl = this.AnagraficaDto.get(
+      'commesse.distaccoAzienda'
+    );
+    const distaccoDataControl = this.AnagraficaDto.get('commesse.distaccoData');
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+
+      if (isChecked) {
+        console.log('Checkbox selezionata, il valore è true');
+        distaccoAziendaControl?.enable();
+        distaccoDataControl?.enable();
+      } else {
+        console.log('Checkbox deselezionata, il valore è false');
+        distaccoAziendaControl?.disable();
+        distaccoDataControl?.disable();
+      }
+    }
   }
 
   aggiungiCommessa() {
@@ -261,8 +347,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       'contratto.tariffaPartitaIva'
     );
 
-    const livelloAttualeControl= this.AnagraficaDto.get('contratto.livelloAttuale');
-    const livelloFinaleControl= this.AnagraficaDto.get('contratto.livelloFinale');
+    const livelloAttualeControl = this.AnagraficaDto.get(
+      'contratto.livelloAttuale'
+    );
+    const livelloFinaleControl = this.AnagraficaDto.get(
+      'contratto.livelloFinale'
+    );
 
     switch (selectedTipoContrattoId) {
       case 1: // Contratto STAGE
@@ -277,8 +367,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           diariaMensileControl &&
           diariaGiornalieraControl &&
           scattiAnzianitaControl &&
-          tariffaPartitaIvaControl
-          &&
+          tariffaPartitaIvaControl &&
           // livelloAttualeControl &&
           retribuzioneNettaMensileControl
           // &&
@@ -292,7 +381,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
           livelloAttualeControl?.disable();
           livelloAttualeControl?.setValue(null);
-
 
           livelloFinaleControl?.disable();
           livelloFinaleControl?.setValue(null);
@@ -341,15 +429,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           dataFineRapportoControl &&
           mesiDurataControl
         ) {
-
           livelloAttualeControl?.disable();
           livelloAttualeControl?.setValue(null);
 
-
           livelloFinaleControl?.disable();
           livelloFinaleControl?.setValue(null);
-
-
 
           tariffaPartitaIvaControl.enable();
           tariffaPartitaIvaControl.setValue('');
@@ -431,7 +515,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           livelloAttualeControl?.enable();
           livelloAttualeControl?.setValue(null);
 
-
           livelloFinaleControl?.enable();
           livelloFinaleControl?.setValue(null);
         }
@@ -452,7 +535,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           retribuzioneMensileLordaControl
         ) {
           mesiDurataControl.disable();
-          mesiDurataControl.setValue('');
+          mesiDurataControl.setValue(1000);
 
           dataFineRapportoControl.disable();
           dataFineRapportoControl.setValue(null);
@@ -490,7 +573,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           livelloAttualeControl?.enable();
           livelloAttualeControl?.setValue(null);
 
-
           livelloFinaleControl?.enable();
           livelloFinaleControl?.setValue(null);
         }
@@ -523,7 +605,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
           livelloAttualeControl?.enable();
           livelloAttualeControl?.setValue(null);
-
 
           livelloFinaleControl?.enable();
           livelloFinaleControl?.setValue(null);
@@ -563,8 +644,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         break;
     }
   }
-
-
 
   calculateDataFineRapporto() {
     const mesiDurataControl = this.AnagraficaDto.get('contratto.mesiDurata');
@@ -613,7 +692,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-
   calculateRalPartTime() {
     const percentualePartTimeControl = this.AnagraficaDto.get(
       'contratto.percentualePartTime'
@@ -632,44 +710,128 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-
   onConiugatoChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
       // Adesso puoi usare isChecked in modo sicuro
       if (isChecked) {
-        console.log("Checkbox selezionata, il valore è true");
+        console.log('Checkbox selezionata, il valore è true');
       } else {
-        console.log("Checkbox deselezionata, il valore è false");
+        console.log('Checkbox deselezionata, il valore è false');
       }
     }
   }
 
-
-  onFigliACaricoChange(event:any){
+  onFigliACaricoChange(event: any) {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
       if (isChecked) {
-        console.log("Checkbox selezionata, il valore è true");
+        console.log('Checkbox selezionata, il valore è true');
       } else {
-        console.log("Checkbox deselezionata, il valore è false");
+        console.log('Checkbox deselezionata, il valore è false');
       }
     }
   }
-  onAttesaLavoriChange(event:any){
+  onAttesaLavoriChange(event: any) {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
       if (isChecked) {
-        console.log("Checkbox selezionata, il valore è true");
+        console.log('Checkbox selezionata, il valore è true');
       } else {
-        console.log("Checkbox deselezionata, il valore è false");
+        console.log('Checkbox deselezionata, il valore è false');
       }
     }
   }
 
+  onValoreTicketChange(event: any) {
+    const valoreTicketControl = this.AnagraficaDto.get(
+      'contratto.valoreTicket'
+    );
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      if (isChecked) {
+        console.log('Checkbox selezionata, il valore è true');
+        valoreTicketControl?.enable();
+      } else {
+        console.log('Checkbox deselezionata, il valore è false');
+        valoreTicketControl?.disable();
+      }
+    }
+  }
+  onCategoriaProtettaChange(event: any) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      if (isChecked) {
+        console.log('Checkbox selezionata, il valore è true');
+      } else {
+        console.log('Checkbox deselezionata, il valore è false');
+      }
+    }
+  }
+  onPFIChange(event: any) {
+    const target = event.target as HTMLInputElement;
+    const tutorControl = this.AnagraficaDto.get('contratto.tutor');
+    if (target) {
+      const isChecked = target.checked;
+      if (isChecked) {
+        console.log('Checkbox selezionata, il valore è true');
+        tutorControl?.enable();
+      } else {
+        console.log('Checkbox deselezionata, il valore è false');
+        tutorControl?.disable();
+      }
+    }
+  }
+  onCorsoSicurezzaChange(event: any) {
+    const dataCorsoSicurezzaControl = this.AnagraficaDto.get(
+      'contratto.dataCorsoSicurezza'
+    );
+
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      if (isChecked) {
+        console.log('Checkbox selezionata, il valore è true');
+        dataCorsoSicurezzaControl?.enable();
+      } else {
+        console.log('Checkbox deselezionata, il valore è false');
+        dataCorsoSicurezzaControl?.disable();
+      }
+    }
+  }
+  onPChange(event: any) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      if (isChecked) {
+        console.log('Checkbox selezionata, il valore è true');
+      } else {
+        console.log('Checkbox deselezionata, il valore è false');
+      }
+    }
+  }
+
+  onVisitaMedicaChange(event: any) {
+    const dataVisitaMedicaControl = this.AnagraficaDto.get(
+      'contratto.dataVisitaMedica'
+    );
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      if (isChecked) {
+        console.log('Checkbox selezionata, il valore è true');
+        dataVisitaMedicaControl?.enable();
+      } else {
+        console.log('Checkbox deselezionata, il valore è false');
+        dataVisitaMedicaControl?.disable();
+      }
+    }
+  }
 
   onPartTimeChange(event: any) {
     const target = event.target as HTMLInputElement;
@@ -882,7 +1044,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.contrattoService
       .getTipoContratto(localStorage.getItem('token'))
       .subscribe((result: any) => {
-        console.log("TIPI DI CONTRATTI: "+ JSON.stringify(result));
+        console.log('TIPI DI CONTRATTI: ' + JSON.stringify(result));
         this.tipiContratti = (result as any)['list'];
       });
   }

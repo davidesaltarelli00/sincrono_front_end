@@ -211,6 +211,23 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       ?.valueChanges.subscribe(() => {
         this.calculateDataFineRapporto();
       });
+
+    const tipoAziendaControlAnagrafica = this.anagraficaDto.get(
+      'anagrafica.tipoAzienda.id'
+    );
+    const tipoAziendaControlContratto = this.anagraficaDto.get(
+      'contratto.tipoAzienda.id'
+    );
+
+    // Aggiungi un listener valueChanges per il controllo tipoAzienda in anagrafica
+    tipoAziendaControlAnagrafica?.valueChanges.subscribe((value) => {
+      tipoAziendaControlContratto?.setValue(value, { emitEvent: false });
+    });
+
+    // Aggiungi un listener valueChanges per il controllo tipoAzienda in contratto
+    tipoAziendaControlContratto?.valueChanges.subscribe((value) => {
+      tipoAziendaControlAnagrafica?.setValue(value, { emitEvent: false });
+    });
   }
 
   caricaDati(): void {
@@ -268,19 +285,26 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         }
         console.log(
           '***************************LE DATE SONO STATE CONVERTITE COSI: *************************** \n' +
-           'Data assunzione:'+ this.data.contratto.dataAssunzione +
+            'Data assunzione:' +
+            this.data.contratto.dataAssunzione +
             '\n' +
-           'Data inizio prova: '+ this.data.contratto.dataInizioProva +
+            'Data inizio prova: ' +
+            this.data.contratto.dataInizioProva +
             '\n' +
-            'Data fine prova: '+ this.data.contratto.dataFineProva +
+            'Data fine prova: ' +
+            this.data.contratto.dataFineProva +
             '\n' +
-            'Data fine rapporto: '+ this.data.contratto.dataFineRapporto +
+            'Data fine rapporto: ' +
+            this.data.contratto.dataFineRapporto +
             '\n' +
-            'Data di nascita: '+ this.data.anagrafica.dataDiNascita +
+            'Data di nascita: ' +
+            this.data.anagrafica.dataDiNascita +
             '\n' +
-            'data corso di sicurezza'+ this.data.contratto.dataCorsoSicurezza +
-            '\n'+
-            'data visita medica: '+ this.data.contratto.dataVisitaMedica +
+            'data corso di sicurezza' +
+            this.data.contratto.dataCorsoSicurezza +
+            '\n' +
+            'data visita medica: ' +
+            this.data.contratto.dataVisitaMedica +
             '\n'
         );
 
