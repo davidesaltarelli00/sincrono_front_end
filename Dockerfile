@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:current-bookworm
 USER root
 RUN npm install -g @angular/cli
 RUN apt update
