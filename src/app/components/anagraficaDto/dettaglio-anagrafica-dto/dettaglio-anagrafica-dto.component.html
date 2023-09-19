@@ -99,7 +99,7 @@
     </div>
 
     <div class="row">
-      <div class="col-12">
+      <div class="col-6">
         <mat-card>
           <mat-card-title>
             Dati azienda <i class="fa-solid fa-briefcase"></i>
@@ -132,6 +132,43 @@
           </mat-card-content>
         </mat-card>
       </div>
+      <div class="col-6">
+        <mat-card>
+          <mat-card-title>
+            Altri dati <i class="fa fa-asterisk" aria-hidden="true"></i>
+          </mat-card-title>
+          <mat-card-content>
+            <table class="table table-bordered">
+              <tr>
+                <td><strong>Contratto attivo:</strong> </td>
+                <td> {{data?.contratto?.attivo ?  'Sì' : 'No'}} </td>
+                <!-- <td *ngIf="data?.contratto?.attivo" > <i class="fa fa-check" ></i> </td> -->
+                <!-- <td *ngIf="!data?.contratto?.attivo"> <i class="fa fa-close" ></i> </td> -->
+              </tr>
+              <tr>
+                <td><strong>Canale Reclutamento:</strong> </td>
+                <td >{{ data?.contratto?.tipoCanaleReclutamento.descrizione }}</td>
+              </tr>
+              <tr>
+             <td><strong>Categoria Protetta:</strong></td>
+              <td > {{ data?.contratto?.categoriaProtetta ?  'Sì' : 'No' }}</td>
+              </tr>
+              <tr>
+                <td><strong>Assicurazione obbligatoria</strong></td>
+                <td> {{data?.contratto?.assicurazioneObbligatoria ? 'Si' : 'No' }} </td>
+              </tr>
+              <tr [hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' && data?.contratto?.tipoContratto?.descrizione!='Apprendistato'" >
+                <td><strong>Tutor:</strong> </td>
+                <td>{{ data?.contratto?.tutor ?  data?.contratto?.tutor : 'Dato non inserito' }}</td>
+              </tr>
+              <tr [hidden]="data?.contratto?.tipoContratto.descrizione!='Stage' && data?.contratto?.tipoContratto.descrizione!='Apprendistato'">
+                <td><strong>PFI:</strong></td>
+                <td>{{data?.contratto?.pfi ? 'Si': 'No' }}</td>
+              </tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
 
     <div class="container-contratto-non-presente" *ngIf="data?.contratto===null" >
@@ -154,7 +191,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-4">
+        <div class="col-6">
           <mat-card>
             <mat-card-title>
               Tipologiche contrattuali <i class="fa-solid fa-file-contract"></i>
@@ -183,7 +220,7 @@
             </mat-card-content>
           </mat-card>
         </div>
-        <div class="col-4">
+        <div class="col-6">
           <mat-card >
             <mat-card-title>Date contratto <i class="fa fa-calendar"></i> </mat-card-title>
 
@@ -211,43 +248,7 @@
             </table>
           </mat-card>
         </div>
-        <div class="col-4">
-          <mat-card>
-            <mat-card-title>
-              Altri dati <i class="fa fa-asterisk" aria-hidden="true"></i>
-            </mat-card-title>
-            <mat-card-content>
-              <table class="table table-bordered">
-                <tr>
-                  <td><strong>Contratto attivo:</strong> </td>
-                  <td> {{data?.contratto?.attivo ?  'Sì' : 'No'}} </td>
-                  <!-- <td *ngIf="data?.contratto?.attivo" > <i class="fa fa-check" ></i> </td> -->
-                  <!-- <td *ngIf="!data?.contratto?.attivo"> <i class="fa fa-close" ></i> </td> -->
-                </tr>
-                <tr>
-                  <td><strong>Canale Reclutamento:</strong> </td>
-                  <td >{{ data?.contratto?.tipoCanaleReclutamento.descrizione }}</td>
-                </tr>
-                <tr>
-               <td><strong>Categoria Protetta:</strong></td>
-                <td > {{ data?.contratto?.categoriaProtetta ?  'Sì' : 'No' }}</td>
-                </tr>
-                <tr>
-                  <td><strong>Assicurazione obbligatoria</strong></td>
-                  <td> {{data?.contratto?.assicurazioneObbligatoria ? 'Si' : 'No' }} </td>
-                </tr>
-                <tr [hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' && data?.contratto?.tipoContratto?.descrizione!='Apprendistato'" >
-                  <td><strong>Tutor:</strong> </td>
-                  <td>{{ data?.contratto?.tutor ?  data?.contratto?.tutor : 'Dato non inserito' }}</td>
-                </tr>
-                <tr [hidden]="data?.contratto?.tipoContratto.descrizione!='Stage' && data?.contratto?.tipoContratto.descrizione!='Apprendistato'">
-                  <td><strong>PFI:</strong></td>
-                  <td>{{data?.contratto?.pfi ? 'Si': 'No' }}</td>
-                </tr>
-              </table>
-            </mat-card-content>
-          </mat-card>
-        </div>
+
       </div>
       <!--Dati economici-->
       <div class="row">
@@ -357,7 +358,7 @@
                   </tr>
                   <tr>
                     <td><strong>Data visita medica:</strong></td>
-                    <td> {{data?.contratto?.visitaMedica  | date: 'dd/MM/yyyy' }} </td>
+                    <td> {{data?.contratto?.dataVisitaMedica  | date: 'dd/MM/yyyy' }} </td>
                   </tr>
                 </table>
               </div>
