@@ -11,6 +11,7 @@ import { AnagraficaDtoService } from '../anagraficaDto-service';
 import { Router } from '@angular/router';
 import { ContrattoService } from '../../contratto/contratto-service';
 import { ThemePalette } from '@angular/material/core';
+import { DatePipe } from '@angular/common';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -63,7 +64,9 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private contrattoService: ContrattoService
+    private contrattoService: ContrattoService,
+    private datePipe: DatePipe
+
   ) {
     this.AnagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
@@ -193,7 +196,24 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.caricaTipoCanaleReclutamento();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const ralPartTimeControl = this.AnagraficaDto.get('contratto.ralPartTime');
+    if (ralPartTimeControl) {
+      ralPartTimeControl.disable();
+    }
+
+    this.AnagraficaDto
+      .get('contratto.dataAssunzione')
+      ?.valueChanges.subscribe(() => {
+        this.calculateDataFineRapporto();
+      });
+
+    this.AnagraficaDto
+      .get('contratto.mesiDurata')
+      ?.valueChanges.subscribe(() => {
+        this.calculateDataFineRapporto();
+      });
+  }
 
   aggiungiCommessa() {
     const commessaFormGroup = this.creaFormCommessa();
@@ -202,24 +222,363 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.formsDuplicati.push(true);
   }
 
-  //se il tipo di contratto é indeterminato (id 4) il campo data fine rapporto viene disabilitato
-  onTipoContrattoChange(event: Event) {
-    const selectedTipoContrattoId = parseInt((event.target as HTMLSelectElement).value, 10);
-    const dataFineRapportoControl = this.AnagraficaDto.get('contratto.dataFineRapporto');
+  onTipoContrattoChange(event: any) {
+    const selectedTipoContrattoId = parseInt(
+      (event.target as HTMLSelectElement).value,
+      10
+    );
+    console.log('SELEZIONATO TIPO CONTRATTO CON ID:' + selectedTipoContrattoId);
+    const dataFineRapportoControl = this.AnagraficaDto.get(
+      'contratto.dataFineRapporto'
+    );
     const mesiDurataControl = this.AnagraficaDto.get('contratto.mesiDurata');
+    const tutorControl = this.AnagraficaDto.get('contratto.tutor');
+    const PFIcontrol = this.AnagraficaDto.get('contratto.pfi');
+    const superminimoMensileControl = this.AnagraficaDto.get(
+      'contratto.superminimoMensile'
+    );
+    const ralAnnuaControl = this.AnagraficaDto.get('contratto.ralAnnua');
+    const superminimoRalControl = this.AnagraficaDto.get(
+      'contratto.superminimoRal'
+    );
+    const diariaMensileControl = this.AnagraficaDto.get(
+      'contratto.diariaMensile'
+    );
+    const diariaGiornalieraControl = this.AnagraficaDto.get(
+      'contratto.diariaGiornaliera'
+    );
+    const scattiAnzianitaControl = this.AnagraficaDto.get(
+      'contratto.scattiAnzianita'
+    );
+    const retribuzioneMensileLordaControl = this.AnagraficaDto.get(
+      'contratto.retribuzioneMensileLorda'
+    );
+    const tariffaPartitaIvaControl = this.AnagraficaDto.get(
+      'contratto.tariffaPartitaIva'
+    );
 
-    if (dataFineRapportoControl && mesiDurataControl) {
-      if (selectedTipoContrattoId === 4 || selectedTipoContrattoId===2 ) {
-        this.inseritoContrattoIndeterminato = false;
-        dataFineRapportoControl.disable();
-        mesiDurataControl.disable();
-      } else {
-        dataFineRapportoControl.enable();
-        mesiDurataControl.enable();
-        this.inseritoContrattoIndeterminato = true;
-      }
+    switch (selectedTipoContrattoId) {
+      case 1: // Contratto STAGE
+        if (
+          mesiDurataControl &&
+          retribuzioneMensileLordaControl &&
+          PFIcontrol &&
+          tutorControl &&
+          superminimoMensileControl &&
+          ralAnnuaControl &&
+          superminimoRalControl &&
+          diariaMensileControl &&
+          diariaGiornalieraControl &&
+          scattiAnzianitaControl &&
+          tariffaPartitaIvaControl
+        ) {
+          retribuzioneMensileLordaControl.enable();
+          retribuzioneMensileLordaControl.setValue(600);
+
+          PFIcontrol.enable();
+          tutorControl.enable();
+
+          superminimoMensileControl.disable();
+          superminimoMensileControl.setValue('');
+
+          ralAnnuaControl.disable();
+          ralAnnuaControl.setValue('');
+
+          superminimoRalControl.disable();
+          superminimoRalControl.setValue('');
+
+          diariaMensileControl.disable();
+          diariaMensileControl.setValue('');
+
+          diariaGiornalieraControl.disable();
+          diariaGiornalieraControl.setValue('');
+
+          scattiAnzianitaControl.disable();
+          scattiAnzianitaControl.setValue('');
+
+          tariffaPartitaIvaControl.disable();
+          tariffaPartitaIvaControl.setValue('');
+
+          mesiDurataControl.setValue(6);
+          mesiDurataControl.enable();
+          this.calculateDataFineRapporto();
+
+          dataFineRapportoControl?.enable();
+          dataFineRapportoControl?.setValue(null);
+        }
+        break;
+
+      case 2: // Contratto PARTITA IVA
+        if (
+          tariffaPartitaIvaControl &&
+          PFIcontrol &&
+          tutorControl &&
+          superminimoMensileControl &&
+          ralAnnuaControl &&
+          retribuzioneMensileLordaControl &&
+          dataFineRapportoControl &&
+          mesiDurataControl
+        ) {
+          tariffaPartitaIvaControl.enable();
+          tariffaPartitaIvaControl.setValue('');
+
+          retribuzioneMensileLordaControl.enable();
+          retribuzioneMensileLordaControl.setValue(null);
+
+          PFIcontrol.disable();
+          PFIcontrol.setValue('');
+
+          tutorControl.disable();
+          tutorControl.setValue('');
+
+          superminimoMensileControl.disable();
+          superminimoMensileControl.setValue('');
+
+          ralAnnuaControl.disable();
+          ralAnnuaControl.setValue('');
+
+          dataFineRapportoControl.disable();
+          dataFineRapportoControl.setValue('');
+
+          mesiDurataControl.disable();
+          mesiDurataControl.setValue('');
+        }
+        break;
+
+      case 3: // Contratto a tempo determinato
+        if (
+          mesiDurataControl &&
+          superminimoMensileControl &&
+          ralAnnuaControl &&
+          superminimoRalControl &&
+          PFIcontrol &&
+          tutorControl &&
+          diariaMensileControl &&
+          diariaGiornalieraControl &&
+          scattiAnzianitaControl &&
+          tariffaPartitaIvaControl &&
+          retribuzioneMensileLordaControl &&
+          dataFineRapportoControl
+        ) {
+          mesiDurataControl.enable();
+          mesiDurataControl.setValue('');
+
+          dataFineRapportoControl.enable();
+          dataFineRapportoControl.setValue(null);
+
+          PFIcontrol.disable();
+          PFIcontrol.setValue('');
+
+          tutorControl.disable();
+          tutorControl.setValue('');
+
+          retribuzioneMensileLordaControl.enable();
+          retribuzioneMensileLordaControl.setValue(null);
+
+          superminimoMensileControl.enable();
+          superminimoMensileControl.setValue('');
+
+          ralAnnuaControl.enable();
+          ralAnnuaControl.setValue('');
+
+          superminimoRalControl.enable();
+          superminimoRalControl.setValue('');
+
+          diariaMensileControl.enable();
+          diariaMensileControl.setValue('');
+
+          diariaGiornalieraControl.enable();
+          diariaGiornalieraControl.setValue('');
+
+          scattiAnzianitaControl.enable();
+          scattiAnzianitaControl.setValue('');
+
+          tariffaPartitaIvaControl.disable();
+          tariffaPartitaIvaControl.setValue('');
+        }
+        break;
+      case 4: // Contratto a tempo indeterminato
+        if (
+          mesiDurataControl &&
+          dataFineRapportoControl &&
+          tariffaPartitaIvaControl &&
+          tutorControl &&
+          PFIcontrol &&
+          superminimoMensileControl &&
+          ralAnnuaControl &&
+          superminimoRalControl &&
+          diariaMensileControl &&
+          diariaGiornalieraControl &&
+          scattiAnzianitaControl &&
+          retribuzioneMensileLordaControl
+        ) {
+          mesiDurataControl.disable();
+          mesiDurataControl.setValue('');
+
+          dataFineRapportoControl.disable();
+          dataFineRapportoControl.setValue(null);
+
+          tariffaPartitaIvaControl.disable();
+          tariffaPartitaIvaControl.setValue('');
+
+          tutorControl.disable();
+          tutorControl.setValue('');
+
+          PFIcontrol.disable();
+          PFIcontrol.setValue('');
+
+          superminimoMensileControl.enable();
+          superminimoMensileControl.setValue('');
+
+          ralAnnuaControl.enable();
+          ralAnnuaControl.setValue('');
+
+          superminimoRalControl.enable();
+          superminimoRalControl.setValue('');
+
+          diariaMensileControl.enable();
+          diariaMensileControl.setValue('');
+
+          diariaGiornalieraControl.enable();
+          diariaGiornalieraControl.setValue('');
+
+          scattiAnzianitaControl.enable();
+          scattiAnzianitaControl.setValue('');
+
+          retribuzioneMensileLordaControl.enable();
+          retribuzioneMensileLordaControl.setValue(null);
+        }
+        break;
+
+      case 5: // Contratto di apprendistato
+        if (
+          mesiDurataControl &&
+          dataFineRapportoControl &&
+          tariffaPartitaIvaControl &&
+          tutorControl &&
+          PFIcontrol &&
+          superminimoMensileControl &&
+          ralAnnuaControl &&
+          superminimoRalControl &&
+          diariaMensileControl &&
+          diariaGiornalieraControl &&
+          scattiAnzianitaControl &&
+          retribuzioneMensileLordaControl
+        ) {
+          mesiDurataControl.enable();
+          mesiDurataControl.setValue(36);
+          this.calculateDataFineRapporto();
+
+          dataFineRapportoControl.enable();
+          dataFineRapportoControl.setValue(null);
+
+          tariffaPartitaIvaControl.enable();
+          tariffaPartitaIvaControl.setValue('');
+
+          tutorControl.enable();
+          tutorControl.setValue('');
+
+          PFIcontrol.enable();
+          PFIcontrol.setValue('');
+
+          superminimoMensileControl.enable();
+          superminimoMensileControl.setValue('');
+
+          ralAnnuaControl.enable();
+          ralAnnuaControl.setValue('');
+
+          superminimoRalControl.enable();
+          superminimoRalControl.setValue('');
+
+          diariaMensileControl.enable();
+          diariaMensileControl.setValue('');
+
+          diariaGiornalieraControl.enable();
+          diariaGiornalieraControl.setValue('');
+
+          scattiAnzianitaControl.enable();
+          scattiAnzianitaControl.setValue('');
+
+          retribuzioneMensileLordaControl.enable();
+          retribuzioneMensileLordaControl.setValue(null);
+
+          this.AnagraficaDto.updateValueAndValidity();
+        }
+        break;
+
+      default:
+        break;
     }
   }
+
+
+
+  calculateDataFineRapporto() {
+    const mesiDurataControl = this.AnagraficaDto.get('contratto.mesiDurata');
+    const dataFineRapportoControl = this.AnagraficaDto.get(
+      'contratto.dataFineRapporto'
+    );
+    const dataAssunzioneControl = this.AnagraficaDto.get(
+      'contratto.dataAssunzione'
+    );
+
+    // Verifica se mesiDurataControl e dataAssunzioneControl esistono e non sono nulli
+    if (
+      mesiDurataControl &&
+      dataAssunzioneControl &&
+      mesiDurataControl.value !== null &&
+      dataAssunzioneControl.value !== null
+    ) {
+      // Ottieni i valori dei controlli
+      const mesiDurata = mesiDurataControl.value;
+      const dataAssunzione = dataAssunzioneControl.value;
+
+      // Verifica se i valori ottenuti sono validi
+      if (mesiDurata && dataAssunzione) {
+        // Calcola la data di fine rapporto aggiungendo i mesi di durata alla data di assunzione
+        const dataFineRapporto = new Date(dataAssunzione);
+        dataFineRapporto.setMonth(dataFineRapporto.getMonth() + mesiDurata);
+
+        // Formatta la data nel formato "yyyy-MM-dd"
+        const dataFineRapportoFormatted = this.datePipe.transform(
+          dataFineRapporto,
+          'yyyy-MM-dd'
+        );
+
+        // Imposta il valore formattato nel controllo 'dataFineRapporto'
+        dataFineRapportoControl?.setValue(dataFineRapportoFormatted);
+      } else {
+        // Alcuni dei valori necessari sono mancanti, gestisci di conseguenza
+        console.error(
+          'Impossibile calcolare la data di fine rapporto. Mancano dati.'
+        );
+      }
+    } else {
+      console.error(
+        'I controlli necessari non esistono o alcuni valori sono nulli.'
+      );
+    }
+  }
+
+
+  calculateRalPartTime() {
+    const percentualePartTimeControl = this.AnagraficaDto.get(
+      'contratto.percentualePartTime'
+    );
+    const ralAnnuaControl = this.AnagraficaDto.get('contratto.ralAnnua');
+    const ralPartTimeControl = this.AnagraficaDto.get('contratto.ralPartTime');
+
+    if (percentualePartTimeControl && ralAnnuaControl && ralPartTimeControl) {
+      const percentualePartTime = percentualePartTimeControl.value || 0;
+      const ralAnnua = ralAnnuaControl.value || 0;
+
+      const percentualeDecimal = percentualePartTime / 100;
+      const ralPartTime = ralAnnua * percentualeDecimal;
+
+      ralPartTimeControl.setValue(ralPartTime.toFixed(2)); // Formattato a due decimali
+    }
+  }
+
 
   onConiugatoChange(event: Event): void {
     const target = event.target as HTMLInputElement;

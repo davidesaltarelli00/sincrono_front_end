@@ -331,6 +331,22 @@
 
                       </div>
 
+                      <div class="col-md-3" >
+                        <label>Mesi Durata </label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="mesiDurata"
+                            placeholder="Inserire mesi durata"
+                          />
+                          <div
+                          *ngIf="AnagraficaDto.get('contratto.mesiDurata')?.hasError('required') && AnagraficaDto.get('contratto.mesiDurata')?.touched"
+                          class="text-danger"
+                        >
+                          Il campo mesi durata è obbligatorio.
+                        </div>
+                      </div>
+
                       <div class="col-md-3">
                         <div formGroupName="tipoLivelloContratto">
                           <label for="filter-LivelloContratto">Tipo livello Contratto:</label>
@@ -442,23 +458,7 @@
                           <input type="date" class="form-control" name="dataInput"  formControlName="dataFineRapporto" /> <!--[disabled]="AnagraficaDto.get('contratto.tipoContratto.id')?.value === '4'"-->
                         </div>
                       </div>
-                      <div class="col-md-3" *ngIf="inseritoContrattoIndeterminato">
-                        <div class="form-group">
-                        <label>Mesi Durata* </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            formControlName="mesiDurata"
-                            placeholder="Inserire mesi durata"
-                          />
-                          <div
-                          *ngIf="AnagraficaDto.get('contratto.mesiDurata')?.hasError('required') && AnagraficaDto.get('contratto.mesiDurata')?.touched"
-                          class="text-danger"
-                        >
-                          Il campo mesi durata è obbligatorio.
-                        </div>
-                        </div>
-                      </div>
+
                       <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
                         <div class="form-group">
                           <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
@@ -523,19 +523,19 @@
                       <div class="col-md-3">
                         <label>Retribuzione Mensile Lorda: </label>
                         <div class="form-group">
-                          <input type="text" class="form-control" formControlName="retribuzioneMensileLorda" />
+                          <input type="text" class="form-control" placeholder="Inserire retribuzione lorda" min="0" step="0.01" formControlName="retribuzioneMensileLorda" />
                         </div>
                       </div>
                       <div class="col-md-3">
                         <label>Superminimo Mensile: </label>
                         <div class="form-group">
-                          <input type="text" class="form-control" formControlName="superminimoMensile" />
+                          <input type="text" class="form-control"  placeholder="Inserire superminimo mensile" min="0" step="0.01" formControlName="superminimoMensile" />
                         </div>
                       </div>
                       <div class="col-md-3">
                         <label>RAL Annua: </label>
                         <div class="form-group">
-                          <input type="text" class="form-control" formControlName="ralAnnua" />
+                          <input type="text" class="form-control"  placeholder="Inserire RAL annua" min="0" step="0.01" formControlName="ralAnnua" />
                         </div>
                       </div>
                     </div>
@@ -544,19 +544,19 @@
                       <div class="col-md-3">
                         <label>Superminimo RAL: </label>
                         <div class="form-group">
-                          <input type="text" class="form-control" formControlName="superminimoRal" />
+                          <input type="text" class="form-control"  placeholder="Inserire superminimo RAL" min="0" step="0.01" formControlName="superminimoRal" />
                         </div>
                       </div>
                       <div class="col-md-3">
                         <label>Diaria Mensile: </label>
                         <div class="form-group">
-                          <input type="text" class="form-control" formControlName="diariaMensile" />
+                          <input type="text" class="form-control"  placeholder="Inserire diaria mensile" min="0" step="0.01" formControlName="diariaMensile" />
                         </div>
                       </div>
                       <div class="col-md-3">
                         <label>Diaria Giornaliera: </label>
                         <div class="form-group">
-                          <input type="text" class="form-control" formControlName="diariaGiornaliera" />
+                          <input type="text" class="form-control"  placeholder="Inserire diaria giornaliera" min="0" step="0.01" formControlName="diariaGiornaliera" />
                         </div>
                       </div>
                     </div>
@@ -566,13 +566,13 @@
                       <div class="col-3">
                         <div class="form-group">
                           <label for="retribuzioneNettaMensile">Retribuzione netta mensile</label>
-                          <input type="number" formControlName="retribuzioneNettaMensile" class="form-control" value="{{data?.contratto?.retribuzioneNettaMensile}}">
+                          <input type="number" formControlName="retribuzioneNettaMensile"  placeholder="Inserire retribuzione netta mensile" min="0" step="0.01" class="form-control" value="{{data?.contratto?.retribuzioneNettaMensile}}">
                         </div>
                       </div>
                       <div class="col-3">
                         <div class="form-group">
                           <label for="retribuzioneNettaGiornaliera">Retribuzione netta giornaliera</label>
-                          <input type="number" formControlName="retribuzioneNettaGiornaliera" class="form-control" value="{{data?.contratto?.retribuzioneNettaGiornaliera}}">
+                          <input type="number" formControlName="retribuzioneNettaGiornaliera"  placeholder="Inserire retribuzione netta giornaliera" min="0" step="0.01" class="form-control" value="{{data?.contratto?.retribuzioneNettaGiornaliera}}">
                         </div>
                       </div>
                     </div>
@@ -588,7 +588,7 @@
                       <div class="col-md-3">
                         <label>Valore Ticket: </label>
                         <div class="form-group">
-                          <input type="number" placeholder="Inserire valore ticket" class="form-control" formControlName="valoreTicket" />
+                          <input type="number" placeholder="Inserire valore ticket" min="0"  step="0.01" class="form-control" formControlName="valoreTicket" />
                         </div>
                       </div>
 

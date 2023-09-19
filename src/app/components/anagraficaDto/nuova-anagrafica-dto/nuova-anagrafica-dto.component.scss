@@ -168,3 +168,155 @@ footer {
   padding: 10px 20px;
   cursor: pointer;
 }
+
+.custom-prefix {
+  background-color: black;
+  color: white;
+}
+
+.invalid-field {
+  border-color: red;
+
+}
+
+select{
+width: 50%;
+}
+
+/* Stili CSS per simulare una tabella */
+.commessa-list {
+// list-style: none;
+padding: 0;
+}
+
+.commessa-item {
+// display: flex;
+align-items: center;
+// justify-content: space-between;
+margin-bottom: 8px;
+}
+
+.commessa-cell {
+flex: 1;
+padding: 4px;
+border: 1px solid #ccc;
+}
+
+ng-container{
+border: 1px solid #f1f1f1;
+}
+
+select{
+width: 100%;
+}
+
+.campo-nullo {
+border-color: red;
+}
+
+mat-card-title{
+text-align: center;
+}
+
+/* Stile generale del toggle switch */
+.toggle-switch {
+display: inline-block;
+position: relative;
+width: 60px;
+height: 34px;
+}
+
+/* Nasconde la checkbox reale */
+.toggle-switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+/* Stile del slider (il cursore del toggle) */
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #ccc; /* Colore di sfondo quando disattivato */
+transition: 0.4s; /* Effetto di transizione */
+border-radius: 34px;
+}
+
+/* Cambia il colore di sfondo quando attivato */
+.toggle-switch input:checked + .slider {
+background-color: #2196F3;
+}
+
+/* Stile del cursore del toggle */
+.slider:before {
+position: absolute;
+content: "";
+height: 26px;
+width: 26px;
+left: 4px;
+bottom: 4px;
+background-color: white;
+transition: 0.4s;
+border-radius: 50%;
+}
+
+/* Posizione del cursore quando attivato */
+.toggle-switch input:checked + .slider:before {
+transform: translateX(26px);
+}
+
+/* Opzionale: stile aggiuntivo per l'etichetta del toggle switch */
+.toggle-switch label {
+display: flex;
+align-items: center;
+user-select: none;
+cursor: pointer;
+}
+
+.custom-prefix {
+background-color: black;
+color: white;
+}
+
+.card {
+border: 1px solid #ccc;
+border-radius: 5px;
+padding: 20px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+background-color: #fff;
+}
+
+.card-title {
+font-size: 1.25rem;
+font-weight: bold;
+margin-bottom: 10px;
+}
+
+.card-content {
+font-size: 1rem;
+line-height: 1.4;
+}
+
+.card-button {
+display: inline-block;
+padding: 10px 20px;
+background-color: #007bff;
+color: #fff;
+border: none;
+border-radius: 3px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+.card-button:hover {
+background-color: #0056b3;
+}
+
+.label-align-vertical {
+  display: inline-block;
+  vertical-align: middle;
+}
