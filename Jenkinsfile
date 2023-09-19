@@ -7,7 +7,7 @@ pipeline {
                 sh 'node --version'
                 sh 'ng build --base-href=/usr/share/nginx/html'
                 sh 'pwd && ls dist'
-                sh 'systemctl status nginx'
+                sh 'dpkg -L nginx'
             }
         }
     }
