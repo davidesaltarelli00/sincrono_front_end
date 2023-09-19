@@ -4,7 +4,7 @@ pipeline {
         stage('Build and Deploy') {
             agent { dockerfile { 
                       filename 'Dockerfile'
-                      args '-v /home/sviluppo/nginx/server1:/home/sviluppo/nginx/server1'
+                      args '-v /home/sviluppo/nginx/server1:/home/html'
                                }
                   }
             steps {
