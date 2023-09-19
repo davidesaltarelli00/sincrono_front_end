@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AnagraficaDtoService } from './../anagraficaDto-service';
 import { CommessaDuplicata } from './commessaDuplicata';
 import { Commessa } from '../nuova-anagrafica-dto/commessa';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-modifica-anagrafica-dto',
@@ -58,7 +59,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private datePipe: DatePipe
   ) {
     console.log(
       '+++++++++++++++++++++++++++ID ANAGRAFICA CORRENTE: ' + this.id
@@ -208,6 +210,122 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .get('contratto.mesiDurata')
       ?.valueChanges.subscribe(() => {
         this.calculateDataFineRapporto();
+      });
+  }
+
+  caricaDati(): void {
+    this.anagraficaDtoService
+      .detailAnagraficaDto(
+        this.activatedRouter.snapshot.params['id'],
+        localStorage.getItem('token')
+      )
+      .subscribe((resp: any) => {
+        console.log(this.activatedRouter.snapshot.params['id']);
+        this.data = (resp as any)['anagraficaDto'];
+
+        //conversione date
+        if (this.data.contratto && this.data.contratto.dataAssunzione) {
+          this.data.contratto.dataAssunzione = this.datePipe.transform(
+            this.data.contratto.dataAssunzione,
+            'yyyy-MM-dd'
+          );
+        }
+        if (this.data.contratto && this.data.contratto.dataInizioProva) {
+          this.data.contratto.dataInizioProva = this.datePipe.transform(
+            this.data.contratto.dataInizioProva,
+            'yyyy-MM-dd'
+          );
+        }
+        if (this.data.contratto && this.data.contratto.dataFineProva) {
+          this.data.contratto.dataFineProva = this.datePipe.transform(
+            this.data.contratto.dataFineProva,
+            'yyyy-MM-dd'
+          );
+        }
+        if (this.data.contratto && this.data.contratto.dataFineRapporto) {
+          this.data.contratto.dataFineRapporto = this.datePipe.transform(
+            this.data.contratto.dataFineRapporto,
+            'yyyy-MM-dd'
+          );
+        }
+        if (this.data.anagrafica && this.data.anagrafica.dataDiNascita) {
+          this.data.anagrafica.dataDiNascita = this.datePipe.transform(
+            this.data.anagrafica.dataDiNascita,
+            'yyyy-MM-dd'
+          );
+        }
+        if (this.data.contratto && this.data.contratto.dataCorsoSicurezza) {
+          this.data.contratto.dataCorsoSicurezza = this.datePipe.transform(
+            this.data.contratto.dataCorsoSicurezza,
+            'yyyy-MM-dd'
+          );
+        }
+        if (this.data.contratto && this.data.contratto.dataVisitaMedica) {
+          this.data.contratto.dataVisitaMedica = this.datePipe.transform(
+            this.data.contratto.dataVisitaMedica,
+            'yyyy-MM-dd'
+          );
+        }
+        console.log(
+          '***************************LE DATE SONO STATE CONVERTITE COSI: *************************** \n' +
+           'Data assunzione:'+ this.data.contratto.dataAssunzione +
+            '\n' +
+           'Data inizio prova: '+ this.data.contratto.dataInizioProva +
+            '\n' +
+            'Data fine prova: '+ this.data.contratto.dataFineProva +
+            '\n' +
+            'Data fine rapporto: '+ this.data.contratto.dataFineRapporto +
+            '\n' +
+            'Data di nascita: '+ this.data.anagrafica.dataDiNascita +
+            '\n' +
+            'data corso di sicurezza'+ this.data.contratto.dataCorsoSicurezza +
+            '\n'+
+            'data visita medica: '+ this.data.contratto.dataVisitaMedica +
+            '\n'
+        );
+
+        console.log(
+          '++++++++++++++++++++++++++++++++++++++++++++++++++ELENCO DEI DATI CARICATI: +++++++++++++++++++++++++++++++++++++++++++++++++ ' +
+            JSON.stringify(resp)
+        );
+
+        this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
+        this.contratto = (resp as any)['anagraficaDto']['contratto'];
+        if (this.contratto == null) {
+          console.log('Niente contratto.');
+          this.contrattoVuoto = true;
+        } else {
+          this.contrattoVuoto = false;
+          console.log('Dati del contratto: ' + JSON.stringify(this.contratto));
+        }
+        if (this.elencoCommesse === null) {
+          console.log('Niente commesse.');
+          this.commesseVuote = true;
+        } else {
+          this.commesseVuote = false;
+          console.log(
+            'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)
+          );
+        }
+        this.initializeCommesse();
+        this.anagraficaDto.patchValue(this.data);
+
+        // Iteriamo attraverso le chiavi dell'oggetto
+        for (const key in resp) {
+          if (resp.hasOwnProperty(key)) {
+            // Verifichiamo se il valore associato alla chiave è null
+            if (resp[key] === null) {
+              // Applichiamo una classe CSS per evidenziare il campo con bordo rosso
+              console.log(`Campo "${key}" è null.`);
+              // Trova l'elemento HTML corrispondente al campo
+              const element = document.querySelector(`[name="${key}"]`);
+              if (element) {
+                // Applica una classe CSS usando Renderer2
+                this.renderer.addClass(element, 'campo-nullo');
+              }
+            }
+          }
+        }
       });
   }
 
@@ -611,6 +729,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         ) {
           mesiDurataControl.enable();
           mesiDurataControl.setValue(36);
+          this.calculateDataFineRapporto();
 
           dataFineRapportoControl.enable();
           dataFineRapportoControl.setValue(null);
@@ -693,7 +812,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.valorePrecedenteDataFineRapporto = dataFineRapportoControl.value;
       dataFineRapportoControl.setValue(this.dataOdierna);
       dataFineRapportoControl.disable();
-      alert("La data di fine rapporto é stata impostata a oggi." + this.dataOdierna+ " Per reimpostare la vecchia data, elimina la causa di fine rapporto.")
+      alert(
+        'La data di fine rapporto é stata impostata a oggi.' +
+          this.dataOdierna +
+          ' Per reimpostare la vecchia data, elimina la causa di fine rapporto.'
+      );
     } else {
       // Ripristina il valore precedente
       if (this.valorePrecedenteDataFineRapporto !== undefined) {
@@ -881,59 +1004,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           console.error("Errore nell'invio del payload al server:", error);
         }
       );
-  }
-
-  caricaDati(): void {
-    this.anagraficaDtoService
-      .detailAnagraficaDto(
-        this.activatedRouter.snapshot.params['id'],
-        localStorage.getItem('token')
-      )
-      .subscribe((resp: any) => {
-        console.log(this.activatedRouter.snapshot.params['id']);
-        this.data = (resp as any)['anagraficaDto'];
-        console.log(
-          '++++++++++++++++++++++++++++++++++++++++++++++++++ELENCO DEI DATI CARICATI: +++++++++++++++++++++++++++++++++++++++++++++++++ ' +
-            JSON.stringify(resp)
-        );
-        this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
-        this.contratto = (resp as any)['anagraficaDto']['contratto'];
-        if (this.contratto == null) {
-          console.log('Niente contratto.');
-          this.contrattoVuoto = true;
-        } else {
-          this.contrattoVuoto = false;
-          console.log('Dati del contratto: ' + JSON.stringify(this.contratto));
-        }
-        if (this.elencoCommesse === null) {
-          console.log('Niente commesse.');
-          this.commesseVuote = true;
-        } else {
-          this.commesseVuote = false;
-          console.log(
-            'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)
-          );
-        }
-        this.initializeCommesse();
-        this.anagraficaDto.patchValue(this.data);
-
-        // Iteriamo attraverso le chiavi dell'oggetto
-        for (const key in resp) {
-          if (resp.hasOwnProperty(key)) {
-            // Verifichiamo se il valore associato alla chiave è null
-            if (resp[key] === null) {
-              // Applichiamo una classe CSS per evidenziare il campo con bordo rosso
-              console.log(`Campo "${key}" è null.`);
-              // Trova l'elemento HTML corrispondente al campo
-              const element = document.querySelector(`[name="${key}"]`);
-              if (element) {
-                // Applica una classe CSS usando Renderer2
-                this.renderer.addClass(element, 'campo-nullo');
-              }
-            }
-          }
-        }
-      });
   }
 
   insertContratto() {
@@ -1138,8 +1208,14 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         const dataFineRapporto = new Date(dataAssunzione);
         dataFineRapporto.setMonth(dataFineRapporto.getMonth() + mesiDurata);
 
-        // Imposta il valore calcolato nel controllo 'dataFineRapporto'
-        dataFineRapportoControl?.setValue(dataFineRapporto);
+        // Formatta la data nel formato "yyyy-MM-dd"
+        const dataFineRapportoFormatted = this.datePipe.transform(
+          dataFineRapporto,
+          'yyyy-MM-dd'
+        );
+
+        // Imposta il valore formattato nel controllo 'dataFineRapporto'
+        dataFineRapportoControl?.setValue(dataFineRapportoFormatted);
       } else {
         // Alcuni dei valori necessari sono mancanti, gestisci di conseguenza
         console.error(

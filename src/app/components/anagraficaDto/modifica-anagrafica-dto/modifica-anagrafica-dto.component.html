@@ -306,10 +306,10 @@
                         <div class="row">
                           <legend>Date</legend>
                           <div class="col-md-3">
-                            <label>Data Assunzione: </label>
+                            <label>Data Assunzione * </label>
                             <div class="form-group">
                               <input
-                                type="text"
+                                type="date"
                                 class="form-control"
                                 [value]="transformDate(data?.contratto?.dataAssunzione)"
                                 formControlName="dataAssunzione"
@@ -318,10 +318,10 @@
                             </div>
                           </div>
                           <div class="col-md-3">
-                            <label>Data inizio prova *</label>
+                            <label>Data inizio prova</label>
                             <div class="form-group">
                               <input
-                                type="text"
+                                type="date"
                                 class="form-control"
                                 [value]="transformDate(data?.contratto?.dataInizioProva)"
                                 formControlName="dataInizioProva"
@@ -333,7 +333,7 @@
                             <label>Data fine Prova: </label>
                             <div class="form-group">
                               <input
-                                type="text"
+                                type="date"
                                 class="form-control"
                                 [value]="transformDate(data?.contratto?.dataFineProva)"
                                 formControlName="dataFineProva"
@@ -345,7 +345,7 @@
                             <label>Data Fine Rapporto: </label>
                             <div class="form-group">
                               <input
-                                type="text"
+                                type="date"
                                 class="form-control"
                                 [value]="transformDate(data?.contratto?.dataFineRapporto)"
                                 formControlName="dataFineRapporto"
@@ -722,6 +722,8 @@
                             type="number"
                             class="form-control"
                             value="{{ data?.contratto?.valoreTicket }}"
+                            step="0.01"
+                            min="0"
                             formControlName="valoreTicket" placeholder="Inserire valore ticket"
                           />
                         </div>

@@ -343,6 +343,30 @@
 
     </div>
 
+    <div class="row">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-title>Dati medici <i class="fa fa-laptop-medical"></i></mat-card-title>
+          <mat-card-content>
+            <div class="row">
+              <div class="col-12">
+                <table class="table table-bordered">
+                  <tr>
+                    <td><strong>Visita medica:</strong></td>
+                    <td>{{data?.contratto?.visitaMedica ? 'Si' : 'No'}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Data visita medica:</strong></td>
+                    <td> {{data?.contratto?.visitaMedica  | date: 'dd/MM/yyyy' }} </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
 
     <!--STORICI-->
     <div class="row">
