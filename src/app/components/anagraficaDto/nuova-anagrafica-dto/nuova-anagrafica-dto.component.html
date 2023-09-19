@@ -260,15 +260,15 @@
                           </div>
                         </div>
                       </div>
-                      <br>
-                      <div class="row">
+                      <!-- <br> -->
+                      <!-- <div class="row">
                         <div class="col-6" style="text-align: end;">
                           <button  hidden mat-button matStepperPrevious>« </button>
                         </div>
                         <div class="col-6" style="text-align: start;">
                           <button matTooltip="Avanti" mat-button matStepperNext> »</button>
                         </div>
-                      </div>
+                      </div> -->
                       <br>
                       <!-- <div class="row">
                         <div class="col-6" style="text-align: end;">
@@ -368,10 +368,12 @@
                         </div>
                       </div>
 
-
+                    </div>
+                    <br>
+                    <div class="row">
                       <div class="col-md-3">
                         <div formGroupName="tipoCcnl">
-                          <label for="tipoCcnl">Tipo Contratto nazionale:</label>
+                          <label for="tipoCcnl">CCNL:</label>
                           <select
                             class="form-control"
                             id="contratto.tipoCcnl.id"
@@ -494,8 +496,8 @@
                         </div>
                       </div>
                     </div>
-                    <legend>Info Generali</legend>
-                    <div class="row">
+
+                    <!-- <div class="row"> -->
                       <!-- <div class="col-md-3">
                         <label class="form-check-label">Dimissioni: </label>
                         <div class="form-check">
@@ -503,7 +505,7 @@
                             formControlName="dimissioni" />
                         </div>
                       </div> -->
-                      <div class="col-md-3">
+                      <!-- <div class="col-md-3">
                         <label class="form-check-label">Part Time: </label>
                         <div class="form-check">
                           <input style="border-color: black" class="form-check-input" type="checkbox"
@@ -516,64 +518,118 @@
                           <input class="form-control" type="number" placeholder="Inserire % part time" formControlName="percentualePartTime" />
                         </div>
                       </div>
+                      <div class="col-md-3">
+                        <label class="form-check-label">RAL Part time : </label>
+                        <div class="form-check">
+                          <input class="form-control" type="number" placeholder="Inserire % part time" formControlName="ralPartTime" />
+                        </div>
+                      </div> -->
+                    <!-- </div> -->
+
+
+                    <div class="container-dati-economici">
+                      <div class="row">
+                        <div class="col-12">
+                          <legend>Dati economici <i class="fa fa-euro-sign" ></i></legend>
+                        </div>
+                      </div>
+
+                      <legend>Retribuzione </legend>
+
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label>Retribuzione Mensile Lorda: </label>
+                          <div class="form-group">
+                            <input type="number" class="form-control" placeholder="Inserire retribuzione lorda" min="0" step="0.01" formControlName="retribuzioneMensileLorda" />
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="retribuzioneNettaMensile">Retribuzione netta mensile</label>
+                            <input type="number" formControlName="retribuzioneNettaMensile"  placeholder="Inserire retribuzione netta mensile" min="0" step="0.01" class="form-control" >
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="retribuzioneNettaGiornaliera">Retribuzione netta giornaliera</label>
+                            <input type="number" formControlName="retribuzioneNettaGiornaliera"  placeholder="Inserire retribuzione netta giornaliera" min="0" step="0.01" class="form-control" >
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label>Superminimo Mensile: </label>
+                          <div class="form-group">
+                            <input type="number" class="form-control"  placeholder="Inserire superminimo mensile" min="0" step="0.01" formControlName="superminimoMensile" />
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <legend>RAL</legend>
+                        <div class="col-6">
+                          <label>RAL Annua: </label>
+                          <div class="form-group">
+                            <input type="number" class="form-control"  placeholder="Inserire RAL annua" min="0" step="0.01" formControlName="ralAnnua" />
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <label>Superminimo RAL: </label>
+                          <div class="form-group">
+                            <input type="number" class="form-control"  placeholder="Inserire superminimo RAL" min="0" step="0.01" formControlName="superminimoRal" />
+                          </div>
+                        </div>
+                      </div>
+                        <br>
+                        <div class="row">
+                          <legend>Diaria</legend>
+                          <div class="col-md-3">
+                            <label>Diaria Mensile: </label>
+                            <div class="form-group">
+                              <input type="text" class="form-control"  placeholder="Inserire diaria mensile" min="0" step="0.01" formControlName="diariaMensile" />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Diaria Giornaliera: </label>
+                            <div class="form-group">
+                              <input type="text" class="form-control"  placeholder="Inserire diaria giornaliera" min="0" step="0.01" formControlName="diariaGiornaliera" />
+                            </div>
+                          </div>
+                        </div>
                     </div>
-                    <legend>Retribuzione e Diaria</legend>
 
                     <div class="row">
-                      <div class="col-md-3">
-                        <label>Retribuzione Mensile Lorda: </label>
-                        <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Inserire retribuzione lorda" min="0" step="0.01" formControlName="retribuzioneMensileLorda" />
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <label>Superminimo Mensile: </label>
-                        <div class="form-group">
-                          <input type="text" class="form-control"  placeholder="Inserire superminimo mensile" min="0" step="0.01" formControlName="superminimoMensile" />
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <label>RAL Annua: </label>
-                        <div class="form-group">
-                          <input type="text" class="form-control"  placeholder="Inserire RAL annua" min="0" step="0.01" formControlName="ralAnnua" />
-                        </div>
-                      </div>
-                    </div>
+                      <legend>Part time</legend>
+                      <div class="col-3">
+                        <label for="partTime">Part time:</label> <br>
+                        <label class="toggle-switch">
 
-                    <div class="row">
-                      <div class="col-md-3">
-                        <label>Superminimo RAL: </label>
-                        <div class="form-group">
-                          <input type="text" class="form-control"  placeholder="Inserire superminimo RAL" min="0" step="0.01" formControlName="superminimoRal" />
-                        </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              style="border-color: black"
+                              [checked]="data?.contratto?.partTime === true"
+                              (change)="onPartTimeChange($event)"
+                              formControlName="partTime"
+                            />
+                            <span class="slider"></span>
+                          </div>
+                        </label>
                       </div>
                       <div class="col-md-3">
-                        <label>Diaria Mensile: </label>
+                        <label class="form-check-label">% Part time: </label>
                         <div class="form-group">
-                          <input type="text" class="form-control"  placeholder="Inserire diaria mensile" min="0" step="0.01" formControlName="diariaMensile" />
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <label>Diaria Giornaliera: </label>
-                        <div class="form-group">
-                          <input type="text" class="form-control"  placeholder="Inserire diaria giornaliera" min="0" step="0.01" formControlName="diariaGiornaliera" />
-                        </div>
-                      </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <legend>Retribuzione netta</legend>
-                      <div class="col-3">
-                        <div class="form-group">
-                          <label for="retribuzioneNettaMensile">Retribuzione netta mensile</label>
-                          <input type="number" formControlName="retribuzioneNettaMensile"  placeholder="Inserire retribuzione netta mensile" min="0" step="0.01" class="form-control" value="{{data?.contratto?.retribuzioneNettaMensile}}">
+                          <input
+                          class="form-control"
+                          type="number"
+                          formControlName="percentualePartTime"
+                          placeholder="Percentuale part time (da 40% a 80%)"
+                          (input)="calculateRalPartTime()"
+                        />
                         </div>
                       </div>
                       <div class="col-3">
-                        <div class="form-group">
-                          <label for="retribuzioneNettaGiornaliera">Retribuzione netta giornaliera</label>
-                          <input type="number" formControlName="retribuzioneNettaGiornaliera"  placeholder="Inserire retribuzione netta giornaliera" min="0" step="0.01" class="form-control" value="{{data?.contratto?.retribuzioneNettaGiornaliera}}">
-                        </div>
+                        <label for="ral part time">RAL Part time</label>
+                        <input type="text" class="form-control" formControlName="ralPartTime" [(ngModel)]="percentualePartTimeValue" >
                       </div>
                     </div>
                     <br>
@@ -680,14 +736,14 @@
                     </div>
                   </div>
                   <br>
-                  <div class="row">
+                  <!-- <div class="row">
                     <div class="col-6" style="text-align: end; ">
                       <button mat-button matStepperPrevious>«</button>
                     </div>
                     <div class="col-6" style="text-align: start;">
                       <button matTooltip="Avanti" mat-button matStepperNext> »</button>
                     </div>
-                  </div>
+                  </div> -->
 
                   </div>
               </mat-step>
@@ -843,14 +899,14 @@
                           </div>
                         </div>
                         <br>
-                        <div class="row">
+                        <!-- <div class="row">
                           <div class="col-6" style="text-align: end;">
                             <button mat-button matStepperPrevious>« </button>
                           </div>
                           <div class="col-6" style="text-align: start;">
                             <button hidden mat-button matStepperNext>»</button>
                           </div>
-                        </div>
+                        </div> -->
                       </mat-card-content>
                     </mat-card>
                   </div>

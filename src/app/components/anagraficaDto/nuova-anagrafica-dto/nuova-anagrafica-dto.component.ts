@@ -55,6 +55,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   showErrorAlert: boolean = false;
   missingFields: string[] = [];
   isDataFineRapportoDisabled: any;
+  percentualePartTimeValue: number | null = null;
 
   //dati per i controlli nei form
   inseritoContrattoIndeterminato=true;
@@ -253,9 +254,15 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     const retribuzioneMensileLordaControl = this.AnagraficaDto.get(
       'contratto.retribuzioneMensileLorda'
     );
+    const retribuzioneNettaMensileControl = this.AnagraficaDto.get(
+      'contratto.retribuzioneNettaMensile'
+    );
     const tariffaPartitaIvaControl = this.AnagraficaDto.get(
       'contratto.tariffaPartitaIva'
     );
+
+    const livelloAttualeControl= this.AnagraficaDto.get('contratto.livelloAttuale');
+    const livelloFinaleControl= this.AnagraficaDto.get('contratto.livelloFinale');
 
     switch (selectedTipoContrattoId) {
       case 1: // Contratto STAGE
@@ -271,9 +278,24 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           diariaGiornalieraControl &&
           scattiAnzianitaControl &&
           tariffaPartitaIvaControl
+          &&
+          // livelloAttualeControl &&
+          retribuzioneNettaMensileControl
+          // &&
+          // livelloFinaleControl
         ) {
           retribuzioneMensileLordaControl.enable();
-          retribuzioneMensileLordaControl.setValue(600);
+          retribuzioneMensileLordaControl.setValue(800);
+
+          retribuzioneNettaMensileControl.enable();
+          retribuzioneNettaMensileControl.setValue(600);
+
+          livelloAttualeControl?.disable();
+          livelloAttualeControl?.setValue(null);
+
+
+          livelloFinaleControl?.disable();
+          livelloFinaleControl?.setValue(null);
 
           PFIcontrol.enable();
           tutorControl.enable();
@@ -319,6 +341,16 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           dataFineRapportoControl &&
           mesiDurataControl
         ) {
+
+          livelloAttualeControl?.disable();
+          livelloAttualeControl?.setValue(null);
+
+
+          livelloFinaleControl?.disable();
+          livelloFinaleControl?.setValue(null);
+
+
+
           tariffaPartitaIvaControl.enable();
           tariffaPartitaIvaControl.setValue('');
 
@@ -395,6 +427,13 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
           tariffaPartitaIvaControl.disable();
           tariffaPartitaIvaControl.setValue('');
+
+          livelloAttualeControl?.enable();
+          livelloAttualeControl?.setValue(null);
+
+
+          livelloFinaleControl?.enable();
+          livelloFinaleControl?.setValue(null);
         }
         break;
       case 4: // Contratto a tempo indeterminato
@@ -447,6 +486,13 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
           retribuzioneMensileLordaControl.enable();
           retribuzioneMensileLordaControl.setValue(null);
+
+          livelloAttualeControl?.enable();
+          livelloAttualeControl?.setValue(null);
+
+
+          livelloFinaleControl?.enable();
+          livelloFinaleControl?.setValue(null);
         }
         break;
 
@@ -474,6 +520,13 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
           tariffaPartitaIvaControl.enable();
           tariffaPartitaIvaControl.setValue('');
+
+          livelloAttualeControl?.enable();
+          livelloAttualeControl?.setValue(null);
+
+
+          livelloFinaleControl?.enable();
+          livelloFinaleControl?.setValue(null);
 
           tutorControl.enable();
           tutorControl.setValue('');
@@ -618,6 +671,35 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
 
+  onPartTimeChange(event: any) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+
+      const percentualePartTimeControl = this.AnagraficaDto.get(
+        'contratto.percentualePartTime'
+      );
+      const ralAnnuaControl = this.AnagraficaDto.get('contratto.ralAnnua');
+      const ralPartTimeControl = this.AnagraficaDto.get(
+        'contratto.ralPartTime'
+      );
+
+      if (percentualePartTimeControl && ralAnnuaControl && ralPartTimeControl) {
+        if (isChecked) {
+          percentualePartTimeControl.enable();
+          ralAnnuaControl.enable();
+          this.calculateRalPartTime();
+        } else {
+          percentualePartTimeControl.disable();
+          percentualePartTimeControl.setValue('');
+          ralAnnuaControl.disable();
+          ralAnnuaControl.setValue('');
+          ralPartTimeControl.disable();
+          ralPartTimeControl.setValue('');
+        }
+      }
+    }
+  }
 
   creaFormCommessa(): FormGroup {
     return this.formBuilder.group({
