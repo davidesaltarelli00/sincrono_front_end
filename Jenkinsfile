@@ -4,7 +4,7 @@ pipeline {
         stage('Build and Deploy') {
             agent { dockerfile { 
                       filename 'Dockerfile'
-                      args '-u 0 -v /home/sviluppo/nginx/server1:/home/html'
+                      args '-u 0 --mount type=bind,source=/home/sviluppo/nginx/server1,target=/home/html'
                                }
                   }
             steps {
