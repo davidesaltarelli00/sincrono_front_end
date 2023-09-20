@@ -78,7 +78,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           Validators.required,
           Validators.minLength(15),
           Validators.maxLength(15),
-          Validators.pattern(/^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$/),
+
         ]),
         cellularePrivato: new FormControl('', [
           Validators.pattern(/^[0-9]{10}$/),
