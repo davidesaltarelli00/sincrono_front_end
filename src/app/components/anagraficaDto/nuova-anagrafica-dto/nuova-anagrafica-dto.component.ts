@@ -396,7 +396,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           retribuzioneMensileLordaControl.setValue(800);
 
           retribuzioneNettaMensileControl.enable();
-          retribuzioneNettaMensileControl.setValue(600);
+          retribuzioneNettaMensileControl.setValue(800);
 
           livelloAttualeControl?.disable();
           livelloAttualeControl?.setValue(null);
@@ -445,6 +445,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           superminimoMensileControl &&
           ralAnnuaControl &&
           retribuzioneMensileLordaControl &&
+          retribuzioneNettaMensileControl &&
           dataFineRapportoControl &&
           mesiDurataControl
         ) {
@@ -472,11 +473,19 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           ralAnnuaControl.disable();
           ralAnnuaControl.setValue('');
 
+          superminimoRalControl?.disable();
+          superminimoRalControl?.setValue('');
+
           dataFineRapportoControl.disable();
           dataFineRapportoControl.setValue('');
 
           mesiDurataControl.disable();
           mesiDurataControl.setValue('');
+
+          retribuzioneMensileLordaControl.setValue('');
+          retribuzioneMensileLordaControl.enable();
+          retribuzioneNettaMensileControl.setValue('');
+          retribuzioneNettaMensileControl.enable();
         }
         break;
 
@@ -536,6 +545,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
           livelloFinaleControl?.enable();
           livelloFinaleControl?.setValue(null);
+
         }
         break;
       case 4: // Contratto a tempo indeterminato
@@ -619,7 +629,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           dataFineRapportoControl.enable();
           dataFineRapportoControl.setValue(null);
 
-          tariffaPartitaIvaControl.enable();
+          tariffaPartitaIvaControl.disable();
           tariffaPartitaIvaControl.setValue('');
 
           livelloAttualeControl?.enable();
