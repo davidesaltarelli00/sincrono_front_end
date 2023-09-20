@@ -14,7 +14,7 @@
         <li *ngFor="let field of missingFields">{{ field }}</li>
       </ul>
     </div> -->
-      <form [formGroup]="AnagraficaDto" (ngSubmit)="inserisci()">
+      <form [formGroup]="AnagraficaDto">
         <!-- Step 1: Anagrafica -->
         <div *ngIf="currentStep === 1">
           <div class="row">
@@ -557,7 +557,7 @@
                             <label for="filter-LivelloContratto"
                               >Livello Contratto:</label
                             >
-                            <select
+                            <select (change)="onChangeLivelloContratto($event)"
                               class="form-control"
                               id="contratto.tipoLivelloContratto.id"
                               formControlName="id"
@@ -586,7 +586,7 @@
                         <div class="col-md-3">
                           <div formGroupName="tipoCcnl">
                             <label for="tipoCcnl">CCNL:</label>
-                            <select
+                            <select (change)="onChangeCCNL($event)"
                               class="form-control"
                               id="contratto.tipoCcnl.id"
                               formControlName="id"
@@ -609,6 +609,7 @@
                           </div> -->
                           </div>
                         </div>
+
                       </div>
                       <br />
                       <legend>Dettagli e date</legend>
@@ -825,6 +826,7 @@
                         <div class="row">
                           <div class="col-md-3">
                             <label>Retribuzione Mensile Lorda: </label>
+                            <!--&nbsp; <button class="btn btn-warning" matTooltip="Calcola" (click)="calcolaRetribuzioneMensileLorda()"><i class="fa fa-calculator"></i></button> -->
                             <div class="form-group">
                               <input
                                 type="number"
@@ -1481,7 +1483,7 @@
                 <div class="col-6" style="text-align: start">
                   <button
                     class="btn btn-success"
-                    [disabled]="AnagraficaDto.invalid"
+                    [disabled]="AnagraficaDto.invalid" (click)="inserisci()"
                   >
                     Salva
                   </button>

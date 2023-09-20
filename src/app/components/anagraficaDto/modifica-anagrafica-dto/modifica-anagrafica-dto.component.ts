@@ -263,6 +263,24 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.selectedTipoContrattoId= (resp as any)['anagraficaDto']['contratto']['tipoContratto']['id'];
         console.log("<<<<<<<<<<<<<<<<<<<<<L'UTENTE CARICATO HA COME ID DEL CONTRATTO "+ this.selectedTipoContrattoId+">>>>>>>>>>>>>>>>>>>>>")
         this.setForm();
+
+        // Iteriamo attraverso le chiavi dell'oggetto
+        for (const key in resp) {
+          if (resp.hasOwnProperty(key)) {
+            // Verifichiamo se il valore associato alla chiave è null
+            if (resp[key] === null) {
+              // Applichiamo una classe CSS per evidenziare il campo con bordo rosso
+              console.log(`Campo "${key}" è null.`);
+              // Trova l'elemento HTML corrispondente al campo
+              const element = document.querySelector(`[name="${key}"]`);
+              if (element) {
+                console.log(`Applicazione della classe CSS "campo-nullo" per "${key}"`);
+                this.renderer.addClass(element, 'campo-nullo');
+              }
+            }
+          }
+        }
+
         //conversione date
         if (this.data.contratto && this.data.contratto.dataAssunzione) {
           this.data.contratto.dataAssunzione = this.datePipe.transform(
@@ -357,22 +375,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.initializeCommesse();
         this.anagraficaDto.patchValue(this.data);
 
-        // Iteriamo attraverso le chiavi dell'oggetto
-        for (const key in resp) {
-          if (resp.hasOwnProperty(key)) {
-            // Verifichiamo se il valore associato alla chiave è null
-            if (resp[key] === null) {
-              // Applichiamo una classe CSS per evidenziare il campo con bordo rosso
-              console.log(`Campo "${key}" è null.`);
-              // Trova l'elemento HTML corrispondente al campo
-              const element = document.querySelector(`[name="${key}"]`);
-              if (element) {
-                // Applica una classe CSS usando Renderer2
-                this.renderer.addClass(element, 'campo-nullo');
-              }
-            }
-          }
-        }
+
       });
   }
 

@@ -59,6 +59,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
   //dati per i controlli nei form
   inseritoContrattoIndeterminato = true;
+  idLivelloContratto: any;
+  retribuzioneMensileLorda: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -1069,10 +1071,21 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   caricaLivelloContratto() {
     this.contrattoService
       .getLivelloContratto(localStorage.getItem('token'))
-      .subscribe((result: any) => {
-        // console.log(result);
-        this.livelliContratti = (result as any)['list'];
-      });
+      .subscribe(
+        (result: any) => {
+          this.livelliContratti = (result as any)['list'];
+          console.log(
+            '££££££££££££££££££££££££££££££££££££ ELENCO LIVELLI CONTRATTO CARICATI ££££££££££££££££££££££££££££££££££££: ' +
+              JSON.stringify(result)
+          );
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il caricamento dei livelli contrattuali:' + error
+          );
+        }
+      );
+    console.log('this.livelliContratti: ' + this.livelliContratti);
   }
 
   caricaTipoAzienda() {
@@ -1172,106 +1185,57 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       }
     }
   }
+
+  onChangeLivelloContratto(selectedId: any) {
+    const selectedValue = selectedId.target.value;
+    if (selectedValue) {
+      console.log(
+        "L'utente ha selezionato il livello contratto con id " + selectedValue
+      );
+    }
+  }
+
+  onChangeCCNL(selectedId: any) {
+    const selectedValue = selectedId.target.value;
+    if (selectedValue) {
+      console.log("L'utente ha selezionato il CCNL con id " + selectedValue);
+    }
+  }
+
+  calcolaRetribuzioneMensileLorda() {
+    const tipoContrattoControl = this.AnagraficaDto.get(
+      'contratto.tipoContratto.id'
+    )?.value;
+    const tipoLivelloContrattoControl = this.AnagraficaDto.get(
+      'contratto.tipoLivelloContratto.id'
+    )?.value;
+    const tipoCcnlControl = this.AnagraficaDto.get(
+      'contratto.tipoCcnl.id'
+    )?.value;
+    const retribuzioneMensileLordaControl = this.AnagraficaDto.get(
+      'retribuzioneMensileLorda'
+    );
+
+    console.log(
+      'Il metodo ha questi valori:\n' +
+        'Tipo contratto: ' +
+        tipoContrattoControl +
+        '\n' +
+        'Livello contratto: ' +
+        tipoLivelloContrattoControl +
+        '\n' +
+        'Tipo CCNL: ' +
+        tipoCcnlControl
+    );
+
+    if (
+      tipoContrattoControl === 4 &&
+      tipoLivelloContrattoControl === 18 &&
+      tipoCcnlControl === 1
+    ) {
+      retribuzioneMensileLordaControl?.setValue(1538.12);
+    } else {
+      retribuzioneMensileLordaControl?.setValue(null);
+    }
+  }
 }
-
-// vecchio codice nel metodo inserisci:
-// this.submitted = true;
-// console.log('Inserisco');
-// const removeEmpty = (obj: any) => {
-//   Object.keys(obj).forEach((key) => {
-//     if (obj[key] && typeof obj[key] === 'object') {
-//       removeEmpty(obj[key]);
-//     } else if (obj[key] === '') {
-//       delete obj[key];
-//     }
-//     if (obj.anagrafica && Object.keys(obj.anagrafica).length === 0) {
-//       delete obj.anagrafica;
-//     }
-//     if (obj.commessa && Object.keys(obj.commessa).length === 0) {
-//       delete obj.commessa;
-//     }
-//     if (obj.contratto && Object.keys(obj.contratto).length === 0) {
-//       delete obj.contratto;
-//     }
-//     if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
-//       delete obj.tipoContratto;
-//     }
-//     if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
-//       delete obj.tipoAzienda;
-//     }
-//     if (
-//       obj.contrattoNazionale &&
-//       Object.keys(obj.contrattoNazionale).length === 0
-//     ) {
-//       delete obj.contrattoNazionale;
-//     }
-//     if (
-//       obj.livelloContratto &&
-//       Object.keys(obj.livelloContratto).length === 0
-//     ) {
-//       delete obj.livelloContratto;
-//     }
-//     if (obj.ruolo && Object.keys(obj.ruolo).length === 0) {
-//       delete obj.ruolo;
-//     }
-//   });
-// };
-
-// removeEmpty(this.AnagraficaDto.value);
-
-// let check = true;
-
-// if (this.AnagraficaDto.value.anagrafica != null) {
-//   if (
-//     this.checkValid([
-//       'anagrafica.nome',
-//       'anagrafica.cognome',
-//       'anagrafica.codiceFiscale',
-//       'anagrafica.mailAziendale',
-//     ])
-//   ) {
-//     return;
-//   }
-// } else {
-//   return;
-// }
-
-// if (this.AnagraficaDto.value.commessa != null) {
-//   if (
-//     this.checkValid([
-//       'commessa.cliente',
-//       'commessa.dataInizio',
-//       'commessa.dataFine',
-//       'commessa.nominativo',
-//     ])
-//   ) {
-//     return;
-//   }
-// } else {
-//   this.reset([
-//     'commessa.cliente',
-//     'commessa.dataInizio',
-//     'commessa.dataFine',
-//     'commessa.nominativo',
-//   ]);
-// }
-
-// if (this.AnagraficaDto.value.contratto != null) {
-//   if (
-//     (check = this.checkValid([
-//       'contratto.tipoContratto.id',
-//       'contratto.livelloContratto.id',
-//       'contratto.contrattoNazionale.id',
-//       'contratto.tipoAzienda.id',
-//     ]))
-//   ) {
-//     return;
-//   }
-// } else {
-//   this.reset([
-//     'contratto.tipoContratto.id',
-//     'contratto.livelloContratto.id',
-//     'contratto.contrattoNazionale.id',
-//     'contratto.tipoAzienda.id',
-//   ]);
-// }
