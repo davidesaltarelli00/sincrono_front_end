@@ -47,7 +47,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   livelliContratti: any = [];
   tipiAziende: any = [];
   contrattiNazionali: any = [];
-  ruoli: any = [];
+  ruoli: any[] = [];
   userlogged: string = '';
   formsDuplicati: boolean[] = [];
   AnagraficaDto: FormGroup;
@@ -77,8 +77,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         codiceFiscale: new FormControl('', [
           Validators.required,
           Validators.minLength(15),
-          Validators.maxLength(15),
-
+          Validators.maxLength(16),
         ]),
         cellularePrivato: new FormControl('', [
           Validators.pattern(/^[0-9]{10}$/),
@@ -124,7 +123,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         attivo: new FormControl(''),
         // aziendaDiFatturazioneInterna: new FormControl(''),
         tipoAzienda: new FormGroup({
-          id: new FormControl(''),
+          id: new FormControl('', Validators.required),
         }),
         tipoContratto: new FormGroup({
           id: new FormControl(''),
@@ -179,13 +178,18 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         dataVisitaMedica: new FormControl(''),
       }),
       ruolo: this.formBuilder.group({
-        id: new FormControl(''),
+        id: new FormControl('', Validators.required),
       }),
     });
 
     this.commesse = this.AnagraficaDto.get('commesse') as FormArray;
 
     this.caricaListaUtenti();
+
+    console.log(
+      'TIPO AZIENDA VALIDITY: ' +
+        this.AnagraficaDto.get('tipoAzienda.id')?.hasError('required')
+    );
 
     this.caricaTipoContratto();
     this.caricaLivelloContratto();
@@ -197,6 +201,19 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const nomeControl = this.AnagraficaDto.get('anagrafica.nome');
+    const cognomeControl = this.AnagraficaDto.get('anagrafica.cognome');
+
+    if (nomeControl && cognomeControl) {
+      nomeControl.valueChanges.subscribe(() => {
+        this.impostaMailAziendale();
+      });
+
+      cognomeControl.valueChanges.subscribe(() => {
+        this.impostaMailAziendale();
+      });
+    }
+
     const distaccoAziendaControl = this.AnagraficaDto.get(
       'commesse.distaccoAzienda'
     );
@@ -1057,20 +1074,28 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         this.livelliContratti = (result as any)['list'];
       });
   }
+
   caricaTipoAzienda() {
     this.contrattoService
       .getTipoAzienda(localStorage.getItem('token'))
-      .subscribe((result: any) => {
-        // console.log(result);
-        this.tipiAziende = (result as any)['list'];
-      });
+      .subscribe(
+        (result: any) => {
+          console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+          this.tipiAziende = (result as any)['list'];
+        },
+        (error: any) => {
+          console.error(
+            'errore durante il caricamento dei nomi azienda:' + error
+          );
+        }
+      );
   }
 
   caricaContrattoNazionale() {
     this.contrattoService
       .getContrattoNazionale(localStorage.getItem('token'))
       .subscribe((result: any) => {
-        console.log('caricaContrattoNazionale' + result);
+        console.log('caricaContrattoNazionale: ' + JSON.stringify(result));
         this.contrattiNazionali = (result as any)['list'];
       });
   }
@@ -1113,12 +1138,39 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   caricaRuoli() {
-    this.anagraficaDtoService
-      .getRuoli(localStorage.getItem('token'))
-      .subscribe((result: any) => {
+    this.anagraficaDtoService.getRuoli(localStorage.getItem('token')).subscribe(
+      (result: any) => {
         this.ruoli = (result as any)['list'];
         console.log(this.ruoli);
-      });
+      },
+      (error: any) => {
+        console.error('Errore durante il caricamento dei ruoli:' + error);
+      }
+    );
+  }
+
+  impostaMailAziendale() {
+    const nomeControl = this.AnagraficaDto.get('anagrafica.nome');
+    const cognomeControl = this.AnagraficaDto.get('anagrafica.cognome');
+    const mailAziendaleControl = this.AnagraficaDto.get(
+      'anagrafica.mailAziendale'
+    );
+
+    if (nomeControl && cognomeControl && mailAziendaleControl) {
+      const nome = nomeControl.value;
+      const cognome = cognomeControl.value;
+
+      // Verifica che nome e cognome non siano vuoti prima di calcolare l'indirizzo email
+      if (nome && cognome) {
+        // Costruisci l'indirizzo email
+        const primaLetteraNome = nome.charAt(0).toLowerCase();
+        const cognomeMinuscolo = cognome.toLowerCase();
+        const indirizzoEmail = `${primaLetteraNome}.${cognomeMinuscolo}@sincrono.it`;
+
+        // Imposta il valore del campo "mailAziendale"
+        mailAziendaleControl.setValue(indirizzoEmail);
+      }
+    }
   }
 }
 

@@ -33,51 +33,43 @@
                       </div>
                       <div class="row">
                         <div class="col-md-3">
-                          <div class="ruolo" formGroupName="ruolo">
+                          <div formGroupName="ruolo" class="form-group" >
                             <label for="filter-ruoli">Ruolo *</label>
                             <select
+                            [ngStyle]="{'border': AnagraficaDto.get('ruolo.id')?.hasError('required') ? '1px solid red' : 'none'}"
                               class="form-control"
                               formControlName="id"
                               type="number"
                             >
-                              <option value="">--nessuna selezione--</option>
-                              <option
-                                *ngFor="let ruolo of ruoli"
-                                value="{{ ruolo.id }}"
-                              >
-                                {{ ruolo.nome }}
-                              </option>
+                              <option value="">-- Seleziona un ruolo --</option>
+                              <option *ngFor="let ruolo of ruoli" [value]="ruolo.id">{{ ruolo.nome }}</option>
                             </select>
                             <div
-                              *ngIf="
-                                AnagraficaDto.get('ruolo.id')?.invalid &&
-                                AnagraficaDto.get('ruolo.id')?.touched
-                              "
+                              *ngIf="AnagraficaDto.get('ruolo.id')?.hasError('required')"
                               class="text-danger"
                             >
                               Il campo ruolo è obbligatorio.
                             </div>
                           </div>
                         </div>
-
-                        <br />
                       </div>
+
+                      <br>
                       <div formGroupName="anagrafica">
                         <div class="row" id="nominativo">
                           <legend>Dati personali</legend>
                           <div class="col-md-3">
                             <label for="nome">Nome* </label>
                             <div class="form-group">
-                              <input
+                              <input [ngStyle]="{'border': AnagraficaDto.get('anagrafica.nome')?.hasError('required') ? '1px solid red' : 'none'}"
                                 id="anagrafica.nome"
                                 type="text"
                                 class="form-control"
                                 placeholder="Inserire il nome."
                                 formControlName="nome"
-                                [class.is-invalid]="AnagraficaDto.get('anagrafica.nome')?.invalid && AnagraficaDto.get('anagrafica.nome')?.touched"
                               />
                               <div
-                                *ngIf="AnagraficaDto.get('anagrafica.nome')?.hasError('required') && !AnagraficaDto.get('anagrafica.nome')?.invalid && AnagraficaDto.get('anagrafica.nome')?.touched"
+                                *ngIf="AnagraficaDto.get('anagrafica.nome')?.hasError('required')"
                                 class="text-danger"
                               >
                                 Il campo nome è obbligatorio.
@@ -85,21 +77,19 @@
                             </div>
 
                           </div>
+                          <!--
+                            && !AnagraficaDto.get('anagrafica.cognome')?.invalid && AnagraficaDto.get('anagrafica.cognome')?.touched"
+                            [class.is-invalid]="AnagraficaDto.get('anagrafica.cognome')?.invalid && AnagraficaDto.get('anagrafica.cognome')?.touched"-->
                           <div class="col-md-3">
                             <label>Cognome* </label>
                             <div class="form-group">
-                              <input
+                              <input [ngStyle]="{'border': AnagraficaDto.get('anagrafica.cognome')?.hasError('required') ? '1px solid red' : 'none'}"
                                 id="anagrafica.cognome"
                                 type="text"
                                 class="form-control"
                                 placeholder="Inserire il cognome."
-                                formControlName="cognome"
-                                [class.is-invalid]="AnagraficaDto.get('anagrafica.cognome')?.invalid && AnagraficaDto.get('anagrafica.cognome')?.touched"
-                              />
-                              <div
-                                *ngIf="AnagraficaDto.get('anagrafica.cognome')?.hasError('required') && !AnagraficaDto.get('anagrafica.cognome')?.invalid && AnagraficaDto.get('anagrafica.cognome')?.touched"
-                                class="text-danger"
-                              >
+                                formControlName="cognome"/>
+                              <div *ngIf="AnagraficaDto.get('anagrafica.cognome')?.hasError('required') " class="text-danger">
                                 Il campo cognome è obbligatorio.
                               </div>
                             </div>
@@ -108,31 +98,15 @@
                           <div class="col-md-3">
                             <label>Codice Fiscale* </label>
                             <div class="form-group">
-                              <input
+                              <input [ngStyle]="{'border': AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('required') || AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('minlength') || AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('maxlength') ? '1px solid red' : 'none'}"
                                 id="anagrafica.codiceFiscale"
                                 type="text"
                                 class="form-control"
                                 placeholder="Inserire il codice fiscale."
                                 formControlName="codiceFiscale"
-                                [class.is-invalid]="
-                                  AnagraficaDto.get('anagrafica.codiceFiscale')
-                                    ?.invalid &&
-                                  (AnagraficaDto.get('anagrafica.codiceFiscale')
-                                    ?.dirty ||
-                                    AnagraficaDto.get(
-                                      'anagrafica.codiceFiscale'
-                                    )?.touched)
-                                "
                               />
-
-                              <div
-                                *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.codiceFiscale'
-                                  )?.hasError('maxLength')
-                                "
-                                class="text-danger"
-                              >
+                              <div *ngIf=" AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('maxLength')
+                                "class="text-danger">
                                 Il campo non rispetta la lunghezza massima
                                 richiesta (15 caratteri)
                               </div>
@@ -145,18 +119,18 @@
                                 class="text-danger"
                               >
                                 Il campo non rispetta la lunghezza minima
-                                richiesta (15 caratteri)
+                                richiesta (16 caratteri)
                               </div>
-                              <!-- <div
+                              <div
                                 *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.codiceFiscale'
-                                  )?.hasError('pattern')
+                                  )?.hasError('required')
                                 "
                                 class="text-danger"
                               >
-                                Formato non valido.
-                              </div> -->
+                                Campo obbligatorio.
+                              </div>
                               <div
                                 *ngIf="
                                   AnagraficaDto.get(
@@ -173,30 +147,25 @@
                           </div>
 
                           <div class="col-3">
-                            <label for="filter-Tipo Azienda">Tipo Azienda*</label>
-                            <div class="form-group" formGroupName="tipoAzienda">
+                            <label for="filter-Tipo Azienda">Nome Azienda*</label>
+                            <div formGroupName="tipoAzienda" class="form-group">
                               <select
+                                [ngStyle]="{'border': AnagraficaDto.get('tipoAzienda.id')?.hasError('required') ? '1px solid red' : 'none'}"
                                 class="form-control"
-                                id="anagrafica.tipoAzienda.id"
                                 formControlName="id"
                                 type="number"
-                                [class.is-invalid]="AnagraficaDto.get('tipoAzienda.id')?.invalid && AnagraficaDto.get('anagrafica.tipoAzienda.id')?.touched"
                               >
-                                <option value="" selected>--nessuna selezione--</option>
-                                <option
-                                  *ngFor="let tipoAzienda of tipiAziende"
-                                  [value]="tipoAzienda.id"
-                                >
-                                  {{ tipoAzienda.descrizione }}
-                                </option>
+                                <option value="">-- Seleziona azienda --</option>
+                                <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">{{ tipoAzienda.descrizione }}</option>
                               </select>
                               <div
-                                *ngIf="AnagraficaDto.get('tipoAzienda.id')?.hasError('required') && !AnagraficaDto.get('anagrafica.tipoAzienda.id')?.invalid && AnagraficaDto.get('anagrafica.tipoAzienda.id')?.touched"
+                                *ngIf="AnagraficaDto.get('tipoAzienda.id')?.hasError('required')"
                                 class="text-danger"
                               >
-                                Il campo Tipo Azienda è obbligatorio.
+                                Il campo nome azienda è obbligatorio.
                               </div>
                             </div>
+
                           </div>
 
                           <br />
@@ -295,7 +264,7 @@
                           <div class="col-md-3">
                             <label>Email Aziendale* </label>
                             <div class="form-group">
-                              <input
+                              <input [ngStyle]="{'border': AnagraficaDto.get('anagrafica.mailAziendale')?.hasError('required') ? '1px solid red' : 'none'}"
                                 id="anagrafica.mailAziendale"
                                 type="text"
                                 class="form-control"
@@ -306,11 +275,7 @@
                                 *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.mailAziendale'
-                                  )?.hasError('required') &&
-                                  AnagraficaDto.get(
-                                    'anagrafica.mailAziendale'
-                                  )?.hasError('touched')
-                                "
+                                  )?.hasError('required')  "
                                 class="text-danger"
                               >
                                 Il campo mail aziendale è obbligatorio.
@@ -323,7 +288,7 @@
                                 "
                                 class="text-danger"
                               >
-                                Il formato della mail aziendale non è valido.
+                                Formato non valido.
                               </div>
                             </div>
                           </div>
