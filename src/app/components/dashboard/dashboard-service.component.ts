@@ -42,7 +42,7 @@ export class DashboardService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.delete<any>(
-      `http://localhost:8080/services/anagraficaDeleteScattoContratti`,
+      `http://localhost:8080/services/anagrafica-Delete-ScattoContratti`,
       {
         headers: headers,
       }
@@ -52,7 +52,6 @@ export class DashboardService {
   //lista commesse in scadenza 2.0
 
 
- 
    getListaCommesseInScadenza(token:any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -65,8 +64,10 @@ export class DashboardService {
   } 
  
 
-  //lista contratti in scadenza 2.0
 
+
+
+//lista contratti in scadenza 2.0
   getListaContrattiInScadenza(token:any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

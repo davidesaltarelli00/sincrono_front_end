@@ -1,7 +1,11 @@
+import { Commessa } from './../../anagraficaDto/nuova-anagrafica-dto/commessa';
 import { AnagraficaDtoService } from '../../anagraficaDto/anagraficaDto-service';
 import { ContrattoService } from './../../contratto/contratto-service';
 import { DashboardService } from './../dashboard-service.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
+import { DatePipe } from '@angular/common';
 import {
   AbstractControl,
   FormBuilder,
@@ -21,6 +25,7 @@ declare var $: any;
   styleUrls: ['./lista-dashboard.component.scss'],
 })
 export class ListaDashboardComponent {
+
   lista: any;
   data: any;
   token: any;
@@ -33,17 +38,18 @@ export class ListaDashboardComponent {
   // paginazione
   currentPage: number = 1;
   itemsPerPage: number = 20; // Numero di elementi per pagina
-  listaCommesseInScadenza: any[]=[]; //array 2.0
-  listaContrattiInScadenza:any[]=[] ; //array 2.0
-  listaCommesseScadute:any[]=[]; //array 2.0
+  listaCommesseInScadenza: any[] = []; //array 2.0
+  listaContrattiInScadenza: any[] = []; //array 2.0
+  listaCommesseScadute: any[] = []; //array 2.0
+  listaContrattiFromBatch: any[] = []; //array 2.0
   mostraFiltri = false;
   originalLista: any;
   tipiAziende: any = [];
-  idutenteCommessaInScadenza :any
+  idutenteCommessaInScadenza: any
   idContrattoInScadenza = this.activatedRouter.snapshot.params['id'];
   idCommessaScaduta = this.activatedRouter.snapshot.params['id'];
-  pageData:any[]=[];
-  messaggio:any;
+  pageData: any[] = [];
+  messaggio: any;
   commesse!: FormArray;
 
   filterAnagraficaDto: FormGroup = new FormGroup({
@@ -59,12 +65,12 @@ export class ListaDashboardComponent {
       dataFineRapporto: new FormControl(null),
     }),
     commesse: new FormGroup({
-      aziendaCliente: new FormControl(null),     
+      aziendaCliente: new FormControl(null),
     }),
-    annoDataFine:new FormControl(null),
-    meseDataFine:new FormControl(null),
-    annoDataInizio:new FormControl(null),
-    meseDataInizio:new FormControl(null)
+    annoDataFine: new FormControl(null),
+    meseDataFine: new FormControl(null),
+    annoDataInizio: new FormControl(null),
+    meseDataInizio: new FormControl(null)
   });
 
   constructor(
@@ -72,9 +78,10 @@ export class ListaDashboardComponent {
     private router: Router,
     private contrattoService: ContrattoService,
     private authService: AuthService,
-    private anagraficaDtoService :AnagraficaDtoService,
+    private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
     private activatedRouter: ActivatedRoute,
+    private datePipe: DatePipe,
 
   ) {
     this.userlogged = localStorage.getItem('userLogged');
@@ -108,52 +115,66 @@ export class ListaDashboardComponent {
         cognome: new FormControl(null),
         attivo: new FormControl(null),
         tipoAzienda: new FormGroup({
-        id: new FormControl(null),
+          id: new FormControl(null),
         }),
       }),
       contratto: new FormGroup({
         dataFineRapporto: new FormControl(null),
       }),
       commesse: this.formBuilder.array([]),
-      annoDataFine:new FormControl(null),
-      meseDataFine:new FormControl(null),
-      annoDataInizio:new FormControl(null),
-      meseDataInizio:new FormControl(null),     
+      annoDataFine: new FormControl(null),
+      meseDataFine: new FormControl(null),
+      annoDataInizio: new FormControl(null),
+      meseDataInizio: new FormControl(null),
     });
-    this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
 
+    this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
     const commessaFormGroup = this.creaFormCommessa();
     this.commesse.push(commessaFormGroup);
     this.caricaTipoAzienda();
 
+    this.dashboardService.listaScattiContratto(localStorage.getItem('token')).subscribe(
+      (resp: any) => {
+        this.listaContrattiFromBatch = (resp as any)['list'];
+        console.log('Lista contratti in arrivo dal batch: ' + JSON.stringify(resp));
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato un errore durante il recupero dei contratti con scatto livello già effettuato: ' +
+          error
+        );
+      }
+    );
+
     this.dashboardService.getListaCommesseInScadenza(localStorage.getItem('token')).subscribe(
       (resp: any) => {
-        this.listaCommesseInScadenza=(resp as any)['list'];
-        (resp.list || []).forEach((item:any) => {
+        this.listaCommesseInScadenza = (resp as any)['list'];
+        (resp.list || []).forEach((item: any) => {
           if (item.anagrafica && item.anagrafica.id) {
-            this. idutenteCommessaInScadenza = item.anagrafica.id;
+            this.idutenteCommessaInScadenza = item.anagrafica.id;
             return;
           }
         });
-        console.log("UTENTE CON LA COMMESSA IN SCADENZA:"+ this.idutenteCommessaInScadenza);
+        console.log("UTENTE CON LA COMMESSA IN SCADENZA:" + this.idutenteCommessaInScadenza);
         console.log('Lista commesse in scadenza: ' + JSON.stringify(resp));
       },
       (error: any) => {
         console.error(
           'Si é verificato un errore durante il recupero della lista delle commesse in scadenza: ' +
-            error
+          error
         );
       }
     );
     this.dashboardService.getListaContrattiInScadenza(localStorage.getItem('token')).subscribe(
       (resp: any) => {
-        this.listaContrattiInScadenza=(resp as any)['list'];
+        this.listaContrattiInScadenza = (resp as any)['list'];
         console.log('Lista contratti in scadenza: ' + JSON.stringify(resp));
+
       },
       (error: any) => {
         console.error(
           'Si é verificato un errore durante il recupero della lista dei contratti in scadenza: ' +
-            error
+          error
         );
       }
     );
@@ -172,16 +193,13 @@ export class ListaDashboardComponent {
       (error: any) => {
         console.error(
           'Si è verificato un errore durante il recupero della lista delle commesse: ' +
-            error
+          error
         );
       }
     );
-
     this.mostraFiltri = false;
-
-    
   }
-  filter(value:any) {
+  filter(value: any) {
     const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
         if (obj[key] && typeof obj[key] === 'object') {
@@ -229,10 +247,10 @@ export class ListaDashboardComponent {
       });
     };
     removeEmpty(this.filterAnagraficaDto.value);
-    const body ={
+    const body = {
       anagraficaDto: this.filterAnagraficaDto.value,
     };
-    console.log("PAYLOAD BACKEND FILTER: "+JSON.stringify(body));
+    console.log("PAYLOAD BACKEND FILTER: " + JSON.stringify(body));
 
     this.dashboardService.commesseListFilter(localStorage.getItem('token'), body).subscribe(
       (result) => {
@@ -272,23 +290,23 @@ export class ListaDashboardComponent {
       });
   }
 
-  dettaglioAnagraficaContrattoInScadenza(idAnagrafica:number){
+  dettaglioAnagraficaContrattoInScadenza(idAnagrafica: number) {
     this.anagraficaDtoService
-    .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
-    .subscribe((resp: any) => {
-      console.log(resp);
-      this.router.navigate(['/dettaglio-anagrafica/'+ idAnagrafica])
-    });
+      .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
+      .subscribe((resp: any) => {
+        console.log(resp);
+        this.router.navigate(['/dettaglio-anagrafica/' + idAnagrafica])
+      });
   }
 
-  dettaglioAnagrafica(idAnagrafica:number){
-    idAnagrafica=this.idutenteCommessaInScadenza;
+  dettaglioAnagrafica(idAnagrafica: number) {
+
     this.anagraficaDtoService
-    .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
-    .subscribe((resp: any) => {
-      console.log(resp);
-      this.router.navigate(['/dettaglio-anagrafica/'+ idAnagrafica])
-    });
+      .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
+      .subscribe((resp: any) => {
+        console.log(resp);
+        this.router.navigate(['/dettaglio-anagrafica/' + idAnagrafica])
+      });
   }
 
   profile() {
@@ -440,7 +458,7 @@ export class ListaDashboardComponent {
     this.isTableVisible1 = !this.isTableVisible1;
   }
 
-  onChangeAttivo(event:any){
+  onChangeAttivo(event: any) {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
@@ -455,16 +473,17 @@ export class ListaDashboardComponent {
     this.dashboardService
       .deleteScattiContratto(localStorage.getItem('token'))
       .subscribe((resp: any) => {
-        if ((resp as any).esito.code != 0) {
+        if ((resp as any).esito.code != 200) {
           alert(
             'cancellazione non riuscita\n' +
-              'target: ' +
-              (resp as any).esito.target
+            'target: ' +
+            (resp as any).esito.target
           );
-          return;
+
         } else {
           this.data = [];
           alert('cancellazione riuscita');
+          location.reload();
         }
       });
   }
@@ -502,5 +521,223 @@ export class ListaDashboardComponent {
         this.tipiAziende = (result as any)['list'];
       });
   }
+  exportContrattiInScadenzaToExcel() {
+    // Verifica che ci siano dati validi prima di esportare
+    console.log('Dati da esportare:', this.listaContrattiInScadenza);
+
+
+
+    // Crea un nuovo libro Excel
+    const workBook = XLSX.utils.book_new();
+
+    const workSheetData = [
+      // Intestazioni delle colonne
+      ["Nome", "Cognome", "Tipo contratto", "CCNL", "Sede di assunzione", "Data Assunzione", "Mesi durata", "livello attuale", "livello finale", "RAL", "Ticket", "Categoria protetta", "Tutor", "PFI", "Sede di assunzione"]
+    ];
+
+    // Aggiungi dati
+    this.listaContrattiInScadenza.forEach((item: any) => {
+      workSheetData.push([
+        item.anagrafica.nome ? item.anagrafica.nome.toString() : '',
+        item.anagrafica.cognome ? item.anagrafica.cognome.toString() : '',
+        item.contratto.tipoContratto.descrizione ? item.contratto.tipoContratto.descrizione.toString() : '',
+        item.contratto.tipoLivelloContratto.ccnl ? item.contratto.tipoLivelloContratto.ccnl.toString() : '',
+        item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : '',
+        this.datePipe.transform(
+          item.contratto.dataAssunzione ? item.contratto.dataAssunzione.toString() : '',
+          'yyyy-MM-dd'
+        ),
+        item.contratto.mesiDurata ? item.contratto.mesiDurata.toString() : '',
+        item.contratto.livelloAttuale ? item.contratto.livelloAttuale.toString() : '',
+        item.contratto.livelloFinale ? item.contratto.livelloFinale.toString() : '',
+        item.contratto.retribuzioneMensileLorda ? item.contratto.retribuzioneMensileLorda.toString() : '',
+        item.contratto.ticket ? item.contratto.ticket.toString() : '',
+        item.contratto.categoriaProtetta ? item.contratto.categoriaProtetta.toString() : '',
+        item.contratto.tutor ? item.contratto.tutor.toString() : '',
+        item.contratto.pfi ? item.contratto.pfi.toString() : '',
+        item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : ''
+      ]);
+    });
+
+    const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
+
+    console.log('Dati nel foglio di lavoro:', workSheet);
+
+    XLSX.utils.book_append_sheet(workBook, workSheet, 'ContrattiInScadenza');
+    // Esporta il libro Excel in un file
+    XLSX.writeFile(workBook, 'contratti_in_scadenza.xlsx');
+
+    (error: any) => {
+      console.error(
+        'Si è verificato un errore durante il recupero della lista dei contratti in scadenza: ' +
+        error
+      );
+    }
+
+  }
+
+  exportCommesseInScadenzaToExcel() {
+    // Verifica che ci siano dati validi prima di esportare
+    console.log('Dati da esportare:', this.listaCommesseInScadenza);
+
+    // Crea un nuovo libro Excel
+    const workBook = XLSX.utils.book_new();
+
+    const workSheetData = [
+      // Intestazioni delle colonne
+      ["Azienda Cliente", "Cliente finale", "Titolo posizione", "Distacco", "Distacco azienda", "Distacco data", "Tariffa giornaliera", "Azienda di fatturazione interna", "Data inizio", "Data fine", "Attivo"]
+    ];
+
+    // Aggiungi dati
+    this.listaCommesseInScadenza.forEach((item: any) => {
+
+      item.commesse.forEach((commessa: any) => {
+        workSheetData.push([
+          commessa.aziendaCliente ? commessa.aziendaCliente.toString() : '',
+          commessa.clienteFinale ? commessa.clienteFinale.toString() : '',
+          commessa.titoloPosizione ? commessa.titoloPosizione.toString() : '',
+          commessa.distacco ? commessa.distacco.toString() : '',
+          commessa.distaccoAzienda ? commessa.distaccoAzienda.toString() : '',
+          this.datePipe.transform(
+            commessa.distaccoData ? commessa.distaccoData.toString() : '', 'yyyy-MM-dd'
+          ),
+          commessa.tariffaGiornaliera ? commessa.tariffaGiornaliera.toString() : '',
+          commessa.aziendaDiFatturazioneInterna ? commessa.aziendaDiFatturazioneInterna.toString() : '',
+          this.datePipe.transform(
+            commessa.dataInizio ? commessa.dataInizio.toString() : '', 'yyyy-MM-dd'
+          ),
+          this.datePipe.transform(
+            commessa.dataFine ? commessa.dataFine.toString() : '', 'yyyy-MM-dd'
+          ),
+          commessa.attivo,
+        ]);
+      });
+    });
+
+    const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
+
+    console.log('Dati nel foglio di lavoro:', workSheet);
+
+    XLSX.utils.book_append_sheet(workBook, workSheet, 'CommesseInScadenza');
+
+    // Esporta il libro Excel in un file
+    try {
+      XLSX.writeFile(workBook, 'Commesse_in_scadenza.xlsx');
+    } catch (error) {
+      console.error('Errore durante l\'esportazione del file Excel:', error);
+    }
+  }
+
+  exportCommesseScaduteToExcel() {
+    // Verifica che ci siano dati validi prima di esportare
+    console.log('Dati da esportare:', this.listaCommesseScadute);
+
+    // Crea un nuovo libro Excel
+    const workBook = XLSX.utils.book_new();
+
+    const workSheetData = [
+      // Intestazioni delle colonne
+      ["Azienda Cliente", "Cliente finale", "Titolo posizione", "Distacco", "Distacco azienda", "Distacco data", "Tariffa giornaliera", "Azienda di fatturazione interna", "Data inizio", "Data fine"]
+    ];
+
+    // Aggiungi dati
+    this.listaCommesseScadute.forEach((item: any) => {
+
+
+      workSheetData.push([
+        item.aziendaCliente ? item.aziendaCliente.toString() : '',
+        item.clienteFinale ? item.clienteFinale.toString() : '',
+        item.titoloPosizione ? item.titoloPosizione.toString() : '',
+        item.distacco ? item.distacco.toString() : '',
+        item.distaccoAzienda ? item.distaccoAzienda.toString() : '',
+        this.datePipe.transform(
+          item.distaccoData ? item.distaccoData.toString() : '', 'yyyy-MM-dd'
+        ),
+        item.tariffaGiornaliera ? item.tariffaGiornaliera.toString() : '',
+        item.aziendaDiFatturazioneInterna ? item.aziendaDiFatturazioneInterna.toString() : '',
+        this.datePipe.transform(
+          item.dataInizio ? item.dataInizio.toString() : '', 'yyyy-MM-dd'
+        ),
+        this.datePipe.transform(
+          item.dataFine ? item.dataFine.toString() : '', 'yyyy-MM-dd'
+        ),
+
+      ]);
+    });
+
+
+    const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
+
+    console.log('Dati nel foglio di lavoro:', workSheet);
+
+    XLSX.utils.book_append_sheet(workBook, workSheet, 'CommesseScadute');
+
+    // Esporta il libro Excel in un file
+    try {
+      XLSX.writeFile(workBook, 'Commesse_scadute.xlsx');
+    } catch (error) {
+      console.error('Errore durante l\'esportazione del file Excel:', error);
+    }
+
+  }
+  exportContrattiFromBatchToExcel() {
+    // Verifica che ci siano dati validi prima di esportare
+    console.log('Dati da esportare:', this.listaContrattiFromBatch);
+
+  
+        // Crea un nuovo libro Excel
+        const workBook = XLSX.utils.book_new();
+
+        const workSheetData = [
+          // Intestazioni delle colonne
+          ["Nome", "Cognome", "Tipo contratto", "CCNL", "Sede di assunzione", "Data Assunzione", "Mesi durata", "livello attuale", "livello finale", "RAL", "Ticket", "Categoria protetta", "Tutor", "PFI", "Sede di assunzione"]
+        ];
+
+        // Aggiungi dati
+        this.listaContrattiFromBatch.forEach((item: any) => {
+          workSheetData.push([
+            item.anagrafica.nome ? item.anagrafica.nome.toString() : '',
+            item.anagrafica.cognome ? item.anagrafica.cognome.toString() : '',
+            item.contratto.tipoContratto.descrizione ? item.contratto.tipoContratto.descrizione.toString() : '',
+            item.contratto.tipoLivelloContratto.ccnl ? item.contratto.tipoLivelloContratto.ccnl.toString() : '',
+            item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : '',
+            this.datePipe.transform(
+              item.contratto.dataAssunzione ? item.contratto.dataAssunzione.toString() : '',
+              'yyyy-MM-dd'
+            ),
+            item.contratto.mesiDurata ? item.contratto.mesiDurata.toString() : '',
+            item.contratto.livelloAttuale ? item.contratto.livelloAttuale.toString() : '',
+            item.contratto.livelloFinale ? item.contratto.livelloFinale.toString() : '',
+            item.contratto.retribuzioneMensileLorda ? item.contratto.retribuzioneMensileLorda.toString() : '',
+            item.contratto.ticket ? item.contratto.ticket.toString() : '',
+            item.contratto.categoriaProtetta ? item.contratto.categoriaProtetta.toString() : '',
+            item.contratto.tutor ? item.contratto.tutor.toString() : '',
+            item.contratto.pfi ? item.contratto.pfi.toString() : '',
+            item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : ''
+          ]);
+        });
+
+        const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
+
+        console.log('Dati nel foglio di lavoro:', workSheet);
+
+        XLSX.utils.book_append_sheet(workBook, workSheet, 'ContrattiScattoLivello');
+        // Esporta il libro Excel in un file
+        XLSX.writeFile(workBook, 'contratti_scatto_livello.xlsx');
+     
+      (error: any) => {
+        console.error(
+          'Si è verificato un errore durante il recupero della lista dei contratti con scatto livello effettuato: ' +
+          error
+        );
+      }
+   
+
+  }
+
+
+
+
+
   //fine paginazione
 }

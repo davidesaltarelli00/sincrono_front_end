@@ -261,6 +261,7 @@
             {{element.commesse.attesaLavori ? 'Si' : 'No'}}
           </td>
           <td>
+            
             <span style="margin:5px;">
               <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button class="btn btn-info"><i class="fa fa-info"></i></button></a>
             </span>
@@ -291,7 +292,9 @@
         </li>
       </ul>
     </div>
-
+    <span>
+      <button (click)="exportListaAnagraficaToExcel()">Esporta Lista come excel</button>
+    </span>
 </div>
 </div>
 </div>

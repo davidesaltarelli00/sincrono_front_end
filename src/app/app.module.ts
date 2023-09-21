@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
+import { saveAs } from 'file-saver';
 //ANAGRAFICA
 import { ListaAnagraficaDtoComponent } from './components/anagraficaDto/lista-anagrafica-dto/lista-anagrafica-dto.component';
 import { DettaglioAnagraficaDtoComponent } from './components/anagraficaDto/dettaglio-anagrafica-dto/dettaglio-anagrafica-dto.component';
@@ -83,10 +83,15 @@ import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirec
     ReactiveFormsModule,
     FormsModule,
     MaterialModule,
+   
 
 
   ],
   providers: [DatePipe,CurrencyPipe],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    window['saveAs'] = saveAs; // Dichiarazione globale di saveAs
+  }
+}
