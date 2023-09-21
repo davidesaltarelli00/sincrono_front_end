@@ -1,10 +1,13 @@
 <html>
 
-<body style="padding-top: 70px;">
+<body>
   <div class="container-fluid">
-    <h1>Storico Commesse per Anagrafica selezionata   <button class="btn btn-success" style="background-color: rgb(24, 122, 0); color: white;"
-      [routerLink]="['/dettaglio-anagrafica/'+id]">Torna al dettaglio</button> </h1>
-    <div style="padding-top: 70px;" class="table-responsive">
+    <h1>Storico Commesse  </h1>
+    <!--
+      per Anagrafica selezionata   <button class="btn btn-success" style="background-color: rgb(24, 122, 0); color: white;"
+      [routerLink]="['/dettaglio-anagrafica/'+id]">Torna al dettaglio</button>
+    -->
+    <div class="table-responsive">
       <!-- <div class="pagination">
         <ul>
           <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
@@ -45,7 +48,7 @@
                     <td>{{ this.transformDate(data.dataFine) }}</td>
                     <td>{{ data.tariffaGiornaliera  ? data.tariffaGiornaliera : 'Dato non inserito'  }} € </td>
                     <td>{{ data.aziendaDiFatturazioneInterna  ? data.aziendaDiFatturazioneInterna : 'Dato non inserito'  }}</td>
-                    <td>{{data.attivo ? 'Si' : 'No'}}</td>
+                    <td>{{data.attivo ? 'Attivo' : 'Non attivo'}}</td>
                    <td> {{data.attesaLavori ? 'Sì' : 'No'}}</td>
                    <td> <button class="btn btn-success" (click)="riattivaCommessa(data.id, i)" > <i class="fa fa-file"></i> </button> </td>
 
