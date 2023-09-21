@@ -51,7 +51,7 @@ export class ListaDashboardComponent {
     anagrafica: new FormGroup({
       nome: new FormControl(null),
       cognome: new FormControl(null),
-      attivo: new FormControl(null),
+      // attivo: new FormControl(null),
       tipoAzienda: new FormGroup({
         id: new FormControl(null),
       }),
@@ -88,7 +88,7 @@ export class ListaDashboardComponent {
       anagrafica: new FormGroup({
         nome: new FormControl(null),
         cognome: new FormControl(null),
-        attivo: new FormControl(null),
+        // attivo: new FormControl(null),
         tipoAzienda: new FormGroup({
           id: new FormControl(null),
         }),
@@ -618,4 +618,16 @@ export class ListaDashboardComponent {
       }
     });
   }
+
+  showAnagraficaInfo(commessa: any) {
+    if (commessa.anagrafica && commessa.anagrafica.id) {
+      // Puoi fare qualcosa con commessa.anagrafica.id, come recuperare ulteriori informazioni
+      // o navigare a una nuova pagina con questo ID.
+      console.log('ID dell\'anagrafica:', commessa.anagrafica.id);
+    } else {
+      console.log('ID dell\'anagrafica non definito');
+    }
+  }
+
+
 }

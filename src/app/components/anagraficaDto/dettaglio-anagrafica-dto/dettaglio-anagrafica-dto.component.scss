@@ -178,3 +178,65 @@ mat-card-subtitle{
 mat-card-content{
   margin: auto;
 }
+
+
+
+/* Colonne responsive */
+.col-6 {
+  padding: 15px;
+}
+
+/* Testo e stili degli elementi */
+h2 {
+  text-align: center;
+}
+
+.table {
+  width: 100%;
+}
+
+/* Nascondi/visualizza elementi */
+@media (max-width: 575px) {
+  /* Nascondi il testo in questo esempio su dispositivi extra piccoli */
+  .hidden-xs {
+      display: none;
+  }
+}
+
+@media (min-width: 576px) {
+  /* Mostra il testo in questo esempio solo su dispositivi piccoli */
+  .hidden-sm {
+      display: none;
+  }
+}
+
+
+/* Stili per l'header */
+header {
+  background-color: #333; /* Colore di sfondo dell'header */
+  color: #fff; /* Colore del testo */
+  padding: 10px;
+}
+
+/* Stili per il testo nell'header */
+header h3 {
+  font-size: 24px; /* Dimensione del carattere di base */
+  margin: 0; /* Rimuovi il margine predefinito */
+}
+
+/* Stili per il pulsante di modifica nell'header */
+header .fa.fa-pencil {
+  font-size: 20px; /* Dimensione del carattere del pulsante */
+  margin-left: 10px; /* Spazio a sinistra del pulsante */
+}
+
+/* Stili per l'header su dispositivi di piccole dimensioni */
+@media (max-width: 576px) {
+  header h3 {
+      font-size: 18px; /* Riduci la dimensione del carattere per schermi più piccoli */
+  }
+
+  header .fa.fa-pencil {
+      font-size: 16px; /* Riduci la dimensione del carattere del pulsante */
+  }
+}

@@ -20,6 +20,7 @@ export class DettaglioAnagraficaDtoComponent {
   role:any;
   elencoCommesse=[];
   commesseGroupedByIndex: any[] = [];
+  mobile=false;
 
 
   filterAnagraficaDto: FormGroup = new FormGroup({
@@ -67,7 +68,19 @@ export class DettaglioAnagraficaDtoComponent {
     private snackBar: MatSnackBar,
     private currencyPipe: CurrencyPipe
   ) {
-
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
   }
 
   ngOnInit(): void {
