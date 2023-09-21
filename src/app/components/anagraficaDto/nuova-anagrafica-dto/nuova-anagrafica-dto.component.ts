@@ -61,6 +61,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   inseritoContrattoIndeterminato = true;
   idLivelloContratto: any;
   retribuzioneMensileLorda: any;
+  descrizioneContrattoNazionale: any;
+  descrizioneCCNL: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -545,7 +547,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
           livelloFinaleControl?.enable();
           livelloFinaleControl?.setValue(null);
-
         }
         break;
       case 4: // Contratto a tempo indeterminato
@@ -1195,20 +1196,56 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       }
     }
   }
+  verificaCorrispondenza(): boolean {
+    const corrispondenza = this.tipiAziende.some((tipoAzienda: any) =>
+      tipoAzienda.ccnl &&
+      this.contrattiNazionali.some((contratto: any) => {
+        const corrisponde = contratto.descrizione === tipoAzienda.ccnl;
+        console.log(`Confronto: ${tipoAzienda.ccnl} con ${contratto.descrizione} - Risultato: ${corrisponde}`);
+        return corrisponde;
+      })
+    );
+    console.log(`Esito della verifica: ${corrispondenza}`);
+    return corrispondenza;
+  }
+
+
 
   onChangeLivelloContratto(selectedId: any) {
     const selectedValue = selectedId.target.value;
     if (selectedValue) {
-      console.log(
-        "L'utente ha selezionato il livello contratto con id " + selectedValue
-      );
+      // Trova l'oggetto corrispondente all'ID selezionato
+      const livelloContrattoSelezionato = this.livelliContratti.find((item:any) => item.id === selectedValue);
+
+      if (livelloContrattoSelezionato) {
+        console.log("L'utente ha selezionato il livello contratto: " + livelloContrattoSelezionato.ccnl);
+      }
+
+      // Chiamare la verifica qui
+      this.verificaCorrispondenza();
     }
   }
 
   onChangeCCNL(selectedId: any) {
     const selectedValue = selectedId.target.value;
     if (selectedValue) {
-      console.log("L'utente ha selezionato il CCNL con id " + selectedValue);
+      // Trova l'oggetto corrispondente all'ID selezionato
+      const contrattoNazionaleSelezionato = this.contrattiNazionali.find((item:any) => item.id === selectedValue);
+
+      if (contrattoNazionaleSelezionato) {
+        console.log("L'utente ha selezionato il CCNL: " + contrattoNazionaleSelezionato.descrizione);
+      }
+
+      // Chiamare la verifica qui
+      this.verificaCorrispondenza();
+    }
+  }
+
+
+  onChangeTipoAzienda(selectedId: any) {
+    const selectedValue = selectedId.target.value;
+    if (selectedValue) {
+      console.log("L'utente ha selezionato l'azienda con id " + selectedValue);
     }
   }
 

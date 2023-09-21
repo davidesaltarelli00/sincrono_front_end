@@ -141,7 +141,7 @@
                                 "
                                 class="text-danger"
                               >
-                                Campo obbligatorio.
+                                Campo non valido.
                               </div>
                             </div>
                           </div>
@@ -149,8 +149,8 @@
                           <div class="col-3">
                             <label for="filter-Tipo Azienda">Nome Azienda*</label>
                             <div formGroupName="tipoAzienda" class="form-group">
-                              <select
-                                [ngStyle]="{'border': AnagraficaDto.get('tipoAzienda.id')?.hasError('required') ? '1px solid red' : 'none'}"
+                              <select (change)="onChangeTipoAzienda($event)"
+                                [ngStyle]="{'border': AnagraficaDto.get('tipoAzienda.id')==null ? '1px solid red' : '1px solid #f1f1f1'}"
                                 class="form-control"
                                 formControlName="id"
                                 type="number"
@@ -159,7 +159,7 @@
                                 <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">{{ tipoAzienda.descrizione }}</option>
                               </select>
                               <div
-                                *ngIf="AnagraficaDto.get('tipoAzienda.id')?.hasError('required')"
+                                *ngIf="AnagraficaDto.get('tipoAzienda.id')==null"
                                 class="text-danger"
                               >
                                 Il campo nome azienda è obbligatorio.
