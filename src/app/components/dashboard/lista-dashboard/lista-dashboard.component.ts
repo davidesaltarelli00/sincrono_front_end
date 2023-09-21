@@ -33,17 +33,17 @@ export class ListaDashboardComponent {
   // paginazione
   currentPage: number = 1;
   itemsPerPage: number = 20; // Numero di elementi per pagina
-  listaCommesseInScadenza: any[]=[]; //array 2.0
-  listaContrattiInScadenza:any[]=[] ; //array 2.0
-  listaCommesseScadute:any[]=[]; //array 2.0
+  listaCommesseInScadenza: any[] = []; //array 2.0
+  listaContrattiInScadenza: any[] = []; //array 2.0
+  listaCommesseScadute: any[] = []; //array 2.0
   mostraFiltri = false;
   originalLista: any;
   tipiAziende: any = [];
-  idutenteCommessaInScadenza :any
+  idutenteCommessaInScadenza: any;
   idContrattoInScadenza = this.activatedRouter.snapshot.params['id'];
   idCommessaScaduta = this.activatedRouter.snapshot.params['id'];
-  pageData:any[]=[];
-  messaggio:any;
+  pageData: any[] = [];
+  messaggio: any;
   commesse!: FormArray;
 
   filterAnagraficaDto: FormGroup = new FormGroup({
@@ -59,12 +59,12 @@ export class ListaDashboardComponent {
       dataFineRapporto: new FormControl(null),
     }),
     commesse: new FormGroup({
-      aziendaCliente: new FormControl(null),     
+      aziendaCliente: new FormControl(null),
     }),
-    annoDataFine:new FormControl(null),
-    meseDataFine:new FormControl(null),
-    annoDataInizio:new FormControl(null),
-    meseDataInizio:new FormControl(null)
+    annoDataFine: new FormControl(null),
+    meseDataFine: new FormControl(null),
+    annoDataInizio: new FormControl(null),
+    meseDataInizio: new FormControl(null),
   });
 
   constructor(
@@ -72,10 +72,9 @@ export class ListaDashboardComponent {
     private router: Router,
     private contrattoService: ContrattoService,
     private authService: AuthService,
-    private anagraficaDtoService :AnagraficaDtoService,
+    private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
-    private activatedRouter: ActivatedRoute,
-
+    private activatedRouter: ActivatedRoute
   ) {
     this.userlogged = localStorage.getItem('userLogged');
 
@@ -83,6 +82,28 @@ export class ListaDashboardComponent {
     if (userLogged) {
       this.userlogged = userLogged;
     }
+    this.filterAnagraficaDto = this.formBuilder.group({
+      anagrafica: new FormGroup({
+        nome: new FormControl(null),
+        cognome: new FormControl(null),
+        attivo: new FormControl(null),
+        tipoAzienda: new FormGroup({
+          id: new FormControl(null),
+        }),
+      }),
+      contratto: new FormGroup({
+        dataFineRapporto: new FormControl(null),
+      }),
+      commesse: this.formBuilder.array([]),
+      annoDataFine: new FormControl(null),
+      meseDataFine: new FormControl(null),
+      annoDataInizio: new FormControl(null),
+      meseDataInizio: new FormControl(null),
+    });
+    this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
+
+    const commessaFormGroup = this.creaFormCommessa();
+    this.commesse.push(commessaFormGroup);
   }
   isTableVisible: boolean = false;
   isTable2Visible: boolean = false;
@@ -102,86 +123,74 @@ export class ListaDashboardComponent {
     //     this.data = resp.list;
     //   });
 
-    this.filterAnagraficaDto = this.formBuilder.group({
-      anagrafica: new FormGroup({
-        nome: new FormControl(null),
-        cognome: new FormControl(null),
-        attivo: new FormControl(null),
-        tipoAzienda: new FormGroup({
-        id: new FormControl(null),
-        }),
-      }),
-      contratto: new FormGroup({
-        dataFineRapporto: new FormControl(null),
-      }),
-      commesse: this.formBuilder.array([]),
-      annoDataFine:new FormControl(null),
-      meseDataFine:new FormControl(null),
-      annoDataInizio:new FormControl(null),
-      meseDataInizio:new FormControl(null),     
-    });
-    this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
-
-    const commessaFormGroup = this.creaFormCommessa();
-    this.commesse.push(commessaFormGroup);
     this.caricaTipoAzienda();
 
-    this.dashboardService.getListaCommesseInScadenza(localStorage.getItem('token')).subscribe(
-      (resp: any) => {
-        this.listaCommesseInScadenza=(resp as any)['list'];
-        (resp.list || []).forEach((item:any) => {
-          if (item.anagrafica && item.anagrafica.id) {
-            this. idutenteCommessaInScadenza = item.anagrafica.id;
-            return;
-          }
-        });
-        console.log("UTENTE CON LA COMMESSA IN SCADENZA:"+ this.idutenteCommessaInScadenza);
-        console.log('Lista commesse in scadenza: ' + JSON.stringify(resp));
-      },
-      (error: any) => {
-        console.error(
-          'Si é verificato un errore durante il recupero della lista delle commesse in scadenza: ' +
-            error
-        );
-      }
-    );
-    this.dashboardService.getListaContrattiInScadenza(localStorage.getItem('token')).subscribe(
-      (resp: any) => {
-        this.listaContrattiInScadenza=(resp as any)['list'];
-        console.log('Lista contratti in scadenza: ' + JSON.stringify(resp));
-      },
-      (error: any) => {
-        console.error(
-          'Si é verificato un errore durante il recupero della lista dei contratti in scadenza: ' +
-            error
-        );
-      }
-    );
-    this.dashboardService.getAllCommesseScadute(localStorage.getItem('token')).subscribe(
-      (resp: any) => {
-        this.listaCommesseScadute = [];
-        for (const item of resp.list) {
-          for (const commesse of item.commesse) {
-            this.listaCommesseScadute.push(commesse);
-          }
+    this.dashboardService
+      .getListaCommesseInScadenza(localStorage.getItem('token'))
+      .subscribe(
+        (resp: any) => {
+          this.listaCommesseInScadenza = (resp as any)['list'];
+          (resp.list || []).forEach((item: any) => {
+            if (item.anagrafica && item.anagrafica.id) {
+              this.idutenteCommessaInScadenza = item.anagrafica.id;
+              return;
+            }
+          });
+          console.log(
+            'UTENTE CON LA COMMESSA IN SCADENZA:' +
+              this.idutenteCommessaInScadenza
+          );
+          console.log('Lista commesse in scadenza: ' + JSON.stringify(resp));
+        },
+        (error: any) => {
+          console.error(
+            'Si é verificato un errore durante il recupero della lista delle commesse in scadenza: ' +
+              error
+          );
         }
-        console.log('Lista commesse scadute: ' + JSON.stringify(this.listaCommesseScadute));
-        this.currentPage = 1;
-        this.pageData = this.getCurrentPageItems();
-      },
-      (error: any) => {
-        console.error(
-          'Si è verificato un errore durante il recupero della lista delle commesse: ' +
-            error
-        );
-      }
-    );
+      );
+    this.dashboardService
+      .getListaContrattiInScadenza(localStorage.getItem('token'))
+      .subscribe(
+        (resp: any) => {
+          this.listaContrattiInScadenza = (resp as any)['list'];
+          console.log('Lista contratti in scadenza: ' + JSON.stringify(resp));
+        },
+        (error: any) => {
+          console.error(
+            'Si é verificato un errore durante il recupero della lista dei contratti in scadenza: ' +
+              error
+          );
+        }
+      );
+    this.dashboardService
+      .getAllCommesseScadute(localStorage.getItem('token'))
+      .subscribe(
+        (resp: any) => {
+          this.listaCommesseScadute = [];
+          for (const item of resp.list) {
+            for (const commesse of item.commesse) {
+              this.listaCommesseScadute.push(commesse);
+            }
+          }
+          console.log(
+            'Lista commesse scadute: ' +
+              JSON.stringify(this.listaCommesseScadute)
+          );
+          this.currentPage = 1;
+          this.pageData = this.getCurrentPageItems();
+        },
+        (error: any) => {
+          console.error(
+            'Si è verificato un errore durante il recupero della lista delle commesse: ' +
+              error
+          );
+        }
+      );
 
     this.mostraFiltri = false;
-
-    
   }
-  filter(value:any) {
+  filter(value: any) {
     const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
         if (obj[key] && typeof obj[key] === 'object') {
@@ -229,38 +238,49 @@ export class ListaDashboardComponent {
       });
     };
     removeEmpty(this.filterAnagraficaDto.value);
-    const body ={
+    const body = {
       anagraficaDto: this.filterAnagraficaDto.value,
+      annoDataFine: this.filterAnagraficaDto.get('annoDataFine')?.value,
+      meseDataFine: this.filterAnagraficaDto.get('meseDataFine')?.value,
+      annoDataInizio: this.filterAnagraficaDto.get('annoDataInizio')?.value,
+      meseDataInizio: this.filterAnagraficaDto.get('meseDataInizio')?.value,
     };
-    console.log("PAYLOAD BACKEND FILTER: "+JSON.stringify(body));
+    console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
 
-    this.dashboardService.commesseListFilter(localStorage.getItem('token'), body).subscribe(
-      (result) => {
-        if ((result as any).esito.code !== 200) {
-          alert('Qualcosa è andato storto\n' + ': ' + (result as any).esito.target);
-        } else {
-          if (Array.isArray(result.list)) {
-            this.pageData = result.list;
-            for (const item of result.list) {
-              if (Array.isArray(item.commesse)) {
-                for (const commesse of item.commesse) {
-                  this.pageData.push(commesse);
-                }
-              } else if (typeof item.commesse === 'object') {
-                // Gestisci il caso in cui item.commesse è un oggetto
-              }
-            }
+    this.dashboardService
+      .commesseListFilter(localStorage.getItem('token'), body)
+      .subscribe(
+        (result) => {
+          if ((result as any).esito.code !== 200) {
+            alert(
+              'Qualcosa è andato storto\n' + ': ' + (result as any).esito.target
+            );
           } else {
-            this.pageData = [];
-            this.messaggio = "Nessun risultato trovato per i filtri inseriti, riprova.";
+            if (Array.isArray(result.list)) {
+              this.pageData = [];
+              for (const item of result.list) {
+                if (Array.isArray(item.commesse)) {
+                  for (const commesse of item.commesse) {
+                    this.pageData.push(commesse);
+                  }
+                } else if (typeof item.commesse === 'object') {
+                  // Gestisci il caso in cui item.commesse è un oggetto
+                }
+              }
+            } else {
+              this.pageData = [];
+              this.messaggio =
+                'Nessun risultato trovato per i filtri inseriti, riprova.';
+            }
+            console.log(
+              'Trovati i seguenti risultati: ' + JSON.stringify(result.list)
+            );
           }
-          console.log("Trovati i seguenti risultati: " + JSON.stringify(result.list));
+        },
+        (error: any) => {
+          console.log('Si è verificato un errore: ' + error);
         }
-      },
-      (error: any) => {
-        console.log("Si è verificato un errore: " + error);
-      }
-    );
+      );
   }
 
   annullaFiltri() {
@@ -272,23 +292,23 @@ export class ListaDashboardComponent {
       });
   }
 
-  dettaglioAnagraficaContrattoInScadenza(idAnagrafica:number){
+  dettaglioAnagraficaContrattoInScadenza(idAnagrafica: number) {
     this.anagraficaDtoService
-    .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
-    .subscribe((resp: any) => {
-      console.log(resp);
-      this.router.navigate(['/dettaglio-anagrafica/'+ idAnagrafica])
-    });
+      .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
+      .subscribe((resp: any) => {
+        console.log(resp);
+        this.router.navigate(['/dettaglio-anagrafica/' + idAnagrafica]);
+      });
   }
 
-  dettaglioAnagrafica(idAnagrafica:number){
-    idAnagrafica=this.idutenteCommessaInScadenza;
+  dettaglioAnagrafica(idAnagrafica: number) {
+    idAnagrafica = this.idutenteCommessaInScadenza;
     this.anagraficaDtoService
-    .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
-    .subscribe((resp: any) => {
-      console.log(resp);
-      this.router.navigate(['/dettaglio-anagrafica/'+ idAnagrafica])
-    });
+      .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
+      .subscribe((resp: any) => {
+        console.log(resp);
+        this.router.navigate(['/dettaglio-anagrafica/' + idAnagrafica]);
+      });
   }
 
   profile() {
@@ -440,14 +460,14 @@ export class ListaDashboardComponent {
     this.isTableVisible1 = !this.isTableVisible1;
   }
 
-  onChangeAttivo(event:any){
+  onChangeAttivo(event: any) {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
       if (isChecked) {
-        console.log("Checkbox selezionata, il valore è true");
+        console.log('Checkbox selezionata, il valore è true');
       } else {
-        console.log("Checkbox deselezionata, il valore è false");
+        console.log('Checkbox deselezionata, il valore è false');
       }
     }
   }
