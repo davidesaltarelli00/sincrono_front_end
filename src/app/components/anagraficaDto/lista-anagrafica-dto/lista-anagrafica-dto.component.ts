@@ -65,7 +65,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         descrizione: new FormControl(null),
       }),
       tipoCausaFineRapporto: new FormGroup({
-        descrizione: new FormControl(null),
+        id: new FormControl(null),
       }),
     }),
     commessa: new FormGroup({
@@ -136,7 +136,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         }),
         tipoCausaFineRapporto: new FormGroup({
           id:new FormControl(),
-          descrizione: new FormControl(null),
         }),
       }),
       commesse: this.formBuilder.array([]),
