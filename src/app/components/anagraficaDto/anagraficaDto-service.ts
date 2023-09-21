@@ -42,7 +42,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.put<any>(
-      `http://localhost:8080/services/storicizza-commessa`,body,
+      `http://localhost:8080/services/commessa`,body,
       { headers: headers }
     );
   }

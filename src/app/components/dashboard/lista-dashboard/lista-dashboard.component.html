@@ -234,134 +234,145 @@
       </mat-expansion-panel>
     </mat-accordion>
 
-    <hr>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri">
+      <hr>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri" >
 
         {{ mostraFiltri ? 'Nascondi filtri' : 'Mostra filtri' }}
       </mat-expansion-panel-header>
 
-      <ng-template matExpansionPanelContent>
-        <div *ngIf="mostraFiltri">
-          <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter(filterAnagraficaDto.value)">
-            <div class="container">
-              <div formGroupName="anagrafica">
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label for="nome">Nome:</label>
-                      <input type="text" id="anagrafica.nome" class="form-control" formControlName="nome">
-                    </div>
+        <ng-template matExpansionPanelContent style="border-top: 1px solid #f1f1f1;">
+          <div *ngIf="mostraFiltri">
+            <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter(filterAnagraficaDto.value)">
+                <div class="container">
+                    <div formGroupName="anagrafica">
+                        <div class="row">
+                          <b>Filtri per anagrafica</b>
+                          <br>
+                            <div class="col-md-4">
+                              <div class="form-group" >
+                                <label for="nome">Nome:</label>
+                                <input type="text" id="anagrafica.nome" class="form-control" placeholder="Inserire nome " formControlName="nome">
+                              </div>
 
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label for="cognome">Cognome:</label>
-                      <input type="text" id="anagrafica.cognome" class="form-control" formControlName="cognome">
-                    </div>
-                  </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group" >
+                                <label for="cognome">Cognome:</label>
+                                <input type="text" id="anagrafica.cognome" class="form-control" formControlName="cognome" placeholder="Inserire cognome">
+                              </div>
+                            </div>
 
-                  <div class="col-3">
-                    <label for="filter-Tipo Azienda">Nome azienda</label>
-                    <div class="form-group" formGroupName="tipoAzienda">
-                      <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
-                        <option value="" selected>--nessuna selezione--</option>
-                        <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
-                          {{ tipoAzienda.descrizione }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
+                            <div class="col-4">
+                              <label for="filter-Tipo Azienda">Nome azienda</label>
+                              <div class="form-group" formGroupName="tipoAzienda">
+                                  <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
+                                    <option value="">--nessuna selezione--</option>
+                                    <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                                      {{ tipoAzienda.descrizione }}
+                                    </option>
+                                  </select>
+                              </div>
+                            </div>
 
-                  <div class="col-md-1">
-                    <div class="form-group">
-                      <label for="attivo">Attivo</label> <br>
-                      <input type="checkbox" class="form-check-input" style="border: 1px solid black;"
-                        id="anagrafica.attivo" name="attivo" (change)="onChangeAttivo($event)" formControlName="attivo"
-                        checked>
+                            <!-- <div class="col-md-1">
+                              <div class="form-group">
+                                <label for="attivo">Attivo</label> <br>
+                                <input type="checkbox" class="form-check-input" style="border: 1px solid black;" id="anagrafica.attivo" name="attivo" (change)="onChangeAttivo($event)"  formControlName="attivo" checked>
+                              </div>
+                            </div> -->
+                        </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <b>Filtri per commesse</b>
-              <div formArrayName="commesse">
-                <div *ngFor="let commessa of commesse.controls; let i = index">
-                  <div [formGroupName]="i">
-                    <div class="row">
-                      <div class="form-group">
-                        <label for="aziendaCliente">Azienda Cliente:</label>
-                        <input type="text" id="commesse.aziendaCliente" class="form-control"
-                          formControlName="aziendaCliente">
+                    <br><br>
+                    <b>Filtri per commesse</b>
+                    <div formArrayName="commesse">
+                      <div *ngFor="let commessa of commesse.controls; let i = index">
+                        <div [formGroupName]="i">
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label for="aziendaCliente">Azienda Cliente:</label>
+                              <input type="text" id="commesse.aziendaCliente" placeholder="Inserire azienda cliente" class="form-control" formControlName="aziendaCliente">
+                          </div>
+                          </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div class="col-md-3">
-                  <label for="annoInizioCommessa">Anno di inizio commessa:</label>
-                  <input type="number" id="annoDataInizio" class="form-control" formControlName="annoDataInizio">
-                </div>
-                <div class="col-md-3">
-                  <label for="meseInizioCommessa">mese di inizio commessa:</label>
-                  <input type="number" id="meseDataInizio" class="form-control" formControlName="meseDataInizio">
-                </div>
-                <div class="col-md-3">
-                  <label for="annoFineCommessa">Anno di fine commessa:</label>
-                  <input type="number" id="annoDataFine" class="form-control" formControlName="annoDataFine">
-                </div>
-                <div class="col-md-3">
-                  <label for="meseFineCommessa">Mese di fine commessa:</label>
-                  <input type="number" id="meseDataFine" class="form-control" formControlName="meseDataFine">
-                </div>
-              </div>
-              <p>Filtri per contratto</p>
-              <div formGroupName="contratto">
-                <div class="row">
-                  <div class="col-md-3">
-                    <label for="dataFineRapporto">Data Fine Rapporto</label>
-                    <mat-form-field appearance="outline">
-                      <input matInput [matDatepicker]="picker1" formControlName="dataFineRapporto"
-                        placeholder="Inserisci la data di fine rapporto" class="form-control"
-                        formControlName="dataFineRapporto" />
-                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                      <mat-datepicker #picker1></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                </div>
-                <div class="row">
-                  <br>
-                  <div class="row">
-                    <div class="col-md-3">
+                    <br><br>
+                    <div class="row">
+                      <b>Filtri per data commessa</b>
                       <br>
-                      <button id="filter-Button" class="btn btn-success"
-                        style="background-color: rgb(24, 122, 0); color: white;">Filtra</button> &nbsp;
-                      <!--dark btn-sm rounded-pill shadow-sm-->
-                      <button (click)="annullaFiltri()" id="filter-Button" class="btn btn-info">Annulla filtri
-                      </button>
+                      <div class="col-md-3">
+                        <label for="annoInizioCommessa">Anno di inizio commessa:</label>
+                        <input type="number" id="annoDataInizio" class="form-control" placeholder="Inserire anno di inizio commessa" formControlName="annoDataInizio">
                     </div>
-                    <!--dark btn-sm rounded-pill shadow-sm  style="background-color: rgb(24, 122, 0); color: white;"-->
+                    <div class="col-md-3">
+                      <label for="meseInizioCommessa">mese di inizio commessa:</label>
+                      <input type="number" min="1" max="12" id="meseDataInizio" class="form-control" placeholder="Inserire mese di inizio commessa" formControlName="meseDataInizio">
                   </div>
+                      <div class="col-md-3">
+                          <label for="annoFineCommessa">Anno di fine commessa:</label>
+                          <input type="number" id="annoDataFine" class="form-control" placeholder="Inserire anno di fine commessa" formControlName="annoDataFine">
+                      </div>
+                      <div class="col-md-3">
+                        <label for="meseFineCommessa">Mese di fine commessa:</label>
+                        <input type="number" min="1" max="12" id="meseDataFine" class="form-control" placeholder="Inserire mese di fine commessa" formControlName="meseDataFine">
+                    </div>
+                    </div>
+                    <br><br>
+                        <div class="row">
+                         <b>Filtri per data fine rapporto</b>
+                            <div class="col-md-3">
+                                <label for="dataFineRapporto">Anno Fine Rapporto</label>
+                                <input type="number" formControlName="annoFineContratto" placeholder="Inserire anno di fine rapporto" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                              <label for="dataFineRapporto">Mese Fine Rapporto</label>
+                              <input type="number" min="1" max="12" formControlName="meseFineContratto" class="form-control" placeholder="Inserire mese di fine rapporto">
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                  <br>
+                                    <button id="filter-Button" class="btn btn-success" style="float: right;"
+                                      [disabled]="filterAnagraficaDto.invalid" >Filtra</button>
+                                </div>
+                                <div class="col-6">
+                                  <br>
+                                  <button (click)="annullaFiltri()" id="filter-Button"
+                                        class="btn btn-info">Annulla filtri </button>
+                                </div>
+                            </div>
+                        </div>
                 </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </ng-template>
-    </mat-expansion-panel>
-    <br>
+            </form>
+        </div>      </ng-template>
+        </mat-expansion-panel>
+        <br>
 
     <div class="row">
       <div class="col-12">
         <h2>Lista commesse scadute</h2>
       </div>
     </div>
-    <div class="row">
+    <div class="row" [hidden]="pageData.length>0">
+      <div class="col-12">
+        <p>Nessun risultato</p>
+        <br><br><br><br><br><br>
+      </div>
+    </div>
+    <div class="row" [hidden]="pageData.length===0">
       <div class="col-12">
 
         <div class="table-responsive">
 
-          <table class="table table-striped">
+
+
+          <table class="table table-striped" >
             <thead>
               <tr>
                 <th>Azienda Cliente</th>
@@ -371,11 +382,10 @@
                 <th>Distacco Azienda</th>
                 <th>Distacco Data</th>
                 <th>Tariffa Giornaliera</th>
-                <th>Azienda di Fatturazione Interna</th>
+                <th>Azienda Fatturazione Interna</th>
                 <th>Data Inizio</th>
                 <th>Data Fine</th>
-                <th>Attivo</th>
-                <th>Attesa Lavori</th>
+                <!-- <th>Anagrafica</th> -->
               </tr>
             </thead>
             <tbody>
@@ -392,11 +402,7 @@
                 <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
                 <td>{{ commessa.dataInizio | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ commessa.dataFine | date: 'dd/MM/yyyy' }}</td>
-                <td *ngIf="commessa.attivo">Attivo</td>
-                <td *ngIf="!commessa.attivo">Non attivo</td>
-                <td *ngIf="commessa.attesaLavori">Si</td>
-                <td *ngIf="!commessa.attesaLavori">No</td>
-                
+                <!-- <td>  <button class="btn btn-success" (click)="showAnagraficaInfo(commessa)"><i class="fa fa-info" ></i></button></td> -->
               </tr>
             </tbody>
             
