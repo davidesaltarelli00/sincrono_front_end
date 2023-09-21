@@ -12,6 +12,7 @@ import {
 } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../login/login-service';
+import { startWith } from 'rxjs';
 
 declare var $: any;
 
@@ -55,9 +56,7 @@ export class ListaDashboardComponent {
         id: new FormControl(null),
       }),
     }),
-    contratto: new FormGroup({
-      dataFineRapporto: new FormControl(null),
-    }),
+
     commesse: new FormGroup({
       aziendaCliente: new FormControl(null),
     }),
@@ -65,6 +64,9 @@ export class ListaDashboardComponent {
     meseDataFine: new FormControl(null),
     annoDataInizio: new FormControl(null),
     meseDataInizio: new FormControl(null),
+
+    annoFineContratto: new FormControl(null),
+    meseFineContratto: new FormControl(null),
   });
 
   constructor(
@@ -91,14 +93,15 @@ export class ListaDashboardComponent {
           id: new FormControl(null),
         }),
       }),
-      contratto: new FormGroup({
-        dataFineRapporto: new FormControl(null),
-      }),
+
       commesse: this.formBuilder.array([]),
       annoDataFine: new FormControl(null),
       meseDataFine: new FormControl(null),
       annoDataInizio: new FormControl(null),
       meseDataInizio: new FormControl(null),
+
+      annoFineContratto: new FormControl(null),
+      meseFineContratto: new FormControl(null),
     });
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
 
@@ -122,6 +125,8 @@ export class ListaDashboardComponent {
     //   .subscribe((resp: any) => {
     //     this.data = resp.list;
     //   });
+
+    this.setForm();
 
     this.caricaTipoAzienda();
 
@@ -229,21 +234,50 @@ export class ListaDashboardComponent {
         ) {
           delete obj.tipoCanaleReclutamento;
         }
+        if (obj.annoDataFine && Object.keys(obj.annoDataFine).length === 0) {
+          delete obj.annoDataFine;
+        }
+        if (obj.meseDataFine && Object.keys(obj.meseDataFine).length === 0) {
+          delete obj.meseDataFine;
+        }
         if (
-          obj.tipoCausaFineRapporto &&
-          Object.keys(obj.tipoCausaFineRapporto).length === 0
+          obj.annoDataInizio &&
+          Object.keys(obj.annoDataInizio).length === 0
         ) {
-          delete obj.tipoCausaFineRapporto;
+          delete obj.annoDataInizio;
+        }
+        if (
+          obj.meseDataInizio &&
+          Object.keys(obj.meseDataInizio).length === 0
+        ) {
+          delete obj.meseDataInizio;
+        }
+        if (
+          obj.annoFineContratto &&
+          Object.keys(obj.annoFineContratto).length === 0
+        ) {
+          delete obj.annoFineContratto;
+        }
+        if (
+          obj.meseFineContratto &&
+          Object.keys(obj.meseFineContratto).length === 0
+        ) {
+          delete obj.meseFineContratto;
         }
       });
     };
     removeEmpty(this.filterAnagraficaDto.value);
+
     const body = {
       anagraficaDto: this.filterAnagraficaDto.value,
       annoDataFine: this.filterAnagraficaDto.get('annoDataFine')?.value,
       meseDataFine: this.filterAnagraficaDto.get('meseDataFine')?.value,
       annoDataInizio: this.filterAnagraficaDto.get('annoDataInizio')?.value,
       meseDataInizio: this.filterAnagraficaDto.get('meseDataInizio')?.value,
+      annoFineContratto:
+        this.filterAnagraficaDto.get('annoFineContratto')?.value,
+      meseFineContratto:
+        this.filterAnagraficaDto.get('meseFineContratto')?.value,
     };
     console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
 
@@ -253,7 +287,7 @@ export class ListaDashboardComponent {
         (result) => {
           if ((result as any).esito.code !== 200) {
             alert(
-              'Qualcosa è andato storto\n' + ': ' + (result as any).esito.target
+              'Qualcosa è andato storto: \n' + (result as any).esito.target
             );
           } else {
             if (Array.isArray(result.list)) {
@@ -522,5 +556,66 @@ export class ListaDashboardComponent {
         this.tipiAziende = (result as any)['list'];
       });
   }
-  //fine paginazione
+
+  setForm() {
+    const meseDataFine = this.filterAnagraficaDto.get(
+      'meseDataFine'
+    ) as FormControl;
+    const annoDataFine = this.filterAnagraficaDto.get(
+      'annoDataFine'
+    ) as FormControl;
+
+    const meseDataInizio = this.filterAnagraficaDto.get(
+      'meseDataInizio'
+    ) as FormControl;
+    const annoDataInizio = this.filterAnagraficaDto.get(
+      'annoDataInizio'
+    ) as FormControl;
+
+    const meseFineContratto = this.filterAnagraficaDto.get(
+      'meseFineContratto'
+    ) as FormControl;
+    const annoFineContratto = this.filterAnagraficaDto.get(
+      'annoFineContratto'
+    ) as FormControl;
+
+    // Crea degli observable per i campi degli anni
+    const annoDataFineChanges = annoDataFine.valueChanges.pipe(
+      startWith(annoDataFine.value)
+    );
+    const annoDataInizioChanges = annoDataInizio.valueChanges.pipe(
+      startWith(annoDataInizio.value)
+    );
+    const annoFineContrattoChanges = annoFineContratto.valueChanges.pipe(
+      startWith(annoFineContratto.value)
+    );
+
+    // Iscriviti agli observable e abilita/disabilita i campi dei mesi in base ai valori degli anni
+    annoDataFineChanges.subscribe((anno) => {
+      if (anno) {
+        meseDataFine.enable();
+      } else {
+        meseDataFine.disable();
+        meseDataFine.setValue(null)
+      }
+    });
+
+    annoDataInizioChanges.subscribe((anno) => {
+      if (anno) {
+        meseDataInizio.enable();
+      } else {
+        meseDataInizio.disable();
+        meseDataInizio.setValue(null);
+      }
+    });
+
+    annoFineContrattoChanges.subscribe((anno) => {
+      if (anno) {
+        meseFineContratto.enable();
+      } else {
+        meseFineContratto.disable();
+        meseFineContratto.setValue(null);
+      }
+    });
+  }
 }
