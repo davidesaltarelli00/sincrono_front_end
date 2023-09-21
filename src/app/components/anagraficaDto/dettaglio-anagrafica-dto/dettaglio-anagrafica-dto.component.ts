@@ -102,29 +102,44 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
   storicizzaCommessa(id: number, posizione: number) {
-    console.log("ID COMMESSA DA STORICIZZARE: " + id);
+    console.log('ID COMMESSA DA STORICIZZARE: ' + id);
     console.log("Posizione nell'array: " + posizione);
 
+    // const payload = {
+    //   anagraficaDto: {
+    //     anagrafica: null,
+    //     contratto: null,
+    //     commesse: [this.elencoCommesse[posizione]],
+    //     ruolo: null
+    //   },
+    // };
     const payload = {
-      anagraficaDto: {
-        anagrafica: null,
-        contratto: null,
-        commesse: [this.elencoCommesse[posizione]],
-        ruolo: null
-      },
+      commessa: this.elencoCommesse[posizione],
     };
 
     console.log(JSON.stringify(payload));
 
-    this.anagraficaDtoService.storicizzaCommessa(payload, localStorage.getItem('token')).subscribe(
-      (res: any) => {
-        console.log("Commessa storicizzata correttamente: " + JSON.stringify(res));
-      },
-      (error: any) => {
-        alert("Si è verificato un errore durante la storicizzazione della commessa selezionata: " + error);
-      }
-    );
+    this.anagraficaDtoService
+      .storicizzaCommessa(payload, localStorage.getItem('token'))
+      .subscribe(
+        (res: any) => {
+          console.log(
+            'Commessa storicizzata correttamente: ' + JSON.stringify(res)
+          );
+          alert("Commessa storicizzata correttamente.");
+          this.ngOnInit();
+        },
+        (error: any) => {
+          alert(
+            'Si è verificato un errore durante la storicizzazione della commessa selezionata: ' +
+              error
+          );
+        }
+      );
   }
+
+
+
 
 
 

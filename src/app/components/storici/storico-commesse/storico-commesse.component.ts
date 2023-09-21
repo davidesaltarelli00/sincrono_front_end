@@ -51,7 +51,7 @@ export class StoricoCommesseComponent implements OnInit {
     });
   }
 
-  riattivaCommessa(id: number, posizione: number) {
+ riattivaCommessa(id: number, posizione: number) {
     console.log('ID COMMESSA DA RIATTIVARE: ' + id);
     console.log("Posizione nell'array: " + posizione);
 
@@ -71,8 +71,10 @@ export class StoricoCommesseComponent implements OnInit {
       .subscribe(
         (res: any) => {
           console.log(
-            'Commessa storicizzata correttamente: ' + JSON.stringify(res)
+            'Commessa riattivata correttamente: ' + JSON.stringify(res)
           );
+          alert('Commessa riattivata correttamente.');
+          this.router.navigate(['/dettaglio-anagrafica/',this.id]);
         },
         (error: any) => {
           alert(
@@ -81,7 +83,7 @@ export class StoricoCommesseComponent implements OnInit {
           );
         }
       );
-  }
+ }
 
   //paginazione
   getCurrentPageItems(): any[] {
