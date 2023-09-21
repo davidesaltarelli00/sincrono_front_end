@@ -81,7 +81,6 @@ export class ListaDashboardComponent {
     private contrattoService: ContrattoService,
     private authService: AuthService,
     private anagraficaDtoService: AnagraficaDtoService,
-    private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
     private activatedRouter: ActivatedRoute,
     private datePipe: DatePipe,
@@ -135,24 +134,6 @@ export class ListaDashboardComponent {
     //     this.data = resp.list;
     //   });
 
-    this.filterAnagraficaDto = this.formBuilder.group({
-      anagrafica: new FormGroup({
-        nome: new FormControl(null),
-        cognome: new FormControl(null),
-        attivo: new FormControl(null),
-        tipoAzienda: new FormGroup({
-          id: new FormControl(null),
-        }),
-      }),
-      contratto: new FormGroup({
-        dataFineRapporto: new FormControl(null),
-      }),
-      commesse: this.formBuilder.array([]),
-      annoDataFine: new FormControl(null),
-      meseDataFine: new FormControl(null),
-      annoDataInizio: new FormControl(null),
-      meseDataInizio: new FormControl(null),
-    });
 
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
     const commessaFormGroup = this.creaFormCommessa();

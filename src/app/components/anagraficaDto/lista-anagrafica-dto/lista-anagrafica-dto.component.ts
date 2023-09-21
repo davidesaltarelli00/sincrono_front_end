@@ -597,7 +597,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     console.log("PAYLOAD BACKEND FILTER: " + JSON.stringify(body));
 
     this.anagraficaDtoService.filterAnagrafica(localStorage.getItem('token'), body).subscribe((result) => {
-      if ((result as any).esito.code !== 200) {
+      if ((result as any).esito.code != 200) {
         alert(
           'Qualcosa é andato storto\n' + ': ' +
           (result as any).esito.target
