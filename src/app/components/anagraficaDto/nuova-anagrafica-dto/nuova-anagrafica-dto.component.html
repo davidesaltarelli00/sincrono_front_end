@@ -581,39 +581,7 @@
                             Il campo mesi durata è obbligatorio.
                           </div>
                         </div>
-
-                        <div class="col-md-3">
-                          <div formGroupName="tipoLivelloContratto">
-                            <label for="filter-LivelloContratto"
-                              >Livello Contratto:</label
-                            >
-                            <select (change)="onChangeLivelloContratto($event)"
-                            class="form-select" aria-label="Default select example"
-                              id="contratto.tipoLivelloContratto.id"
-                              formControlName="id"
-                            >
-                              <option value="">--nessuna selezione--</option>
-                              <option
-                                *ngFor="
-                                  let tipoLivelloContratto of livelliContratti
-                                "
-                                [value]="tipoLivelloContratto.id"
-                              >
-                                {{ tipoLivelloContratto.livello }}
-                              </option>
-                            </select>
-                            <!-- <div
-                            *ngIf="AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.touched"
-                            class="text-danger"
-                          >
-                            Il campo tipo livello contratto è obbligatorio.
-                          </div> -->
-                          </div>
-                        </div>
-                      </div>
-                      <br />
-                      <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-3">
                           <div formGroupName="tipoCcnl">
                             <label for="tipoCcnl">CCNL:</label>
                             <select (change)="onChangeCCNL($event)"
@@ -638,6 +606,38 @@
                             Il campo Tipo Contratto nazionale è obbligatorio.
                           </div> -->
                           </div>
+                        </div>
+                      </div>
+                      <br />
+                      <div class="row" *ngIf="ccnLSelezionato" >
+                          <div class="col-md-3">
+                            <div formGroupName="tipoLivelloContratto">
+                              <label for="filter-LivelloContratto"
+                                >Livello Contratto:</label
+                              >
+                              <select (change)="onChangeLivelloContratto($event)"
+                              class="form-select" aria-label="Default select example"
+                                id="contratto.tipoLivelloContratto.id"
+                                formControlName="id"
+                              >
+                                <option value="">--nessuna selezione--</option>
+                                <option
+                                  *ngFor="
+                                    let tipoLivelloContratto of livelliContratti
+                                  "
+                                  [value]="tipoLivelloContratto.id"
+                                >
+                                  {{ tipoLivelloContratto.livello }}
+                                </option>
+                              </select>
+                              <!-- <div
+                              *ngIf="AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.touched"
+                              class="text-danger"
+                            >
+                              Il campo tipo livello contratto è obbligatorio.
+                            </div> -->
+                          </div>
+
                         </div>
 
                       </div>

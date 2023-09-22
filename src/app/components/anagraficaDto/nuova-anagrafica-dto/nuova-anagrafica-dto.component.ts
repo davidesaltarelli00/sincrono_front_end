@@ -56,6 +56,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   missingFields: string[] = [];
   isDataFineRapportoDisabled: any;
   percentualePartTimeValue: number | null = null;
+  ccnLSelezionato=false;
 
   //dati per i controlli nei form
   inseritoContrattoIndeterminato = true;
@@ -206,7 +207,21 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const tipoAziendaAnagrafica = this.AnagraficaDto.get('anagrafica.tipoAzienda.id');
+    const livelloAttualeControl=this.AnagraficaDto.get('contratto.livelloAttuale');
+    if(livelloAttualeControl){
+      livelloAttualeControl.disable();
+    }
+
+    const livelloControl = this.AnagraficaDto.get(
+      'contratto.tipoLivelloContratto.id'
+    );
+    if (livelloControl) {
+      livelloControl.disable();
+    }
+
+    const tipoAziendaAnagrafica = this.AnagraficaDto.get(
+      'anagrafica.tipoAzienda.id'
+    );
     if (tipoAziendaAnagrafica) {
       tipoAziendaAnagrafica.disable();
     }
@@ -1203,47 +1218,48 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   //   }
   // }
   verificaCorrispondenza(): boolean {
-    const corrispondenza = this.tipiAziende.some((tipoAzienda: any) =>
-      tipoAzienda.ccnl &&
-      this.contrattiNazionali.some((contratto: any) => {
-        const corrisponde = contratto.descrizione === tipoAzienda.ccnl;
-        console.log(`Confronto: ${tipoAzienda.ccnl} con ${contratto.descrizione} - Risultato: ${corrisponde}`);
-        return corrisponde;
-      })
+    const corrispondenza = this.tipiAziende.some(
+      (tipoAzienda: any) =>
+        tipoAzienda.ccnl &&
+        this.contrattiNazionali.some((contratto: any) => {
+          const corrisponde = contratto.descrizione === tipoAzienda.ccnl;
+          console.log(
+            `Confronto: ${tipoAzienda.ccnl} con ${contratto.descrizione} - Risultato: ${corrisponde}`
+          );
+          return corrisponde;
+        })
     );
     console.log(`Esito della verifica: ${corrispondenza}`);
     return corrispondenza;
   }
 
+  onChangeLivelloContratto(event: any) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.value;
 
-
-  onChangeLivelloContratto(selectedId: any) {
-    const selectedValue = selectedId.target.value;
-    if (selectedValue) {
-      // Trova l'oggetto corrispondente all'ID selezionato
-      const livelloContrattoSelezionato = this.livelliContratti.find((item:any) => item.id === selectedValue);
-
-      if (livelloContrattoSelezionato) {
-        console.log("L'utente ha selezionato il livello contratto: " + livelloContrattoSelezionato.ccnl);
+      if (isChecked) {
+        console.log('Livello contratto numero ' + isChecked);
+        //qui andrá l endpoint/calcolo per il calcolo del livello attuale
+      } else {
+        console.log('Livello contratto non selezionato ');
       }
-
-      // Chiamare la verifica qui
-      this.verificaCorrispondenza();
     }
   }
 
-  onChangeCCNL(selectedId: any) {
-    const selectedValue = selectedId.target.value;
-    if (selectedValue) {
-      // Trova l'oggetto corrispondente all'ID selezionato
-      const contrattoNazionaleSelezionato = this.contrattiNazionali.find((item:any) => item.id === selectedValue);
+  onChangeCCNL(event: any) {
+    const isChecked = event.target.value;
+    const livelloControl = this.AnagraficaDto.get('contratto.tipoLivelloContratto.id');
 
-      if (contrattoNazionaleSelezionato) {
-        console.log("L'utente ha selezionato il CCNL: " + contrattoNazionaleSelezionato.descrizione);
-      }
-
-      // Chiamare la verifica qui
-      this.verificaCorrispondenza();
+    if (isChecked) {
+      console.log('Livello contratto numero ' + isChecked);
+      livelloControl?.enable();
+      this.ccnLSelezionato=true;
+      // Qui andrà la chiamata per l'endpoint per la get del livello contratto
+    } else {
+      console.log('CCNL non selezionato');
+      livelloControl?.disable();
+      this.ccnLSelezionato=false;
     }
   }
 
