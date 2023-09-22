@@ -561,47 +561,12 @@
                                  [value]="data?.contratto?.retribuzioneMensileLorda"
                                  formControlName="retribuzioneMensileLorda"
                                  placeholder="Inserire retribuzione mensile lorda"
+                                 (input)="calcolaMensileTot()"
+                                 id="retribuzioneMensileLorda"
                           />
                         </div>
                       </div>
-                      <div class="col-md-3">
-                        <label>Retribuzione netta mensile:</label>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text custom-prefix">€</span>
-                            </div>
-                            <input
-                              type="number"
-                              class="form-control"
-                              value="{{ data?.contratto?.retribuzioneNettaMensile }}"
-                              formControlName="retribuzioneNettaMensile"
-                              step="0.01"
-                              min="0"
-                              placeholder="Inserire retribuzione netta mensile"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <label>Retribuzione netta giornaliera:</label>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text custom-prefix">€</span>
-                            </div>
-                            <input
-                              type="number"
-                              class="form-control"
-                              value="{{ data?.contratto?.retribuzioneNettaGiornaliera }}"
-                              formControlName="retribuzioneNettaGiornaliera"
-                              step="0.01"
-                              min="0"
-                              placeholder="Inserire retribuzione netta giornaliera"
-                            />
-                          </div>
-                        </div>
-                      </div>
+
 
                       <div class="col-md-3">
                         <label>Superminimo Mensile:</label>
@@ -618,13 +583,52 @@
                               step="0.01"
                               min="0"
                               placeholder="Inserire Superminimo mensile"
+                              id="superminimoMensile"
+                              (input)="calcolaMensileTot()"
                             />
                           </div>
                         </div>
                       </div>
 
+                      <div class="col-md-3">
+                        <label>Scatti anzianitá:</label>
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text custom-prefix">€</span>
+                            </div>
+                            <input
+                              type="number"
+                              class="form-control"
+                              value="{{ data?.contratto?.scattiAnzianita }}"
+                              formControlName="scattiAnzianita"
+                              step="0.01"
+                              min="0"
+                              placeholder="Inserire scatti anzianitá"
+                              id="scattiAnzianita"
+                              (input)="calcolaMensileTot()"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                         <label for="mensileTOT">Mensile tot</label>
+                       <!-- <div class="form-group">
+                          <input type="number" readonly class="form-control" placeholder="Mensile tot" id="mensileTOT">
+                        </div> -->
 
+
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text prefix" style="background-color: black; color: white;">€</div>
+                          </div>
+                          <input matInput type="number" readonly class="form-control" placeholder="Mensile tot" id="mensileTOT"
+                          />
+                        </div>
+
+                      </div>
                     </div>
+
                     <br>
                     <div class="row">
 
@@ -738,9 +742,9 @@
                     </div>
                     <br>
                     <div class="row">
-                      <legend>Scatti anzianitá</legend>
-                      <div class="col-md-4">
-                        <label>Scatti anzianitá:</label>
+                      <legend>Retribuzione netta</legend>
+                      <div class="col-md-3">
+                        <label>Retribuzione netta mensile:</label>
                         <div class="form-group">
                           <div class="input-group">
                             <div class="input-group-prepend">
@@ -749,11 +753,30 @@
                             <input
                               type="number"
                               class="form-control"
-                              value="{{ data?.contratto?.scattiAnzianita }}"
-                              formControlName="scattiAnzianita"
+                              value="{{ data?.contratto?.retribuzioneNettaMensile }}"
+                              formControlName="retribuzioneNettaMensile"
                               step="0.01"
                               min="0"
-                              placeholder="Inserire scatti anzianitá"
+                              placeholder="Inserire retribuzione netta mensile"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Retribuzione netta giornaliera:</label>
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text custom-prefix">€</span>
+                            </div>
+                            <input
+                              type="number"
+                              class="form-control"
+                              value="{{ data?.contratto?.retribuzioneNettaGiornaliera }}"
+                              formControlName="retribuzioneNettaGiornaliera"
+                              step="0.01"
+                              min="0"
+                              placeholder="Inserire retribuzione netta giornaliera"
                             />
                           </div>
                         </div>
@@ -824,6 +847,9 @@
                           formControlName="percentualePartTime"
                           placeholder="Percentuale part time (da 40% a 80%)"
                           (input)="calculateRalPartTime()"
+                          step="10"
+                          min="40"
+                          max="80"
                         />
                         </div>
                       </div>

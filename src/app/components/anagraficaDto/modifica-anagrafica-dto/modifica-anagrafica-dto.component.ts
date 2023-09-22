@@ -198,6 +198,16 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.caricaTipoCanaleReclutamento();
     this.caricaTipoCausaFineRapporto();
 
+    const retribuzioneMensileLorda=this.anagraficaDto.get('contratto.retribuzioneMensileLorda');
+    const superminimoMensileControl=this.anagraficaDto.get('contratto.superminimoMensile');
+    const scattiAnzianitaControl=this.anagraficaDto.get('contratto.scattiAnzianita');
+    if(retribuzioneMensileLorda && superminimoMensileControl && scattiAnzianitaControl){
+      // this.calcolaMensileTot();
+    } else{
+      console.warn("Non é possibile calcolare il mensile totale perché mancano dei dati.");
+    }
+
+
     const tariffaPartitaIvaControl=this.anagraficaDto.get('contratto.tariffaPartitaIva');
 
     if(tariffaPartitaIvaControl){
@@ -1621,4 +1631,19 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         break;
     }
   }
+
+  calcolaMensileTot() {
+    const retribuzioneMensileLorda = parseFloat((<HTMLInputElement>document.getElementById('retribuzioneMensileLorda')).value) || 0;
+    const superminimoMensile = parseFloat((<HTMLInputElement>document.getElementById('superminimoMensile')).value) || 0;
+    const scattiAnzianita = parseFloat((<HTMLInputElement>document.getElementById('scattiAnzianita')).value) || 0;
+
+    if (retribuzioneMensileLorda !== 0 && superminimoMensile !== 0 && scattiAnzianita !== 0) {
+      const mensileTot = retribuzioneMensileLorda + superminimoMensile + scattiAnzianita;
+      document.getElementById('mensileTOT')?.setAttribute('value', mensileTot.toFixed(2));
+    } else {
+      // Se uno dei campi è vuoto, nascondi il risultato o reimpostalo a zero, a seconda delle tue esigenze
+      document.getElementById('mensileTOT')?.setAttribute('value', '');
+    }
+  }
+
 }
