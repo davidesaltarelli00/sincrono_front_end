@@ -74,7 +74,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.AnagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
         tipoAzienda: new FormGroup({
-          id: new FormControl('', Validators.required),
+          id: new FormControl(''),
         }),
         nome: new FormControl('', Validators.required),
         cognome: new FormControl('', Validators.required),
@@ -140,7 +140,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         }),
         qualifica: new FormControl(''),
         sedeAssunzione: new FormControl(''),
-        dataAssunzione: new FormControl(''), //, Validators.required
+        dataAssunzione: new FormControl('', Validators.required), //, Validators.required
         dataInizioProva: new FormControl(''),
         dataFineProva: new FormControl(''),
         dataFineRapporto: new FormControl(''), //, Validators.required
@@ -205,18 +205,24 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    const tipoAziendaAnagrafica = this.AnagraficaDto.get('anagrafica.tipoAzienda.id');
+    if (tipoAziendaAnagrafica) {
+      tipoAziendaAnagrafica.disable();
+    }
+
     const nomeControl = this.AnagraficaDto.get('anagrafica.nome');
     const cognomeControl = this.AnagraficaDto.get('anagrafica.cognome');
 
-    if (nomeControl && cognomeControl) {
-      nomeControl.valueChanges.subscribe(() => {
-        this.impostaMailAziendale();
-      });
+    // if (nomeControl && cognomeControl) {
+    //   nomeControl.valueChanges.subscribe(() => {
+    //     this.impostaMailAziendale();
+    //   });
 
-      cognomeControl.valueChanges.subscribe(() => {
-        this.impostaMailAziendale();
-      });
-    }
+    //   cognomeControl.valueChanges.subscribe(() => {
+    //     this.impostaMailAziendale();
+    //   });
+    // }
 
     const distaccoAziendaControl = this.AnagraficaDto.get(
       'commesse.distaccoAzienda'
@@ -395,10 +401,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           // livelloFinaleControl
         ) {
           retribuzioneMensileLordaControl.enable();
-          retribuzioneMensileLordaControl.setValue(800);
+          retribuzioneMensileLordaControl.setValue('');
 
           retribuzioneNettaMensileControl.enable();
-          retribuzioneNettaMensileControl.setValue(800);
+          retribuzioneNettaMensileControl.setValue('');
 
           livelloAttualeControl?.disable();
           livelloAttualeControl?.setValue(null);
@@ -565,7 +571,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           retribuzioneMensileLordaControl
         ) {
           mesiDurataControl.disable();
-          mesiDurataControl.setValue(1000);
+          mesiDurataControl.setValue('');
 
           dataFineRapportoControl.disable();
           dataFineRapportoControl.setValue(null);
@@ -1173,29 +1179,29 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     );
   }
 
-  impostaMailAziendale() {
-    const nomeControl = this.AnagraficaDto.get('anagrafica.nome');
-    const cognomeControl = this.AnagraficaDto.get('anagrafica.cognome');
-    const mailAziendaleControl = this.AnagraficaDto.get(
-      'anagrafica.mailAziendale'
-    );
+  // impostaMailAziendale() {
+  //   const nomeControl = this.AnagraficaDto.get('anagrafica.nome');
+  //   const cognomeControl = this.AnagraficaDto.get('anagrafica.cognome');
+  //   const mailAziendaleControl = this.AnagraficaDto.get(
+  //     'anagrafica.mailAziendale'
+  //   );
 
-    if (nomeControl && cognomeControl && mailAziendaleControl) {
-      const nome = nomeControl.value;
-      const cognome = cognomeControl.value;
+  //   if (nomeControl && cognomeControl && mailAziendaleControl) {
+  //     const nome = nomeControl.value;
+  //     const cognome = cognomeControl.value;
 
-      // Verifica che nome e cognome non siano vuoti prima di calcolare l'indirizzo email
-      if (nome && cognome) {
-        // Costruisci l'indirizzo email
-        const primaLetteraNome = nome.charAt(0).toLowerCase();
-        const cognomeMinuscolo = cognome.toLowerCase();
-        const indirizzoEmail = `${primaLetteraNome}.${cognomeMinuscolo}@sincrono.it`;
+  //     // Verifica che nome e cognome non siano vuoti prima di calcolare l'indirizzo email
+  //     if (nome && cognome) {
+  //       // Costruisci l'indirizzo email
+  //       const primaLetteraNome = nome.charAt(0).toLowerCase();
+  //       const cognomeMinuscolo = cognome.toLowerCase();
+  //       const indirizzoEmail = `${primaLetteraNome}.${cognomeMinuscolo}@sincrono.it`;
 
-        // Imposta il valore del campo "mailAziendale"
-        mailAziendaleControl.setValue(indirizzoEmail);
-      }
-    }
-  }
+  //       // Imposta il valore del campo "mailAziendale"
+  //       mailAziendaleControl.setValue(indirizzoEmail);
+  //     }
+  //   }
+  // }
   verificaCorrispondenza(): boolean {
     const corrispondenza = this.tipiAziende.some((tipoAzienda: any) =>
       tipoAzienda.ccnl &&

@@ -37,7 +37,7 @@
                             <label for="filter-ruoli">Ruolo *</label>
                             <select
                             [ngStyle]="{'border': AnagraficaDto.get('ruolo.id')?.hasError('required') ? '1px solid red' : 'none'}"
-                              class="form-control"
+                            class="form-select" aria-label="Default select example"
                               formControlName="id"
                               type="number"
                             >
@@ -146,24 +146,19 @@
                             </div>
                           </div>
 
-                          <div class="col-3">
+                          <div class="col-3" >
                             <label for="filter-Tipo Azienda">Nome Azienda*</label>
                             <div formGroupName="tipoAzienda" class="form-group">
                               <select (change)="onChangeTipoAzienda($event)"
-                                [ngStyle]="{'border': AnagraficaDto.get('tipoAzienda.id')==null ? '1px solid red' : '1px solid #f1f1f1'}"
-                                class="form-control"
+
+                                class="form-select" aria-label="Default select example"
                                 formControlName="id"
                                 type="number"
                               >
                                 <option value="">-- Seleziona azienda --</option>
                                 <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">{{ tipoAzienda.descrizione }}</option>
                               </select>
-                              <div
-                                *ngIf="AnagraficaDto.get('tipoAzienda.id')==null"
-                                class="text-danger"
-                              >
-                                Il campo nome azienda è obbligatorio.
-                              </div>
+
                             </div>
 
                           </div>
@@ -346,6 +341,28 @@
                         <legend>Info Extra</legend>
                         <div class="row">
                           <div class="col-md-3">
+                            <label>Data di Nascita </label>
+                            <div class="form-group">
+                              <input
+                                type="date"
+                                placeholder="Data di nascita (Anno-mese-giorno)"
+                                class="form-control"
+                                formControlName="dataDiNascita"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Provincia di Nascita </label>
+                            <div class="form-group">
+                              <input
+                                type="text"
+                                class="form-control"
+
+                                placeholder="Inserire provincia di nascita."
+                              />
+                            </div> <!--formControlName="provinciaDiNascita"-->
+                          </div>
+                          <div class="col-md-3">
                             <label>Comune di Nascita </label>
                             <div class="form-group">
                               <input
@@ -354,6 +371,31 @@
                                 formControlName="comuneDiNascita"
                                 placeholder="Inserire comune di nascita."
                               />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Stato di Nascita </label>
+                            <div class="form-group">
+                              <input
+                                type="text"
+                                class="form-control"
+
+                                placeholder="Inserire stato di nascita."
+                              /> <!--formControlName="statoDiNascita"-->
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <div class="col-md-3">
+                            <label>Cittadinanza </label>
+                            <div class="form-group">
+                              <input
+                                type="text"
+                                class="form-control"
+
+                                placeholder="Inserire cittadinanza."
+                              /> <!--formControlName="cittadinanza"-->
                             </div>
                           </div>
                           <div class="col-md-3">
@@ -375,18 +417,6 @@
                                 class="form-control"
                                 formControlName="domicilio"
                                 placeholder="Inserire domicilio."
-                              />
-                            </div>
-                          </div>
-
-                          <div class="col-md-3">
-                            <label>Data di Nascita </label>
-                            <div class="form-group">
-                              <input
-                                type="date"
-                                placeholder="Data di nascita (Anno-mese-giorno)"
-                                class="form-control"
-                                formControlName="dataDiNascita"
                               />
                             </div>
                           </div>
@@ -489,9 +519,9 @@
                       <legend>Dati Tipologici</legend>
                       <div class="row">
                         <div class="col-md-3" formGroupName="tipoAzienda">
-                          <label for="tipoAzienda">Tipo Azienda:</label>
+                          <label for="tipoAzienda">Nome Azienda:</label>
                           <select
-                            class="form-control"
+                          class="form-select" aria-label="Default select example"
                             id="contratto.tipoAzienda.id"
                             formControlName="id"
                             type="number"
@@ -515,7 +545,7 @@
                               >Tipo Contratto:</label
                             >
                             <select
-                              class="form-control"
+                            class="form-select" aria-label="Default select example"
                               id="contratto.tipoContratto.id"
                               formControlName="id"
                               (change)="onTipoContrattoChange($event)"
@@ -558,7 +588,7 @@
                               >Livello Contratto:</label
                             >
                             <select (change)="onChangeLivelloContratto($event)"
-                              class="form-control"
+                            class="form-select" aria-label="Default select example"
                               id="contratto.tipoLivelloContratto.id"
                               formControlName="id"
                             >
@@ -587,7 +617,7 @@
                           <div formGroupName="tipoCcnl">
                             <label for="tipoCcnl">CCNL:</label>
                             <select (change)="onChangeCCNL($event)"
-                              class="form-control"
+                            class="form-select" aria-label="Default select example"
                               id="contratto.tipoCcnl.id"
                               formControlName="id"
                             >
@@ -644,24 +674,17 @@
                               type="date"
                               class="form-control"
                               name="dataInput"
+                              [ngStyle]="{'border': AnagraficaDto.get('contratto.dataAssunzione')?.hasError('required') ? '1px solid red' : '1px solid #f1f1f1'}"
                               formControlName="dataAssunzione"
                               placeholder="Inserire data assunzione"
                             />
                             <div
-                              *ngIf="
-                                AnagraficaDto.get(
-                                  'contratto.dataAssunzione'
-                                )?.hasError('required') &&
-                                AnagraficaDto.get('contratto.dataAssunzione')
-                                  ?.touched
-                              "
-                              class="text-danger"
-                            >
+                              *ngIf="AnagraficaDto.get('contratto.dataAssunzione')?.hasError('required')"class="text-danger">
                               Il campo Data assunzione è obbligatorio.
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3" >
                           <div class="form-group">
                             <label for="dataInizoProva">Data Inzio prova</label>
                             <input
@@ -671,7 +694,7 @@
                               formControlName="dataInizioProva"
                             />
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                       <br />
                       <div class="row"></div>
@@ -714,7 +737,7 @@
                               >Canale reclutamento*</label
                             >
                             <select
-                              class="form-control"
+                            class="form-select" aria-label="Default select example"
                               id="contratto.tipoCanaleReclutamento.id"
                               formControlName="id"
                               type="number"
@@ -1018,7 +1041,7 @@
                       </div>
 
                       <br>
-                      <legend>Ticket e Aggevolazioni</legend> <br>
+                      <legend>Ticket e Agevolazioni</legend> <br>
                       <div class="row">
                         <div class="col-md-3">
                           <div class="form-group">

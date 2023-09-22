@@ -24,7 +24,7 @@
                   <div class="form-group" formGroupName="ruolo">
                     <div class="col-4">
                       <label for="ruolo">Ruolo *</label>
-                      <select class="form-control" id="ruolo.id" formControlName="id" type="number">
+                      <select  class="form-select" aria-label="Default select example" id="ruolo.id" formControlName="id" type="number">
                         <option value="">--nessuna selezione--</option>
                         <option *ngFor="let ruolo of ruoli" value="{{ ruolo.id }}">
                           {{ ruolo.nome }}
@@ -57,9 +57,9 @@
                 </div>
 
                 <div class="col-3">
-                  <div class="form-group" formGroupName="tipoAzienda" > <!--formGroupName="tipoAzienda"-->
-                      <label for="tipoAzienda">Tipo Azienda*</label>
-                      <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
+                  <div class="form-group" formGroupName="tipoAzienda"  >
+                      <label for="tipoAzienda">Nome Azienda</label>
+                      <select  class="form-select" aria-label="Default select example"  id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
                         <option value="">--nessuna selezione--</option>
                         <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
                           {{ tipoAzienda.descrizione }}
@@ -69,27 +69,6 @@
                 </div>
               </div>
               <br>
-            <div class="row">
-              <legend>Dati di nascita e residenza/domicilio</legend>
-              <br>
-              <div  class="col-3">
-                <label for="comuneDiNascita">Comune di Nascita:</label>
-                <input placeholder="Inserire comune di nascita" type="text" class="form-control" id="comuneDiNascita" formControlName="comuneDiNascita" />
-              </div>
-              <div class="col-3">
-                <label for="dataDiNascita">Data di Nascita:</label>
-                <input placeholder="Inserire data di nascita" type="date" class="form-control" id="dataDiNascita" formControlName="dataDiNascita" />
-              </div>
-              <div class="col-3">
-                <label for="residenza">Residenza:</label>
-                <input placeholder="Inserire indirizzo di residenza" type="text" class="form-control" id="residenza" formControlName="residenza" />
-              </div>
-              <div class="col-3">
-                <label for="domicilio">Domicilio:</label>
-                <input placeholder="Inserire indirizzo di domicilio" type="text" class="form-control" id="domicilio" formControlName="domicilio" />
-              </div>
-            </div>
-            <br>
             <div class="row">
               <legend>Recapiti</legend> <br>
               <div class="col-3">
@@ -131,6 +110,91 @@
               <div class="col-3">
                 <label for="altriTitoli">Altri Titoli:</label>
                 <input type="text" class="form-control" placeholder="Inserire eventuali altri titoli conseguiti" id="altriTitoli" formControlName="altriTitoli" />
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <legend>Dati di nascita e residenza/domicilio</legend>
+              <br>
+              <div class="col-md-3">
+                <label>Data di Nascita </label>
+                <div class="form-group">
+                  <input
+                    type="date"
+                    placeholder="Data di nascita (Anno-mese-giorno)"
+                    class="form-control"
+                    formControlName="dataDiNascita"
+                  />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label>Provincia di Nascita </label>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+
+                    placeholder="Inserire provincia di nascita."
+                  />
+                </div> <!--formControlName="provinciaDiNascita"-->
+              </div>
+              <div class="col-md-3">
+                <label>Comune di Nascita </label>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="comuneDiNascita"
+                    placeholder="Inserire comune di nascita."
+                  />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label>Stato di Nascita </label>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+
+                    placeholder="Inserire stato di nascita."
+                  /> <!--formControlName="statoDiNascita"-->
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-3">
+                <label>Cittadinanza </label>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+
+                    placeholder="Inserire cittadinanza."
+                  /> <!--formControlName="cittadinanza"-->
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label>Residenza </label>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="residenza"
+                    placeholder="Inserire residenza."
+                  />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label>Domicilio </label>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="domicilio"
+                    placeholder="Inserire domicilio."
+                  />
+                </div>
               </div>
             </div>
             <br>
@@ -220,7 +284,7 @@
                         <div formGroupName="tipoContratto">
                           <label for="tipoContratto">Tipo Contratto</label>
                           <select (change)="onTipoContrattoChange($event)"
-                            class="form-control"
+                          class="form-select" aria-label="Default select example"
                             id="contratto.tipoContratto.id"
                             formControlName="id"
                           >
@@ -253,7 +317,7 @@
                         <div formGroupName="tipoLivelloContratto">
                           <label for="tipoLivelloContratto">Livello Contratto</label>
                           <select
-                            class="form-control"
+                          class="form-select" aria-label="Default select example"
                             id="contratto.tipoLivelloContratto.id"
                             formControlName="id"
                             type="number"
@@ -271,7 +335,7 @@
                       <div class="col-3">
                         <div formGroupName="tipoAzienda">
                           <label for="tipoAzienda">Tipo Azienda</label>
-                          <select class="form-control" id="contratto.tipoAzienda.id" formControlName="id" type="number">
+                          <select  class="form-select" aria-label="Default select example" id="contratto.tipoAzienda.id" formControlName="id" type="number">
                             <option value="">--nessuna selezione--</option>
                             <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
                               {{ tipoAzienda.descrizione }}
@@ -286,7 +350,7 @@
                         <div formGroupName="tipoCcnl">
                           <label for="tipoCcnl">CCNL</label>
                           <select (change)="onChangeCCNL($event)"
-                            class="form-control"
+                          class="form-select" aria-label="Default select example"
                             id="contratto.tipoCcnl.id"
                             formControlName="id"
                             type="number"
@@ -317,7 +381,7 @@
                               />
                             </div>
                           </div>
-                          <div class="col-md-3">
+                          <div class="col-md-3" hidden>
                             <label>Data inizio prova</label>
                             <div class="form-group">
                               <input
@@ -384,7 +448,7 @@
                           <div class="col-4">
                               <label>Canale Reclutamento * </label>
                               <div class="form-group" formGroupName="tipoCanaleReclutamento">
-                                <select class="form-control" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
+                                <select  class="form-select" aria-label="Default select example" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
                                   <option value="">--nessuna selezione--</option>
                                   <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.id">
                                     {{ tipoCanaleReclutamento.descrizione }}
@@ -695,8 +759,9 @@
                         </div>
                       </div>
                     </div>
+                    <br>
                     <div class="row">
-                      <legend>Ticket</legend>
+                      <legend>Ticket e agevolazioni</legend>
                       <div class="col-3">
                         <label for="ticket">Ticket:</label> <br>
                         <label class="toggle-switch">
@@ -891,7 +956,7 @@
                       <div class="col-md-5">
                         <div class="form-group"  formGroupName="tipoCausaFineRapporto">
                         <label>Motivazione Fine Rapporto: </label>
-                        <select (change)="onChangeCausaFineRapporto($event)" class="form-control" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
+                        <select (change)="onChangeCausaFineRapporto($event)"  class="form-select" aria-label="Default select example" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
                           <option value="">--nessuna selezione--</option>
                           <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto" [value]="tipoCausaFineRapporto.id">
                             {{ tipoCausaFineRapporto.descrizione }}

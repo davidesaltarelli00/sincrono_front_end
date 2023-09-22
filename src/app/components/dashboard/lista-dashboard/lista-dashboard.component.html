@@ -45,11 +45,11 @@
                     <th>Ticket</th>
                     <th>Categoria Protetta</th>
                     <th>Tutor</th>
-                    <th>PFI</th>                    
+                    <th>PFI</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let element of listaContrattiFromBatch"> 
+                  <tr *ngFor="let element of listaContrattiFromBatch">
                     <td>{{element.anagrafica.nome }} {{element.anagrafica.cognome}}</td>
                     <td>{{ element.contratto.tipoContratto.descrizione }}</td>
                     <td>{{ element.contratto.tipoLivelloContratto.ccnl}} - Livello {{
@@ -70,7 +70,7 @@
                   </tr>
                 </tbody>
                 <button (click)="resetTabella()">Svuota tabella</button>
-                <button (click)="exportContrattiFromBatchToExcel()">Esporta Commesse come Excel</button>
+                <button (click)="exportContrattiFromBatchToExcel()" class="btn btn-success"><i class="fa-solid fa-file-export"></i></button>
               </table>
             </div>
           </div>
@@ -130,7 +130,7 @@
                     </tr>
                   </ng-container>
                 </tbody>
-                
+
               </table>
               <button (click)=" exportCommesseInScadenzaToExcel() ">Esporta Commesse come Excel</button>
 
@@ -405,7 +405,7 @@
                 <!-- <td>  <button class="btn btn-success" (click)="showAnagraficaInfo(commessa)"><i class="fa fa-info" ></i></button></td> -->
               </tr>
             </tbody>
-            
+
           </table>
           <div class="pagination">
             <ul>

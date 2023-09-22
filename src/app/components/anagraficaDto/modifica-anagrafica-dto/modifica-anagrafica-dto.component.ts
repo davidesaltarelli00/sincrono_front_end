@@ -216,6 +216,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     //   livelloFinaleControl.disable();
     // }
 
+    const tipoAziendaAnagrafica = this.anagraficaDto.get('anagrafica.tipoAzienda.id');
+    if (tipoAziendaAnagrafica) {
+      tipoAziendaAnagrafica.disable();
+    }
     const ralPartTimeControl = this.anagraficaDto.get('contratto.ralPartTime');
     if (ralPartTimeControl) {
       ralPartTimeControl.disable();
