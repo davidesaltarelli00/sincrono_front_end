@@ -65,6 +65,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   descrizioneContrattoNazionale: any;
   descrizioneCCNL: any;
 
+
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
@@ -172,7 +173,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         retribuzioneNettaGiornaliera: new FormControl(''),
         retribuzioneNettaMensile: new FormControl(''),
         tipoCanaleReclutamento: new FormGroup({
-          id: new FormControl(''),
+          id: new FormControl('', Validators.required),
           descrizione: new FormControl(''),
         }),
         // tipoCausaFineRapporto: new FormGroup({
@@ -320,6 +321,20 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       } else {
         console.log('Checkbox deselezionata, il valore è false');
       }
+    }
+  }
+
+  calcolaMensileTot() {
+    const retribuzioneMensileLorda = parseFloat((<HTMLInputElement>document.getElementById('retribuzioneMensileLorda')).value) || 0;
+    const superminimoMensile = parseFloat((<HTMLInputElement>document.getElementById('superminimoMensile')).value) || 0;
+    const scattiAnzianita = parseFloat((<HTMLInputElement>document.getElementById('scattiAnzianita')).value) || 0;
+
+    if (retribuzioneMensileLorda !== 0 && superminimoMensile !== 0 && scattiAnzianita !== 0) {
+      const mensileTot = retribuzioneMensileLorda + superminimoMensile + scattiAnzianita;
+      document.getElementById('mensileTOT')?.setAttribute('value', mensileTot.toFixed(2));
+    } else {
+      // Se uno dei campi è vuoto, nascondi il risultato o reimpostalo a zero, a seconda delle tue esigenze
+      document.getElementById('mensileTOT')?.setAttribute('value', '');
     }
   }
 
@@ -1259,6 +1274,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     } else {
       console.log('CCNL non selezionato');
       livelloControl?.disable();
+      livelloControl?.setValue(null);
       this.ccnLSelezionato=false;
     }
   }
