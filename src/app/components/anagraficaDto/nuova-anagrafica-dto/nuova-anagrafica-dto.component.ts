@@ -220,12 +220,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       livelloControl.disable();
     }
 
-    const tipoAziendaAnagrafica = this.AnagraficaDto.get(
-      'anagrafica.tipoAzienda.id'
-    );
-    if (tipoAziendaAnagrafica) {
-      tipoAziendaAnagrafica.disable();
-    }
+    // const tipoAziendaAnagrafica = this.AnagraficaDto.get(
+    //   'anagrafica.tipoAzienda.id'
+    // );
+    // if (tipoAziendaAnagrafica) {
+    //   tipoAziendaAnagrafica.disable();
+    // }
 
     const nomeControl = this.AnagraficaDto.get('anagrafica.nome');
     const cognomeControl = this.AnagraficaDto.get('anagrafica.cognome');
