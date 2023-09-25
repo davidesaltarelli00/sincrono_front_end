@@ -1,0 +1,72 @@
+<html>
+<title>Dashboard</title>
+
+<body style="padding-top: 70px;">
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <h2>Storico contratti numero {{idAnagrafica}}  <button class="btn btn-success" style="background-color: rgb(24, 122, 0); color: white;"
+        [routerLink]="['/dettaglio-anagrafica/'+idAnagrafica]"> <i class="fa fa-arrow-left" ></i> Torna al dettaglio</button></h2>
+    </div>
+  </div>
+<div class="row">
+  <div class="col-12">
+    <mat-card *ngFor="let data of lista; let i=index;">
+      <mat-card-header>
+        <mat-card-title>Contratto {{i+1}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Qualifica: {{ data.qualifica }}</p>
+        <p *ngIf="data.societa">Società: {{ data.societa }}</p>
+        <p *ngIf="data.societa">Sede assunzione: {{ data.sedeAssunzione }}</p>
+        <p *ngIf="data.dataAssunzione">Data Assunzione: {{ data.dataAssunzione | date: 'dd/MM/yyyy' }}</p>
+        <p *ngIf="data.dataInizioProva">Data Inizio Prova: {{ data.dataInizioProva | date: 'dd/MM/yyyy' }}</p>
+        <p *ngIf="data.dataFineProva">Data Fine Prova: {{ data.dataFineProva | date: 'dd/MM/yyyy' }}</p>
+        <p *ngIf="data.dataFineRapporto">Data Fine Rapporto: {{ data.dataFineRapporto | date: 'dd/MM/yyyy' }}</p>
+        <p *ngIf="data.mesiDurata">Mesi Durata: {{ data.mesiDurata }}</p>
+        <p *ngIf="data.livelloAttuale">Livello Attuale: {{ data.livelloAttuale }}</p>
+        <p *ngIf="data.livelloFinale">Livello Finale: {{ data.livelloFinale }}</p>
+        <p *ngIf="data.dimissioni">Dimissioni: {{ data.dimissioni }}</p>
+        <p *ngIf="data.partTime">Part Time: {{ data.partTime }}</p>
+        <p *ngIf="data.partTimeA">Part Time A: {{ data.partTimeA }}</p>
+        <p *ngIf="data.retribuzioneMensileLorda">Retribuzione Mensile Lorda: {{ data.retribuzioneMensileLorda }}</p>
+        <p *ngIf="data.superminimoMensile">Superminimo Mensile: {{ data.superminimoMensile }}</p>
+        <p *ngIf="data.ralAnnua">RAL Annua: {{ data.ralAnnua }}</p>
+        <p *ngIf="data.superminimoRal">Superminimo RAL: {{ data.superminimoRal }}</p>
+        <p *ngIf="data.diariaMese">Diaria Mese: {{ data.diariaMese }}</p>
+        <p *ngIf="data.diariaGg">Diaria Gg: {{ data.diariaGg }}</p>
+        <p *ngIf="data.ticket">Ticket: {{ data.ticket }}</p>
+        <p *ngIf="data.valoreTicket">Valore Ticket: {{ data.valoreTicket }}</p>
+        <p *ngIf="data.categoriaProtetta">Categoria Protetta: Si</p>
+        <p *ngIf="!data.categoriaProtetta">Categoria Protetta: No</p>
+        <p *ngIf="data.tutor">Tutor: {{ data.tutor }}</p>
+        <p *ngIf="data.pfi">PFI: {{ data.pfi }}</p>
+        <p *ngIf="data.assicurazioneObbligatoria">Assicurazione Obbligatoria: {{ data.assicurazioneObbligatoria }}</p>
+        <p *ngIf="data.corsoSicurezza">Corso Sicurezza: {{ data.corsoSicurezza }}</p>
+        <p *ngIf="data.motivazioneFineRapporto">Motivazione Fine Rapporto: {{ data.motivazioneFineRapporto }}</p>
+        <p *ngIf="data.pc">PC: Si</p>
+        <p *ngIf="!data.pc">PC: No</p>
+        <p *ngIf="data.scattiAnzianita">Scatti Anzianità: {{ data.scattiAnzianita }}</p>
+        <p *ngIf="data.tariffaPartitaIva">Tariffa Partita IVA: {{ data.tariffaPartitaIva }}</p>
+        <p *ngIf="data.canaleReclutamento">Canale Reclutamento: {{ data.canaleReclutamento }}</p>
+        <p *ngIf="data.tipoContratto.descrizione">Tipo Contratto: {{ data.tipoContratto.descrizione }}</p>
+        <p *ngIf="data.livelloContratto.ccnl">Livello Contratto (CCNL): {{ data.livelloContratto.ccnl }}</p>
+        <p *ngIf="data.livelloContratto.descrizione">Descrizione Livello Contratto: {{ data.livelloContratto.descrizione }}</p>
+        <p *ngIf="data.livelloContratto.minimiRet23">MinimiRet23: {{ data.livelloContratto.minimiRet23 }}</p>
+        <p *ngIf="data.tipoAzienda.descrizione">Nome Azienda: {{ data.tipoAzienda.descrizione }}</p>
+        <p *ngIf="data.tipoCcnl.descrizione">Contratto Nazionale: {{ data.tipoCcnl.descrizione }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <hr>
+
+  </div>
+</div>
+</div>
+
+
+
+</body>
+
+</html>

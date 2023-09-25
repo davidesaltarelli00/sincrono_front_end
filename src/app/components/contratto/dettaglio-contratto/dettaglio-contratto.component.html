@@ -1,0 +1,186 @@
+<html>
+
+<body>
+    <h1>Dettaglio Contratto</h1>
+    <fieldset>
+        <legend>Dati Tipologici</legend>
+        <div>
+            <div>
+                <label>Azienda : </label>
+                <input type="text" value="{{ data?.tipoAzienda.descrizione }}" readonly />
+            </div>
+            <div>
+                <label>Tipo Contratto : </label>
+                <input type="text" value="{{ data?.tipoContratto.descrizione }}" readonly />
+            </div>
+            <div>
+                <label>Livello Contratto : </label>
+                <input type="text" value="{{ data?.livelloContratto.descrizione }}" readonly />
+            </div>
+            <div>
+                <label>Contratto Nazionale : </label>
+                <input type="text" value="{{ data?.contrattoNazionale.descrizione }}" readonly />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Dettagli</legend>
+        <div>
+            <div>
+                <label>Attivo: </label>
+                <input type="checkbox" [checked]="data?.attivo" disabled="disabled" />
+            </div>
+            <div>
+                <label>Qualifica: </label>
+                <input type="text" value="{{ data?.qualifica }}" readonly />
+            </div>
+            <div>
+                <label>Sede Assunzione: </label>
+                <input type="text" value="{{ data?.sedeAssunzione }}" readonly />
+            </div>
+            <div>
+                <label>Data Assunzione: </label>
+                <input type="text" value="{{ this.transformDate(data?.dataAssunzione) }}" readonly />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Date</legend>
+        <div>
+            <div>
+                <label>Data Inizio Prova: </label>
+                <input type="text" value="{{ this.transformDate(data?.dataInizioProva) }}" readonly />
+            </div>
+            <div>
+                <label>Data Fine Prova: </label>
+                <input type="text" value="{{ this.transformDate(data?.dataFineProva) }}" readonly />
+            </div>
+            <div>
+                <label>Data Fine Rapporto: </label>
+                <input type="text" value="{{ this.transformDate(data?.dataFineRapporto) }}" readonly />
+            </div>
+            <div>
+                <label>Mesi Durata: </label>
+                <input type="text" value="{{ data?.mesiDurata }}" readonly />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Livello Dipendente</legend>
+        <div>
+            <div>
+                <label>Livello Iniziale: </label>
+                <input type="text" value="{{ data?.livelloIniziale }}" readonly />
+            </div>
+            <div>
+                <label>Livello Attuale: </label>
+                <input type="text" value="{{ data?.livelloAttuale }}" readonly />
+            </div>
+            <div>
+                <label>Livello Finale: </label>
+                <input type="text" value="{{ data?.livelloFinale }}" readonly />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Info Generali</legend>
+        <div>
+            <div>
+                <label>Dimissioni: </label>
+                <input type="text" value="{{ data?.dimissioni }}" readonly />
+            </div>
+            <div>
+                <label>Part Time: </label>
+                <input type="text" value="{{ data?.partTime }}" readonly />
+            </div>
+            <div>
+                <label>Part Time A: </label>
+                <input type="text" value="{{ data?.partTimeA }}" readonly />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Retribuzione e Diaria</legend>
+        <div>
+            <div>
+                <label>Retribuzione Mensile Lorda: </label>
+                <input type="text" value="{{ data?.retribuzioneMensileLorda }}" readonly />
+            </div>
+            <div>
+                <label>Superminimo Mensile: </label>
+                <input type="text" value="{{ data?.superminimoMensile }}" readonly />
+            </div>
+            <div>
+                <label>RAL Annua: </label>
+                <input type="text" value="{{ data?.ralAnnua }}" readonly />
+            </div>
+            <div>
+                <label>Supermionimo RAL: </label>
+                <input type="text" value="{{ data?.superminimoRal }}" readonly />
+            </div>
+            <div>
+                <label>Diaria Mensile: </label>
+                <input type="text" value="{{ data?.diariaMese }}" readonly />
+            </div>
+            <div>
+                <label>Diaria Giornaliera: </label>
+                <input type="text" value="{{ data?.diariaGg }}" readonly />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Ticket e Aggevolazioni</legend>
+        <div>
+            <div>
+                <label>Ticket: </label>
+                <input type="text" value="{{ data?.ticket }}" readonly />
+            </div>
+            <div>
+                <label>ValoreTicket: </label>
+                <input type="text" value="{{ data?.valoreTicket }}" readonly />
+            </div>
+            <div>
+                <label>Categoria Protetta: </label>
+                <input type="text" value="{{ data?.categoriaProtetta }}" readonly />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Altro</legend>
+        <div>
+            <label>Tutor: </label>
+            <input type="text" value="{{ data?.tutor }}" readonly />
+        </div>
+        <div>
+            <label>PFI: </label>
+            <input type="text" value="{{ data?.pfi }}" readonly />
+        </div>
+        <div>
+            <label>Corso di Sicurezza: </label>
+            <input type="text" value="{{ data?.corsoSicurezza }}" readonly />
+        </div>
+        <div>
+            <label>Motivazione Fine Rapporto: </label>
+            <input type="text" value="{{ data?.motivazioneFineRapporto }}" readonly />
+        </div>
+        <div>
+            <label>PC: </label>
+            <input type="checkbox" [checked]="data?.pc" disabled="disabled" />
+        </div>
+        <div>
+            <label>Scatti Anzianita: </label>
+            <input type="text" value="{{ data?.scattiAnzianita }}" readonly />
+        </div>
+        <div><label>Tariffa Partita IVA: </label>
+            <input type="text" value="{{ data?.tariffaPartitaIva }}" readonly />
+        </div>
+        <div>
+            <label>Canale Reclutamento: </label>
+            <input type="text" value="{{ data?.canaleReclutamento }}" readonly />
+        </div>
+        <button [routerLink]="['../../modifica-contratto',data?.id]">Modifica Contratto</button>
+        <button [routerLink]="['../../lista-contratti']">Torna alla lista</button>
+    </fieldset>
+</body>
+
+</html>

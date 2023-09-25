@@ -1,0 +1,47 @@
+/* General styles */
+.container-fluid {
+  padding: 20px;
+}
+
+.profile-box-container {
+  margin-bottom: 20px;
+}
+
+.profile-box {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 768px) {
+  .col-6 {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .profile-box {
+    padding: 15px;
+  }
+
+  .profile-box h3 {
+    font-size: 1.2rem;
+  }
+}
+
+/* Adjustments for small screen sizes (e.g., smartphones) */
+@media screen and (max-width: 425px) {
+  .container-fluid {
+    padding: 10px;
+  }
+
+  .profile-box {
+    padding: 10px;
+  }
+
+  .profile-box h3 {
+    font-size: 1rem;
+  }
+}

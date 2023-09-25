@@ -1,0 +1,41 @@
+<html>
+    <title>Contratti</title>
+<body>
+    <button [routerLink]="['/home']">Home</button>
+    <button [routerLink]="['../nuovo-contratto']">Inserisci Nuovo Contratto</button>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>Tipo Contratto</th>
+                <th>Contratto Nazionale</th>
+                <th>Livello Contratto<div>Reddito</div>
+                </th>
+                <th>Nome Azienda</th>
+                <th>Qualifica</th>
+                <th>Dettaglio</th>
+                <th>-----------</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of lista">
+                <td>{{ data.tipoContratto.descrizione }}</td>
+                <td>{{ data.contrattoNazionale.descrizione }}</td>
+                <td>Livello:{{ data.livelloContratto.descrizione }}<div>{{ data.livelloContratto.minimiRet23 }}€</div>
+                </td>
+                <td>{{ data.tipoAzienda.descrizione }}</td>
+                <td>{{ data.qualifica }}</td>
+
+                <td>
+                    <a [routerLink]="['/contratto/', data.id]"><img src="../../../../assets/images/dettagli.png"
+                            height="30px" width="45px"></a>
+                </td>
+                <td>
+                    <button (click)="delete(data?.id)">Elimina</button>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</body>
+
+</html>

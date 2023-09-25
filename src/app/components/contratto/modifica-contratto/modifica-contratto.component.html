@@ -1,0 +1,250 @@
+<html>
+
+<body>
+    <form [formGroup]="modificaContratto" (ngSubmit)="inserisci()">
+        <div>
+            
+            <fieldset>
+                <legend>Dati Tipologici</legend>
+                <div formGroupName="tipoContratto">
+                    <label for="tipoContratto">Tipo Contratto</label>
+                    <select id="tipoContratto" formControlName="id">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let tipoContratto of tipiContratti" value="{{tipoContratto.id}}">
+                            {{tipoContratto.descrizione}}</option>
+                    </select>
+                </div>
+                <div formGroupName="livelloContratto">
+                    <label for="livelloContratto">Livello Contratto</label>
+                    <select id="livelloContratto" formControlName="id" type="number">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let livelloContratto of livelliContratti" value="{{livelloContratto.id}}">
+                            {{livelloContratto.descrizione}}</option>
+                    </select>
+                </div>
+                <div formGroupName="tipoAzienda">
+                    <label for="tipoAzienda">Tipo Azienda</label>
+                    <select id="tipoAzienda" formControlName="id" type="number">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.id}}">
+                            {{tipoAzienda.descrizione}}</option>
+                    </select>
+                </div>
+                <div formGroupName="contrattoNazionale">
+                    <label for="contrattoNazionale">Contratto Nazionale</label>
+                    <select id="contrattoNazionale" formControlName="id" type="number">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let contrattoNazionale of contrattiNazionali" value="{{contrattoNazionale.id}}">
+                            {{contrattoNazionale.descrizione}}</option>
+                    </select>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div>
+                    <label for="attivo">Attivo</label>
+                    <input type="checkbox" name="attivo" id="inlineCheckbox1" formControlName="attivo"
+                        [checked]="data?.attivo" />
+                </div>
+                <div>
+                    <label for="sedeAssunzione">Sede Assunzione</label>
+                    <input id="sedeAssunzione" type="text" placeholder="{{data?.sedeAssunzione}}"
+                        formControlName="sedeAssunzione">
+                </div>
+                <div>
+                    <label for="qualifica">Qualifica</label>
+                    <input id="qualifica" type="text" placeholder="{{data?.qualifica}}" formControlName="qualifica">
+                </div>
+                <div>
+                    <div>
+                        <label for="dataAssunzione" style="width: 100%">Data Assunzione</label>
+                        <mat-form-field appearance="outline">
+                            <input matInput [matDatepicker]="picker" formControlName="dataAssunzione"
+                                placeholder="{{ this.transformDate(data?.dataAssunzione) }}" />
+
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div>
+                    <div>
+                        <label for="dataInizioProva" style="width: 100%">Data Inizio Prova</label>
+                        <mat-form-field appearance="outline">
+                            <input matInput [matDatepicker]="picker1" formControlName="dataInizioProva"
+                                placeholder="{{ this.transformDate(data?.dataInizioProva) }}" />
+
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label for="dataFineProva" style="width: 100%">Data Fine Prova</label>
+                        <mat-form-field appearance="outline">
+                            <input matInput [matDatepicker]="picker2" formControlName="dataFineProva"
+                                placeholder="{{ this.transformDate(data?.dataFineProva) }}" />
+
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label for="dataFineRapporto" style="width: 100%">Data Fine Rapporto</label>
+                        <mat-form-field appearance="outline">
+                            <input matInput [matDatepicker]="picker3" formControlName="dataFineRapporto"
+                                placeholder="{{ this.transformDate(data?.dataFineRapporto) }}" />
+                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                            <mat-datepicker #picker3></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div>
+                    <label for="mesiDurata">Mesi Durata</label>
+                    <input id="mesiDurata" type="text" placeholder="{{data?.mesiDurata}}"
+                        formControlName="mesiDurata">
+                </div>
+            </fieldset>
+            <fieldset>
+                <div>
+                    <label for="livelloIniziale">Livello Iniziale</label>
+                    <input id="livelloIniziale" type="text" placeholder="{{data?.livelloIniziale}}"
+                        formControlName="livelloIniziale">
+                </div>
+                <div>
+                    <label for="livelloAttuale">Livello Attuale</label>
+                    <input id="livelloAttuale" type="text" placeholder="{{data?.livelloAttuale}}"
+                        formControlName="livelloAttuale">
+                </div>
+                <div>
+                    <label for="livelloFinale">Livello Finale</label>
+                    <input id="livelloFinale" type="text" placeholder="{{data?.livelloFinale}}"
+                        formControlName="livelloFinale">
+                </div>
+            </fieldset>
+            <fieldset>
+
+                <label for="dimissioni">Dimissioni</label>
+                <input type="checkbox" name="dimissioni" id="inlineCheckbox2" formControlName="dimissioni"
+                    [checked]="data?.dimissioni" />
+                <div>
+                    <label for="partTime">Part Time</label>
+                    <input type="checkbox" name="partTime" id="inlineCheckbox3" formControlName="partTime"
+                        [checked]="data?.partTime" />
+                </div>
+                <div>
+                    <label for="partTimeA">Part Time A</label>
+                    <input type="checkbox" name="partTimeA" id="inlineCheckbox4" formControlName="partTimeA"
+                        [checked]="data?.partTimeA" />
+                </div>
+            </fieldset>
+            <fieldset>
+                <div>
+                    <label for="retribuzioneMensileLorda">Retribuzione Mensile Lorda</label>
+                    <input id="retribuzioneMensileLorda" type="text" placeholder="{{data?.retribuzioneMensileLorda}}"
+                        formControlName="retribuzioneMensileLorda">
+                </div>
+                <div>
+                    <label for="superminimoMensile">Superminimo Mensile</label>
+                    <input id="superminimoMensile" type="text" placeholder="{{data?.superminimoMensile}}"
+                        formControlName="superminimoMensile">
+                </div>
+                <div>
+                    <label for="ralAnnua">Ral Annua</label>
+                    <input id="ralAnnua" type="text" placeholder="{{data?.ralAnnua}}" formControlName="ralAnnua">
+                </div>
+                <div>
+                    <label for="superminimoRal">Superminimo Ral</label>
+                    <input id="superminimoRal" type="text" placeholder="{{data?.superminimoRal}}"
+                        formControlName="superminimoRal">
+                </div>
+                <div>
+                    <label for="diariaMese">Diaria Mensile</label>
+                    <input id="diariaMese" type="text" placeholder="{{data?.diariaMese}}"
+                        formControlName="diariaMese">
+                </div>
+                <div>
+                    <label for="diariaGg">Diaria Giornaliera</label>
+                    <input id="diariaGg" type="text" placeholder="{{data?.diariaGg}}" formControlName="diariaGg">
+                </div>
+            </fieldset>
+            <fieldset>
+                <div>
+                    <label for="ticket">Ticket</label>
+                    <input id="ticket" type="text" placeholder="{{data?.ticket}}" formControlName="ticket">
+                </div>
+                <div>
+                    <label for="valoreTicket">Valore Ticket</label>
+                    <input id="valoreTicket" type="text" placeholder="{{data?.valoreTicket}}"
+                        formControlName="valoreTicket">
+                </div>
+                <div>
+                    <label for="categoriaProtetta">Categoria Protetta</label>
+                    <input type="checkbox" name="categoriaProtetta" id="inlineCheckbox5"
+                        formControlName="categoriaProtetta" [checked]="data?.categoriaProtetta" />
+                </div>
+            </fieldset>
+            <fieldset>
+                <div>
+                    <label for="tutor">Tutor</label>
+                    <input id="tutor" type="text" placeholder="{{data?.tutor}}" formControlName="tutor">
+                </div>
+                <div>
+                    <label for="pfi">Pfi</label>
+                    <input id="pfi" type="text" placeholder="{{data?.pfi}}" formControlName="pfi">
+                </div>
+                <div>
+                    <label for="assicurazioneObbligatoria">Assicurazione Obbligatoria</label>
+                    <input id="assicurazioneObbligatoria" type="text"
+                        placeholder="{{data?.assicurazioneObbligatoria}}"
+                        formControlName="assicurazioneObbligatoria">
+                </div>
+                <div>
+                    <div>
+                        <label for="corsoSicurezza" style="width: 100%">Corso Sicurezza</label>
+                        <mat-form-field appearance="outline">
+                            <input matInput [matDatepicker]="picker4" formControlName="corsoSicurezza"
+                                placeholder="{{ this.transformDate(data?.corsoSicurezza) }}" />
+
+                            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                            <mat-datepicker #picker4></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div>
+                    <label for="motivazioneFineRapporto">Motivazione di Fine Rapporto</label>
+                    <input id="motivazioneFineRapporto" type="text" placeholder="{{data?.motivazioneFineRapporto}}"
+                        formControlName="motivazioneFineRapporto">
+                </div>
+                <div>
+                    <label for="pc">Pc</label>
+                    <input type="checkbox" name="pc" id="inlineCheckbox6" formControlName="pc"
+                        [checked]="data?.pc" />
+                </div>
+                <div>
+                    <label for="scattiAnzianita">Scatti Anzianita</label>
+                    <input id="scattiAnzianita" type="text" placeholder="{{data?.scattiAnzianita}}"
+                        formControlName="scattiAnzianita">
+                </div>
+                <div>
+                    <label for="tariffaPartitaIva">Tariffa Partita Iva</label>
+                    <input id="tariffaPartitaIva" type="text" placeholder="{{data?.tariffaPartitaIva}}"
+                        formControlName="tariffaPartitaIva">
+                </div>
+                <div>
+                    <label for="canaleReclutamento">Canale Reclutamento</label>
+                    <input id="canaleReclutamento" type="text" placeholder="{{data?.canaleReclutamento}}"
+                        formControlName="canaleReclutamento">
+                </div>
+                <button type="submit">Salva</button>
+                <button [routerLink]="['../../contratto', data?.id]">Annulla e torna indietro</button>
+            </fieldset>
+        </div>
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,372 @@
+<html>
+
+<body>
+
+    <form [formGroup]="nuovo" (ngSubmit)="inserisci()">
+        <div class="card-body">
+            <fieldset class="border p-2">
+                <legend class="w-auto">Dati Tipologici</legend>
+                <div class="card">
+                    <div class="row">
+                        <div class="card-body">
+                            <div class="row">
+                                <div formGroupName="tipoContratto">
+                                    <label for="tipoContratto">Tipo Contratto</label>
+                                    <select style="width: 100%;" id="tipoContratto" class="form-control select2"
+                                        formControlName="id">
+                                        <option value="">--nessuna selezione--</option>
+                                        <option *ngFor="let tipoContratto of tipiContratti"
+                                            value="{{tipoContratto.id}}">
+                                            {{tipoContratto.descrizione}}</option>
+                                    </select>
+                                </div>
+                                <div formGroupName="livelloContratto">
+                                    <label for="livelloContratto">Livello Contratto</label>
+                                    <select style="width: 100%;" id="livelloContratto" class="form-control select2"
+                                        formControlName="id">
+                                        <option value="">--nessuna selezione--</option>
+                                        <option *ngFor="let livelloContratto of livelliContratti"
+                                            value="{{livelloContratto.id}}">
+                                            {{livelloContratto.ccnl}}</option>
+                                    </select>
+                                </div>
+                                <div formGroupName="tipoAzienda">
+                                    <label for="tipoAzienda">Nome Azienda</label>
+                                    <select style="width: 100%;" id="tipoAzienda" class="form-control select2"
+                                        formControlName="id">
+                                        <option value="">--nessuna selezione--</option>
+                                        <option *ngFor="let tipoAzienda of tipiAziende" value="{{tipoAzienda.id}}">
+                                            {{tipoAzienda.descrizione}}</option>
+                                    </select>
+                                </div>
+                                <div formGroupName="tipoCcnl">
+                                    <label for="tipoCcnl">Contratto Nazionale</label>
+                                    <select style="width: 100%;" id="tipoCcnl" class="form-control select2"
+                                        formControlName="id">
+                                        <option value="">--nessuna selezione--</option>
+                                        <option *ngFor="let contrattoNazionale of contrattiNazionali"
+                                            value="{{contrattoNazionale.id}}">
+                                            {{contrattoNazionale.descrizione}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="border p-2">
+                <legend class="w-auto">Dettagli</legend>
+                <div class="card">
+                    <div class="row">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="attivo" style="width: 100%;">Attivo</label>
+                                    <div class="form-check form-check-inline">
+                                        <input id="checkbox" type="checkbox" formcontrolname="attivo">
+                                        <label class="form-check-label" for="attivo">Attivo</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sedeAssunzione">Sede Assunzione</label>
+                                    <input class="form-control" id="sedeAssunzione" type="text"
+                                        placeholder="Inserisci la sede di assunzione" formControlName="sedeAssunzione">
+                                </div>
+                                <div class="form-group">
+                                    <label for="qualifica">Qualifica</label>
+                                    <input class="form-control" id="qualifica" type="text"
+                                        placeholder="Inserisci una qualifica" formControlName="qualifica">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="border p-2">
+                <legend class="w-auto">Date</legend>
+                <div class="card">
+                    <div class="row">
+                        <div class="card-body">
+                            <div class="row">
+
+
+                                <div>
+                                    <div>
+                                        <label for="dataAssunzione" style="width: 100%;">Data Assunzione</label>
+                                        <mat-form-field appearance="outline">
+                                            <input matInput [matDatepicker]="picker" formControlName="dataAssunzione"
+                                                placeholder="Inserisci una data assunzione">
+
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div>
+                                        <label for="dataInizioProva" style="width: 100%;">Data Inizio Prova</label>
+                                        <mat-form-field appearance="outline">
+                                            <input matInput [matDatepicker]="picker1" formControlName="dataInizioProva"
+                                                placeholder="Inserisci una data inizio prova">
+
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div>
+                                    <div>
+                                        <label for="dataFineProva" style="width: 100%;">Data Fine Prova</label>
+                                        <mat-form-field appearance="outline">
+                                            <input matInput [matDatepicker]="picker2" formControlName="dataFineProva"
+                                                placeholder="Inserisci una data di fine prova">
+
+                                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker2></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+
+                                <div>
+                                    <div>
+                                        <label for="dataFineRapporto" style="width: 100%;">Data Fine Rapporto</label>
+                                        <mat-form-field appearance="outline">
+                                            <input matInput [matDatepicker]="picker3" formControlName="dataFineRapporto"
+                                                placeholder="Inserisci una data di fine rapporto">
+
+                                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker3></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="mesiDurata">Mesi Durata</label>
+                                    <input class="form-control" id="mesiDurata" type="text"
+                                        placeholder="Inserisci la durata in mesi" formControlName="mesiDurata">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="border p-2">
+                <legend class="w-auto">Livello Dipendente</legend>
+                <div class="card">
+                    <div class="row">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="livelloIniziale">Livello Iniziale</label>
+                                    <input class="form-control" id="livelloIniziale" type="text"
+                                        placeholder="Inserisci il livello iniziale" formControlName="livelloIniziale">
+                                </div>
+                                <div class="form-group">
+                                    <label for="livelloAttuale">Livello Attuale</label>
+                                    <input class="form-control" id="livelloAttuale" type="text"
+                                        placeholder="Inserisci il livello attuale" formControlName="livelloAttuale">
+                                </div>
+                                <div class="form-group">
+                                    <label for="livelloFinale">Livello Finale</label>
+                                    <input class="form-control" id="livelloFinale" type="text"
+                                        placeholder="Inserisci il livello finale" formControlName="livelloFinale">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="border p-2">
+                <legend class="w-auto">Info Generali</legend>
+                <div class="card">
+                    <div class="row">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="dimissioni" style="width: 100%;">Dimissioni</label>
+                                    <div class="form-check form-check-inline">
+                                        <input id="checkbox" type="checkbox" formcontrolname="dimissioni">
+                                        <label class="form-check-label" for="attivo">Dimissioni</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="partTime" style="width: 100%;">Part Time</label>
+                                    <div class="form-check form-check-inline">
+                                        <input id="checkbox" type="checkbox" formcontrolname="dimissioni">
+                                        <label class="form-check-label" for="partTime">Part Time</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="partTimeA" style="width: 100%;">Part Time A</label>
+                                    <div class="form-check form-check-inline">
+                                        <input id="checkbox" type="checkbox" formcontrolname="dimissioni">
+                                        <label class="form-check-label" for="partTimeA">Part Time A</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="border p-2">
+                <legend class="w-auto">Retribuzione e Diaria</legend>
+                <div class="card">
+                    <div class="row">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="retribuzioneMensileLorda">Retribuzione Mensile Lorda</label>
+                                    <input class="form-control" id="partTime" type="text"
+                                        placeholder="Inserisci la retribuzione mensile lorda"
+                                        formControlName="retribuzioneMensileLorda">
+                                </div>
+                                <div class="form-group">
+                                    <label for="superminimoMensile">Superminimo Mensile</label>
+                                    <input class="form-control" id="superminimoMensile" type="text"
+                                        placeholder="Inserisci il superminimo mensile"
+                                        formControlName="superminimoMensile">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ralAnnua">Ral Annua</label>
+                                    <input class="form-control" id="ralAnnua" type="text"
+                                        placeholder="Inserisci la ral annua" formControlName="ralAnnua">
+                                </div>
+                                <div class="form-group">
+                                    <label for="superminimoRal">Superminimo Ral</label>
+                                    <input class="form-control" id="superminimoRal" type="text"
+                                        placeholder="Inserisci il superminimo ral" formControlName="superminimoRal">
+                                </div>
+                                <div class="form-group">
+                                    <label for="diariaMensile">Diaria Mensile</label>
+                                    <input class="form-control" id="diariaMensile" type="text"
+                                        placeholder="Inserisci la diaria mensile" formControlName="diariaMensile">
+                                </div>
+                                <div class="form-group">
+                                    <label for="diariaGg">Diaria Giornaliera</label>
+                                    <input class="form-control" id="diariaGg" type="text"
+                                        placeholder="Inserisci la diaria giornaliera" formControlName="diariaGg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="border p-2">
+                <legend class="w-auto">Ticket e Aggevolazioni</legend>
+                <div class="card">
+                    <div class="row">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="ticket">Ticket</label>
+                                    <input class="form-control" id="ticket" type="text"
+                                        placeholder="Inserisci il ticket" formControlName="ticket">
+                                </div>
+                                <div class="form-group">
+                                    <label for="valoreTicket">Valore Ticket</label>
+                                    <input class="form-control" id="valoreTicket" type="text"
+                                        placeholder="Inserisci il valore ticket" formControlName="valoreTicket">
+                                </div>
+                                <div class="form-group">
+                                    <label for="categoriaProtetta" style="width: 100%;">Categoria Protetta</label>
+                                    <div class="form-check form-check-inline">
+                                        <input id="checkbox" type="checkbox" formcontrolname="attivo">
+                                        <label class="form-check-label" for="categoriaProtetta">Categoria
+                                            Protetta</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="border p-2">
+                <legend class="w-auto">Altro</legend>
+                <div class="card">
+                    <div class="row">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="tutor">Tutor</label>
+                                    <input class="form-control" id="tutor" type="text"
+                                        placeholder="Inserisci il/la tutor" formControlName="tutor">
+                                </div>
+                                <div class="form-group">
+                                    <label for="pfi">Pfi</label>
+                                    <input class="form-control" id="pfi" type="text" placeholder="Inserisci il pfi"
+                                        formControlName="pfi">
+                                </div>
+                                <div class="form-group">
+                                    <label for="assicurazioneObbligatoria">Assicurazione Obbligatoria</label>
+                                    <input class="form-control" id="assicurazioneObbligatoria" type="text"
+                                        placeholder="Inserisci le assicurazione obbligatoria"
+                                        formControlName="assicurazioneObbligatoria">
+                                </div>
+                                <div class="form-group">
+                                    <label for="corsoSicurezza">Corso Sicurezza</label>
+                                    <input class="form-control" id="corsoSicurezza" type="text"
+                                        placeholder="Inserisci il corso sicurezza" formControlName="corsoSicurezza">
+                                </div>
+
+                                <div>
+                                    <div>
+                                        <label for="corsoSicurezza" style="width: 100%">Corso Sicurezza</label>
+                                        <mat-form-field appearance="outline">
+                                            <input matInput [matDatepicker]="picker" formControlName="corsoSicurezza"/>
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="motivazioneFineRapporto">Motivazione di Fine Rapporto</label>
+                                    <input class="form-control" id="motivazioneFineRapporto" type="text"
+                                        placeholder="Inserisci le motivazione di fine rapporto"
+                                        formControlName="motivazioneFineRapporto">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="pc" style="width: 100%;">PC</label>
+                                    <div class="form-check form-check-inline">
+                                        <input id="checkbox" type="checkbox" formcontrolname="pc">
+                                        <label class="form-check-label" for="pc">PC</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="scattiAnzianita">Scatti Anzianita</label>
+                                    <input class="form-control" id="scattiAnzianita" type="text"
+                                        placeholder="Inserisci se scatti anzianita" formControlName="scattiAnzianita">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tariffaPartitaIva">Tariffa Partita Iva</label>
+                                    <input class="form-control" id="tariffaPartitaIva" type="text"
+                                        placeholder="Inserisci la tariffa partita iva"
+                                        formControlName="tariffaPartitaIva">
+                                </div>
+                                <div class="form-group">
+                                    <label for="canaleReclutamento">Canale Reclutamento</label>
+                                    <input class="form-control" id="canaleReclutamento" type="text"
+                                        placeholder="Inserisci se canale di reclutamento"
+                                        formControlName="canaleReclutamento">
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </form>
+
+</body>
+
+</html>

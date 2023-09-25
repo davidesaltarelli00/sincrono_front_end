@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container-fluid">
+
+    <div class="day-calendar">
+      <h1 style="text-align: center;">Giorno selezionato: {{ formattedDate }}</h1>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Ora</th>
+            <th>Attività</th>
+            <th>Salva</th>
+            <th>Svuota</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let hour of hours; let i = index">
+            <tr [ngClass]="{ 'highlighted': isHourSelected(i) }">
+              <td>
+                <input type="checkbox" [(ngModel)]="selectedHours[i]" (change)="onCheckboxChange(i)">
+              </td>
+              <td>{{ hour }}</td>
+              <td contenteditable="true" class="form-control" (input)="onInput($event, i)"></td>
+              <td><button class="btn btn-success" (click)="saveActivity(i)" [disabled]="i==null" > <i class="fa fa-check"></i> </button></td>
+              <td><button class="btn btn-danger" (click)="clearActivity(i)"> <i class="fa fa-trash"></i> </button></td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <br><br><br>
+    </div>
+
+  </div>
+</body>
+</html>
