@@ -1,103 +1,39 @@
-.invalid-field {
-  border-color: red;
-
-}
-
 .container-fluid {
   margin-right: auto;
   margin-left: auto;
   padding-right: 15px;
   padding-left: 15px;
 }
-
 .row {
   display: flex;
   flex-wrap: wrap;
   margin-right: -15px;
   margin-left: -15px;
 }
-
-.col-md-3 {
-  flex: 0 0 25%;
-  max-width: 25%;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-.form-control {
-  display: block;
-  width: 100%;
-  height: calc(1.5em + 0.75rem + 2px);
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
 .legend {
   font-size: 1.2rem;
   font-weight: bold;
   margin-top: 20px;
   margin-bottom: 10px;
 }
-
 @media (max-width: 767px) {
   .col-md-3 {
     flex: 0 0 100%;
     max-width: 100%;
   }
 }
-
 .ruolo {
   margin-bottom: 30px;
-}
-
-
-#avanti {
-  margin: auto;
-  text-align: center;
-  margin-top: 10px;
-}
-
-#indietro{
- float: right;
-  text-align: center;
-  margin-top: 10px;
-}
-
-#nominativo {
-  margin-bottom: 10px;
 }
 .mat-stepper-horizontal {
   margin-top: 8px;
 }
-
-.mat-mdc-form-field {
-  margin-top: 16px;
-}
-
 *{
   box-sizing: border-box;
 }
-
-button:hover{
-  background-color: transparent;
-}
-
-button{border: 1px solid #333;}
-
-
-
-// overflow
 body {
   overflow-y: auto; /* Nasconde l'overflow verticale */
 }
-
 body::after {
   content: "";
   position: relative;
@@ -105,135 +41,58 @@ body::after {
   bottom: 0;
   left: 0;
   right: 0;
-  overflow-y: auto; /* Consente lo scrolling */
-  padding-right: 17px; /* Aggiunge un margine destro per compensare la larghezza della barra di scorrimento */
+  overflow-y: auto;
+  padding-right: 17px;
 }
-
-/* Nasconde la barra di scorrimento orizzontale */
 body::-webkit-scrollbar {
   width: 0.5em;
   background-color: #F5F5F5;
 }
-
 body::-webkit-scrollbar-thumb {
   background-color: transparent;
 }
-
-
-
-footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  text-align: center;
-}
-
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.form-control {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  transition: border-color 0.2s ease-in-out;
-}
-
-.form-control.invalid {
-  border-color: red;
-}
-
-.error-message {
-  color: red;
-  font-size: 12px;
-  margin-top: 5px;
-}
-
-.submit-button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
 .custom-prefix {
   background-color: black;
   color: white;
 }
-
-.invalid-field {
-  border-color: red;
-
-}
-
 select{
 width: 50%;
 }
-
-/* Stili CSS per simulare una tabella */
 .commessa-list {
-// list-style: none;
 padding: 0;
 }
-
 .commessa-item {
-// display: flex;
 align-items: center;
-// justify-content: space-between;
 margin-bottom: 8px;
 }
-
 .commessa-cell {
 flex: 1;
 padding: 4px;
 border: 1px solid #ccc;
 }
-
 ng-container{
 border: 1px solid #f1f1f1;
 }
-
 select{
 width: 100%;
 }
-
 .campo-nullo {
 border-color: red;
 }
-
 mat-card-title{
 text-align: center;
 }
-
-/* Stile generale del toggle switch */
 .toggle-switch {
 display: inline-block;
 position: relative;
 width: 60px;
 height: 34px;
 }
-
-/* Nasconde la checkbox reale */
 .toggle-switch input {
 opacity: 0;
 width: 0;
 height: 0;
 }
-
-/* Stile del slider (il cursore del toggle) */
 .slider {
 position: absolute;
 cursor: pointer;
@@ -245,13 +104,9 @@ background-color: #ccc; /* Colore di sfondo quando disattivato */
 transition: 0.4s; /* Effetto di transizione */
 border-radius: 34px;
 }
-
-/* Cambia il colore di sfondo quando attivato */
 .toggle-switch input:checked + .slider {
 background-color: #2196F3;
 }
-
-/* Stile del cursore del toggle */
 .slider:before {
 position: absolute;
 content: "";
@@ -263,25 +118,19 @@ background-color: white;
 transition: 0.4s;
 border-radius: 50%;
 }
-
-/* Posizione del cursore quando attivato */
 .toggle-switch input:checked + .slider:before {
 transform: translateX(26px);
 }
-
-/* Opzionale: stile aggiuntivo per l'etichetta del toggle switch */
 .toggle-switch label {
 display: flex;
 align-items: center;
 user-select: none;
 cursor: pointer;
 }
-
 .custom-prefix {
 background-color: black;
 color: white;
 }
-
 .card {
 border: 1px solid #ccc;
 border-radius: 5px;
@@ -289,18 +138,15 @@ padding: 20px;
 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 background-color: #fff;
 }
-
 .card-title {
 font-size: 1.25rem;
 font-weight: bold;
 margin-bottom: 10px;
 }
-
 .card-content {
 font-size: 1rem;
 line-height: 1.4;
 }
-
 .card-button {
 display: inline-block;
 padding: 10px 20px;
@@ -311,17 +157,13 @@ border-radius: 3px;
 cursor: pointer;
 transition: background-color 0.3s ease;
 }
-
 .card-button:hover {
 background-color: #0056b3;
 }
-
 .label-align-vertical {
   display: inline-block;
   vertical-align: middle;
 }
-
-/* Stile per campi di input disabilitati */
 input[disabled] {
   background-color: #f2f2f2;
   color: #999;
