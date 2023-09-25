@@ -27,7 +27,7 @@ export class AuthService {
 
     return this.http
       .post<AuthenticationResponse>(
-        'http://localhost:8080/login-service/login',
+        '192.168.58.196:8080/login-service/login',
         body,
         { headers }
       )
@@ -72,7 +72,7 @@ export class AuthService {
   //     Authenticate: 'token',
   //   });
 
-  //   return this.http.put(`http://localhost:8080/services/logout`, body, { headers });
+  //   return this.http.put(`192.168.58.196:8080/services/logout`, body, { headers });
   // }
 
   logout() {
@@ -87,7 +87,7 @@ export class AuthService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.put('http://localhost:8080/services/logout', body, {
+    return this.http.put('192.168.58.196:8080/services/logout', body, {
       headers,
     });
   }

@@ -16,7 +16,7 @@ export class DashboardService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/dashboard`, {
+    return this.http.get<any>(`192.168.58.196:8080/services/dashboard`, {
       headers: headers,
     });
   }
@@ -28,7 +28,7 @@ export class DashboardService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/anagrafica-list-contratti`,
+      `192.168.58.196:8080/services/anagrafica-list-contratti`,
       {
         headers: headers,
       }
@@ -42,7 +42,7 @@ export class DashboardService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.delete<any>(
-      `http://localhost:8080/services/anagrafica-Delete-ScattoContratti`,
+      `192.168.58.196:8080/services/anagrafica-Delete-ScattoContratti`,
       {
         headers: headers,
       }
@@ -58,11 +58,11 @@ export class DashboardService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>('http://localhost:8080/services/list-commesse',{
+    return this.http.get<any>('192.168.58.196:8080/services/list-commesse',{
       headers: headers,
     });
-  } 
- 
+  }
+
 
 
 
@@ -74,7 +74,7 @@ export class DashboardService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>('http://localhost:8080/services/list-contratti',{
+    return this.http.get<any>('192.168.58.196:8080/services/list-contratti',{
       headers: headers,
     });
   }
@@ -85,7 +85,7 @@ export class DashboardService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>('http://localhost:8080/services/list-all-commesse',{
+    return this.http.get<any>('192.168.58.196:8080/services/list-all-commesse',{
     headers: headers,
   });
 }
@@ -96,9 +96,9 @@ commesseListFilter(token:any,body:any): Observable<any> {
     'Access-Control-Allow-Origin': '*',
     Authorization: `Bearer ${token}`,
   });
-  
-  return this.http.post<any>('http://localhost:8080/services/list-filter',body,{
-  headers: headers, 
+
+  return this.http.post<any>('192.168.58.196:8080/services/list-filter',body,{
+  headers: headers,
   });
 }
 

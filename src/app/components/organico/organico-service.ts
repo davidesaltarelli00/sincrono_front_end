@@ -16,7 +16,7 @@ export class OrganicoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/organico`, {
+    return this.http.get<any>(`192.168.58.196:8080/services/organico`, {
       headers: headers,
     });
   }

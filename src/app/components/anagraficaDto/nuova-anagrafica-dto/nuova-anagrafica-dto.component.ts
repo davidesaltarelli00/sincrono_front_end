@@ -439,70 +439,63 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
     switch (selectedTipoContrattoId) {
       case 1: // Contratto STAGE
-        if (
-          dataFineRapportoControl &&
-          mesiDurataControl &&
-          retribuzioneMensileLordaControl &&
-          PFIcontrol &&
-          tutorControl &&
-          superminimoMensileControl &&
-          ralAnnuaControl &&
-          superminimoRalControl &&
-          diariaMensileControl &&
-          diariaGiornalieraControl &&
-          scattiAnzianitaControl &&
-          tariffaPartitaIvaControl &&
-          livelloAttualeControl &&
-          retribuzioneNettaMensileControl &&
-          livelloFinaleControl &&
-          retribuzioneNettaGiornalieraControl
-        ) {
-          PFIcontrol.enable();
-          PFIcontrol.setValue('');
-          tutorControl.enable();
-          tutorControl.setValue('');
-          retribuzioneNettaMensileControl.enable();
-          retribuzioneNettaMensileControl.setValue(800);
-          mesiDurataControl.setValue(6);
-          mesiDurataControl.enable();
-          this.calculateDataFineRapporto();
-          dataFineRapportoControl.enable();
-          dataFineRapportoControl.setValue(null);
+      if (
+        dataFineRapportoControl &&
+        mesiDurataControl &&
+        retribuzioneMensileLordaControl &&
+        PFIcontrol &&
+        tutorControl &&
+        superminimoMensileControl &&
+        ralAnnuaControl &&
+        superminimoRalControl &&
+        diariaMensileControl &&
+        diariaGiornalieraControl &&
+        scattiAnzianitaControl &&
+        tariffaPartitaIvaControl &&
+        livelloAttualeControl &&
+        retribuzioneNettaMensileControl &&
+        livelloFinaleControl &&
+        retribuzioneNettaGiornalieraControl
+      ) {
+        PFIcontrol.enable();
+        tutorControl.enable();
+        retribuzioneNettaMensileControl.enable();
+        mesiDurataControl.enable();
+        mesiDurataControl.setValidators([Validators.required]);
+        mesiDurataControl.setValue(6);
 
-          retribuzioneMensileLordaControl.disable();
-          retribuzioneMensileLordaControl.setValue('');
+        tutorControl.setValidators([Validators.required]);
+        PFIcontrol.setValidators([Validators.required]);
 
-          livelloAttualeControl.disable();
-          livelloAttualeControl.setValue('');
+        this.calculateDataFineRapporto();
+        dataFineRapportoControl.enable();
+        dataFineRapportoControl.setValue(null);
+        retribuzioneMensileLordaControl.disable();
+        livelloAttualeControl.disable();
+        livelloFinaleControl.disable();
+        superminimoMensileControl.disable();
+        ralAnnuaControl.disable();
+        superminimoRalControl.disable();
+        diariaMensileControl.disable();
+        diariaGiornalieraControl.disable();
+        scattiAnzianitaControl.disable();
+        tariffaPartitaIvaControl.disable();
+        retribuzioneNettaGiornalieraControl.disable();
 
-          livelloFinaleControl.disable();
-          livelloFinaleControl.setValue('');
-
-          superminimoMensileControl.disable();
-          superminimoMensileControl.setValue('');
-
-          ralAnnuaControl.disable();
-          ralAnnuaControl.setValue('');
-
-          superminimoRalControl.disable();
-          superminimoRalControl.setValue('');
-
-          diariaMensileControl.disable();
-          diariaMensileControl.setValue('');
-
-          diariaGiornalieraControl.disable();
-          diariaGiornalieraControl.setValue('');
-
-          scattiAnzianitaControl.disable();
-          scattiAnzianitaControl.setValue('');
-
-          tariffaPartitaIvaControl.disable();
-          tariffaPartitaIvaControl.setValue('');
-
-          retribuzioneNettaGiornalieraControl.disable();
-          retribuzioneNettaGiornalieraControl.setValue('');
-        }
-        break;
+        // Azzera i valori degli altri campi
+        retribuzioneMensileLordaControl.setValue('');
+        livelloAttualeControl.setValue('');
+        livelloFinaleControl.setValue('');
+        superminimoMensileControl.setValue('');
+        ralAnnuaControl.setValue('');
+        superminimoRalControl.setValue('');
+        diariaMensileControl.setValue('');
+        diariaGiornalieraControl.setValue('');
+        scattiAnzianitaControl.setValue('');
+        tariffaPartitaIvaControl.setValue('');
+        retribuzioneNettaGiornalieraControl.setValue('');
+      }
+      break;
 
       case 2: // Contratto PARTITA IVA
         if (

@@ -5,5 +5,5 @@ import { Injectable } from '@angular/core';
 })
 export class MenuService {
 id:any;
-url=`http://localhost:8085/funzioni-ruolo/tree/1`
+url=`192.168.58.196:8085/funzioni-ruolo/tree/1`
 }

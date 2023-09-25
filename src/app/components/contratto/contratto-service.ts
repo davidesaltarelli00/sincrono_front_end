@@ -17,7 +17,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/contratto-list`, {
+    return this.http.get<any>(`192.168.58.196:8080/services/contratto-list`, {
       headers: headers,
     });
   }
@@ -28,7 +28,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.delete<any>(`http://localhost:8085/contratto/${id}`, {
+    return this.http.delete<any>(`192.168.58.196:8085/contratto/${id}`, {
       headers: headers,
     });
   }
@@ -39,7 +39,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(`http://localhost:8085/contratto`, body, {
+    return this.http.put<any>(`192.168.58.196:8085/contratto`, body, {
       headers: headers,
     });
   }
@@ -51,7 +51,7 @@ export class ContrattoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.post<any>(
-      `http://localhost:8080/services/contratto`,
+      `192.168.58.196:8080/services/contratto`,
       body,
       { headers: headers }
     );
@@ -64,7 +64,7 @@ export class ContrattoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/contratto/${id}`,
+      `192.168.58.196:8080/services/contratto/${id}`,
       { headers: headers }
     );
   }
@@ -77,7 +77,7 @@ export class ContrattoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/tipo-contratto-map`,
+      `192.168.58.196:8080/services/tipo-contratto-map`,
       { headers: headers }
     );
   }
@@ -89,7 +89,7 @@ export class ContrattoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8085/tipo-livelli-contrattuali-map`
+      `192.168.58.196:8085/tipo-livelli-contrattuali-map`
     );
   }
 
@@ -99,7 +99,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8085/tipo-azienda-map`, {
+    return this.http.get<any>(`192.168.58.196:8085/tipo-azienda-map`, {
       headers: headers,
     });
   }
@@ -110,7 +110,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8085/tipo-ccnl-map`, {
+    return this.http.get<any>(`192.168.58.196:8085/tipo-ccnl-map`, {
       headers: headers,
     });
   }

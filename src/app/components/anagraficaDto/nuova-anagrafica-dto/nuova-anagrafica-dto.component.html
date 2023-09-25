@@ -580,18 +580,14 @@
                             class="form-control"
                             formControlName="mesiDurata"
                             placeholder="Inserire mesi durata"
+                            [ngStyle]="{'border': AnagraficaDto.get('contratto.mesiDurata')?.hasError('required') ? '1px solid red' : '1px solid #f1f1f1'}"
                           />
                           <div
-                            *ngIf="
-                              AnagraficaDto.get(
-                                'contratto.mesiDurata'
-                              )?.hasError('required') &&
-                              AnagraficaDto.get('contratto.mesiDurata')?.touched
-                            "
-                            class="text-danger"
-                          >
-                            Il campo mesi durata è obbligatorio.
-                          </div>
+                          *ngIf="AnagraficaDto.get('contratto.mesiDurata')?.hasError('required')"
+                          class="text-danger"
+                        >
+                          Il campo mesi durata è obbligatorio.
+                        </div>
                         </div>
                         <div class="col-3">
                           <div formGroupName="tipoCcnl">
@@ -1070,7 +1066,7 @@
                       <div class="row">
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Ticket</label>
+                            <label>Ticket</label> <br>
                             <label class="toggle-switch">
 
                               <div class="form-check">
@@ -1102,7 +1098,7 @@
 
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Categoria protetta</label>
+                            <label>Categoria protetta</label> <br>
                             <label class="toggle-switch">
 
                               <div class="form-check">
@@ -1147,7 +1143,12 @@
                               type="text"
                               class="form-control"
                               formControlName="tutor"
+                              [ngStyle]="{'border': AnagraficaDto.get('contratto.tutor')?.hasError('required') ? '1px solid red' : '1px solid #f1f1f1'}"
                             />
+                            <div
+                            *ngIf="AnagraficaDto.get('contratto.tutor')?.hasError('required')"class="text-danger">
+                            Il campo tutor è obbligatorio per gli stagisti e per gli apprendisti.
+                          </div>
                           </div>
                         </div>
 

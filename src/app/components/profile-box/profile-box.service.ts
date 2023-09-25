@@ -23,7 +23,7 @@ export class profileBoxService {
         Authorization: `Bearer ${token}`,
       });
       return this.http.get<any>(
-        `http://localhost:8080/services/dettaglio-token/${token}`,
+        `192.168.58.196:8080/services/dettaglio-token/${token}`,
         { headers: headers }
       );
     } else {

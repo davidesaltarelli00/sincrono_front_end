@@ -17,7 +17,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/list`, {
+    return this.http.get<any>(`192.168.58.196:8080/services/list`, {
       headers: headers,
     });
   }
@@ -29,7 +29,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/dettaglio/${id}`,
+      `192.168.58.196:8080/services/dettaglio/${id}`,
       { headers: headers }
     );
   }
@@ -42,7 +42,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.put<any>(
-      `http://localhost:8080/services/commessa`,body,
+      `192.168.58.196:8080/services/commessa`,body,
       { headers: headers }
     );
   }
@@ -54,7 +54,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.put<any>(
-      `http://localhost:8080/services/retain`,body,
+      `192.168.58.196:8080/services/retain`,body,
       { headers: headers }
     );
   }
@@ -65,7 +65,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(`http://localhost:8080/services/delete`, body, {
+    return this.http.put<any>(`192.168.58.196:8080/services/delete`, body, {
       headers: headers,
     });
   }
@@ -77,7 +77,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     console.log("BODY SERVICE:"+ JSON.stringify(body));
-    return this.http.put<any>(`http://localhost:8080/services/modifica`, body, {
+    return this.http.put<any>(`192.168.58.196:8080/services/modifica`, body, {
       headers: headers,
     });
   }
@@ -89,7 +89,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.post<any>(
-      `http://localhost:8080/services/inserisci`,
+      `192.168.58.196:8080/services/inserisci`,
       body,
       {
         headers: headers,
@@ -104,7 +104,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.post<any>(
-      `http://localhost:8080/services/filter`,
+      `192.168.58.196:8080/services/filter`,
       body,
       {
         headers: headers,
@@ -119,7 +119,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/utenti-list`, {
+    return this.http.get<any>(`192.168.58.196:8080/services/utenti-list`, {
       headers: headers,
     });
   }
@@ -130,7 +130,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/tipo-causa-fine-rapporto-map`, {
+    return this.http.get<any>(`192.168.58.196:8080/services/tipo-causa-fine-rapporto-map`, {
       headers: headers,
     });
   }
@@ -142,7 +142,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/tipo-canale-reclutamento-map`, {
+    return this.http.get<any>(`192.168.58.196:8080/services/tipo-canale-reclutamento-map`, {
       headers: headers,
     });
   }
@@ -154,7 +154,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(`http://localhost:8080/services/list`, body, {
+    return this.http.post<any>(`192.168.58.196:8080/services/list`, body, {
       headers: headers,
     });
   }
@@ -166,7 +166,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/tipo-contratto-map`,{ headers: headers }
+      `192.168.58.196:8080/services/tipo-contratto-map`,{ headers: headers }
     );
   }
 
@@ -177,7 +177,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/tipo-livelli-contrattuali-map`,
+      `192.168.58.196:8080/services/tipo-livelli-contrattuali-map`,
       { headers: headers }
     );
   }
@@ -189,7 +189,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/tipo-azienda-map`,
+      `192.168.58.196:8080/services/tipo-azienda-map`,
       { headers: headers }
     );
   }
@@ -200,7 +200,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/tipo-ccnl-map`, {
+    return this.http.get<any>(`192.168.58.196:8080/services/tipo-ccnl-map`, {
       headers: headers,
     }); //tipo-ccnl
   }
@@ -211,7 +211,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/ruoli-map`, {
+    return this.http.get<any>(`192.168.58.196:8080/services/ruoli-map`, {
       headers: headers,
     });
   }
@@ -222,7 +222,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>('http://localhost:8080/services/commessa', body, {
+    return this.http.put<any>('192.168.58.196:8080/services/commessa', body, {
       headers: headers,
     });
   }

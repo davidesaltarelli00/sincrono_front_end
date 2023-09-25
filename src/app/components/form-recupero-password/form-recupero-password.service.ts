@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class RecuperoPasswordService {
-  url = 'http://localhost:8080/services/';
+  url = '192.168.58.196:8080/services/';
 
   constructor(private http: HttpClient) {}
 
