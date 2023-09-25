@@ -17,7 +17,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`192.168.58.196:8080/services/contratto-list`, {
+    return this.http.get<any>(`http://192.168.58.196:8080/services/contratto-list`, {
       headers: headers,
     });
   }
@@ -51,7 +51,7 @@ export class ContrattoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.post<any>(
-      `192.168.58.196:8080/services/contratto`,
+      `http://192.168.58.196:8080/services/contratto`,
       body,
       { headers: headers }
     );
@@ -64,7 +64,7 @@ export class ContrattoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `192.168.58.196:8080/services/contratto/${id}`,
+      `http://192.168.58.196:8080/services/contratto/${id}`,
       { headers: headers }
     );
   }
@@ -77,7 +77,7 @@ export class ContrattoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `192.168.58.196:8080/services/tipo-contratto-map`,
+      `http://192.168.58.196:8080/services/tipo-contratto-map`,
       { headers: headers }
     );
   }

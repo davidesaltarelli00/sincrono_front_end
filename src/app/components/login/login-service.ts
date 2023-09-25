@@ -27,7 +27,7 @@ export class AuthService {
 
     return this.http
       .post<AuthenticationResponse>(
-        '192.168.58.196:8080/login-service/login',
+        'http://192.168.58.196:8080/login-service/login',
         body,
         { headers }
       )

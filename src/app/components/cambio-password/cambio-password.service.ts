@@ -6,7 +6,7 @@ import { profileBoxService } from '../profile-box/profile-box.service';
   providedIn: 'root',
 })
 export class CambioPasswordService {
-  urlLocale: string = `192.168.58.196:8080/services/`;
+  urlLocale: string = `http://192.168.58.196:8080/services/`;
   anagrafica: any;
   idUtente: any;
   passwordVecchia: string = '';

@@ -116,7 +116,7 @@ export class AppComponent implements OnInit {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${this.token}`,
     });
-    const url = `192.168.58.196:8080/services/funzioni-ruolo-tree/${this.id}`;
+    const url = `http://192.168.58.196:8080/services/funzioni-ruolo-tree/${this.id}`;
     this.http.get<MenuData>(url, {headers: headers}).subscribe(
       (data) => {
         this.jsonData = data;
@@ -136,7 +136,7 @@ export class AppComponent implements OnInit {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${this.token}`,
     });
-    const url = `192.168.58.196:8080/services/operazioni/${functionId}`;
+    const url = `http://192.168.58.196:8080/services/operazioni/${functionId}`;
     this.http.get(url,{headers: headers}).subscribe(
       (data: any) => {
         // Qui puoi fare qualcosa con i permessi ottenuti dalla chiamata API
