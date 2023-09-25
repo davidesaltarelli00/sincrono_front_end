@@ -10,6 +10,7 @@ pipeline {
             steps {
                 sh 'node --version'
                 sh 'npm i -D @angular-devkit/build-angular'
+                sh 'npm install -S file-saver-es'
                 sh 'ng build'
                 sh 'rm -fr /var/jenkins_home/server1/*'
                 sh 'rm -fr /var/jenkins_home/server2/*'
