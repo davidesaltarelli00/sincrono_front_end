@@ -56,7 +56,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   missingFields: string[] = [];
   isDataFineRapportoDisabled: any;
   percentualePartTimeValue: number | null = null;
-  ccnLSelezionato=false;
+  ccnLSelezionato = false;
 
   //dati per i controlli nei form
   inseritoContrattoIndeterminato = true;
@@ -64,7 +64,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   retribuzioneMensileLorda: any;
   descrizioneContrattoNazionale: any;
   descrizioneCCNL: any;
-
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -132,13 +131,13 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           id: new FormControl('', Validators.required),
         }),
         tipoContratto: new FormGroup({
-          id: new FormControl(''),
+          id: new FormControl('', Validators.required),
         }),
         tipoLivelloContratto: new FormGroup({
           id: new FormControl(''),
         }),
         tipoCcnl: new FormGroup({
-          id: new FormControl(''),
+          id: new FormControl('', Validators.required),
         }),
         qualifica: new FormControl(''),
         sedeAssunzione: new FormControl(''),
@@ -207,10 +206,17 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    const livelloAttualeControl=this.AnagraficaDto.get('contratto.livelloAttuale');
-    if(livelloAttualeControl){
+    const livelloAttualeControl = this.AnagraficaDto.get(
+      'contratto.livelloAttuale'
+    );
+    if (livelloAttualeControl) {
       livelloAttualeControl.disable();
+    }
+    const livelloFinaleControl = this.AnagraficaDto.get(
+      'contratto.livelloFinale'
+    );
+    if (livelloFinaleControl) {
+      livelloFinaleControl.disable();
     }
 
     const livelloControl = this.AnagraficaDto.get(
@@ -325,13 +331,30 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   calcolaMensileTot() {
-    const retribuzioneMensileLorda = parseFloat((<HTMLInputElement>document.getElementById('retribuzioneMensileLorda')).value) || 0;
-    const superminimoMensile = parseFloat((<HTMLInputElement>document.getElementById('superminimoMensile')).value) || 0;
-    const scattiAnzianita = parseFloat((<HTMLInputElement>document.getElementById('scattiAnzianita')).value) || 0;
+    const retribuzioneMensileLorda =
+      parseFloat(
+        (<HTMLInputElement>document.getElementById('retribuzioneMensileLorda'))
+          .value
+      ) || 0;
+    const superminimoMensile =
+      parseFloat(
+        (<HTMLInputElement>document.getElementById('superminimoMensile')).value
+      ) || 0;
+    const scattiAnzianita =
+      parseFloat(
+        (<HTMLInputElement>document.getElementById('scattiAnzianita')).value
+      ) || 0;
 
-    if (retribuzioneMensileLorda !== 0 && superminimoMensile !== 0 && scattiAnzianita !== 0) {
-      const mensileTot = retribuzioneMensileLorda + superminimoMensile + scattiAnzianita;
-      document.getElementById('mensileTOT')?.setAttribute('value', mensileTot.toFixed(2));
+    if (
+      retribuzioneMensileLorda !== 0 &&
+      superminimoMensile !== 0 &&
+      scattiAnzianita !== 0
+    ) {
+      const mensileTot =
+        retribuzioneMensileLorda + superminimoMensile + scattiAnzianita;
+      document
+        .getElementById('mensileTOT')
+        ?.setAttribute('value', mensileTot.toFixed(2));
     } else {
       // Se uno dei campi è vuoto, nascondi il risultato o reimpostalo a zero, a seconda delle tue esigenze
       document.getElementById('mensileTOT')?.setAttribute('value', '');
@@ -410,10 +433,14 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     const livelloFinaleControl = this.AnagraficaDto.get(
       'contratto.livelloFinale'
     );
+    const retribuzioneNettaGiornalieraControl = this.AnagraficaDto.get(
+      'contratto.retribuzioneNettaGiornaliera'
+    );
 
     switch (selectedTipoContrattoId) {
       case 1: // Contratto STAGE
         if (
+          dataFineRapportoControl &&
           mesiDurataControl &&
           retribuzioneMensileLordaControl &&
           PFIcontrol &&
@@ -425,25 +452,31 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           diariaGiornalieraControl &&
           scattiAnzianitaControl &&
           tariffaPartitaIvaControl &&
-          // livelloAttualeControl &&
-          retribuzioneNettaMensileControl
-          // &&
-          // livelloFinaleControl
+          livelloAttualeControl &&
+          retribuzioneNettaMensileControl &&
+          livelloFinaleControl &&
+          retribuzioneNettaGiornalieraControl
         ) {
-          retribuzioneMensileLordaControl.enable();
+          PFIcontrol.enable();
+          PFIcontrol.setValue('');
+          tutorControl.enable();
+          tutorControl.setValue('');
+          retribuzioneNettaMensileControl.enable();
+          retribuzioneNettaMensileControl.setValue(800);
+          mesiDurataControl.setValue(6);
+          mesiDurataControl.enable();
+          this.calculateDataFineRapporto();
+          dataFineRapportoControl.enable();
+          dataFineRapportoControl.setValue(null);
+
+          retribuzioneMensileLordaControl.disable();
           retribuzioneMensileLordaControl.setValue('');
 
-          retribuzioneNettaMensileControl.enable();
-          retribuzioneNettaMensileControl.setValue('');
+          livelloAttualeControl.disable();
+          livelloAttualeControl.setValue('');
 
-          livelloAttualeControl?.disable();
-          livelloAttualeControl?.setValue(null);
-
-          livelloFinaleControl?.disable();
-          livelloFinaleControl?.setValue(null);
-
-          PFIcontrol.enable();
-          tutorControl.enable();
+          livelloFinaleControl.disable();
+          livelloFinaleControl.setValue('');
 
           superminimoMensileControl.disable();
           superminimoMensileControl.setValue('');
@@ -466,12 +499,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           tariffaPartitaIvaControl.disable();
           tariffaPartitaIvaControl.setValue('');
 
-          mesiDurataControl.setValue(6);
-          mesiDurataControl.enable();
-          this.calculateDataFineRapporto();
-
-          dataFineRapportoControl?.enable();
-          dataFineRapportoControl?.setValue(null);
+          retribuzioneNettaGiornalieraControl.disable();
+          retribuzioneNettaGiornalieraControl.setValue('');
         }
         break;
 
@@ -484,20 +513,27 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           ralAnnuaControl &&
           retribuzioneMensileLordaControl &&
           retribuzioneNettaMensileControl &&
+          retribuzioneNettaGiornalieraControl &&
           dataFineRapportoControl &&
-          mesiDurataControl
+          mesiDurataControl &&
+          livelloAttualeControl &&
+          livelloFinaleControl &&
+          superminimoRalControl
         ) {
-          livelloAttualeControl?.disable();
-          livelloAttualeControl?.setValue(null);
-
-          livelloFinaleControl?.disable();
-          livelloFinaleControl?.setValue(null);
-
           tariffaPartitaIvaControl.enable();
           tariffaPartitaIvaControl.setValue('');
 
           retribuzioneMensileLordaControl.enable();
           retribuzioneMensileLordaControl.setValue(null);
+
+          retribuzioneNettaGiornalieraControl.enable();
+          retribuzioneNettaGiornalieraControl.setValue('');
+
+          livelloAttualeControl.disable();
+          livelloAttualeControl.setValue(null);
+
+          livelloFinaleControl.disable();
+          livelloFinaleControl.setValue(null);
 
           PFIcontrol.disable();
           PFIcontrol.setValue('');
@@ -511,8 +547,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           ralAnnuaControl.disable();
           ralAnnuaControl.setValue('');
 
-          superminimoRalControl?.disable();
-          superminimoRalControl?.setValue('');
+          superminimoRalControl.disable();
+          superminimoRalControl.setValue('');
 
           dataFineRapportoControl.disable();
           dataFineRapportoControl.setValue('');
@@ -540,22 +576,27 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           scattiAnzianitaControl &&
           tariffaPartitaIvaControl &&
           retribuzioneMensileLordaControl &&
-          dataFineRapportoControl
+          dataFineRapportoControl &&
+          livelloAttualeControl &&
+          livelloFinaleControl &&
+          retribuzioneNettaGiornalieraControl &&
+          retribuzioneNettaMensileControl
         ) {
           mesiDurataControl.enable();
           mesiDurataControl.setValue('');
+          // mesiDurataControl.setValidators([Validators.required]);
 
           dataFineRapportoControl.enable();
-          dataFineRapportoControl.setValue(null);
+          dataFineRapportoControl.setValue('');
 
-          PFIcontrol.disable();
-          PFIcontrol.setValue('');
-
-          tutorControl.disable();
-          tutorControl.setValue('');
+          // Imposta i validatori
+          // dataFineRapportoControl.setValidators([Validators.required]);
 
           retribuzioneMensileLordaControl.enable();
-          retribuzioneMensileLordaControl.setValue(null);
+          retribuzioneMensileLordaControl.setValue('');
+
+          retribuzioneNettaMensileControl.enable();
+          retribuzioneNettaMensileControl.setValue('');
 
           superminimoMensileControl.enable();
           superminimoMensileControl.setValue('');
@@ -575,14 +616,25 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           scattiAnzianitaControl.enable();
           scattiAnzianitaControl.setValue('');
 
+          PFIcontrol.disable();
+          PFIcontrol.setValue('');
+
+          tutorControl.disable();
+          tutorControl.setValue('');
+
+          livelloAttualeControl.disable();
+          livelloAttualeControl.setValue('');
+
+          livelloFinaleControl.disable();
+          livelloFinaleControl.setValue('');
+
           tariffaPartitaIvaControl.disable();
           tariffaPartitaIvaControl.setValue('');
 
-          livelloAttualeControl?.enable();
-          livelloAttualeControl?.setValue(null);
+          retribuzioneNettaGiornalieraControl.disable();
+          retribuzioneNettaGiornalieraControl.setValue('');
 
-          livelloFinaleControl?.enable();
-          livelloFinaleControl?.setValue(null);
+          // this.AnagraficaDto.updateValueAndValidity();
         }
         break;
       case 4: // Contratto a tempo indeterminato
@@ -598,10 +650,14 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           diariaMensileControl &&
           diariaGiornalieraControl &&
           scattiAnzianitaControl &&
-          retribuzioneMensileLordaControl
+          retribuzioneMensileLordaControl &&
+          retribuzioneNettaGiornalieraControl
         ) {
           mesiDurataControl.disable();
           mesiDurataControl.setValue('');
+
+          retribuzioneNettaGiornalieraControl.disable();
+          retribuzioneNettaGiornalieraControl.setValue('');
 
           dataFineRapportoControl.disable();
           dataFineRapportoControl.setValue(null);
@@ -1264,21 +1320,22 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
   onChangeCCNL(event: any) {
     const isChecked = event.target.value;
-    const livelloControl = this.AnagraficaDto.get('contratto.tipoLivelloContratto.id');
+    const livelloControl = this.AnagraficaDto.get(
+      'contratto.tipoLivelloContratto.id'
+    );
 
     if (isChecked) {
       console.log('Livello contratto numero ' + isChecked);
       livelloControl?.enable();
-      this.ccnLSelezionato=true;
+      this.ccnLSelezionato = true;
       // Qui andrà la chiamata per l'endpoint per la get del livello contratto
     } else {
       console.log('CCNL non selezionato');
       livelloControl?.disable();
       livelloControl?.setValue(null);
-      this.ccnLSelezionato=false;
+      this.ccnLSelezionato = false;
     }
   }
-
 
   onChangeTipoAzienda(selectedId: any) {
     const selectedValue = selectedId.target.value;

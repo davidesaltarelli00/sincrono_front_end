@@ -525,6 +525,7 @@
                             id="contratto.tipoAzienda.id"
                             formControlName="id"
                             type="number"
+                            [ngStyle]="{'border': AnagraficaDto.get('contratto.tipoAzienda.id')?.hasError('required') ? '1px solid red' : '1px solid #f1f1f1'}"
                           >
                             <option value="">--nessuna selezione--</option>
                             <option
@@ -534,6 +535,10 @@
                               {{ tipoAzienda.descrizione }}
                             </option>
                           </select>
+                          <div
+                          *ngIf="AnagraficaDto.get('contratto.tipoAzienda.id')?.hasError('required')" class="text-danger" >
+                          Il campo nome azienda è obbligatorio.
+                        </div>
                         </div>
 
                         <!-- <div *ngIf="AnagraficaDto.get('contratto.tipoAzienda.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoAzienda.id')?.touched" class="text-danger">
@@ -549,6 +554,7 @@
                               id="contratto.tipoContratto.id"
                               formControlName="id"
                               (change)="onTipoContrattoChange($event)"
+                              [ngStyle]="{'border': AnagraficaDto.get('contratto.tipoContratto.id')?.hasError('required') ? '1px solid red' : '1px solid #f1f1f1'}"
                             >
                               <option value="">--nessuna selezione--</option>
                               <option
@@ -558,6 +564,12 @@
                                 {{ tipoContratto.descrizione }}
                               </option>
                             </select>
+                            <div
+                              *ngIf="AnagraficaDto.get('contratto.tipoContratto.id')?.hasError('required')"
+                              class="text-danger"
+                            >
+                              Il campo tipo contratto è obbligatorio.
+                            </div>
                           </div>
                         </div>
 
@@ -588,6 +600,7 @@
                             class="form-select" aria-label="Default select example"
                               id="contratto.tipoCcnl.id"
                               formControlName="id"
+                              [ngStyle]="{'border': AnagraficaDto.get('contratto.tipoCcnl.id')?.hasError('required') ? '1px solid red' : '1px solid #f1f1f1'}"
                             >
                               <option value="">--nessuna selezione--</option>
                               <option
@@ -599,12 +612,9 @@
                                 {{ contrattiNazionale.descrizione }}
                               </option>
                             </select>
-                            <!-- <div
-                            *ngIf="AnagraficaDto.get('contratto.tipoCcnl.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoCcnl.id')?.touched"
-                            class="text-danger"
-                          >
-                            Il campo Tipo Contratto nazionale è obbligatorio.
-                          </div> -->
+                            <div *ngIf="AnagraficaDto.get('contratto.tipoCcnl.id')?.hasError('required')" class="text-danger" >
+                            Il campo CCNL è obbligatorio.
+                          </div>
                           </div>
                         </div>
                       </div>
@@ -679,7 +689,7 @@
                               id="contratto.tipoCanaleReclutamento.id"
                               formControlName="id"
                               type="number"
-                              [ngStyle]="{'border': AnagraficaDto.get('contratto.tipoCanaleReclutamento.id')?.hasError('required') ? '1px solid red' : 'none'}"
+                              [ngStyle]="{'border': AnagraficaDto.get('contratto.tipoCanaleReclutamento.id')?.hasError('required') ? '1px solid red' : '1px solid #f1f1f1'}"
                             >
                               <option value="">--nessuna selezione--</option>
                               <option
@@ -747,7 +757,7 @@
                         </div>
                       </div>
 
-                      <div class="col-md-3" *ngIf="inseritoContrattoIndeterminato">
+                      <div class="col-md-3">
                         <div class="form-group">
                           <label for="dataFineRapporto"
                             >Data Fine Rapporto</label
@@ -757,7 +767,12 @@
                             class="form-control"
                             name="dataInput"
                             formControlName="dataFineRapporto"
+                            [ngStyle]="{'border': AnagraficaDto.get('contratto.dataFineRapporto')?.hasError('required') ? '1px solid red' : '1px solid #f1f1f1'}"
                           />
+                          <div
+                            *ngIf="AnagraficaDto.get('contratto.dataFineRapporto')?.hasError('required')"class="text-danger">
+                            Il campo Data Fine rapporto è obbligatorio.
+                          </div>
                           <!--[disabled]="AnagraficaDto.get('contratto.tipoContratto.id')?.value === '4'"-->
                         </div>
                       </div>
@@ -895,13 +910,13 @@
 
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label for="retribuzioneNettaGiornaliera"
-                                >Retribuzione netta giornaliera</label
+                              <label for="retribuzioneNettaMensile"
+                                >Retribuzione netta mensile</label
                               >
                               <input
                                 type="number"
-                                formControlName="retribuzioneNettaGiornaliera"
-                                placeholder="Inserire retribuzione netta giornaliera"
+                                formControlName="retribuzioneNettaMensile"
+                                placeholder="Inserire retribuzione netta mensile"
                                 min="0"
                                 step="0.01"
                                 class="form-control"
@@ -911,13 +926,13 @@
 
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label for="retribuzioneNettaMensile"
-                                >Retribuzione netta mensile</label
+                              <label for="retribuzioneNettaGiornaliera"
+                                >Retribuzione netta giornaliera</label
                               >
                               <input
                                 type="number"
-                                formControlName="retribuzioneNettaMensile"
-                                placeholder="Inserire retribuzione netta mensile"
+                                formControlName="retribuzioneNettaGiornaliera"
+                                placeholder="Inserire retribuzione netta giornaliera"
                                 min="0"
                                 step="0.01"
                                 class="form-control"
