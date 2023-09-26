@@ -45,10 +45,12 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         id: new FormControl(null),
       }),
     }),
+
     contratto: new FormGroup({
       ralAnnua: new FormControl(null),
       dataAssunzione: new FormControl(null),
       dataFineRapporto: new FormControl(null),
+
       tipoLivelloContratto: new FormGroup({
         id: new FormControl(null),
       }),

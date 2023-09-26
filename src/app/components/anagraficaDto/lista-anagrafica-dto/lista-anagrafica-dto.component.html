@@ -53,15 +53,14 @@
             <div class="col-3">
               <label for="filter-Tipo Azienda">Nome azienda</label>
               <div class="form-group" formGroupName="tipoAzienda">
-                <select class="form-select" aria-label="Default select example" id="tipoAzienda.id" formControlName="id" type="number">
-                  <option value="" selected>--nessuna selezione--</option>
+                <select class="form-select" aria-label="Default select example" id="anagrafica.tipoAzienda.id" formControlName="id">
+                  <option value="" selected>--Nessuna selezione--</option>
                   <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
                     {{ tipoAzienda.descrizione }}
                   </option>
                 </select>
               </div>
             </div>
-
            </div>
           </div>
           <br>
@@ -73,7 +72,7 @@
               <div class="col-md-3">
                 <div formGroupName="tipoLivelloContratto">
                   <label for="filter-LivelloContratto">Tipo livello Contratto</label>
-                  <select class="form-select" aria-label="Default select example" id="contratto.tipoLivelloContratto.livello" formControlName="id">
+                  <select class="form-select" aria-label="Default select example" id="contratto.tipoLivelloContratto.id" formControlName="id">
                     <option value="">--nessuna selezione--</option>
                     <option
                       *ngFor="let livello of livelliContratti"
@@ -100,7 +99,7 @@
 
               <div class="col-md-3">
                 <div formGroupName="tipoCcnl">
-                  <label for="tipoCcnl">CCNL</label>
+                  <label for="tipoCcnl">Tipo Contratto nazionale</label>
                   <select
                   class="form-select" aria-label="Default select example"
                     id="contratto.tipoCcnl.id"
@@ -166,7 +165,7 @@
               <div class="col-md-3">
                 <div class="form-group"  formGroupName="tipoCausaFineRapporto">
                 <label>Motivazione Fine Rapporto: </label>
-                <select class="form-select" aria-label="Default select example" id="contratto.tipoCausaFineRapporto.descrizione" formControlName="id">
+                <select class="form-select" aria-label="Default select example" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
                   <option value="">--nessuna selezione--</option>
                   <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto" [value]="tipoCausaFineRapporto.id">
                     {{ tipoCausaFineRapporto.descrizione }}
