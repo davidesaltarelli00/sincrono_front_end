@@ -53,14 +53,15 @@
             <div class="col-3">
               <label for="filter-Tipo Azienda">Nome azienda</label>
               <div class="form-group" formGroupName="tipoAzienda">
-                  <select class="form-select" aria-label="Default select example" id="anagrafica.tipoAzienda.descrizione" formControlName="descrizione" type="number">
-                    <option value="" selected>--nessuna selezione--</option>
-                    <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.descrizione">
-                      {{ tipoAzienda.descrizione }}
-                    </option>
-                  </select>
+                <select class="form-select" aria-label="Default select example" id="tipoAzienda.id" formControlName="id" type="number">
+                  <option value="" selected>--nessuna selezione--</option>
+                  <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                    {{ tipoAzienda.descrizione }}
+                  </option>
+                </select>
               </div>
             </div>
+
            </div>
           </div>
           <br>
@@ -72,11 +73,11 @@
               <div class="col-md-3">
                 <div formGroupName="tipoLivelloContratto">
                   <label for="filter-LivelloContratto">Tipo livello Contratto</label>
-                  <select class="form-select" aria-label="Default select example" id="contratto.tipoLivelloContratto.livello" formControlName="livello">
+                  <select class="form-select" aria-label="Default select example" id="contratto.tipoLivelloContratto.livello" formControlName="id">
                     <option value="">--nessuna selezione--</option>
                     <option
                       *ngFor="let livello of livelliContratti"
-                      [value]="livello.livello"
+                      [value]="livello.id"
                     >
                       {{ livello.livello }}
                     </option>
@@ -87,9 +88,9 @@
               <div class="col-md-3">
                 <div formGroupName="tipoContratto">
                   <label for="filter-TipoContratto">Tipo Contratto</label>
-                  <select class="form-select" aria-label="Default select example" id="contratto.tipoContratto.descrizione" formControlName="descrizione" (change)="onTipoContrattoChange($event)" >
+                  <select class="form-select" aria-label="Default select example" id="contratto.tipoContratto.id" formControlName="id" (change)="onTipoContrattoChange($event)" >
                     <option value="">--nessuna selezione--</option>
-                    <option *ngFor="let tipoContratto of tipiContratti" [value]="tipoContratto.descrizione">
+                    <option *ngFor="let tipoContratto of tipiContratti" [value]="tipoContratto.id">
                       {{ tipoContratto.descrizione }}
                     </option>
                   </select>
@@ -99,16 +100,16 @@
 
               <div class="col-md-3">
                 <div formGroupName="tipoCcnl">
-                  <label for="tipoCcnl">Tipo Contratto nazionale</label>
+                  <label for="tipoCcnl">CCNL</label>
                   <select
                   class="form-select" aria-label="Default select example"
-                    id="contratto.tipoCcnl.descrizione"
-                    formControlName="descrizione"
+                    id="contratto.tipoCcnl.id"
+                    formControlName="id"
                   >
                     <option value="">--nessuna selezione--</option>
                     <option
                       *ngFor="let contrattiNazionale of tipiCcnl"
-                      [value]="contrattiNazionale.descrizione"
+                      [value]="contrattiNazionale.id"
                     >
                       {{ contrattiNazionale.descrizione }}
                     </option>
@@ -118,9 +119,9 @@
               </div>
               <div class="col-md-3" formGroupName="tipoAzienda">
                 <label for="tipoAzienda">Nome Azienda</label>
-                <select class="form-select" aria-label="Default select example" id="contratto.tipoAzienda.descrizione" formControlName="descrizione" type="number">
+                <select class="form-select" aria-label="Default select example" id="contratto.tipoAzienda.id" formControlName="id" type="number">
                   <option value="">--nessuna selezione--</option>
-                  <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.descrizione">
+                  <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
                     {{ tipoAzienda.descrizione }}
                   </option>
                 </select>
@@ -152,9 +153,9 @@
               <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
                 <div class="form-group">
                   <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
-                  <select class="form-select" aria-label="Default select example" id="contratto.tipoCanaleReclutamento.descrizione" formControlName="descrizione" type="number">
+                  <select class="form-select" aria-label="Default select example" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
                     <option value="">--nessuna selezione--</option>
-                    <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.descrizione">
+                    <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.id">
                       {{ tipoCanaleReclutamento.descrizione }}
                     </option>
                   </select>

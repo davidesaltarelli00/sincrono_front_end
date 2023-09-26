@@ -42,7 +42,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       attivo: new FormControl(true),
       attesaLavori: new FormControl(null),
       tipoAzienda: new FormGroup({
-        descrizione: new FormControl(null),
+        id: new FormControl(null),
       }),
     }),
     contratto: new FormGroup({
@@ -50,19 +50,19 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       dataAssunzione: new FormControl(null),
       dataFineRapporto: new FormControl(null),
       tipoLivelloContratto: new FormGroup({
-        ccnl: new FormControl(null),
+        id: new FormControl(null),
       }),
       tipoCcnl: new FormGroup({
-        descrizione: new FormControl(null),
+        id: new FormControl(null),
       }),
       tipoContratto: new FormGroup({
-        descrizione: new FormControl(null),
+        id: new FormControl(null),
       }),
       tipoAzienda: new FormGroup({
-        descrizione: new FormControl(null),
+        id: new FormControl(null),
       }),
       tipoCanaleReclutamento: new FormGroup({
-        descrizione: new FormControl(null),
+        id: new FormControl(null),
       }),
       tipoCausaFineRapporto: new FormGroup({
         id: new FormControl(null),

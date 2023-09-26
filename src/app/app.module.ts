@@ -44,6 +44,7 @@ import { UtenteComponent } from './components/utente/utente.component';
 import { GiornoComponent } from './components/giorno/giorno.component';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirective';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirec
     FormRecuperoPasswordComponent,
     AlertLogoutComponent,
     UtenteComponent,
-    GiornoComponent
+    GiornoComponent,
+    NotFoundComponent,
   ],
   imports: [
     MatNativeDateModule,
@@ -83,11 +85,8 @@ import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirec
     ReactiveFormsModule,
     FormsModule,
     MaterialModule,
-   
-
-
   ],
-  providers: [DatePipe,CurrencyPipe],
+  providers: [DatePipe, CurrencyPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {

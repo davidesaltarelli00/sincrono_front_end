@@ -23,6 +23,7 @@ import { FormRecuperoPasswordComponent } from './components/form-recupero-passwo
 import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
 import { UtenteComponent } from './components/utente/utente.component';
 import { GiornoComponent } from './components/giorno/giorno.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -162,6 +163,8 @@ const routes: Routes = [
     component: GiornoComponent,
     canActivate: [AuthGuard],
   },
+  { path: 'not-found', component: NotFoundComponent },
+  { path: '**', redirectTo: '/not-found' }
 ];
 
 @NgModule({

@@ -457,50 +457,74 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           livelloFinaleControl &&
           retribuzioneNettaGiornalieraControl
         ) {
-          PFIcontrol.enable();
-          PFIcontrol.setValue('');
+          mesiDurataControl.enable();
+          mesiDurataControl.setValidators([Validators.required]);
+          mesiDurataControl.setValue(6);
+          mesiDurataControl.updateValueAndValidity();
+
+          dataFineRapportoControl.enable();
+          dataFineRapportoControl.setValidators([Validators.required]);
+          dataFineRapportoControl.setValue(null);
+          dataFineRapportoControl.updateValueAndValidity();
+
           tutorControl.enable();
+          tutorControl.setValidators([Validators.required]);
           tutorControl.setValue('');
+          tutorControl.updateValueAndValidity();
+
+          PFIcontrol.enable();
+          PFIcontrol.setValidators([Validators.required]);
+          PFIcontrol.setValue('');
+          PFIcontrol.updateValueAndValidity();
+
           retribuzioneNettaMensileControl.enable();
           retribuzioneNettaMensileControl.setValue(800);
-          mesiDurataControl.setValue(6);
-          mesiDurataControl.enable();
-          this.calculateDataFineRapporto();
-          dataFineRapportoControl.enable();
-          dataFineRapportoControl.setValue(null);
+          retribuzioneNettaMensileControl.updateValueAndValidity();
 
-          retribuzioneMensileLordaControl.disable();
-          retribuzioneMensileLordaControl.setValue('');
-
-          livelloAttualeControl.disable();
-          livelloAttualeControl.setValue('');
-
-          livelloFinaleControl.disable();
-          livelloFinaleControl.setValue('');
-
+          // Disabilita gli altri controlli
           superminimoMensileControl.disable();
           superminimoMensileControl.setValue('');
+          superminimoMensileControl.updateValueAndValidity();
 
           ralAnnuaControl.disable();
           ralAnnuaControl.setValue('');
+          ralAnnuaControl.updateValueAndValidity();
 
           superminimoRalControl.disable();
           superminimoRalControl.setValue('');
+          superminimoRalControl.updateValueAndValidity();
 
           diariaMensileControl.disable();
           diariaMensileControl.setValue('');
+          diariaMensileControl.updateValueAndValidity();
 
           diariaGiornalieraControl.disable();
           diariaGiornalieraControl.setValue('');
+          diariaGiornalieraControl.updateValueAndValidity();
 
           scattiAnzianitaControl.disable();
           scattiAnzianitaControl.setValue('');
+          scattiAnzianitaControl.updateValueAndValidity();
 
           tariffaPartitaIvaControl.disable();
           tariffaPartitaIvaControl.setValue('');
+          tariffaPartitaIvaControl.updateValueAndValidity();
+
+          livelloAttualeControl.disable();
+          livelloAttualeControl.setValue('');
+          livelloAttualeControl.updateValueAndValidity();
+
+          livelloFinaleControl.disable();
+          livelloFinaleControl.setValue('');
+          livelloFinaleControl.updateValueAndValidity();
+
+          retribuzioneMensileLordaControl.disable();
+          retribuzioneMensileLordaControl.setValue('');
+          retribuzioneMensileLordaControl.updateValueAndValidity();
 
           retribuzioneNettaGiornalieraControl.disable();
           retribuzioneNettaGiornalieraControl.setValue('');
+          retribuzioneNettaGiornalieraControl.updateValueAndValidity();
         }
         break;
 
@@ -518,16 +542,28 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           mesiDurataControl &&
           livelloAttualeControl &&
           livelloFinaleControl &&
-          superminimoRalControl
+          superminimoRalControl &&
+          scattiAnzianitaControl &&
+          retribuzioneNettaGiornalieraControl
         ) {
           tariffaPartitaIvaControl.enable();
+          tariffaPartitaIvaControl.setValidators([Validators.required]);
           tariffaPartitaIvaControl.setValue('');
+          tariffaPartitaIvaControl.updateValueAndValidity();
 
           retribuzioneMensileLordaControl.enable();
           retribuzioneMensileLordaControl.setValue(null);
 
           retribuzioneNettaGiornalieraControl.enable();
+          retribuzioneNettaGiornalieraControl.setValidators([Validators.required]);
           retribuzioneNettaGiornalieraControl.setValue('');
+          retribuzioneNettaGiornalieraControl.updateValueAndValidity();
+
+          retribuzioneMensileLordaControl.setValue('');
+          retribuzioneMensileLordaControl.enable();
+
+          retribuzioneNettaMensileControl.setValue('');
+          retribuzioneNettaMensileControl.enable();
 
           livelloAttualeControl.disable();
           livelloAttualeControl.setValue(null);
@@ -552,14 +588,14 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
           dataFineRapportoControl.disable();
           dataFineRapportoControl.setValue('');
+          dataFineRapportoControl.clearValidators();
+          dataFineRapportoControl.updateValueAndValidity();
 
           mesiDurataControl.disable();
           mesiDurataControl.setValue('');
+          mesiDurataControl.clearValidators();
+          mesiDurataControl.updateValueAndValidity();
 
-          retribuzioneMensileLordaControl.setValue('');
-          retribuzioneMensileLordaControl.enable();
-          retribuzioneNettaMensileControl.setValue('');
-          retribuzioneNettaMensileControl.enable();
         }
         break;
 
@@ -898,17 +934,26 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   onPFIChange(event: any) {
     const target = event.target as HTMLInputElement;
     const tutorControl = this.AnagraficaDto.get('contratto.tutor');
+    const PFIControl = this.AnagraficaDto.get('contratto.pfi');
     if (target) {
       const isChecked = target.checked;
       if (isChecked) {
-        console.log('Checkbox selezionata, il valore è true');
+        PFIControl?.setValue(true);
+        console.log('Checkbox selezionata, il valore è ' + PFIControl?.value);
         tutorControl?.enable();
+        tutorControl?.setValidators([Validators.required]);
+        tutorControl?.updateValueAndValidity();
       } else {
-        console.log('Checkbox deselezionata, il valore è false');
+        PFIControl?.setValue(false);
+        console.log('Checkbox deselezionata, il valore è ' + PFIControl?.value);
         tutorControl?.disable();
+        tutorControl?.clearValidators();
+        tutorControl?.updateValueAndValidity();
       }
     }
   }
+
+
   onCorsoSicurezzaChange(event: any) {
     const dataCorsoSicurezzaControl = this.AnagraficaDto.get(
       'contratto.dataCorsoSicurezza'
