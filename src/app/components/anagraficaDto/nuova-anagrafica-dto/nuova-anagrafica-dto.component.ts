@@ -65,6 +65,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   descrizioneContrattoNazionale: any;
   descrizioneCCNL: any;
   numeroMensilitaCCNL: any;
+  minimiRet23: any;
+  ralAnnua: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -227,25 +229,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       livelloControl.disable();
     }
 
-    // const tipoAziendaAnagrafica = this.AnagraficaDto.get(
-    //   'anagrafica.tipoAzienda.id'
-    // );
-    // if (tipoAziendaAnagrafica) {
-    //   tipoAziendaAnagrafica.disable();
-    // }
-
     const nomeControl = this.AnagraficaDto.get('anagrafica.nome');
     const cognomeControl = this.AnagraficaDto.get('anagrafica.cognome');
-
-    // if (nomeControl && cognomeControl) {
-    //   nomeControl.valueChanges.subscribe(() => {
-    //     this.impostaMailAziendale();
-    //   });
-
-    //   cognomeControl.valueChanges.subscribe(() => {
-    //     this.impostaMailAziendale();
-    //   });
-    // }
 
     const distaccoAziendaControl = this.AnagraficaDto.get(
       'commesse.distaccoAzienda'
@@ -268,11 +253,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     if (tutorControl) {
       tutorControl.disable();
     }
-
-    // const ralPartTimeControl = this.AnagraficaDto.get('contratto.ralPartTime');
-    // if (ralPartTimeControl) {
-    //   ralPartTimeControl.disable();
-    // }
 
     const tipoAziendaControlAnagrafica = this.AnagraficaDto.get(
       'anagrafica.tipoAzienda.id'
@@ -316,17 +296,39 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         this.calculateDataFineRapporto();
       }
     );
-    //calcolo data fine prova dinamico: somma 3 mesi alla data d assunzione
-    // this.AnagraficaDto.get('contratto.dataAssunzione')?.valueChanges.subscribe(
-    //   () => {
-    //     this.calculateDataFineProva();
-    //   }
-    // );
-    // this.AnagraficaDto.get('contratto.dataFineProva')?.valueChanges.subscribe(
-    //   () => {
-    //     this.calculateDataFineProva();
-    //   }
-    // );
+
+    this.AnagraficaDto.get(
+      'contratto.retribuzioneMensileLorda'
+    )?.valueChanges.subscribe(() => {
+      this.calcoloRAL();
+    });
+    this.AnagraficaDto.get(
+      'contratto.percentualePartTime'
+    )?.valueChanges.subscribe(() => {
+      this.calcoloRAL();
+    });
+    this.calcoloRAL();
+  }
+
+  calcoloRAL() {
+    const retribuzioneMensileLorda = this.AnagraficaDto.get(
+      'contratto.retribuzioneMensileLorda'
+    )?.value;
+    const percentualePartTime = this.AnagraficaDto.get(
+      'contratto.percentualePartTime'
+    )?.value;
+    const numeroMensilita = this.numeroMensilitaCCNL;
+    // Calcolo della RAL annua
+    if (retribuzioneMensileLorda && percentualePartTime) {
+      // Calcolo della RAL mensile
+      const ralMensile = retribuzioneMensileLorda * percentualePartTime;
+
+      // Calcolo della RAL annua
+      this.ralAnnua = ralMensile * numeroMensilita;
+
+      // Stampare il risultato sulla console
+      console.log('RAL annua calcolata:', this.ralAnnua);
+    }
   }
 
   onChangeConiugato(event: Event) {
@@ -1434,13 +1436,21 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   onChangeLivelloContratto(event: any) {
     const target = event.target as HTMLInputElement;
     if (target) {
-      const isChecked = target.value;
+      const selectedValue = parseInt(target.value, 10); // Converte il valore selezionato in un numero
+      if (!isNaN(selectedValue)) {
+        const selectedLivello = this.livelliContratti.find(
+          (livello: any) => livello.id === selectedValue
+        );
 
-      if (isChecked) {
-        console.log('Livello contratto numero ' + isChecked);
-        //qui andrá l endpoint/calcolo per il calcolo del livello attuale
+        if (selectedLivello) {
+          console.log('Livello contratto selezionato: ', selectedLivello);
+          this.minimiRet23 = selectedLivello.minimiRet23;
+          console.log('Minimi retributivi 2023:' + this.minimiRet23);
+        } else {
+          console.log('Livello contratto non trovato nella lista');
+        }
       } else {
-        console.log('Livello contratto non selezionato ');
+        console.log('Valore non valido o livello contratto non selezionato');
       }
     }
   }
