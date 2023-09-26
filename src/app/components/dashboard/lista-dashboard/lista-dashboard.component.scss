@@ -13,6 +13,10 @@ mat-expansion-panel{
 
 }
 
+body{
+  background-color: aliceblue;
+}
+
 footer {
   position: fixed;
   left: 0;
@@ -66,4 +70,12 @@ footer {
     background-color: #ccc;
     color: #333;
     border: 1px solid #333;
+  }
+
+  .container-fluid {
+    background-color: aliceblue;
+  }
+
+  tr:hover{
+    background-color: aliceblue;
   }

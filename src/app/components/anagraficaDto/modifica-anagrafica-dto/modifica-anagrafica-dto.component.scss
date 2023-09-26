@@ -1,3 +1,16 @@
+body{
+  background-color: aliceblue;
+
+}
+
+.container-fluid{
+  background-color: aliceblue;
+}
+
+mat-stepper{
+  background-color: aliceblue;
+}
+
 .invalid-field {
     border-color: red;
 
@@ -5,6 +18,10 @@
 
 select{
   width: 50%;
+}
+
+mat-card{
+  margin: 20px;
 }
 
 /* Stili CSS per simulare una tabella */

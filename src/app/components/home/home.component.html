@@ -1,4 +1,66 @@
-<!-- <html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* Aggiungi un po' di stile per la transizione */
+    body {
+      transition: background-color 0.5s ease-in-out;
+      background-color: aliceblue;
+    }
+
+    /* Aggiungi un'animazione al logo */
+    .logo-img {
+      animation: spin 2s linear infinite;
+      padding: 30px;
+    }
+
+    /* Definisci l'animazione spin */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <header>
+        <div class="row">
+          <div class="col-12" style="margin: auto; text-align: center">
+            <!-- Componente Angular Material - Logo -->
+            <mat-card>
+              <mat-card-content>
+                <img
+                  src="../../../../assets/images/logo.jpeg"
+                  alt="Logo"
+                  style="max-width: 300px"
+                  class="logo-img"
+                />
+              </mat-card-content>
+            </mat-card>
+            <h1>Benvenuto su Sincrono CRM</h1> <!-- Aggiungi una descrizione dell'applicazione -->
+          </div>
+        </div>
+      </header>
+    </div>
+  </div>
+
+  <main>
+    <section>
+      <h2>Ciao {{userloggedName}} {{userLoggedSurname}}.</h2>
+      <p>Sincrono CRM è un potente strumento per gestire le tue relazioni con i clienti in modo efficiente. Con Sincrono CRM, puoi facilmente monitorare le interazioni con i clienti, gestire i contatti e aumentare la produttività del tuo team. </p>
+    </section>
+  </main>
+</div>
+</body>
+</html>
+
+
+    <!-- <html>
   <head>
     <title>Home</title>
   </head>
@@ -139,35 +201,3 @@
 
   </body>
 </html> -->
-
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-12">
-      <header>
-        <div class="row">
-          <div class="col-12" style="margin: auto; text-align: center">
-            <!-- Componente Angular Material - Logo -->
-            <mat-card>
-              <mat-card-content>
-                <img
-                  src="../../../../assets/images/logo.jpeg"
-                  alt="Logo"
-                  style="max-width: 300px"
-                />
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-      </header>
-    </div>
-  </div>
-
-  <main>
-    <section>
-      <h2>Sincrono CRM</h2>
-      <p>Benvenuto {{userloggedName}} {{userLoggedSurname}}.</p>
-    </section>
-  </main>
-
-
-</div>
