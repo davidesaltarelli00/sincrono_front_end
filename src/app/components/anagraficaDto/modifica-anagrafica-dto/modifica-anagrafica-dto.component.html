@@ -281,6 +281,17 @@
                     <div class="row">
                       <legend>Tipologiche</legend>
                       <div class="col-3">
+                        <div formGroupName="tipoAzienda">
+                          <label for="tipoAzienda">Tipo Azienda</label>
+                          <select  class="form-select" aria-label="Default select example" id="contratto.tipoAzienda.id" formControlName="id" type="number">
+                            <option value="">--nessuna selezione--</option>
+                            <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                              {{ tipoAzienda.descrizione }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-3">
                         <div formGroupName="tipoContratto">
                           <label for="tipoContratto">Tipo Contratto</label>
                           <select (change)="onTipoContrattoChange($event)"
@@ -314,39 +325,6 @@
                       </div>
 
                       <div class="col-3">
-                        <div formGroupName="tipoLivelloContratto">
-                          <label for="tipoLivelloContratto">Livello Contratto</label>
-                          <select
-                          class="form-select" aria-label="Default select example"
-                            id="contratto.tipoLivelloContratto.id"
-                            formControlName="id"
-                            type="number"
-                          >
-                            <option value="">--nessuna selezione--</option>
-                            <option
-                              *ngFor="let tipoLivelloContratto of livelliContratti"
-                              [value]="tipoLivelloContratto.id"
-                            >
-                              {{ tipoLivelloContratto.livello }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-3">
-                        <div formGroupName="tipoAzienda">
-                          <label for="tipoAzienda">Tipo Azienda</label>
-                          <select  class="form-select" aria-label="Default select example" id="contratto.tipoAzienda.id" formControlName="id" type="number">
-                            <option value="">--nessuna selezione--</option>
-                            <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
-                              {{ tipoAzienda.descrizione }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <div class="col-4">
                         <div formGroupName="tipoCcnl">
                           <label for="tipoCcnl">CCNL</label>
                           <select (change)="onChangeCCNL($event)"
@@ -361,6 +339,28 @@
                               [value]="tipoCcnl.id"
                             >
                               {{ tipoCcnl.descrizione }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-3">
+                        <div formGroupName="tipoLivelloContratto">
+                          <label for="tipoLivelloContratto">Livello Contratto</label>
+                          <select (change)="onChangeLivelloContratto($event)" (input)="calcolaMensileTot()"
+                          class="form-select" aria-label="Default select example"
+                            id="contratto.tipoLivelloContratto.id"
+                            formControlName="id"
+                            type="number"
+                          >
+                            <option value="">--nessuna selezione--</option>
+                            <option
+                              *ngFor="let tipoLivelloContratto of livelliContratti"
+                              [value]="tipoLivelloContratto.id"
+                            >
+                              {{ tipoLivelloContratto.livello }}
                             </option>
                           </select>
                         </div>
@@ -563,6 +563,7 @@
                                  placeholder="Inserire retribuzione mensile lorda"
                                  (input)="calcolaMensileTot()"
                                  id="retribuzioneMensileLorda"
+                                 value="{{minimiRet23}}"
                           />
                         </div>
                       </div>
@@ -762,25 +763,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-3">
-                        <label>Retribuzione netta giornaliera:</label>
-                        <div class="form-group">
-                          <div class="input-group">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text custom-prefix">€</span>
-                            </div>
-                            <input
-                              type="number"
-                              class="form-control"
-                              value="{{ data?.contratto?.retribuzioneNettaGiornaliera }}"
-                              formControlName="retribuzioneNettaGiornaliera"
-                              step="0.01"
-                              min="0"
-                              placeholder="Inserire retribuzione netta giornaliera"
-                            />
-                          </div>
-                        </div>
-                      </div>
+
                     </div>
                     <br>
                     <div class="row">
@@ -920,9 +903,9 @@
 
                     <div class="row">
                      <legend>Dati economici partita iva</legend>
+                      <div class="col-md-3">
                       <div class="form-group">
                         <label>Tariffa Partita IVA: </label>
-                        <div class="col-md-3">
                           <input
                             type="number"
                             class="form-control"
@@ -931,6 +914,27 @@
                           />
                         </div>
                      </div>
+
+                     <div class="col-md-3">
+                      <label>Retribuzione netta giornaliera:</label>
+                      <div class="form-group">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text custom-prefix">€</span>
+                          </div>
+                          <input
+                            type="number"
+                            class="form-control"
+                            value="{{ data?.contratto?.retribuzioneNettaGiornaliera }}"
+                            formControlName="retribuzioneNettaGiornaliera"
+                            step="0.01"
+                            min="0"
+                            placeholder="Inserire retribuzione netta giornaliera"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
                     </div>
                     <br>
                     <div class="row">
