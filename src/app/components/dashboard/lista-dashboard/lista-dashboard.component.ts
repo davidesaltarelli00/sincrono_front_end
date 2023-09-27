@@ -52,7 +52,6 @@ export class ListaDashboardComponent {
   pageData: any[] = [];
   messaggio: any;
   commesse!: FormArray;
-
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
       nome: new FormControl(null),
@@ -134,7 +133,7 @@ export class ListaDashboardComponent {
     //     this.data = resp.list;
     //   });
 
-
+    
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
     const commessaFormGroup = this.creaFormCommessa();
     this.commesse.push(commessaFormGroup);

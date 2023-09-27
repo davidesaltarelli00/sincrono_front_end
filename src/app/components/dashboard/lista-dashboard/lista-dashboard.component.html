@@ -59,7 +59,7 @@
                     <td>{{ element.contratto.dataAssunzione | date:'dd/MM/yyyy'}}</td>
                     <td>{{ element.contratto.dataFineRapporto | date:'dd/MM/yyyy' }}</td>
                     <td>{{ element.contratto.mesiDurata }}</td>
-                    <td>{{ element.contratto.livelloAttuale }}</td>
+                    <td>{{ element.contratto.tipoLivelloContratto.livello }}</td>
                     <td>{{ element.contratto.livelloFinale }}</td>
                     <td>{{ element.contratto.retribuzioneMensileLorda }}</td>
                     <td>{{ element.contratto.ticket ? 'Sì' : 'No' }}</td>
@@ -203,7 +203,7 @@
                     <td>{{ element.contratto.dataAssunzione | date:'dd/MM/yyyy' }}</td>
                     <td>{{ element.contratto.dataFineRapporto | date:'dd/MM/yyyy' }}</td>
                     <td>{{ element.contratto.mesiDurata }}</td>
-                    <td>{{ element.contratto.livelloAttuale }}</td>
+                    <td>{{ element.contratto.tipoLivelloContratto.livello }}</td>
                     <td>{{ element.contratto.livelloFinale }}</td>
                     <td>{{ element.contratto.retribuzioneMensileLorda }}</td>
                     <td>{{ element.contratto.ticket ? 'Sì' : 'No' }}</td>
