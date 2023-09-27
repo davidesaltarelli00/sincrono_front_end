@@ -250,12 +250,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     //   livelloFinaleControl.disable();
     // }
 
-    const tipoAziendaAnagrafica = this.anagraficaDto.get(
-      'anagrafica.tipoAzienda.id'
-    );
-    if (tipoAziendaAnagrafica) {
-      tipoAziendaAnagrafica.disable();
-    }
+    // const tipoAziendaAnagrafica = this.anagraficaDto.get(
+    //   'anagrafica.tipoAzienda.id'
+    // );
+    // if (tipoAziendaAnagrafica) {
+    //   tipoAziendaAnagrafica.disable();
+    // }
     const ralPartTimeControl = this.anagraficaDto.get('contratto.ralPartTime');
     if (ralPartTimeControl) {
       ralPartTimeControl.disable();
@@ -289,6 +289,27 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     tipoAziendaControlContratto?.valueChanges.subscribe((value) => {
       tipoAziendaControlAnagrafica?.setValue(value, { emitEvent: false });
     });
+  }
+
+
+  onChangeTipoAzienda(event:any){
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const selectedValue = parseInt(target.value, 10); // Converte il valore selezionato in un numero
+      if (!isNaN(selectedValue)) {
+        const selectedLivello = this.tipiAziende.find(
+          (tipoAzienda: any) => tipoAzienda.id === selectedValue
+        );
+
+        if (selectedLivello) {
+          console.log('tipo contratto selezionato: ', selectedLivello);
+        } else {
+          console.log('tipo contratto non trovato nella lista');
+        }
+      } else {
+        console.log('Valore non valido o tipo contratto non selezionato');
+      }
+    }
   }
 
   caricaDati(): void {

@@ -415,25 +415,55 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         if (selectedcontract) {
           console.log('Contratto selezionato: ', selectedcontract);
 
-          const dataFineRapportoControl = this.AnagraficaDto.get('contratto.dataFineRapporto');
-          const mesiDurataControl = this.AnagraficaDto.get('contratto.mesiDurata');
+          const dataFineRapportoControl = this.AnagraficaDto.get(
+            'contratto.dataFineRapporto'
+          );
+          const mesiDurataControl = this.AnagraficaDto.get(
+            'contratto.mesiDurata'
+          );
           const tutorControl = this.AnagraficaDto.get('contratto.tutor');
           const PFIcontrol = this.AnagraficaDto.get('contratto.pfi');
-          const superminimoMensileControl = this.AnagraficaDto.get('contratto.superminimoMensile');
+          const superminimoMensileControl = this.AnagraficaDto.get(
+            'contratto.superminimoMensile'
+          );
           const ralAnnuaControl = this.AnagraficaDto.get('contratto.ralAnnua');
-          const superminimoRalControl = this.AnagraficaDto.get( 'contratto.superminimoRal');
-          const diariaMensileControl = this.AnagraficaDto.get('contratto.diariaMensile');
-          const diariaGiornalieraControl = this.AnagraficaDto.get( 'contratto.diariaGiornaliera');
-          const scattiAnzianitaControl = this.AnagraficaDto.get('contratto.scattiAnzianita');
-          const retribuzioneMensileLordaControl = this.AnagraficaDto.get('contratto.retribuzioneMensileLorda');
-          const retribuzioneNettaMensileControl = this.AnagraficaDto.get('contratto.retribuzioneNettaMensile');
-          const tariffaPartitaIvaControl = this.AnagraficaDto.get('contratto.tariffaPartitaIva');
-          const livelloAttualeControl = this.AnagraficaDto.get('contratto.livelloAttuale');
-          const livelloFinaleControl = this.AnagraficaDto.get('contratto.livelloFinale');
-          const retribuzioneNettaGiornalieraControl = this.AnagraficaDto.get('contratto.retribuzioneNettaGiornaliera');
-          const dataFineProvaControl = this.AnagraficaDto.get('contratto.dataFineProva');
+          const superminimoRalControl = this.AnagraficaDto.get(
+            'contratto.superminimoRal'
+          );
+          const diariaMensileControl = this.AnagraficaDto.get(
+            'contratto.diariaMensile'
+          );
+          const diariaGiornalieraControl = this.AnagraficaDto.get(
+            'contratto.diariaGiornaliera'
+          );
+          const scattiAnzianitaControl = this.AnagraficaDto.get(
+            'contratto.scattiAnzianita'
+          );
+          const retribuzioneMensileLordaControl = this.AnagraficaDto.get(
+            'contratto.retribuzioneMensileLorda'
+          );
+          const retribuzioneNettaMensileControl = this.AnagraficaDto.get(
+            'contratto.retribuzioneNettaMensile'
+          );
+          const tariffaPartitaIvaControl = this.AnagraficaDto.get(
+            'contratto.tariffaPartitaIva'
+          );
+          const livelloAttualeControl = this.AnagraficaDto.get(
+            'contratto.livelloAttuale'
+          );
+          const livelloFinaleControl = this.AnagraficaDto.get(
+            'contratto.livelloFinale'
+          );
+          const retribuzioneNettaGiornalieraControl = this.AnagraficaDto.get(
+            'contratto.retribuzioneNettaGiornaliera'
+          );
+          const dataFineProvaControl = this.AnagraficaDto.get(
+            'contratto.dataFineProva'
+          );
           const ticketControl = this.AnagraficaDto.get('contratto.ticket');
-          const valoreTicketControl = this.AnagraficaDto.get('contratto.valoreTicket');
+          const valoreTicketControl = this.AnagraficaDto.get(
+            'contratto.valoreTicket'
+          );
           switch (selectedValue) {
             case 1: // Contratto STAGE
               if (
@@ -830,9 +860,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
             default:
               break;
           }
-
-
-
         } else {
           console.log('Livello contratto non trovato nella lista');
         }
@@ -840,9 +867,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         console.log('Valore non valido o livello contratto non selezionato');
       }
     }
-
-
-
   }
 
   calculateDataFineProva() {
@@ -968,10 +992,14 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
+      const attesaLavoriControl=this.AnagraficaDto.get('anagrafica.attesaLavori');
       if (isChecked) {
         console.log('Checkbox selezionata, il valore è true');
+        attesaLavoriControl?.setValue(true);
       } else {
         console.log('Checkbox deselezionata, il valore è false');
+        attesaLavoriControl?.setValue(false);
+
       }
     }
   }
