@@ -677,7 +677,7 @@
                               >Canale reclutamento*</label
                             >
                           <div class="form-group">
-                            <select
+                            <select (change)="onChamgeCanaleReclutamento($event)"
                             class="form-select" aria-label="Default select example"
                               id="contratto.tipoCanaleReclutamento.id"
                               formControlName="id"
