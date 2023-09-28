@@ -3,26 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
-    /* Aggiungi un po' di stile per la transizione */
-    body {
-      transition: background-color 0.5s ease-in-out;
-      background-color: aliceblue;
-    }
-
-    /* Aggiungi un'animazione al logo */
-    .logo-img {
-      animation: spin 2s linear infinite;
-      padding: 30px;
-    }
-
-    /* Definisci l'animazione spin */
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
+  <title>Home</title>
 </head>
 <body>
 <div class="container-fluid">
@@ -34,12 +15,13 @@
             <!-- Componente Angular Material - Logo -->
             <mat-card>
               <mat-card-content>
-                <img
-                  src="../../../../assets/images/logo.jpeg"
-                  alt="Logo"
-                  style="max-width: 300px"
-                  class="logo-img"
-                />
+                <div class="banner">
+                  <img src="../../../../assets/images/logo.jpeg" alt="Logo Sincrono"> &nbsp;
+                  <img src="../../../../assets/images/sincrono_formazione.png" alt="Logo Sincrono formazione"> &nbsp;
+                  <img src="../../../../assets/images/reymond_consulting.jpeg" alt="Logo Reymond consulting"> &nbsp;
+                  <img src="../../../../assets/images/delta_SRL.jpeg" alt="Logo Delta SRL"> &nbsp;
+              </div>
+
               </mat-card-content>
             </mat-card>
             <h1>Sincrono CRM</h1> <!-- Aggiungi una descrizione dell'applicazione -->
