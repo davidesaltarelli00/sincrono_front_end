@@ -76,6 +76,12 @@ export class LoginComponent implements OnInit {
             },
           });
         } else {
+          // const dialogRef = this.dialog.open(AlertDialogComponent, {
+          //   data: {
+          //     title: 'Login effettuato correttamente:',
+          //     message: (response as any).esito.target,
+          //   },
+          // });
           this.router.navigate(['/home']);
 
         // Formatta il token

@@ -23,6 +23,7 @@ export class DettaglioAnagraficaDtoComponent {
   elencoCommesse = [];
   commesseGroupedByIndex: any[] = [];
   mobile=false;
+  dataOdierna=new Date()
 
 
   filterAnagraficaDto: FormGroup = new FormGroup({
@@ -84,9 +85,12 @@ export class DettaglioAnagraficaDtoComponent {
     ) {
       this.mobile = true;
     }
+
+    console.log("DATA DI OGGI: "+this.dataOdierna)
   }
 
   ngOnInit(): void {
+
     console.log(this.id);
     this.anagraficaDtoService
       .detailAnagraficaDto(this.id, localStorage.getItem('token'))

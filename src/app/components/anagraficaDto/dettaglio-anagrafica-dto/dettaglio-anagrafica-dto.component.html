@@ -953,7 +953,7 @@
             </div>
             <div class="row" *ngIf="data?.commesse.length!=0">
               <div class="col-12">
-                <table id="commessaTable" class="table table-striped">
+                <table id="commessaTable" class="table table-striped" style="font-size: 15px;">
                   <thead class="thead-dark">
                     <tr>
                       <th scope="col">Cliente</th>
@@ -963,10 +963,8 @@
                       <th scope="col">Data Inizio</th>
                       <th scope="col">Data Fine</th>
                       <th scope="col">Tariffa Giornaliera</th>
-                      <th scope="col">Azienda di Fatturazione Interna</th>
+                      <th scope="col">Azienda fatturazione interna</th>
                       <th scope="col">Archivia</th>
-                      <!-- <th scope="col">Modifica</th> -->
-                      <!-- <th scope="col">Elimina</th> -->
                     </tr>
                   </thead>
                   <tbody>
@@ -976,7 +974,7 @@
                       <td>{{ commessa.titoloPosizione }}</td>
                       <td>{{ commessa.distacco === true ? 'Si' : (commessa.distacco === false ? 'No' : 'Dato non inserito') | titlecase }}</td>
                       <td>{{ commessa.dataInizio | date: 'dd/MM/yyyy' }}</td>
-                      <td>{{ commessa.dataFine | date: 'dd/MM/yyyy' }}</td>
+                      <td  [ngStyle]="{'color': commessa.dataFine <= dataOdierna ? 'red' : 'green'}">{{ commessa.dataFine | date: 'dd/MM/yyyy' }}</td>
                       <td>{{ commessa.tariffaGiornaliera }} <i class="fa-solid fa-euro-sign"></i></td>
                       <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
                       <td>

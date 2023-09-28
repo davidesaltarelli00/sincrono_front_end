@@ -12,6 +12,8 @@ import { AnagraficaDtoService } from './../anagraficaDto-service';
 import { CommessaDuplicata } from './commessaDuplicata';
 import { Commessa } from '../nuova-anagrafica-dto/commessa';
 import { DatePipe } from '@angular/common';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-modifica-anagrafica-dto',
@@ -64,7 +66,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private renderer: Renderer2,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    public dialog: MatDialog
   ) {
     console.log(
       '+++++++++++++++++++++++++++ID ANAGRAFICA CORRENTE: ' + this.id
@@ -1339,12 +1342,21 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .update(payload, localStorage.getItem('token'))
       .subscribe(
         (response) => {
-          if ((response as any).esito.code != 200) {
-            alert('Modifica non riuscita:\n' + (response as any).esito.target);
-            this.errore = true;
-            this.messaggio = (response as any).esito.target;
+            if ((response as any).esito.code !== 200) {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  title: 'Modifica non riuscita:',
+                  message: (response as any).esito.target,
+                },
+              });
           } else {
             console.log('Payload inviato con successo al server:', response);
+            // const dialogRef = this.dialog.open(AlertDialogComponent, {
+            //   data: {
+            //     title: 'Modifica effettuata correttamente:',
+            //     message: (response as any).esito.target,
+            //   },
+            // });
             this.router.navigate(['/dettaglio-anagrafica/' + this.id]);
           }
         },

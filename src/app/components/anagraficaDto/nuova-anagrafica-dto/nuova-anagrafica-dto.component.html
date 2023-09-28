@@ -578,7 +578,7 @@
                           <div class="col-md-3">
                             <label>Mesi Durata </label>
                             <input
-                              type="text"
+                              type="number"
                               class="form-control"
                               formControlName="mesiDurata"
                               placeholder="Inserire mesi durata"
@@ -587,6 +587,10 @@
                             <div *ngIf=" AnagraficaDto.get('contratto.mesiDurata')?.hasError('required')" class="text-danger">
                               Il campo mesi durata è obbligatorio.
                             </div>
+                            <div
+                            *ngIf="AnagraficaDto.get('contratto.mesiDurata')?.invalid" class="text-danger">
+                            Formato non valido.
+                          </div>
                           </div>
                           <div class="col-3">
                             <div formGroupName="tipoCcnl">
@@ -737,12 +741,16 @@
                               *ngIf="AnagraficaDto.get('contratto.dataAssunzione')?.hasError('required')"class="text-danger">
                               Il campo Data assunzione è obbligatorio.
                             </div>
+                            <!-- <div
+                            *ngIf="AnagraficaDto.get('contratto.dataAssunzione')?.invalid" class="text-danger">
+                            Formato non valido.
+                          </div> -->
                           </div>
                         </div>
 
                         <div class="col-md-3">
+                          <label for="dataFineProva">Data Fine prova</label>
                           <div class="form-group">
-                            <label for="dataInizoProva">Data Fine prova</label>
                             <input
                               type="date"
                               class="form-control"
@@ -753,6 +761,7 @@
                               *ngIf="AnagraficaDto.get('contratto.dataFineProva')?.hasError('required')"class="text-danger">
                               Il campo Data fine prova è obbligatorio.
                             </div>
+
                             </div>
                         </div>
 

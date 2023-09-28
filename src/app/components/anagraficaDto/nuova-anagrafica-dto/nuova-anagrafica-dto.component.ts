@@ -1288,19 +1288,21 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                 message: (result as any).esito.target,
               },
             });
-            this.errore = true;
-            this.messaggio = (result as any).esito.target;
           } else {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                title: 'Inserimento riuscito:',
+                title: 'Inserimento riuscito',
                 message: (result as any).esito.target,
               },
             });
             console.log(this.AnagraficaDto.value);
             this.router.navigate(['/lista-anagrafica']);
           }
-        });
+        },
+        (error:any)=>{
+          console.error("Si é verificato un errore durante l'inserimento:"+ error);
+        }
+        );
     }
   }
 
