@@ -34,6 +34,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   dataFineRapporto: any;
   inserimentoParziale: any;
   contrattoScaduto: any;
+  ruolo: any;
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -137,7 +138,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           descrizione: new FormControl(null),
         }),
         tipoCausaFineRapporto: new FormGroup({
-          id:new FormControl(),
+          id: new FormControl(),
         }),
       }),
       commesse: this.formBuilder.array([]),
@@ -160,15 +161,17 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   onTipoContrattoChange(event: Event) {
     const selectedTipoContratto = (event.target as HTMLSelectElement).value;
-    const dataFineRapportoControl = this.filterAnagraficaDto.get('contratto.dataFineRapporto');
+    const dataFineRapportoControl = this.filterAnagraficaDto.get(
+      'contratto.dataFineRapporto'
+    );
 
     if (dataFineRapportoControl) {
       if (selectedTipoContratto === 'Indeterminato') {
-        console.log("Selezionato contratto: " + selectedTipoContratto)
+        console.log('Selezionato contratto: ' + selectedTipoContratto);
         this.inseritoContrattoIndeterminato = false;
         dataFineRapportoControl.disable();
       } else {
-        console.log("Selezionato contratto: " + selectedTipoContratto)
+        console.log('Selezionato contratto: ' + selectedTipoContratto);
         dataFineRapportoControl.enable();
         this.inseritoContrattoIndeterminato = true;
       }
@@ -180,9 +183,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     if (target) {
       const isChecked = target.checked;
       if (isChecked) {
-        console.log("Checkbox selezionata, il valore è true");
+        console.log('Checkbox selezionata, il valore è true');
       } else {
-        console.log("Checkbox deselezionata, il valore è false");
+        console.log('Checkbox deselezionata, il valore è false');
       }
     }
   }
@@ -198,13 +201,17 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         this.anagraficaLoggata = response.anagraficaDto.anagrafica.id;
-        console.log("ID UTENTE LOGGATO: " + JSON.stringify(this.anagraficaLoggata));
+        console.log(
+          'ID UTENTE LOGGATO: ' + JSON.stringify(this.anagraficaLoggata)
+        );
+        this.ruolo = response.anagraficaDto.ruolo.descrizione;
+        console.log('RUOLO UTENTE LOGGATO:' + this.ruolo);
         this.isGreenBackground(this.anagraficaLoggata);
       },
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
@@ -232,7 +239,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.log(
             'Si é verificato un errore durante il caricamento dei dati: ' +
-            error
+              error
           );
         }
       );
@@ -256,7 +263,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
             // Hai un campo vuoto in questo record
             console.log(
               `Campo vuoto trovato in record con ID ${record.anagrafica.id}` +
-              `: ${value}`
+                `: ${value}`
             );
           }
         }
@@ -279,11 +286,13 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           console.log('Elenco motivazioni fine rapporto:', JSON.stringify(res));
         },
         (error: any) => {
-          console.log('Errore durante il caricamento della tipologica Motivazione fine rapporto:', JSON.stringify(error));
+          console.log(
+            'Errore durante il caricamento della tipologica Motivazione fine rapporto:',
+            JSON.stringify(error)
+          );
         }
       );
   }
-
 
   caricaTipoCanaleReclutamento() {
     this.anagraficaDtoService
@@ -296,12 +305,11 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.log(
             'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
-            JSON.stringify(error)
+              JSON.stringify(error)
           );
         }
       );
   }
-
 
   isCampoVuoto(record: any): boolean {
     for (const key in record) {
@@ -328,11 +336,15 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           (resp: any) => {
             //parseing json
             // resp = (resp as any)['anagraficaDto'];
-            console.log("Dettaglio prima dell eliminazione: " + JSON.stringify(resp));
+            console.log(
+              'Dettaglio prima dell eliminazione: ' + JSON.stringify(resp)
+            );
             let body = {
-              anagraficaDto: resp.anagraficaDto
-            }
-            console.log("PAYLOAD BACKEND PER L'ELIMINAZIONE: " + JSON.stringify(body));
+              anagraficaDto: resp.anagraficaDto,
+            };
+            console.log(
+              "PAYLOAD BACKEND PER L'ELIMINAZIONE: " + JSON.stringify(body)
+            );
             //se é ok parte l elimina
             this.anagraficaDtoService
               .delete(body, localStorage.getItem('token'))
@@ -341,7 +353,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
                   if ((response as any).esito.code != 200) {
                     alert(
                       'Disattivazione non riuscita:\n' +
-                      (response as any).esito.target
+                        (response as any).esito.target
                     );
                   } else {
                     alert('Utente disattivato correttamente. ' + response);
@@ -380,7 +392,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
                   if ((response as any).esito.code != 200) {
                     alert(
                       'Riattivazione non riuscita:\n' +
-                      (response as any).esito.target
+                        (response as any).esito.target
                     );
                   } else {
                     alert('Utente riattivato correttamente.');
@@ -596,28 +608,33 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     const body = {
       anagraficaDto: this.filterAnagraficaDto.value,
     };
-    console.log("PAYLOAD BACKEND FILTER: " + JSON.stringify(body));
+    console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
 
-    this.anagraficaDtoService.filterAnagrafica(localStorage.getItem('token'), body).subscribe((result) => {
-      if ((result as any).esito.code != 200) {
-        alert(
-          'Qualcosa é andato storto\n' + ': ' +
-          (result as any).esito.target
-        );
-      } else {
-        if (Array.isArray(result.list)) {
-          this.pageData = result.list;
-        } else {
-          this.pageData = [];
-          this.messaggio = "Nessun risultato trovato per i filtri inseriti, riprova."
+    this.anagraficaDtoService
+      .filterAnagrafica(localStorage.getItem('token'), body)
+      .subscribe(
+        (result) => {
+          if ((result as any).esito.code != 200) {
+            alert(
+              'Qualcosa é andato storto\n' + ': ' + (result as any).esito.target
+            );
+          } else {
+            if (Array.isArray(result.list)) {
+              this.pageData = result.list;
+            } else {
+              this.pageData = [];
+              this.messaggio =
+                'Nessun risultato trovato per i filtri inseriti, riprova.';
+            }
+            console.log(
+              'Trovati i seguenti risultati: ' + JSON.stringify(result)
+            );
+          }
+        },
+        (error: any) => {
+          console.log('Si é verificato un errore: ' + error);
         }
-        console.log("Trovati i seguenti risultati: " + JSON.stringify(result));
-      }
-    },
-      (error: any) => {
-        console.log("Si é verificato un errore: " + error);
-      }
-    );
+      );
   }
 
   exportListaAnagraficaToExcel() {
@@ -625,21 +642,41 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
     const workSheetData = [
       // Intestazioni delle colonne
-      ["Nome", "Cognome", "Codice fiscale", "Nome azienda", "Mail aziendale", "Cell privato", "Contratto", "Attesa lavori"]
+      [
+        'Nome',
+        'Cognome',
+        'Codice fiscale',
+        'Nome azienda',
+        'Mail aziendale',
+        'Cell privato',
+        'Contratto',
+        'Attesa lavori',
+      ],
     ];
 
     this.lista.forEach((item: any) => {
       workSheetData.push([
         item.anagrafica.nome ? item.anagrafica.nome.toString() : '',
         item.anagrafica.cognome ? item.anagrafica.cognome.toString() : '',
-        item.anagrafica.codiceFiscale ? item.anagrafica.codiceFiscale.toString() : '',
-        item.anagrafica.tipoAzienda.descrizione ? item.anagrafica.tipoAzienda.descrizione.toString() : '',
-        item.anagrafica.mailAziendale ? item.anagrafica.mailAziendale.toString() : '',
-        item.anagrafica.cellPrivato ? item.anagrafica.cellPrivato.toString() : '',
-        item.contratto?.tipoContratto.descrizione ? item.contratto?.tipoContratto.descrizione.toString() : '',
-        item.anagrafica.attesaLavori ? item.anagrafica.attesaLavori.toString() : 'No',
+        item.anagrafica.codiceFiscale
+          ? item.anagrafica.codiceFiscale.toString()
+          : '',
+        item.anagrafica.tipoAzienda.descrizione
+          ? item.anagrafica.tipoAzienda.descrizione.toString()
+          : '',
+        item.anagrafica.mailAziendale
+          ? item.anagrafica.mailAziendale.toString()
+          : '',
+        item.anagrafica.cellPrivato
+          ? item.anagrafica.cellPrivato.toString()
+          : '',
+        item.contratto?.tipoContratto.descrizione
+          ? item.contratto?.tipoContratto.descrizione.toString()
+          : '',
+        item.anagrafica.attesaLavori
+          ? item.anagrafica.attesaLavori.toString()
+          : 'No',
       ]);
-
     });
     const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
 
@@ -652,8 +689,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     (error: any) => {
       console.error(
         'Si è verificato un errore durante il recupero della lista delle anagrafiche: ' +
-        error
+          error
       );
-    }
+    };
   }
 }

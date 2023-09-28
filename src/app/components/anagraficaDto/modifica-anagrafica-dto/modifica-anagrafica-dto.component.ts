@@ -200,6 +200,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.caricaTipoCanaleReclutamento();
     this.caricaTipoCausaFineRapporto();
 
+
+
     const retribuzioneMensileLorda = this.anagraficaDto.get(
       'contratto.retribuzioneMensileLorda'
     );
