@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 import { ContrattoService } from '../../contratto/contratto-service';
 import { ThemePalette } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -73,7 +75,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private contrattoService: ContrattoService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    public dialog:MatDialog
   ) {
     this.AnagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
@@ -1279,15 +1282,21 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         .insert(body, localStorage.getItem('token'))
         .subscribe((result) => {
           if ((result as any).esito.code !== 200) {
-            alert(
-              'Inserimento non riuscito\n' +
-                'Target: ' +
-                (result as any).esito.target
-            );
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Inserimento non riuscito:',
+                message: (result as any).esito.target,
+              },
+            });
             this.errore = true;
             this.messaggio = (result as any).esito.target;
           } else {
-            alert('Inserimento riuscito');
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Inserimento riuscito:',
+                message: (result as any).esito.target,
+              },
+            });
             console.log(this.AnagraficaDto.value);
             this.router.navigate(['/lista-anagrafica']);
           }

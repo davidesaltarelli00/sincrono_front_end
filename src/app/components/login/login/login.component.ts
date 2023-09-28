@@ -2,6 +2,8 @@ import { Component, DoCheck, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../login-service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +18,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -58,9 +61,22 @@ export class LoginComponent implements OnInit {
 
     this.authService.authenticate(username, password).subscribe(
       (response) => {
-        // Login successful, handle the response
-        console.log('Login successful!');
-        console.log("Response: "+response);
+
+        if ((response as any).esito.code !== 200) {
+          // alert(
+          //   'Inserimento non riuscito\n' +
+          //     'Target: ' +
+          //     (response as any).esito.target
+          // );
+
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              title: 'Login non riuscito:',
+              message: (response as any).esito.target,
+            },
+          });
+        } else {
+          this.router.navigate(['/home']);
 
         // Formatta il token
         const tokenParts = response.token.split('.');
@@ -76,8 +92,9 @@ export class LoginComponent implements OnInit {
         this.token = response.token;
         console.log("Si é loggato l'utente "+ tokenPayload.sub);
 
-        // Redirect a una diversa pagina o esegui altre azioni
-        this.router.navigate(['/home']);
+        }
+
+
       },
       (error) => {
         // Login failed, handle the error

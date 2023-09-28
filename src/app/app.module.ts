@@ -45,6 +45,7 @@ import { GiornoComponent } from './components/giorno/giorno.component';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirective';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     UtenteComponent,
     GiornoComponent,
     NotFoundComponent,
+    AlertDialogComponent
   ],
   imports: [
     MatNativeDateModule,
