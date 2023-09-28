@@ -6,11 +6,15 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <h2>Storico contratti numero {{idAnagrafica}}  <button class="btn btn-success" style="background-color: rgb(24, 122, 0); color: white;"
-        [routerLink]="['/dettaglio-anagrafica/'+idAnagrafica]"> <i class="fa fa-arrow-left" ></i> Torna al dettaglio</button></h2>
+      <h2>Storico contratti </h2>
     </div>
   </div>
-<div class="row">
+  <div class="row" >
+    <div class="col-12">
+      <h3 style="text-align: center;">Storico contratti non presente. <i class="fa fa-undo btn btn-primary" [routerLink]="['/dettaglio-anagrafica/'+idAnagrafica]" ></i> </h3>
+    </div>
+  </div>
+<div class="row" >
   <div class="col-12">
     <mat-card *ngFor="let data of lista; let i=index;">
       <mat-card-header>
