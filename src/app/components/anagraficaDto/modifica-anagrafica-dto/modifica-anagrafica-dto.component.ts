@@ -58,6 +58,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   numeroMensilitaCCNL: any;
   minimiRet23: any;
   tipoDiContrattoControl: any;
+  tipoContratto: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -600,10 +601,22 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         if (selectedLivello) {
           console.log('Livello contratto selezionato: ', selectedLivello);
           this.minimiRet23 = selectedLivello.minimiRet23;
-          let retribuzioneMensileLorda=this.anagraficaDto.get('contratto.retribuzioneMensileLorda');
-          retribuzioneMensileLorda?.setValue(this.minimiRet23);
           console.log('Minimi retributivi 2023:' + this.minimiRet23);
-          this.calcolaMensileTot();
+          const tipoContratto = this.anagraficaDto.get(
+            'contratto.tipoContratto.id'
+          );
+          if (this.tipoContratto.descrizione==='Stage') {
+            console.log('é uno stage, NO retr lorda')
+            let retribuzioneMensileLorda = this.anagraficaDto.get(
+              'contratto.retribuzioneMensileLorda'
+            );
+            retribuzioneMensileLorda?.setValue('');
+          } else {
+            let retribuzioneMensileLorda = this.anagraficaDto.get(
+              'contratto.retribuzioneMensileLorda'
+            );
+            retribuzioneMensileLorda?.setValue(this.minimiRet23);
+          }
         } else {
           console.log('Livello contratto non trovato nella lista');
         }
@@ -665,7 +678,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         );
 
         if (selectedcontract) {
-          console.log('Contratto selezionato: ', selectedcontract);
+
+          this.tipoContratto=selectedcontract;
+
+          console.log('Contratto selezionato: ', this.tipoContratto);
+
 
           const dataFineRapportoControl = this.anagraficaDto.get(
             'contratto.dataFineRapporto'
@@ -761,6 +778,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
                 retribuzioneNettaMensileControl.enable();
                 retribuzioneNettaMensileControl.setValue(800);
+                retribuzioneNettaMensileControl.setValidators(
+                  Validators.required
+                );
                 retribuzioneNettaMensileControl.updateValueAndValidity();
 
                 // Disabilita gli altri controlli
@@ -861,7 +881,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 retribuzioneMensileLordaControl.enable();
 
                 retribuzioneNettaMensileControl.setValue('');
-                retribuzioneNettaMensileControl.enable();
+                retribuzioneNettaMensileControl.disable();
+                retribuzioneNettaMensileControl.clearValidators();
+                retribuzioneNettaMensileControl.updateValueAndValidity();
 
                 livelloAttualeControl.disable();
                 livelloAttualeControl.setValue(null);
@@ -938,8 +960,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 retribuzioneMensileLordaControl.enable();
                 retribuzioneMensileLordaControl.setValue('');
 
-                retribuzioneNettaMensileControl.enable();
+                retribuzioneNettaMensileControl.disable();
                 retribuzioneNettaMensileControl.setValue('');
+                retribuzioneNettaMensileControl.clearValidators();
+                retribuzioneNettaMensileControl.updateValueAndValidity();
 
                 superminimoMensileControl.enable();
                 superminimoMensileControl.setValue('');
@@ -980,7 +1004,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
                 retribuzioneNettaGiornalieraControl.disable();
                 retribuzioneNettaGiornalieraControl.setValue('');
-                retribuzioneNettaGiornalieraControl.updateValueAndValidity();
 
                 // this.AnagraficaDto.updateValueAndValidity();
               }
@@ -1006,7 +1029,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
                 retribuzioneNettaGiornalieraControl.disable();
                 retribuzioneNettaGiornalieraControl.setValue('');
-                retribuzioneNettaGiornalieraControl.updateValueAndValidity();
 
                 dataFineRapportoControl.disable();
                 dataFineRapportoControl.setValue(null);
@@ -1063,7 +1085,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 diariaGiornalieraControl &&
                 scattiAnzianitaControl &&
                 retribuzioneMensileLordaControl &&
-                retribuzioneNettaGiornalieraControl
+                retribuzioneNettaMensileControl
               ) {
                 mesiDurataControl.enable();
                 mesiDurataControl.setValue(36);
@@ -1077,6 +1099,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
                 livelloAttualeControl?.enable();
                 livelloAttualeControl?.setValue(null);
+
+                retribuzioneNettaMensileControl.disable();
+                retribuzioneNettaMensileControl.setValue('');
+                retribuzioneNettaMensileControl.clearValidators();
+                retribuzioneNettaMensileControl.updateValueAndValidity();
 
                 livelloFinaleControl?.enable();
                 livelloFinaleControl?.setValue(null);
@@ -1108,9 +1135,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 retribuzioneMensileLordaControl.enable();
                 retribuzioneMensileLordaControl.setValue(null);
 
-                retribuzioneNettaGiornalieraControl.disable();
-                retribuzioneNettaGiornalieraControl.setValue('');
-                retribuzioneNettaGiornalieraControl.updateValueAndValidity();
+                this.anagraficaDto.updateValueAndValidity();
               }
               break;
 

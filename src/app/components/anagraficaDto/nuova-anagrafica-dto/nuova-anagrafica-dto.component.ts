@@ -69,6 +69,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   numeroMensilitaCCNL: any;
   minimiRet23: any;
   ralAnnua: any;
+  tipoContratto: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -76,7 +77,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     private router: Router,
     private contrattoService: ContrattoService,
     private datePipe: DatePipe,
-    public dialog:MatDialog
+    public dialog: MatDialog
   ) {
     this.AnagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
@@ -278,6 +279,15 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       dataVisitaMedicaControl.disable();
     }
 
+    const retribuzioneNettaMensileControl = this.AnagraficaDto.get(
+      'contratto.retribuzioneNettaMensile'
+    );
+
+    if (retribuzioneNettaMensileControl) {
+      retribuzioneNettaMensileControl.disable();
+      retribuzioneNettaMensileControl.setValue('');
+    }
+
     // // Aggiungi un listener valueChanges per il controllo tipoAzienda in anagrafica
     // tipoAziendaControlAnagrafica?.valueChanges.subscribe((value) => {
     //   tipoAziendaControlContratto?.setValue(value, { emitEvent: false });
@@ -416,7 +426,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         );
 
         if (selectedcontract) {
-          console.log('Contratto selezionato: ', selectedcontract);
+
+          this.tipoContratto=selectedcontract;
+
+          console.log('Contratto selezionato: ', this.tipoContratto);
+
 
           const dataFineRapportoControl = this.AnagraficaDto.get(
             'contratto.dataFineRapporto'
@@ -512,6 +526,9 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
                 retribuzioneNettaMensileControl.enable();
                 retribuzioneNettaMensileControl.setValue(800);
+                retribuzioneNettaMensileControl.setValidators(
+                  Validators.required
+                );
                 retribuzioneNettaMensileControl.updateValueAndValidity();
 
                 // Disabilita gli altri controlli
@@ -612,7 +629,9 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                 retribuzioneMensileLordaControl.enable();
 
                 retribuzioneNettaMensileControl.setValue('');
-                retribuzioneNettaMensileControl.enable();
+                retribuzioneNettaMensileControl.disable();
+                retribuzioneNettaMensileControl.clearValidators();
+                retribuzioneNettaMensileControl.updateValueAndValidity();
 
                 livelloAttualeControl.disable();
                 livelloAttualeControl.setValue(null);
@@ -689,8 +708,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                 retribuzioneMensileLordaControl.enable();
                 retribuzioneMensileLordaControl.setValue('');
 
-                retribuzioneNettaMensileControl.enable();
+                retribuzioneNettaMensileControl.disable();
                 retribuzioneNettaMensileControl.setValue('');
+                retribuzioneNettaMensileControl.clearValidators();
+                retribuzioneNettaMensileControl.updateValueAndValidity();
 
                 superminimoMensileControl.enable();
                 superminimoMensileControl.setValue('');
@@ -811,7 +832,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                 diariaMensileControl &&
                 diariaGiornalieraControl &&
                 scattiAnzianitaControl &&
-                retribuzioneMensileLordaControl
+                retribuzioneMensileLordaControl &&
+                retribuzioneNettaMensileControl
               ) {
                 mesiDurataControl.enable();
                 mesiDurataControl.setValue(36);
@@ -825,6 +847,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
                 livelloAttualeControl?.enable();
                 livelloAttualeControl?.setValue(null);
+
+                retribuzioneNettaMensileControl.disable();
+                retribuzioneNettaMensileControl.setValue('');
+                retribuzioneNettaMensileControl.clearValidators();
+                retribuzioneNettaMensileControl.updateValueAndValidity();
 
                 livelloFinaleControl?.enable();
                 livelloFinaleControl?.setValue(null);
@@ -995,14 +1022,15 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
-      const attesaLavoriControl=this.AnagraficaDto.get('anagrafica.attesaLavori');
+      const attesaLavoriControl = this.AnagraficaDto.get(
+        'anagrafica.attesaLavori'
+      );
       if (isChecked) {
         console.log('Checkbox selezionata, il valore è true');
         attesaLavoriControl?.setValue(true);
       } else {
         console.log('Checkbox deselezionata, il valore è false');
         attesaLavoriControl?.setValue(false);
-
       }
     }
   }
@@ -1280,28 +1308,31 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
       this.anagraficaDtoService
         .insert(body, localStorage.getItem('token'))
-        .subscribe((result) => {
-          if ((result as any).esito.code !== 200) {
-            const dialogRef = this.dialog.open(AlertDialogComponent, {
-              data: {
-                title: 'Inserimento non riuscito:',
-                message: (result as any).esito.target,
-              },
-            });
-          } else {
-            const dialogRef = this.dialog.open(AlertDialogComponent, {
-              data: {
-                title: 'Inserimento riuscito',
-                message: (result as any).esito.target,
-              },
-            });
-            console.log(this.AnagraficaDto.value);
-            this.router.navigate(['/lista-anagrafica']);
+        .subscribe(
+          (result) => {
+            if ((result as any).esito.code !== 200) {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  title: 'Inserimento non riuscito:',
+                  message: (result as any).esito.target,
+                },
+              });
+            } else {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  title: 'Inserimento riuscito',
+                  message: (result as any).esito.target,
+                },
+              });
+              console.log(this.AnagraficaDto.value);
+              this.router.navigate(['/lista-anagrafica']);
+            }
+          },
+          (error: any) => {
+            console.error(
+              "Si é verificato un errore durante l'inserimento:" + error
+            );
           }
-        },
-        (error:any)=>{
-          console.error("Si é verificato un errore durante l'inserimento:"+ error);
-        }
         );
     }
   }
@@ -1466,8 +1497,21 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           console.log('Livello contratto selezionato: ', selectedLivello);
           this.minimiRet23 = selectedLivello.minimiRet23;
           console.log('Minimi retributivi 2023:' + this.minimiRet23);
-          let retribuzioneMensileLorda=this.AnagraficaDto.get('contratto.retribuzioneMensileLorda');
-          retribuzioneMensileLorda?.setValue(this.minimiRet23);
+          const tipoContratto = this.AnagraficaDto.get(
+            'contratto.tipoContratto.id'
+          );
+          if (this.tipoContratto.descrizione==='Stage') {
+            console.log('é uno stage, NO retr lorda')
+            let retribuzioneMensileLorda = this.AnagraficaDto.get(
+              'contratto.retribuzioneMensileLorda'
+            );
+            retribuzioneMensileLorda?.setValue('');
+          } else {
+            let retribuzioneMensileLorda = this.AnagraficaDto.get(
+              'contratto.retribuzioneMensileLorda'
+            );
+            retribuzioneMensileLorda?.setValue(this.minimiRet23);
+          }
         } else {
           console.log('Livello contratto non trovato nella lista');
         }
