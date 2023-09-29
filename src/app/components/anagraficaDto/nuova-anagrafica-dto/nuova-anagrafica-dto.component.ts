@@ -278,15 +278,15 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       dataVisitaMedicaControl.disable();
     }
 
-    // Aggiungi un listener valueChanges per il controllo tipoAzienda in anagrafica
-    tipoAziendaControlAnagrafica?.valueChanges.subscribe((value) => {
-      tipoAziendaControlContratto?.setValue(value, { emitEvent: false });
-    });
+    // // Aggiungi un listener valueChanges per il controllo tipoAzienda in anagrafica
+    // tipoAziendaControlAnagrafica?.valueChanges.subscribe((value) => {
+    //   tipoAziendaControlContratto?.setValue(value, { emitEvent: false });
+    // });
 
-    // Aggiungi un listener valueChanges per il controllo tipoAzienda in contratto
-    tipoAziendaControlContratto?.valueChanges.subscribe((value) => {
-      tipoAziendaControlAnagrafica?.setValue(value, { emitEvent: false });
-    });
+    // // Aggiungi un listener valueChanges per il controllo tipoAzienda in contratto
+    // tipoAziendaControlContratto?.valueChanges.subscribe((value) => {
+    //   tipoAziendaControlAnagrafica?.setValue(value, { emitEvent: false });
+    // });
 
     this.AnagraficaDto.get('contratto.dataAssunzione')?.valueChanges.subscribe(
       () => {
@@ -1466,6 +1466,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           console.log('Livello contratto selezionato: ', selectedLivello);
           this.minimiRet23 = selectedLivello.minimiRet23;
           console.log('Minimi retributivi 2023:' + this.minimiRet23);
+          let retribuzioneMensileLorda=this.AnagraficaDto.get('contratto.retribuzioneMensileLorda');
+          retribuzioneMensileLorda?.setValue(this.minimiRet23);
         } else {
           console.log('Livello contratto non trovato nella lista');
         }

@@ -1,101 +1,43 @@
-.ag-format-container {
-    width: 1142px;
-    margin: 0 auto;
-}
-
-
-body {
-    background-color: #ffffff;
-}
-
-
-
-main {
-  padding: 20px;
-}
-
-section {
-  margin-bottom: 20px;
-}
-
-.cards {
-  display: flex;
-}
-
-.card {
-  background-color: #f4f4f4;
-  padding: 20px;
-  margin-right: 10px;
-  flex-basis: 33.33%;
-}
-
-h2 {
-  margin-top: 0;
-}
-
-.recent-activity li {
-  margin-bottom: 10px;
-}
-
-.timestamp {
-  font-weight: bold;
-  margin-right: 5px;
-}
-
-
-
-footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  text-align: center;
-}
-
-
-.login-page .sidebar {
-  display: none;
-}
-
-
-body {
-  overflow: hidden;
-}
-
-.container-fluid{
-  background-color: aliceblue;
-}.banner {
-  white-space: nowrap;
-  overflow: hidden;
-  position: relative;
-  animation: scroll 10s linear infinite;
-  background-color: aliceblue; /* Sfondo del banner */
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Ombra del banner */
-  border-radius: 5px; /* Bordo arrotondato */
-}
-
-.banner img {
-  display: inline-block;
-  width: 100%;
-  max-width: 20%;
-  height: auto;
-  margin-right: 10px;
-  border: 2px solid #fff;
-  border-radius: 5px;
-}
-
-@keyframes scroll {
-  0% {
-    transform: translateX(100%);
+ /* Stili specifici per schermi di grandi dimensioni (desktop) */
+ @media (min-width: 768px) {
+  body {
+    font-size: 18px;
   }
-  100% {
-    transform: translateX(-300%);
+  /* Altri stili specifici per schermi di grandi dimensioni */
+  .container-fluid {
+    padding: 20px;
+  }
+  .col-6 {
+    width: 50%;
+    float: left;
   }
 }
 
-img{
-  max-height: 30%;
+/* Stili specifici per schermi di medie dimensioni (tablet) */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+  /* Altri stili specifici per schermi di medie dimensioni */
+  .col-6 {
+    width: 100%;
+    float: none;
+  }
+  .banner img {
+    max-width: 100%;
+  }
+}
+
+/* Stili specifici per schermi di piccole dimensioni (dispositivi mobili) */
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+  /* Altri stili specifici per schermi di piccole dimensioni */
+  .container-fluid {
+    padding: 10px;
+  }
+  .custom-list-item {
+    padding: 10px;
+  }
 }

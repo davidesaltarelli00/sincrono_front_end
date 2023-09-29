@@ -5,6 +5,93 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
 </head>
+<style>
+  mat-list{
+  margin: 30px;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+.container-fluid{
+  background-color: aliceblue;
+}
+
+body{
+  background-color: aliceblue;
+}
+
+.banner {
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  animation: scroll 10s linear infinite;
+  background-color: aliceblue; /* Sfondo del banner */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Ombra del banner */
+  border-radius: 5px; /* Bordo arrotondato */
+}
+.banner img {
+  display: inline-block;
+  width: 100%;
+  max-width: 20%;
+  height: auto;
+  margin-right: 10px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-300%);
+  }
+}
+
+img{
+  max-height: 30%;
+}
+.custom-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.custom-list-item {
+  margin-bottom: 10px;
+  padding: 5px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-list-item:hover {
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
+.custom-list-item a {
+  text-decoration: none;
+  color: #333;
+}
+
+.custom-list-item a:hover {
+  text-decoration: underline;
+  color: blue;
+
+}
+
+
+</style>
 <body>
 <div class="container-fluid">
   <div class="row">
@@ -12,31 +99,51 @@
       <header>
         <div class="row">
           <div class="col-12" style="margin: auto; text-align: center">
-            <!-- Componente Angular Material - Logo -->
-            <mat-card>
-              <mat-card-content>
                 <div class="banner">
                   <img src="../../../../assets/images/logo.jpeg" alt="Logo Sincrono"> &nbsp;
                   <img src="../../../../assets/images/sincrono_formazione.png" alt="Logo Sincrono formazione"> &nbsp;
                   <img src="../../../../assets/images/reymond_consulting.jpeg" alt="Logo Reymond consulting"> &nbsp;
-                  <!-- <img src="../../../../assets/images/zerolock.png" alt="Logo Zerolock"> &nbsp; -->
               </div>
-
-              </mat-card-content>
-            </mat-card>
-            <h1>Sincrono CRM</h1> <!-- Aggiungi una descrizione dell'applicazione -->
           </div>
         </div>
       </header>
     </div>
   </div>
+  <br>
+  <div class="row">
+    <div class="col-6">
+      <mat-card>
+        <mat-card-title style="text-align: center;">
+          <h1>Sincrono CRM</h1>
+        </mat-card-title>
+        <mat-card-content>
+          <main>
+            <h2>Ciao {{userloggedName}} {{userLoggedSurname}}.</h2>
+            <p>Sincrono CRM è un potente strumento per gestire le tue relazioni con i clienti in modo efficiente. Con Sincrono CRM, puoi facilmente monitorare le interazioni con i clienti, gestire i contatti e aumentare la produttività del tuo team. </p>
+          </main>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-6">
+      <mat-card>
+        <mat-card-content>
+          <mat-list role="list" class="custom-list">
+            <mat-list-item role="listitem" [routerLink]="['/lista-anagrafica']" class="custom-list-item">
+              <a href="/lista-anagrafica">Lista anagrafica</a>
+            </mat-list-item>
+            <mat-list-item role="listitem" [routerLink]="['/dashboard']" class="custom-list-item">
+              <a href="/dashboard">Dashboard</a>
+            </mat-list-item>
+            <mat-list-item role="listitem" [routerLink]="['/organico']" class="custom-list-item">
+              <a href="/organico">Organico</a>
+            </mat-list-item>
+          </mat-list>
 
-  <main>
-    <section>
-      <h2>Ciao {{userloggedName}} {{userLoggedSurname}}.</h2>
-      <p>Sincrono CRM è un potente strumento per gestire le tue relazioni con i clienti in modo efficiente. Con Sincrono CRM, puoi facilmente monitorare le interazioni con i clienti, gestire i contatti e aumentare la produttività del tuo team. </p>
-    </section>
-  </main>
+        </mat-card-content>
+       </mat-card>
+    </div>
+  </div>
+
 </div>
 </body>
 </html>
