@@ -53,7 +53,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   inseritoContrattoIndeterminato: boolean = false;
   contrattoStageOApprendistato: any;
   percentualePartTimeValue: number | null = null;
-  dataOdierna = new Date();
+  dataOdierna : any;
+  dataFormattata:any
   selectedTipoContrattoId: any;
   numeroMensilitaCCNL: any;
   minimiRet23: any;
@@ -73,6 +74,15 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     console.log(
       '+++++++++++++++++++++++++++ID ANAGRAFICA CORRENTE: ' + this.id
     );
+    this.dataOdierna = new Date();
+  if (this.dataOdierna) {
+    this.dataFormattata = this.datePipe.transform(this.dataOdierna, 'yyyy-MM-dd');
+    if (this.dataFormattata) {
+      console.log('DATA DI OGGI FORMATTATA: ' + this.dataFormattata);
+    }
+  }
+
+
     this.anagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
         id: [this.id],
@@ -116,6 +126,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         coniugato: [''],
         figliACarico: [''],
         attesaLavori: [''],
+
+        categoriaProtetta: [''],
+        statoDiNascita: [''],
+        cittadinanza: [''],
+        provinciaDiNascita: [''],
       }),
       commesse: this.formBuilder.array([]),
 
@@ -160,7 +175,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         diariaGiornaliera: ['', [Validators.pattern('[0-9]+(.[0-9][0-9]?)?')]],
         ticket: [''],
         valoreTicket: ['', Validators.maxLength(50)],
-        categoriaProtetta: [''],
+        // categoriaProtetta: [''],
         tutor: [''],
         pfi: [''],
         retribuzioneNettaGiornaliera: [''],
@@ -204,7 +219,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.caricaTipoCanaleReclutamento();
     this.caricaTipoCausaFineRapporto();
 
-
+    const tipoContratto = this.anagraficaDto.get('contratto.tipoContratto.id');
 
     const retribuzioneMensileLorda = this.anagraficaDto.get(
       'contratto.retribuzioneMensileLorda'
@@ -216,18 +231,17 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       'contratto.scattiAnzianita'
     );
     if (
-      retribuzioneMensileLorda?.value!=null &&
-      superminimoMensileControl?.value!=null &&
-      scattiAnzianitaControl?.value!=null
+      retribuzioneMensileLorda?.value != null &&
+      superminimoMensileControl?.value != null &&
+      scattiAnzianitaControl?.value != null
     ) {
       // this.calcolaMensileTot();
-      console.log("Il mensile totale si puo calcolare.")
+      console.log('Il mensile totale si puo calcolare.');
     } else {
       console.warn(
         'Non é possibile calcolare il mensile totale perché mancano dei dati.'
       );
     }
-
 
     //SE IL CONTRATTO É DIVERSO DA PARTITA IVA I CAMPI TARIFFA PARTITA IVA E RETRIBUZIONE NETTA GIORNALIERA SARANNO DISABILITATI
     const tariffaPartitaIvaControl = this.anagraficaDto.get(
@@ -297,8 +311,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     // });
   }
 
-
-  onChangeTipoAzienda(event:any){
+  onChangeTipoAzienda(event: any) {
     const target = event.target as HTMLInputElement;
     if (target) {
       const selectedValue = parseInt(target.value, 10); // Converte il valore selezionato in un numero
@@ -439,10 +452,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           console.log('Dati del contratto: ' + JSON.stringify(this.contratto));
           this.tipoDiContrattoControl =
             this.contratto.tipoContratto.descrizione;
-          console.log(
-            '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TIPO CONTRATTO!!!!!!!!!!!!!!!!!!!!!!' +
-              this.tipoDiContrattoControl
-          );
+          console.log('TIPO DI CONTRATTO: ' + this.tipoDiContrattoControl);
+          if (this.tipoDiContrattoControl === 'Stage') {
+            const retribuzioneNetta = this.anagraficaDto.get(
+              'contratto.retribuzioneMensileNetta'
+            );
+          }
         }
         if (this.elencoCommesse === null) {
           console.log('Niente commesse.');
@@ -605,8 +620,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           const tipoContratto = this.anagraficaDto.get(
             'contratto.tipoContratto.id'
           );
-          if (this.tipoContratto.descrizione==='Stage') {
-            console.log('é uno stage, NO retr lorda')
+          if (this.tipoContratto.descrizione === 'Stage') {
+            console.log('é uno stage, NO retr lorda');
             let retribuzioneMensileLorda = this.anagraficaDto.get(
               'contratto.retribuzioneMensileLorda'
             );
@@ -678,11 +693,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         );
 
         if (selectedcontract) {
-
-          this.tipoContratto=selectedcontract;
+          this.tipoContratto = selectedcontract;
 
           console.log('Contratto selezionato: ', this.tipoContratto);
-
 
           const dataFineRapportoControl = this.anagraficaDto.get(
             'contratto.dataFineRapporto'
@@ -1188,21 +1201,33 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
     if (value && dataFineRapportoControl) {
       this.valorePrecedenteDataFineRapporto = dataFineRapportoControl.value;
-      dataFineRapportoControl.setValue(this.dataOdierna);
-      dataFineRapportoControl.disable();
-      alert(
-        'La data di fine rapporto é stata impostata a oggi.' +
-          this.dataOdierna +
-          ' Per reimpostare la vecchia data, elimina la causa di fine rapporto.'
-      );
+      dataFineRapportoControl.enable();
+      dataFineRapportoControl.setValue(this.dataFormattata);
+      // alert(
+      //   'La data di fine rapporto é stata impostata a oggi.' +
+      //   this.dataFormattata +
+      //     ' \n Per reimpostare la vecchia data, elimina la causa di fine rapporto.'
+      // );
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          title: 'Attenzione:',
+          message: 'La data di fine rapporto é stata impostata a '+this.dataFormattata + '.'+ '\n Per reimpostare la data precedente, se presente, rimuovi la causa di fine rapporto. ' ,
+        },
+      });
     } else {
       // Ripristina il valore precedente
       if (this.valorePrecedenteDataFineRapporto !== undefined) {
         dataFineRapportoControl?.setValue(
           this.valorePrecedenteDataFineRapporto
         );
+        const dialogRef = this.dialog.open(AlertDialogComponent, {
+          data: {
+            title: 'Attenzione:',
+            message: "La data di fine rapporto é stata impostata a "+ this.valorePrecedenteDataFineRapporto+". \n",
+          },
+        });
       } else {
-        dataFineRapportoControl?.setValue(null); // Se non esiste un valore precedente, impostalo su null o su quello che desideri
+        dataFineRapportoControl?.setValue(null);
       }
       dataFineRapportoControl?.enable();
     }
@@ -1369,13 +1394,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .update(payload, localStorage.getItem('token'))
       .subscribe(
         (response) => {
-            if ((response as any).esito.code !== 200) {
-              const dialogRef = this.dialog.open(AlertDialogComponent, {
-                data: {
-                  title: 'Modifica non riuscita:',
-                  message: (response as any).esito.target,
-                },
-              });
+          if ((response as any).esito.code !== 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Modifica non riuscita:',
+                message: (response as any).esito.target,
+              },
+            });
           } else {
             console.log('Payload inviato con successo al server:', response);
             // const dialogRef = this.dialog.open(AlertDialogComponent, {
@@ -1598,6 +1623,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         // Formatta la data nel formato "yyyy-MM-dd"
         const dataFineRapportoFormatted = this.datePipe.transform(
           dataFineRapporto,
+          'yyyy-MM-dd'
+        );
+        const dataOdiernaFormatted = this.datePipe.transform(
+          this.dataOdierna,
           'yyyy-MM-dd'
         );
 

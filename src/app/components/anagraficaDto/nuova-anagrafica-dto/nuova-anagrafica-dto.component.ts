@@ -121,10 +121,15 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         ]),
         titoliDiStudio: new FormControl(''),
         altriTitoli: new FormControl(''),
+        categoriaProtetta: new FormControl(''),
+        statoDiNascita: new FormControl(''),
+        cittadinanza:new FormControl(''),
+        provinciaDiNascita:new FormControl(''),
         comuneDiNascita: new FormControl(''),
         residenza: new FormControl(''),
         domicilio: new FormControl(''),
         dataDiNascita: new FormControl(''),
+
         coniugato: new FormControl(false),
         figliACarico: new FormControl(false),
         attesaLavori: new FormControl(false),
@@ -167,7 +172,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         diariaGiornaliera: new FormControl(''),
         ticket: new FormControl(''),
         valoreTicket: new FormControl('', Validators.maxLength(50)),
-        categoriaProtetta: new FormControl(''),
         tutor: new FormControl(''),
         pfi: new FormControl(''),
         corsoSicurezza: new FormControl(''),
@@ -353,6 +357,19 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         console.log('Checkbox selezionata, il valore è true');
       } else {
         console.log('Checkbox deselezionata, il valore è false');
+      }
+    }
+  }
+
+  onChangeAssicurazioneObbligatoria(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+
+      if (isChecked) {
+        console.log('Assicurazione obbligatoria si');
+      } else {
+        console.log('Assicurazione obbligatoria no');
       }
     }
   }

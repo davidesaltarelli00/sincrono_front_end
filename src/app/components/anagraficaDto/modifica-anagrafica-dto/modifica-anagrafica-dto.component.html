@@ -134,10 +134,10 @@
                           <input
                             type="text"
                             class="form-control"
-
+                            formControlName="provinciaDiNascita"
                             placeholder="Inserire provincia di nascita."
                           />
-                        </div> <!--formControlName="provinciaDiNascita"-->
+                        </div>
                       </div>
                       <div class="col-md-3">
                         <label>Comune di Nascita </label>
@@ -156,9 +156,9 @@
                           <input
                             type="text"
                             class="form-control"
-
+                            formControlName="statoDiNascita"
                             placeholder="Inserire stato di nascita."
-                          /> <!--formControlName="statoDiNascita"-->
+                          />
                         </div>
                       </div>
                     </div>
@@ -170,7 +170,7 @@
                           <input
                             type="text"
                             class="form-control"
-
+                            formControlName="cittadinanza"
                             placeholder="Inserire cittadinanza."
                           /> <!--formControlName="cittadinanza"-->
                         </div>
@@ -236,7 +236,7 @@
                     </div>
                     <br>
                     <div class="row">
-                      <legend>Attesa lavori</legend> <br>
+                      <legend>Info aziendali</legend> <br>
                       <div class="col-md-3">
                         <label for="attesaLavori">Attesa lavori:</label> <br>
                         <label class="toggle-switch">
@@ -248,6 +248,22 @@
                               style="border-color: black"
                               [checked]="data?.contratto?.attesaLavori === true"
                               formControlName="attesaLavori"
+                            />
+                            <span class="slider"></span>
+                          </div>
+                        </label>
+                      </div>
+                      <div class="col-md-3">
+                        <label for="categoriaProtetta">Categoria Protetta:</label> <br>
+                        <label class="toggle-switch">
+
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              style="border-color: black"
+                              [checked]="data?.contratto?.categoriaProtetta === true"
+                              formControlName="categoriaProtetta"
                             />
                             <span class="slider"></span>
                           </div>
@@ -465,22 +481,6 @@
                               <br>
                               <legend>Altri dati</legend>
                               <div class="row">
-                                <div class="col-md-3">
-                                  <label for="categoriaProtetta">Categoria Protetta:</label> <br>
-                                  <label class="toggle-switch">
-
-                                    <div class="form-check">
-                                      <input
-                                        class="form-check-input"
-                                        type="checkbox"
-                                        style="border-color: black"
-                                        [checked]="data?.contratto?.categoriaProtetta === true"
-                                        formControlName="categoriaProtetta"
-                                      />
-                                      <span class="slider"></span>
-                                    </div>
-                                  </label>
-                                </div>
 
                                 <div class="col-md-3">
                                   <label for="pc">Computer:</label> <br>
@@ -635,10 +635,32 @@
                           </div>
 
                           <br>
+
                           <div class="row">
-
+                            <legend>Retribuzione netta</legend>
+                            <div class="col-md-4">
+                              <label>Retribuzione netta mensile:</label>
+                              <div class="form-group">
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text custom-prefix">€</span>
+                                  </div>
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    value="{{ data?.contratto?.retribuzioneNettaMensile }}"
+                                    formControlName="retribuzioneNettaMensile"
+                                    step="0.01"
+                                    min="0"
+                                    placeholder="Inserire retribuzione netta mensile"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <br>
+                          <div class="row">
                             <legend>RAL</legend>
-
                             <div class="col-md-6">
                               <label>RAL Annua:</label>
                               <div class="form-group">
@@ -739,30 +761,6 @@
                                     step="0.01"
                                     min="0"
                                     placeholder="Inserire diaria giornaliera"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-
-                          </div>
-                          <br>
-                          <div class="row">
-                            <legend>Retribuzione netta</legend>
-                            <div class="col-md-3">
-                              <label>Retribuzione netta mensile:</label>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text custom-prefix">€</span>
-                                  </div>
-                                  <input
-                                    type="number"
-                                    class="form-control"
-                                    value="{{ data?.contratto?.retribuzioneNettaMensile }}"
-                                    formControlName="retribuzioneNettaMensile"
-                                    step="0.01"
-                                    min="0"
-                                    placeholder="Inserire retribuzione netta mensile"
                                   />
                                 </div>
                               </div>

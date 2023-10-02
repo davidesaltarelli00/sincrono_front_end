@@ -357,7 +357,7 @@
                               <input
                                 type="text"
                                 class="form-control"
-
+                                formControlName="provinciaDiNascita"
                                 placeholder="Inserire provincia di nascita."
                               />
                             </div> <!--formControlName="provinciaDiNascita"-->
@@ -379,7 +379,7 @@
                               <input
                                 type="text"
                                 class="form-control"
-
+                                formControlName="statoDiNascita"
                                 placeholder="Inserire stato di nascita."
                               /> <!--formControlName="statoDiNascita"-->
                             </div>
@@ -393,6 +393,7 @@
                               <input
                                 type="text"
                                 class="form-control"
+                                formControlName="cittadinanza"
 
                                 placeholder="Inserire cittadinanza."
                               /> <!--formControlName="cittadinanza"-->
@@ -423,7 +424,7 @@
                         </div>
                         <br>
                         <div class="row">
-                          <div class="col-md-4">
+                          <div class="col-md-3">
                             <div class="form-group">
                               <label>Coniugato </label>
                               <label class="toggle-switch">
@@ -441,7 +442,7 @@
                               </label>
                             </div>
                           </div>
-                          <div class="col-md-4">
+                          <div class="col-md-3">
                             <div class="form-group">
                               <label>Figli a Carico</label>
                               <label class="toggle-switch">
@@ -459,7 +460,7 @@
                               </label>
                             </div>
                           </div>
-                          <div class="col-md-4">
+                          <div class="col-md-3">
                             <div class="form-group">
                               <label>Attesa lavori</label>
                               <label class="toggle-switch">
@@ -477,6 +478,26 @@
                               </label>
                             </div>
                           </div>
+
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Categoria protetta</label>
+                              <label class="toggle-switch">
+
+                                <div class="form-check">
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    style="border-color: black"
+                                   (change)="onCategoriaProtettaChange($event)"
+                                    formControlName="categoriaProtetta"
+                                  />
+                                  <span class="slider"></span>
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+
                         </div>
                         <!-- <br> -->
                         <!-- <div class="row">
@@ -647,6 +668,24 @@
                               </div> -->
                             </div>
 
+                          </div>
+
+                          <div class="col-md-3">
+                            <label for="assicurazioneObbligatoria">Assicurazione obbligatoria:</label> <br>
+                            <label class="toggle-switch">
+
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  (change)="onChangeAssicurazioneObbligatoria($event)"
+                                  style="border-color: black"
+                                  [checked]="data?.contratto?.assicurazioneObbligatoria === true"
+                                  formControlName="assicurazioneObbligatoria"
+                                />
+                                <span class="slider"></span>
+                              </div>
+                            </label>
                           </div>
 
                         </div>
@@ -1128,24 +1167,6 @@
                             </div>
                           </div>
 
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Categoria protetta</label>
-                              <label class="toggle-switch">
-
-                                <div class="form-check">
-                                  <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    style="border-color: black"
-                                   (change)="onCategoriaProtettaChange($event)"
-                                    formControlName="categoriaProtetta"
-                                  />
-                                  <span class="slider"></span>
-                                </div>
-                              </label>
-                            </div>
-                          </div>
                         </div>
                         <br>
                         <legend>Tutor e PFI</legend>
