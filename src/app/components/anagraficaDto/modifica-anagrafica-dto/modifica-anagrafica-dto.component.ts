@@ -60,7 +60,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   minimiRet23: any;
   tipoDiContrattoControl: any;
   tipoContratto: any;
-  descrizioneLivelloCCNL: any;
+  descrizioneLivelloCCNL: any ;
   elencoLivelliCCNL: any[] = [];
 
   constructor(
@@ -216,13 +216,14 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.caricaTipoContratto();
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
+    this.changeElencoLivelliCCNL();
     this.caricaDati();
     this.calculateRalPartTime();
     this.caricaRuoli();
     this.creaFormCommessa();
     this.caricaTipoCanaleReclutamento();
     this.caricaTipoCausaFineRapporto();
-    this.changeElencoLivelliCCNL();
+    this.caricaLivelloContratto();
 
     const tipoContratto = this.anagraficaDto.get('contratto.tipoContratto.id');
 
@@ -355,7 +356,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         );
         this.descrizioneLivelloCCNL = (resp as any)['anagraficaDto'][
           'contratto'
-        ]['tipoLivelloContratto']['livello'];
+        ]['tipoLivelloContratto']['ccnl'];
         console.log(
           'LIVELLO CONTRATTO IN ARRIVO DAL DETTAGLIO CHE DEVE APPARIRE NELLA SELECT:' +
             this.descrizioneLivelloCCNL
@@ -629,6 +630,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           console.log('Livello contratto selezionato: ', selectedLivello);
           this.minimiRet23 = selectedLivello.minimiRet23;
           console.log('Minimi retributivi 2023:' + this.minimiRet23);
+          this.changeElencoLivelliCCNL();
           const tipoContratto = this.anagraficaDto.get(
             'contratto.tipoContratto.id'
           );
@@ -654,6 +656,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   changeElencoLivelliCCNL() {
+    console.log("VALORE VALORIZZATO PER ENDPOINT"+this.descrizioneLivelloCCNL);
     this.anagraficaDtoService
       .changeCCNL(localStorage.getItem('token'), this.descrizioneLivelloCCNL)
       .subscribe(
@@ -1612,6 +1615,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         }
       );
   }
+
+
   caricaTipoAzienda() {
     this.anagraficaDtoService
       .getTipoAzienda(localStorage.getItem('token'))
