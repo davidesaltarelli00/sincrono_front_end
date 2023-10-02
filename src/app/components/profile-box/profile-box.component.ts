@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../login/login-service';
 import { profileBoxService } from './profile-box.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-box',
@@ -12,11 +13,12 @@ export class ProfileBoxComponent {
 
   anagrafica: any;
   username_accesso = null;
-  codiceFiscaleUtenteLoggato:any;
+  codiceFiscaleUtenteLoggato: any;
 
   constructor(
     private authService: AuthService,
-    private profileBoxService: profileBoxService
+    private profileBoxService: profileBoxService,
+    private router: Router
   ) {}
   ngOnInit(): void {
     const token = localStorage.getItem('token');
@@ -25,8 +27,11 @@ export class ProfileBoxComponent {
       (response: any) => {
         this.anagrafica = response;
         this.username_accesso = response.anagraficaDto.anagrafica.mailAziendale;
-        this.codiceFiscaleUtenteLoggato= response.anagraficaDto.anagrafica.codiceFiscale;
-        console.log("CODICE FISCALE UTENTE LOGGATO: "+this.codiceFiscaleUtenteLoggato);
+        this.codiceFiscaleUtenteLoggato =
+          response.anagraficaDto.anagrafica.codiceFiscale;
+        console.log(
+          'CODICE FISCALE UTENTE LOGGATO: ' + this.codiceFiscaleUtenteLoggato
+        );
       },
       (error: any) => {
         console.error(
@@ -35,5 +40,9 @@ export class ProfileBoxComponent {
         );
       }
     );
+  }
+
+  goToRapportinoByCodiceFiscale() {
+    this.router.navigate(['/utente/' + this.codiceFiscaleUtenteLoggato]);
   }
 }

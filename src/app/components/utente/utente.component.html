@@ -1,13 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-<div class="container-fluid">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-</div>
-</body>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <header>
+            <h1>Rapportino</h1>
+          </header>
+        </div>
+      </div>
+      <br>
+      <mat-card>
+        <mat-card-content>
+          <div class="row">
+            <div class="col-6">
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <td><strong>Mese di riferimento:</strong></td>
+                      <td>Mese</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Nome:</strong></td>
+                      <td>{{ userLogged?.anagraficaDto.anagrafica?.nome }}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Cognome:</strong></td>
+                      <td>{{ userLogged?.anagraficaDto.anagrafica?.cognome }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered">
+                <thead style="background-color: purple; color: white;">
+                 <tr>
+                  <th style="background-color: purple; color: white;"><strong>Giorni utili di lavoro</strong></th>
+                 </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Num Giorni</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-6">
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <!-- <td>  <img src="../../../../assets/images/logo.jpeg" alt="Logo Sincrono" > </td> -->
+                    <td>{{ userLogged?.anagraficaDto.anagrafica?.tipoAzienda?.descrizione }} </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-bordered">
+                <thead >
+                  <tr >
+                    <th style="background-color: purple; color: white;">Giorno</th>
+                    <th style="background-color: purple; color: white;">Cliente</th>
+                    <th style="background-color: purple; color: white;">Ore ordinarie</th>
+                    <th style="background-color: purple; color: white;">18:00 - 20:00</th>
+                    <th style="background-color: purple; color: white;">20:00 - 22:00</th>
+                    <th style="background-color: purple; color: white;">22:00 - 09:00</th>
+                    <th style="background-color: purple; color: white;">Ferie</th>
+                    <th style="background-color: purple; color: white;">Permessi</th>
+                    <th style="background-color: purple; color: white;">Malattia</th>
+                    <th style="background-color: purple; color: white;">NOTE</th>
+                    <th style="background-color: purple; color: white;">Totale</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr > <!--*ngFor="let item of data"-->
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                  </tr>
+                  <tr > <!--*ngFor="let item of data"-->
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                  </tr>
+                  <tr > <!--*ngFor="let item of data"-->
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                  </tr>
+                  <tr > <!--*ngFor="let item of data"-->
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                    <td>TEST</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-footer>
+          <button class="btn btn-success" >Invia rapportino <i class="fa fa-save" ></i> </button>
+        </mat-card-footer>
+      </mat-card>
+
+    </div>
+  </body>
 </html>

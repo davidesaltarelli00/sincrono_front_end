@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -30,5 +31,17 @@ export class profileBoxService {
       console.error('Token non presente.');
       return null;
     }
+  }
+
+  getRapportino(token: any, codiceFiscale: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    const url = `http://localhost:8080/services/get-rapportino/${codiceFiscale}`;
+    return this.http.get<any>(url, {
+      headers: headers,
+    });
   }
 }
