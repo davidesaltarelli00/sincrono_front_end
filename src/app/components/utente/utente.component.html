@@ -6,35 +6,8 @@
   <title>Document</title>
 </head>
 <body>
-  <div class="container-fluid">
+<div class="container-fluid">
 
-    <div class="calendar">
-      <table>
-        <!-- Intestazione con nome mese e pulsanti di navigazione -->
-        <thead>
-          <tr>
-            <th colspan="7">
-              <button (click)="prevMonth()" [disabled]="isPrevButtonDisabled()" >« Precedente</button>
-              {{ months[currentMonthIndex] }} {{ currentDate.getFullYear() }}
-              <button (click)="nextMonth()" [disabled]="isNextButtonDisabled()">Successivo »</button>
-            </th>
-          </tr>
-          <tr>
-            <th *ngFor="let day of weekDays">{{ day }}</th>
-          </tr>
-        </thead>
-        <!-- Corpo del calendario con giorni -->
-        <tbody>
-          <tr *ngFor="let week of calendar">
-            <td *ngFor="let day of week"  (click)="openDayComponent(day.date)"  [ngClass]="{ 'current-day': isCurrentDay(day) }">
-              {{ day.day }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-
-  </div>
+</div>
 </body>
 </html>

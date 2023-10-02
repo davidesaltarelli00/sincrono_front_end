@@ -53,13 +53,15 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   inseritoContrattoIndeterminato: boolean = false;
   contrattoStageOApprendistato: any;
   percentualePartTimeValue: number | null = null;
-  dataOdierna : any;
-  dataFormattata:any
+  dataOdierna: any;
+  dataFormattata: any;
   selectedTipoContrattoId: any;
   numeroMensilitaCCNL: any;
   minimiRet23: any;
   tipoDiContrattoControl: any;
   tipoContratto: any;
+  descrizioneLivelloCCNL: any;
+  elencoLivelliCCNL: any[] = [];
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -75,13 +77,15 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       '+++++++++++++++++++++++++++ID ANAGRAFICA CORRENTE: ' + this.id
     );
     this.dataOdierna = new Date();
-  if (this.dataOdierna) {
-    this.dataFormattata = this.datePipe.transform(this.dataOdierna, 'yyyy-MM-dd');
-    if (this.dataFormattata) {
-      console.log('DATA DI OGGI FORMATTATA: ' + this.dataFormattata);
+    if (this.dataOdierna) {
+      this.dataFormattata = this.datePipe.transform(
+        this.dataOdierna,
+        'yyyy-MM-dd'
+      );
+      if (this.dataFormattata) {
+        console.log('DATA DI OGGI FORMATTATA: ' + this.dataFormattata);
+      }
     }
-  }
-
 
     this.anagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
@@ -144,10 +148,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         tipoContratto: this.formBuilder.group({
           id: [''],
         }),
-        tipoLivelloContratto: this.formBuilder.group({
+
+        tipoCcnl: this.formBuilder.group({
           id: [''],
         }),
-        tipoCcnl: this.formBuilder.group({
+        tipoLivelloContratto: this.formBuilder.group({
           id: [''],
         }),
         qualifica: [''],
@@ -209,7 +214,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
   ngOnInit(): void {
     this.caricaTipoContratto();
-    this.caricaLivelloContratto();
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
     this.caricaDati();
@@ -218,6 +222,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.creaFormCommessa();
     this.caricaTipoCanaleReclutamento();
     this.caricaTipoCausaFineRapporto();
+    this.changeElencoLivelliCCNL();
 
     const tipoContratto = this.anagraficaDto.get('contratto.tipoContratto.id');
 
@@ -347,6 +352,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           "<<<<<<<<<<<<<<<<<<<<<L'UTENTE CARICATO HA COME ID DEL CONTRATTO " +
             this.selectedTipoContrattoId +
             '>>>>>>>>>>>>>>>>>>>>>'
+        );
+        this.descrizioneLivelloCCNL = (resp as any)['anagraficaDto'][
+          'contratto'
+        ]['tipoLivelloContratto']['livello'];
+        console.log(
+          'LIVELLO CONTRATTO IN ARRIVO DAL DETTAGLIO CHE DEVE APPARIRE NELLA SELECT:' +
+            this.descrizioneLivelloCCNL
         );
         this.setForm();
 
@@ -641,6 +653,25 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     }
   }
 
+  changeElencoLivelliCCNL() {
+    this.anagraficaDtoService
+      .changeCCNL(localStorage.getItem('token'), this.descrizioneLivelloCCNL)
+      .subscribe(
+        (response: any) => {
+          this.elencoLivelliCCNL = response['list'];
+          console.log(
+            '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
+              JSON.stringify(this.elencoLivelliCCNL)
+          );
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il caricamento dei livelli di contratto: ' + error
+          );
+        }
+      );
+  }
+
   onChangeCCNL(event: any) {
     const selectedValue = parseInt(event.target.value, 10); // Converte il valore selezionato in un numero
 
@@ -657,9 +688,33 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       if (selectedOption) {
         console.log('Opzione selezionata: ', selectedOption);
         this.numeroMensilitaCCNL = selectedOption.numeroMensilita;
+        this.descrizioneLivelloCCNL = selectedOption.descrizione;
         console.log('numero mensilitá:' + this.numeroMensilitaCCNL);
         livelloControl?.enable();
         // Qui andrà la chiamata per l'endpoint per la get del livello contratto
+        this.anagraficaDtoService
+          .changeCCNL(
+            localStorage.getItem('token'),
+            this.descrizioneLivelloCCNL
+          )
+          .subscribe(
+            (response: any) => {
+              console.log(
+                'RESPONSE NUOVA LISTA LIVELLI CCNL:' + JSON.stringify(response)
+              );
+              this.elencoLivelliCCNL = response.list;
+              console.log(
+                '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
+                  JSON.stringify(this.elencoLivelliCCNL)
+              );
+            },
+            (error: any) => {
+              console.error(
+                'Errore durante il caricamento dei livelli di contratto: ' +
+                  error
+              );
+            }
+          );
       } else {
         console.log('Opzione non trovata nei contratti nazionali');
       }
@@ -668,6 +723,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       livelloControl?.disable();
       livelloControl?.setValue(null);
     }
+  }
+
+  aCaso() {
+    this.caricaContrattoNazionale();
+    console.log('LIVELLO CONTRATTO SELEZIONATO:' + this.descrizioneLivelloCCNL);
+    this.changeElencoLivelliCCNL();
   }
 
   onChangePFI(event: Event) {
@@ -1211,7 +1272,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
           title: 'Attenzione:',
-          message: 'La data di fine rapporto é stata impostata a '+this.dataFormattata + '.'+ '\n Per reimpostare la data precedente, se presente, rimuovi la causa di fine rapporto. ' ,
+          message:
+            'La data di fine rapporto é stata impostata a ' +
+            this.dataFormattata +
+            '.' +
+            '\n Per reimpostare la data precedente, se presente, rimuovi la causa di fine rapporto. ',
         },
       });
     } else {
@@ -1223,7 +1288,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         const dialogRef = this.dialog.open(AlertDialogComponent, {
           data: {
             title: 'Attenzione:',
-            message: "La data di fine rapporto é stata impostata a "+ this.valorePrecedenteDataFineRapporto+". \n",
+            message:
+              'La data di fine rapporto é stata impostata a ' +
+              this.valorePrecedenteDataFineRapporto +
+              '. \n',
           },
         });
       } else {
@@ -1525,6 +1593,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         }
       );
   }
+
   caricaLivelloContratto() {
     this.anagraficaDtoService
       .getLivelloContratto(localStorage.getItem('token'))
@@ -1570,6 +1639,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             '------------------------CCNL CARICATI:------------------------ ' +
               JSON.stringify(result)
           );
+          this.changeElencoLivelliCCNL();
         },
         (error: any) => {
           console.log(

@@ -12,6 +12,7 @@ export class ProfileBoxComponent {
 
   anagrafica: any;
   username_accesso = null;
+  codiceFiscaleUtenteLoggato:any;
 
   constructor(
     private authService: AuthService,
@@ -24,6 +25,8 @@ export class ProfileBoxComponent {
       (response: any) => {
         this.anagrafica = response;
         this.username_accesso = response.anagraficaDto.anagrafica.mailAziendale;
+        this.codiceFiscaleUtenteLoggato= response.anagraficaDto.anagrafica.codiceFiscale;
+        console.log("CODICE FISCALE UTENTE LOGGATO: "+this.codiceFiscaleUtenteLoggato);
       },
       (error: any) => {
         console.error(

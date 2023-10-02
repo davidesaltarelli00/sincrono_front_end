@@ -139,10 +139,7 @@ export class AppComponent implements OnInit {
     const url = `http://localhost:8080/services/operazioni/${functionId}`;
     this.http.get(url,{headers: headers}).subscribe(
       (data: any) => {
-        // Qui puoi fare qualcosa con i permessi ottenuti dalla chiamata API
         console.log('Permessi ottenuti:', data);
-
-        // Ad esempio, puoi mostrarli in una finestra di dialogo o in un altro componente
         this.showPermissionsDialog(data);
       },
       (error) => {
@@ -158,21 +155,6 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.dialog.open(AlertLogoutComponent);
-    // const confirmation = confirm('Sei sicuro di voler effettuare il logout?');
-    // if (confirmation) {
-    //   this.authService.logout().subscribe(
-    //     () => {
-    //       localStorage.removeItem('token');
-    //       localStorage.removeItem('tokenProvvisorio');
-    //       // console.log('Logout effettuato correttamente.');
-    //       this.router.navigate(['/login']);
-    //       location.reload();
-    //     },
-    //     (error: any) => {
-    //       console.log('Errore durante il logout:', error.message);
-    //     }
-    //   );
-    // }
   }
 
   avviaRecuperoPassword() {

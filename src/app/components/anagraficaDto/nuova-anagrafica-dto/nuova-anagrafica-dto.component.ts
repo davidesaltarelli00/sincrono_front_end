@@ -59,6 +59,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   isDataFineRapportoDisabled: any;
   percentualePartTimeValue: number | null = null;
   ccnLSelezionato = false;
+  elencoLivelliCCNL: any[] = [];
 
   //dati per i controlli nei form
   inseritoContrattoIndeterminato = true;
@@ -67,6 +68,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   descrizioneContrattoNazionale: any;
   descrizioneCCNL: any;
   numeroMensilitaCCNL: any;
+  descrizioneLivelloCCNL:any;
   minimiRet23: any;
   ralAnnua: any;
   tipoContratto: any;
@@ -123,8 +125,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         altriTitoli: new FormControl(''),
         categoriaProtetta: new FormControl(''),
         statoDiNascita: new FormControl(''),
-        cittadinanza:new FormControl(''),
-        provinciaDiNascita:new FormControl(''),
+        cittadinanza: new FormControl(''),
+        provinciaDiNascita: new FormControl(''),
         comuneDiNascita: new FormControl(''),
         residenza: new FormControl(''),
         domicilio: new FormControl(''),
@@ -208,7 +210,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     );
 
     this.caricaTipoContratto();
-    this.caricaLivelloContratto();
+    // this.caricaLivelloContratto();
     this.caricaTipoAzienda();
     this.caricaContrattoNazionale();
     // this.caricaTipoCausaFineRapporto();
@@ -443,11 +445,9 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         );
 
         if (selectedcontract) {
-
-          this.tipoContratto=selectedcontract;
+          this.tipoContratto = selectedcontract;
 
           console.log('Contratto selezionato: ', this.tipoContratto);
-
 
           const dataFineRapportoControl = this.AnagraficaDto.get(
             'contratto.dataFineRapporto'
@@ -1368,25 +1368,25 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       });
   }
 
-  caricaLivelloContratto() {
-    this.contrattoService
-      .getLivelloContratto(localStorage.getItem('token'))
-      .subscribe(
-        (result: any) => {
-          this.livelliContratti = (result as any)['list'];
-          console.log(
-            '££££££££££££££££££££££££££££££££££££ ELENCO LIVELLI CONTRATTO CARICATI ££££££££££££££££££££££££££££££££££££: ' +
-              JSON.stringify(result)
-          );
-        },
-        (error: any) => {
-          console.error(
-            'Errore durante il caricamento dei livelli contrattuali:' + error
-          );
-        }
-      );
-    console.log('this.livelliContratti: ' + this.livelliContratti);
-  }
+  // caricaLivelloContratto() {
+  //   this.contrattoService
+  //     .getLivelloContratto(localStorage.getItem('token'))
+  //     .subscribe(
+  //       (result: any) => {
+  //         this.livelliContratti = (result as any)['list'];
+  //         console.log(
+  //           '££££££££££££££££££££££££££££££££££££ ELENCO LIVELLI CONTRATTO CARICATI ££££££££££££££££££££££££££££££££££££: ' +
+  //             JSON.stringify(result)
+  //         );
+  //       },
+  //       (error: any) => {
+  //         console.error(
+  //           'Errore durante il caricamento dei livelli contrattuali:' + error
+  //         );
+  //       }
+  //     );
+  //   console.log('this.livelliContratti: ' + this.livelliContratti);
+  // }
 
   caricaTipoAzienda() {
     this.contrattoService
@@ -1517,8 +1517,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           const tipoContratto = this.AnagraficaDto.get(
             'contratto.tipoContratto.id'
           );
-          if (this.tipoContratto.descrizione==='Stage') {
-            console.log('é uno stage, NO retr lorda')
+          if (this.tipoContratto.descrizione === 'Stage') {
+            console.log('é uno stage, NO retr lorda');
             let retribuzioneMensileLorda = this.AnagraficaDto.get(
               'contratto.retribuzioneMensileLorda'
             );
@@ -1579,10 +1579,27 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       if (selectedOption) {
         console.log('Opzione selezionata: ', selectedOption);
         this.numeroMensilitaCCNL = selectedOption.numeroMensilita;
+        this.descrizioneLivelloCCNL=selectedOption.descrizione;
         console.log('numero mensilitá:' + this.numeroMensilitaCCNL);
+        console.log("Livelli contratto: "+ this.descrizioneLivelloCCNL);
         livelloControl?.enable();
         this.ccnLSelezionato = true;
         // Qui andrà la chiamata per l'endpoint per la get del livello contratto
+        this.anagraficaDtoService
+          .changeCCNL(localStorage.getItem('token'), this.descrizioneLivelloCCNL)
+          .subscribe(
+            (response: any) => {
+              console.log("RESPONSE NUOVA LISTA LIVELLI CCNL:"+JSON.stringify(response));
+              this.elencoLivelliCCNL = response.list;
+              console.log('+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' + JSON.stringify(this.elencoLivelliCCNL));
+            },
+            (error: any) => {
+              console.error(
+                'Errore durante il caricamento dei livelli di contratto: ' +
+                  error
+              );
+            }
+          );
       } else {
         console.log('Opzione non trovata nei contratti nazionali');
       }

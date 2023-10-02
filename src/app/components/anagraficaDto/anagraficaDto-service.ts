@@ -34,29 +34,26 @@ export class AnagraficaDtoService {
     );
   }
 
-
-  storicizzaCommessa(body: any, token:any): Observable<any>{
+  storicizzaCommessa(body: any, token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(
-      `http://localhost:8080/services/commessa`,body,
-      { headers: headers }
-    );
+    return this.http.put<any>(`http://localhost:8080/services/commessa`, body, {
+      headers: headers,
+    });
   }
 
-  riattivaUtente(body:any, token:any):Observable<any>{
+  riattivaUtente(body: any, token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(
-      `http://localhost:8080/services/retain`,body,
-      { headers: headers }
-    );
+    return this.http.put<any>(`http://localhost:8080/services/retain`, body, {
+      headers: headers,
+    });
   }
 
   delete(body: any, token: any) {
@@ -76,7 +73,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    console.log("BODY SERVICE:"+ JSON.stringify(body));
+    console.log('BODY SERVICE:' + JSON.stringify(body));
     return this.http.put<any>(`http://localhost:8080/services/modifica`, body, {
       headers: headers,
     });
@@ -97,19 +94,15 @@ export class AnagraficaDtoService {
     );
   }
 
-  filterAnagrafica(token:any, body:any) :Observable<any> {
+  filterAnagrafica(token: any, body: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(
-      `http://localhost:8080/services/filter`,
-      body,
-      {
-        headers: headers,
-      }
-    );
+    return this.http.post<any>(`http://localhost:8080/services/filter`, body, {
+      headers: headers,
+    });
   }
 
   //GET UTENTI LIST
@@ -124,27 +117,32 @@ export class AnagraficaDtoService {
     });
   }
 
-  caricaTipoCausaFineRapporto(token:any): Observable<any>{
+  caricaTipoCausaFineRapporto(token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/tipo-causa-fine-rapporto-map`, {
-      headers: headers,
-    });
+    return this.http.get<any>(
+      `http://localhost:8080/services/tipo-causa-fine-rapporto-map`,
+      {
+        headers: headers,
+      }
+    );
   }
 
-
-  caricaTipoCanaleReclutamento(token:any): Observable<any>{
+  caricaTipoCanaleReclutamento(token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/tipo-canale-reclutamento-map`, {
-      headers: headers,
-    });
+    return this.http.get<any>(
+      `http://localhost:8080/services/tipo-canale-reclutamento-map`,
+      {
+        headers: headers,
+      }
+    );
   }
 
   //FILTER ANAGRAFICA
@@ -166,7 +164,8 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/tipo-contratto-map`,{ headers: headers }
+      `http://localhost:8080/services/tipo-contratto-map`,
+      { headers: headers }
     );
   }
 
@@ -223,6 +222,20 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.put<any>('http://localhost:8080/services/commessa', body, {
+      headers: headers,
+    });
+  }
+
+  changeCCNL(token: any, ccnl: any): Observable<any> {
+    ///livelli-by-ccnl/{ccnl}
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    const url = `http://localhost:8080/services/livelli-by-ccnl/${ccnl}`;
+    console.log('URL CHANGE CCNL:' + url);
+    return this.http.get<any>(url, {
       headers: headers,
     });
   }
