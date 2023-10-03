@@ -46,6 +46,7 @@ export class ListaDashboardComponent {
   mostraFiltri = false;
   originalLista: any;
   tipiAziende: any = [];
+  idAnagraficaCommessaScaduta: any;
   idutenteCommessaInScadenza: any;
   idContrattoInScadenza = this.activatedRouter.snapshot.params['id'];
   idCommessaScaduta = this.activatedRouter.snapshot.params['id'];
@@ -133,7 +134,7 @@ export class ListaDashboardComponent {
     //     this.data = resp.list;
     //   });
 
-    
+
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
     const commessaFormGroup = this.creaFormCommessa();
     this.commesse.push(commessaFormGroup);
@@ -165,14 +166,14 @@ export class ListaDashboardComponent {
           });
           console.log(
             'UTENTE CON LA COMMESSA IN SCADENZA:' +
-              this.idutenteCommessaInScadenza
+            this.idutenteCommessaInScadenza
           );
           console.log('Lista commesse in scadenza: ' + JSON.stringify(resp));
         },
         (error: any) => {
           console.error(
             'Si é verificato un errore durante il recupero della lista delle commesse in scadenza: ' +
-              error
+            error
           );
         }
       );
@@ -186,7 +187,7 @@ export class ListaDashboardComponent {
         (error: any) => {
           console.error(
             'Si é verificato un errore durante il recupero della lista dei contratti in scadenza: ' +
-              error
+            error
           );
         }
       );
@@ -194,15 +195,17 @@ export class ListaDashboardComponent {
       .getAllCommesseScadute(localStorage.getItem('token'))
       .subscribe(
         (resp: any) => {
-          this.listaCommesseScadute = [];
           for (const item of resp.list) {
+            if (item.anagrafica && item.anagrafica.id) {
+              this.idAnagraficaCommessaScaduta = item.anagrafica.id;
+            }
             for (const commesse of item.commesse) {
               this.listaCommesseScadute.push(commesse);
             }
           }
           console.log(
             'Lista commesse scadute: ' +
-              JSON.stringify(this.listaCommesseScadute)
+            JSON.stringify(this.listaCommesseScadute)
           );
           this.currentPage = 1;
           this.pageData = this.getCurrentPageItems();
@@ -210,7 +213,7 @@ export class ListaDashboardComponent {
         (error: any) => {
           console.error(
             'Si è verificato un errore durante il recupero della lista delle commesse: ' +
-              error
+            error
           );
         }
       );
@@ -359,6 +362,16 @@ export class ListaDashboardComponent {
 
   dettaglioAnagrafica(idAnagrafica: number) {
     idAnagrafica = this.idutenteCommessaInScadenza;
+    this.anagraficaDtoService
+      .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
+      .subscribe((resp: any) => {
+        console.log(resp);
+        this.router.navigate(['/dettaglio-anagrafica/' + idAnagrafica]);
+      });
+  }
+
+  dettaglioAnagraficaCommessaScaduta(idAnagrafica: number) {
+    idAnagrafica = this.idAnagraficaCommessaScaduta;
     this.anagraficaDtoService
       .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
       .subscribe((resp: any) => {
@@ -742,54 +755,54 @@ export class ListaDashboardComponent {
     // Verifica che ci siano dati validi prima di esportare
     console.log('Dati da esportare:', this.listaContrattiFromBatch);
 
-  
-        // Crea un nuovo libro Excel
-        const workBook = XLSX.utils.book_new();
 
-        const workSheetData = [
-          // Intestazioni delle colonne
-          ["Nome", "Cognome", "Tipo contratto", "CCNL", "Sede di assunzione", "Data Assunzione", "Mesi durata", "livello attuale", "livello finale", "RAL", "Ticket", "Categoria protetta", "Tutor", "PFI", "Sede di assunzione"]
-        ];
+    // Crea un nuovo libro Excel
+    const workBook = XLSX.utils.book_new();
 
-        // Aggiungi dati
-        this.listaContrattiFromBatch.forEach((item: any) => {
-          workSheetData.push([
-            item.anagrafica.nome ? item.anagrafica.nome.toString() : '',
-            item.anagrafica.cognome ? item.anagrafica.cognome.toString() : '',
-            item.contratto.tipoContratto.descrizione ? item.contratto.tipoContratto.descrizione.toString() : '',
-            item.contratto.tipoLivelloContratto.ccnl ? item.contratto.tipoLivelloContratto.ccnl.toString() : '',
-            item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : '',
-            this.datePipe.transform(
-              item.contratto.dataAssunzione ? item.contratto.dataAssunzione.toString() : '',
-              'yyyy-MM-dd'
-            ),
-            item.contratto.mesiDurata ? item.contratto.mesiDurata.toString() : '',
-            item.contratto.livelloAttuale ? item.contratto.livelloAttuale.toString() : '',
-            item.contratto.livelloFinale ? item.contratto.livelloFinale.toString() : '',
-            item.contratto.retribuzioneMensileLorda ? item.contratto.retribuzioneMensileLorda.toString() : '',
-            item.contratto.ticket ? item.contratto.ticket.toString() : '',
-            item.contratto.categoriaProtetta ? item.contratto.categoriaProtetta.toString() : '',
-            item.contratto.tutor ? item.contratto.tutor.toString() : '',
-            item.contratto.pfi ? item.contratto.pfi.toString() : '',
-            item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : ''
-          ]);
-        });
+    const workSheetData = [
+      // Intestazioni delle colonne
+      ["Nome", "Cognome", "Tipo contratto", "CCNL", "Sede di assunzione", "Data Assunzione", "Mesi durata", "livello attuale", "livello finale", "RAL", "Ticket", "Categoria protetta", "Tutor", "PFI", "Sede di assunzione"]
+    ];
 
-        const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
+    // Aggiungi dati
+    this.listaContrattiFromBatch.forEach((item: any) => {
+      workSheetData.push([
+        item.anagrafica.nome ? item.anagrafica.nome.toString() : '',
+        item.anagrafica.cognome ? item.anagrafica.cognome.toString() : '',
+        item.contratto.tipoContratto.descrizione ? item.contratto.tipoContratto.descrizione.toString() : '',
+        item.contratto.tipoLivelloContratto.ccnl ? item.contratto.tipoLivelloContratto.ccnl.toString() : '',
+        item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : '',
+        this.datePipe.transform(
+          item.contratto.dataAssunzione ? item.contratto.dataAssunzione.toString() : '',
+          'yyyy-MM-dd'
+        ),
+        item.contratto.mesiDurata ? item.contratto.mesiDurata.toString() : '',
+        item.contratto.livelloAttuale ? item.contratto.livelloAttuale.toString() : '',
+        item.contratto.livelloFinale ? item.contratto.livelloFinale.toString() : '',
+        item.contratto.retribuzioneMensileLorda ? item.contratto.retribuzioneMensileLorda.toString() : '',
+        item.contratto.ticket ? item.contratto.ticket.toString() : '',
+        item.contratto.categoriaProtetta ? item.contratto.categoriaProtetta.toString() : '',
+        item.contratto.tutor ? item.contratto.tutor.toString() : '',
+        item.contratto.pfi ? item.contratto.pfi.toString() : '',
+        item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : ''
+      ]);
+    });
 
-        console.log('Dati nel foglio di lavoro:', workSheet);
+    const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
 
-        XLSX.utils.book_append_sheet(workBook, workSheet, 'ContrattiScattoLivello');
-        // Esporta il libro Excel in un file
-        XLSX.writeFile(workBook, 'contratti_scatto_livello.xlsx');
-     
-      (error: any) => {
-        console.error(
-          'Si è verificato un errore durante il recupero della lista dei contratti con scatto livello effettuato: ' +
-          error
-        );
-      }
-   
+    console.log('Dati nel foglio di lavoro:', workSheet);
+
+    XLSX.utils.book_append_sheet(workBook, workSheet, 'ContrattiScattoLivello');
+    // Esporta il libro Excel in un file
+    XLSX.writeFile(workBook, 'contratti_scatto_livello.xlsx');
+
+    (error: any) => {
+      console.error(
+        'Si è verificato un errore durante il recupero della lista dei contratti con scatto livello effettuato: ' +
+        error
+      );
+    }
+
 
   }
 

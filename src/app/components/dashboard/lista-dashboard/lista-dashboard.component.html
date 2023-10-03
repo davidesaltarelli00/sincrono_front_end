@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+
 <body>
   <div class="container-fluid">
     <div class="row">
@@ -67,11 +68,12 @@
                     <td>{{ element.contratto.tutor }}</td>
                     <td>{{ element.contratto.pfi }}</td>
                     <td (click)="dettaglioAnagrafica(element.anagrafica.id)"> <button class="btn btn-primary"><i
-                      class="fa fa-info"></i></button> </td>
+                          class="fa fa-info"></i></button> </td>
                   </tr>
                 </tbody>
                 <button class="btn btn-success" (click)="resetTabella()">Svuota tabella</button>
-                <button class="btn btn-success" (click)="exportContrattiFromBatchToExcel()" class="btn btn-success"><i class="fa-solid fa-file-export"></i></button>
+                <button class="btn btn-success" (click)="exportContrattiFromBatchToExcel()" class="btn btn-success"><i
+                    class="fa-solid fa-file-export"></i></button>
               </table>
             </div>
           </div>
@@ -133,7 +135,8 @@
                 </tbody>
 
               </table>
-              <button class="btn btn-success" (click)=" exportCommesseInScadenzaToExcel() ">Esporta Commesse come Excel</button>
+              <button class="btn btn-success" (click)=" exportCommesseInScadenzaToExcel() ">Esporta Commesse come
+                Excel</button>
 
             </div>
           </div>
@@ -153,17 +156,17 @@
         </mat-expansion-panel-header>
         <div class="row">
           <div class="col-12">
-
+            <h3>Contratti in scadenza (40 giorni)</h3>
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
                   <tr>
                     <th>Nominativo</th>
+                    <th>Codice Fiscale</th>
                     <th>Tipo Contratto</th>
                     <th>Tipo Livello Contratto</th>
                     <th>Sede Assunzione</th>
                     <th>Data Assunzione</th>
-                    <th>Data Fine Rapporto</th>
                     <th>Mesi Durata</th>
                     <th>Livello Attuale</th>
                     <th>Livello Finale</th>
@@ -196,12 +199,12 @@
                 <tbody>
                   <tr *ngFor="let element of listaContrattiInScadenza">
                     <td>{{element.anagrafica.nome}} {{element.anagrafica.cognome}}</td>
+                    <td>{{element.anagrafica.codiceFiscale}}</td>
                     <td>{{ element.contratto.tipoContratto.descrizione }}</td>
                     <td>{{ element.contratto.tipoLivelloContratto.ccnl }} - Livello {{
                       element.contratto.tipoLivelloContratto.livello }}</td>
                     <td>{{ element.contratto.sedeAssunzione }}</td>
                     <td>{{ element.contratto.dataAssunzione | date:'dd/MM/yyyy' }}</td>
-                    <td>{{ element.contratto.dataFineRapporto | date:'dd/MM/yyyy' }}</td>
                     <td>{{ element.contratto.mesiDurata }}</td>
                     <td>{{ element.contratto.tipoLivelloContratto.livello }}</td>
                     <td>{{ element.contratto.livelloFinale }}</td>
@@ -228,7 +231,8 @@
                   </tr>
                 </tbody>
               </table>
-              <button class="btn btn-success" (click)=" exportContrattiInScadenzaToExcel()">Esporta Contratti come Excel</button>
+              <button class="btn btn-success" (click)=" exportContrattiInScadenzaToExcel()">Esporta Contratti come
+                Excel</button>
             </div>
           </div>
         </div>
@@ -243,191 +247,183 @@
     <div class="row">
       <div class="col-12">
         <mat-expansion-panel>
-          <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri" >
+          <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri">
 
-          {{ mostraFiltri ? 'Nascondi filtri' : 'Mostra filtri' }}
-        </mat-expansion-panel-header>
+            {{ mostraFiltri ? 'Nascondi filtri' : 'Mostra filtri' }}
+          </mat-expansion-panel-header>
 
           <ng-template matExpansionPanelContent style="border-top: 1px solid #f1f1f1;">
             <div *ngIf="mostraFiltri">
               <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter(filterAnagraficaDto.value)">
-                  <div class="container">
-                      <div formGroupName="anagrafica">
-                          <div class="row">
-                            <b>Filtri per anagrafica</b>
-                            <br>
-                              <div class="col-md-4">
-                                <div class="form-group" >
-                                  <label for="nome">Nome:</label>
-                                  <input type="text" id="anagrafica.nome" class="form-control" placeholder="Inserire nome " formControlName="nome">
-                                </div>
-
-                              </div>
-                              <div class="col-md-4">
-                                <div class="form-group" >
-                                  <label for="cognome">Cognome:</label>
-                                  <input type="text" id="anagrafica.cognome" class="form-control" formControlName="cognome" placeholder="Inserire cognome">
-                                </div>
-                              </div>
-
-                              <div class="col-4">
-                                <label for="filter-Tipo Azienda">Nome azienda</label>
-                                <div class="form-group" formGroupName="tipoAzienda">
-                                    <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
-                                      <option value="">--nessuna selezione--</option>
-                                      <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
-                                        {{ tipoAzienda.descrizione }}
-                                      </option>
-                                    </select>
-                                </div>
-                              </div>
-
-                              <!-- <div class="col-md-1">
+                <div class="container">
+                  <div formGroupName="anagrafica">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <b>Filtri per anagrafica</b>
+                          <br>
+                          <br>
+                          <label for="nome">Nome:</label>
+                          <input type="text" id="anagrafica.nome" class="form-control" placeholder="Inserire nome "
+                            formControlName="nome">
+                          <label for="cognome">Cognome:</label>
+                          <input type="text" id="anagrafica.cognome" class="form-control" formControlName="cognome"
+                            placeholder="Inserire cognome">
+                        </div>
+                        <label for="filter-Tipo Azienda">Nome azienda</label>
+                        <div class="form-group" formGroupName="tipoAzienda">
+                          <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id"
+                            type="number">
+                            <option value="">--nessuna selezione--</option>
+                            <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                              {{ tipoAzienda.descrizione }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-1">
                                 <div class="form-group">
                                   <label for="attivo">Attivo</label> <br>
                                   <input type="checkbox" class="form-check-input" style="border: 1px solid black;" id="anagrafica.attivo" name="attivo" (change)="onChangeAttivo($event)"  formControlName="attivo" checked>
                                 </div>
                               </div> -->
-                          </div>
-                      </div>
-                      <br><br>
-                      <b>Filtri per commesse</b>
-                      <div formArrayName="commesse">
-                        <div *ngFor="let commessa of commesse.controls; let i = index">
-                          <div [formGroupName]="i">
-                          <div class="row">
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                <label for="aziendaCliente">Azienda Cliente:</label>
-                                <input type="text" id="commesse.aziendaCliente" placeholder="Inserire azienda cliente" class="form-control" formControlName="aziendaCliente">
-                            </div>
-                            </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <br><br>
-                      <div class="row">
-                        <b>Filtri per data commessa</b>
-                        <br>
-                        <div class="col-md-3">
-                          <label for="annoInizioCommessa">Anno di inizio commessa:</label>
-                          <input type="number" id="annoDataInizio" class="form-control" placeholder="Inserire anno di inizio commessa" formControlName="annoDataInizio">
-                      </div>
-                      <div class="col-md-3">
-                        <label for="meseInizioCommessa">mese di inizio commessa:</label>
-                        <input type="number" min="1" max="12" id="meseDataInizio" class="form-control" placeholder="Inserire mese di inizio commessa" formControlName="meseDataInizio">
                     </div>
-                        <div class="col-md-3">
-                            <label for="annoFineCommessa">Anno di fine commessa:</label>
-                            <input type="number" id="annoDataFine" class="form-control" placeholder="Inserire anno di fine commessa" formControlName="annoDataFine">
-                        </div>
-                        <div class="col-md-3">
-                          <label for="meseFineCommessa">Mese di fine commessa:</label>
-                          <input type="number" min="1" max="12" id="meseDataFine" class="form-control" placeholder="Inserire mese di fine commessa" formControlName="meseDataFine">
-                      </div>
-                      </div>
-                      <br><br>
-                          <div class="row">
-                           <b>Filtri per data fine rapporto</b>
-                              <div class="col-md-3">
-                                  <label for="dataFineRapporto">Anno Fine Rapporto</label>
-                                  <input type="number" formControlName="annoFineContratto" placeholder="Inserire anno di fine rapporto" class="form-control">
-                              </div>
-                              <div class="col-md-3">
-                                <label for="dataFineRapporto">Mese Fine Rapporto</label>
-                                <input type="number" min="1" max="12" formControlName="meseFineContratto" class="form-control" placeholder="Inserire mese di fine rapporto">
-                            </div>
-                          </div>
-                          <br>
-                          <div class="row">
-                              <br>
-                              <div class="row">
-                                  <div class="col-md-6">
-                                    <br>
-                                      <button id="filter-Button" class="btn btn-success" style="float: right;"
-                                        [disabled]="filterAnagraficaDto.invalid" >Filtra</button>
-                                  </div>
-                                  <div class="col-6">
-                                    <br>
-                                    <button (click)="annullaFiltri()" id="filter-Button"
-                                          class="btn btn-info">Annulla filtri </button>
-                                  </div>
-                              </div>
-                          </div>
                   </div>
-              </form>
-          </div>      </ng-template>
-          </mat-expansion-panel>
+                  <br><br>
+                  <b>Filtri per commesse</b>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="aziendaCliente">Azienda Cliente:</label>
+                        <input type="text" id="commesse.aziendaCliente" placeholder="Inserire azienda cliente"
+                          class="form-control" formControlName="aziendaCliente">
+                      </div>
+                    </div>
+                  <br>
+
+                  
+                    <label for="annoInizioCommessa">Anno di inizio commessa:</label>
+                    <input type="number" id="annoDataInizio" class="form-control"
+                      placeholder="Inserire anno di inizio commessa" formControlName="annoDataInizio">
+                  
+                    <label for="meseInizioCommessa">mese di inizio commessa:</label>
+                    <input type="number" min="1" max="12" id="meseDataInizio" class="form-control"
+                      placeholder="Inserire mese di inizio commessa" formControlName="meseDataInizio">
+                  
+                  <div class="col-md-3">
+                    <label for="annoFineCommessa">Anno di fine commessa:</label>
+                    <input type="number" id="annoDataFine" class="form-control"
+                      placeholder="Inserire anno di fine commessa" formControlName="annoDataFine">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="meseFineCommessa">Mese di fine commessa:</label>
+                    <input type="number" min="1" max="12" id="meseDataFine" class="form-control"
+                      placeholder="Inserire mese di fine commessa" formControlName="meseDataFine">
+                  </div>
+                </div>
+                <br><br>
+                <div class="row">
+                  <b>Filtri per data fine rapporto contratto</b>
+                  <div class="col-md-3">
+                    <label for="dataFineRapporto">Anno Fine Rapporto</label>
+                    <input type="number" formControlName="annoFineContratto"
+                      placeholder="Inserire anno di fine rapporto" class="form-control">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="dataFineRapporto">Mese Fine Rapporto</label>
+                    <input type="number" min="1" max="12" formControlName="meseFineContratto" class="form-control"
+                      placeholder="Inserire mese di fine rapporto">
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <br>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <br>
+                      <button id="filter-Button" class="btn btn-success" style="float: right;"
+                        [disabled]="filterAnagraficaDto.invalid">Filtra</button>
+                    </div>
+                    <div class="col-6">
+                      <br>
+                      <button (click)="annullaFiltri()" id="filter-Button" class="btn btn-info">Annulla filtri
+                      </button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            </form>
       </div>
+      </ng-template>
+      </mat-expansion-panel>
     </div>
-    <div class="row" [hidden]="pageData.length>0">
-      <div class="col-12">
-        <p>Nessun risultato</p>
-        <br><br><br><br><br><br>
-      </div>
+  </div>
+  <div class="row" [hidden]="pageData.length>0">
+    <div class="col-12">
+      <p>Nessun risultato</p>
+      <br><br><br><br><br><br>
     </div>
-    <div class="row" [hidden]="pageData.length===0">
-      <div class="col-12">
+  </div>
+  <div class="row" [hidden]="pageData.length===0">
+    <div class="col-12">
 
-        <div class="table-responsive">
+      <div class="table-responsive">
 
-
-
-          <table class="table table-striped" >
-            <thead>
-              <tr>
-                <th>Azienda Cliente</th>
-                <th>Cliente Finale</th>
-                <th>Titolo Posizione</th>
-                <th>Distacco</th>
-                <th>Distacco Azienda</th>
-                <th>Distacco Data</th>
-                <th>Tariffa Giornaliera</th>
-                <th>Azienda Fatturazione Interna</th>
-                <th>Data Inizio</th>
-                <th>Data Fine</th>
-                <!-- <th>Anagrafica</th> -->
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let commessa of pageData;
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Azienda Cliente</th>
+              <th>Cliente Finale</th>
+              <th>Titolo Posizione</th>
+              <th>Distacco</th>
+              <th>Distacco Azienda</th>
+              <th>Distacco Data</th>
+              <th>Tariffa Giornaliera</th>
+              <th>Azienda Fatturazione Interna</th>
+              <th>Data Inizio</th>
+              <th>Data Fine</th>
+              <!-- <th>Anagrafica</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let commessa of pageData;
               let i =index">
-                <td>{{ commessa.aziendaCliente }}</td>
-                <td>{{ commessa.clienteFinale }}</td>
-                <td>{{ commessa.titoloPosizione }}</td>
-                <td *ngIf="commessa.distacco">Si</td>
-                <td *ngIf="!commessa.distacco">No</td>
-                <td>{{ commessa.distaccoAzienda }}</td>
-                <td>{{ commessa.distaccoData | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ commessa.tariffaGiornaliera }}</td>
-                <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
-                <td>{{ commessa.dataInizio | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ commessa.dataFine | date: 'dd/MM/yyyy' }}</td>
-                <!-- <td>  <button class="btn btn-success" (click)="showAnagraficaInfo(commessa)"><i class="fa fa-info" ></i></button></td> -->
-              </tr>
-            </tbody>
-
-          </table>
-          <div class="pagination">
-            <ul>
-              <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-                <span> <i class="fa fa-arrow-left"></i> </span>
-              </li>
-              <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
-                (click)="goToPage(page)">
-                <span>{{ page }}</span>
-              </li>
-              <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
-                <span> <i class="fa fa-arrow-right"></i> </span>
-              </li>
-            </ul>
-          </div>
-          <button class="btn btn-success" (click)="exportCommesseScaduteToExcel()">Esporta Commesse come Excel</button>
-          <br><br><br>
+              <td>{{ commessa.aziendaCliente }}</td>
+              <td>{{ commessa.clienteFinale }}</td>
+              <td>{{ commessa.titoloPosizione }}</td>
+              <td *ngIf="commessa.distacco">Si</td>
+              <td *ngIf="!commessa.distacco">No</td>
+              <td>{{ commessa.distaccoAzienda }}</td>
+              <td>{{ commessa.distaccoData | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ commessa.tariffaGiornaliera }}</td>
+              <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
+              <td>{{ commessa.dataInizio | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ commessa.dataFine | date: 'dd/MM/yyyy' }}</td>
+              <td (click)="dettaglioAnagraficaCommessaScaduta(idAnagraficaCommessaScaduta)"> <button
+                class="btn btn-primary"><i class="fa fa-info"></i></button> </td>
+              <!-- <td>  <button class="btn btn-success" (click)="showAnagraficaInfo(commessa)"><i class="fa fa-info" ></i></button></td> -->
+            </tr>
+          </tbody>
+        </table>
+        <div class="pagination">
+          <ul>
+            <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+              <span> <i class="fa fa-arrow-left"></i> </span>
+            </li>
+            <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
+              (click)="goToPage(page)">
+              <span>{{ page }}</span>
+            </li>
+            <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
+              <span> <i class="fa fa-arrow-right"></i> </span>
+            </li>
+          </ul>
         </div>
+        <button class="btn btn-success" (click)="exportCommesseScaduteToExcel()">Esporta Commesse come Excel</button>
+        <br><br><br>
       </div>
     </div>
+  </div>
   </div>
 </body>
 
