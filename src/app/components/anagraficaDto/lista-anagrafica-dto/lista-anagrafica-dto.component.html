@@ -272,7 +272,9 @@
               {{element.commesse.attesaLavori ? 'Si' : 'No'}}
             </td>
             <td>
-
+              <span style="margin:5px;">
+                <a [routerLink]="['/utente/', element?.anagrafica.id]"><button class="btn btn-success"><i class="fa fa-file"></i></button></a>
+              </span>
               <span style="margin:5px;">
                 <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button class="btn btn-info"><i class="fa fa-info"></i></button></a>
               </span>

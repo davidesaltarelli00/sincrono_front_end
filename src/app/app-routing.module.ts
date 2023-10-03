@@ -154,7 +154,7 @@ const routes: Routes = [
 
   //CALENDARIO
   {
-    path: 'utente/:codiceFiscale',
+    path: 'utente/:id',
     component: UtenteComponent,
     canActivate: [AuthGuard],
   },
