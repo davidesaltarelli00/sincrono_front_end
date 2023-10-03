@@ -110,6 +110,7 @@
                     <th>Attivo</th>
                     <th>Attesa lavori</th>
                     <th>Dettaglio</th>
+                    <th>Modifica</th>
                   </tr>
                 </thead>
 
@@ -130,6 +131,8 @@
                       <td>{{ commessa.attesaLavori ? 'Sì' : 'No' }}</td>
                       <td (click)="dettaglioAnagrafica(element.anagrafica.id)"> <button class="btn btn-primary"><i
                             class="fa fa-info"></i></button> </td>
+                      <td (click)="vaiAModificaAnagrafica(element.anagrafica.id)"><button class="btn btn-warning"><i
+                            class="fa fa-pencil"></i></button></td>
                     </tr>
                   </ng-container>
                 </tbody>
@@ -182,6 +185,7 @@
                     <th>Tutor</th>
                     <th>PFI</th>
                     <th>Info</th>
+                    <th>Modifica</th>
                     <!-- <th>Corso Sicurezza</th> -->
                     <!-- <th>Data Corso Sicurezza</th>
                       <th>PC</th>
@@ -216,6 +220,8 @@
                     <td>{{ element.contratto.pfi }}</td>
                     <td (click)="dettaglioAnagraficaContrattoInScadenza(element.anagrafica.id)"> <button
                         class="btn btn-primary"><i class="fa fa-info"></i></button> </td>
+                    <td (click)="vaiAModificaAnagrafica(element.anagrafica.id)"><button class="btn btn-warning"><i
+                          class="fa fa-pencil"></i></button></td>
                     <!-- <td>{{ contratto.contratto.corsoSicurezza }}</td> -->
                     <!-- <td>{{ contratto.contratto.dataCorsoSicurezza | date:'dd/MM/yyyy' }}</td>
                       <td>{{ contratto.contratto.pc }}</td>
@@ -299,132 +305,141 @@
                           class="form-control" formControlName="aziendaCliente">
                       </div>
                     </div>
-                  <br>
+                    <br>
 
-                  
+
                     <label for="annoInizioCommessa">Anno di inizio commessa:</label>
                     <input type="number" id="annoDataInizio" class="form-control"
                       placeholder="Inserire anno di inizio commessa" formControlName="annoDataInizio">
-                  
+
                     <label for="meseInizioCommessa">mese di inizio commessa:</label>
                     <input type="number" min="1" max="12" id="meseDataInizio" class="form-control"
                       placeholder="Inserire mese di inizio commessa" formControlName="meseDataInizio">
-                  
-                  <div class="col-md-3">
-                    <label for="annoFineCommessa">Anno di fine commessa:</label>
-                    <input type="number" id="annoDataFine" class="form-control"
-                      placeholder="Inserire anno di fine commessa" formControlName="annoDataFine">
+
+                    <div class="col-md-3">
+                      <label for="annoFineCommessa">Anno di fine commessa:</label>
+                      <input type="number" id="annoDataFine" class="form-control"
+                        placeholder="Inserire anno di fine commessa" formControlName="annoDataFine">
+                    </div>
+                    <div class="col-md-3">
+                      <label for="meseFineCommessa">Mese di fine commessa:</label>
+                      <input type="number" min="1" max="12" id="meseDataFine" class="form-control"
+                        placeholder="Inserire mese di fine commessa" formControlName="meseDataFine">
+                    </div>
                   </div>
-                  <div class="col-md-3">
-                    <label for="meseFineCommessa">Mese di fine commessa:</label>
-                    <input type="number" min="1" max="12" id="meseDataFine" class="form-control"
-                      placeholder="Inserire mese di fine commessa" formControlName="meseDataFine">
+                  <br><br>
+                  <div class="row">
+                    <b>Filtri per data fine rapporto contratto</b>
+                    <div class="col-md-3">
+                      <label for="dataFineRapporto">Anno Fine Rapporto</label>
+                      <input type="number" formControlName="annoFineContratto"
+                        placeholder="Inserire anno di fine rapporto" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                      <label for="dataFineRapporto">Mese Fine Rapporto</label>
+                      <input type="number" min="1" max="12" formControlName="meseFineContratto" class="form-control"
+                        placeholder="Inserire mese di fine rapporto">
+                    </div>
                   </div>
-                </div>
-                <br><br>
-                <div class="row">
-                  <b>Filtri per data fine rapporto contratto</b>
-                  <div class="col-md-3">
-                    <label for="dataFineRapporto">Anno Fine Rapporto</label>
-                    <input type="number" formControlName="annoFineContratto"
-                      placeholder="Inserire anno di fine rapporto" class="form-control">
-                  </div>
-                  <div class="col-md-3">
-                    <label for="dataFineRapporto">Mese Fine Rapporto</label>
-                    <input type="number" min="1" max="12" formControlName="meseFineContratto" class="form-control"
-                      placeholder="Inserire mese di fine rapporto">
-                  </div>
-                </div>
-                <br>
-                <div class="row">
                   <br>
                   <div class="row">
-                    <div class="col-md-6">
-                      <br>
-                      <button id="filter-Button" class="btn btn-success" style="float: right;"
-                        [disabled]="filterAnagraficaDto.invalid">Filtra</button>
-                    </div>
-                    <div class="col-6">
-                      <br>
-                      <button (click)="annullaFiltri()" id="filter-Button" class="btn btn-info">Annulla filtri
-                      </button>
+                    <br>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <br>
+                        <button id="filter-Button" class="btn btn-success" style="float: right;"
+                          [disabled]="filterAnagraficaDto.invalid">Filtra</button>
+                      </div>
+                      <div class="col-6">
+                        <br>
+                        <button (click)="annullaFiltri()" id="filter-Button" class="btn btn-info">Annulla filtri
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
+              </form>
             </div>
-            </form>
+          </ng-template>
+        </mat-expansion-panel>
       </div>
-      </ng-template>
-      </mat-expansion-panel>
     </div>
-  </div>
-  <div class="row" [hidden]="pageData.length>0">
-    <div class="col-12">
-      <p>Nessun risultato</p>
-      <br><br><br><br><br><br>
+    <div class="row" [hidden]="pageData.length>0">
+      <div class="col-12">
+        <p>Nessun risultato</p>
+        <br><br><br><br><br><br>
+      </div>
     </div>
-  </div>
-  <div class="row" [hidden]="pageData.length===0">
-    <div class="col-12">
+    <div class="row" [hidden]="pageData.length===0">
+      <div class="col-12">
 
-      <div class="table-responsive">
+        <div class="table-responsive">
 
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Azienda Cliente</th>
-              <th>Cliente Finale</th>
-              <th>Titolo Posizione</th>
-              <th>Distacco</th>
-              <th>Distacco Azienda</th>
-              <th>Distacco Data</th>
-              <th>Tariffa Giornaliera</th>
-              <th>Azienda Fatturazione Interna</th>
-              <th>Data Inizio</th>
-              <th>Data Fine</th>
-              <th>Dettaglio</th>
-              <!-- <th>Anagrafica</th> -->
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let commessa of pageData;
-              let i =index">
-              <td>{{ commessa.aziendaCliente }}</td>
-              <td>{{ commessa.clienteFinale }}</td>
-              <td>{{ commessa.titoloPosizione }}</td>
-              <td *ngIf="commessa.distacco">Si</td>
-              <td *ngIf="!commessa.distacco">No</td>
-              <td>{{ commessa.distaccoAzienda }}</td>
-              <td>{{ commessa.distaccoData | date: 'dd/MM/yyyy' }}</td>
-              <td>{{ commessa.tariffaGiornaliera }}</td>
-              <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
-              <td>{{ commessa.dataInizio | date: 'dd/MM/yyyy' }}</td>
-              <td>{{ commessa.dataFine | date: 'dd/MM/yyyy' }}</td>
-              <td (click)="dettaglioAnagraficaCommessaScaduta(idAnagraficaCommessaScaduta)"> <button
-                class="btn btn-primary"><i class="fa fa-info"></i></button> </td>
-              <!-- <td>  <button class="btn btn-success" (click)="showAnagraficaInfo(commessa)"><i class="fa fa-info" ></i></button></td> -->
-            </tr>
-          </tbody>
-        </table>
-        <div class="pagination">
-          <ul>
-            <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-              <span> <i class="fa fa-arrow-left"></i> </span>
-            </li>
-            <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
-              (click)="goToPage(page)">
-              <span>{{ page }}</span>
-            </li>
-            <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
-              <span> <i class="fa fa-arrow-right"></i> </span>
-            </li>
-          </ul>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Nominativo</th>
+                <th>Codice Fiscale</th>
+                <th>Azienda Cliente</th>
+                <th>Cliente Finale</th>
+                <th>Titolo Posizione</th>
+                <th>Distacco</th>
+                <th>Distacco Azienda</th>
+                <th>Distacco Data</th>
+                <th>Tariffa Giornaliera</th>
+                <th>Azienda Fatturazione Interna</th>
+                <th>Data Inizio</th>
+                <th>Data Fine</th>
+                <th>Dettaglio</th>
+                <th>Modifica</th>
+                <!-- <th>Anagrafica</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let element of listaAnagraficheCommesseScadute">
+                <tr *ngFor="let commessa of pageData">
+                  <td>{{element.nome}} {{element.cognome}}</td>
+                  <td>{{element.codiceFiscale}}</td>
+                  <td>{{ commessa.aziendaCliente }}</td>
+                  <td>{{ commessa.clienteFinale }}</td>
+                  <td>{{ commessa.titoloPosizione }}</td>
+                  <td>{{ commessa.distacco ? 'Sì' : 'No' }}</td>
+                  <td>{{ commessa.distaccoAzienda ? 'Sì' : 'No' }}</td>
+                  <td>{{ commessa.distaccoData | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ commessa.tariffaGiornaliera || '' }}</td>
+                  <td>{{ commessa.aziendaDiFatturazioneInterna || '' }}</td>
+                  <td>{{ commessa.dataInizio | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ commessa.dataFine | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ commessa.attivo ? 'Sì' : 'No' }}</td>
+                  <td>{{ commessa.attesaLavori ? 'Sì' : 'No' }}</td>
+                  <td (click)="dettaglioAnagrafica(idAnagraficaCommessaScaduta)"> <button class="btn btn-primary"><i
+                        class="fa fa-info"></i></button> </td>
+                  <td (click)="vaiAModificaAnagrafica(idAnagraficaCommessaScaduta)"><button class="btn btn-warning"><i
+                        class="fa fa-pencil"></i></button></td>
+                </tr>
+              </ng-container>
+            </tbody>
+
+          </table>
+          <div class="pagination">
+            <ul>
+              <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+                <span> <i class="fa fa-arrow-left"></i> </span>
+              </li>
+              <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
+                (click)="goToPage(page)">
+                <span>{{ page }}</span>
+              </li>
+              <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
+                <span> <i class="fa fa-arrow-right"></i> </span>
+              </li>
+            </ul>
+          </div>
+          <button class="btn btn-success" (click)="exportCommesseScaduteToExcel()">Esporta Commesse come Excel</button>
+          <br><br><br>
         </div>
-        <button class="btn btn-success" (click)="exportCommesseScaduteToExcel()">Esporta Commesse come Excel</button>
-        <br><br><br>
       </div>
     </div>
-  </div>
   </div>
 </body>
 
