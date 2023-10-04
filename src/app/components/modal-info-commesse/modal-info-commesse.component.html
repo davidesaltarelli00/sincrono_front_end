@@ -9,7 +9,9 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <header>Ecco le commesse di {{ data.anagraficaDto.anagrafica.nome }} {{ data.anagraficaDto.anagrafica.cognome }} <button style="float: right;" mat-flat-button ><i  class="fa fa-close" (click)="closeDialog()"></i> </button></header>
+          <header><h1>
+            Ecco le commesse di {{ data.anagraficaDto.anagrafica.nome }} {{ data.anagraficaDto.anagrafica.cognome }} <button style="float: right;" mat-flat-button ><i  class="fa fa-close" (click)="closeDialog()"></i> </button>
+          </h1></header>
         </div>
       </div>
       <div class="row">
@@ -21,13 +23,15 @@
                 <th>Nome</th>
                 <th>Cognome</th>
                 <th>Codice fiscale</th>
+                <th>Mail aziendale</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>{{ data.anagraficaDto.anagrafica.nome }}</td>
                 <td>{{ data.anagraficaDto.anagrafica.cognome }}</td>
-                <td>{{ data.anagraficaDto.anagrafica.codiceFiscale | uppercase }}</td>
+                <td>{{ data.anagraficaDto.anagrafica.codiceFiscale | uppercase }}  <i  style="cursor: pointer;" matTooltip="Copia" class="fa-solid fa-copy" (click)="copy(data.anagraficaDto.anagrafica.codiceFiscale)"></i></td>
+                <td>{{data.anagraficaDto.anagrafica.mailAziendale}}  <i  style="cursor: pointer;" matTooltip="Copia" class="fa-solid fa-copy" (click)="copy(data.anagraficaDto.anagrafica.mailAziendale)"></i></td>
               </tr>
             </tbody>
           </table>
@@ -43,25 +47,54 @@
                 <th>Titolo Posizione</th>
                 <th>Distacco</th>
                 <th>Distacco Azienda</th>
+                <th>Distacco data</th>
                 <th>Data Inizio</th>
                 <th>Data Fine</th>
                 <th>Tariffa Giornaliera</th>
                 <th>Azienda di Fatturazione Interna</th>
-                <!-- <th>Attivo</th> -->
+                <th>Modifica</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let commessa of data.anagraficaDto.commesse">
-                <td>{{ commessa.aziendaCliente }}</td>
-                <td>{{ commessa.clienteFinale }}</td>
-                <td>{{ commessa.titoloPosizione }}</td>
-                <td>{{ commessa.distacco ? 'Sì' : 'No' }}</td>
-                <td>{{ commessa.distaccoAzienda }}</td>
-                <td>{{ commessa.dataInizio | date }}</td>
-                <td>{{ commessa.dataFine | date }}</td>
-                <td>{{ commessa.tariffaGiornaliera }}</td>
-                <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
-                <!-- <td>{{ commessa.attivo ? 'Sì' : 'No' }}</td> -->
+                <td *ngIf="commessa.aziendaCliente!=null" >{{ commessa.aziendaCliente }}</td>
+                <td style="color: red;" *ngIf="commessa.aziendaCliente==null" >Dato non inserito.</td>
+
+                <td *ngIf="commessa.clienteFinale!=null" >{{ commessa.clienteFinale }}</td>
+                <td style="color: red;" *ngIf="commessa.clienteFinale==null" >Dato non inserito.</td>
+
+                <td *ngIf="commessa.titoloPosizione!=null" >{{ commessa.titoloPosizione }}</td>
+                <td  style="color: red;" *ngIf="commessa.titoloPosizione==null" >Dato non inserito.</td>
+
+                <td>
+                  <label class="switch" >
+                    <input type="checkbox" disabled [checked]="commessa.distacco">
+                    <span class="slider"></span>
+                  </label>
+                </td>
+
+                <td *ngIf="commessa.distaccoAzienda" >{{ commessa.distaccoAzienda }}</td>
+                <td style="color: red;"  *ngIf="!commessa.distaccoAzienda" >Dato non inserito.</td>
+
+
+                <td *ngIf="commessa.distaccoData">{{ commessa.distaccoData | date: 'dd/MM/yyyy' }}</td>
+                <td style="color: red;" *ngIf="!commessa.distaccoData">Dato non inserito.</td>
+
+                <td *ngIf="commessa.dataInizio!=null" >{{ commessa.dataInizio | date: 'dd/MM/yyyy' }}</td>
+                <td style="color: red;" *ngIf="commessa.dataInizio==null" >Dato non inserito.</td>
+
+                <td *ngIf="commessa.dataFine !=null" >{{ commessa.dataFine | date: 'dd/MM/yyyy' }}</td>
+                <td style="color: red;" *ngIf="commessa.dataFine ==null" >Dato non inserito.</td>
+
+                <td *ngIf="commessa.tariffaGiornaliera !=null" >{{ commessa.tariffaGiornaliera }}<i class="fa fa-euro-sign" ></i> </td>
+                <td style="color: red;" *ngIf="commessa.tariffaGiornaliera ==null">Dato non inserito.</td>
+
+
+                <td *ngIf=" commessa.aziendaDiFatturazioneInterna !=null" >{{ commessa.aziendaDiFatturazioneInterna }} </td>
+                <td style="color: red;" *ngIf=" commessa.aziendaDiFatturazioneInterna==null " >Dato non inserito.</td>
+
+
+                <td > <button class="btn btn-warning" (click)="modificaCommessa(data.anagraficaDto.anagrafica.id)" > <i class="fa fa-pencil"></i> </button> </td>
               </tr>
             </tbody>
           </table>
