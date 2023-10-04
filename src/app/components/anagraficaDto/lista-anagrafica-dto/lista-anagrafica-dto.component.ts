@@ -44,6 +44,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       attesaLavori: new FormControl(null),
       tipoAzienda: new FormGroup({
         id: new FormControl(null),
+        descrizione: new FormControl(null),
       }),
     }),
 
@@ -110,6 +111,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         attivo: new FormControl(true),
         attesaLavori: new FormControl(null),
         tipoAzienda: new FormGroup({
+          id: new FormControl(null),
           descrizione: new FormControl(null),
         }),
       }),
@@ -146,6 +148,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
   }
+
   profile() {
     this.router.navigate(['/profile-box/', this.userlogged]);
   }
@@ -558,6 +561,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   filter(value: any) {
+    console.log("Valore del form: "+value)
     const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
         if (obj[key] && typeof obj[key] === 'object') {
