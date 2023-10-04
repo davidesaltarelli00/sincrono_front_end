@@ -267,7 +267,8 @@
             </td>
             <td [ngStyle]="{'color': element?.commesse?.length > 0 ? 'green' : 'red'}">
               {{ element?.commesse?.length > 0 ? 'Inserita' : 'Non inserita' }}
-              <i *ngIf="element?.commesse?.length > 0" class="fa fa-info-circle" style="cursor:pointer;" (click)="mostraInfo(element.anagrafica?.id)"></i>
+              <i *ngIf="element?.commesse?.length > 0" class="fa fa-info-circle" style="cursor:pointer;" matTooltip="Vedi le commesse di {{element.anagrafica?.nome}} {{element.anagrafica?.cognome}}" (click)="mostraInfo(element.anagrafica?.id)"></i>
+              <i style="background-color: red;" *ngIf="element?.commesse?.length == 0" class="fa fa-plus-circle" style="cursor:pointer;" matTooltip="Aggiungi commesse a {{element.anagrafica?.nome}} {{element.anagrafica?.cognome}}" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"></i>
             </td>
 
             <td>

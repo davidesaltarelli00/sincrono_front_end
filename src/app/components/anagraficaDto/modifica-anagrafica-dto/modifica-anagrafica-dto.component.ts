@@ -57,11 +57,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   dataFormattata: any;
   selectedTipoContrattoId: any;
   numeroMensilitaCCNL: any;
+  numeroMensilitaDaDettaglio: any;
   minimiRet23: any;
   tipoDiContrattoControl: any;
   tipoContratto: any;
-  descrizioneLivelloCCNL: any ;
+  descrizioneLivelloCCNL: any;
   elencoLivelliCCNL: any[] = [];
+  mensileTOT: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -463,6 +465,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         } else {
           this.contrattoVuoto = false;
           console.log('Dati del contratto: ' + JSON.stringify(this.contratto));
+          this.numeroMensilitaDaDettaglio = (resp as any)['anagraficaDto'][
+            'contratto'
+          ]['tipoCcnl']['numeroMensilita'];
+          console.log(
+            'NUMBER MENSILITA DA DETTAGLIO:' + this.numeroMensilitaDaDettaglio
+          );
+
           this.tipoDiContrattoControl =
             this.contratto.tipoContratto.descrizione;
           console.log('TIPO DI CONTRATTO: ' + this.tipoDiContrattoControl);
@@ -656,7 +665,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   changeElencoLivelliCCNL() {
-    console.log("VALORE VALORIZZATO PER ENDPOINT"+this.descrizioneLivelloCCNL);
+    console.log(
+      'VALORE VALORIZZATO PER ENDPOINT' + this.descrizioneLivelloCCNL
+    );
     this.anagraficaDtoService
       .changeCCNL(localStorage.getItem('token'), this.descrizioneLivelloCCNL)
       .subscribe(
@@ -1616,7 +1627,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       );
   }
 
-
   caricaTipoAzienda() {
     this.anagraficaDtoService
       .getTipoAzienda(localStorage.getItem('token'))
@@ -2056,9 +2066,33 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       document
         .getElementById('mensileTOT')
         ?.setAttribute('value', mensileTot.toFixed(2));
+      this.mensileTOT = mensileTot;
+      console.log(
+        'MENSILE TOTALE CALCOLATO:' +
+          this.mensileTOT +
+          '\n Numero mensilitá: ' +
+          this.numeroMensilitaDaDettaglio
+      );
+      this.calcoloRAL();
     } else {
       // Se uno dei campi è vuoto, nascondi il risultato o reimpostalo a zero, a seconda delle tue esigenze
       document.getElementById('mensileTOT')?.setAttribute('value', '');
+    }
+  }
+
+  calcoloRAL() {
+    const RALControl = this.anagraficaDto.get('contratto.ralAnnua');
+
+    if (RALControl) {
+      if (
+        this.mensileTOT !== undefined &&
+        this.numeroMensilitaDaDettaglio !== undefined
+      ) {
+        const RALCalcolata = this.mensileTOT * this.numeroMensilitaDaDettaglio;
+
+        RALControl.setValue(RALCalcolata.toFixed(2));
+        console.log('RAL CALCOLATA:' + RALCalcolata.toFixed(2));
+      }
     }
   }
 }
