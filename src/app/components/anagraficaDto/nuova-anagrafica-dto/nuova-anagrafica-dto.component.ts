@@ -14,6 +14,7 @@ import { ThemePalette } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -80,7 +81,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     private router: Router,
     private contrattoService: ContrattoService,
     private datePipe: DatePipe,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public snackBar: MatSnackBar
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -937,7 +939,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
               break;
           }
         } else {
-          console.log('Livello contratto non trovato nella lista');
+          console.log('-----------');
         }
       } else {
         console.log('Valore non valido o livello contratto non selezionato');
@@ -1534,9 +1536,9 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   onChangeLivelloContratto(event: any) {
     const target = event.target as HTMLInputElement;
     if (target) {
-      const selectedValue = parseInt(target.value, 10); // Converte il valore selezionato in un numero
+      const selectedValue = parseInt(target.value, 10);
       if (!isNaN(selectedValue)) {
-        const selectedLivello = this.livelliContratti.find(
+        const selectedLivello = this.elencoLivelliCCNL.find(
           (livello: any) => livello.id === selectedValue
         );
 
@@ -1547,17 +1549,27 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           const tipoContratto = this.AnagraficaDto.get(
             'contratto.tipoContratto.id'
           );
-          if (this.tipoContratto.descrizione === 'Stage') {
-            console.log('é uno stage, NO retr lorda');
-            let retribuzioneMensileLorda = this.AnagraficaDto.get(
-              'contratto.retribuzioneMensileLorda'
-            );
-            retribuzioneMensileLorda?.setValue('');
+          if (this.tipoContratto != null) {
+            if (this.tipoContratto.descrizione === 'Stage') {
+              console.log('é uno stage, NO retr lorda');
+              let retribuzioneMensileLorda = this.AnagraficaDto.get(
+                'contratto.retribuzioneMensileLorda'
+              );
+              retribuzioneMensileLorda?.setValue('');
+            } else {
+              let retribuzioneMensileLorda = this.AnagraficaDto.get(
+                'contratto.retribuzioneMensileLorda'
+              );
+              retribuzioneMensileLorda?.setValue(this.minimiRet23);
+            }
           } else {
-            let retribuzioneMensileLorda = this.AnagraficaDto.get(
-              'contratto.retribuzioneMensileLorda'
-            );
-            retribuzioneMensileLorda?.setValue(this.minimiRet23);
+            const config = new MatSnackBarConfig();
+            config.verticalPosition = 'top';
+            config.horizontalPosition = 'center';
+            config.duration = 5000;
+            config.panelClass = ['custom-snackbar'];
+
+            this.snackBar.open('ATTENZIONE: tipo di contratto non selezionato.', 'Chiudi', config);
           }
         } else {
           console.log('Livello contratto non trovato nella lista');
