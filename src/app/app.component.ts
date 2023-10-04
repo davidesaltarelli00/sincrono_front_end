@@ -1,4 +1,10 @@
-import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { AuthService } from './components/login/login-service';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -12,7 +18,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   token: string | null = null;
   userLoggedMail: any;
   userLoggedName: any;
@@ -22,7 +28,7 @@ export class AppComponent implements OnInit {
   voceMenu: any;
   userRole: any;
   jsonData: any = {};
-  idFunzione: any={};
+  idFunzione: any = {};
   id: any;
   currentDateTime: any;
 
@@ -34,43 +40,35 @@ export class AppComponent implements OnInit {
     private dialog: MatDialog,
     private http: HttpClient,
     private datePipe: DatePipe
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-
     const currentDate = new Date();
     this.currentDateTime = this.datePipe.transform(currentDate, 'yyyy-MM-dd'); // HH:mm:ss
-
     this.token = localStorage.getItem('tokenProvvisorio');
     this.token = localStorage.getItem('token');
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.token = localStorage.getItem('token');
       }
-      // console.log('Token:', this.token);
-
-      if (this.token) {
-        // Se l'utente è autenticato, recupera i dati dell'utente
-        this.getUserLogged();
-        this.getUserRole();
-      }
     });
-
     this.token = localStorage.getItem('token');
-
-    // Estrai il token provvisorio dai parametri della URL
     this.route.params.subscribe((params) => {
       this.tokenProvvisorio = params['tokenProvvisorio'];
     });
   }
 
+  ngAfterViewInit(): void {
+    if (this.token) {
+      this.getUserLogged();
+      this.getUserRole();
+    }
+  }
+
   getUserLogged() {
     const token = localStorage.getItem('token');
-    // console.log('TOKEN PROFILE BOX APP COMPONENT: ' + token);
     this.profileBoxService.getData().subscribe(
       (response: any) => {
-        // console.log("RESPONSE PROFILE BOX: " + JSON.stringify(response));
         this.userLoggedMail = response.anagraficaDto.anagrafica.mailAziendale;
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
@@ -82,7 +80,6 @@ export class AppComponent implements OnInit {
         );
       }
     );
-    // console.log('l utente che si é loggato é un ' + this.userRole);
   }
 
   getUserRole() {
@@ -107,7 +104,6 @@ export class AppComponent implements OnInit {
         );
       }
     );
-    // console.log('l utente che si é loggato é un ' + this.userRole);
   }
 
   generateMenuByUserRole() {
@@ -117,12 +113,10 @@ export class AppComponent implements OnInit {
       Authorization: `Bearer ${this.token}`,
     });
     const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.id}`;
-    this.http.get<MenuData>(url, {headers: headers}).subscribe(
+    this.http.get<MenuData>(url, { headers: headers }).subscribe(
       (data) => {
         this.jsonData = data;
-        // console.log(this.jsonData);
         this.idFunzione = data.list[0].id;
-        // console.log(this.idFunzione);
       },
       (error) => {
         console.error('Errore nella generazione del menu:', error);
@@ -137,21 +131,15 @@ export class AppComponent implements OnInit {
       Authorization: `Bearer ${this.token}`,
     });
     const url = `http://localhost:8080/services/operazioni/${functionId}`;
-    this.http.get(url,{headers: headers}).subscribe(
+    this.http.get(url, { headers: headers }).subscribe(
       (data: any) => {
         console.log('Permessi ottenuti:', data);
-        this.showPermissionsDialog(data);
       },
       (error) => {
         console.error('Errore nella generazione dei permessi:', error);
       }
     );
   }
-
-  showPermissionsDialog(permissions: any) {
-   console.log("Permessi: "+ permissions);
-  }
-
 
   logout() {
     this.dialog.open(AlertLogoutComponent);
@@ -165,7 +153,6 @@ export class AppComponent implements OnInit {
     this.isRecuperoPassword = false;
   }
 }
-
 
 interface MenuData {
   esito: {
