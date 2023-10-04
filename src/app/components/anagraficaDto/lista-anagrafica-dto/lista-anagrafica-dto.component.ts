@@ -561,11 +561,17 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   filter(value: any) {
-    console.log("Valore del form: "+value)
+    console.log('Valore del form: ' + JSON.stringify(value));
     const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
         if (obj[key] && typeof obj[key] === 'object') {
           removeEmpty(obj[key]);
+          // Rimuovi l'array se è un array vuoto o un oggetto vuoto
+          if (Array.isArray(obj[key]) && obj[key].length === 0) {
+            delete obj[key];
+          } else if (Object.keys(obj[key]).length === 0) {
+            delete obj[key];
+          }
         } else if (obj[key] === '' || obj[key] === null) {
           delete obj[key];
         }
@@ -574,9 +580,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         }
         if (obj.contratto && Object.keys(obj.contratto).length === 0) {
           delete obj.contratto;
-        }
-        if (obj.commesse && Object.keys(obj.commesse).length === 0) {
-          delete obj.commesse;
         }
         if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
           delete obj.tipoContratto;
@@ -608,6 +611,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         }
       });
     };
+
     removeEmpty(this.filterAnagraficaDto.value);
     const body = {
       anagraficaDto: this.filterAnagraficaDto.value,
