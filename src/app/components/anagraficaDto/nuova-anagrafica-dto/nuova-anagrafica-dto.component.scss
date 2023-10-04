@@ -94,7 +94,9 @@ button {
   border: 1px solid #333;
 }
 
-
+*{
+  box-sizing: border-box;
+}
 
 // overflow
 body {
@@ -343,4 +345,43 @@ input[disabled] {
   color: #999;
   cursor: not-allowed;
   border: 1px solid #ccc;
+}
+
+/* Stile di base per il form */
+.form-container {
+  max-width: 600px; /* Larghezza massima del form */
+  margin: 0 auto; /* Centra il form orizzontalmente */
+  padding: 20px;
+}
+
+/* Stile per il campo di input */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Stile per le etichette */
+label {
+  display: block; /* Mostra le etichette su una nuova riga */
+  font-weight: bold;
+}
+
+/* Stile per gli input di testo */
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Media query per dispositivi con larghezza massima di 768px */
+@media screen and (max-width: 768px) {
+  .form-container {
+    max-width: 100%; /* Larghezza massima del form per schermi più piccoli */
+    padding: 10px; /* Riduci il padding del form */
+  }
+
+  /* Riduci il margine tra i campi di input */
+  .form-group {
+    margin-bottom: 10px;
+  }
 }

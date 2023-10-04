@@ -46,6 +46,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirective';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
+import { ModalInfoCommesseComponent } from './components/modal-info-commesse/modal-info-commesse.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
     HighlightNullFieldDirective,
     ListaOrganicoComponent,
     HomeComponent,
+    ModalInfoCommesseComponent,
     ListaAnagraficaDtoComponent,
     DettaglioAnagraficaDtoComponent,
     ModificaAnagraficaDtoComponent,

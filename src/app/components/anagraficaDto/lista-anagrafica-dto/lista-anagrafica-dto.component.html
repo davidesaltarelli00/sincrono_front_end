@@ -267,7 +267,9 @@
             </td>
             <td [ngStyle]="{'color': element?.commesse?.length > 0 ? 'green' : 'red'}">
               {{ element?.commesse?.length > 0 ? 'Inserita' : 'Non inserita' }}
+              <i *ngIf="element?.commesse?.length > 0" class="fa fa-info-circle" style="cursor:pointer;" (click)="mostraInfo(element.anagrafica?.id)"></i>
             </td>
+
             <td>
               {{element.commesse.attesaLavori ? 'Si' : 'No'}}
             </td>

@@ -7,6 +7,8 @@ import { ContrattoService } from '../../contratto/contratto-service';
 import { AuthService } from '../../login/login-service';
 import { profileBoxService } from '../../profile-box/profile-box.service';
 import * as XLSX from 'xlsx';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalInfoCommesseComponent } from '../../modal-info-commesse/modal-info-commesse.component';
 declare var $: any;
 
 @Component({
@@ -93,6 +95,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   pageData: any[] = [];
   risultatiFilter: any[] = [];
   inseritoContrattoIndeterminato = true;
+  elencoCommesse: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -102,7 +105,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     public authService: AuthService,
     private router: Router,
-    private profileBoxService: profileBoxService
+    private profileBoxService: profileBoxService,
+    private dialog: MatDialog
   ) {
     this.filterAnagraficaDto = this.formBuilder.group({
       anagrafica: new FormGroup({
@@ -643,6 +647,39 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           console.log('Si é verificato un errore: ' + error);
         }
       );
+  }
+
+  mostraInfo(id: any) {
+    console.log(id);
+    this.anagraficaDtoService
+      .detailAnagraficaDto(id, localStorage.getItem('token'))
+      .subscribe(
+        (resp: any) => {
+          console.log(resp);
+          this.data = (resp as any)['anagraficaDto'];
+          console.log(this.data);
+          this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
+          console.log(this.elencoCommesse);
+
+          // Apro il dialog e passo i dati al componente
+          const dialogRef = this.dialog.open(ModalInfoCommesseComponent, {
+            data: {
+              // Passa qui i dati che desideri
+              anagraficaDto: this.data,
+              commesse: this.elencoCommesse,
+            },
+          });
+        },
+        (error: any) => {
+          console.error(
+            'ERRORE DURANTE IL CARICAMENTO DELLE COMMESSE:' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
+  data(data: any) {
+    throw new Error('Method not implemented.');
   }
 
   exportListaAnagraficaToExcel() {

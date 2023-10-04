@@ -68,10 +68,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   descrizioneContrattoNazionale: any;
   descrizioneCCNL: any;
   numeroMensilitaCCNL: any;
-  descrizioneLivelloCCNL:any;
+  descrizioneLivelloCCNL: any;
   minimiRet23: any;
   ralAnnua: any;
   tipoContratto: any;
+  mobile: boolean;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -81,6 +82,20 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     private datePipe: DatePipe,
     public dialog: MatDialog
   ) {
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
+
     this.AnagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
         tipoAzienda: new FormGroup({
@@ -292,6 +307,20 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     if (retribuzioneNettaMensileControl) {
       retribuzioneNettaMensileControl.disable();
       retribuzioneNettaMensileControl.setValue('');
+    }
+
+    //all inizio devono essere disabilitati, si abilitano solo se si seleziona il contratto PARTITA IVA
+
+    const tariffaPartitaIvaControl = this.AnagraficaDto.get(
+      'contratto.tariffaPartitaIva'
+    );
+    const retribuzioneNettaGiornalieraControl = this.AnagraficaDto.get(
+      'contratto.retribuzioneNettaGiornaliera'
+    );
+
+    if (tariffaPartitaIvaControl && retribuzioneNettaGiornalieraControl) {
+      tariffaPartitaIvaControl.disable();
+      retribuzioneNettaGiornalieraControl.disable();
     }
 
     // // Aggiungi un listener valueChanges per il controllo tipoAzienda in anagrafica
@@ -1580,19 +1609,27 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       if (selectedOption) {
         console.log('Opzione selezionata: ', selectedOption);
         this.numeroMensilitaCCNL = selectedOption.numeroMensilita;
-        this.descrizioneLivelloCCNL=selectedOption.descrizione;
+        this.descrizioneLivelloCCNL = selectedOption.descrizione;
         console.log('numero mensilitá:' + this.numeroMensilitaCCNL);
-        console.log("Livelli contratto: "+ this.descrizioneLivelloCCNL);
+        console.log('Livelli contratto: ' + this.descrizioneLivelloCCNL);
         livelloControl?.enable();
         this.ccnLSelezionato = true;
         // Qui andrà la chiamata per l'endpoint per la get del livello contratto
         this.anagraficaDtoService
-          .changeCCNL(localStorage.getItem('token'), this.descrizioneLivelloCCNL)
+          .changeCCNL(
+            localStorage.getItem('token'),
+            this.descrizioneLivelloCCNL
+          )
           .subscribe(
             (response: any) => {
-              console.log("RESPONSE NUOVA LISTA LIVELLI CCNL:"+JSON.stringify(response));
+              console.log(
+                'RESPONSE NUOVA LISTA LIVELLI CCNL:' + JSON.stringify(response)
+              );
               this.elencoLivelliCCNL = response.list;
-              console.log('+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' + JSON.stringify(this.elencoLivelliCCNL));
+              console.log(
+                '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
+                  JSON.stringify(this.elencoLivelliCCNL)
+              );
             },
             (error: any) => {
               console.error(

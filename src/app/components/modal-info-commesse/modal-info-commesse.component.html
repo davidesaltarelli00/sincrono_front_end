@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <header>Ecco le commesse di {{ data.anagraficaDto.anagrafica.nome }} {{ data.anagraficaDto.anagrafica.cognome }} <button style="float: right;" mat-flat-button ><i  class="fa fa-close" (click)="closeDialog()"></i> </button></header>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Cognome</th>
+                <th>Codice fiscale</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ data.anagraficaDto.anagrafica.nome }}</td>
+                <td>{{ data.anagraficaDto.anagrafica.cognome }}</td>
+                <td>{{ data.anagraficaDto.anagrafica.codiceFiscale | uppercase }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Azienda Cliente</th>
+                <th>Cliente Finale</th>
+                <th>Titolo Posizione</th>
+                <th>Distacco</th>
+                <th>Distacco Azienda</th>
+                <th>Data Inizio</th>
+                <th>Data Fine</th>
+                <th>Tariffa Giornaliera</th>
+                <th>Azienda di Fatturazione Interna</th>
+                <!-- <th>Attivo</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let commessa of data.anagraficaDto.commesse">
+                <td>{{ commessa.aziendaCliente }}</td>
+                <td>{{ commessa.clienteFinale }}</td>
+                <td>{{ commessa.titoloPosizione }}</td>
+                <td>{{ commessa.distacco ? 'Sì' : 'No' }}</td>
+                <td>{{ commessa.distaccoAzienda }}</td>
+                <td>{{ commessa.dataInizio | date }}</td>
+                <td>{{ commessa.dataFine | date }}</td>
+                <td>{{ commessa.tariffaGiornaliera }}</td>
+                <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
+                <!-- <td>{{ commessa.attivo ? 'Sì' : 'No' }}</td> -->
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
