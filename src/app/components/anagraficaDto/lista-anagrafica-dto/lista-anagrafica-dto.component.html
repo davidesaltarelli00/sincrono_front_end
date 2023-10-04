@@ -78,21 +78,6 @@
               <br>
               <div class="row">
                 <div class="col-md-3">
-                  <div formGroupName="tipoLivelloContratto">
-                    <label for="filter-LivelloContratto">Tipo livello Contratto</label>
-                    <select (keyup)="filter(filterAnagraficaDto.value)"  class="form-select" aria-label="Default select example" id="contratto.tipoLivelloContratto.id" formControlName="id">
-                      <option value="">--nessuna selezione--</option>
-                      <option
-                        *ngFor="let livello of livelliContratti"
-                        [value]="livello.id"
-                      >
-                        {{ livello.livello }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-md-3">
                   <div formGroupName="tipoContratto">
                     <label for="filter-TipoContratto">Tipo Contratto</label>
                     <select (keyup)="filter(filterAnagraficaDto.value)"  class="form-select" aria-label="Default select example" id="contratto.tipoContratto.id" formControlName="id" (change)="onTipoContrattoChange($event)" >
@@ -107,8 +92,8 @@
 
                 <div class="col-md-3">
                   <div formGroupName="tipoCcnl">
-                    <label for="tipoCcnl">Tipo Contratto nazionale</label>
-                    <select (keyup)="filter(filterAnagraficaDto.value)"
+                    <label for="tipoCcnl">CCNL</label>
+                    <select (keyup)="filter(filterAnagraficaDto.value)" (change)="onChangeTipoContrattoValue($event)"
                     class="form-select" aria-label="Default select example"
                       id="contratto.tipoCcnl.id"
                       formControlName="id"
@@ -123,7 +108,26 @@
                     </select>
 
                   </div>
+
+
+
                 </div>
+
+                <div class="col-md-3">
+                  <div formGroupName="tipoLivelloContratto">
+                    <label for="filter-LivelloContratto">Livello Contratto</label>
+                    <select (keyup)="filter(filterAnagraficaDto.value)"  class="form-select" aria-label="Default select example" id="contratto.tipoLivelloContratto.id" formControlName="id">
+                      <option value="">--nessuna selezione--</option>
+                      <option
+                        *ngFor="let livello of elencoLivelliCCNL"
+                        [value]="livello.id"
+                      >
+                        {{ livello.livello }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
                 <div class="col-md-3" formGroupName="tipoAzienda">
                   <label for="tipoAzienda">Nome Azienda</label>
                   <select  (keyup)="filter(filterAnagraficaDto.value)" class="form-select" aria-label="Default select example" id="contratto.tipoAzienda.id" formControlName="id" type="number">
@@ -219,7 +223,7 @@
   <br>
   <div class="row" *ngIf="pageData.length===0" >
     <div class="col-12">
-      <h3 style="text-align: center; padding: 20px;">La ricerca non ha prodotto risultati.</h3>
+      <h3 style="text-align: center; padding: 20px;"> <i class="fa fa-exclamation-triangle" ></i> Nessun risultato.</h3>
     </div>
   </div>
   <div class="row" *ngIf="pageData.length>0" >
@@ -265,11 +269,15 @@
             <td *ngIf="element.contratto?.tipoContratto?.descrizione==='#'" >
               Generico
             </td>
-            <td [ngStyle]="{'color': element?.commesse?.length > 0 ? 'green' : 'red'}">
+            <td style="cursor: pointer;" [ngStyle]="{'color': element?.commesse?.length > 0 ? 'green' : 'red'}" [matTooltip]="element?.commesse?.length > 0 ? 'Vedi le commesse di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi commesse a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome" (click)="handleClick(element)">
               {{ element?.commesse?.length > 0 ? 'Inserita' : 'Non inserita' }}
-              <i *ngIf="element?.commesse?.length > 0" class="fa fa-info-circle" style="cursor:pointer;" matTooltip="Vedi le commesse di {{element.anagrafica?.nome}} {{element.anagrafica?.cognome}}" (click)="mostraInfo(element.anagrafica?.id)"></i>
-              <i style="background-color: red;" *ngIf="element?.commesse?.length == 0" class="fa fa-plus-circle" style="cursor:pointer;" matTooltip="Aggiungi commesse a {{element.anagrafica?.nome}} {{element.anagrafica?.cognome}}" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"></i>
+              <i *ngIf="element?.commesse?.length > 0" class="fa fa-info-circle" style="cursor:pointer;"></i>
+              <i *ngIf="element?.commesse?.length == 0" class="fa fa-plus-circle" style="cursor:pointer;"></i>
             </td>
+
+
+
+
 
             <td>
               {{element.commesse.attesaLavori ? 'Si' : 'No'}}

@@ -96,6 +96,11 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   risultatiFilter: any[] = [];
   inseritoContrattoIndeterminato = true;
   elencoCommesse: any;
+  descrizioneLivelloCCNL: any;
+  elencoLivelliCCNL: any[] = [];
+  ccnLSelezionato: any;
+  numeroMensilitaCCNL: any;
+  idCCNLselezionato: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -257,6 +262,12 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.caricaContrattoNazionale();
     this.caricaTipoCanaleReclutamento();
     this.caricaTipoCausaFineRapporto();
+    const livelloContrattoControl = this.filterAnagraficaDto.get(
+      'contratto.tipoLivelloContratto.id'
+    );
+    if (livelloContrattoControl) {
+      livelloContrattoControl.disable();
+    }
   }
 
   // Metodo per verificare campi vuoti
@@ -482,11 +493,11 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       });
   }
   caricaLivelloContratto() {
-    this.contrattoService
-      .getLivelloContratto(localStorage.getItem('token'))
-      .subscribe((result: any) => {
-        this.livelliContratti = (result as any)['list'];
-      });
+    // this.contrattoService
+    //   .getLivelloContratto(localStorage.getItem('token'))
+    //   .subscribe((result: any) => {
+    //     this.livelliContratti = (result as any)['list'];
+    //   });
   }
   caricaTipoAzienda() {
     this.contrattoService
@@ -738,4 +749,63 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       );
     };
   }
+
+  onChangeTipoContrattoValue(event: any) {
+    const selectedValue = parseInt(event.target.value, 10);
+
+    const livelliCCNL = this.filterAnagraficaDto.get(
+      'contratto.tipoLivelloContratto.id'
+    );
+
+    if (!isNaN(selectedValue)) {
+      // Cerca l'opzione selezionata nei contratti nazionali
+      const selectedOption = this.tipiCcnl.find(
+        (canale: any) => canale.id === selectedValue
+      );
+
+      if (selectedOption) {
+        console.log('Opzione selezionata: ', selectedOption);
+        this.idCCNLselezionato = selectedOption.descrizione;
+        livelliCCNL?.enable();
+
+        this.anagraficaDtoService
+          .changeCCNL(localStorage.getItem('token'), this.idCCNLselezionato)
+          .subscribe(
+            (response: any) => {
+              console.log(
+                'RESPONSE NUOVA LISTA LIVELLI CCNL:' + JSON.stringify(response)
+              );
+              this.elencoLivelliCCNL = response.list;
+              console.log(
+                '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
+                  JSON.stringify(this.elencoLivelliCCNL)
+              );
+            },
+            (error: any) => {
+              console.error(
+                'Errore durante il caricamento dei livelli di contratto: ' +
+                  error
+              );
+            }
+          );
+      } else {
+        console.log('Opzione non trovata ');
+      }
+    } else {
+      console.log('Valore non valido ');
+    }
+  }
+
+
+  handleClick(element: any) {
+    if (element?.commesse?.length > 0) {
+      // Se ci sono commesse, esegui l'azione desiderata (ad esempio, mostraInfo)
+      this.mostraInfo(element.anagrafica?.id);
+    } else {
+      // Se non ci sono commesse, reindirizza l'utente a un'altra pagina
+      this.router.navigate(['/modifica-anagrafica', element.anagrafica.id]);
+    }
+  }
+
+
 }
