@@ -192,13 +192,13 @@ export class ListaDashboardComponent {
           );
         }
       );
-   
-      this.dashboardService
+
+    this.dashboardService
       .getAllCommesseScadute(localStorage.getItem('token'))
       .subscribe(
         (resp: any) => {
           const filteredList = resp.list.filter((item: any) => item.commesse.length > 0);
-          
+
           filteredList.forEach((item: any) => {
             if (item.anagrafica && item.anagrafica.id) {
               this.idAnagraficaCommessaScaduta = item.anagrafica.id;
@@ -210,12 +210,12 @@ export class ListaDashboardComponent {
               this.listaCommesseScadute.push(commesse);
             });
           });
-    
+
           console.log(
             'Lista commesse scadute: ' +
             JSON.stringify(this.listaCommesseScadute)
           );
-    
+
           this.currentPage = 1;
           this.pageData = this.getCurrentPageItems();
         },
@@ -226,7 +226,7 @@ export class ListaDashboardComponent {
           );
         }
       );
-    
+
     this.mostraFiltri = false;
   }
   filter(value: any) {
@@ -602,32 +602,28 @@ export class ListaDashboardComponent {
 
     const workSheetData = [
       // Intestazioni delle colonne
-      ["Azienda Cliente", "Cliente finale", "Titolo posizione", "Distacco", "Distacco azienda", "Distacco data", "Tariffa giornaliera", "Azienda di fatturazione interna", "Data inizio", "Data fine"]
+      ["Nominativo", "Codice fiscale", "Azienda Cliente", "Cliente finale", "Titolo posizione", "Distacco", "Distacco azienda", "Distacco data", "Tariffa giornaliera", "Azienda di fatturazione interna", "Data inizio", "Data fine", "Attivo", "Attesa lavori"]
     ];
 
-    // Aggiungi dati
-    this.listaCommesseScadute.forEach((item: any) => {
-
-
-      workSheetData.push([
-        item.aziendaCliente ? item.aziendaCliente.toString() : '',
-        item.clienteFinale ? item.clienteFinale.toString() : '',
-        item.titoloPosizione ? item.titoloPosizione.toString() : '',
-        item.distacco ? item.distacco.toString() : '',
-        item.distaccoAzienda ? item.distaccoAzienda.toString() : '',
-        this.datePipe.transform(
-          item.distaccoData ? item.distaccoData.toString() : '', 'yyyy-MM-dd'
-        ),
-        item.tariffaGiornaliera ? item.tariffaGiornaliera.toString() : '',
-        item.aziendaDiFatturazioneInterna ? item.aziendaDiFatturazioneInterna.toString() : '',
-        this.datePipe.transform(
-          item.dataInizio ? item.dataInizio.toString() : '', 'yyyy-MM-dd'
-        ),
-        this.datePipe.transform(
-          item.dataFine ? item.dataFine.toString() : '', 'yyyy-MM-dd'
-        ),
-
-      ]);
+    this.listaAnagraficheCommesseScadute.forEach((element: any) => {
+      this.pageData.forEach((commessa: any) => {
+        workSheetData.push([
+          `${element.nome} ${element.cognome}`,
+          element.codiceFiscale ? element.codiceFiscale.toString() : '',
+          commessa.aziendaCliente ? commessa.aziendaCliente.toString() : '',
+          commessa.clienteFinale ? commessa.clienteFinale.toString() : '',
+          commessa.titoloPosizione ? commessa.titoloPosizione.toString() : '',
+          commessa.distacco ? commessa.distacco.toString() : '',
+          commessa.distaccoAzienda ? commessa.distaccoAzienda.toString() : '',
+          this.datePipe.transform(commessa.distaccoData ? commessa.distaccoData.toString() : '', 'yyyy-MM-dd'),
+          commessa.tariffaGiornaliera ? commessa.tariffaGiornaliera.toString() : '',
+          commessa.aziendaDiFatturazioneInterna ? commessa.aziendaDiFatturazioneInterna.toString() : '',
+          this.datePipe.transform(commessa.dataInizio ? commessa.dataInizio.toString() : '', 'yyyy-MM-dd'),
+          this.datePipe.transform(commessa.dataFine ? commessa.dataFine.toString() : '', 'yyyy-MM-dd'),
+          commessa.attivo ? 'Sì' : 'No',
+          commessa.attesaLavori ? 'Sì' : 'No',
+        ]);
+      });
     });
 
 
