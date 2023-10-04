@@ -89,6 +89,7 @@ import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
     MaterialModule,
   ],
   providers: [DatePipe, CurrencyPipe],
+  //  { provide: LOCALE_ID, useValue: 'it-IT' }
   bootstrap: [AppComponent],
 })
 export class AppModule {

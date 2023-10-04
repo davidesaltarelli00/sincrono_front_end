@@ -14,6 +14,7 @@ export class ProfileBoxComponent {
   anagrafica: any;
   username_accesso = null;
   codiceFiscaleUtenteLoggato: any;
+  id: any;
 
   constructor(
     private authService: AuthService,
@@ -26,6 +27,8 @@ export class ProfileBoxComponent {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         this.anagrafica = response;
+        this.id=response.anagraficaDto.anagrafica.id;
+        console.log("ID:"+this.id);
         this.username_accesso = response.anagraficaDto.anagrafica.mailAziendale;
         this.codiceFiscaleUtenteLoggato =
           response.anagraficaDto.anagrafica.codiceFiscale;
@@ -43,6 +46,6 @@ export class ProfileBoxComponent {
   }
 
   goToRapportinoByCodiceFiscale() {
-    this.router.navigate(['/utente/' + this.codiceFiscaleUtenteLoggato]);
+    this.router.navigate(['/utente/' + this.id]);
   }
 }
