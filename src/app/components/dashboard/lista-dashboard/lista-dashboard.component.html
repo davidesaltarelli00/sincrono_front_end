@@ -11,7 +11,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <h1>Dashboard</h1>
+        <h3>Dashboard</h3>
       </div>
     </div>
     <mat-accordion>
@@ -29,7 +29,6 @@
 
         <div class="row">
           <div class="col-12">
-            <h3>Contratti con scatto livello effettuato:</h3>
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
@@ -48,6 +47,8 @@
                     <th>Categoria Protetta</th>
                     <th>Tutor</th>
                     <th>PFI</th>
+                    <th>Info</th>
+                    <th>Modifica</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -69,6 +70,8 @@
                     <td>{{ element.contratto.pfi }}</td>
                     <td (click)="dettaglioAnagrafica(element.anagrafica.id)"> <button class="btn btn-primary"><i
                           class="fa fa-info"></i></button> </td>
+                          <td (click)="vaiAModificaAnagrafica(element.anagrafica.id)"><button class="btn btn-warning"><i
+                            class="fa fa-pencil"></i></button></td>
                   </tr>
                 </tbody>
                 <button class="btn btn-success" (click)="resetTabella()">Svuota tabella</button>
@@ -92,7 +95,6 @@
         </mat-expansion-panel-header>
         <div class="row">
           <div class="col-12">
-            <h3>Commesse in scadenza (40 giorni)</h3>
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
@@ -109,7 +111,7 @@
                     <th>Data fine</th>
                     <th>Attivo</th>
                     <th>Attesa lavori</th>
-                    <th>Dettaglio</th>
+                    <th>Info</th>
                     <th>Modifica</th>
                   </tr>
                 </thead>
@@ -159,7 +161,6 @@
         </mat-expansion-panel-header>
         <div class="row">
           <div class="col-12">
-            <h3>Contratti in scadenza (40 giorni)</h3>
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
@@ -247,7 +248,7 @@
     <hr>
     <div class="row">
       <div class="col-12">
-        <h2>Lista commesse scadute</h2>
+        <h4>Lista commesse scadute</h4>
       </div>
     </div>
     <div class="row">
@@ -299,14 +300,18 @@
                   <b>Filtri per commesse</b>
                   <div class="row">
                     <div class="col-md-3">
-                      <div class="form-group">
-                        <label for="aziendaCliente">Azienda Cliente:</label>
-                        <input type="text" id="commesse.aziendaCliente" placeholder="Inserire azienda cliente"
-                          class="form-control" formControlName="aziendaCliente">
+                      <div formArrayName="commesse">
+                        <div *ngFor="let commessa of commesse.controls; let i = index">
+                          <div [formGroupName]="i">
+                            <div class="form-group">
+                              <label for="aziendaCliente">Azienda cliente</label>
+                            <input  (keyup)="filter(filterAnagraficaDto.value)" type="text" formControlName="aziendaCliente" class="form-control" id="commesse.aziendaCliente" name="aziendaCliente">
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <br>
-
 
                     <label for="annoInizioCommessa">Anno di inizio commessa:</label>
                     <input type="number" id="annoDataInizio" class="form-control"
@@ -392,34 +397,34 @@
                 <th>Data Fine</th>
                 <th>Attivo</th>
                 <th>Attesa lavori</th>
-                <th>Dettaglio</th>
+                <th>Info</th>
                 <th>Modifica</th>
                 <!-- <th>Anagrafica</th> -->
               </tr>
             </thead>
             <tbody>
-              <ng-container *ngFor="let element of listaAnagraficheCommesseScadute">
-                <tr *ngFor="let commessa of pageData">
-                  <td>{{element.nome}} {{element.cognome}}</td>
-                  <td>{{element.codiceFiscale}}</td>
-                  <td>{{ commessa.aziendaCliente }}</td>
-                  <td>{{ commessa.clienteFinale }}</td>
-                  <td>{{ commessa.titoloPosizione }}</td>
-                  <td>{{ commessa.distacco ? 'Sì' : 'No' }}</td>
-                  <td>{{ commessa.distaccoAzienda ? 'Sì' : 'No' }}</td>
-                  <td>{{ commessa.distaccoData | date:'dd/MM/yyyy' }}</td>
-                  <td>{{ commessa.tariffaGiornaliera || '' }}</td>
-                  <td>{{ commessa.aziendaDiFatturazioneInterna || '' }}</td>
-                  <td>{{ commessa.dataInizio | date:'dd/MM/yyyy' }}</td>
-                  <td>{{ commessa.dataFine | date:'dd/MM/yyyy' }}</td>
-                  <td>{{ commessa.attivo ? 'Sì' : 'No' }}</td>
-                  <td>{{ commessa.attesaLavori ? 'Sì' : 'No' }}</td>
+             
+                <tr *ngFor="let commessa of listaCommesseScadute">
+                  <td>{{commessa[0]}} {{commessa[1]}}</td>
+                  <td>{{commessa[2]}}</td>
+                  <td>{{ commessa[3] }}</td>
+                  <td>{{ commessa[4] }}</td>
+                  <td>{{ commessa[5]}}</td>
+                  <td>{{ commessa[6] ? 'Sì' : 'No' }}</td>
+                  <td>{{ commessa[7] ? 'Sì' : 'No' }}</td>
+                  <td>{{ commessa[8] | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ commessa[9] || '' }}</td>
+                  <td>{{ commessa[10] || '' }}</td>
+                  <td>{{ commessa[11] | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ commessa[12] | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ commessa[13] ? 'Sì' : 'No' }}</td>
+                  <td>{{ commessa[14] ? 'Sì' : 'No' }}</td>
                   <td (click)="dettaglioAnagrafica(idAnagraficaCommessaScaduta)"> <button class="btn btn-primary"><i
                         class="fa fa-info"></i></button> </td>
                   <td (click)="vaiAModificaAnagrafica(idAnagraficaCommessaScaduta)"><button class="btn btn-warning"><i
                         class="fa fa-pencil"></i></button></td>
                 </tr>
-              </ng-container>
+            
             </tbody>
 
           </table>

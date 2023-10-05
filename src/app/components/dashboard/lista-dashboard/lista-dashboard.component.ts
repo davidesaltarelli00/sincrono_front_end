@@ -44,6 +44,7 @@ export class ListaDashboardComponent {
   listaCommesseScadute: any[] = []; //array 2.0
   listaContrattiFromBatch: any[] = []; //array 2.0
   listaAnagraficheCommesseScadute: any[] = [];
+  listaAnagraficaDtoFromResponse: any[] = [];
   mostraFiltri = false;
   originalLista: any;
   tipiAziende: any = [];
@@ -54,7 +55,9 @@ export class ListaDashboardComponent {
   pageData: any[] = [];
   messaggio: any;
   commesse!: FormArray;
+  genericList: any[] = [];
   filterAnagraficaDto: FormGroup = new FormGroup({
+
     anagrafica: new FormGroup({
       nome: new FormControl(null),
       cognome: new FormControl(null),
@@ -64,9 +67,10 @@ export class ListaDashboardComponent {
       }),
     }),
 
-    commesse: new FormGroup({
+    commessa: new FormGroup({
       aziendaCliente: new FormControl(null),
     }),
+
     annoDataFine: new FormControl(null),
     meseDataFine: new FormControl(null),
     annoDataInizio: new FormControl(null),
@@ -114,8 +118,7 @@ export class ListaDashboardComponent {
     });
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
 
-    const commessaFormGroup = this.creaFormCommessa();
-    this.commesse.push(commessaFormGroup);
+
   }
   isTableVisible: boolean = false;
   isTable2Visible: boolean = false;
@@ -197,19 +200,8 @@ export class ListaDashboardComponent {
       .getAllCommesseScadute(localStorage.getItem('token'))
       .subscribe(
         (resp: any) => {
-          const filteredList = resp.list.filter((item: any) => item.commesse.length > 0);
-
-          filteredList.forEach((item: any) => {
-            if (item.anagrafica && item.anagrafica.id) {
-              this.idAnagraficaCommessaScaduta = item.anagrafica.id;
-              // Your logic for anagrafiche with commesse here
-              this.listaAnagraficheCommesseScadute.push(item.anagrafica);
-              console.log(this.listaAnagraficheCommesseScadute);
-            }
-            item.commesse.forEach((commesse: any) => {
-              this.listaCommesseScadute.push(commesse);
-            });
-          });
+          resp.list.filter((elem: any) => elem.commesse.length > 0);
+          this.listaCommesseScadute = this.createAnagraficaDtoList(resp.list);
 
           console.log(
             'Lista commesse scadute: ' +
@@ -230,6 +222,7 @@ export class ListaDashboardComponent {
     this.mostraFiltri = false;
   }
   filter(value: any) {
+    console.log('Valore del form: ' + JSON.stringify(value));
     const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
         if (obj[key] && typeof obj[key] === 'object') {
@@ -301,7 +294,6 @@ export class ListaDashboardComponent {
       });
     };
     removeEmpty(this.filterAnagraficaDto.value);
-
     const body = {
       anagraficaDto: this.filterAnagraficaDto.value,
       annoDataFine: this.filterAnagraficaDto.get('annoDataFine')?.value,
@@ -326,15 +318,16 @@ export class ListaDashboardComponent {
           } else {
             if (Array.isArray(result.list)) {
               this.pageData = [];
-              for (const item of result.list) {
-                if (Array.isArray(item.commesse)) {
-                  for (const commesse of item.commesse) {
-                    this.pageData.push(commesse);
-                  }
-                } else if (typeof item.commesse === 'object') {
-                  // Gestisci il caso in cui item.commesse è un oggetto
-                }
-              }
+
+            
+                this.listaCommesseScadute = this.createAnagraficaDtoList(result.list);
+
+                this.currentPage = 1;
+                this.pageData = this.getCurrentPageItems();
+
+                console.log("daje"+  this.listaCommesseScadute);
+           
+
             } else {
               this.pageData = [];
               this.messaggio =
@@ -352,12 +345,9 @@ export class ListaDashboardComponent {
   }
 
   annullaFiltri() {
-    this.anagraficaDtoService
-      .listAnagraficaDto(localStorage.getItem('token'))
-      .subscribe((resp: any) => {
-        this.lista = resp.list;
-        location.reload();
-      });
+   
+    location.reload();
+
   }
 
   dettaglioAnagraficaContrattoInScadenza(idAnagrafica: number) {
@@ -767,6 +757,34 @@ export class ListaDashboardComponent {
       console.log('ID dell\'anagrafica non definito');
     }
   }
+
+  createAnagraficaDtoList(resp: any) {
+    this.genericList = [];
+    resp.forEach((item: any) => {
+      item.commesse.forEach((commessa: any) => {
+        this.genericList.push([
+          item.anagrafica.nome,
+          item.anagrafica.cognome,
+          item.anagrafica.codiceFiscale,
+          commessa.aziendaCliente,
+          commessa.clienteFinale,
+          commessa.titoloPosizione,
+          commessa.distacco,
+          commessa.distaccoAzienda,
+          commessa.distaccoData,
+          commessa.tariffaGiornaliera,
+          commessa.aziendaDiFatturazioneInterna,
+          commessa.dataInizio,
+          commessa.dataFine,
+          commessa.attivo,
+          commessa.attesaLavori
+        ]);
+      });
+    });
+    return this.genericList;
+  }
+
+
 
 
 }

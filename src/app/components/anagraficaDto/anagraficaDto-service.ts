@@ -19,7 +19,7 @@ export class AnagraficaDtoService {
     });
     return this.http.get<any>(`http://localhost:8080/services/list`, {
       headers: headers,
-    });
+    }); 
   }
 
   detailAnagraficaDto(id: any, token: any): Observable<any> {
