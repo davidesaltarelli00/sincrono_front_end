@@ -141,10 +141,7 @@ export class ListaDashboardComponent {
   isTableVisible1: boolean = false;
 
   ngOnInit(): void {
-    if (this.token != null) {
-      this.getUserLogged();
-      this.getUserRole();
-    }
+
 
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
     const commessaFormGroup = this.creaFormCommessa();
@@ -227,6 +224,10 @@ export class ListaDashboardComponent {
       );
 
     this.mostraFiltri = false;
+    if (this.token != null) {
+      this.getUserLogged();
+      this.getUserRole();
+    }
   }
   filter(value: any) {
     console.log('Valore del form: ' + JSON.stringify(value));
@@ -326,14 +327,14 @@ export class ListaDashboardComponent {
             if (Array.isArray(result.list)) {
               this.pageData = [];
 
-            
-                this.listaCommesseScadute = this.createAnagraficaDtoList(result.list);
 
-                this.currentPage = 1;
-                this.pageData = this.getCurrentPageItems();
+              this.listaCommesseScadute = this.createAnagraficaDtoList(result.list);
 
-                console.log("daje"+  this.listaCommesseScadute);
-           
+              this.currentPage = 1;
+              this.pageData = this.getCurrentPageItems();
+
+              console.log("daje" + this.listaCommesseScadute);
+
 
             } else {
               this.pageData = [];
@@ -352,7 +353,7 @@ export class ListaDashboardComponent {
   }
 
   annullaFiltri() {
-   
+
     location.reload();
 
   }
@@ -810,7 +811,7 @@ export class ListaDashboardComponent {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
+          error
         );
       }
     );
@@ -839,7 +840,7 @@ export class ListaDashboardComponent {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
+          error
         );
         this.shouldReloadPage = true;
       }
