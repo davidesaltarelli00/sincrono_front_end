@@ -5,10 +5,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ContrattoService } from '../../contratto/contratto-service';
 import { AuthService } from '../../login/login-service';
-import { profileBoxService } from '../../profile-box/profile-box.service';
+import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import * as XLSX from 'xlsx';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalInfoCommesseComponent } from '../../modal-info-commesse/modal-info-commesse.component';
+import { ModalInfoContrattoComponent } from '../../modal-info-contratto/modal-info-contratto.component';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 declare var $: any;
 
 @Component({
@@ -21,7 +24,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   tipoAziendaFilter = this.activatedRoute.snapshot.params['tipoAzienda'];
   id = this.activatedRoute.snapshot.params['id'];
   lista: any[] = [];
-  token: any;
   errore = false;
   messaggio: any;
   originalLista: any[] = [];
@@ -37,6 +39,18 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   inserimentoParziale: any;
   contrattoScaduto: any;
   ruolo: any;
+
+  //navbar
+  userLoggedName: any;
+  userLoggedSurname: any;
+  shouldReloadPage: any;
+  idFunzione: any;
+  jsonData: any;
+  token = localStorage.getItem('token');
+  userRoleNav: any;
+  idNav: any;
+  tokenProvvisorio: any;
+
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -101,6 +115,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   ccnLSelezionato: any;
   numeroMensilitaCCNL: any;
   idCCNLselezionato: any;
+  contratto: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -110,8 +125,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     public authService: AuthService,
     private router: Router,
-    private profileBoxService: profileBoxService,
-    private dialog: MatDialog
+    private profileBoxService: ProfileBoxService,
+    private dialog: MatDialog,
+    private http:HttpClient
   ) {
     this.filterAnagraficaDto = this.formBuilder.group({
       anagrafica: new FormGroup({
@@ -162,9 +178,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.router.navigate(['/profile-box/', this.userlogged]);
   }
 
-  logout() {
-    // this.authService.logout();
-  }
+
 
   reloadPage(): void {
     this.location.go(this.location.path());
@@ -207,6 +221,12 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    if (this.token != null) {
+      this.getUserLogged();
+      this.getUserRole();
+    }
+
     const commessaFormGroup = this.creaFormCommessa();
     this.commesse.push(commessaFormGroup);
 
@@ -796,6 +816,43 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     }
   }
 
+  mostraInfoContratto(id: any) {
+    console.log(id);
+    this.anagraficaDtoService
+      .detailAnagraficaDto(id, localStorage.getItem('token'))
+      .subscribe(
+        (resp: any) => {
+          console.log(resp);
+          this.data = (resp as any)['anagraficaDto'];
+          console.log(this.data);
+          this.contratto = (resp as any)['anagraficaDto']['contratto'];
+          console.log(this.contratto);
+
+          // Apro il dialog e passo i dati al componente
+          const dialogRef = this.dialog.open(ModalInfoContrattoComponent, {
+            data: {
+              // Passa qui i dati che desideri
+              anagraficaDto: this.data,
+              commesse: this.contratto,
+            },
+          });
+        },
+        (error: any) => {
+          console.error(
+            'ERRORE DURANTE IL CARICAMENTO DELLE INFO SUL CONTRATTO:' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+  handleClickContratto(element: any) {
+    if (element?.contratto != null) {
+      this.mostraInfoContratto(element.anagrafica?.id);
+    } else {
+      this.router.navigate(['/modifica-anagrafica', element.anagrafica.id]);
+    }
+  }
 
   handleClick(element: any) {
     if (element?.commesse?.length > 0) {
@@ -807,5 +864,115 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     }
   }
 
+  //METODI NAVBAR
 
+  logout() {
+    this.dialog.open(AlertLogoutComponent);
+  }
+
+  getUserLogged() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        localStorage.getItem('token');
+        this.userLoggedName = response.anagraficaDto.anagrafica.nome;
+        this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato il seguente errore durante il recupero dei dati : ' +
+            error
+        );
+      }
+    );
+  }
+
+  getUserRole() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
+      },
+      (error: any) => {
+        console.error(
+          'Si è verificato il seguente errore durante il recupero del ruolo: ' +
+            error
+        );
+        this.shouldReloadPage = true;
+      }
+    );
+  }
+
+  generateMenuByUserRole() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${this.token}`,
+    });
+    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
+    this.http.get<MenuData>(url, { headers: headers }).subscribe(
+      (data: any) => {
+        this.jsonData = data;
+        this.idFunzione = data.list[0].id;
+        console.log(
+          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+        );
+        this.shouldReloadPage = false;
+      },
+      (error: any) => {
+        console.error('Errore nella generazione del menu:', error);
+        this.shouldReloadPage = true;
+      }
+    );
+  }
+
+  getPermissions(functionId: number) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${this.token}`,
+    });
+    const url = `http://localhost:8080/services/operazioni/${functionId}`;
+    this.http.get(url, { headers: headers }).subscribe(
+      (data: any) => {
+        console.log('Permessi ottenuti:', data);
+      },
+      (error: any) => {
+        console.error('Errore nella generazione dei permessi:', error);
+      }
+    );
+  }
+}
+
+
+interface MenuData {
+  esito: {
+    code: number;
+    target: any;
+    args: any;
+  };
+  list: {
+    id: number;
+    funzione: any;
+    menuItem: number;
+    nome: string;
+    percorso: string;
+    immagine: any;
+    ordinamento: number;
+    funzioni: any;
+    privilegio: any;
+  }[];
 }

@@ -47,6 +47,7 @@ import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirec
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import { ModalInfoCommesseComponent } from './components/modal-info-commesse/modal-info-commesse.component';
+import { ModalInfoContrattoComponent } from './components/modal-info-contratto/modal-info-contratto.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { ModalInfoCommesseComponent } from './components/modal-info-commesse/mod
     UtenteComponent,
     GiornoComponent,
     NotFoundComponent,
-    AlertDialogComponent
+    AlertDialogComponent,
+    ModalInfoContrattoComponent,
   ],
   imports: [
     MatNativeDateModule,

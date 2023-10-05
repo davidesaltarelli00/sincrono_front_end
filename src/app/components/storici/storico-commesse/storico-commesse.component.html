@@ -1,6 +1,114 @@
 <html>
+<head>
+  <style>
+    #toolbar {
+background-color: #007bff; /* Colore blu aziendale */
+color: #ffffff; /* Testo bianco */
+display: flex;
+background-color: #333;
+justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
+align-items: center; /* Allinea verticalmente gli elementi al centro */
+}
 
+.logo-link {
+margin-right: 10px;
+}
+
+.toolbar-menu {
+display: flex;
+gap: 10px;
+background-color: #333;
+margin-right:auto;
+}
+
+.toolbar-link {
+text-decoration: none;
+color: #ffffff;
+/* padding: 10px; */
+}
+
+a{
+color: white;
+}
+
+.toolbar-link:hover {
+color: #d8d8d8;
+}
+
+.user-icon,
+.logout-icon {
+color: #ffffff;
+cursor: pointer;
+}
+
+
+#toolbar {
+  background-color: #007bff; /* Colore blu aziendale */
+  color: #ffffff; /* Testo bianco */
+  display: flex;
+  background-color: #333;
+  justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
+  align-items: center; /* Allinea verticalmente gli elementi al centro */
+}
+
+.logo-link {
+  margin-right: 10px;
+}
+
+.toolbar-menu {
+  display: flex;
+  gap: 10px;
+  background-color: #333;
+  margin-right:auto;
+}
+
+.toolbar-link {
+  text-decoration: none;
+  color: #ffffff;
+  /* padding: 10px; */
+}
+
+a{
+  color: white;
+}
+
+.toolbar-link:hover {
+  color: #d8d8d8;
+}
+
+.user-icon,
+.logout-icon {
+  color: #ffffff;
+  cursor: pointer;
+}
+
+
+  </style>
+</head>
 <body>
+  <div
+  class="container-toolbar"
+  [hidden]="tokenProvvisorio != null && tokenProvvisorio == null"
+>
+<mat-toolbar id="toolbar" *ngIf="token">
+  <a [routerLink]="['/home']" class="logo-link">
+    <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+  </a>
+  <div class="toolbar-menu">
+    <a   (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link" *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+      {{ menuItem.nome }}
+    </a>
+  </div>
+  <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+    <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+    <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i class="fa fa-user"></i>
+  </span> &nbsp;&nbsp;
+  <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+    <i class="fa fa-sign-out" aria-hidden="true"></i>
+  </span>
+</mat-toolbar>
+
+</div>
   <div class="container-fluid">
     <h1>Storico Commesse  </h1>
     <!--

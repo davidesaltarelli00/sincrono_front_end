@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { profileBoxService } from '../profile-box/profile-box.service';
+import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import * as XLSX from 'xlsx';
@@ -29,7 +29,7 @@ export class UtenteComponent implements OnInit {
   ];
   constructor(
     private activatedRoute: ActivatedRoute,
-    private profileBoxService: profileBoxService,
+    private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
     private router: Router,
     private anagraficaDtoService: AnagraficaDtoService,

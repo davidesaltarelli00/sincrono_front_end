@@ -4,6 +4,10 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../login/login-service';
 import { Chart } from 'chart.js/auto';
 import * as XLSX from 'xlsx';
+import { ProfileBoxService } from '../../profile-box/profile-box.service';
+import { MatDialog } from '@angular/material/dialog';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 
 @Component({
   selector: 'app-lista-organico',
@@ -12,7 +16,6 @@ import * as XLSX from 'xlsx';
 })
 export class ListaOrganicoComponent implements OnInit {
   lista: any;
-  token: any;
   labelsX: string[] = [];
 
   submitted = false;
@@ -21,9 +24,23 @@ export class ListaOrganicoComponent implements OnInit {
   userlogged: any;
   role: any;
 
+  //nav
+  userLoggedName: any;
+  userLoggedSurname: any;
+  shouldReloadPage: any;
+  idFunzione: any;
+  jsonData: any;
+  token = localStorage.getItem('token');
+  userRoleNav: any;
+  idNav: any;
+  tokenProvvisorio: any;
+
   constructor(
     private organicoService: OrganicoService,
     private router: Router,
+    private profileBoxService: ProfileBoxService,
+    private dialog: MatDialog,
+    private http: HttpClient,
     private authService: AuthService
   ) {
     this.userlogged = localStorage.getItem('userLogged');
@@ -34,27 +51,29 @@ export class ListaOrganicoComponent implements OnInit {
     }
   }
 
-  logout() {
-    // this.authService.logout();
-  }
 
   profile() {
     this.router.navigate(['/profile-box/', this.userlogged]);
   }
 
   ngOnInit(): void {
-    this.organicoService.listaOrganico(localStorage.getItem('token')).subscribe((resp: any) => {
-      const jsonResp = JSON.stringify(resp);
-      console.log(jsonResp);
-      this.lista = resp.list;
-      this.createBarChart();
-
-    },
+    if (this.token != null) {
+      this.getUserLogged();
+      this.getUserRole();
+    }
+    this.organicoService.listaOrganico(localStorage.getItem('token')).subscribe(
+      (resp: any) => {
+        const jsonResp = JSON.stringify(resp);
+        console.log(jsonResp);
+        this.lista = resp.list;
+        this.createBarChart();
+      },
       (error: string) => {
-        console.log("errore durante il caricamento dei dati dell'organico:" + error)
+        console.log(
+          "errore durante il caricamento dei dati dell'organico:" + error
+        );
       }
     );
-
   }
 
   filter(tipoContratto: any, tipoAzienda: any) {
@@ -62,40 +81,62 @@ export class ListaOrganicoComponent implements OnInit {
   }
 
   calculateSliceRotation(element: any): number {
-    const total = element.numeroDipendenti + element.indeterminati + element.determinati +
-      element.apprendistato + element.consulenza + element.stage +
-      element.partitaIva + element.potenzialeStage + element.slotStage +
-      element.potenzialeApprendistato + element.slotApprendistato;
+    const total =
+      element.numeroDipendenti +
+      element.indeterminati +
+      element.determinati +
+      element.apprendistato +
+      element.consulenza +
+      element.stage +
+      element.partitaIva +
+      element.potenzialeStage +
+      element.slotStage +
+      element.potenzialeApprendistato +
+      element.slotApprendistato;
 
     const percentage = (element.numeroDipendenti / total) * 360;
     return percentage;
   }
 
   calculatePercentage(element: any): number {
-    const total = element.numeroDipendenti + element.indeterminati + element.determinati +
-      element.apprendistato + element.consulenza + element.stage +
-      element.partitaIva + element.potenzialeStage + element.slotStage +
-      element.potenzialeApprendistato + element.slotApprendistato;
+    const total =
+      element.numeroDipendenti +
+      element.indeterminati +
+      element.determinati +
+      element.apprendistato +
+      element.consulenza +
+      element.stage +
+      element.partitaIva +
+      element.potenzialeStage +
+      element.slotStage +
+      element.potenzialeApprendistato +
+      element.slotApprendistato;
 
     const percentage = (element.numeroDipendenti / total) * 100;
     return Math.round(percentage);
   }
 
-
-
   createBarChart() {
     const labels = this.lista.map((item: any) => item.azienda);
-    const dataNumeroDipendenti = this.lista.map((item: any) => item.numeroDipendenti);
+    const dataNumeroDipendenti = this.lista.map(
+      (item: any) => item.numeroDipendenti
+    );
     const dataIndeterminati = this.lista.map((item: any) => item.indeterminati);
     const dataDeterminati = this.lista.map((item: any) => item.determinati);
     const dataApprendistato = this.lista.map((item: any) => item.apprendistato);
     const dataConsulenza = this.lista.map((item: any) => item.consulenza);
     const dataStage = this.lista.map((item: any) => item.stage);
     const dataPartitaIva = this.lista.map((item: any) => item.partitaIva);
-    const dataPotenzialeStage = this.lista.map((item: any) => item.potenzialeStage);
+    const dataPotenzialeStage = this.lista.map(
+      (item: any) => item.potenzialeStage
+    );
     const dataSlotStage = this.lista.map((item: any) => item.slotStage);
-    const dataPotenzialeApprendistato = this.lista.map((item: any) => item.potenzialeApprendistato);
-    const dataSlotApprendistato = this.lista.map((item: any) => item.slotApprendistato);
+    const dataPotenzialeApprendistato = this.lista.map(
+      (item: any) => item.potenzialeApprendistato
+    );
+    const dataSlotApprendistato = this.lista.map(
+      (item: any) => item.slotApprendistato
+    );
 
     const ctx = document.getElementById('barChart') as HTMLCanvasElement;
     const myChart = new Chart(ctx, {
@@ -180,7 +221,6 @@ export class ListaOrganicoComponent implements OnInit {
             backgroundColor: '#B1983E',
             borderColor: '#B1983E',
             borderWidth: 1,
-
           },
         ],
       },
@@ -198,41 +238,60 @@ export class ListaOrganicoComponent implements OnInit {
           },
         },
 
-
         onClick: (event, elements) => {
           if (elements.length > 0) {
             const clickedIndex = elements[0].index;
             const clickedLabel = labels[clickedIndex];
-            const tipoContratto = myChart.data.datasets[elements[0].datasetIndex].label;
+            const tipoContratto =
+              myChart.data.datasets[elements[0].datasetIndex].label;
 
             // Verifica se il tipo di contratto è uno di quelli desiderati
-            if (tipoContratto === 'Numero Dipendenti' || tipoContratto === 'Contratti Indeterminati' || tipoContratto === 'Contratti determinati') {
+            if (
+              tipoContratto === 'Numero Dipendenti' ||
+              tipoContratto === 'Contratti Indeterminati' ||
+              tipoContratto === 'Contratti determinati'
+            ) {
               // Modifica il tipo di contratto in "Determinato" se necessario
-              const tipoContrattoCorretto1 = tipoContratto === 'Contratti determinati' ? 'Determinato' : tipoContratto;
-              const tipoContrattoCorretto2 = tipoContratto === 'Contratti Indeterminati' ? 'Indeterminato' : tipoContratto;
+              const tipoContrattoCorretto1 =
+                tipoContratto === 'Contratti determinati'
+                  ? 'Determinato'
+                  : tipoContratto;
+              const tipoContrattoCorretto2 =
+                tipoContratto === 'Contratti Indeterminati'
+                  ? 'Indeterminato'
+                  : tipoContratto;
               if (tipoContrattoCorretto1) {
                 this.filter(tipoContrattoCorretto1, clickedLabel);
-              } if (tipoContrattoCorretto2) {
+              }
+              if (tipoContrattoCorretto2) {
                 this.filter(tipoContrattoCorretto2, clickedLabel);
               }
             }
           }
         },
-
-
       },
     });
-
-
   }
-
 
   exportOrganicoToExcel() {
     const workBook = XLSX.utils.book_new();
 
     const workSheetData = [
       // Intestazioni delle colonne
-      ["Azienda", "Numero dipendenti", "Indeterminati", "Determinati", "Apprendistato", "Consulenza", "Stage", "Partita iva", "Potenziale stage", "Slot stage", "Potenziale apprendistato", "Slot apprendistato"]
+      [
+        'Azienda',
+        'Numero dipendenti',
+        'Indeterminati',
+        'Determinati',
+        'Apprendistato',
+        'Consulenza',
+        'Stage',
+        'Partita iva',
+        'Potenziale stage',
+        'Slot stage',
+        'Potenziale apprendistato',
+        'Slot apprendistato',
+      ],
     ];
     this.lista.forEach((item: any) => {
       workSheetData.push([
@@ -246,7 +305,9 @@ export class ListaOrganicoComponent implements OnInit {
         item.partitaIva ? item.partitaIva.toString() : 'Non inserito',
         item.potenzialeStage ? item.potenzialeStage.toString() : '0',
         item.slotStage ? item.slotStage.toString() : '0',
-        item.potenzialeApprendistato ? item.potenzialeApprendistato.toString() : '0',
+        item.potenzialeApprendistato
+          ? item.potenzialeApprendistato.toString()
+          : '0',
         item.slotApprendistato ? item.slotApprendistato.toString() : '0',
       ]);
     });
@@ -262,14 +323,103 @@ export class ListaOrganicoComponent implements OnInit {
     (error: any) => {
       console.error(
         'Si è verificato un errore durante il recupero della lista dell organico: ' +
-        error
+          error
       );
-    }
+    };
   }
 
 
-}
+  logout() {
+    this.dialog.open(AlertLogoutComponent);
+  }
 
+  getUserLogged() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        localStorage.getItem('token');
+        this.userLoggedName = response.anagraficaDto.anagrafica.nome;
+        this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato il seguente errore durante il recupero dei dati : ' +
+            error
+        );
+      }
+    );
+  }
+
+  getUserRole() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
+      },
+      (error: any) => {
+        console.error(
+          'Si è verificato il seguente errore durante il recupero del ruolo: ' +
+            error
+        );
+        this.shouldReloadPage = true;
+      }
+    );
+  }
+
+  generateMenuByUserRole() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${this.token}`,
+    });
+    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
+    this.http.get<MenuData>(url, { headers: headers }).subscribe(
+      (data: any) => {
+        this.jsonData = data;
+        this.idFunzione = data.list[0].id;
+        console.log(
+          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+        );
+        this.shouldReloadPage = false;
+      },
+      (error: any) => {
+        console.error('Errore nella generazione del menu:', error);
+        this.shouldReloadPage = true;
+      }
+    );
+  }
+
+  getPermissions(functionId: number) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${this.token}`,
+    });
+    const url = `http://localhost:8080/services/operazioni/${functionId}`;
+    this.http.get(url, { headers: headers }).subscribe(
+      (data: any) => {
+        console.log('Permessi ottenuti:', data);
+      },
+      (error: any) => {
+        console.error('Errore nella generazione dei permessi:', error);
+      }
+    );
+  }
+
+}
 
 /*
    possibili tipi:
@@ -315,3 +465,22 @@ altri attrivuti di stile per le barre del grafico:
          maxBarThickness: 30, // Larghezza massima delle barre
 
    */
+
+         interface MenuData {
+          esito: {
+            code: number;
+            target: any;
+            args: any;
+          };
+          list: {
+            id: number;
+            funzione: any;
+            menuItem: number;
+            nome: string;
+            percorso: string;
+            immagine: any;
+            ordinamento: number;
+            funzioni: any;
+            privilegio: any;
+          }[];
+        }

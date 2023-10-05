@@ -4,8 +4,115 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anagrafica</title>
+  <style>
+    #toolbar {
+background-color: #007bff; /* Colore blu aziendale */
+color: #ffffff; /* Testo bianco */
+display: flex;
+background-color: #333;
+justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
+align-items: center; /* Allinea verticalmente gli elementi al centro */
+}
+
+.logo-link {
+margin-right: 10px;
+}
+
+.toolbar-menu {
+display: flex;
+gap: 10px;
+background-color: #333;
+margin-right:auto;
+}
+
+.toolbar-link {
+text-decoration: none;
+color: #ffffff;
+/* padding: 10px; */
+}
+
+a{
+color: white;
+}
+
+.toolbar-link:hover {
+color: #d8d8d8;
+}
+
+.user-icon,
+.logout-icon {
+color: #ffffff;
+cursor: pointer;
+}
+
+
+#toolbar {
+  background-color: #007bff; /* Colore blu aziendale */
+  color: #ffffff; /* Testo bianco */
+  display: flex;
+  background-color: #333;
+  justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
+  align-items: center; /* Allinea verticalmente gli elementi al centro */
+}
+
+.logo-link {
+  margin-right: 10px;
+}
+
+.toolbar-menu {
+  display: flex;
+  gap: 10px;
+  background-color: #333;
+  margin-right:auto;
+}
+
+.toolbar-link {
+  text-decoration: none;
+  color: #ffffff;
+  /* padding: 10px; */
+}
+
+a{
+  color: white;
+}
+
+.toolbar-link:hover {
+  color: #d8d8d8;
+}
+
+.user-icon,
+.logout-icon {
+  color: #ffffff;
+  cursor: pointer;
+}
+
+
+  </style>
 </head>
 <body>
+  <div
+  class="container-toolbar"
+  [hidden]="tokenProvvisorio != null && tokenProvvisorio == null"
+>
+<mat-toolbar id="toolbar" *ngIf="token">
+  <a [routerLink]="['/home']" class="logo-link">
+    <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+  </a>
+  <div class="toolbar-menu">
+    <a   (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link" *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+      {{ menuItem.nome }}
+    </a>
+  </div>
+  <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+    <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+    <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i class="fa fa-user"></i>
+  </span> &nbsp;&nbsp;
+  <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+    <i class="fa fa-sign-out" aria-hidden="true"></i>
+  </span>
+</mat-toolbar>
+
+</div>
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
@@ -249,13 +356,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let element of pageData; let i=index" [ngClass]="{ 'green-background': isGreenBackground(element.anagrafica.id), 'red-background': !isGreenBackground(element.anagrafica.id)}">
-            <td [routerLink]="['/dettaglio-anagrafica/',element.anagrafica.id]" [ngStyle]="{'border': isCampoVuoto(element) ? '1px solid red' : '1px solid green'}" >
-              <div>
-                <span [ngClass]="{'text-danger': isCampoVuoto(element), 'text-success': !isCampoVuoto(element)}">
-                  {{ isCampoVuoto(element) ? 'Si' : 'No' }}
-                </span>
-              </div>
+          <tr *ngFor="let element of pageData; let i=index" >
+            <td [routerLink]="['/dettaglio-anagrafica/',element.anagrafica.id]"  >
+              <span [ngStyle]="{'color': isCampoVuoto(element) ? 'red' : 'green'}" >
+                {{isCampoVuoto(element)? 'Si' : 'No'}}
+              </span>
             </td>
             <td>{{ element.anagrafica?.nome |titlecase }}</td>
             <td>{{ element.anagrafica?.cognome |titlecase }}</td>
@@ -263,9 +368,12 @@
             <td>{{ element.anagrafica?.tipoAzienda?.descrizione |titlecase }}</td>
             <td>{{ element.anagrafica?.mailAziendale  }}</td>
             <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non inserito'  }}</td>
-            <td *ngIf="element.contratto?.tipoContratto?.descrizione!='#'">
-              {{element.contratto?.tipoContratto?.descrizione ? element.contratto?.tipoContratto?.descrizione : 'Non inserito'}}
+            <td style="cursor: pointer;" [ngStyle]="{'color': element?.contratto!=null ? 'black' : 'red'}" [matTooltip]="element?.contratto!=null ? 'Vedi Il contratto di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi contratto a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome" (click)="handleClickContratto(element)">
+              {{ element?.contratto!=null ? element.contratto.tipoContratto.descrizione : 'Non inserito' }}
+              <i *ngIf="element?.contratto!=null" class="fa fa-info-circle" style="cursor:pointer;"></i>
+              <i *ngIf="element?.contratto==null" class="fa fa-plus-circle" style="cursor:pointer;"></i>
             </td>
+
             <td *ngIf="element.contratto?.tipoContratto?.descrizione==='#'" >
               Generico
             </td>
@@ -274,13 +382,11 @@
               <i *ngIf="element?.commesse?.length > 0" class="fa fa-info-circle" style="cursor:pointer;"></i>
               <i *ngIf="element?.commesse?.length == 0" class="fa fa-plus-circle" style="cursor:pointer;"></i>
             </td>
-
-
-
-
-
             <td>
-              {{element.commesse.attesaLavori ? 'Si' : 'No'}}
+              <label class="switch" >
+                <input type="checkbox" disabled [checked]="element.anagrafica.attesaLavori">
+                <span class="slider"></span>
+              </label>
             </td>
             <td>
               <span style="margin:5px;">

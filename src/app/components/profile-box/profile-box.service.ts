@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class profileBoxService {
+export class ProfileBoxService {
   token = localStorage.getItem('token');
 
   constructor(private http: HttpClient) {}

@@ -8,7 +8,7 @@ import {
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { AuthService } from './components/login/login-service';
 import { MatSidenav } from '@angular/material/sidenav';
-import { profileBoxService } from './components/profile-box/profile-box.service';
+import { ProfileBoxService } from './components/profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -31,11 +31,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   idFunzione: any = {};
   id: any;
   currentDateTime: any;
+  shouldReloadPage: boolean = false;
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private profileBoxService: profileBoxService,
+    private profileBoxService: ProfileBoxService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private http: HttpClient,
@@ -56,90 +57,104 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe((params) => {
       this.tokenProvvisorio = params['tokenProvvisorio'];
     });
+    // if (this.token != null) {
+    //   this.getUserLogged();
+    //   this.getUserRole();
+    //   this.generateMenuByUserRole();
+    // }
   }
 
-  ngAfterViewInit(): void {
-    if (this.token) {
-      this.getUserLogged();
-      this.getUserRole();
-    }
-  }
+  ngAfterViewInit(): void {}
 
-  getUserLogged() {
-    const token = localStorage.getItem('token');
-    this.profileBoxService.getData().subscribe(
-      (response: any) => {
-        this.userLoggedMail = response.anagraficaDto.anagrafica.mailAziendale;
-        this.userLoggedName = response.anagraficaDto.anagrafica.nome;
-        this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-      },
-      (error: any) => {
-        console.error(
-          'Si è verificato il seguente errore durante il recupero dei dati: ' +
-            error
-        );
-      }
-    );
-  }
+  // getUserLogged() {
+  //   const token = localStorage.getItem('token');
+  //   this.profileBoxService.getData().subscribe(
+  //     (response: any) => {
+  //       this.userLoggedMail = response.anagraficaDto.anagrafica.mailAziendale;
+  //       this.userLoggedName = response.anagraficaDto.anagrafica.nome;
+  //       this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+  //       console.log('DATI GET USER LOGGED:' + JSON.stringify(response));
+  //     },
+  //     (error: any) => {
+  //       console.error(
+  //         'Si è verificato il seguente errore durante il recupero dei dati: ' +
+  //           error
+  //       );
+  //     }
+  //   );
+  // }
 
-  getUserRole() {
-    this.profileBoxService.getData().subscribe(
-      (response: any) => {
-        this.userRole = response.anagraficaDto.ruolo.nome;
-        if ((this.userRole = response.anagraficaDto.ruolo.nome === 'ADMIN')) {
-          this.id = 1;
-          this.generateMenuByUserRole();
-        }
-        if (
-          (this.userRole = response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
-        ) {
-          this.id = 2;
-          this.generateMenuByUserRole();
-        }
-      },
-      (error: any) => {
-        console.error(
-          'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
-        );
-      }
-    );
-  }
+  // getUserRole() {
+  //   this.profileBoxService.getData().subscribe(
+  //     (response: any) => {
+  //       console.log('DATI GET USER ROLE:' + JSON.stringify(response));
 
-  generateMenuByUserRole() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.id}`;
-    this.http.get<MenuData>(url, { headers: headers }).subscribe(
-      (data) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-      },
-      (error) => {
-        console.error('Errore nella generazione del menu:', error);
-      }
-    );
-  }
+  //       this.userRole = response.anagraficaDto.ruolo.nome;
+  //       if ((this.userRole = response.anagraficaDto.ruolo.nome === 'ADMIN')) {
+  //         this.id = 1;
+  //         this.generateMenuByUserRole();
+  //         if (this.shouldReloadPage) {
+  //           window.location.reload();
+  //         }
+  //       }
+  //       if (
+  //         (this.userRole = response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+  //       ) {
+  //         this.id = 2;
+  //         this.generateMenuByUserRole();
+  //         if (this.shouldReloadPage) {
+  //           window.location.reload();
+  //           this.shouldReloadPage = false;
+  //         }
+  //       }
+  //     },
+  //     (error: any) => {
+  //       console.error(
+  //         'Si è verificato il seguente errore durante il recupero del ruolo: ' +
+  //           error
+  //       );
+  //       this.shouldReloadPage = true;
+  //     }
+  //   );
+  // }
 
-  getPermissions(functionId: number) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/operazioni/${functionId}`;
-    this.http.get(url, { headers: headers }).subscribe(
-      (data: any) => {
-        console.log('Permessi ottenuti:', data);
-      },
-      (error) => {
-        console.error('Errore nella generazione dei permessi:', error);
-      }
-    );
-  }
+  // generateMenuByUserRole() {
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'Access-Control-Allow-Origin': '*',
+  //     Authorization: `Bearer ${this.token}`,
+  //   });
+  //   const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.id}`;
+  //   this.http.get<MenuData>(url, { headers: headers }).subscribe(
+  //     (data) => {
+  //       this.jsonData = data;
+  //       this.idFunzione = data.list[0].id;
+  //       console.log(JSON.stringify('DATI NAVBAR: ' + this.jsonData));
+  //       this.shouldReloadPage = false;
+  //     },
+  //     (error) => {
+  //       console.error('Errore nella generazione del menu:', error);
+  //       this.shouldReloadPage = true;
+  //     }
+  //   );
+  // }
+
+  // getPermissions(functionId: number) {
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'Access-Control-Allow-Origin': '*',
+  //     Authorization: `Bearer ${this.token}`,
+  //   });
+  //   const url = `http://localhost:8080/services/operazioni/${functionId}`;
+  //   this.http.get(url, { headers: headers }).subscribe(
+  //     (data: any) => {
+  //       console.log('Permessi ottenuti:', data);
+  //     },
+  //     (error) => {
+  //       console.error('Errore nella generazione dei permessi:', error);
+  //     }
+  //   );
+  // }
 
   logout() {
     this.dialog.open(AlertLogoutComponent);
@@ -154,21 +169,21 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 }
 
-interface MenuData {
-  esito: {
-    code: number;
-    target: any;
-    args: any;
-  };
-  list: {
-    id: number;
-    funzione: any;
-    menuItem: number;
-    nome: string;
-    percorso: string;
-    immagine: any;
-    ordinamento: number;
-    funzioni: any;
-    privilegio: any;
-  }[];
-}
+// interface MenuData {
+//   esito: {
+//     code: number;
+//     target: any;
+//     args: any;
+//   };
+//   list: {
+//     id: number;
+//     funzione: any;
+//     menuItem: number;
+//     nome: string;
+//     percorso: string;
+//     immagine: any;
+//     ordinamento: number;
+//     funzioni: any;
+//     privilegio: any;
+//   }[];
+// }
