@@ -221,7 +221,6 @@
                     <th>Azienda di fatturazione interna</th>
                     <th>Data inizio</th>
                     <th>Data fine</th>
-                    <th>Attivo</th>
                     <th>Attesa lavori</th>
                     <th>Info</th>
                     <th>Modifica</th>
@@ -240,8 +239,7 @@
                       <td>{{ commessa.tariffaGiornaliera || '' }}</td>
                       <td>{{ commessa.aziendaDiFatturazioneInterna || '' }}</td>
                       <td>{{ commessa.dataInizio | date:'dd/MM/yyyy' }}</td>
-                      <td>{{ commessa.dataFine | date:'dd/MM/yyyy' }}</td>
-                      <td>{{ commessa.attivo ? 'Sì' : 'No' }}</td>
+                      <td>{{ commessa.dataFine | date:'dd/MM/yyyy' }}</td>                     
                       <td>{{ commessa.attesaLavori ? 'Sì' : 'No' }}</td>
                       <td (click)="dettaglioAnagrafica(element.anagrafica.id)"> <button class="btn btn-primary"><i
                             class="fa fa-info"></i></button> </td>
@@ -494,7 +492,6 @@
                 <th>Azienda Fatturazione Interna</th>
                 <th>Data Inizio</th>
                 <th>Data Fine</th>
-                <th>Attivo</th>
                 <th>Attesa lavori</th>
                 <th>Info</th>
                 <th>Modifica</th>
@@ -516,7 +513,6 @@
                 <td>{{ commessa[10] || '' }}</td>
                 <td>{{ commessa[11] | date:'dd/MM/yyyy' }}</td>
                 <td>{{ commessa[12] | date:'dd/MM/yyyy' }}</td>
-                <td>{{ commessa[13] ? 'Sì' : 'No' }}</td>
                 <td>{{ commessa[14] ? 'Sì' : 'No' }}</td>
                 <td (click)="dettaglioAnagrafica(idAnagraficaCommessaScaduta)"> <button class="btn btn-primary"><i
                       class="fa fa-info"></i></button> </td>
