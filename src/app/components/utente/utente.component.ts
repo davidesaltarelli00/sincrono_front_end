@@ -7,6 +7,8 @@ import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import * as XLSX from 'xlsx';
 import { MenuService } from '../menu.service';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 
 @Component({
   selector: 'app-utente',
@@ -14,6 +16,18 @@ import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.componen
   styleUrls: ['./utente.component.scss'],
 })
 export class UtenteComponent implements OnInit {
+
+  userLoggedName: any;
+  userLoggedSurname: any;
+  shouldReloadPage: any;
+  idFunzione: any;
+  jsonData: any;
+  token = localStorage.getItem('token');
+  userRoleNav: any;
+  idNav: any;
+  tokenProvvisorio: any;
+
+
   codiceFiscale = '';
   data: any[] = [];
   user: any;
@@ -45,7 +59,6 @@ export class UtenteComponent implements OnInit {
 
   modifiedData: any[] = [];
 
-  token = localStorage.getItem('token');
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -54,7 +67,10 @@ export class UtenteComponent implements OnInit {
     private router: Router,
     private anagraficaDtoService: AnagraficaDtoService,
     private datePipe: DatePipe,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private http: HttpClient,
+
+
   ) {
     this.currentMonth = this.italianMonths[this.currentDate.getMonth()];
     this.currentYear = this.currentDate.getFullYear();
@@ -62,6 +78,8 @@ export class UtenteComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.token != null) {
+      this.getUserLogged();
+      this.getUserRole();
       this.getAnagraficaRapportino();
     } else {
       console.error('ERRORE DI AUTENTICAZIONE');
@@ -175,95 +193,118 @@ export class UtenteComponent implements OnInit {
       );
   }
 
-  /*
 
-  exportListaAnagraficaToExcel() {
-    const workBook = XLSX.utils.book_new();
 
-    const workSheetData = [
-      // Intestazioni delle colonne
-      [
-        'Nome',
-        'Cognome',
-        'Codice fiscale',
-        'Nome azienda',
-        'Mail aziendale',
-        'Cell privato',
-        'Contratto',
-        'Attesa lavori',
-      ],
-    ];
-
-    this.lista.forEach((item: any) => {
-      workSheetData.push([
-        item.anagrafica.nome ? item.anagrafica.nome.toString() : '',
-        item.anagrafica.cognome ? item.anagrafica.cognome.toString() : '',
-        item.anagrafica.codiceFiscale
-          ? item.anagrafica.codiceFiscale.toString()
-          : '',
-        item.anagrafica.tipoAzienda.descrizione
-          ? item.anagrafica.tipoAzienda.descrizione.toString()
-          : '',
-        item.anagrafica.mailAziendale
-          ? item.anagrafica.mailAziendale.toString()
-          : '',
-        item.anagrafica.cellPrivato
-          ? item.anagrafica.cellPrivato.toString()
-          : '',
-        item.contratto?.tipoContratto.descrizione
-          ? item.contratto?.tipoContratto.descrizione.toString()
-          : '',
-        item.anagrafica.attesaLavori
-          ? item.anagrafica.attesaLavori.toString()
-          : 'No',
-      ]);
-    });
-    const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
-
-    console.log('Dati nel foglio di lavoro:', workSheet);
-
-    XLSX.utils.book_append_sheet(workBook, workSheet, 'ListaAnagrafiche');
-    // Esporta il libro Excel in un file
-    XLSX.writeFile(workBook, 'lista_anagrafiche.xlsx');
-
-    (error: any) => {
-      console.error(
-        'Si è verificato un errore durante il recupero della lista delle anagrafiche: ' +
-          error
-      );
-    };
+  logout() {
+    this.dialog.open(AlertLogoutComponent);
   }
-  */
+
+  getUserLogged() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        localStorage.getItem('token');
+        this.userLoggedName = response.anagraficaDto.anagrafica.nome;
+        this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato il seguente errore durante il recupero dei dati : ' +
+            error
+        );
+      }
+    );
+  }
+
+  getUserRole() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
+      },
+      (error: any) => {
+        console.error(
+          'Si è verificato il seguente errore durante il recupero del ruolo: ' +
+            error
+        );
+        this.shouldReloadPage = true;
+      }
+    );
+  }
+
+  generateMenuByUserRole() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${this.token}`,
+    });
+    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
+    this.http.get<MenuData>(url, { headers: headers }).subscribe(
+      (data: any) => {
+        this.jsonData = data;
+        this.idFunzione = data.list[0].id;
+        console.log(
+          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+        );
+        this.shouldReloadPage = false;
+      },
+      (error: any) => {
+        console.error('Errore nella generazione del menu:', error);
+        this.shouldReloadPage = true;
+      }
+    );
+  }
+
+  getPermissions(functionId: number) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${this.token}`,
+    });
+    const url = `http://localhost:8080/services/operazioni/${functionId}`;
+    this.http.get(url, { headers: headers }).subscribe(
+      (data: any) => {
+        console.log('Permessi ottenuti:', data);
+      },
+      (error: any) => {
+        console.error('Errore nella generazione dei permessi:', error);
+      }
+    );
+  }
+
+
+
 }
 
-/*
-{
-    "esito": {
-        "code": 200,
-        "target": null,
-        "args": null
-    },
-    "rapportinoDto": {
-        "mese": {
-            "mese": [
-                {
-                    "giorno": 2,
-                    "cliente": "accenture",
-                    "oreOrdinarie": 8.0
-                },
-                {
-                    "giorno": 3,
-                    "cliente": "accenture",
-                    "oreOrdinarie": 8.0
-                },
-                {
-                    "giorno": 4,
-                    "cliente": "accenture",
-                    "oreOrdinarie": 8.0
-                }
-            ]
-        },
-        "anagrafica": null
-    }
+
+interface MenuData {
+  esito: {
+    code: number;
+    target: any;
+    args: any;
+  };
+  list: {
+    id: number;
+    funzione: any;
+    menuItem: number;
+    nome: string;
+    percorso: string;
+    immagine: any;
+    ordinamento: number;
+    funzioni: any;
+    privilegio: any;
+  }[];
 }
-*/
