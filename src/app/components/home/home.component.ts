@@ -25,9 +25,9 @@ export class HomeComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private profileBoxService: ProfileBoxService,
+    private dialog: MatDialog,
     private http: HttpClient,
     private router: Router,
-    private dialog: MatDialog
   ) {}
   ngOnInit(): void {
     if (this.token != null) {
