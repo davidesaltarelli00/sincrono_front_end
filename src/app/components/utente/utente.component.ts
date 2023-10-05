@@ -143,16 +143,21 @@ export class UtenteComponent implements OnInit {
       .sendRapportino(localStorage.getItem('token'), body)
       .subscribe(
         (result: any) => {
-          if ((result as any).esito.code !== 200) {
+          if (
+            (result as any).esito.code !== 200 &&
+            (result as any).esito.target === 'HTTP error code: 400'
+          ) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 Image: '../../../../assets/images/logo.jpeg',
                 title: 'Invio non riuscito:',
-                message: (result as any).esito.target,
+                message: 'Errore validazione.', //(result as any).esito.target,
               },
             });
-            location.reload();
-          } else {
+            console.error(result);
+          }
+
+          if ((result as any).esito.code == 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 title: 'Invio riuscito',
