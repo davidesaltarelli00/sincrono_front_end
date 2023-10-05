@@ -249,13 +249,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let element of pageData; let i=index" [ngClass]="{ 'green-background': isGreenBackground(element.anagrafica.id), 'red-background': !isGreenBackground(element.anagrafica.id)}">
-            <td [routerLink]="['/dettaglio-anagrafica/',element.anagrafica.id]" [ngStyle]="{'border': isCampoVuoto(element) ? '1px solid red' : '1px solid green'}" >
-              <div>
-                <span [ngClass]="{'text-danger': isCampoVuoto(element), 'text-success': !isCampoVuoto(element)}">
-                  {{ isCampoVuoto(element) ? 'Si' : 'No' }}
-                </span>
-              </div>
+          <tr *ngFor="let element of pageData; let i=index" >
+            <td [routerLink]="['/dettaglio-anagrafica/',element.anagrafica.id]"  >
+              <span [ngStyle]="{'color': isCampoVuoto(element) ? 'red' : 'green'}" >
+                {{isCampoVuoto(element)? 'Si' : 'No'}}
+              </span>
             </td>
             <td>{{ element.anagrafica?.nome |titlecase }}</td>
             <td>{{ element.anagrafica?.cognome |titlecase }}</td>
@@ -277,13 +275,11 @@
               <i *ngIf="element?.commesse?.length > 0" class="fa fa-info-circle" style="cursor:pointer;"></i>
               <i *ngIf="element?.commesse?.length == 0" class="fa fa-plus-circle" style="cursor:pointer;"></i>
             </td>
-
-
-
-
-
             <td>
-              {{element.commesse.attesaLavori ? 'Si' : 'No'}}
+              <label class="switch" >
+                <input type="checkbox" disabled [checked]="element.anagrafica.attesaLavori">
+                <span class="slider"></span>
+              </label>
             </td>
             <td>
               <span style="margin:5px;">
