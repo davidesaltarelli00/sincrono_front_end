@@ -263,9 +263,12 @@
             <td>{{ element.anagrafica?.tipoAzienda?.descrizione |titlecase }}</td>
             <td>{{ element.anagrafica?.mailAziendale  }}</td>
             <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non inserito'  }}</td>
-            <td *ngIf="element.contratto?.tipoContratto?.descrizione!='#'">
-              {{element.contratto?.tipoContratto?.descrizione ? element.contratto?.tipoContratto?.descrizione : 'Non inserito'}}
+            <td style="cursor: pointer;" [ngStyle]="{'color': element?.contratto!=null ? 'black' : 'red'}" [matTooltip]="element?.contratto!=null ? 'Vedi Il contratto di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi contratto a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome" (click)="handleClickContratto(element)">
+              {{ element?.contratto!=null ? element.contratto.tipoContratto.descrizione : 'Non inserito' }}
+              <i *ngIf="element?.contratto!=null" class="fa fa-info-circle" style="cursor:pointer;"></i>
+              <i *ngIf="element?.contratto==null" class="fa fa-plus-circle" style="cursor:pointer;"></i>
             </td>
+
             <td *ngIf="element.contratto?.tipoContratto?.descrizione==='#'" >
               Generico
             </td>

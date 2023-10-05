@@ -9,6 +9,7 @@ import { profileBoxService } from '../../profile-box/profile-box.service';
 import * as XLSX from 'xlsx';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalInfoCommesseComponent } from '../../modal-info-commesse/modal-info-commesse.component';
+import { ModalInfoContrattoComponent } from '../../modal-info-contratto/modal-info-contratto.component';
 declare var $: any;
 
 @Component({
@@ -101,6 +102,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   ccnLSelezionato: any;
   numeroMensilitaCCNL: any;
   idCCNLselezionato: any;
+  contratto: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -796,6 +798,43 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     }
   }
 
+  mostraInfoContratto(id: any) {
+    console.log(id);
+    this.anagraficaDtoService
+      .detailAnagraficaDto(id, localStorage.getItem('token'))
+      .subscribe(
+        (resp: any) => {
+          console.log(resp);
+          this.data = (resp as any)['anagraficaDto'];
+          console.log(this.data);
+          this.contratto = (resp as any)['anagraficaDto']['contratto'];
+          console.log(this.contratto);
+
+          // Apro il dialog e passo i dati al componente
+          const dialogRef = this.dialog.open(ModalInfoContrattoComponent, {
+            data: {
+              // Passa qui i dati che desideri
+              anagraficaDto: this.data,
+              commesse: this.contratto,
+            },
+          });
+        },
+        (error: any) => {
+          console.error(
+            'ERRORE DURANTE IL CARICAMENTO DELLE INFO SUL CONTRATTO:' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+  handleClickContratto(element: any) {
+    if (element?.contratto != null) {
+      this.mostraInfoContratto(element.anagrafica?.id);
+    } else {
+      this.router.navigate(['/modifica-anagrafica', element.anagrafica.id]);
+    }
+  }
 
   handleClick(element: any) {
     if (element?.commesse?.length > 0) {
@@ -806,6 +845,4 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       this.router.navigate(['/modifica-anagrafica', element.anagrafica.id]);
     }
   }
-
-
 }
