@@ -77,7 +77,7 @@ import { ModalInfoContrattoComponent } from './components/modal-info-contratto/m
     GiornoComponent,
     NotFoundComponent,
     AlertDialogComponent,
-    ModalInfoContrattoComponent
+    ModalInfoContrattoComponent,
   ],
   imports: [
     MatNativeDateModule,

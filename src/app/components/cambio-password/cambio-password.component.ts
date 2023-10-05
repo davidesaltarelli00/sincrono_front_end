@@ -5,7 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { profileBoxService } from '../profile-box/profile-box.service';
+import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { CambioPasswordService } from './cambio-password.service';
 import { Router } from '@angular/router';
 
@@ -23,7 +23,7 @@ export class CambioPasswordComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private profileBoxService: profileBoxService,
+    private profileBoxService: ProfileBoxService,
     private cambioPasswordService:CambioPasswordService,
     private router:Router
   ) {

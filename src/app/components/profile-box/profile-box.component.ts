@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../login/login-service';
-import { profileBoxService } from './profile-box.service';
+import { ProfileBoxService } from './profile-box.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,7 +18,7 @@ export class ProfileBoxComponent {
 
   constructor(
     private authService: AuthService,
-    private profileBoxService: profileBoxService,
+    private profileBoxService: ProfileBoxService,
     private router: Router
   ) {}
   ngOnInit(): void {

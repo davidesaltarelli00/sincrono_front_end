@@ -34,9 +34,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     if (localStorage.getItem('token') != null) {
       this.router.navigate(['/home']);
-    } else{
+    } else {
       this.router.navigate(['/login']);
-
     }
   }
 
@@ -61,7 +60,6 @@ export class LoginComponent implements OnInit {
 
     this.authService.authenticate(username, password).subscribe(
       (response) => {
-
         if ((response as any).esito.code !== 200) {
           // alert(
           //   'Inserimento non riuscito\n' +
@@ -84,23 +82,21 @@ export class LoginComponent implements OnInit {
           // });
           this.router.navigate(['/home']);
 
-        // Formatta il token
-        const tokenParts = response.token.split('.');
-        const tokenHeader = JSON.parse(atob(tokenParts[0]));
-        const tokenPayload = JSON.parse(atob(tokenParts[1]));
+          // Formatta il token
+          const tokenParts = response.token.split('.');
+          const tokenHeader = JSON.parse(atob(tokenParts[0]));
+          const tokenPayload = JSON.parse(atob(tokenParts[1]));
 
-        // Puoi accedere alle parti del token come oggetti JSON
-        console.log('Token header:', tokenHeader);
-        console.log('Token payload:', tokenPayload);
+          // Puoi accedere alle parti del token come oggetti JSON
+          console.log('Token header:', tokenHeader);
+          console.log('Token payload:', tokenPayload);
 
-        // Memorizza il token nel localStorage e assegna alla variabile token
-        localStorage.setItem('token', response.token);
-        this.token = response.token;
-        console.log("Si é loggato l'utente "+ tokenPayload.sub);
-
+          // Memorizza il token nel localStorage e assegna alla variabile token
+          localStorage.setItem('token', response.token);
+          this.token = response.token;
+          console.log("Si é loggato l'utente " + tokenPayload.sub);
+          console.log("Token generato: "+localStorage.getItem('token'));
         }
-
-
       },
       (error) => {
         // Login failed, handle the error
