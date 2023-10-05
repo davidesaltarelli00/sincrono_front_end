@@ -1,10 +1,12 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import * as XLSX from 'xlsx';
+import { MenuService } from '../menu.service';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-utente',
@@ -23,23 +25,50 @@ export class UtenteComponent implements OnInit {
   elencoCommesse: any;
   contratto: any;
   italianMonths = [
-    'gennaio', 'febbraio', 'marzo', 'aprile',
-    'maggio', 'giugno', 'luglio', 'agosto',
-    'settembre', 'ottobre', 'novembre', 'dicembre'
+    'gennaio',
+    'febbraio',
+    'marzo',
+    'aprile',
+    'maggio',
+    'giugno',
+    'luglio',
+    'agosto',
+    'settembre',
+    'ottobre',
+    'novembre',
+    'dicembre',
   ];
+
+  rapportinoDto: any[] = [];
+
+  @ViewChild('editableTable') editableTable!: ElementRef;
+
+  modifiedData: any[] = [];
+
+  token = localStorage.getItem('token');
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
     private router: Router,
     private anagraficaDtoService: AnagraficaDtoService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private menuService: MenuService
   ) {
     this.currentMonth = this.italianMonths[this.currentDate.getMonth()];
     this.currentYear = this.currentDate.getFullYear();
   }
 
   ngOnInit(): void {
+    if (this.token != null) {
+      this.getAnagraficaRapportino();
+    } else {
+      console.error('ERRORE DI AUTENTICAZIONE');
+    }
+  }
+
+  getAnagraficaRapportino() {
     this.anagraficaDtoService
       .detailAnagraficaDto(this.id, localStorage.getItem('token'))
       .subscribe(
@@ -53,50 +82,92 @@ export class UtenteComponent implements OnInit {
           ];
           console.log('CODICE FISCALE:' + this.codiceFiscale);
           console.log('PARTE ENDPOINT PER RAPPORTINO');
-          this.profileBoxService
-            .getRapportino(localStorage.getItem('token'), this.codiceFiscale)
-            .subscribe(
-              (result: any) => {
-                this.data = result;
-                console.log('DATA: ' + JSON.stringify(this.data));
-              },
-              (error: any) => {
-                console.error(
-                  'ERRORE DURANTE IL CARICAMENTO DEL RAPPORTINO:' + error
-                );
-              }
-            );
+          this.getRapportino();
         },
         (error: any) => {
-          console.error('ERRORE:' + JSON.stringify(error));
+          console.error(
+            'ERRORE DURANTE IL CARICAMENTO DELL ANAGRAFICA :' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+  getRapportino() {
+    this.profileBoxService
+      .getRapportino(localStorage.getItem('token'), this.codiceFiscale)
+      .subscribe(
+        (result: any) => {
+          this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
+          console.log('DATA: ' + JSON.stringify(this.rapportinoDto));
+        },
+        (error: any) => {
+          console.error(
+            'ERRORE DURANTE IL CARICAMENTO DEL RAPPORTINO:' +
+              JSON.stringify(error)
+          );
         }
       );
   }
 
   inviaRapportino() {
-    const celleModificate = document.querySelectorAll(
-      'td[contenteditable="true"]'
-    );
-    const datiExcel: string[][] = []; // Dichiarazione esplicita del tipo
-    const intestazioni: string[] = ['Giorno', 'Cliente', 'Ore Ordinarie'];
-    datiExcel.push(intestazioni); // Aggiungi l'intestazione all'array datiExcel
+    // Raccogli i dati modificati dalla tabella e aggiungili a modifiedData
+    const tableRows =
+      this.editableTable.nativeElement.getElementsByTagName('tr');
+    for (let i = 1; i < tableRows.length; i++) {
+      const row = tableRows[i];
+      const giorno = row.cells[0].innerText;
+      const cliente = row.cells[1].innerText;
+      const oreOrdinarie = row.cells[2].innerText;
 
-    let rowData: string[] = [];
-    celleModificate.forEach((cella, index) => {
-      const testoCella = cella.textContent || ''; // Se testoCella è null, lo converte in una stringa vuota
-      rowData.push(testoCella);
+      // Aggiungi i dati modificati all'array modifiedData
+      this.modifiedData.push({ giorno, cliente, oreOrdinarie });
+    }
 
-      if ((index + 1) % 3 === 0) {
-        datiExcel.push([...rowData]);
-        rowData = [];
-      }
-    });
+    // Ora puoi inviare this.modifiedData al server
+    console.log('Dati modificati:', this.modifiedData);
 
-    const nomeFile = 'rapportino.xlsx';
-    const foglioExcel = XLSX.utils.aoa_to_sheet(datiExcel);
-    const libroExcel = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(libroExcel, foglioExcel, 'Rapportino');
-    XLSX.writeFile(libroExcel, nomeFile);
+    // Invia i dati modificati al server
+    let body = {
+      rapportinoDto: {
+        mese: {
+          giorni: this.modifiedData,
+        },
+        anagrafica: {
+          codiceFiscale: this.codiceFiscale,
+        },
+      },
+    };
+
+    this.menuService
+      .sendRapportino(localStorage.getItem('token'), body)
+      .subscribe(
+        (result: any) => {
+          if ((result as any).esito.code !== 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                Image: '../../../../assets/images/logo.jpeg',
+                title: 'Invio non riuscito:',
+                message: (result as any).esito.target,
+              },
+            });
+            location.reload();
+          } else {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Invio riuscito',
+                message: (result as any).esito.target,
+              },
+            });
+            this.getRapportino();
+          }
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante l invio del rapportino: ' + JSON.stringify(error)
+          );
+        }
+      );
   }
 
   /*

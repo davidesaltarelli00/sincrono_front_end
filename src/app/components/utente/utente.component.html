@@ -32,7 +32,7 @@
                   <tr>
                     <td><strong>Nome</strong></td>
                     <td>{{ user?.anagrafica?.nome }}</td>
-                    <td rowspan="2">Num Giorni</td>
+                    <td rowspan="2">{{rapportinoDto.length}}</td>
                   </tr>
                   <tr>
                     <td><strong>Cognome</strong></td>
@@ -49,16 +49,20 @@
                 <tbody>
                   <tr>
                     <!-- <td>  <img src="../../../../assets/images/logo.jpeg" alt="Logo Sincrono" > </td> -->
-                    <td>{{ user?.anagrafica?.tipoAzienda?.descrizione }}</td>
+                    <td>{{ user?.anagrafica?.tipoAzienda?.descrizione }}   <button style="float: right;" class="btn btn-success" (click)="inviaRapportino()">
+                      Invia rapportino <i class="fa fa-save"></i>
+                    </button></td>
                   </tr>
                 </tbody>
               </table>
             </div>
+
           </div>
           <br />
+
           <div class="row">
             <div class="col-12">
-              <table class="table table-bordered">
+              <table class="table table-striped"  #editableTable>
                 <thead>
                   <tr>
                     <th style="background-color: purple; color: white">
@@ -73,22 +77,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <!--*ngFor="let item of data"-->
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
+                  <tr *ngFor="let giornaliero of rapportinoDto; let i=index">
+                    <td contenteditable="true">{{ giornaliero.giorno }}</td>
+                    <td contenteditable="true">{{ giornaliero.cliente }}</td>
+                    <td contenteditable="true">{{ giornaliero.oreOrdinarie }}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
         </mat-card-content>
-        <mat-card-footer>
-          <button class="btn btn-success" (click)="inviaRapportino()">
-            Invia rapportino <i class="fa fa-save"></i>
-          </button>
-        </mat-card-footer>
       </mat-card>
     </div>
   </body>
