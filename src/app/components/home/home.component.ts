@@ -107,6 +107,7 @@ export class HomeComponent implements OnInit {
       (error: any) => {
         console.error('Errore nella generazione del menu:', error);
         this.shouldReloadPage = true;
+        this.jsonData = { list: [] };
       }
     );
   }

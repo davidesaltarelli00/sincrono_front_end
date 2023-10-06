@@ -100,8 +100,8 @@ a{
   <a [routerLink]="['/home']" class="logo-link">
     <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
   </a>
-  <div class="toolbar-menu">
-    <a   (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link" *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+  <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
+    <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link" *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
       {{ menuItem.nome }}
     </a>
   </div>

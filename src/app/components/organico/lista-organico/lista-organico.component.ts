@@ -398,8 +398,10 @@ export class ListaOrganicoComponent implements OnInit {
       (error: any) => {
         console.error('Errore nella generazione del menu:', error);
         this.shouldReloadPage = true;
+        this.jsonData = { list: [] }; // Imposta un valore predefinito per jsonData
       }
     );
+
   }
 
   getPermissions(functionId: number) {

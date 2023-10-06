@@ -664,6 +664,7 @@ export class DettaglioAnagraficaDtoComponent {
       (error: any) => {
         console.error('Errore nella generazione del menu:', error);
         this.shouldReloadPage = true;
+        this.jsonData = { list: [] };
       }
     );
   }

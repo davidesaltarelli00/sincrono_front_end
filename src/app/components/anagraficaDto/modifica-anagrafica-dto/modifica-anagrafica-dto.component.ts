@@ -18,7 +18,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 
-
 @Component({
   selector: 'app-modifica-anagrafica-dto',
   templateUrl: './modifica-anagrafica-dto.component.html',
@@ -90,7 +89,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     private datePipe: DatePipe,
     public dialog: MatDialog,
     public profileBoxService: ProfileBoxService,
-    private http: HttpClient,
+    private http: HttpClient
   ) {
     console.log(
       '+++++++++++++++++++++++++++ID ANAGRAFICA CORRENTE: ' + this.id
@@ -2187,6 +2186,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       (error: any) => {
         console.error('Errore nella generazione del menu:', error);
         this.shouldReloadPage = true;
+        this.jsonData = { list: [] };
       }
     );
   }
@@ -2207,7 +2207,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       }
     );
   }
-
 }
 
 interface MenuData {
