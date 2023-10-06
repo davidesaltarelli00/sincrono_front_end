@@ -40,7 +40,6 @@ export class ListaDashboardComponent {
   userRoleNav: any;
   idNav: any;
   tokenProvvisorio: any;
-
   lista: any;
   data: any;
   livelliContrattuali: any = [];
@@ -68,6 +67,9 @@ export class ListaDashboardComponent {
   pageData: any[] = [];
   messaggio: any;
   commesse!: FormArray;
+  annoDataInizio:any;
+  annoDataFine:any;
+  annoFineContratto:any;
   genericList: any[] = [];
   filterAnagraficaDto: FormGroup = new FormGroup({
 
@@ -142,7 +144,7 @@ export class ListaDashboardComponent {
 
   ngOnInit(): void {
 
-
+   
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
     const commessaFormGroup = this.creaFormCommessa();
     this.commesse.push(commessaFormGroup);

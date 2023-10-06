@@ -423,15 +423,15 @@
                     <label for="annoInizioCommessa">Anno di inizio commessa:</label>
                     <input type="number" id="annoDataInizio" class="form-control" placeholder="Inserire anno di inizio commessa" formControlName="annoDataInizio">
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-3" *ngIf="filterAnagraficaDto.get('annoDataInizio')?.value!==null">
                     <label for="meseInizioCommessa">Mese di inizio commessa:</label>
-                    <input type="number" min="1" max="12" id="meseDataInizio" class="form-control" placeholder="Inserire mese di inizio commessa" formControlName="meseDataInizio">
+                    <input  min="1" max="12" id="meseDataInizio" class="form-control" placeholder="Inserire mese di inizio commessa" formControlName="meseDataInizio">
                   </div>
                   <div class="col-md-3">
                     <label for="annoFineCommessa">Anno di fine commessa:</label>
                     <input type="number" id="annoDataFine" class="form-control" placeholder="Inserire anno di fine commessa" formControlName="annoDataFine">
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-3" *ngIf="filterAnagraficaDto.get('annoDataFine')?.value!==null">
                     <label for="meseFineCommessa">Mese di fine commessa:</label>
                     <input type="number" min="1" max="12" id="meseDataFine" class="form-control" placeholder="Inserire mese di fine commessa" formControlName="meseDataFine">
                   </div>
@@ -443,7 +443,7 @@
                     <label for="dataFineRapporto">Anno Fine Rapporto</label>
                     <input type="number" formControlName="annoFineContratto" placeholder="Inserire anno di fine rapporto" class="form-control">
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-3" *ngIf="filterAnagraficaDto.get('annoFineContratto')?.value!==null">
                     <label for="dataFineRapporto">Mese Fine Rapporto</label>
                     <input type="number" min="1" max="12" formControlName="meseFineContratto" class="form-control" placeholder="Inserire mese di fine rapporto">
                   </div>
