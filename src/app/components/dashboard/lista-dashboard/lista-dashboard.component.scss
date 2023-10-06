@@ -6,7 +6,10 @@
 button {
   background-color: rgb(24, 122, 0);
   color: white;
+    padding: 2px 4px; /* Adjust padding to make the button smaller */
+    margin-left: 10px; /* Adjust margin-left to add space to the right of the text */
 }
+
 
 button:hover {
   background-color: rgb(24, 122, 0);

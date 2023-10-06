@@ -129,8 +129,11 @@
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            Contratti con Scatto livello
+           <span> Contratti con Scatto livello  </span> 
+            <button class="btn btn-success" (click)="exportContrattiFromBatchToExcel()" class="btn btn-success" title="Esporta come file Excel"><i
+              class="fa-solid fa-file-export"></i></button>
           </mat-panel-title>
+         
           <mat-panel-description>
             <p>Contiene tutti i contratti con almeno uno scatto livello effettuato
             </p>
@@ -185,9 +188,7 @@
                           class="fa fa-pencil"></i></button></td>
                   </tr>
                 </tbody>
-                <button class="btn btn-success" (click)="resetTabella()">Svuota tabella</button>
-                <button class="btn btn-success" (click)="exportContrattiFromBatchToExcel()" class="btn btn-success"><i
-                    class="fa-solid fa-file-export"></i></button>
+                <button class="btn btn-success" (click)="resetTabella()">Svuota</button>              
               </table>
             </div>
           </div>
@@ -199,6 +200,8 @@
         <mat-expansion-panel-header>
           <mat-panel-title>
             Commesse in scadenza (40 giorni)
+            <button class="btn btn-success" (click)="exportCommesseInScadenzaToExcel()" class="btn btn-success" title="Esporta come file Excel"><i
+              class="fa-solid fa-file-export"></i></button>
           </mat-panel-title>
           <mat-panel-description>
             <p>Contiene le commesse in scadenza</p>
@@ -249,8 +252,7 @@
                 </tbody>
 
               </table>
-              <button class="btn btn-success" (click)=" exportCommesseInScadenzaToExcel() ">Esporta Commesse come
-                Excel</button>
+              
 
             </div>
           </div>
@@ -263,6 +265,8 @@
         <mat-expansion-panel-header>
           <mat-panel-title>
             Contratti in scadenza (40 giorni)
+            <button class="btn btn-success" (click)="exportContrattiInScadenzaToExcel()" class="btn btn-success" title="Esporta come file Excel"><i
+              class="fa-solid fa-file-export"></i></button>
           </mat-panel-title>
           <mat-panel-description>
             Contiene i contratti in scadenza
@@ -313,7 +317,7 @@
                 <tbody>
                   <tr *ngFor="let element of listaContrattiInScadenza">
                     <td>{{element.anagrafica.nome}} {{element.anagrafica.cognome}}</td>
-                    <td>{{element.anagrafica.codiceFiscale}}</td>
+                    <td>{{element.anagrafica.codiceFiscale |uppercase}}</td>
                     <td>{{ element.contratto.tipoContratto.descrizione }}</td>
                     <td>{{ element.contratto.tipoLivelloContratto.ccnl }} - Livello {{
                       element.contratto.tipoLivelloContratto.livello }}</td>
@@ -346,9 +350,7 @@
                       <td>{{ contratto.contratto.ralPartTime }}</td> -->
                   </tr>
                 </tbody>
-              </table>
-              <button class="btn btn-success" (click)=" exportContrattiInScadenzaToExcel()">Esporta Contratti come
-                Excel</button>
+              </table>          
             </div>
           </div>
         </div>
@@ -358,7 +360,9 @@
     <div class="row">
       <div class="col-12">
         <h4>Lista commesse scadute</h4>
-      </div>
+        <button class="btn btn-success" (click)="exportCommesseScaduteToExcel()" class="btn btn-success" title="Esporta come file Excel"><i
+          class="fa-solid fa-file-export"></i></button>
+      </div>    
     </div>
     <div class="row">
       <div class="col-12">
@@ -498,10 +502,9 @@
               </tr>
             </thead>
             <tbody>
-
               <tr *ngFor="let commessa of listaCommesseScadute">
                 <td>{{commessa[0]}} {{commessa[1]}}</td>
-                <td>{{commessa[2]}}</td>
+                <td>{{commessa[2] |uppercase}}</td>
                 <td>{{ commessa[3] }}</td>
                 <td>{{ commessa[4] }}</td>
                 <td>{{ commessa[5]}}</td>
@@ -518,10 +521,9 @@
                 <td (click)="vaiAModificaAnagrafica(idAnagraficaCommessaScaduta)"><button class="btn btn-warning"><i
                       class="fa fa-pencil"></i></button></td>
               </tr>
-
             </tbody>
 
-          </table>
+          </table>        
           <div class="pagination">
             <ul>
               <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
@@ -534,9 +536,8 @@
               <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
                 <span> <i class="fa fa-arrow-right"></i> </span>
               </li>
-            </ul>
+            </ul>           
           </div>
-          <button class="btn btn-success" (click)="exportCommesseScaduteToExcel()">Esporta Commesse come Excel</button>
           <br><br><br>
         </div>
       </div>
