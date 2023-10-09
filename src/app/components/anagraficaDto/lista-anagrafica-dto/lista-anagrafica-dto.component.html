@@ -390,19 +390,19 @@ a{
             </td>
             <td>
               <span style="margin:5px;">
-                <a [routerLink]="['/utente/', element?.anagrafica.id]"><button [disabled]="anagraficaLoggata!=element.anagrafica.id"  class="btn btn-success"><i class="fa fa-file"></i></button></a>
+                <a [routerLink]="['/utente/', element?.anagrafica.id]"><button matTooltip="Rapportino {{element.anagrafica.nome}} {{element.anagrafica.cognome}} " [disabled]="anagraficaLoggata!=element.anagrafica.id"  class="btn btn-success"><i class="fa fa-file"></i></button></a>
               </span>
               <span style="margin:5px;">
-                <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button class="btn btn-info"><i class="fa fa-info"></i></button></a>
+                <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} " class="btn btn-info"><i class="fa fa-info"></i></button></a>
               </span>
               <span style="margin:5px;">
-                <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"><i class="fa fa-pencil"></i></button>
+                <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]" matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i class="fa fa-pencil"></i></button>
               </span>
               <span style="margin:5px;" *ngIf="element.anagrafica.attivo==true">
-                <button [disabled]="anagraficaLoggata===element.anagrafica.id" class="btn btn-danger" matTooltip="Disattiva anagrafica" (click)="elimina(element.anagrafica.id)"><i class="fa fa-minus"></i></button>
+                <button [disabled]="anagraficaLoggata===element.anagrafica.id" class="btn btn-danger" matTooltip="Disattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} " (click)="elimina(element.anagrafica.id)"><i class="fa fa-minus"></i></button>
               </span>
               <span style="margin:5px;" *ngIf="element.anagrafica.attivo==false">
-                <button class="btn btn-success"  (click)="riattivaAnagrafica(element.anagrafica.id)" matTooltip="Riattiva anagrafica" > <i class="fa fa-plus" ></i> </button>
+                <button class="btn btn-success"  (click)="riattivaAnagrafica(element.anagrafica.id)" matTooltip="Riattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} " > <i class="fa fa-plus" ></i> </button>
               </span>
             </td>
           </tr>
