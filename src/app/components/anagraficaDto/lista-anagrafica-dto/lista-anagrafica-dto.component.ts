@@ -12,6 +12,7 @@ import { ModalInfoCommesseComponent } from '../../modal-info-commesse/modal-info
 import { ModalInfoContrattoComponent } from '../../modal-info-contratto/modal-info-contratto.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 declare var $: any;
 
 @Component({
@@ -50,7 +51,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   userRoleNav: any;
   idNav: any;
   tokenProvvisorio: any;
-
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -127,7 +127,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     private router: Router,
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
-    private http:HttpClient
+    private http: HttpClient
   ) {
     this.filterAnagraficaDto = this.formBuilder.group({
       anagrafica: new FormGroup({
@@ -178,8 +178,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.router.navigate(['/profile-box/', this.userlogged]);
   }
 
-
-
   reloadPage(): void {
     this.location.go(this.location.path());
     location.reload();
@@ -221,7 +219,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
@@ -372,8 +369,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
         .subscribe(
           (resp: any) => {
-            //parseing json
-            // resp = (resp as any)['anagraficaDto'];
             console.log(
               'Dettaglio prima dell eliminazione: ' + JSON.stringify(resp)
             );
@@ -389,22 +384,39 @@ export class ListaAnagraficaDtoComponent implements OnInit {
               .subscribe(
                 (response: any) => {
                   if ((response as any).esito.code != 200) {
-                    alert(
-                      'Disattivazione non riuscita:\n' +
-                        (response as any).esito.target
-                    );
+                    const dialogRef = this.dialog.open(AlertDialogComponent, {
+                      data: {
+                        title: 'Disattivazione non riuscita:',
+                        message: (response as any).esito.target,
+                      },
+                    });
                   } else {
-                    alert('Utente disattivato correttamente. ' + response);
+                    const dialogRef = this.dialog.open(AlertDialogComponent, {
+                      data: {
+                        title: 'Disattivazione riuscita correttamente:',
+                        message: (response as any).esito.target,
+                      },
+                    });
                     this.ngOnInit();
                   }
                 },
                 (errorDeleted: any) => {
-                  console.log("Errore durante l'eliminazione: " + errorDeleted);
+                  const dialogRef = this.dialog.open(AlertDialogComponent, {
+                    data: {
+                      title: 'Errore durante l eliminazione:',
+                      message: JSON.stringify(errorDeleted),
+                    },
+                  });
                 }
               );
           },
           (error: any) => {
-            console.log(error);
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Qualcosa é andato storto:',
+                message: JSON.stringify(error),
+              },
+            });
           }
         );
     } else {
@@ -504,7 +516,56 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         this.tipoAziendaFilter;
       this.filterAnagraficaDto.value.anagrafica.attivo = 1;
     }
+
+    const payload = {
+      anagraficaDto: {
+        contratto: {
+          tipoContratto: {
+            descrizione: this.tipoContrattoFilter,
+          },
+          tipoAzienda: {
+            descrizione: this.tipoAziendaFilter,
+          },
+        },
+      },
+    };
+
+
+      console.log(
+        'PAYLOAD BACKEND FILTER ORGANICO: ' + JSON.stringify(payload)
+      );
+      this.anagraficaDtoService
+        .filterAnagrafica(localStorage.getItem('token'), payload)
+        .subscribe(
+          (result) => {
+            if ((result as any).esito.code != 200) {
+              alert(
+                'Qualcosa é andato storto\n' +
+                  ': ' +
+                  (result as any).esito.target
+              );
+            } else {
+              if (Array.isArray(result.list)) {
+                this.pageData = result.list;
+              } else {
+                this.pageData = [];
+                this.messaggio =
+                  'Nessun risultato trovato per i filtri inseriti, riprova.';
+              }
+              console.log(
+                'Trovati i seguenti risultati: ' + JSON.stringify(result)
+              );
+            }
+          },
+          (error: any) => {
+            console.log(
+              'Si é verificato un errore durante il passaggio dei dati da organico: ' +
+                error
+            );
+          }
+        );
   }
+
   caricaTipoContratto() {
     this.contrattoService
       .getTipoContratto(localStorage.getItem('token'))
@@ -957,7 +1018,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     );
   }
 }
-
 
 interface MenuData {
   esito: {
