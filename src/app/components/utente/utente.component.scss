@@ -25,6 +25,11 @@ h2 {
 }
 
 
+table.th,td{
+  text-align: center;
+  text-decoration: none;
+}
+
 p {
   font-size: 1.2rem;
   margin-top: 10px;
@@ -34,4 +39,43 @@ a {
   text-decoration: none;
   color: #007bff;
   font-weight: bold;
+}
+
+/* Stile generale per la tabella */
+.table-excel {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* Stile per l'intestazione delle colonne */
+.table-excel th {
+  background-color: #007bff; /* Colore di sfondo dell'intestazione */
+  color: #ffffff; /* Colore del testo nell'intestazione */
+  font-weight: bold;
+  border: 1px solid #000; /* Bordo dell'intestazione */
+  padding: 8px;
+  text-align: center;
+}
+
+/* Stile per le celle nella tabella */
+.table-excel td {
+  border: 1px solid #000; /* Bordo delle celle */
+  padding: 8px;
+  text-align: left;
+}
+
+/* Stile per le righe pari (effetto zebra) */
+.table-excel tr:nth-child(even) {
+  background-color: #f2f2f2; /* Colore di sfondo delle righe pari */
+}
+
+/* Stile per le celle modificabili (contenteditable) */
+.table-excel td[contenteditable="true"] {
+  background-color: #ffff99; /* Colore di sfondo delle celle modificabili */
+  cursor: pointer; /* Cambia il cursore quando si passa sopra una cella modificabile */
+}
+
+/* Stile per l'hover sulle celle modificabili */
+.table-excel td[contenteditable="true"]:hover {
+  background-color: #ffffcc; /* Cambia il colore di sfondo quando si passa sopra */
 }
