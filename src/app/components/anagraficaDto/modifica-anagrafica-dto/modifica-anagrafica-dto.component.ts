@@ -14,9 +14,14 @@ import { Commessa } from '../nuova-anagrafica-dto/commessa';
 import { DatePipe } from '@angular/common';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
+import { AuthService } from '../../login/login-service';
 
 @Component({
   selector: 'app-modifica-anagrafica-dto',
@@ -89,7 +94,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     private datePipe: DatePipe,
     public dialog: MatDialog,
     public profileBoxService: ProfileBoxService,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {
     console.log(
       '+++++++++++++++++++++++++++ID ANAGRAFICA CORRENTE: ' + this.id
@@ -158,8 +164,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
       contratto: this.formBuilder.group({
         id: [''],
-        // attivo: [''],
-        // aziendaDiFatturazioneInterna: [''],
         tipoAzienda: this.formBuilder.group({
           id: [''],
         }),
@@ -182,7 +186,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         mesiDurata: [''],
         livelloAttuale: [''],
         livelloFinale: [''],
-        // dimissioni: [''],
         partTime: [''],
         percentualePartTime: [''],
         retribuzioneMensileLorda: [
@@ -198,7 +201,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         diariaGiornaliera: ['', [Validators.pattern('[0-9]+(.[0-9][0-9]?)?')]],
         ticket: [''],
         valoreTicket: ['', Validators.maxLength(50)],
-        // categoriaProtetta: [''],
         tutor: [''],
         pfi: [''],
         retribuzioneNettaGiornaliera: [''],
@@ -234,109 +236,144 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
-    }
-    this.caricaTipoContratto();
-    this.caricaTipoAzienda();
-    this.caricaContrattoNazionale();
-    this.changeElencoLivelliCCNL();
-    this.caricaDati();
-    this.calculateRalPartTime();
-    this.caricaRuoli();
-    this.creaFormCommessa();
-    this.caricaTipoCanaleReclutamento();
-    this.caricaTipoCausaFineRapporto();
-    this.caricaLivelloContratto();
+      this.inizializzaStatoCampiDistacco();
+      this.caricaTipoContratto();
+      this.caricaTipoAzienda();
+      this.caricaContrattoNazionale();
+      this.changeElencoLivelliCCNL();
+      this.caricaDati();
+      this.calculateRalPartTime();
+      this.caricaRuoli();
+      this.creaFormCommessa();
+      this.caricaTipoCanaleReclutamento();
+      this.caricaTipoCausaFineRapporto();
+      this.caricaLivelloContratto();
 
-    const tipoContratto = this.anagraficaDto.get('contratto.tipoContratto.id');
+      const tipoContratto = this.anagraficaDto.get(
+        'contratto.tipoContratto.id'
+      );
 
-    const retribuzioneMensileLorda = this.anagraficaDto.get(
-      'contratto.retribuzioneMensileLorda'
-    );
-    const superminimoMensileControl = this.anagraficaDto.get(
-      'contratto.superminimoMensile'
-    );
-    const scattiAnzianitaControl = this.anagraficaDto.get(
-      'contratto.scattiAnzianita'
-    );
-    if (
-      retribuzioneMensileLorda?.value != null &&
-      superminimoMensileControl?.value != null &&
-      scattiAnzianitaControl?.value != null
-    ) {
-      // this.calcolaMensileTot();
-      console.log('Il mensile totale si puo calcolare.');
+      const retribuzioneMensileLorda = this.anagraficaDto.get(
+        'contratto.retribuzioneMensileLorda'
+      );
+      const superminimoMensileControl = this.anagraficaDto.get(
+        'contratto.superminimoMensile'
+      );
+      const scattiAnzianitaControl = this.anagraficaDto.get(
+        'contratto.scattiAnzianita'
+      );
+      if (
+        retribuzioneMensileLorda?.value != null &&
+        superminimoMensileControl?.value != null &&
+        scattiAnzianitaControl?.value != null
+      ) {
+        // this.calcolaMensileTot();
+        console.log('Il mensile totale si puo calcolare.');
+      } else {
+        console.warn(
+          'Non é possibile calcolare il mensile totale perché mancano dei dati.'
+        );
+      }
+
+      //SE IL CONTRATTO É DIVERSO DA PARTITA IVA I CAMPI TARIFFA PARTITA IVA E RETRIBUZIONE NETTA GIORNALIERA SARANNO DISABILITATI
+      const tariffaPartitaIvaControl = this.anagraficaDto.get(
+        'contratto.tariffaPartitaIva'
+      );
+
+      const retribuzioneNettaGiornalieraControl = this.anagraficaDto.get(
+        'contratto.retribuzioneNettaGiornaliera'
+      );
+      if (this.tipoDiContrattoControl != 'P.Iva') {
+        if (tariffaPartitaIvaControl && retribuzioneNettaGiornalieraControl) {
+          tariffaPartitaIvaControl.disable();
+          retribuzioneNettaGiornalieraControl.disable();
+        }
+      }
+
+      const ralPartTimeControl = this.anagraficaDto.get(
+        'contratto.ralPartTime'
+      );
+      if (ralPartTimeControl) {
+        ralPartTimeControl.disable();
+      }
+
+      this.anagraficaDto
+        .get('contratto.dataAssunzione')
+        ?.valueChanges.subscribe(() => {
+          this.calculateDataFineRapporto();
+        });
+
+      this.anagraficaDto
+        .get('contratto.mesiDurata')
+        ?.valueChanges.subscribe(() => {
+          this.calculateDataFineRapporto();
+        });
+
+      const tipoAziendaControlAnagrafica = this.anagraficaDto.get(
+        'anagrafica.tipoAzienda.id'
+      );
+      const tipoAziendaControlContratto = this.anagraficaDto.get(
+        'contratto.tipoAzienda.id'
+      );
     } else {
-      console.warn(
-        'Non é possibile calcolare il mensile totale perché mancano dei dati.'
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          title: 'Attenzione:',
+          message: 'Errore di autenticazione, effettua il login.',
+        },
+      });
+      this.authService.logout().subscribe(
+        (response: any) => {
+          if (response.status === 200) {
+            // Logout effettuato con successo
+            localStorage.removeItem('token');
+            localStorage.removeItem('tokenProvvisorio');
+            sessionStorage.clear();
+            this.router.navigate(['/login']);
+            this.dialog.closeAll();
+          } else {
+            // Gestione di altri stati di risposta (es. 404, 500, ecc.)
+            console.log(
+              'Errore durante il logout:',
+              response.status,
+              response.body
+            );
+            this.handleLogoutError();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          if (error.status === 403) {
+            // Logout a causa di errore 403 (Forbidden)
+            console.log('Errore 403: Accesso negato');
+            this.handleLogoutError();
+          } else {
+            // Gestione di altri errori di rete o server
+            console.log('Errore durante il logout:', error.message);
+            this.handleLogoutError();
+          }
+        }
       );
     }
+  }
 
-    //SE IL CONTRATTO É DIVERSO DA PARTITA IVA I CAMPI TARIFFA PARTITA IVA E RETRIBUZIONE NETTA GIORNALIERA SARANNO DISABILITATI
-    const tariffaPartitaIvaControl = this.anagraficaDto.get(
-      'contratto.tariffaPartitaIva'
-    );
+  inizializzaStatoCampiDistacco(): void {
+    const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+    commesseFormArray.controls.forEach((commessaControl, index) => {
+      const distaccoControl = commessaControl.get('distacco');
+      const distaccoAziendaControl = commessaControl.get('distaccoAzienda');
+      const distaccoDataControl = commessaControl.get('distaccoData');
 
-    const retribuzioneNettaGiornalieraControl = this.anagraficaDto.get(
-      'contratto.retribuzioneNettaGiornaliera'
-    );
-    if (this.tipoDiContrattoControl != 'P.Iva') {
-      if (tariffaPartitaIvaControl && retribuzioneNettaGiornalieraControl) {
-        tariffaPartitaIvaControl.disable();
-        retribuzioneNettaGiornalieraControl.disable();
+      if (distaccoControl && distaccoAziendaControl && distaccoDataControl) {
+        const isChecked = distaccoControl.value;
+        if (isChecked) {
+          distaccoAziendaControl.enable();
+          distaccoDataControl.enable();
+        } else {
+          distaccoAziendaControl.disable();
+          distaccoDataControl.disable();
+        }
       }
-    }
-
-    // const livelloAttualeControl = this.anagraficaDto.get(
-    //   'contratto.livelloAttuale'
-    // );
-    // const livelloFinaleControl = this.anagraficaDto.get(
-    //   'contratto.livelloFinale'
-    // );
-
-    // if (livelloAttualeControl && livelloFinaleControl) {
-    //   livelloAttualeControl.disable();
-    //   livelloFinaleControl.disable();
-    // }
-
-    // const tipoAziendaAnagrafica = this.anagraficaDto.get(
-    //   'anagrafica.tipoAzienda.id'
-    // );
-    // if (tipoAziendaAnagrafica) {
-    //   tipoAziendaAnagrafica.disable();
-    // }
-    const ralPartTimeControl = this.anagraficaDto.get('contratto.ralPartTime');
-    if (ralPartTimeControl) {
-      ralPartTimeControl.disable();
-    }
-
-    this.anagraficaDto
-      .get('contratto.dataAssunzione')
-      ?.valueChanges.subscribe(() => {
-        this.calculateDataFineRapporto();
-      });
-
-    this.anagraficaDto
-      .get('contratto.mesiDurata')
-      ?.valueChanges.subscribe(() => {
-        this.calculateDataFineRapporto();
-      });
-
-    const tipoAziendaControlAnagrafica = this.anagraficaDto.get(
-      'anagrafica.tipoAzienda.id'
-    );
-    const tipoAziendaControlContratto = this.anagraficaDto.get(
-      'contratto.tipoAzienda.id'
-    );
-
-    // // Aggiungi un listener valueChanges per il controllo tipoAzienda in anagrafica
-    // tipoAziendaControlAnagrafica?.valueChanges.subscribe((value) => {
-    //   tipoAziendaControlContratto?.setValue(value, { emitEvent: false });
-    // });
-
-    // // Aggiungi un listener valueChanges per il controllo tipoAzienda in contratto
-    // tipoAziendaControlContratto?.valueChanges.subscribe((value) => {
-    //   tipoAziendaControlAnagrafica?.setValue(value, { emitEvent: false });
-    // });
+    });
   }
 
   onChangeTipoAzienda(event: any) {
@@ -358,7 +395,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       }
     }
   }
-
 
   //conversione date
   convertiDateCommesse(commesse: any[]): void {
@@ -382,12 +418,26 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           'yyyy-MM-dd'
         );
       }
-      console.log("************************************ \n DATA DISTACCO DELLE COMMESSE CONVERTITE: \n"+ ""+commessa.distaccoData + "\n");
-      console.log("DATE INIZIO DELLE COMMESSE CONVERTITE: \n"+ ""+commessa.dataInizio + "\n");
-      console.log("DATE FINE DELLE COMMESSE CONVERTITE: \n"+ ""+commessa.dataFine + "\n");
+      console.log(
+        '************************************ \n DATA DISTACCO DELLE COMMESSE CONVERTITE: \n' +
+          '' +
+          commessa.distaccoData +
+          '\n'
+      );
+      console.log(
+        'DATE INIZIO DELLE COMMESSE CONVERTITE: \n' +
+          '' +
+          commessa.dataInizio +
+          '\n'
+      );
+      console.log(
+        'DATE FINE DELLE COMMESSE CONVERTITE: \n' +
+          '' +
+          commessa.dataFine +
+          '\n'
+      );
     }
   }
-
 
   caricaDati(): void {
     this.anagraficaDtoService
@@ -544,6 +594,56 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.initializeCommesse();
         this.anagraficaDto.patchValue(this.data);
       });
+
+    const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+    commesseFormArray.controls.forEach((commessaControl: AbstractControl) => {
+      const distaccoControl = commessaControl.get('distacco');
+      if (distaccoControl) {
+        distaccoControl.valueChanges.subscribe((isChecked: any) => {
+          if (isChecked) {
+            this.enableDistaccoFieldsForCommessa(commessaControl);
+          } else {
+            this.disableDistaccoFieldsForCommessa(commessaControl);
+          }
+        });
+      }
+    });
+  }
+
+  disableDistaccoFieldsForAllCommesse(): void {
+    const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+    commesseFormArray.controls.forEach((commessaControl: AbstractControl) => {
+      const distaccoAziendaControl = commessaControl.get('distaccoAzienda');
+      const distaccoDataControl = commessaControl.get('distaccoData');
+      if (distaccoAziendaControl) {
+        distaccoAziendaControl.disable();
+      }
+      if (distaccoDataControl) {
+        distaccoDataControl.disable();
+      }
+    });
+  }
+
+  enableDistaccoFieldsForCommessa(commessaControl: AbstractControl): void {
+    const distaccoAziendaControl = commessaControl.get('distaccoAzienda');
+    const distaccoDataControl = commessaControl.get('distaccoData');
+    if (distaccoAziendaControl) {
+      distaccoAziendaControl.enable();
+    }
+    if (distaccoDataControl) {
+      distaccoDataControl.enable();
+    }
+  }
+
+  disableDistaccoFieldsForCommessa(commessaControl: AbstractControl): void {
+    const distaccoAziendaControl = commessaControl.get('distaccoAzienda');
+    const distaccoDataControl = commessaControl.get('distaccoData');
+    if (distaccoAziendaControl) {
+      distaccoAziendaControl.disable();
+    }
+    if (distaccoDataControl) {
+      distaccoDataControl.disable();
+    }
   }
 
   onPartTimeChange(event: any) {
@@ -607,46 +707,22 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-  /* Questo metodo gestisce il valore della  */
+  /* Questo metodo gestisce il valore della  checkbox del distacco */
   onChangeDistaccoCommessa(event: Event, commessaIndex: number) {
     const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
     const commessaFormGroup = commesseFormArray.at(commessaIndex) as FormGroup;
     const distaccoControl = commessaFormGroup.get('distacco');
     const distaccoAziendaControl = commessaFormGroup.get('distaccoAzienda');
     const distaccoDataControl = commessaFormGroup.get('distaccoData');
-    const target = event.target as HTMLInputElement;
-    console.log('TARGET: ' + target);
-    if (target) {
-      let isChecked = target.checked;
-      if (isChecked) {
-        console.log('Checkbox selezionata, il valore è true');
-        if (distaccoControl && distaccoAziendaControl && distaccoDataControl) {
-          if (isChecked) {
-            distaccoAziendaControl.enable();
-            distaccoDataControl.enable();
-          } else {
-            distaccoAziendaControl.disable();
-            distaccoDataControl.disable();
-          }
-        }
-        if (distaccoControl === null) {
-          isChecked = false;
-        }
-      } else {
-        console.log('Checkbox deselezionata, il valore è false');
-        if (distaccoControl && distaccoAziendaControl && distaccoDataControl) {
-          if (isChecked) {
-            distaccoAziendaControl.enable();
-            distaccoDataControl.enable();
-          } else {
-            distaccoAziendaControl.disable();
-            distaccoDataControl.disable();
-          }
-        }
 
-        if (distaccoControl === null) {
-          isChecked = false;
-        }
+    if (distaccoControl && distaccoAziendaControl && distaccoDataControl) {
+      const isChecked = distaccoControl.value;
+      if (isChecked) {
+        distaccoAziendaControl.enable();
+        distaccoDataControl.enable();
+      } else {
+        distaccoAziendaControl.disable();
+        distaccoDataControl.disable();
       }
     }
   }
@@ -1323,16 +1399,19 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   createCommessaFormGroup(commessa: any): FormGroup {
     return this.formBuilder.group({
       id: [commessa.id],
-      aziendaCliente: [commessa.aziendaCliente],
-      clienteFinale: [commessa.clienteFinale],
-      titoloPosizione: [commessa.titoloPosizione],
+      aziendaCliente: [commessa.aziendaCliente, Validators.required],
+      clienteFinale: [commessa.clienteFinale, Validators.required],
+      titoloPosizione: [commessa.titoloPosizione, Validators.required],
       distacco: [commessa.distacco],
       distaccoAzienda: [commessa.distaccoAzienda],
       distaccoData: [commessa.distaccoData],
-      dataInizio: [commessa.dataInizio],
+      dataInizio: [commessa.dataInizio, Validators.required],
       dataFine: [commessa.dataFine],
       tariffaGiornaliera: [commessa.tariffaGiornaliera],
-      aziendaDiFatturazioneInterna: [commessa.aziendaDiFatturazioneInterna],
+      aziendaDiFatturazioneInterna: [
+        commessa.aziendaDiFatturazioneInterna,
+        Validators.required,
+      ],
     });
   }
 
@@ -1443,6 +1522,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     const conferma =
       'Sei sicuro di voler eliminare la commessa con indice ' + index + '?';
     if (confirm(conferma)) {
+      const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+
+      // Rimuovi la commessa dall'array del form
+      commesseFormArray.removeAt(index);
+
+      // Invia la richiesta di eliminazione al backend
       const body = JSON.stringify({
         commessa: this.elencoCommesse[index],
       });
@@ -1450,23 +1535,31 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.anagraficaDtoService
         .deleteCommessa(body, localStorage.getItem('token'))
         .subscribe(
-          (res: any) => {
-            console.log(
-              'Commessa con indice ' +
-                index +
-                ' eliminata correttamente. Risposta:',
-              JSON.stringify(res)
-            );
-            this.elencoCommesse.splice(index, 1);
-            location.reload();
+          (response: any) => {
+            if ((response as any).esito.code !== 200) {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  title: 'Eliminazione non riuscita:',
+                  message: (response as any).esito.target,
+                },
+              });
+            } else {
+              this.elencoCommesse.splice(index, 1);
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  title: 'Commessa eliminata correttamente.',
+                },
+              });
+              location.reload();
+            }
           },
           (error: any) => {
-            console.log(
-              "Errore durante l'eliminazione della commessa con indice " +
-                index +
-                ': ' +
-                error
-            );
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Qualcosa é andato storto:',
+                message: error,
+              },
+            });
           }
         );
     }
@@ -1559,13 +1652,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             });
           } else {
             console.log('Payload inviato con successo al server:', response);
-            // const dialogRef = this.dialog.open(AlertDialogComponent, {
-            //   data: {
-            //     title: 'Modifica effettuata correttamente:',
-            //     message: (response as any).esito.target,
-            //   },
-            // });
-            this.router.navigate(['/dettaglio-anagrafica/' + this.id]);
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Modifica effettuata correttamente.',
+              },
+            });
+            this.router.navigate(['/lista-anagrafica']);
           }
         },
         (error) => {
@@ -2261,6 +2353,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         console.error('Errore nella generazione dei permessi:', error);
       }
     );
+  }
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
   }
 }
 

@@ -1120,105 +1120,148 @@
                   <mat-card>
                     <mat-card-title><h1>Commesse</h1></mat-card-title>
                     <mat-card-content>
-                      <div formArrayName="commesse" style="padding: 5%;">
+                      <div formArrayName="commesse" class="commesse-container">
                         <ng-container *ngFor="let commessa of commesseControls; let i = index">
-                          <div class="row"  style="text-align: center; margin: auto;">
-                            <div class="col-12">
-                              <legend>Commessa {{i+1}}</legend>
-                            </div>
-                          </div>
-                          <div [formGroupName]="i">
-
-
-                            <div class="row">
-                              <div class="col-3">
-                                <label>Azienda Cliente</label> <br>
-                                <input class="form-control" placeholder="Inserire l' azienda cliente" [ngStyle]="{ 'border': commessa.get('aziendaCliente')?.value=='' ? '1px solid red' : ''}" formControlName="aziendaCliente" type="text" />
-                              </div>
-                              <div class="col-3">
-                                <label>Cliente Finale</label><br>
-                                <input class="form-control"  [ngStyle]="{ 'border': commessa.get('clienteFinale')?.value=='' ? '1px solid red' : ''}"  placeholder="Inserire l' azienda cliente finale" formControlName="clienteFinale" type="text" />
-                              </div>
-                              <div class="col-3">
-                                <label>Titolo posizione</label><br>
-                                <input class="form-control" formControlName="titoloPosizione"  [ngStyle]="{ 'border': commessa.get('titoloPosizione')?.value=='' ? '1px solid red' : ''}"  placeholder="Aggiungere la posizione da ricoprire." type="text" />
-
-                              </div>
-                              <div class="col-3">
-                                <label>Distacco</label><br>
-                                <input  (change)="onChangeDistaccoCommessa($event, i)" style="border-color: black" class="form-check-input" type="checkbox" formControlName="distacco" />
-                              </div>
-                              <div class="col-md-3">
-                                <div class="form-group">
-                                  <label for="distaccoAzienda">Distacco azienda</label>
-                                  <input type="text" class="form-control" placeholder="Inserire distacco azienda" [ngStyle]="{ 'border': commessa.get('distaccoAzienda')?.value=='' ? '1px solid red' : ''}" formControlName="distaccoAzienda" placeholder="Inserire distacco azienda."> <!--[disabled]="!commessa.get('distacco')?.value==false"-->
-
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <div class="form-group">
-                                  <label for="distaccoData">Data distacco</label>
-                                  <input type="date" class="form-control" formControlName="distaccoData"  [ngStyle]="{ 'border': commessa.get('dataDistacco')?.value==null ? '1px solid red' : ''}" placeholder="Inserire data distacco.">
-                                </div>
-                              </div>
-                              <div class="col-3">
-                                <label>aziendaDiFatturazioneInterna</label><br>
-                            <input class="form-control" formControlName="aziendaDiFatturazioneInterna"  [ngStyle]="{ 'border': commessa.get('aziendaDiFatturazioneInterna')?.value=='' ? '1px solid red' : ''}" placeholder="Inserire azienda di fatturazione interna" type="text" />
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-3">
-                                <label>dataInizio</label><br>
-                                <input class="form-control" formControlName="dataInizio" [ngStyle]="{ 'border': commessa.get('dataInizio')?.value=='' ? '1px solid red' : ''}" type="date" />
-
-                              </div>
-                              <div class="col-3">
-                                <label>dataFine</label><br>
-                                <input class="form-control" [ngStyle]="{ 'border': commessa.get('dataFine')?.value=='' ? '1px solid red' : ''}" formControlName="dataFine" type="date" />
-                              </div>
-
-                              <div class="col-3">
-                                <label>tariffaGiornaliera</label><br>
-                                <input class="form-control" formControlName="tariffaGiornaliera" [ngStyle]="{ 'border': commessa.get('tariffaGiornaliera')?.value=='' ? '1px solid red' : ''}" placeholder="Inserire la tariffa giornaliera" type="number" />
-                              </div>
-
-                            </div>
-                            <div class="row">
-                              <!-- <div class="col-3">
-                                <label>nominativo</label><br>
-                                <input class="form-control" formControlName="nominativo" type="text" />
-
-                              </div> -->
-                              <!-- <div class="col-3">
-                                <label>azienda</label><br>
-                                <input class="form-control" formControlName="azienda" type="text" />
-                              </div> -->
-
-                            </div>
-
-                              <!-- <div class="col-6">
-                                <label>Stato</label>
-                                <div class="form-group">
-                                  <div class="form-check">
-                                    <input style="border-color: black" class="form-check-input" type="checkbox"
-                                      formControlName="attivo" />
+                          <mat-card>
+                            <mat-card-content>
+                              <div class="commessa" [formGroupName]="i">
+                                <div class="row">
+                                  <div class="col-12">
+                                    <legend>Commessa {{i+1}}</legend>
                                   </div>
                                 </div>
-                              </div> -->
+                                <div class="row">
+                                  <div class="col-3">
+                                    <label>Azienda Cliente</label> <br>
+                                    <input class="form-control" placeholder="Inserire l' azienda cliente"
+                                           [ngStyle]="{ 'border': commessa.get('aziendaCliente')?.value=='' ? '1px solid red' : ''}"
+                                           formControlName="aziendaCliente" type="text" />
+                                           <div *ngIf="commessa.get('aziendaCliente')?.hasError('required')" class="text-danger">
+                                            Il campo Azienda Cliente è obbligatorio.
+                                          </div>
 
-                          </div>
-                          <br>
-                          <div class="row">
-                            <div class="col-12">
-                              <button  mat-flat-button color="accent" type="button" (click)="rimuoviCommessa(i)" matTooltip="rimuovi commessa {{i+1}}">Rimuovi Commessa <i class="fa fa-trash" ></i> </button> &nbsp; <!--[disabled]="i==0"-->
-                              <button class="btn btn-success" matTooltip="Premendo questo pulsante disattiverai la commessa numero {{i+1}} e potrai recuperarla nello storico" (click)="storicizza(i)" >Storicizza commessa  <i class="fa fa-file" ></i></button>
-                            </div>
-                          </div>
+                                  </div>
+                                  <div class="col-3">
+                                    <label>Cliente Finale</label><br>
+                                    <input class="form-control" placeholder="Inserire l' azienda cliente finale"
+                                           [ngStyle]="{ 'border': commessa.get('clienteFinale')?.value=='' ? '1px solid red' : ''}"
+                                           formControlName="clienteFinale" type="text" />
+                                           <div *ngIf="commessa.get('clienteFinale')?.hasError('required')" class="text-danger">
+                                            Il campo Cliente finale è obbligatorio.
+                                          </div>
+                                  </div>
 
+
+                                  <div class="col-3">
+                                    <label>Azienda di Fatturazione Interna</label><br>
+                                    <input  [ngStyle]="{ 'border': commessa.get('aziendaDiFatturazioneInterna')?.value=='' ? '1px solid red' : ''}" class="form-control" formControlName="aziendaDiFatturazioneInterna"
+                                           placeholder="Inserire azienda di fatturazione interna" type="text" />
+                                           <div *ngIf="commessa.get('aziendaDiFatturazioneInterna')?.hasError('required')" class="text-danger">
+                                            Il campo Azienda di fatturazione interna è obbligatorio.
+                                          </div>
+                                          </div>
+
+                                  <div class="col-3">
+                                    <label>Titolo posizione</label><br>
+                                    <input class="form-control" formControlName="titoloPosizione"
+                                           [ngStyle]="{ 'border': commessa.get('titoloPosizione')?.value=='' ? '1px solid red' : ''}"
+                                           placeholder="Aggiungere la posizione da ricoprire." type="text" />
+                                           <div *ngIf="commessa.get('titoloPosizione')?.hasError('required')" class="text-danger">
+                                            Il campo Titolo posizione è obbligatorio.
+                                          </div>
+                                  </div>
+
+                                </div>
+                                <br>
+                                <div class="row" >
+                                  <legend  >Dati distacco</legend>
+                                  <div class="col-2" style="margin: auto; " >
+                                    <label>Distacco</label><br>
+                                    <label class="switch" >
+                                      <input (change)="onChangeDistaccoCommessa($event, i)" class="form-check-input"
+                                      type="checkbox" formControlName="distacco" />
+                                      <span class="slider"></span>
+                                    </label>
+
+                                  </div>
+                                  <div class="col-3" style="margin: auto; ">
+                                    <div class="form-group">
+                                      <label for="distaccoAzienda">Distacco azienda</label>
+                                      <input type="text" class="form-control" placeholder="Inserire distacco azienda"
+                                             formControlName="distaccoAzienda" [disabled]="!commessa.get('distacco')?.value" />
+                                    </div>
+                                  </div>
+                                  <div class="col-3" style="margin: auto; ">
+                                    <div class="form-group">
+                                      <label for="distaccoData">Data distacco</label>
+                                      <input type="date" class="form-control" formControlName="distaccoData"
+                                             [disabled]="!commessa.get('distacco')?.value" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                  <legend  >Date commessa</legend>
+
+                                  <div class="col-4">
+                                    <label>Data di Inizio</label><br>
+                                    <input class="form-control"  [ngStyle]="{ 'border': commessa.get('dataInizio')?.value=='' ? '1px solid red' : ''}" formControlName="dataInizio" type="date" />
+                                    <div *ngIf="commessa.get('dataInizio')?.hasError('required')" class="text-danger">
+                                      Il campo Data inizio è obbligatorio.
+                                    </div>
+                                  </div>
+                                  <div class="col-4">
+                                    <label>Data di Fine <i class="fa fa-question-circle" matTooltip="Inserire la data di fine commessa se la commessa é terminata o si sa una data di fine."  aria-hidden="true"></i> </label> <br> <!--*ngIf="commessa.get('dataFine')?.value==''"-->
+                                    <input class="form-control" formControlName="dataFine" type="date" />
+                                  </div>
+
+
+                                </div>
+                                <br>
+                                <div class="row">
+                                  <legend >Tariffa </legend>
+
+                                  <div class="col-md-3">
+                                    <label>Tariffa Giornaliera</label>
+                                    <div class="input-group mb-2">
+                                      <div class="input-group-prepend">
+                                        <div class="input-group-text prefix" style="background-color: black; color: white;">€</div>
+                                      </div>
+                                      <input matInput
+                                      formControlName="tariffaGiornaliera" step="0.01" class="form-control"
+                                      min="0" placeholder="Inserire la tariffa giornaliera" type="number"
+
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <!-- <div class="col-3" >
+                                    <label>Tariffa Giornaliera</label><br>
+                                    <input class="form-control" formControlName="tariffaGiornaliera" step="0.01"
+                                    min="0" placeholder="Inserire la tariffa giornaliera" type="number" />
+                                  </div> -->
+                                </div>
+                                <br>
+                                <div class="row">
+                                  <div class="col-12">
+                                    <button class="btn btn-danger" (click)="rimuoviCommessa(i)"
+                                            matTooltip="Rimuovi Commessa {{i+1}}">Rimuovi Commessa <i class="fa fa-trash"></i>
+                                    </button>
+                                     <!-- &nbsp;
+                                    <button class="btn btn-success" matTooltip="Storicizza Commessa {{i+1}}" (click)="storicizza(i)">
+                                      Storicizza Commessa <i class="fa fa-file"></i>
+                                    </button> -->
+                                  </div>
+                                </div>
+                                <br>
+                              </div>
+                            </mat-card-content>
+                          </mat-card>
                         </ng-container>
                       </div>
                     </mat-card-content>
                   </mat-card>
+
                 </div>
                 <br>
                 <div class="row"  *ngIf="commesseControls.length=== 0" >
