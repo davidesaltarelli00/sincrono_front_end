@@ -419,7 +419,7 @@
                     </div>
                   </div>
                   <!-- Move the labels and input fields inside the formGroup div -->
-                  <div class="col-md-3">
+                  <div class="col-md-3 custom-picker">
                     <mat-form-field appearance="fill">
                       <mat-label>Anno di inizio commessa:</mat-label>
                       <mat-select placeholder="Seleziona anno di inizio commessa" formControlName="annoDataInizio">
@@ -427,8 +427,9 @@
                       </mat-select>
                     </mat-form-field>
                   </div>
-                  <div class="col-md-3" *ngIf="filterAnagraficaDto.get('annoDataInizio')?.value !== null">
-                    <label for="meseInizioCommessa">Mese di inizio commessa:</label>
+                  <div class="col-md-3 custom-picker" *ngIf="filterAnagraficaDto.get('annoDataInizio')?.value !== null">
+                    <mat-form-field appearance="fill" class="compact-form-field" >
+                    <mat-label for="meseInizioCommessa">Mese di inizio commessa:</mat-label>
                     <mat-select placeholder="Seleziona il mese di inizio commessa" formControlName="meseDataInizio">
                       <mat-option value="1">Gennaio</mat-option>
                       <mat-option value="2">Febbraio</mat-option>
@@ -443,8 +444,9 @@
                       <mat-option value="11">Novembre</mat-option>
                       <mat-option value="12">Dicembre</mat-option>
                     </mat-select>
+                  </mat-form-field>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-3 custom-picker">
                     <mat-form-field appearance="fill">
                       <mat-label>Anno di fine commessa:</mat-label>
                       <mat-select placeholder="Seleziona anno di fine commessa" formControlName="annoDataFine">
@@ -452,9 +454,10 @@
                       </mat-select>
                     </mat-form-field>
                   </div>
-                  <div class="col-md-3" *ngIf="filterAnagraficaDto.get('annoDataFine')?.value !== null">
-                    <label for="meseFineCommessa">Mese di fine commessa:</label>
-                    <mat-select placeholder="Seleziona il mese di fine commessa" formControlName="meseDataFine">
+                  <div class="col-md-3 custom-picker" *ngIf="filterAnagraficaDto.get('annoDataFine')?.value !== null">
+                    <mat-form-field appearance="fill" class="compact-form-field" >
+                    <mat-label for="meseFineCommessa">Mese di fine commessa:</mat-label>
+                    <mat-select placeholder="Seleziona il mese di fine commessa" formControlName="meseDataFine" >
                       <mat-option value="1">Gennaio</mat-option>
                       <mat-option value="2">Febbraio</mat-option>
                       <mat-option value="3">Marzo</mat-option>
@@ -468,12 +471,13 @@
                       <mat-option value="11">Novembre</mat-option>
                       <mat-option value="12">Dicembre</mat-option>
                     </mat-select>
+                    </mat-form-field>
                   </div>
                 </div>
                 
                 <div class="row">
                   <b>Filtri per data fine rapporto contratto</b>
-                  <div class="col-md-3">
+                  <div class="col-md-3 custom-picker">
                     <mat-form-field appearance="fill">
                       <mat-label>Anno di fine rapporto:</mat-label>
                       <mat-select placeholder="Seleziona anno di fine contratto" formControlName="annoFineContratto">
@@ -481,8 +485,9 @@
                       </mat-select>
                     </mat-form-field>
                   </div>
-                  <div class="col-md-3" *ngIf="filterAnagraficaDto.get('annoFineContratto')?.value !== null">
-                    <label for="meseFineContratto">Mese di fine rapporto:</label>
+                  <div class="col-md-3 custom-picker" *ngIf="filterAnagraficaDto.get('annoFineContratto')?.value !== null">
+                    <mat-form-field appearance="fill" class="compact-form-field" >
+                    <mat-label for="meseFineContratto">Mese di fine rapporto:</mat-label>
                     <mat-select placeholder="Seleziona il mese di fine rapporto" formControlName="meseFineContratto">
                       <mat-option value="1">Gennaio</mat-option>
                       <mat-option value="2">Febbraio</mat-option>
@@ -497,6 +502,7 @@
                       <mat-option value="11">Novembre</mat-option>
                       <mat-option value="12">Dicembre</mat-option>
                     </mat-select>
+                    </mat-form-field>
                   </div>
                 </div>
                 <br>
