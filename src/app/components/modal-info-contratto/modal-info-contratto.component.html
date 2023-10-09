@@ -20,6 +20,29 @@
     </div>
     <div class="row">
       <div class="col-12">
+
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Cognome</th>
+              <th>Codice fiscale</th>
+              <th>Mail aziendale</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ data.anagraficaDto.anagrafica.nome }}</td>
+              <td>{{ data.anagraficaDto.anagrafica.cognome }}</td>
+              <td>{{ data.anagraficaDto.anagrafica.codiceFiscale | uppercase }}  <i  style="cursor: pointer;" matTooltip="Copia" class="fa-solid fa-copy" (click)="copy(data.anagraficaDto.anagrafica.codiceFiscale)"></i></td>
+              <td>{{data.anagraficaDto.anagrafica.mailAziendale}}  <i  style="cursor: pointer;" matTooltip="Copia" class="fa-solid fa-copy" (click)="copy(data.anagraficaDto.anagrafica.mailAziendale)"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
         <table class="table table-bordered">
          <thead>
           <tr>

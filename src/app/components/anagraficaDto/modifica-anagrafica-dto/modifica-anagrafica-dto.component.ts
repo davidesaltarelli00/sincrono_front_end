@@ -359,6 +359,36 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     }
   }
 
+
+  //conversione date
+  convertiDateCommesse(commesse: any[]): void {
+    for (let i = 0; i < commesse.length; i++) {
+      const commessa = commesse[i];
+      if (commessa.dataInizio) {
+        commessa.dataInizio = this.datePipe.transform(
+          commessa.dataInizio,
+          'yyyy-MM-dd'
+        );
+      }
+      if (commessa.dataFine) {
+        commessa.dataFine = this.datePipe.transform(
+          commessa.dataFine,
+          'yyyy-MM-dd'
+        );
+      }
+      if (commessa.distaccoData) {
+        commessa.distaccoData = this.datePipe.transform(
+          commessa.distaccoData,
+          'yyyy-MM-dd'
+        );
+      }
+      console.log("************************************ \n DATA DISTACCO DELLE COMMESSE CONVERTITE: \n"+ ""+commessa.distaccoData + "\n");
+      console.log("DATE INIZIO DELLE COMMESSE CONVERTITE: \n"+ ""+commessa.dataInizio + "\n");
+      console.log("DATE FINE DELLE COMMESSE CONVERTITE: \n"+ ""+commessa.dataFine + "\n");
+    }
+  }
+
+
   caricaDati(): void {
     this.anagraficaDtoService
       .detailAnagraficaDto(
@@ -509,6 +539,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           console.log(
             'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)
           );
+          this.convertiDateCommesse(this.elencoCommesse);
         }
         this.initializeCommesse();
         this.anagraficaDto.patchValue(this.data);
