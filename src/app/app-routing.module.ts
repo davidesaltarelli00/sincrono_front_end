@@ -24,6 +24,7 @@ import { AlertLogoutComponent } from './components/alert-logout/alert-logout.com
 import { UtenteComponent } from './components/utente/utente.component';
 import { GiornoComponent } from './components/giorno/giorno.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { RisultatiFilterOrganicoComponent } from './components/organico/risultati-filter-organico/risultati-filter-organico.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -143,6 +144,13 @@ const routes: Routes = [
     path: 'storico-contratti/:id',
     component: StoricoContrattiComponent,
     canActivate: [AuthGuard],
+  },
+
+  {
+    path: 'risultati-filter-organico',
+    component: RisultatiFilterOrganicoComponent,
+    canActivate: [AuthGuard],
+    pathMatch: 'full',
   },
 
   //STORICO COMMESSE

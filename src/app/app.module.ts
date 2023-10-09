@@ -49,6 +49,7 @@ import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import { ModalInfoCommesseComponent } from './components/modal-info-commesse/modal-info-commesse.component';
 import { ModalInfoContrattoComponent } from './components/modal-info-contratto/modal-info-contratto.component';
 import { MatSelectModule } from '@angular/material/select';
+import { RisultatiFilterOrganicoComponent } from './components/organico/risultati-filter-organico/risultati-filter-organico.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { MatSelectModule } from '@angular/material/select';
     NotFoundComponent,
     AlertDialogComponent,
     ModalInfoContrattoComponent,
+    RisultatiFilterOrganicoComponent
   ],
   imports: [
     MatNativeDateModule,

@@ -82,74 +82,11 @@ export class ListaOrganicoComponent implements OnInit {
     );
   }
 
-
-
   filter(tipoContratto: string, azienda: string) {
-    console.log("tipo contratto:"+tipoContratto);
-    console.log("azienda:"+azienda);
-    this.anagraficaDtoService
-      .listAnagraficaDto(localStorage.getItem('token'))
-      .subscribe(
-        (resp: any) => {
-          if (Array.isArray(resp.list)) {
-            this.originalLista = resp.list;
-
-            // Filtra per tipo di contratto
-            const filteredByContratto = this.originalLista.filter((item: any) => {
-              if (tipoContratto === '') {
-                return true; // Mostra tutto se il tipo di contratto non è specificato
-              } else {
-                switch (tipoContratto) {
-                  case 'Indeterminato':
-                    return item.indeterminati > 0;
-                  case 'Determinato':
-                    return item.determinati > 0;
-                  case 'Apprendistato':
-                    return item.apprendistato > 0;
-                  case 'Consulenza':
-                    return item.consulenza > 0;
-                  case 'Stage':
-                    return item.stage > 0;
-                  case 'PartitaIva':
-                    return item.partitaIva > 0;
-                  default:
-                    return false; // Non corrisponde a nessun tipo di contratto
-                }
-              }
-            });
-
-            // Filtra per azienda
-            this.filteredLista = filteredByContratto.filter((item: any) => {
-              if (azienda === '') {
-                return true; // Mostra tutto se l'azienda non è specificata
-              } else {
-                switch (azienda) {
-                  case 'ZeroLock':
-                    return item.azienda === 'ZeroLock';
-                  case 'Reymon':
-                    return item.azienda === 'Reymon';
-                  case 'AltraAzienda':
-                    return item.azienda === 'AltraAzienda';
-                  // Aggiungi altri casi per le aziende
-                  default:
-                    return false; // Non corrisponde a nessuna azienda specificata
-                }
-              }
-            });
-
-            console.log('Elenco record filtrati: ' + JSON.stringify(this.filteredLista));
-          } else {
-            console.log('La risposta non contiene un array di dati.');
-          }
-        },
-        (error: any) => {
-          console.log(
-            'Si è verificato un errore durante il caricamento dei dati: ' + error
-          );
-        }
-      );
+    this.router.navigate(['/risultati-filter-organico'], {
+      queryParams: { tipoContratto, azienda },
+    });
   }
-
 
   calculateSliceRotation(element: any): number {
     const total =
