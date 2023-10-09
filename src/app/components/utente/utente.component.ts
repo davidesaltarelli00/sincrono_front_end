@@ -16,7 +16,6 @@ import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
   styleUrls: ['./utente.component.scss'],
 })
 export class UtenteComponent implements OnInit {
-
   userLoggedName: any;
   userLoggedSurname: any;
   shouldReloadPage: any;
@@ -27,7 +26,6 @@ export class UtenteComponent implements OnInit {
   idNav: any;
   tokenProvvisorio: any;
 
-
   codiceFiscale = '';
   data: any[] = [];
   user: any;
@@ -36,6 +34,7 @@ export class UtenteComponent implements OnInit {
   currentMonth: any;
   currentYear: any;
   id = this.activatedRoute.snapshot.params['id'];
+  idUtenteLoggato: any;
   elencoCommesse: any;
   contratto: any;
   italianMonths = [
@@ -53,12 +52,13 @@ export class UtenteComponent implements OnInit {
     'dicembre',
   ];
 
+  dettaglioSbagliato: any;
+
   rapportinoDto: any[] = [];
 
   @ViewChild('editableTable') editableTable!: ElementRef;
 
   modifiedData: any[] = [];
-
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -68,9 +68,7 @@ export class UtenteComponent implements OnInit {
     private anagraficaDtoService: AnagraficaDtoService,
     private datePipe: DatePipe,
     private menuService: MenuService,
-    private http: HttpClient,
-
-
+    private http: HttpClient
   ) {
     this.currentMonth = this.italianMonths[this.currentDate.getMonth()];
     this.currentYear = this.currentDate.getFullYear();
@@ -92,12 +90,13 @@ export class UtenteComponent implements OnInit {
       .subscribe(
         (resp: any) => {
           this.user = (resp as any)['anagraficaDto'];
-          console.log(this.user);
           this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
           this.contratto = (resp as any)['anagraficaDto']['contratto'];
           this.codiceFiscale = (resp as any)['anagraficaDto']['anagrafica'][
             'codiceFiscale'
           ];
+          this.dettaglioSbagliato = false;
+          console.log('DETTAGLIO USER ' + JSON.stringify(this.user));
           console.log('CODICE FISCALE:' + this.codiceFiscale);
           console.log('PARTE ENDPOINT PER RAPPORTINO');
           this.getRapportino();
@@ -193,8 +192,6 @@ export class UtenteComponent implements OnInit {
       );
   }
 
-
-
   logout() {
     this.dialog.open(AlertLogoutComponent);
   }
@@ -205,6 +202,14 @@ export class UtenteComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.idUtenteLoggato = response.anagraficaDto.anagrafica.id;
+        console.log('ID USER LOGGATO: ' + JSON.stringify(this.idUtenteLoggato));
+
+        if (this.idUtenteLoggato != this.id) {
+          this.dettaglioSbagliato = true;
+        } else {
+          this.dettaglioSbagliato = false;
+        }
       },
       (error: any) => {
         console.error(
@@ -284,11 +289,7 @@ export class UtenteComponent implements OnInit {
       }
     );
   }
-
-
-
 }
-
 
 interface MenuData {
   esito: {

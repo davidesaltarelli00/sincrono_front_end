@@ -50,10 +50,7 @@ a{
   </head>
 
   <body>
-    <div
-    class="container-toolbar"
-    [hidden]="tokenProvvisorio != null && tokenProvvisorio == null"
-  >
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null" >
   <mat-toolbar id="toolbar"  *ngIf="jsonData && jsonData.list">
     <a [routerLink]="['/home']" class="logo-link">
       <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
@@ -73,7 +70,7 @@ a{
   </mat-toolbar>
 
   </div>
-    <div class="container-fluid">
+    <div class="container-fluid" *ngIf="!dettaglioSbagliato" >
       <div class="row">
         <div class="col-12">
           <header>
@@ -154,6 +151,13 @@ a{
           </div>
         </mat-card-content>
       </mat-card>
+    </div>
+    <div class="container-fluid" *ngIf="dettaglioSbagliato">
+      <div class="not-found-container">
+        <h2>404 - Pagina non trovata</h2>
+        <p>Siamo spiacenti, ma la pagina che stai cercando non esiste.</p>
+        <p>Torna alla <a style=" text-decoration: none;color: #007bff; font-weight: bold;" routerLink="/home">pagina principale</a>.</p>
+      </div>
     </div>
   </body>
 </html>
