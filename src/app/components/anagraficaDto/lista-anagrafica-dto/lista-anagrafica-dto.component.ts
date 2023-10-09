@@ -246,10 +246,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     );
     this.mostraFiltri = false;
 
-    this.setFilterFromOrganico(
-      this.tipoContrattoFilter,
-      this.tipoAziendaFilter
-    );
+    // this.setFilterFromOrganico(
+    //   this.tipoContrattoFilter,
+    //   this.tipoAziendaFilter
+    // );
 
     this.anagraficaDtoService
       .listAnagraficaDto(localStorage.getItem('token'))

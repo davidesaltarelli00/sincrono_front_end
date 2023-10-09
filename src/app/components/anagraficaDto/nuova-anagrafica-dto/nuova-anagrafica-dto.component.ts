@@ -98,7 +98,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     public dialog: MatDialog,
     public snackBar: MatSnackBar,
     private profileBoxService: ProfileBoxService,
-    private http: HttpClient,
+    private http: HttpClient
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -235,7 +235,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
     this.commesse = this.AnagraficaDto.get('commesse') as FormArray;
 
-    this.caricaListaUtenti();
+    // this.caricaListaUtenti();
 
     console.log(
       'TIPO AZIENDA VALIDITY: ' +
@@ -256,6 +256,22 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       this.getUserLogged();
       this.getUserRole();
     }
+
+    //INIZIO porzione di codice necessaria alla disabilitazione dei campi "distaccoAzienda" e "DistaccoData" nelle commesseç
+    const commesseFormArray = this.AnagraficaDto.get('commesse') as FormArray;
+
+    commesseFormArray.controls.forEach(
+      (commessaControl: AbstractControl<any, any>) => {
+        if (commessaControl instanceof FormGroup) {
+          const distaccoAziendaControl = commessaControl.get('distaccoAzienda');
+          const distaccoDataControl = commessaControl.get('distaccoData');
+          distaccoAziendaControl?.disable();
+          distaccoDataControl?.disable();
+        }
+      }
+    );
+    //FINE porzione di codice necessaria alla disabilitazione dei campi "distaccoAzienda" e "DistaccoData" nelle commesse
+
     const livelloAttualeControl = this.AnagraficaDto.get(
       'contratto.livelloAttuale'
     );
@@ -458,12 +474,14 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-  onDistaccoChange(event: Event) {
-    const distaccoAziendaControl = this.AnagraficaDto.get(
-      'commesse.distaccoAzienda'
-    );
-    const distaccoDataControl = this.AnagraficaDto.get('commesse.distaccoData');
+  onDistaccoChange(event: Event, commessaIndex: number) {
+    const commesseFormArray = this.AnagraficaDto.get('commesse') as FormArray;
+    const commessaFormGroup = commesseFormArray.at(commessaIndex) as FormGroup;
+    const distaccoAziendaControl = commessaFormGroup.get('distaccoAzienda');
+    const distaccoDataControl = commessaFormGroup.get('distaccoData');
     const target = event.target as HTMLInputElement;
+    distaccoAziendaControl?.disable();
+    distaccoDataControl?.disable();
     if (target) {
       const isChecked = target.checked;
 
@@ -1225,16 +1243,16 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   creaFormCommessa(): FormGroup {
     return this.formBuilder.group({
       id: new FormControl(''),
-      aziendaCliente: new FormControl(''),
-      clienteFinale: new FormControl(''),
-      titoloPosizione: new FormControl(''),
+      aziendaCliente: new FormControl('', Validators.required),
+      clienteFinale: new FormControl('', Validators.required),
+      titoloPosizione: new FormControl('', Validators.required),
       distacco: new FormControl(false),
       distaccoAzienda: new FormControl(''),
       distaccoData: new FormControl(''),
-      dataInizio: new FormControl(''),
+      dataInizio: new FormControl('', Validators.required),
       dataFine: new FormControl(''),
       tariffaGiornaliera: new FormControl(''),
-      aziendaDiFatturazioneInterna: new FormControl(''),
+      aziendaDiFatturazioneInterna: new FormControl('', Validators.required),
       // attivo: new FormControl(true),
     });
   }
@@ -1289,14 +1307,14 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       );
   }
 
-  caricaListaUtenti() {
-    this.anagraficaDtoService
-      .getListaUtenti(localStorage.getItem('token'))
-      .subscribe((result: any) => {
-        // console.log(result);
-        this.utenti = (result as any)['list'];
-      });
-  }
+  // caricaListaUtenti() {
+  //   this.anagraficaDtoService
+  //     .getListaUtenti(localStorage.getItem('token'))
+  //     .subscribe((result: any) => {
+  //       // console.log(result);
+  //       this.utenti = (result as any)['list'];
+  //     });
+  // }
 
   setStep1() {
     this.currentStep = 1;
@@ -1589,7 +1607,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
             config.duration = 5000;
             config.panelClass = ['custom-snackbar'];
 
-            this.snackBar.open('ATTENZIONE: tipo di contratto non selezionato.', 'Chiudi', config);
+            this.snackBar.open(
+              'ATTENZIONE: tipo di contratto non selezionato.',
+              'Chiudi',
+              config
+            );
           }
         } else {
           console.log('Livello contratto non trovato nella lista');
@@ -1828,7 +1850,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     );
   }
 }
-
 
 interface MenuData {
   esito: {

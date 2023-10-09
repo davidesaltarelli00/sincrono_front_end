@@ -1660,15 +1660,8 @@
                                 &nbsp;
                               </div>
                             </div>
-                            <!-- Loop attraverso le commesse esistenti -->
-                            <div
-                              class="row"
-                              *ngFor="
-                                let commessa of commesse.controls;
-                                let i = index
-                              "
-                              [formGroupName]="i"
-                            >
+
+                            <div class="row" *ngFor="let commessa of commesse.controls;let i = index"[formGroupName]="i">
                               <div class="col-12">
                                 <strong>
                                   <h1 style="text-align: center">
@@ -1676,24 +1669,21 @@
                                   </h1>
                                 </strong>
                               </div>
-                              <!-- Inserimento dei campi delle commesse -->
+                            <br>
+                            <div class="row">
                               <div class="col-md-3">
                                 <label>Azienda cliente: </label>
                                 <div class="form-group">
                                   <input
-                                    [ngStyle]="{
-                                      border:
-                                        commessa
-                                          .get('aziendaCliente')
-                                          ?.value.trim() === ''
-                                          ? '1px solid red'
-                                          : ''
-                                    }"
+                                  [ngStyle]="{ 'border': commessa.get('aziendaCliente')?.value=='' ? '1px solid red' : ''}"
                                     type="text"
                                     class="form-control"
                                     placeholder="Inserire azienda cliente"
                                     formControlName="aziendaCliente"
                                   />
+                                  <div *ngIf="commessa.get('aziendaCliente')?.hasError('required')" class="text-danger">
+                                    Il campo Azienda Cliente è obbligatorio.
+                                  </div>
                                 </div>
                               </div>
                               <div class="col-md-3">
@@ -1701,92 +1691,102 @@
                                 <div class="form-group">
                                   <input
                                     type="text"
-                                    [ngStyle]="{
-                                      border:
-                                        commessa
-                                          .get('clienteFinale')
-                                          ?.value.trim() === ''
-                                          ? '1px solid red'
-                                          : ''
-                                    }"
+                                    [ngStyle]="{ 'border': commessa.get('clienteFinale')?.value=='' ? '1px solid red' : ''}"
                                     class="form-control"
                                     placeholder="Inserire cliente finale"
                                     formControlName="clienteFinale"
                                   />
+                                  <div *ngIf="commessa.get('clienteFinale')?.hasError('required')" class="text-danger">
+                                    Il campo Cliente Finale è obbligatorio.
+                                  </div>
                                 </div>
                               </div>
-                              <!-- Aggiungere gli altri campi della commessa simile a quanto fatto sopra -->
+                              <div class="col-md-3">
+
+                                <label>Azienda di fatturazione interna: </label>
+                                <div class="form-group">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    [ngStyle]="{ 'border': commessa.get('aziendaDiFatturazioneInterna')?.value=='' ? '1px solid red' : ''}"
+                                    formControlName="aziendaDiFatturazioneInterna"
+                                    placeholder="Inserire azienda di fatturazione interna"
+                                  />
+                                  <div *ngIf="commessa.get('aziendaDiFatturazioneInterna')?.hasError('required')" class="text-danger">
+                                    Il campo Azienda di fatturazione interna è obbligatorio.
+                                  </div>
+                                </div>
+                              </div>
                               <div class="col-md-3">
                                 <label>Titolo Posizione: </label>
                                 <div class="form-group">
                                   <input
                                     placeholder="Inserire titolo posizione"
-                                    [ngStyle]="{
-                                      border:
-                                        commessa
-                                          .get('titoloPosizione')
-                                          ?.value.trim() === ''
-                                          ? '1px solid red'
-                                          : ''
-                                    }"
+                                    [ngStyle]="{ 'border': commessa.get('titoloPosizione')?.value=='' ? '1px solid red' : ''}"
                                     type="text"
                                     class="form-control"
                                     formControlName="titoloPosizione"
                                   />
+                                  <div *ngIf="commessa.get('titoloPosizione')?.hasError('required')" class="text-danger">
+                                    Il campo titolo posizione è obbligatorio.
+                                  </div>
                                 </div>
                               </div>
-                              <div class="col-md-3">
-                                <label>Distacco: </label>
-                                <div class="form-group">
-                                  <!-- <input type="text" class="form-control" formControlName="distacco" /> -->
-                                  <label class="toggle-switch">
-                                    <div class="form-check">
-                                      <input
-                                        class="form-check-input"
-                                        type="checkbox"
-                                        style="border-color: black"
-                                        (change)="onDistaccoChange($event)"
-                                        formControlName="distacco"
-                                      />
-                                      <span class="slider"></span>
-                                    </div>
-                                  </label>
-                                  <!--[checked]="commessa.get('distacco')?.value==true"-->
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <div class="form-group">
-                                  <label for="distaccoAzienda"
-                                    >Distacco azienda</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="distaccoAzienda"
-                                    placeholder="Inserire distacco azienda."
-                                  />
-                                  <!--[disabled]="!commessa.get('distacco')?.value==false"-->
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <div class="form-group">
-                                  <label for="distaccoData"
-                                    >Data distacco</label
-                                  >
-                                  <input
-                                    type="date"
-                                    class="form-control"
-                                    formControlName="distaccoData"
-                                    placeholder="Inserire data distacco."
-                                  />
-                                </div>
-                              </div>
-                              <!-- <div class="col-md-3">
-                              <label>Costo mese: </label>
+                            </div>
+                            <br>
+                            <div class="row">
+                              <legend>
+                                Distacco
+                              </legend>
+
+                            <div class="col-md-3">
+                              <label>Distacco: </label>
                               <div class="form-group">
-                                <input type="text" class="form-control" formControlName="costoMese" />
+                                <label class="toggle-switch">
+                                  <div class="form-check">
+                                    <input
+                                      class="form-check-input"
+                                      type="checkbox"
+                                      style="border-color: black"
+                                      (change)="onDistaccoChange($event, i)"
+                                      formControlName="distacco"
+                                    />
+                                    <span class="slider"></span>
+                                  </div>
+                                </label>
+
                               </div>
-                            </div> -->
+                            </div>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label for="distaccoAzienda"
+                                  >Distacco azienda</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  formControlName="distaccoAzienda"
+                                  placeholder="Inserire distacco azienda."
+                                />
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label for="distaccoData"
+                                  >Data distacco</label
+                                >
+                                <input
+                                  type="date"
+                                  class="form-control"
+                                  formControlName="distaccoData"
+                                  placeholder="Inserire data distacco."
+                                />
+                              </div>
+                            </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                              <legend>Date</legend>
                               <div class="col-md-3">
                                 <label>Data Inizio: </label>
                                 <div class="form-group">
@@ -1799,7 +1799,7 @@
                                 </div>
                               </div>
                               <div class="col-md-3">
-                                <label>Data Fine: </label>
+                                <label>Data Fine: <i class="fa fa-question-circle" matTooltip="Inserire la data di fine commessa se la commessa é terminata o si sa una data di fine."></i> </label>
                                 <div class="form-group">
                                   <input
                                     type="date"
@@ -1809,6 +1809,10 @@
                                   />
                                 </div>
                               </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                              <legend>Tariffa</legend>
                               <div class="col-md-3">
                                 <label>Tariffa giornaliera: </label>
                                 <div class="form-group">
@@ -1822,27 +1826,16 @@
                                   />
                                 </div>
                               </div>
+                            </div>
+
+
                               <!-- <div class="col-md-3">
                               <label>Nominativo: </label>
                               <div class="form-group">
                                 <input type="text" class="form-control" formControlName="nominativo" />
                               </div>
                             </div> -->
-                              <div class="col-md-3">
-                                <!-- <label>Azienda: </label>
-                              <div class="form-group">
-                                <input type="text" class="form-control" formControlName="azienda" />
-                              </div> -->
-                                <label>Azienda di fatturazione interna: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="aziendaDiFatturazioneInterna"
-                                    placeholder="Inserire azienda di fatturazione interna"
-                                  />
-                                </div>
-                              </div>
+
                               <!-- <div class="col-md-3">
                               <label>Stato</label>
                               <div class="form-group">
@@ -1878,7 +1871,7 @@
                                     id="button-duplica"
                                     *ngIf="commesse.length != 0"
                                   >
-                                    Aggiungi Commessa
+                                    Aggiungi Commessa <i class="fa fa-plus" ></i>
                                   </button>
                                   &nbsp;
                                   <button
@@ -1891,7 +1884,7 @@
                                         : ''
                                     "
                                   >
-                                    Rimuovi Commessa
+                                    Rimuovi Commessa <i class="fa fa-trash" ></i>
                                   </button>
                                 </div>
                               </div>
