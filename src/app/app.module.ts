@@ -48,6 +48,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import { ModalInfoCommesseComponent } from './components/modal-info-commesse/modal-info-commesse.component';
 import { ModalInfoContrattoComponent } from './components/modal-info-contratto/modal-info-contratto.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,8 @@ import { ModalInfoContrattoComponent } from './components/modal-info-contratto/m
     ReactiveFormsModule,
     FormsModule,
     MaterialModule,
+    MatSelectModule,
+   
   ],
   providers: [DatePipe, CurrencyPipe],
   //  { provide: LOCALE_ID, useValue: 'it-IT' }

@@ -67,10 +67,11 @@ export class ListaDashboardComponent {
   pageData: any[] = [];
   messaggio: any;
   commesse!: FormArray;
-  annoDataInizio:any;
-  annoDataFine:any;
-  annoFineContratto:any;
+  annoDataInizio: any;
+  annoDataFine: any;
+  annoFineContratto: any;
   genericList: any[] = [];
+  years: number[] = [];
   filterAnagraficaDto: FormGroup = new FormGroup({
 
     anagrafica: new FormGroup({
@@ -144,7 +145,7 @@ export class ListaDashboardComponent {
 
   ngOnInit(): void {
 
-   
+    this.populateYears()
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
     const commessaFormGroup = this.creaFormCommessa();
     this.commesse.push(commessaFormGroup);
@@ -452,7 +453,13 @@ export class ListaDashboardComponent {
         }
       });
   }
+  populateYears() {
 
+    for (let year = 1999; year <= 2099; year++) {
+      this.years.push(year);
+    }
+
+  }
   //paginazione
   getCurrentPageItems(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;

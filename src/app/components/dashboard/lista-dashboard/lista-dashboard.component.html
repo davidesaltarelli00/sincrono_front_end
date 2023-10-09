@@ -420,32 +420,83 @@
                   </div>
                   <!-- Move the labels and input fields inside the formGroup div -->
                   <div class="col-md-3">
-                    <label for="annoInizioCommessa">Anno di inizio commessa:</label>
-                    <input type="number" id="annoDataInizio" class="form-control" placeholder="Inserire anno di inizio commessa" formControlName="annoDataInizio">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Anno di inizio commessa:</mat-label>
+                      <mat-select placeholder="Seleziona anno di inizio commessa" formControlName="annoDataInizio">
+                        <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
                   </div>
-                  <div class="col-md-3" *ngIf="filterAnagraficaDto.get('annoDataInizio')?.value!==null">
+                  <div class="col-md-3" *ngIf="filterAnagraficaDto.get('annoDataInizio')?.value !== null">
                     <label for="meseInizioCommessa">Mese di inizio commessa:</label>
-                    <input  min="1" max="12" id="meseDataInizio" class="form-control" placeholder="Inserire mese di inizio commessa" formControlName="meseDataInizio">
+                    <mat-select placeholder="Seleziona il mese di inizio commessa" formControlName="meseDataInizio">
+                      <mat-option value="1">Gennaio</mat-option>
+                      <mat-option value="2">Febbraio</mat-option>
+                      <mat-option value="3">Marzo</mat-option>
+                      <mat-option value="4">Aprile</mat-option>
+                      <mat-option value="5">Maggio</mat-option>
+                      <mat-option value="6">Giugno</mat-option>
+                      <mat-option value="7">Luglio</mat-option>
+                      <mat-option value="8">Agosto</mat-option>
+                      <mat-option value="9">Settembre</mat-option>
+                      <mat-option value="10">Ottobre</mat-option>
+                      <mat-option value="11">Novembre</mat-option>
+                      <mat-option value="12">Dicembre</mat-option>
+                    </mat-select>
                   </div>
                   <div class="col-md-3">
-                    <label for="annoFineCommessa">Anno di fine commessa:</label>
-                    <input type="number" id="annoDataFine" class="form-control" placeholder="Inserire anno di fine commessa" formControlName="annoDataFine">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Anno di fine commessa:</mat-label>
+                      <mat-select placeholder="Seleziona anno di fine commessa" formControlName="annoDataFine">
+                        <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
                   </div>
-                  <div class="col-md-3" *ngIf="filterAnagraficaDto.get('annoDataFine')?.value!==null">
+                  <div class="col-md-3" *ngIf="filterAnagraficaDto.get('annoDataFine')?.value !== null">
                     <label for="meseFineCommessa">Mese di fine commessa:</label>
-                    <input type="number" min="1" max="12" id="meseDataFine" class="form-control" placeholder="Inserire mese di fine commessa" formControlName="meseDataFine">
+                    <mat-select placeholder="Seleziona il mese di fine commessa" formControlName="meseDataFine">
+                      <mat-option value="1">Gennaio</mat-option>
+                      <mat-option value="2">Febbraio</mat-option>
+                      <mat-option value="3">Marzo</mat-option>
+                      <mat-option value="4">Aprile</mat-option>
+                      <mat-option value="5">Maggio</mat-option>
+                      <mat-option value="6">Giugno</mat-option>
+                      <mat-option value="7">Luglio</mat-option>
+                      <mat-option value="8">Agosto</mat-option>
+                      <mat-option value="9">Settembre</mat-option>
+                      <mat-option value="10">Ottobre</mat-option>
+                      <mat-option value="11">Novembre</mat-option>
+                      <mat-option value="12">Dicembre</mat-option>
+                    </mat-select>
                   </div>
                 </div>
-                <br><br>
+                
                 <div class="row">
                   <b>Filtri per data fine rapporto contratto</b>
                   <div class="col-md-3">
-                    <label for="dataFineRapporto">Anno Fine Rapporto</label>
-                    <input type="number" formControlName="annoFineContratto" placeholder="Inserire anno di fine rapporto" class="form-control">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Anno di fine rapporto:</mat-label>
+                      <mat-select placeholder="Seleziona anno di fine contratto" formControlName="annoFineContratto">
+                        <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
                   </div>
-                  <div class="col-md-3" *ngIf="filterAnagraficaDto.get('annoFineContratto')?.value!==null">
-                    <label for="dataFineRapporto">Mese Fine Rapporto</label>
-                    <input type="number" min="1" max="12" formControlName="meseFineContratto" class="form-control" placeholder="Inserire mese di fine rapporto">
+                  <div class="col-md-3" *ngIf="filterAnagraficaDto.get('annoFineContratto')?.value !== null">
+                    <label for="meseFineContratto">Mese di fine rapporto:</label>
+                    <mat-select placeholder="Seleziona il mese di fine rapporto" formControlName="meseFineContratto">
+                      <mat-option value="1">Gennaio</mat-option>
+                      <mat-option value="2">Febbraio</mat-option>
+                      <mat-option value="3">Marzo</mat-option>
+                      <mat-option value="4">Aprile</mat-option>
+                      <mat-option value="5">Maggio</mat-option>
+                      <mat-option value="6">Giugno</mat-option>
+                      <mat-option value="7">Luglio</mat-option>
+                      <mat-option value="8">Agosto</mat-option>
+                      <mat-option value="9">Settembre</mat-option>
+                      <mat-option value="10">Ottobre</mat-option>
+                      <mat-option value="11">Novembre</mat-option>
+                      <mat-option value="12">Dicembre</mat-option>
+                    </mat-select>
                   </div>
                 </div>
                 <br>
