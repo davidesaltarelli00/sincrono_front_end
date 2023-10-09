@@ -356,7 +356,7 @@ a{
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let element of pageData; let i=index" >
+          <tr *ngFor="let element of pageData; let i=index" [ngStyle]="{'background-color': (anagraficaLoggata === element.anagrafica.id) ? 'aliceblue' : 'white'}" >
             <td [routerLink]="['/dettaglio-anagrafica/',element.anagrafica.id]"  >
               <span [ngStyle]="{'color': isCampoVuoto(element) ? 'red' : 'green'}" >
                 {{isCampoVuoto(element)? 'Si' : 'No'}}
@@ -389,9 +389,9 @@ a{
               </label>
             </td>
             <td>
-              <!-- <span style="margin:5px;">
-                <a [routerLink]="['/utente/', element?.anagrafica.id]"><button class="btn btn-success"><i class="fa fa-file"></i></button></a>
-              </span> -->
+              <span style="margin:5px;">
+                <a [routerLink]="['/utente/', element?.anagrafica.id]"><button [disabled]="anagraficaLoggata!=element.anagrafica.id"  class="btn btn-success"><i class="fa fa-file"></i></button></a>
+              </span>
               <span style="margin:5px;">
                 <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button class="btn btn-info"><i class="fa fa-info"></i></button></a>
               </span>

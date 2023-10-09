@@ -116,20 +116,11 @@ a{
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <h1 style="text-align: center; margin: auto;">Organico</h1>
+        <h1 style="text-align: center; margin: auto;">Organico <button class="btn btn-success" (click)="exportOrganicoToExcel()" > <i
+          class="fa-solid fa-file-export"></i> </button> </h1>
       </div>
     </div>
-
-  <!-- <div class="row" >
-    <div class="col-8" style="text-align:center; margin: auto;" >
-      <canvas id="barChart"></canvas>
-
-    </div>
-  </div> -->
-
-  <!-- <br> -->
-  <!-- <hr> -->
-  <!-- <br> -->
+  <br>
   <div class="row">
     <div class="col-12">
       <div class="table-responsive">
@@ -233,7 +224,38 @@ a{
     </div>
   </div>
 
-  <button (click)="exportOrganicoToExcel()" >Esporta come file Excel</button>
+  <div class="row" *ngIf="lista && lista.length > 0">
+    <div class="col-12">
+      <h1>Risultati</h1>
+      <table class="table table-bordered" *ngIf="filteredLista && filteredLista.length > 0">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Cognome</th>
+                <th scope="col">Tipo Azienda</th>
+                <th scope="col">Tipo Contratto</th>
+                <!-- Aggiungi altre colonne se necessario -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of filteredLista">
+                <td>{{ item.anagrafica.nome }}</td>
+                <td>{{ item.anagrafica.cognome }}</td>
+                <td>{{ item.anagrafica.tipoAzienda.descrizione }}</td>
+                <td>{{ item.contratto.tipoContratto.descrizione }}</td>
+                <!-- Aggiungi altri campi se necessario -->
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="!filteredLista || filteredLista.length === 0">
+      Nessun risultato trovato.
+    </div>
+
+    </div>
+  </div>
+
+
   </div>
 </body>
 </html>

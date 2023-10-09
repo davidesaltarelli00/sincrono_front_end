@@ -659,34 +659,64 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           console.log('Livello contratto selezionato: ', selectedLivello);
           this.minimiRet23 = selectedLivello.minimiRet23;
           console.log('Minimi retributivi 2023:' + this.minimiRet23);
-          this.changeElencoLivelliCCNL();
           const tipoContratto = this.anagraficaDto.get(
             'contratto.tipoContratto.id'
           );
-          if (this.tipoContratto.descrizione === 'Stage') {
-            console.log('é uno stage, NO retr lorda');
+
+          const selectedOption = this.anagraficaDto.get(
+            'contratto.retribuzioneMensileLorda'
+          );
+
+          if (this.tipoDiContrattoControl.descrizione === 'Stage') {
+            console.log('é uno stage, NO retr lorda ma si retribuzione netta.');
             let retribuzioneMensileLorda = this.anagraficaDto.get(
               'contratto.retribuzioneMensileLorda'
             );
-            retribuzioneMensileLorda?.setValue('');
+            let retribuzioneMensileNetta = this.anagraficaDto.get(
+              'contratto.retribuzioneNettaMensile'
+            );
+            //controlli da fare sulle retribuzioni in caso il contratto sia uno stage
+            if (retribuzioneMensileLorda && retribuzioneMensileNetta) {
+              retribuzioneMensileLorda.setValue('');
+              retribuzioneMensileLorda.disable();
+              retribuzioneMensileLorda.updateValueAndValidity();
+
+              retribuzioneMensileNetta.enable();
+              retribuzioneMensileNetta.setValue(600);
+              retribuzioneMensileNetta.updateValueAndValidity();
+            }
           } else {
+            console.log('IL CONTRATTO NON É UNO STAGE.');
             let retribuzioneMensileLorda = this.anagraficaDto.get(
               'contratto.retribuzioneMensileLorda'
             );
-            retribuzioneMensileLorda?.setValue(this.minimiRet23);
+            if (retribuzioneMensileLorda) {
+              retribuzioneMensileLorda.setValue(this.minimiRet23);
+              retribuzioneMensileLorda.updateValueAndValidity();
+            }
           }
         } else {
-          console.log('Livello contratto non trovato nella lista');
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              title: 'Attenzione:',
+              message: 'Livello contratto non trovato nella lista.',
+            },
+          });
         }
       } else {
-        console.log('Valore non valido o livello contratto non selezionato');
+        const dialogRef = this.dialog.open(AlertDialogComponent, {
+          data: {
+            title: 'Attenzione:',
+            message: 'Valore non valido o livello contratto non selezionato.',
+          },
+        });
       }
     }
   }
 
   changeElencoLivelliCCNL() {
     console.log(
-      'VALORE VALORIZZATO PER ENDPOINT' + this.descrizioneLivelloCCNL
+      'VALORE VALORIZZATO PER ENDPOINT ' + this.descrizioneLivelloCCNL
     );
     this.anagraficaDtoService
       .changeCCNL(localStorage.getItem('token'), this.descrizioneLivelloCCNL)
@@ -707,14 +737,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   onChangeCCNL(event: any) {
-    const selectedValue = parseInt(event.target.value, 10); // Converte il valore selezionato in un numero
+    const selectedValue = parseInt(event.target.value, 10);
 
     const livelloControl = this.anagraficaDto.get(
       'contratto.tipoLivelloContratto.id'
     );
 
     if (!isNaN(selectedValue)) {
-      // Cerca l'opzione selezionata nei contratti nazionali
       const selectedOption = this.ccnl.find(
         (ccnl: any) => ccnl.id === selectedValue
       );
@@ -757,12 +786,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       livelloControl?.disable();
       livelloControl?.setValue(null);
     }
-  }
-
-  aCaso() {
-    this.caricaContrattoNazionale();
-    console.log('LIVELLO CONTRATTO SELEZIONATO:' + this.descrizioneLivelloCCNL);
-    this.changeElencoLivelliCCNL();
   }
 
   onChangePFI(event: Event) {
@@ -1665,6 +1688,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   caricaContrattoNazionale() {
+    //metodo che carica la lista della select del ccnl
     this.anagraficaDtoService
       .getContrattoNazionale(localStorage.getItem('token'))
       .subscribe(

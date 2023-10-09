@@ -8,6 +8,7 @@ import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
+import { AnagraficaDtoService } from '../../anagraficaDto/anagraficaDto-service';
 
 @Component({
   selector: 'app-lista-organico',
@@ -17,7 +18,9 @@ import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component'
 export class ListaOrganicoComponent implements OnInit {
   lista: any;
   labelsX: string[] = [];
-
+  currentPage: number = 1;
+  itemsPerPage: number = 20;
+  pageData: any[] = [];
   submitted = false;
   errore = false;
   messaggio: any;
@@ -34,6 +37,9 @@ export class ListaOrganicoComponent implements OnInit {
   userRoleNav: any;
   idNav: any;
   tokenProvvisorio: any;
+  filteredLista: any[] = [];
+
+  originalLista: any;
 
   constructor(
     private organicoService: OrganicoService,
@@ -41,7 +47,8 @@ export class ListaOrganicoComponent implements OnInit {
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private anagraficaDtoService: AnagraficaDtoService
   ) {
     this.userlogged = localStorage.getItem('userLogged');
 
@@ -50,7 +57,6 @@ export class ListaOrganicoComponent implements OnInit {
       this.userlogged = userLogged;
     }
   }
-
 
   profile() {
     this.router.navigate(['/profile-box/', this.userlogged]);
@@ -76,9 +82,74 @@ export class ListaOrganicoComponent implements OnInit {
     );
   }
 
-  filter(tipoContratto: any, tipoAzienda: any) {
-    this.router.navigate(['/lista-anagrafica', { tipoContratto, tipoAzienda }]);
+
+
+  filter(tipoContratto: string, azienda: string) {
+    console.log("tipo contratto:"+tipoContratto);
+    console.log("azienda:"+azienda);
+    this.anagraficaDtoService
+      .listAnagraficaDto(localStorage.getItem('token'))
+      .subscribe(
+        (resp: any) => {
+          if (Array.isArray(resp.list)) {
+            this.originalLista = resp.list;
+
+            // Filtra per tipo di contratto
+            const filteredByContratto = this.originalLista.filter((item: any) => {
+              if (tipoContratto === '') {
+                return true; // Mostra tutto se il tipo di contratto non è specificato
+              } else {
+                switch (tipoContratto) {
+                  case 'Indeterminato':
+                    return item.indeterminati > 0;
+                  case 'Determinato':
+                    return item.determinati > 0;
+                  case 'Apprendistato':
+                    return item.apprendistato > 0;
+                  case 'Consulenza':
+                    return item.consulenza > 0;
+                  case 'Stage':
+                    return item.stage > 0;
+                  case 'PartitaIva':
+                    return item.partitaIva > 0;
+                  default:
+                    return false; // Non corrisponde a nessun tipo di contratto
+                }
+              }
+            });
+
+            // Filtra per azienda
+            this.filteredLista = filteredByContratto.filter((item: any) => {
+              if (azienda === '') {
+                return true; // Mostra tutto se l'azienda non è specificata
+              } else {
+                switch (azienda) {
+                  case 'ZeroLock':
+                    return item.azienda === 'ZeroLock';
+                  case 'Reymon':
+                    return item.azienda === 'Reymon';
+                  case 'AltraAzienda':
+                    return item.azienda === 'AltraAzienda';
+                  // Aggiungi altri casi per le aziende
+                  default:
+                    return false; // Non corrisponde a nessuna azienda specificata
+                }
+              }
+            });
+
+            console.log('Elenco record filtrati: ' + JSON.stringify(this.filteredLista));
+          } else {
+            console.log('La risposta non contiene un array di dati.');
+          }
+        },
+        (error: any) => {
+          console.log(
+            'Si è verificato un errore durante il caricamento dei dati: ' + error
+          );
+        }
+      );
   }
+
 
   calculateSliceRotation(element: any): number {
     const total =
@@ -328,6 +399,32 @@ export class ListaOrganicoComponent implements OnInit {
     };
   }
 
+  //paginazione
+  getCurrentPageItems(): any[] {
+    if (!this.lista) {
+      return [];
+    }
+
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.lista.slice(startIndex, endIndex);
+  }
+
+  goToPage(pageNumber: number) {
+    if (pageNumber >= 1 && pageNumber <= this.getTotalPages()) {
+      this.currentPage = pageNumber;
+      this.pageData = this.getCurrentPageItems();
+    }
+  }
+
+  getTotalPages(): number {
+    return Math.ceil((this.lista?.length || 0) / this.itemsPerPage);
+  }
+
+  getPaginationArray(): number[] {
+    const totalPages = this.getTotalPages();
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
 
   logout() {
     this.dialog.open(AlertLogoutComponent);
@@ -401,7 +498,6 @@ export class ListaOrganicoComponent implements OnInit {
         this.jsonData = { list: [] }; // Imposta un valore predefinito per jsonData
       }
     );
-
   }
 
   getPermissions(functionId: number) {
@@ -420,7 +516,6 @@ export class ListaOrganicoComponent implements OnInit {
       }
     );
   }
-
 }
 
 /*
@@ -468,21 +563,21 @@ altri attrivuti di stile per le barre del grafico:
 
    */
 
-         interface MenuData {
-          esito: {
-            code: number;
-            target: any;
-            args: any;
-          };
-          list: {
-            id: number;
-            funzione: any;
-            menuItem: number;
-            nome: string;
-            percorso: string;
-            immagine: any;
-            ordinamento: number;
-            funzioni: any;
-            privilegio: any;
-          }[];
-        }
+interface MenuData {
+  esito: {
+    code: number;
+    target: any;
+    args: any;
+  };
+  list: {
+    id: number;
+    funzione: any;
+    menuItem: number;
+    nome: string;
+    percorso: string;
+    immagine: any;
+    ordinamento: number;
+    funzioni: any;
+    privilegio: any;
+  }[];
+}
