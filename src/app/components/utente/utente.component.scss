@@ -1,16 +1,21 @@
-img{
+img {
   max-height: 50%;
 }
 
-*{
+* {
   box-sizing: border-box;
 }
 
-body{
+body {
   background-color: aliceblue;
 }
 
-th,td{
+.container-fluid {
+  background-color: aliceblue;
+}
+
+th,
+td {
   border: 1px solid black;
 }
 
@@ -25,7 +30,8 @@ h2 {
 }
 
 
-table.th,td{
+table.th,
+td {
   text-align: center;
   text-decoration: none;
 }
@@ -41,41 +47,52 @@ a {
   font-weight: bold;
 }
 
-/* Stile generale per la tabella */
+
 .table-excel {
   border-collapse: collapse;
   width: 100%;
 }
 
-/* Stile per l'intestazione delle colonne */
 .table-excel th {
-  background-color: #007bff; /* Colore di sfondo dell'intestazione */
-  color: #ffffff; /* Colore del testo nell'intestazione */
+  background-color: #007bff;
+  color: #ffffff;
   font-weight: bold;
-  border: 1px solid #000; /* Bordo dell'intestazione */
+  border: 1px solid #000;
   padding: 8px;
   text-align: center;
 }
 
-/* Stile per le celle nella tabella */
+
 .table-excel td {
-  border: 1px solid #000; /* Bordo delle celle */
+  border: 1px solid #000;
   padding: 8px;
   text-align: left;
 }
 
-/* Stile per le righe pari (effetto zebra) */
 .table-excel tr:nth-child(even) {
-  background-color: #f2f2f2; /* Colore di sfondo delle righe pari */
+  background-color: #f2f2f2;
 }
 
-/* Stile per le celle modificabili (contenteditable) */
 .table-excel td[contenteditable="true"] {
-  background-color: #ffff99; /* Colore di sfondo delle celle modificabili */
-  cursor: pointer; /* Cambia il cursore quando si passa sopra una cella modificabile */
+  background-color: #ffff99;
+  cursor: pointer;
 }
 
-/* Stile per l'hover sulle celle modificabili */
 .table-excel td[contenteditable="true"]:hover {
-  background-color: #ffffcc; /* Cambia il colore di sfondo quando si passa sopra */
+  background-color: #ffffcc;
+}
+
+.table-excel td[contenteditable="false"] {
+  background-color: #ffff99;
+  cursor: pointer;
+}
+
+.table-excel td[contenteditable="false"]:hover {
+  background-color: #ffffcc;
+}
+
+
+#duplica-riga:hover {
+  background-color: #ffffcc;
+
 }
