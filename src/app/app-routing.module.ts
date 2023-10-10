@@ -25,6 +25,7 @@ import { UtenteComponent } from './components/utente/utente.component';
 import { GiornoComponent } from './components/giorno/giorno.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { RisultatiFilterOrganicoComponent } from './components/organico/risultati-filter-organico/risultati-filter-organico.component';
+import { ListaRapportiniComponent } from './components/lista-rapportini/lista-rapportini.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -145,6 +146,11 @@ const routes: Routes = [
     component: StoricoContrattiComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'lista-rapportini',
+    component: ListaRapportiniComponent,
+    canActivate: [AuthGuard],
+  },
 
   {
     path: 'risultati-filter-organico',
@@ -172,7 +178,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: 'not-found', component: NotFoundComponent },
-  { path: '**', redirectTo: '/not-found' }
+  { path: '**', redirectTo: '/not-found' },
 ];
 
 @NgModule({

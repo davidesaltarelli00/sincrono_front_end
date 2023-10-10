@@ -120,6 +120,14 @@ img{
 
   <div class="row">
     <div class="col-12">
+      <mat-card style="text-align: center;">
+        <h1>Sincrono CRM</h1>
+      </mat-card>
+    </div>
+  </div>
+<br>
+  <div class="row">
+    <div class="col-12">
       <header>
         <div class="row">
           <div class="col-12" style="margin: auto; text-align: center">
@@ -137,9 +145,6 @@ img{
   <div class="row">
     <div class="col-6">
       <mat-card>
-        <mat-card-title style="text-align: center;">
-          <h1>Sincrono CRM</h1>
-        </mat-card-title>
         <mat-card-content>
           <main>
             <h2>Ciao {{userLoggedName}} {{userLoggedSurname}}.</h2>
@@ -161,13 +166,16 @@ img{
             <mat-list-item role="listitem" [routerLink]="['/organico']" class="custom-list-item">
               <a href="/organico">Organico</a>
             </mat-list-item>
+            <mat-list-item role="listitem" [routerLink]="['/lista-rapportini']" class="custom-list-item">
+              <a href="/lista-rapportini">Lista rapportini</a>
+            </mat-list-item>
           </mat-list>
 
         </mat-card-content>
        </mat-card>
     </div>
   </div>
-
+<br><br><br><br>
 </div>
 </body>
 </html>

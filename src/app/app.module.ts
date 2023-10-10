@@ -50,6 +50,7 @@ import { ModalInfoCommesseComponent } from './components/modal-info-commesse/mod
 import { ModalInfoContrattoComponent } from './components/modal-info-contratto/modal-info-contratto.component';
 import { MatSelectModule } from '@angular/material/select';
 import { RisultatiFilterOrganicoComponent } from './components/organico/risultati-filter-organico/risultati-filter-organico.component';
+import { ListaRapportiniComponent } from './components/lista-rapportini/lista-rapportini.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { RisultatiFilterOrganicoComponent } from './components/organico/risultat
     NotFoundComponent,
     AlertDialogComponent,
     ModalInfoContrattoComponent,
-    RisultatiFilterOrganicoComponent
+    RisultatiFilterOrganicoComponent,
+    ListaRapportiniComponent
   ],
   imports: [
     MatNativeDateModule,
@@ -95,7 +97,7 @@ import { RisultatiFilterOrganicoComponent } from './components/organico/risultat
     FormsModule,
     MaterialModule,
     MatSelectModule,
-   
+
   ],
   providers: [DatePipe, CurrencyPipe],
   //  { provide: LOCALE_ID, useValue: 'it-IT' }
