@@ -9,6 +9,7 @@ import { MenuService } from '../menu.service';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
+import { RapportinoService } from './rapportino.service';
 
 @Component({
   selector: 'app-utente',
@@ -37,28 +38,21 @@ export class UtenteComponent implements OnInit {
   idUtenteLoggato: any;
   elencoCommesse: any;
   contratto: any;
-  italianMonths = [
-    'gennaio',
-    'febbraio',
-    'marzo',
-    'aprile',
-    'maggio',
-    'giugno',
-    'luglio',
-    'agosto',
-    'settembre',
-    'ottobre',
-    'novembre',
-    'dicembre',
-  ];
-
   dettaglioSbagliato: any;
-
   rapportinoDto: any[] = [];
-
   @ViewChild('editableTable') editableTable!: ElementRef;
 
   modifiedData: any[] = [];
+  anno: any;
+  selectedAnno: number;
+  selectedMese: number;
+  anni: number[] = [];
+  mesi: number[] = [];
+  giorniUtili: any;
+  giorniLavorati: any;
+  note: any;
+  anagrafica: any;
+  esitoCorretto = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -68,10 +62,21 @@ export class UtenteComponent implements OnInit {
     private anagraficaDtoService: AnagraficaDtoService,
     private datePipe: DatePipe,
     private menuService: MenuService,
-    private http: HttpClient
+    private http: HttpClient,
+    private rapportinoService: RapportinoService
   ) {
-    this.currentMonth = this.italianMonths[this.currentDate.getMonth()];
-    this.currentYear = this.currentDate.getFullYear();
+    const oggi = new Date();
+    const annoCorrente = oggi.getFullYear();
+    const meseCorrente = oggi.getMonth() + 1;
+
+    for (let anno = 2010; anno <= annoCorrente; anno++) {
+      this.anni.push(anno);
+    }
+
+    this.mesi = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+    this.selectedAnno = annoCorrente;
+    this.selectedMese = meseCorrente;
   }
 
   ngOnInit(): void {
@@ -79,9 +84,88 @@ export class UtenteComponent implements OnInit {
       this.getUserLogged();
       this.getUserRole();
       this.getAnagraficaRapportino();
+      // this.getRapportinoByMeseAnnoCorrenti();
     } else {
       console.error('ERRORE DI AUTENTICAZIONE');
     }
+
+    console.log('ANNI:' + JSON.stringify(this.anni));
+    console.log('MESI:' + JSON.stringify(this.mesi));
+  }
+
+  duplicaRiga(index: number) {
+    const rigaDaCopiare = this.rapportinoDto[index];
+    const nuovaRiga = { ...rigaDaCopiare };
+    // Inserisci la nuova riga subito sotto all'indice attuale
+    this.rapportinoDto.splice(index + 1, 0, nuovaRiga);
+  }
+
+  eliminaRigaDuplicata(index: number) {
+    // Rimuovi la riga dalla matrice rapportinoDto in base all'indice
+    this.rapportinoDto.splice(index, 1);
+
+    // Verifica se la riga successiva è duplicata (non la prima occorrenza)
+    if (
+      index < this.rapportinoDto.length - 1 &&
+      this.rapportinoDto[index] === this.rapportinoDto[index + 1]
+    ) {
+      // Rimuovi la riga duplicata
+      this.rapportinoDto.splice(index + 1, 1);
+    }
+  }
+
+  eliminaRapportino() {
+    this.rapportinoDto = [];
+    this.esitoCorretto=false;
+  }
+
+  getRapportinoByMeseAnnoCorrenti() {
+    //carica il rapportino del mese e anno corrente ma non funziona
+
+    const oggi = new Date();
+    const annoCorrente = oggi.getFullYear();
+    const meseCorrente = oggi.getMonth() + 1;
+
+    for (let anno = 2010; anno <= annoCorrente; anno++) {
+      this.anni.push(anno);
+    }
+
+    this.mesi = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+    this.selectedAnno = annoCorrente;
+    this.selectedMese = meseCorrente;
+    let body = {
+      rapportinoDto: {
+        anagrafica: {
+          codiceFiscale: this.codiceFiscale,
+        },
+        annoRequest: annoCorrente,
+        meseRequest: meseCorrente,
+      },
+    };
+    console.log('BODY PER GET RAPPORTINO:' + JSON.stringify(body));
+    this.rapportinoService.getRapportino(this.token, body).subscribe(
+      (result: any) => {
+        if ((result as any).esito.code !== 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              Image: '../../../../assets/images/logo.jpeg',
+              title: 'Caricamento non riuscito:',
+              message: (result as any).esito.target,
+            },
+          });
+        } else {
+          this.esitoCorretto = true;
+          this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
+          this.note = result['rapportinoDto']['note'];
+          this.giorniUtili = result['rapportinoDto']['giorniUtili'];
+          this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
+        }
+      },
+      (error: string) => {
+        console.error('ERRORE:' + JSON.stringify(error));
+      }
+    );
   }
 
   getAnagraficaRapportino() {
@@ -98,8 +182,6 @@ export class UtenteComponent implements OnInit {
           this.dettaglioSbagliato = false;
           console.log('DETTAGLIO USER ' + JSON.stringify(this.user));
           console.log('CODICE FISCALE:' + this.codiceFiscale);
-          console.log('PARTE ENDPOINT PER RAPPORTINO');
-          this.getRapportino();
         },
         (error: any) => {
           console.error(
@@ -111,24 +193,43 @@ export class UtenteComponent implements OnInit {
   }
 
   getRapportino() {
-    this.profileBoxService
-      .getRapportino(localStorage.getItem('token'), this.codiceFiscale)
-      .subscribe(
-        (result: any) => {
-          this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
-          console.log('DATA: ' + JSON.stringify(this.rapportinoDto));
+    let body = {
+      rapportinoDto: {
+        anagrafica: {
+          codiceFiscale: this.codiceFiscale,
         },
-        (error: any) => {
-          console.error(
-            'ERRORE DURANTE IL CARICAMENTO DEL RAPPORTINO:' +
-              JSON.stringify(error)
-          );
+        annoRequest: this.selectedAnno,
+        meseRequest: this.selectedMese,
+      },
+    };
+    console.log('BODY PER GET RAPPORTINO:' + JSON.stringify(body));
+    this.rapportinoService.getRapportino(this.token, body).subscribe(
+      (result: any) => {
+        if ((result as any).esito.code !== 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              Image: '../../../../assets/images/logo.jpeg',
+              title: 'Caricamento non riuscito:',
+              message: (result as any).esito.target,
+            },
+          });
+        } else {
+          this.esitoCorretto = true;
+          this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
+          this.note = result['rapportinoDto']['note'];
+          this.giorniUtili = result['rapportinoDto']['giorniUtili'];
+          this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
         }
-      );
+      },
+      (error: string) => {
+        console.error('ERRORE:' + JSON.stringify(error));
+      }
+    );
   }
 
   inviaRapportino() {
-    // Raccogli i dati modificati dalla tabella e aggiungili a modifiedData
+    const giorniArray = [];
+
     const tableRows =
       this.editableTable.nativeElement.getElementsByTagName('tr');
     for (let i = 1; i < tableRows.length; i++) {
@@ -136,28 +237,38 @@ export class UtenteComponent implements OnInit {
       const giorno = row.cells[0].innerText;
       const cliente = row.cells[1].innerText;
       const oreOrdinarie = row.cells[2].innerText;
+      // Dividi il campo cliente in un array di stringhe
+      const clientiArray = cliente ? cliente.split(',') : null;
+      // Dividi il campo oreOrdinarie in un array di stringhe
+      const oreOrdinarieArray = oreOrdinarie.split(',');
 
-      // Aggiungi i dati modificati all'array modifiedData
-      this.modifiedData.push({ giorno, cliente, oreOrdinarie });
+      giorniArray.push({
+        giorno: parseInt(giorno), // Converte il giorno in un numero intero
+        cliente: clientiArray,
+        oreOrdinarie: oreOrdinarieArray.map(parseFloat), // Converte le ore in numeri decimali
+      });
     }
 
-    // Ora puoi inviare this.modifiedData al server
-    console.log('Dati modificati:', this.modifiedData);
-
-    // Invia i dati modificati al server
-    let body = {
+    // Crea il corpo del JSON
+    const body = {
       rapportinoDto: {
         mese: {
-          giorni: this.modifiedData,
+          giorni: giorniArray,
         },
         anagrafica: {
           codiceFiscale: this.codiceFiscale,
         },
+        note: this.note,
+        giorniUtili: this.giorniUtili,
+        giorniLavorati: this.giorniLavorati,
+        annoRequest: this.selectedAnno,
+        meseRequest: this.selectedMese,
       },
     };
 
-    this.menuService
-      .sendRapportino(localStorage.getItem('token'), body)
+    console.log('BODY UPDATE RAPPORTINO:' + JSON.stringify(body));
+    this.rapportinoService
+      .updateRapportino(localStorage.getItem('token'), body)
       .subscribe(
         (result: any) => {
           if (
@@ -167,17 +278,27 @@ export class UtenteComponent implements OnInit {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 Image: '../../../../assets/images/logo.jpeg',
-                title: 'Invio non riuscito:',
-                message: 'Errore validazione.', //(result as any).esito.target,
+                title: 'Salvataggio non riuscito:',
+                message: 'Errore di validazione.', //(result as any).esito.target,
+              },
+            });
+            console.error(result);
+          }
+          if ((result as any).esito.code === 500) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                Image: '../../../../assets/images/logo.jpeg',
+                title: 'Salvataggio non riuscito:',
+                message: 'Errore del server.', //(result as any).esito.target,
               },
             });
             console.error(result);
           }
 
-          if ((result as any).esito.code == 200) {
+          if ((result as any).esito.code === 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                title: 'Invio riuscito',
+                title: 'Salvataggio riuscito.',
                 message: (result as any).esito.target,
               },
             });

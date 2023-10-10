@@ -21,13 +21,14 @@ export class HomeComponent implements OnInit {
   userRoleNav: any;
   idNav: any;
   tokenProvvisorio: any;
+  ruolo: any;
 
   constructor(
     private authService: AuthService,
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
     private http: HttpClient,
-    private router: Router,
+    private router: Router
   ) {}
   ngOnInit(): void {
     if (this.token != null) {
@@ -48,6 +49,8 @@ export class HomeComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.ruolo = response.anagraficaDto.ruolo.nome;
+        console.log('RUOLO UTENTE LOGGATO:' + this.ruolo);
       },
       (error: any) => {
         console.error(
