@@ -86,7 +86,7 @@ a{
         <mat-card>
           <mat-card-content>
             <div class="row">
-              <div class="col-6" style="margin: auto; text-align: center">
+              <div class="col-12">
                 <table class="table table-bordered table-excel">
                   <tbody>
                     <tr>
@@ -110,33 +110,29 @@ a{
               </div>
             </div>
             <br />
-
+            <table class="table table-bordered">
+              <tbody>
+                <tr> <!-- <img src="../../../../assets/images/logo.jpeg" alt="Logo Sincrono" >-->
+                  <td style="background-color: #ffff99; color: black;"> <strong>Nome azienda:</strong> </td>
+                  <td style="background-color: #007bff; color: white">{{ user?.anagrafica?.tipoAzienda?.descrizione }}   </td>
+                </tr>
+              </tbody>
+            </table>
 
           </mat-card-content>
         </mat-card>
       </div>
      </div>
      <br>
-      <div class="row" style="margin: auto;">
-        <div class="col-6">
-          <table class="table table-bordered">
-            <tbody>
-              <tr> <!-- <img src="../../../../assets/images/logo.jpeg" alt="Logo Sincrono" >-->
-                <td style="background-color: #ffff99; color: black;"> <strong>Nome azienda:</strong> </td>
-                <td style="background-color: #007bff; color: white">{{ user?.anagrafica?.tipoAzienda?.descrizione }}   </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <br><br><br><br><br>
-      </div>
+
       <br>
       <form>
         <div class="row">
           <div class="col-4">
             <div class="form-group">
               <label for="meseSelect">Seleziona il mese:</label>
-              <select class="form-select" aria-label="Default select example" id="meseSelect" [(ngModel)]="selectedMese" name="mese">
+              <select (change)="onMeseSelectChange($event)" class="form-select" aria-label="Default select example" id="meseSelect" [(ngModel)]="selectedMese" name="mese">
+                <option selected>---Nessuna selezione---</option>
                 <option *ngFor="let month of mesi; let i = index" [value]="i + 1">{{ i + 1 }}</option>
               </select>
             </div>
@@ -144,14 +140,15 @@ a{
           <div class="col-4">
             <div class="form-group">
               <label for="annoSelect">Seleziona l'anno:</label>
-              <select class="form-select" aria-label="Default select example" id="annoSelect" [(ngModel)]="selectedAnno" name="anno">
+              <select (change)="onAnnoSelectChange($event)" class="form-select" aria-label="Default select example" id="annoSelect" [(ngModel)]="selectedAnno" name="anno">
+                <option selected>---Nessuna selezione---</option>
                 <option *ngFor="let year of anni" [value]="year">{{ year }}</option>
               </select>
             </div>
           </div>
           <div class="col-4">
             <label for="getRapportino">Azioni</label><br>
-            <button class="btn btn-primary" (click)="getRapportino()" >Carica rapportino <i class="fa fa-print" aria-hidden="true"></i></button>&nbsp;
+            <button class="btn btn-primary" (click)="getRapportino()" [disabled]="selectedMese==null || selectedAnno==null" >Carica rapportino <i class="fa fa-print" aria-hidden="true"></i></button>&nbsp;
             <button class="btn btn-danger" (click)="eliminaRapportino()" >Elimina rapportino <i class="fa fa-trash" aria-hidden="true"></i></button>
           </div>
         </div>
@@ -182,7 +179,7 @@ a{
                 <td contenteditable="true">{{ giornaliero.giorno }}</td>
                 <td contenteditable="true">{{ giornaliero.cliente }}</td>
                 <td contenteditable="true">{{ giornaliero.oreOrdinarie }}</td>
-                <td id="duplica-riga" style=" background-color: #ffff99;" >
+                <td id="duplica-riga" style=" background-color: #ffff99; text-align: center;" >
                   <button class="btn btn-primary" (click)="duplicaRiga(i)" >Duplica riga <i class="fa fa-clone" ></i></button> &nbsp;
                   <button class="btn btn-danger" (click)="eliminaRigaDuplicata(i)" >Elimina riga <i class="fa fa-trash" ></i></button>
                 </td>
@@ -196,16 +193,20 @@ a{
         <div class="col-6">
           <div class="form-group">
             <label for="note">Note:</label> <br>
-            <textarea name="note" class="form-control" id="note" cols="15" rows="5"></textarea>
+            <textarea name="note" class="form-control" [(ngModel)]="note" id="note" cols="15" rows="5"  ></textarea>
           </div>
         </div>
         <div class="col-6">
           <div class="form-group">
             <label for="giorniLavorati">Giorni lavorati:</label> <br>
-            <input type="number" readonly id="giorniLavorati" name="giorniLavorati" class="form-control" [(ngModel)]="giorniLavorati">
+            <input style="width: 23%;" type="number" readonly id="giorniLavorati" name="giorniLavorati" class="form-control" [(ngModel)]="giorniLavorati">
             <br>
             <button class="btn btn-warning"  (click)="inviaRapportino()" >Invia rapportino <i class="fa fa-file" ></i> </button>
           </div>
+        </div>
+        <br>
+        <div class="col-3">
+          <button class="btn btn-warning" (click)="aggiungiNote()" >Salva note <i class="fa fa-save" ></i></button>
         </div>
       </div>
       <br><br><br>

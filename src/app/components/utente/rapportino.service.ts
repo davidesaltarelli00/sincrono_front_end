@@ -32,10 +32,36 @@ export class RapportinoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    const url = this.url + 'update-rapportino';
-    console.log('URL:' + url);
+
     return this.http.post<any>(this.url + 'update-rapportino', body, {
       headers: headers,
     });
   }
+
+  /*
+  /aggiungi-note (POST)
+{
+    "rapportinoDto": {
+        "note":"PROVA 2",
+        "anagrafica": {
+            "codiceFiscale":"rneedpont43218k"
+        },
+        "annoRequest":2023,
+        "meseRequest":10
+    }
+}
+  */
+
+  aggiungiNote(token: any, body: any): Observable<any>{
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.post<any>(this.url + 'aggiungi-note', body, {
+      headers: headers,
+    });
+  }
+
 }

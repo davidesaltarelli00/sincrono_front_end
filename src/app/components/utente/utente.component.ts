@@ -53,6 +53,7 @@ export class UtenteComponent implements OnInit {
   note: any;
   anagrafica: any;
   esitoCorretto = false;
+  mobile: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -77,6 +78,20 @@ export class UtenteComponent implements OnInit {
 
     this.selectedAnno = annoCorrente;
     this.selectedMese = meseCorrente;
+
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
   }
 
   ngOnInit(): void {
@@ -116,7 +131,7 @@ export class UtenteComponent implements OnInit {
 
   eliminaRapportino() {
     this.rapportinoDto = [];
-    this.esitoCorretto=false;
+    this.esitoCorretto = false;
   }
 
   getRapportinoByMeseAnnoCorrenti() {
@@ -311,6 +326,57 @@ export class UtenteComponent implements OnInit {
           );
         }
       );
+  }
+
+  aggiungiNote() {
+    let body = {
+      rapportinoDto: {
+        note: this.note,
+        anagrafica: {
+          codiceFiscale: this.codiceFiscale,
+        },
+        annoRequest: this.selectedAnno,
+        meseRequest: this.selectedMese,
+      },
+    };
+    console.log('BODY AGGIUNGI NOTE:' + JSON.stringify(body));
+
+    this.rapportinoService.aggiungiNote(this.token, body).subscribe(
+      (result: any) => {
+        if (
+          (result as any).esito.code !== 200 &&
+          (result as any).esito.target === 'HTTP error code: 400'
+        ) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              Image: '../../../../assets/images/logo.jpeg',
+              title: 'Salvataggio delle note non riuscito:',
+              message: 'Errore di validazione.', //(result as any).esito.target,
+            },
+          });
+          console.error(result);
+        } else {
+          console.log('RESULT AGGIUNGI NOTE:' + JSON.stringify(result));
+        }
+      },
+      (error: any) => {
+        const dialogRef = this.dialog.open(AlertDialogComponent, {
+          data: {
+            Image: '../../../../assets/images/logo.jpeg',
+            title: 'Salvataggio delle note non riuscito:',
+            message: JSON.stringify(error),
+          },
+        });
+      }
+    );
+  }
+
+  onMeseSelectChange(event: any) {
+    console.log('Mese selezionato:', event.target.value);
+  }
+
+  onAnnoSelectChange(event: any) {
+    console.log('Anno selezionato:', event.target.value);
   }
 
   logout() {
