@@ -109,6 +109,19 @@ export class ListaRapportiniComponent implements OnInit {
 
   eliminaRapportinoNonFreezato(id: number) {
     console.log(id);
+    this.rapportinoService.deleteRapportino(this.token, id).subscribe(
+      (result: any) => {
+        console.log(
+          'RAPPORTINO NUMERO ' +
+            id +
+            ' ELIMINATO CORRETTAMENTE: ' +
+            JSON.stringify(result)
+        );
+      },
+      (error: any) => {
+        console.error('ERRORE:' + JSON.stringify(error));
+      }
+    );
   }
 
   eliminaRapportinoFreezato(index: number) {
@@ -238,9 +251,15 @@ export class ListaRapportiniComponent implements OnInit {
     );
   }
 
-  getRapportino(id: any, codiceFiscale:any, mese: any, anno: any) {
-    console.log("DATI IN LISTA RAPPORTINI PER ROTTA"+id, mese, anno);
-    this.router.navigate(['/dettaglio-rapportino', id, codiceFiscale, mese, anno]);
+  getRapportino(id: any, codiceFiscale: any, mese: any, anno: any) {
+    console.log('DATI IN LISTA RAPPORTINI PER ROTTA' + id, mese, anno);
+    this.router.navigate([
+      '/dettaglio-rapportino',
+      id,
+      codiceFiscale,
+      mese,
+      anno,
+    ]);
   }
 
   //metodi navbar

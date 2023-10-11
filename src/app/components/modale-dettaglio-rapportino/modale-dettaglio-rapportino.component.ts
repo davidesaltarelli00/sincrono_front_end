@@ -6,7 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RapportinoService } from '../utente/rapportino.service';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 
@@ -30,7 +30,8 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private rapportinoService: RapportinoService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router:Router
   ) {}
 
   ngOnInit() {
@@ -100,6 +101,13 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
           console.error(result);
         } else {
           console.log('RESULT AGGIUNGI NOTE:' + JSON.stringify(result));
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              Image: '../../../../assets/images/logo.jpeg',
+              title: 'Salvataggio delle note effettuato',
+            },
+          });
+          this.router.navigate(['/lista-rapportini']);
         }
       },
       (error: any) => {

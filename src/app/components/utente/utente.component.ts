@@ -53,6 +53,7 @@ export class UtenteComponent implements OnInit {
   anagrafica: any;
   esitoCorretto = false;
   rapportinoSalvato = false;
+  rapportinoInviato = false;
   mobile: boolean = false;
   checkFreeze = false;
 
@@ -294,6 +295,7 @@ export class UtenteComponent implements OnInit {
               message: 'Errore di validazione.', //(result as any).esito.target,
             },
           });
+          this.rapportinoInviato=false;
           console.error(result);
         }
         if ((result as any).esito.code === 500) {
@@ -304,6 +306,8 @@ export class UtenteComponent implements OnInit {
               message: 'Errore del server:' + (result as any).esito.target, //(result as any).esito.target,
             },
           });
+          this.rapportinoInviato=false;
+
           console.error(result);
         }
         if ((result as any).esito.code === 200) {
@@ -314,7 +318,7 @@ export class UtenteComponent implements OnInit {
             },
           });
           console.log('RESPONSE INSERT RAPPORTINO:' + JSON.stringify(result));
-          this.router.navigate(['/lista-rapportini']);
+          this.rapportinoInviato=true;
         }
       });
   }

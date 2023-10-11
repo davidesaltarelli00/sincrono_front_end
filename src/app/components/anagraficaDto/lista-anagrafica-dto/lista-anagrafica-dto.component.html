@@ -343,6 +343,7 @@ a{
         <thead class="thead-dark">
           <tr>
             <th scope="col">Inserimento <br> parziale</th>
+            <th scope="col" >Ruolo</th>
             <th scope="col">Nome</th>
             <th scope="col">Cognome</th>
             <th scope="col">Codice Fiscale</th>
@@ -362,6 +363,7 @@ a{
                 {{isCampoVuoto(element)? 'Si' : 'No'}}
               </span>
             </td>
+            <td><i *ngIf="element.ruolo.descrizione==='ADMIN'" matTooltip="{{element.ruolo.descrizione}}" style="color: green;" class="fa-solid fa-user"></i><i  *ngIf="element.ruolo.descrizione==='DIPENDENTE'" style="color: orangered;"  matTooltip="{{element.ruolo.descrizione}}" class="fa-solid fa-user"></i></td>
             <td>{{ element.anagrafica?.nome |titlecase }}</td>
             <td>{{ element.anagrafica?.cognome |titlecase }}</td>
             <td>{{ element.anagrafica?.codiceFiscale |uppercase }}</td>

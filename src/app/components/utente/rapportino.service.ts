@@ -60,4 +60,32 @@ export class RapportinoService {
       headers: headers,
     });
   }
+
+  deleteRapportino(token: any, id: number) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.delete(this.url + `delete-rapportino-inviato/${id}`);
+  }
 }
+
+/*
+DeleteRapportinoInviato (sara sulla lista della get) (delete)
+/delete-rapportino-inviato/{id}
+no payload
+
+
+ detailAnagraficaDto(id: any, token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(
+      `http://localhost:8080/services/dettaglio/${id}`,
+      { headers: headers }
+    );
+  }
+*/
