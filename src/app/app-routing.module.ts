@@ -26,6 +26,7 @@ import { GiornoComponent } from './components/giorno/giorno.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { RisultatiFilterOrganicoComponent } from './components/organico/risultati-filter-organico/risultati-filter-organico.component';
 import { ListaRapportiniComponent } from './components/lista-rapportini/lista-rapportini.component';
+import { ModaleDettaglioRapportinoComponent } from './components/modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -149,6 +150,11 @@ const routes: Routes = [
   {
     path: 'lista-rapportini',
     component: ListaRapportiniComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'dettaglio-rapportino/:id/:codiceFiscale/:mese/:anno',
+    component: ModaleDettaglioRapportinoComponent,
     canActivate: [AuthGuard],
   },
 

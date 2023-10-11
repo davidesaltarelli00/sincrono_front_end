@@ -51,6 +51,7 @@ import { ModalInfoContrattoComponent } from './components/modal-info-contratto/m
 import { MatSelectModule } from '@angular/material/select';
 import { RisultatiFilterOrganicoComponent } from './components/organico/risultati-filter-organico/risultati-filter-organico.component';
 import { ListaRapportiniComponent } from './components/lista-rapportini/lista-rapportini.component';
+import { ModaleDettaglioRapportinoComponent } from './components/modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { ListaRapportiniComponent } from './components/lista-rapportini/lista-ra
     AlertDialogComponent,
     ModalInfoContrattoComponent,
     RisultatiFilterOrganicoComponent,
-    ListaRapportiniComponent
+    ListaRapportiniComponent,
+    ModaleDettaglioRapportinoComponent
   ],
   imports: [
     MatNativeDateModule,

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <header>
+            <h1>Rapportino selezionato</h1>
+          </header>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="note">Note:</label> <br>
+            <textarea name="note" class="form-control" [(ngModel)]="note" id="note" cols="15" rows="5"  ></textarea> <br>
+            <button class="btn btn-warning" (click)="aggiungiNote()" [disabled]="note==null" >Salva note <i class="fa fa-save" ></i> </button> &nbsp;
+            <button class="btn btn-info" (click)="resetNote()" >Cancella <i class="fa fa-undo" ></i> </button> <br>
+          </div>
+        </div>
+      </div>
+      <br>
+     <div class="row">
+      <div class="col-12">
+        <table class="table table-striped table-excel" #editableTable>
+          <thead>
+            <tr>
+              <th>Giorno</th>
+              <th>Cliente</th>
+              <th>Ore ordinarie</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let giornaliero of rapportinoDto; let i = index">
+              <td contenteditable="false">{{ giornaliero.giorno }}</td>
+              <td contenteditable="false">{{ giornaliero.cliente }}</td>
+              <td contenteditable="false">{{ giornaliero.oreOrdinarie }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+     </div>
+     <br>
+     <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label for="note">Note:</label> <br>
+          <textarea name="note" class="form-control" [(ngModel)]="note" id="note" cols="15" rows="5"  ></textarea> <br>
+          <button class="btn btn-warning" (click)="aggiungiNote()" [disabled]="note==null" >Salva note <i class="fa fa-save" ></i> </button> &nbsp;
+          <button class="btn btn-info" (click)="resetNote()" >Cancella <i class="fa fa-undo" ></i> </button> <br>
+        </div>
+      </div>
+    </div>
+    <br><br><br><br><br>
+    </div>
+  </body>
+</html>

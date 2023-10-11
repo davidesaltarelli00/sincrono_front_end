@@ -91,6 +91,83 @@ a{
     </header>
   </div>
 </div>
+<br>
+<div class="row">
+  <div class="col-12">
+    <legend>Rapportini non congelati:</legend>
+    <table class="table table-striped" >
+      <thead>
+        <tr>
+          <th>Nominativo</th>
+          <th>Codice Fiscale</th>
+          <th>Anno</th>
+          <th>Mese</th>
+          <th>Check Freeze</th>
+          <th>Azioni</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rapportinoNonFreezato of elencoRapportiniNonFreezati; let i = index">
+          <td>{{ rapportinoNonFreezato.nome }} {{ rapportinoNonFreezato.cognome }}</td>
+          <td>{{ rapportinoNonFreezato.codiceFiscale }}</td>
+          <td>{{ rapportinoNonFreezato.anno }}</td>
+          <td>{{ rapportinoNonFreezato.mese }}</td>
+          <td>
+            <label class="switch" >
+              <input (change)="onChangecheckFreeze($event, rapportinoNonFreezato.id)" class="form-check-input"
+              type="checkbox" [checked]="rapportinoNonFreezato.checkFreeze">
+              <span class="slider"></span>
+            </label>
+          </td>
+          <td>
+            <button class="btn btn-info" (click)="getRapportino(rapportinoNonFreezato.id, rapportinoNonFreezato.codiceFiscale, rapportinoNonFreezato.mese, rapportinoNonFreezato.anno)" > <i class="fa fa-info" ></i> </button>
+            <button class="btn btn-danger" (click)="eliminaRapportinoNonFreezato(rapportinoNonFreezato.id)" > <i class="fa fa-trash" ></i> </button></td>
+
+        </tr>
+      </tbody>
+    </table>
+    <!-- <p *ngIf="elencoRapportiniNonFreezati.length===0" >Nessun risultato.</p> -->
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-12">
+    <legend>Rapportini congelati: <i class="fa fa-info-circle" matTooltip="Se scongelerai il rapportino, quest'ultimo verrá eliminato." ></i> </legend>
+    <table class="table table-striped" >
+      <thead>
+        <tr>
+          <th>Nominativo</th>
+          <th>Codice Fiscale</th>
+          <th>Anno</th>
+          <th>Mese</th>
+          <th>Check Freeze</th>
+          <th>Azioni</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rapportinoFreezato of elencoRapportiniFreezati; let i = index">
+          <td>{{ rapportinoFreezato.nome }} {{ rapportinoFreezato.cognome }}</td>
+          <td>{{ rapportinoFreezato.codiceFiscale }}</td>
+          <td>{{ rapportinoFreezato.anno }}</td>
+          <td>{{ rapportinoFreezato.mese }}</td>
+          <td>
+            <label class="switch" >
+              <input (change)="onChangecheckFreeze($event, rapportinoFreezato.id)" class="form-check-input"
+              type="checkbox" [checked]="rapportinoFreezato.checkFreeze">
+              <span class="slider"></span>
+            </label>
+          </td>
+          <td><button class="btn btn-danger" (click)="eliminaRapportinoFreezato(rapportinoFreezato.id)" > <i class="fa fa-trash" ></i> </button></td>
+
+        </tr>
+      </tbody>
+    </table>
+    <!-- <p *ngIf="elencoRapportiniFreezati.length===0" >Nessun risultato.</p> -->
+  </div>
+</div>
+<br><br><br><br>
 </div>
 </body>
 </html>
