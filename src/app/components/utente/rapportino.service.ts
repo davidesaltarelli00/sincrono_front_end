@@ -38,21 +38,18 @@ export class RapportinoService {
     });
   }
 
-  /*
-  /aggiungi-note (POST)
-{
-    "rapportinoDto": {
-        "note":"PROVA 2",
-        "anagrafica": {
-            "codiceFiscale":"rneedpont43218k"
-        },
-        "annoRequest":2023,
-        "meseRequest":10
-    }
-}
-  */
+  insertRapportino(token: any, body: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.put<any>(this.url + 'insert-rapportino', body, {
+      headers: headers,
+    });
+  }
 
-  aggiungiNote(token: any, body: any): Observable<any>{
+  aggiungiNote(token: any, body: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -63,5 +60,4 @@ export class RapportinoService {
       headers: headers,
     });
   }
-
 }

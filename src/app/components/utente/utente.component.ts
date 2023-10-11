@@ -27,7 +27,6 @@ export class UtenteComponent implements OnInit {
   idNav: any;
   tokenProvvisorio: any;
 
-  codiceFiscale = '';
   data: any[] = [];
   user: any;
   messaggio = '';
@@ -53,7 +52,13 @@ export class UtenteComponent implements OnInit {
   note: any;
   anagrafica: any;
   esitoCorretto = false;
+  rapportinoSalvato = false;
   mobile: boolean = false;
+  checkFreeze = false;
+
+  nome: any;
+  cognome: any;
+  codiceFiscale = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -197,6 +202,7 @@ export class UtenteComponent implements OnInit {
           this.dettaglioSbagliato = false;
           console.log('DETTAGLIO USER ' + JSON.stringify(this.user));
           console.log('CODICE FISCALE:' + this.codiceFiscale);
+          console.log(' \n ELENCO COMMESSE:' + JSON.stringify(this.elencoCommesse));
         },
         (error: any) => {
           console.error(
@@ -263,6 +269,77 @@ export class UtenteComponent implements OnInit {
         oreOrdinarie: oreOrdinarieArray.map(parseFloat), // Converte le ore in numeri decimali
       });
     }
+    let body = {
+      rapportino: {
+        nome: this.userLoggedName,
+        cognome: this.userLoggedSurname,
+        codiceFiscale: this.codiceFiscale,
+        anno: this.selectedAnno,
+        mese: this.selectedMese,
+        checkFreeze: this.checkFreeze,
+      },
+    };
+    console.log('PAYLOAD PER INSERT RAPPORTINO:' + JSON.stringify(body));
+    this.rapportinoService
+      .insertRapportino(this.token, body)
+      .subscribe((result: any) => {
+        if (
+          (result as any).esito.code !== 200 &&
+          (result as any).esito.target === 'HTTP error code: 400'
+        ) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              Image: '../../../../assets/images/logo.jpeg',
+              title: 'Invio non riuscito:',
+              message: 'Errore di validazione.', //(result as any).esito.target,
+            },
+          });
+          console.error(result);
+        }
+        if ((result as any).esito.code === 500) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              Image: '../../../../assets/images/logo.jpeg',
+              title: 'Invio non riuscito:',
+              message: 'Errore del server:' + (result as any).esito.target, //(result as any).esito.target,
+            },
+          });
+          console.error(result);
+        }
+        if ((result as any).esito.code === 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              title: 'Invio riuscito.',
+              message: (result as any).esito.target,
+            },
+          });
+          console.log('RESPONSE INSERT RAPPORTINO:' + JSON.stringify(result));
+          this.router.navigate(['/lista-rapportini']);
+        }
+      });
+  }
+
+  salvaRapportino() {
+    const giorniArray = [];
+
+    const tableRows =
+      this.editableTable.nativeElement.getElementsByTagName('tr');
+    for (let i = 1; i < tableRows.length; i++) {
+      const row = tableRows[i];
+      const giorno = row.cells[0].innerText;
+      const cliente = row.cells[1].innerText;
+      const oreOrdinarie = row.cells[2].innerText;
+      // Dividi il campo cliente in un array di stringhe
+      const clientiArray = cliente ? cliente.split(',') : null;
+      // Dividi il campo oreOrdinarie in un array di stringhe
+      const oreOrdinarieArray = oreOrdinarie.split(',');
+
+      giorniArray.push({
+        giorno: parseInt(giorno), // Converte il giorno in un numero intero
+        cliente: clientiArray,
+        oreOrdinarie: oreOrdinarieArray.map(parseFloat), // Converte le ore in numeri decimali
+      });
+    }
 
     // Crea il corpo del JSON
     const body = {
@@ -297,6 +374,7 @@ export class UtenteComponent implements OnInit {
                 message: 'Errore di validazione.', //(result as any).esito.target,
               },
             });
+            this.rapportinoSalvato = false;
             console.error(result);
           }
           if ((result as any).esito.code === 500) {
@@ -308,6 +386,7 @@ export class UtenteComponent implements OnInit {
               },
             });
             console.error(result);
+            this.rapportinoSalvato = false;
           }
 
           if ((result as any).esito.code === 200) {
@@ -317,6 +396,7 @@ export class UtenteComponent implements OnInit {
                 message: (result as any).esito.target,
               },
             });
+            this.rapportinoSalvato = true;
             this.getRapportino();
           }
         },
@@ -411,7 +491,6 @@ export class UtenteComponent implements OnInit {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         console.log('DATI GET USER ROLE:' + JSON.stringify(response));
-
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')

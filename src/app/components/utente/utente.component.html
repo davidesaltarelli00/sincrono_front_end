@@ -4,51 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <style>
 
-
-
-#toolbar {
-  background-color: #007bff; /* Colore blu aziendale */
-  color: #ffffff; /* Testo bianco */
-  display: flex;
-  background-color: #333;
-  justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
-  align-items: center; /* Allinea verticalmente gli elementi al centro */
-}
-
-.logo-link {
-  margin-right: 10px;
-}
-
-.toolbar-menu {
-  display: flex;
-  gap: 10px;
-  background-color: #333;
-  margin-right:auto;
-}
-
-.toolbar-link {
-  text-decoration: none;
-  color: #ffffff;
-  /* padding: 10px; */
-}
-
-a{
-  color: white;
-}
-
-.toolbar-link:hover {
-  color: #d8d8d8;
-}
-
-.user-icon,
-.logout-icon {
-  color: #ffffff;
-  cursor: pointer;
-}
-
-    </style>
   </head>
 
   <body>
@@ -116,6 +72,10 @@ a{
                   <td style="background-color: #ffff99; color: black;"> <strong>Nome azienda:</strong> </td>
                   <td style="background-color: #007bff; color: white">{{ user?.anagrafica?.tipoAzienda?.descrizione }}   </td>
                 </tr>
+                <tr>
+                  <td style="background-color: #ffff99; color: black;"> <strong>Numero commesse:</strong> </td>
+                  <td style="background-color: #007bff; color: white">{{ elencoCommesse.length }}   </td>
+                </tr>
               </tbody>
             </table>
 
@@ -180,16 +140,31 @@ a{
                 <td contenteditable="true">{{ giornaliero.cliente }}</td>
                 <td contenteditable="true">{{ giornaliero.oreOrdinarie }}</td>
                 <td id="duplica-riga" style=" background-color: #ffff99; text-align: center;" >
-                  <button class="btn btn-primary" (click)="duplicaRiga(i)" >Duplica riga <i class="fa fa-clone" ></i></button> &nbsp;
+                  <button class="btn btn-primary" (click)="duplicaRiga(i)" [disabled]="elencoCommesse.length<=1" >Duplica riga <i class="fa fa-clone" ></i> <i class="fa fa-info-circle" *ngIf="elencoCommesse.length<=1" matTooltip="La funzione é disabilitata se hai 1 o 0 commesse." ></i> </button> &nbsp;
                   <button class="btn btn-danger" (click)="eliminaRigaDuplicata(i)" >Elimina riga <i class="fa fa-trash" ></i></button>
                 </td>
               </tr>
             </tbody>
+
           </table>
         </div>
       </div>
       <br>
       <div class="row" *ngIf="esitoCorretto" >
+        <div class="form-group" style="text-align:center; margin:auto;">
+          <label for="giorniLavorati" style="text-align:center; margin:auto;">Giorni lavorati:</label> <br>
+        <input style="width: 30%; text-align:center; margin:auto;" type="number" readonly id="giorniLavorati" name="giorniLavorati" class="form-control" [(ngModel)]="giorniLavorati">
+        <br>
+        </div>
+        <div class="col-12" style="text-align: center; margin: auto;">
+          <label for="azioni">Azioni:</label> <br>
+          <button class="btn btn-warning"   (click)="salvaRapportino()" >Salva rapportino <i class="fa fa-file" ></i> </button> &nbsp;
+          <button class="btn btn-primary" [disabled]="!rapportinoSalvato" (click)="inviaRapportino()">
+          Invia rapportino <i class="fa fa-paper-plane" aria-hidden="true"></i>
+        </button> &nbsp; <i *ngIf="!rapportinoSalvato" class="fa fa-info-circle" matTooltip="Il pulsante si abiliterá solo dopo aver effettuato il salvataggio del rapportino, si invita ad inviarlo solo a compilazione completa." ></i>
+      </div>
+      </div>
+      <!-- <div class="row" *ngIf="esitoCorretto" >
         <div class="col-6">
           <div class="form-group">
             <label for="note">Note:</label> <br>
@@ -201,14 +176,12 @@ a{
             <label for="giorniLavorati">Giorni lavorati:</label> <br>
             <input style="width: 23%;" type="number" readonly id="giorniLavorati" name="giorniLavorati" class="form-control" [(ngModel)]="giorniLavorati">
             <br>
-            <button class="btn btn-warning"  (click)="inviaRapportino()" >Invia rapportino <i class="fa fa-file" ></i> </button>
+            <button class="btn btn-warning"  (click)="salvaRapportino()" >Salva rapportino <i class="fa fa-file" ></i> </button>
           </div>
         </div>
         <br>
-        <div class="col-3">
-          <button class="btn btn-warning" (click)="aggiungiNote()" >Salva note <i class="fa fa-save" ></i></button>
-        </div>
-      </div>
+
+      </div> -->
       <br><br><br>
     </div>
     <div class="container-fluid" *ngIf="dettaglioSbagliato">
@@ -216,6 +189,16 @@ a{
         <h2>404 - Pagina non trovata</h2>
         <p>Siamo spiacenti, ma la pagina che stai cercando non esiste.</p>
         <p>Torna alla <a style=" text-decoration: none;color: #007bff; font-weight: bold;" routerLink="/home">pagina principale</a>.</p>
+      </div>
+    </div>
+    <div class="container-fluid" *ngIf="userRoleNav==='DIPENDENTE'" >
+      <div class="row">
+        <div class="col-12">
+          <img src="../../../../assets/images/danger.png" alt="Logo Sincrono">
+          <h1>Attenzione:</h1> <br>
+          <h3>Non hai i permessi per accedere a questa pagina.</h3> <br>
+          <a href="/home" >Torna alla home.</a>
+        </div>
       </div>
     </div>
   </body>
