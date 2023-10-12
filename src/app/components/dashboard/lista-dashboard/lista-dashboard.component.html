@@ -122,18 +122,23 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <h3>Dashboard</h3>
+        <br>
+        <mat-card style="text-align: center;">
+          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+          <h1>Dashboard</h1>
+        </mat-card>
       </div>
     </div>
+    <br>
     <mat-accordion>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
-           <span> Contratti con Scatto livello  </span> 
+           <span> Contratti con Scatto livello  </span>
             <button class="btn btn-success" (click)="exportContrattiFromBatchToExcel()" class="btn btn-success" title="Esporta come file Excel"><i
               class="fa-solid fa-file-export"></i></button>
           </mat-panel-title>
-         
+
           <mat-panel-description>
             <p>Contiene tutti i contratti con almeno uno scatto livello effettuato
             </p>
@@ -188,7 +193,7 @@
                           class="fa fa-pencil"></i></button></td>
                   </tr>
                 </tbody>
-                <button class="btn btn-success" (click)="resetTabella()">Svuota</button>              
+                <button class="btn btn-success" (click)="resetTabella()">Svuota</button>
               </table>
             </div>
           </div>
@@ -252,7 +257,7 @@
                 </tbody>
 
               </table>
-              
+
 
             </div>
           </div>
@@ -350,7 +355,7 @@
                       <td>{{ contratto.contratto.ralPartTime }}</td> -->
                   </tr>
                 </tbody>
-              </table>          
+              </table>
             </div>
           </div>
         </div>
@@ -361,8 +366,8 @@
       <div class="col-12">
         <h4>Lista commesse scadute  <button class="btn btn-success" (click)="exportCommesseScaduteToExcel()" class="btn btn-success" title="Esporta come file Excel"><i
           class="fa-solid fa-file-export"></i></button> </h4>
-       
-      </div>    
+
+      </div>
     </div>
     <div class="row">
       <div class="col-12">
@@ -474,7 +479,7 @@
                     </mat-form-field>
                   </div>
                 </div>
-                
+
                 <div class="row">
                   <b>Filtri per data fine rapporto contratto</b>
                   <div class="col-md-3 custom-picker">
@@ -580,7 +585,7 @@
               </tr>
             </tbody>
 
-          </table>        
+          </table>
           <div class="pagination">
             <ul>
               <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
@@ -593,7 +598,7 @@
               <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
                 <span> <i class="fa fa-arrow-right"></i> </span>
               </li>
-            </ul>           
+            </ul>
           </div>
           <br><br><br>
         </div>

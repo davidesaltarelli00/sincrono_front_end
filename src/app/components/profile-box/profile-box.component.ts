@@ -29,6 +29,8 @@ export class ProfileBoxComponent {
   idNav: any;
   tokenProvvisorio: any;
 
+
+
   constructor(
     private authService: AuthService,
     private profileBoxService: ProfileBoxService,

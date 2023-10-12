@@ -114,6 +114,16 @@ a{
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
+          <br>
+          <mat-card style="text-align: center;">
+            <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+            <h1>Profilo</h1>
+          </mat-card>
+        </div>
+      </div>
+    <br>
+      <div class="row">
+        <div class="col-12">
           <div class="profile-box-container">
             <br />
             <div class="row">
@@ -244,42 +254,21 @@ a{
                     {{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}
                   </div>
                   <div>
-                    <a [routerLink]="['/cambia-password']">Cambia password</a>
+                    <a style="color: blue !important;" [routerLink]="['/cambia-password']">Cambia password <i class="fa fa-key" aria-hidden="true"></i> </a>
                   </div>
                 </mat-card>
               </div>
               <div class="col-6">
                 <mat-card class="profile-box">
                   <h3>Altre informazioni</h3>
-                  <div
-                    *ngIf="
-                      anagrafica?.anagraficaDto.anagrafica?.coniugato != null
-                    "
-                  >
-                    <strong>Coniugato</strong> Si
-                  </div>
-                  <div
-                    *ngIf="
-                      anagrafica?.anagraficaDto.anagrafica?.coniugato == null
-                    "
-                  >
-                    <strong>Coniugato</strong> No
-                  </div>
-                  <div
-                    *ngIf="
-                      anagrafica?.anagraficaDto.anagrafica?.figliACarico != null
-                    "
-                  >
-                    <strong>Figli a carico</strong>
-                    {{ anagrafica?.anagraficaDto.anagrafica?.figliACarico }}
-                  </div>
-                  <div
-                    *ngIf="
-                      anagrafica?.anagraficaDto.anagrafica?.figliACarico == null
-                    "
-                  >
-                    <strong>Figli a carico</strong> No
-                  </div>
+
+
+                <div>
+                  <strong>Coniugato:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.coniugato ? 'Si':'No'}}
+                </div>
+                <div>
+                  <strong>Coniugato:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.figliACarico ? 'Si':'No'}}
+                </div>
                 </mat-card>
               </div>
             </div>
@@ -292,7 +281,11 @@ a{
                     <h3>Documentazioni</h3>
                   </mat-card-title>
                   <mat-card-content>
-                  <h3>Rapportino   <button class="btn btn-success" (click)="goToRapportinoByCodiceFiscale()" matTooltip="Rapportino." > <i class="fa fa-file" ></i> </button></h3>
+                 <mat-list role="list" class="custom-list">
+                  <mat-list-item role="listitem" class="custom-list-item">
+                    <h3>Rapportino   <button class="btn btn-success" (click)="goToRapportinoByCodiceFiscale()" matTooltip="Rapportino." > <i class="fa fa-file" ></i> </button></h3>
+                  </mat-list-item>
+                </mat-list>
                   </mat-card-content>
                 </mat-card>
               </div>
@@ -303,38 +296,3 @@ a{
     </div>
   </body>
 </html>
-
-<!-- {
-  "esito": {
-      "code": 0,
-      "target": null,
-      "args": null
-  },
-  "anagraficaDto": {
-      "anagrafica": {
-          "id": 24,
-          "utente": null,
-          "attivo": true,
-          "aziendaTipo": null,
-          "cognome": "Sbarigia",
-          "nome": "Luca ",
-          "codiceFiscale": "SRGLCA75B21H501L",
-          "comuneDiNascita": "Bucarest",
-          "dataDiNascita": "2002-04-06",
-          "residenza": "Roma",
-          "domicilio": "Roma",
-          "cellularePrivato": "3335555555",
-          "cellulareAziendale": "3478998001",
-          "mailPrivata": "luca@gmail.com",
-          "mailAziendale": "andreimusat2000@gmail.com",
-          "mailPec": "andreimusat2000@gmail.com",
-          "titoliDiStudio": "diploma in informatica e telecomunicazioni",
-          "altriTitoli": "Perito informatico",
-          "coniugato": null,
-          "figliACarico": null
-      },
-      "contratto": null,
-      "commessa": null,
-      "ruolo": null
-  }
-} -->
