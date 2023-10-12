@@ -612,25 +612,25 @@ export class ListaDashboardComponent {
       ["Nominativo", "Codice fiscale", "Azienda Cliente", "Cliente finale", "Titolo posizione", "Distacco", "Distacco azienda", "Distacco data", "Tariffa giornaliera", "Azienda di fatturazione interna", "Data inizio", "Data fine", "Attivo", "Attesa lavori"]
     ];
 
-    this.listaAnagraficheCommesseScadute.forEach((element: any) => {
-      this.pageData.forEach((commessa: any) => {
+    this.listaCommesseScadute.forEach((element: any) => {
+    
         workSheetData.push([
-          `${element.nome} ${element.cognome}`,
-          element.codiceFiscale ? element.codiceFiscale.toString() : '',
-          commessa.aziendaCliente ? commessa.aziendaCliente.toString() : '',
-          commessa.clienteFinale ? commessa.clienteFinale.toString() : '',
-          commessa.titoloPosizione ? commessa.titoloPosizione.toString() : '',
-          commessa.distacco ? commessa.distacco.toString() : '',
-          commessa.distaccoAzienda ? commessa.distaccoAzienda.toString() : '',
-          this.datePipe.transform(commessa.distaccoData ? commessa.distaccoData.toString() : '', 'yyyy-MM-dd'),
-          commessa.tariffaGiornaliera ? commessa.tariffaGiornaliera.toString() : '',
-          commessa.aziendaDiFatturazioneInterna ? commessa.aziendaDiFatturazioneInterna.toString() : '',
-          this.datePipe.transform(commessa.dataInizio ? commessa.dataInizio.toString() : '', 'yyyy-MM-dd'),
-          this.datePipe.transform(commessa.dataFine ? commessa.dataFine.toString() : '', 'yyyy-MM-dd'),
-          commessa.attivo ? 'Sì' : 'No',
-          commessa.attesaLavori ? 'Sì' : 'No',
+          `${element[0]} ${element[1]}`,
+          element[2] ? element[2].toString() : '',
+          element[3] ?element[3].toString() : '',
+          element[4] ? element[4].toString() : '',
+          element[5]  ? element[5].toString() : '',
+          element[6] ? element[6].toString() : '',
+          element[7] ? element[7].toString() : '',
+          this.datePipe.transform(element[8] ? element[8].toString() : '', 'yyyy-MM-dd'),
+          element[9] ? element[9].toString() : '',
+          element[10] ? element[10].toString() : '',
+          this.datePipe.transform(element[11] ? element[11].toString() : '', 'yyyy-MM-dd'),
+          this.datePipe.transform(element[12] ? element[12].toString() : '', 'yyyy-MM-dd'),
+          element[13] ? 'Sì' : 'No',
+          element[14] ? 'Sì' : 'No',
         ]);
-      });
+  
     });
 
 
