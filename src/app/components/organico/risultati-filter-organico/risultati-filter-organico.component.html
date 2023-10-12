@@ -153,6 +153,8 @@
                 <th scope="col">Mail aziendale</th>
                 <th scope="col">Cell privato</th>
                 <th scope="col">Attesa lavori</th>
+                <th scope="col">Dettaglio</th>
+                <th scope="col">Modifica</th>
               </tr>
             </thead>
             <tbody>
@@ -172,6 +174,10 @@
                     <input type="checkbox" disabled [checked]="element.anagrafica.attesaLavori">
                     <span class="slider"></span>
                   </label></td>
+                  <td (click)="dettaglioAnagrafica(element.anagrafica?.id)"> <button class="btn btn-primary"><i
+                    class="fa fa-info"></i></button> </td>
+                    <td (click)="vaiAModificaAnagrafica(element.anagrafica?.id)"><button class="btn btn-warning"><i
+                      class="fa fa-pencil"></i></button></td>
               </tr>
             </tbody>
           </table>

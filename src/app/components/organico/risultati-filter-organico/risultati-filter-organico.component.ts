@@ -216,7 +216,25 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
 
   }
 
+  dettaglioAnagrafica(idAnagrafica: number) {
+    
+    this.anagraficaDtoService
+      .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
+      .subscribe((resp: any) => {
+        console.log(resp);
+        this.router.navigate(['/dettaglio-anagrafica/' + idAnagrafica]);
+      });
+  }
 
+  vaiAModificaAnagrafica(idAnagrafica: number) {
+    this.anagraficaDtoService
+      .update(idAnagrafica, localStorage.getItem('token'))
+      .subscribe((resp: any) => {
+        console.log(resp);
+        this.router.navigate(['/modifica-anagrafica/' + idAnagrafica]);
+      });
+  }
+  
   getUserLogged() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
