@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,125 +8,174 @@
 </head>
 <style>
   #toolbar {
-background-color: #007bff; /* Colore blu aziendale */
-color: #ffffff; /* Testo bianco */
-display: flex;
-background-color: #333;
-justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
-align-items: center; /* Allinea verticalmente gli elementi al centro */
-}
+    background-color: #007bff;
+    /* Colore blu aziendale */
+    color: #ffffff;
+    /* Testo bianco */
+    display: flex;
+    background-color: #333;
+    justify-content: space-between;
+    /* Allinea gli elementi a sinistra e a destra */
+    align-items: center;
+    /* Allinea verticalmente gli elementi al centro */
+  }
 
-.logo-link {
-margin-right: 10px;
-}
+  .logo-link {
+    margin-right: 10px;
+  }
 
-.toolbar-menu {
-display: flex;
-gap: 10px;
-background-color: #333;
-margin-right:auto;
-}
+  .toolbar-menu {
+    display: flex;
+    gap: 10px;
+    background-color: #333;
+    margin-right: auto;
+  }
 
-.toolbar-link {
-text-decoration: none;
-color: #ffffff;
-/* padding: 10px; */
-}
+  .toolbar-link {
+    text-decoration: none;
+    color: #ffffff;
+    /* padding: 10px; */
+  }
 
-a{
-color: white;
-}
+  a {
+    color: white;
+  }
 
-.toolbar-link:hover {
-color: #d8d8d8;
-}
+  .toolbar-link:hover {
+    color: #d8d8d8;
+  }
 
-.user-icon,
-.logout-icon {
-color: #ffffff;
-cursor: pointer;
-}
-
-
-#toolbar {
-background-color: #007bff; /* Colore blu aziendale */
-color: #ffffff; /* Testo bianco */
-display: flex;
-background-color: #333;
-justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
-align-items: center; /* Allinea verticalmente gli elementi al centro */
-}
-
-.logo-link {
-margin-right: 10px;
-}
-
-.toolbar-menu {
-display: flex;
-gap: 10px;
-background-color: #333;
-margin-right:auto;
-}
-
-.toolbar-link {
-text-decoration: none;
-color: #ffffff;
-/* padding: 10px; */
-}
-
-a{
-color: white;
-}
-
-.toolbar-link:hover {
-color: #d8d8d8;
-}
-
-.user-icon,
-.logout-icon {
-color: #ffffff;
-cursor: pointer;
-}
+  .user-icon,
+  .logout-icon {
+    color: #ffffff;
+    cursor: pointer;
+  }
 
 
+  #toolbar {
+    background-color: #007bff;
+    /* Colore blu aziendale */
+    color: #ffffff;
+    /* Testo bianco */
+    display: flex;
+    background-color: #333;
+    justify-content: space-between;
+    /* Allinea gli elementi a sinistra e a destra */
+    align-items: center;
+    /* Allinea verticalmente gli elementi al centro */
+  }
+
+  .logo-link {
+    margin-right: 10px;
+  }
+
+  .toolbar-menu {
+    display: flex;
+    gap: 10px;
+    background-color: #333;
+    margin-right: auto;
+  }
+
+  .toolbar-link {
+    text-decoration: none;
+    color: #ffffff;
+    /* padding: 10px; */
+  }
+
+  a {
+    color: white;
+  }
+
+  .toolbar-link:hover {
+    color: #d8d8d8;
+  }
+
+  .user-icon,
+  .logout-icon {
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  table,
+  th,
+  td {
+    text-align: center;
+    font-size: 15px;
+  }
 </style>
-<body>
-  <div
-  class="container-toolbar"
-  [hidden]="tokenProvvisorio != null && tokenProvvisorio == null"
->
-<mat-toolbar id="toolbar" *ngIf="token">
-  <a [routerLink]="['/home']" class="logo-link">
-    <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
-  </a>
-  <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
-    <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link" *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
-      {{ menuItem.nome }}
-    </a>
-  </div>
-  <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
-    <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-    <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i class="fa fa-user"></i>
-  </span> &nbsp;&nbsp;
-  <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
-    <i class="fa fa-sign-out" aria-hidden="true"></i>
-  </span>
-</mat-toolbar>
 
-</div>
+<body>
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+      </a>
+      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
+        <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+          {{ menuItem.nome }}
+        </a>
+      </div>
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
+          class="fa fa-user"></i>
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+
+  </div>
   <div class="container-fluid">
 
     <div class="row">
       <div class="col-12">
         <header>
-          <h1>Risultati organico</h1>
+          <h1>Risultati sommari Organico</h1>
         </header>
       </div>
-    </div><div class="row">
+    </div>
+    <div class="row">
       <div class="col-12">
-
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Ruolo</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Cognome</th>
+                <th scope="col">Codice Fiscale</th>
+                <th scope="col">Nome azienda</th>
+                <th scope="col">Mail aziendale</th>
+                <th scope="col">Cell privato</th>
+                <th scope="col">Attesa lavori</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let element of pageData; let i=index">
+                <td><i *ngIf="element.ruolo.descrizione==='ADMIN'" matTooltip="{{element.ruolo.descrizione}}"
+                    style="color: green;" class="fa-solid fa-user"></i><i
+                    *ngIf="element.ruolo.descrizione==='DIPENDENTE'" style="color: orangered;"
+                    matTooltip="{{element.ruolo.descrizione}}" class="fa-solid fa-user"></i></td>
+                <td>{{ element.anagrafica?.nome |titlecase }} </td>
+                <td>{{element.anagrafica?.cognome |titlecase }}</td>
+                <td>{{ element.anagrafica?.codiceFiscale |uppercase }}</td>
+                <td>{{ element.anagrafica?.tipoAzienda?.descrizione |titlecase }}</td>
+                <td>{{ element.anagrafica?.mailAziendale }}</td>
+                <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non inserito' }}
+                </td>
+                <td><label class="switch">
+                    <input type="checkbox" disabled [checked]="element.anagrafica.attesaLavori">
+                    <span class="slider"></span>
+                  </label></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </body>
+
 </html>

@@ -1,3 +1,4 @@
+import { OrganicoService } from './../organico-service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -34,52 +35,24 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
   pageData: any;
   messaggio: any;
   commesse!: FormArray;
-
+  listaAnagraficheFromFilter: any[] = [];
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
-      nome: new FormControl(null),
-      cognome: new FormControl(null),
-      attivo: new FormControl(true),
-      attesaLavori: new FormControl(null),
       tipoAzienda: new FormGroup({
-        id: new FormControl(null),
         descrizione: new FormControl(null),
       }),
     }),
-
     contratto: new FormGroup({
-      ralAnnua: new FormControl(null),
-      dataAssunzione: new FormControl(null),
-      dataFineRapporto: new FormControl(null),
-
-      tipoLivelloContratto: new FormGroup({
-        id: new FormControl(null),
-      }),
-      tipoCcnl: new FormGroup({
-        id: new FormControl(null),
-      }),
       tipoContratto: new FormGroup({
-        id: new FormControl(null),
-      }),
-      tipoAzienda: new FormGroup({
-        id: new FormControl(null),
-      }),
-      tipoCanaleReclutamento: new FormGroup({
-        id: new FormControl(null),
-      }),
-      tipoCausaFineRapporto: new FormGroup({
-        id: new FormControl(null),
-      }),
-    }),
-    commessa: new FormGroup({
-      aziendaCliente: new FormControl(null),
+        descrizione: new FormControl(null),
+      }),   
     }),
   });
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
-    private contrattoService: ContrattoService,
+    private organicoService: OrganicoService,
     private activatedRoute: ActivatedRoute,
     public authService: AuthService,
     private router: Router,
@@ -88,45 +61,19 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
     private http: HttpClient
   ) {
     this.filterAnagraficaDto = this.formBuilder.group({
-      anagrafica: new FormGroup({
-        nome: new FormControl(null),
-        cognome: new FormControl(null),
-        attivo: new FormControl(true),
-        attesaLavori: new FormControl(null),
-        tipoAzienda: new FormGroup({
-          id: new FormControl(null),
-          descrizione: new FormControl(null),
-        }),
-      }),
+    
+    
       contratto: new FormGroup({
-        ralAnnua: new FormControl(null),
-        dataAssunzione: new FormControl(null),
-        dataFineRapporto: new FormControl(null),
-        tipoLivelloContratto: new FormGroup({
-          id: new FormControl(),
-          livello: new FormControl(null),
-        }),
-        tipoCcnl: new FormGroup({
-          id: new FormControl(),
+
+        tipoContratto: new FormGroup({  
           descrizione: new FormControl(null),
         }),
-        tipoContratto: new FormGroup({
-          id: new FormControl(),
+        tipoAzienda:new FormGroup({
           descrizione: new FormControl(null),
-        }),
-        tipoAzienda: new FormGroup({
-          id: new FormControl(),
-          descrizione: new FormControl(null),
-        }),
-        tipoCanaleReclutamento: new FormGroup({
-          id: new FormControl(),
-          descrizione: new FormControl(null),
-        }),
-        tipoCausaFineRapporto: new FormGroup({
-          id: new FormControl(),
-        }),
+        })
+
       }),
-      commesse: this.formBuilder.array([]),
+
     });
 
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
@@ -143,7 +90,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
+          error
         );
       }
     );
@@ -167,9 +114,52 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
         this.tipoContrattoFilter,
         this.tipoAziendaFilter
       );
+
+      const payload = {
+        anagraficaDto: {
+          contratto: {
+            tipoContratto: {
+              descrizione: this.tipoContrattoFilter,
+            },
+            tipoAzienda: {
+              descrizione: this.tipoAziendaFilter,
+            },
+          },
+        },
+      };
+  
+      this.anagraficaDtoService
+        .filterAnagrafica(localStorage.getItem('token'), payload)
+        .subscribe(
+          (result) => {
+            if ((result as any).esito.code != 200) {
+              alert(
+                'Qualcosa é andato storto\n' + ': ' + (result as any).esito.target
+              );
+            } else {
+              if (Array.isArray(result.list)) {
+                this.pageData = result.list;
+              } else {
+                this.pageData = [];
+                this.messaggio =
+                  'Nessun risultato trovato per i filtri inseriti, riprova.';
+              }
+              console.log(
+                'Trovati i seguenti risultati per il filter: ' + JSON.stringify(result)
+              );
+            }
+          },
+          (error: any) => {
+            console.log(
+              'Si é verificato un errore durante il passaggio dei dati da organico: ' +
+              error
+            );
+          }
+        );
+      this.filterValidate(this.pageData);
     }
 
-}
+  }
 
   setFilterFromOrganico(tipoContrattoFilter: any, tipoAziendaFilter: any) {
     if (tipoContrattoFilter != null && tipoAziendaFilter != null) {
@@ -177,52 +167,55 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
         this.tipoContrattoFilter;
       this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione =
         this.tipoAziendaFilter;
-      this.filterAnagraficaDto.value.anagrafica.attivo = 1;
+      
     }
 
-    const payload = {
-      anagraficaDto: {
-        contratto: {
-          tipoContratto: {
-            descrizione: this.tipoContrattoFilter,
-          },
-          tipoAzienda: {
-            descrizione: this.tipoAziendaFilter,
-          },
-        },
-      },
-    };
 
-    console.log('PAYLOAD BACKEND FILTER ORGANICO: ' + JSON.stringify(payload));
-    this.anagraficaDtoService
-      .filterAnagrafica(localStorage.getItem('token'), payload)
-      .subscribe(
-        (result) => {
-          if ((result as any).esito.code != 200) {
-            alert(
-              'Qualcosa é andato storto\n' + ': ' + (result as any).esito.target
-            );
-          } else {
-            if (Array.isArray(result.list)) {
-              this.pageData = result.list;
-            } else {
-              this.pageData = [];
-              this.messaggio =
-                'Nessun risultato trovato per i filtri inseriti, riprova.';
-            }
-            console.log(
-              'Trovati i seguenti risultati per il filter: ' + JSON.stringify(result)
-            );
-          }
-        },
-        (error: any) => {
-          console.log(
-            'Si é verificato un errore durante il passaggio dei dati da organico: ' +
-              error
-          );
-        }
-      );
   }
+
+  filterValidate(value: any) {
+    console.log('Valore del form: ' + JSON.stringify(value));
+    const removeEmpty = (obj: any) => {
+      Object.keys(obj).forEach((key) => {
+        if (obj[key] && typeof obj[key] === 'object') {
+          removeEmpty(obj[key]);
+        } else if (obj[key] === '' || obj[key] === null) {
+          delete obj[key];
+        }
+        if (obj.anagrafica && Object.keys(obj.anagrafica).length === 0) {
+          delete obj.anagrafica;
+        }
+        if (obj.contratto && Object.keys(obj.contratto).length === 0) {
+          delete obj.contratto;
+        }
+        if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
+          delete obj.tipoContratto;
+        }
+        if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
+          delete obj.tipoAzienda;
+        }
+        if (
+          obj.tipoLivelloContratto &&
+          Object.keys(obj.tipoLivelloContratto).length === 0
+        ) {
+          delete obj.tipoLivelloContratto;
+        }
+
+      });
+
+    };
+    removeEmpty(this.filterAnagraficaDto.value);
+    const body = {
+      anagraficaDto: this.filterAnagraficaDto.value
+
+    };
+    console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
+
+   
+
+
+  }
+
 
   getUserLogged() {
     this.profileBoxService.getData().subscribe(
@@ -234,7 +227,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
+          error
         );
       }
     );
@@ -263,7 +256,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
+          error
         );
         this.shouldReloadPage = true;
       }

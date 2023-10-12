@@ -82,7 +82,7 @@ export class ListaOrganicoComponent implements OnInit {
     );
   }
 
-  filter(tipoContratto: string, azienda: string) {
+  filter(tipoContratto: any, azienda: any) {
     this.router.navigate(['/risultati-filter-organico'], {
       queryParams: { tipoContratto, azienda },
     });
