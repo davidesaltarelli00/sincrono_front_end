@@ -63,6 +63,10 @@ export class UtenteComponent implements OnInit {
   cognome: any;
   codiceFiscale = '';
   numeroCommessePresenti: any;
+  duplicazioniEffettuate: number[] = [];
+  disabilitaDuplica=false;
+  rigaDuplicata=false;
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -142,12 +146,51 @@ export class UtenteComponent implements OnInit {
     console.log('Esito tabella completa: ' + this.tabellaCompletata);
   }
 
+  // duplicaRiga(index: number) {
+  //   if (this.elencoCommesse.length <= 1 || index < 0 || index >= this.rapportinoDto.length) {
+  //     // La funzione è disabilitata se hai 1 o 0 commesse o l'indice è fuori dai limiti
+  //     return;
+  //   }
+
+  //   const rigaDaDuplicare = this.rapportinoDto[index];
+  //   const nuovaRiga = { ...rigaDaDuplicare };
+
+  //   // Inserisci la nuova riga nella posizione successiva
+  //   this.rapportinoDto.splice(index + 1, 0, nuovaRiga);
+  // }
+
   duplicaRiga(index: number) {
-    const rigaDaCopiare = this.rapportinoDto[index];
-    const nuovaRiga = { ...rigaDaCopiare };
-    // Inserisci la nuova riga subito sotto all'indice attuale
-    this.rapportinoDto.splice(index + 1, 0, nuovaRiga);
+    if (this.elencoCommesse.length <= 1 || index < 0 || index >= this.rapportinoDto.length) {
+      // La funzione è disabilitata se hai 1 o 0 commesse o l'indice è fuori dai limiti
+      return;
+    }
+
+    if (!this.duplicazioniEffettuate[index] || this.duplicazioniEffettuate[index] < this.numeroCommessePresenti) {
+      const rigaDaDuplicare = this.rapportinoDto[index];
+      const nuovaRiga = { ...rigaDaDuplicare };
+
+      // Inserisci la nuova riga solo se il numero di duplicazioni effettuate è minore del numero desiderato
+      if (!this.duplicazioniEffettuate[index] || this.duplicazioniEffettuate[index] < this.numeroCommessePresenti) {
+        this.rapportinoDto.splice(index + 1, 0, nuovaRiga);
+        this.rigaDuplicata=true;
+        if (!this.duplicazioniEffettuate[index]) {
+          this.duplicazioniEffettuate[index] = 1;
+        } else {
+          this.duplicazioniEffettuate[index]++;
+        }
+      }
+
+      if (this.duplicazioniEffettuate[index] === this.numeroCommessePresenti) {
+        // Disabilita il bottone quando il numero desiderato di duplicazioni è stato raggiunto per questo record
+        // Puoi farlo tramite una variabile booleana o altri meccanismi a seconda del tuo codice
+        this.disabilitaDuplica=true;
+        this.rigaDuplicata=false;
+
+      }
+    }
   }
+
+
 
   eliminaRigaDuplicata(index: number) {
     // Rimuovi la riga dalla matrice rapportinoDto in base all'indice

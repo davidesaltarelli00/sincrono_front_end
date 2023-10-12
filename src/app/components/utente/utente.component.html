@@ -262,7 +262,7 @@
                   <button
                     class="btn btn-primary"
                     (click)="duplicaRiga(i)"
-                    [disabled]="elencoCommesse.length <= 1"
+                    [disabled]="elencoCommesse.length <= 1 && disabilitaDuplica && !rigaDuplicata"
                   >
                     Duplica riga <i class="fa fa-clone"></i>
                     <i
