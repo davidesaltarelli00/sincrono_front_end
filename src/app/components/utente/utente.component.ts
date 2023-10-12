@@ -40,7 +40,8 @@ export class UtenteComponent implements OnInit {
   dettaglioSbagliato: any;
   rapportinoDto: any[] = [];
   @ViewChild('editableTable') editableTable!: ElementRef;
-
+  aziendeClienti: any[] = [];
+  aziendaSelezionata: string = '';
   modifiedData: any[] = [];
   anno: any;
   selectedAnno: number;
@@ -100,6 +101,10 @@ export class UtenteComponent implements OnInit {
     ) {
       this.mobile = true;
     }
+  }
+
+  selezionaAzienda() {
+    console.log('Azienda selezionata:', this.aziendaSelezionata);
   }
 
   ngOnInit(): void {
@@ -212,6 +217,17 @@ export class UtenteComponent implements OnInit {
     );
   }
 
+  salvaAziendeClienti() {
+    this.elencoCommesse.forEach((commessa: any) => {
+      if (commessa.aziendaCliente) {
+        this.aziendeClienti.push(commessa.aziendaCliente);
+        console.log(
+          'ELENCO AZIENDE CLIENTI:' + JSON.stringify(this.aziendeClienti)
+        );
+      }
+    });
+  }
+
   getAnagraficaRapportino() {
     this.anagraficaDtoService
       .detailAnagraficaDto(this.id, localStorage.getItem('token'))
@@ -219,6 +235,7 @@ export class UtenteComponent implements OnInit {
         (resp: any) => {
           this.user = (resp as any)['anagraficaDto'];
           this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
+          this.salvaAziendeClienti();
           this.contratto = (resp as any)['anagraficaDto']['contratto'];
           this.codiceFiscale = (resp as any)['anagraficaDto']['anagrafica'][
             'codiceFiscale'
@@ -229,7 +246,8 @@ export class UtenteComponent implements OnInit {
           console.log(
             ' \n ELENCO COMMESSE:' + JSON.stringify(this.elencoCommesse)
           );
-          this.numeroCommessePresenti=this.elencoCommesse.length;
+
+          this.numeroCommessePresenti = this.elencoCommesse.length;
         },
         (error: any) => {
           console.error(
@@ -429,10 +447,10 @@ export class UtenteComponent implements OnInit {
                 message: (result as any).esito.target,
               },
             });
-            if(this.tabellaCompletata){
+            if (this.tabellaCompletata) {
               this.rapportinoSalvato = true;
-            }else{
-              this.rapportinoSalvato=false;
+            } else {
+              this.rapportinoSalvato = false;
             }
           }
         },
@@ -590,6 +608,82 @@ export class UtenteComponent implements OnInit {
         console.error('Errore nella generazione dei permessi:', error);
       }
     );
+  }
+
+  validaValore(event: Event) {
+    const target = event.target as HTMLTableCellElement;
+    const value = target.innerText.trim(); // Ottieni il valore senza spazi bianchi
+
+    // Verifica se il valore è un numero e rientra nell'intervallo consentito
+    const valoreNumerico = parseInt(value, 10);
+
+    if (
+      !isNaN(valoreNumerico) &&
+      valoreNumerico >= 1 &&
+      valoreNumerico <= this.rapportinoDto.length
+    ) {
+      // Il valore è valido, puoi aggiornare il tuo modello qui se necessario
+      // E.g., giornaliero.giorno = valoreNumerico;
+    } else {
+      // Il valore non è valido, puoi gestire l'errore in qualche modo
+      // E.g., reimposta il valore precedente o visualizza un messaggio di errore
+      target.innerText = ''; // Oppure, puoi reimpostare il valore precedente
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          Image: '../../../../assets/images/logo.jpeg',
+          title: 'Attenzione:',
+          message:
+            'Il valore deve essere un numero compreso tra 1 e ' +
+            this.rapportinoDto.length,
+        },
+      });
+    }
+  }
+
+  validaValoreTestuale(event: Event) {
+    const target = event.target as HTMLTableCellElement;
+    const value = target.innerText.trim(); // Ottieni il valore senza spazi bianchi
+
+    // Verifica se il valore contiene numeri
+    if (/\d/.test(value)) {
+      // Il valore contiene numeri, impedisci l'input
+      target.innerText = ''; // Oppure, puoi reimpostare il valore precedente
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          Image: '../../../../assets/images/logo.jpeg',
+          title: 'Attenzione:',
+          message: 'Il campo cliente non deve contenere numeri.',
+        },
+      });
+    } else {
+      console.log('Inserito il cliente ' + target.innerText);
+    }
+  }
+
+  validaOreOrdinarie(event: Event) {
+    const target = event.target as HTMLTableCellElement;
+    const value = target.innerText.trim(); // Ottieni il valore senza spazi bianchi
+
+    // Verifica se il valore è un numero con incrementi di 0.5 tra 0 e 24
+    const valoreNumerico = parseFloat(value);
+
+    if (
+      isNaN(valoreNumerico) ||
+      valoreNumerico < 0 ||
+      valoreNumerico > 24 ||
+      valoreNumerico % 0.5 !== 0
+    ) {
+      target.innerText = '';
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          Image: '../../../../assets/images/logo.jpeg',
+          title: 'Attenzione:',
+          message:
+            'Il campo deve essere un numero con incrementi di 0.5 compreso tra 0 e 24.',
+        },
+      });
+    } else {
+    }
   }
 }
 

@@ -252,9 +252,9 @@
             </thead>
             <tbody>
               <tr *ngFor="let giornaliero of rapportinoDto; let i = index">
-                <td [attr.contentEditable]="tabellaEditabile" (input)="verificaTabellaCompletata()">{{ giornaliero.giorno }}</td>
-                <td [attr.contentEditable]="tabellaEditabile" (input)="verificaTabellaCompletata()">{{ giornaliero.cliente }}</td>
-                <td [attr.contentEditable]="tabellaEditabile" (input)="verificaTabellaCompletata()">{{ giornaliero.oreOrdinarie }}</td>
+                <td [attr.contentEditable]="tabellaEditabile" (input)="verificaTabellaCompletata()" (input)="validaValore($event)">{{ giornaliero.giorno }}</td>
+                <td [attr.contentEditable]="tabellaEditabile" (input)="verificaTabellaCompletata()" (input)="validaValoreTestuale($event)">{{ giornaliero.cliente }}</td>
+                <td [attr.contentEditable]="tabellaEditabile" (input)="verificaTabellaCompletata()" (input)="validaOreOrdinarie($event)">{{ giornaliero.oreOrdinarie }}</td>
                 <td
                   id="duplica-riga"
                   style="background-color: #ffff99; text-align: center"
@@ -342,6 +342,13 @@
         <br>
 
       </div> -->
+
+
+      <!-- <select [(ngModel)]="aziendaSelezionata" (change)="selezionaAzienda()">
+        <option value="" disabled selected>Scegli un'azienda</option>
+        <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
+      </select> -->
+
       <br /><br /><br />
     </div>
     <div class="container-fluid" *ngIf="dettaglioSbagliato">
