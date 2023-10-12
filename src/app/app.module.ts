@@ -52,6 +52,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { RisultatiFilterOrganicoComponent } from './components/organico/risultati-filter-organico/risultati-filter-organico.component';
 import { ListaRapportiniComponent } from './components/lista-rapportini/lista-rapportini.component';
 import { ModaleDettaglioRapportinoComponent } from './components/modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { ModaleDettaglioRapportinoComponent } from './components/modale-dettagli
     ModalInfoContrattoComponent,
     RisultatiFilterOrganicoComponent,
     ListaRapportiniComponent,
-    ModaleDettaglioRapportinoComponent
+    ModaleDettaglioRapportinoComponent,
+    HeaderComponent
   ],
   imports: [
     MatNativeDateModule,

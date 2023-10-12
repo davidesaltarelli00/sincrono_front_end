@@ -116,17 +116,14 @@ a{
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <h1>Lista Anagrafiche</h1>
+        <br>
+        <mat-card style="text-align: center;">
+          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+          <h1>Lista anagrafiche</h1>
+        </mat-card>
       </div>
     </div>
-
-
-
-    <button class="btn btn-success" style="background-color: rgb(24, 122, 0); color: white;"
-    [routerLink]="['/nuova-anagrafica']">Inserisci Nuova Anagrafica <i class="fa fa-plus"></i> </button> <!--dark btn-sm rounded-pill shadow-sm-->
-  <br>
-  <br>
-
+    <br>
   <mat-expansion-panel>
   <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri">
 
@@ -328,6 +325,31 @@ a{
     </ng-template>
   </mat-expansion-panel>
   <br>
+  <div class="row">
+    <div class="col-6">
+      <mat-card style="height: 100%;">
+        <div style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+          <label>Esporta in excel</label>
+          <button (click)="exportListaAnagraficaToExcel()" style="margin: 5px;" matTooltip="Esporta in excel" class="btn btn-success">
+            <i class="fa-solid fa-file-export"></i>
+          </button>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="col-6">
+      <mat-card style="height: 100%;">
+        <div style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+          <label>Inserisci nuova anagrafica</label>
+          <button class="btn btn-success" [routerLink]="['/nuova-anagrafica']">
+            <i matTooltip="Inserisci Nuova Anagrafica" class="fa fa-plus"></i>
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+<br>
   <div class="row" *ngIf="pageData.length===0" >
     <div class="col-12">
       <h3 style="text-align: center; padding: 20px;"> <i class="fa fa-exclamation-triangle" ></i> Nessun risultato.</h3>
@@ -336,9 +358,7 @@ a{
   <div class="row" *ngIf="pageData.length>0" >
   <div class="col-12">
     <div class="table-responsive">
-      <span>
-        <button (click)="exportListaAnagraficaToExcel()" style="margin: 5px;" matTooltip="Esporta in excel" class="btn btn-success"><i class="fa-solid fa-file-export"></i></button>
-      </span>
+
       <table id="table" class="table table-bordered">
         <thead class="thead-dark">
           <tr>

@@ -251,11 +251,13 @@ export class ListaRapportiniComponent implements OnInit {
     );
   }
 
-  getRapportino(id: any, codiceFiscale: any, mese: any, anno: any) {
+  getRapportino(id: any,nome:any, cognome:any, codiceFiscale: any, mese: any, anno: any) {
     console.log('DATI IN LISTA RAPPORTINI PER ROTTA' + id, mese, anno);
     this.router.navigate([
       '/dettaglio-rapportino',
       id,
+      nome,
+      cognome,
       codiceFiscale,
       mese,
       anno,

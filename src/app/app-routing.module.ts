@@ -153,7 +153,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'dettaglio-rapportino/:id/:codiceFiscale/:mese/:anno',
+    path: 'dettaglio-rapportino/:id/:nome/:cognome/:codiceFiscale/:mese/:anno',
     component: ModaleDettaglioRapportinoComponent,
     canActivate: [AuthGuard],
   },

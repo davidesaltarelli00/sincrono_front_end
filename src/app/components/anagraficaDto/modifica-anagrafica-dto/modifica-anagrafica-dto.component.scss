@@ -1,26 +1,26 @@
-body{
+body {
   background-color: aliceblue;
 
 }
 
-.container-fluid{
+.container-fluid {
   background-color: aliceblue;
 }
 
-mat-stepper{
+mat-stepper {
   background-color: aliceblue;
 }
 
 .invalid-field {
-    border-color: red;
+  border-color: red;
 
-  }
+}
 
-select{
+select {
   width: 50%;
 }
 
-mat-card{
+mat-card {
   margin: 20px;
 }
 
@@ -43,11 +43,11 @@ mat-card{
   border: 1px solid #ccc;
 }
 
-ng-container{
+ng-container {
   border: 1px solid #f1f1f1;
 }
 
-select{
+select {
   width: 100%;
 }
 
@@ -55,7 +55,7 @@ select{
   border-color: red;
 }
 
-mat-card-title{
+mat-card-title {
   text-align: center;
 }
 
@@ -83,13 +83,15 @@ mat-card-title{
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc; /* Colore di sfondo quando disattivato */
-  transition: 0.4s; /* Effetto di transizione */
+  background-color: #ccc;
+  /* Colore di sfondo quando disattivato */
+  transition: 0.4s;
+  /* Effetto di transizione */
   border-radius: 34px;
 }
 
 /* Cambia il colore di sfondo quando attivato */
-.toggle-switch input:checked + .slider {
+.toggle-switch input:checked+.slider {
   background-color: #2196F3;
 }
 
@@ -107,7 +109,7 @@ mat-card-title{
 }
 
 /* Posizione del cursore quando attivato */
-.toggle-switch input:checked + .slider:before {
+.toggle-switch input:checked+.slider:before {
   transform: translateX(26px);
 }
 
@@ -158,7 +160,7 @@ mat-card-title{
   background-color: #0056b3;
 }
 
-mat-card-contnt{
+mat-card-contnt {
   width: 100%;
 }
 
@@ -229,15 +231,15 @@ mat-card-contnt{
   transition: .4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: green;
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -259,6 +261,10 @@ input[type="checkbox"]:disabled {
 }
 
 /* Icona della checkbox disabilitata */
-input[type="checkbox"]:disabled + .slider::before {
+input[type="checkbox"]:disabled+.slider::before {
   background-color: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
 }

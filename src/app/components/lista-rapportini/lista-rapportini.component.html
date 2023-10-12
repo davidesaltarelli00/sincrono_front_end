@@ -86,7 +86,7 @@ a{
   <div class="col-12">
     <header>
       <h1>
-        Lista rapportini inviati di {{userLoggedName}} {{userLoggedSurname}}
+        Lista rapportini inviati
       </h1>
     </header>
   </div>
@@ -102,7 +102,7 @@ a{
           <th>Codice Fiscale</th>
           <th>Anno</th>
           <th>Mese</th>
-          <th>Check Freeze</th>
+          <th>Verificato</th>
           <th>Azioni</th>
 
         </tr>
@@ -121,7 +121,7 @@ a{
             </label>
           </td>
           <td>
-            <button class="btn btn-info" (click)="getRapportino(rapportinoNonFreezato.id, rapportinoNonFreezato.codiceFiscale, rapportinoNonFreezato.mese, rapportinoNonFreezato.anno)" > <i class="fa fa-info" ></i> </button>
+            <button class="btn btn-info" (click)="getRapportino(rapportinoNonFreezato.id,rapportinoNonFreezato.nome ,rapportinoNonFreezato.cognome, rapportinoNonFreezato.codiceFiscale, rapportinoNonFreezato.mese, rapportinoNonFreezato.anno)" > <i class="fa fa-info" ></i> </button>
             <!-- <button class="btn btn-danger" (click)="eliminaRapportinoNonFreezato(rapportinoNonFreezato.id)" > <i class="fa fa-trash" ></i> </button></td> -->
 
         </tr>
@@ -141,7 +141,7 @@ a{
           <th>Codice Fiscale</th>
           <th>Anno</th>
           <th>Mese</th>
-          <th>Check Freeze</th>
+          <th>Verificato</th>
           <!-- <th>Azioni</th> -->
 
         </tr>

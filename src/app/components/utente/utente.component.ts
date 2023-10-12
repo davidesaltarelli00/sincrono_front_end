@@ -267,6 +267,7 @@ export class UtenteComponent implements OnInit {
           this.note = result['rapportinoDto']['note'];
           this.giorniUtili = result['rapportinoDto']['giorniUtili'];
           this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
+          //qui andrá l endpoint per verificare la completezza della tabella
         }
       },
       (error: string) => {
