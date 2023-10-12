@@ -26,7 +26,7 @@ export class UtenteComponent implements OnInit {
   userRoleNav: any;
   idNav: any;
   tokenProvvisorio: any;
-
+  tabellaEditabile: string = 'true';
   data: any[] = [];
   user: any;
   messaggio = '';
@@ -56,10 +56,12 @@ export class UtenteComponent implements OnInit {
   rapportinoInviato = false;
   mobile: boolean = false;
   checkFreeze = false;
+  tabellaCompletata: boolean = false;
 
   nome: any;
   cognome: any;
   codiceFiscale = '';
+  numeroCommessePresenti: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -112,6 +114,27 @@ export class UtenteComponent implements OnInit {
 
     console.log('ANNI:' + JSON.stringify(this.anni));
     console.log('MESI:' + JSON.stringify(this.mesi));
+  }
+
+  verificaTabellaCompletata() {
+    const tableRows =
+      this.editableTable.nativeElement.getElementsByTagName('tr');
+    let tabellaCompleta = true;
+    console.log('Controllo se la tabella é completa...');
+    for (let i = 1; i < tableRows.length; i++) {
+      const row = tableRows[i];
+      const giorno = row.cells[0].innerText;
+      const cliente = row.cells[1].innerText;
+      const oreOrdinarie = row.cells[2].innerText;
+
+      if (!giorno || !cliente || !oreOrdinarie) {
+        tabellaCompleta = false;
+        break;
+      }
+    }
+
+    this.tabellaCompletata = tabellaCompleta;
+    console.log('Esito tabella completa: ' + this.tabellaCompletata);
   }
 
   duplicaRiga(index: number) {
@@ -203,7 +226,10 @@ export class UtenteComponent implements OnInit {
           this.dettaglioSbagliato = false;
           console.log('DETTAGLIO USER ' + JSON.stringify(this.user));
           console.log('CODICE FISCALE:' + this.codiceFiscale);
-          console.log(' \n ELENCO COMMESSE:' + JSON.stringify(this.elencoCommesse));
+          console.log(
+            ' \n ELENCO COMMESSE:' + JSON.stringify(this.elencoCommesse)
+          );
+          this.numeroCommessePresenti=this.elencoCommesse.length;
         },
         (error: any) => {
           console.error(
@@ -251,7 +277,7 @@ export class UtenteComponent implements OnInit {
 
   inviaRapportino() {
     const giorniArray = [];
-
+    let isDataValid = true;
     const tableRows =
       this.editableTable.nativeElement.getElementsByTagName('tr');
     for (let i = 1; i < tableRows.length; i++) {
@@ -295,8 +321,9 @@ export class UtenteComponent implements OnInit {
               message: 'Errore di validazione.', //(result as any).esito.target,
             },
           });
-          this.rapportinoInviato=false;
+          this.rapportinoInviato = false;
           console.error(result);
+          this.tabellaEditabile = 'true';
         }
         if ((result as any).esito.code === 500) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
@@ -306,8 +333,8 @@ export class UtenteComponent implements OnInit {
               message: 'Errore del server:' + (result as any).esito.target, //(result as any).esito.target,
             },
           });
-          this.rapportinoInviato=false;
-
+          this.rapportinoInviato = false;
+          this.tabellaEditabile = 'true';
           console.error(result);
         }
         if ((result as any).esito.code === 200) {
@@ -318,7 +345,8 @@ export class UtenteComponent implements OnInit {
             },
           });
           console.log('RESPONSE INSERT RAPPORTINO:' + JSON.stringify(result));
-          this.rapportinoInviato=true;
+          this.rapportinoInviato = true;
+          this.tabellaEditabile = 'false';
         }
       });
   }
@@ -400,8 +428,11 @@ export class UtenteComponent implements OnInit {
                 message: (result as any).esito.target,
               },
             });
-            this.rapportinoSalvato = true;
-            this.getRapportino();
+            if(this.tabellaCompletata){
+              this.rapportinoSalvato = true;
+            }else{
+              this.rapportinoSalvato=false;
+            }
           }
         },
         (error: any) => {

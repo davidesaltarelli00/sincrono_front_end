@@ -151,7 +151,7 @@
                       <strong>Numero commesse:</strong>
                     </td>
                     <td style="background-color: #007bff; color: white">
-                      {{ elencoCommesse.length }}
+                      {{ numeroCommessePresenti }}
                     </td>
                   </tr>
                 </tbody>
@@ -248,9 +248,9 @@
             </thead>
             <tbody>
               <tr *ngFor="let giornaliero of rapportinoDto; let i = index">
-                <td contenteditable="true">{{ giornaliero.giorno }}</td>
-                <td contenteditable="true">{{ giornaliero.cliente }}</td>
-                <td contenteditable="true">{{ giornaliero.oreOrdinarie }}</td>
+                <td [attr.contentEditable]="tabellaEditabile" (input)="verificaTabellaCompletata()">{{ giornaliero.giorno }}</td>
+                <td [attr.contentEditable]="tabellaEditabile" (input)="verificaTabellaCompletata()">{{ giornaliero.cliente }}</td>
+                <td [attr.contentEditable]="tabellaEditabile" (input)="verificaTabellaCompletata()">{{ giornaliero.oreOrdinarie }}</td>
                 <td
                   id="duplica-riga"
                   style="background-color: #ffff99; text-align: center"
@@ -306,7 +306,7 @@
           &nbsp;
           <button
             class="btn btn-primary"
-            [disabled]="!rapportinoSalvato"
+            [disabled]="!(rapportinoSalvato && tabellaCompletata)"
             (click)="inviaRapportino()"
           >
             Invia rapportino
@@ -316,7 +316,7 @@
           <i
             *ngIf="!rapportinoSalvato"
             class="fa fa-info-circle"
-            matTooltip="Il pulsante si abiliterá solo dopo aver effettuato il salvataggio del rapportino, si invita ad inviarlo solo a compilazione completa."
+            matTooltip="Il pulsante si abiliterá solo dopo aver completato il rapportino ed averne effettuato il salvataggio."
           ></i>
         </div>
       </div>
