@@ -68,6 +68,21 @@ export class UtenteComponent implements OnInit {
   disabilitaDuplica = false;
   rigaDuplicata = false;
   isFormDuplicated = false;
+  nomiMesi = [
+    'gennaio',
+    'febbraio',
+    'marzo',
+    'aprile',
+    'maggio',
+    'giugno',
+    'luglio',
+    'agosto',
+    'settembre',
+    'ottobre',
+    'novembre',
+    'dicembre',
+  ];
+  isDuplicaAbilitato: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -106,6 +121,34 @@ export class UtenteComponent implements OnInit {
     ) {
       this.mobile = true;
     }
+  }
+
+  getCommesseIndices(numeroCommesse: number): number[] {
+    return new Array(numeroCommesse);
+  }
+
+
+  nomeMeseDaNumero(numeroMese: number): string {
+    if (numeroMese >= 1 && numeroMese <= 12) {
+      return this.nomiMesi[numeroMese - 1]; // Sottrai 1 perché gli array sono zero-based
+    } else {
+      return 'Mese non valido'; // Gestisci il caso in cui il numero del mese non sia valido
+    }
+  }
+
+  getNomeGiorno(numeroGiorno: number | null): any {
+    if (numeroGiorno === null) {
+      return ''; // Imposta una stringa vuota se il valore è null
+    }
+
+    const oggi = new Date();
+    const annoCorrente = oggi.getFullYear();
+    const meseCorrente = oggi.getMonth() + 1;
+
+    const data = new Date(annoCorrente, meseCorrente - 1, numeroGiorno); // Sottrai 1 al mese perché JavaScript inizia da 0 per gennaio
+    const nomeGiorno = this.datePipe.transform(data, 'EEEE'); // 'EEEE' restituirà il nome completo del giorno della settimana
+
+    return nomeGiorno;
   }
 
   selezionaAzienda() {
@@ -173,12 +216,30 @@ export class UtenteComponent implements OnInit {
   //   this.rapportinoDto.splice(index + 1, 0, nuovaRiga);
   // }
 
-  duplicaRiga(index: number) {
-    // Creare una copia dell'oggetto della riga corrente
-    const rigaCorrente = this.rapportinoDto[index];
-    const nuovaRiga = JSON.parse(JSON.stringify(rigaCorrente));
-    this.rapportinoDto.push(index + 1, 0, nuovaRiga);
+
+
+  isRigaVuota(index: number): boolean {
+    const riga = this.rapportinoDto[index];
+    return !riga || !riga.giorno;
   }
+
+  duplicaRiga(index: number) {
+    if (index >= 0 && index < this.rapportinoDto.length) {
+      const rigaDaDuplicare = { ...this.rapportinoDto[index] };
+      const nuovaRiga = { ...rigaDaDuplicare };
+
+      // Imposta il campo "giorno" come null o con un valore predefinito
+      nuovaRiga.giorno = null;
+
+      // Aggiungi la nuova riga in coda
+      this.rapportinoDto.push(nuovaRiga);
+
+      // Disabilita il pulsante dopo la duplicazione
+      this.isDuplicaAbilitato = false;
+    }
+  }
+
+
 
   eliminaRiga(index: number) {
     // Rimuovi la riga dalla matrice rapportinoDto in base all'indice
@@ -205,6 +266,22 @@ export class UtenteComponent implements OnInit {
         this.aziendeClienti.push(commessa.aziendaCliente);
       }
     });
+  }
+
+  getNomeGiornoSettimana(data: string): string {
+    const giorniSettimana = [
+      'Domenica',
+      'Lunedì',
+      'Martedì',
+      'Mercoledì',
+      'Giovedì',
+      'Venerdì',
+      'Sabato',
+    ];
+    const dataSelezionata = new Date(data);
+    const nomeGiorno = giorniSettimana[dataSelezionata.getDay()];
+
+    return nomeGiorno;
   }
 
   getAnagraficaRapportino() {
@@ -387,8 +464,16 @@ export class UtenteComponent implements OnInit {
 
       return {
         giorno: formValue[`giorno${i}`],
-        cliente: Array.isArray(clienteValue) ? clienteValue : (clienteValue ? [clienteValue] : null),
-        oreOrdinarie: Array.isArray(oreOrdinarieValue) ? oreOrdinarieValue : (oreOrdinarieValue ? [oreOrdinarieValue] : null),
+        cliente: Array.isArray(clienteValue)
+          ? clienteValue
+          : clienteValue
+          ? [clienteValue]
+          : null,
+        oreOrdinarie: Array.isArray(oreOrdinarieValue)
+          ? oreOrdinarieValue
+          : oreOrdinarieValue
+          ? [oreOrdinarieValue]
+          : null,
       };
     });
 

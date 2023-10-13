@@ -93,7 +93,7 @@ a {
 
 }
 
-form{
+form {
   padding: 5%;
 }
 
@@ -104,6 +104,29 @@ form{
 
 }
 
+.form-rapportino {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group:nth-child(odd) {
+  background-color: #f2f2f2; /* Cambia il colore di sfondo di ogni altra riga */
+  border-top: 1px solid #ccc; /* Aggiunge una linea superiore per separare le righe */
+  border-bottom: 1px solid #ccc; /* Aggiunge una linea inferiore per separare le righe */
+}
+
+.form-group {
+  margin-bottom: 10px; /* Spazio tra le righe dei campi */
+  padding: 10px; /* Aggiunge spazio interno alle righe */
+}
+
+input[type="text"], input[type="number"] {
+  text-align: center;
+}
+
+select {
+  text-align-last: center;
+}
 
 
 /* Responsive */
@@ -226,12 +249,16 @@ form{
 
 
 #toolbar {
-  background-color: #007bff; /* Colore blu aziendale */
-  color: #ffffff; /* Testo bianco */
+  background-color: #007bff;
+  /* Colore blu aziendale */
+  color: #ffffff;
+  /* Testo bianco */
   display: flex;
   background-color: #333;
-  justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
-  align-items: center; /* Allinea verticalmente gli elementi al centro */
+  justify-content: space-between;
+  /* Allinea gli elementi a sinistra e a destra */
+  align-items: center;
+  /* Allinea verticalmente gli elementi al centro */
 }
 
 .logo-link {
@@ -242,7 +269,7 @@ form{
   display: flex;
   gap: 10px;
   background-color: #333;
-  margin-right:auto;
+  margin-right: auto;
 }
 
 .toolbar-link {
@@ -251,7 +278,7 @@ form{
   /* padding: 10px; */
 }
 
-a{
+a {
   color: white;
   font-weight: 500;
 }
