@@ -234,24 +234,28 @@
      <div class="row">
       <div class="col-12">
        <mat-card>
-        <form #rapportinoForm="ngForm"  *ngIf="esitoCorretto" [ngClass]="{'duplicato': isFormDuplicated}">
+        <form #rapportinoForm="ngForm"  *ngIf="esitoCorretto" >
           <div class="form-group" *ngFor="let giorno of rapportinoDto; let i = index"  >
             <div class="row" >
-              <div class="col-4">
+              <div class="col-3">
                 <label for="giorno{{i}}">Giorno</label>
                 <input placeholder="Giorno" type="number" class="form-control" id="giorno{{i}}" name="giorno{{i}}" [(ngModel)]="giorno.giorno" ngDefaultControl>
               </div>
-              <div class="col-4">
+              <div class="col-3">
                 <label for="cliente{{i}}">Cliente</label>
-                <select class="form-control" id="cliente{{i}}" placeholder="Cliente" name="cliente{{i}}" [(ngModel)]="giorno.cliente">
+                <select class="form-select" id="cliente{{i}}" placeholder="Cliente" name="cliente{{i}}" [(ngModel)]="giorno.cliente">
                   <option placeholder="Cliente" value="" disabled selected>Scegli un'azienda</option>
                   <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
                 </select>
               </div>
-              <div class="col-4">
+              <div class="col-3">
                 <label for="oreOrdinarie{{i}}">Ore</label>
-                <input placeholder="Ore" type="number" class="form-control" id="oreOrdinarie{{i}}" name="oreOrdinarie{{i}}" [(ngModel)]="giorno.oreOrdinarie" ngDefaultControl>
+                <input placeholder="Ore" type="number" step="0.5" class="form-control" id="oreOrdinarie{{i}}" name="oreOrdinarie{{i}}" [(ngModel)]="giorno.oreOrdinarie" ngDefaultControl>
               </div>
+              <!-- <div class="col-3">
+                <label for="Duplica"></label> <br>
+                <button type="button" class="btn btn-success" (click)="duplicaRiga(i)">Duplica Riga</button>
+              </div> -->
             </div>
           </div>
           <br>
