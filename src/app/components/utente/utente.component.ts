@@ -66,6 +66,8 @@ export class UtenteComponent implements OnInit {
   duplicazioniEffettuate: number[] = [];
   disabilitaDuplica = false;
   rigaDuplicata = false;
+  isFormDuplicated = false;
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -115,6 +117,7 @@ export class UtenteComponent implements OnInit {
       this.getUserLogged();
       this.getUserRole();
       this.getAnagraficaRapportino();
+
       // this.getRapportinoByMeseAnnoCorrenti();
     } else {
       console.error('ERRORE DI AUTENTICAZIONE');
@@ -145,6 +148,21 @@ export class UtenteComponent implements OnInit {
     console.log('Esito tabella completa: ' + this.tabellaCompletata);
   }
 
+  checkRapportinoInviato() {
+    let body = {
+      anno: this.selectedAnno,
+      mese: this.selectedMese,
+      codiceFiscale: this.codiceFiscale,
+    };
+    this.rapportinoService
+      .checkRapportinoInviato(this.token, body)
+      .subscribe((result: any) => {
+        console.log(
+          'RISULTATO checkRapportinoInviato:' + JSON.stringify(result)
+        );
+      });
+  }
+
   // duplicaRiga(index: number) {
   //   if (this.elencoCommesse.length <= 1 || index < 0 || index >= this.rapportinoDto.length) {
   //     // La funzione è disabilitata se hai 1 o 0 commesse o l'indice è fuori dai limiti
@@ -158,47 +176,25 @@ export class UtenteComponent implements OnInit {
   //   this.rapportinoDto.splice(index + 1, 0, nuovaRiga);
   // }
 
-  duplicaRiga(index: number) {
-    if (
-      this.elencoCommesse.length <= 1 ||
-      index < 0 ||
-      index >= this.rapportinoDto.length
-    ) {
-      // La funzione è disabilitata se hai 1 o 0 commesse o l'indice è fuori dai limiti
-      return;
-    }
+  duplicaRapportino() {
+    const nuovoRapportino = [...this.rapportinoDto];
 
-    if (
-      !this.duplicazioniEffettuate[index] ||
-      this.duplicazioniEffettuate[index] < this.numeroCommessePresenti
-    ) {
-      const rigaDaDuplicare = this.rapportinoDto[index];
-      const nuovaRiga = { ...rigaDaDuplicare };
+    // Duplica ogni riga del rapportino
+    nuovoRapportino.forEach(riga => {
+      const nuovaRiga = { ...riga };
+      nuovaRiga.giorno = riga.giorno; // Mantieni il giorno se è presente
+      nuovaRiga.cliente = null; // Imposta cliente a null
+      nuovaRiga.oreOrdinarie = null; // Imposta oreOrdinarie a null
+      nuovoRapportino.push(nuovaRiga);
+    });
 
-      // Inserisci la nuova riga solo se il numero di duplicazioni effettuate è minore del numero desiderato
-      if (
-        !this.duplicazioniEffettuate[index] ||
-        this.duplicazioniEffettuate[index] < this.numeroCommessePresenti
-      ) {
-        this.rapportinoDto.splice(index + 1, 0, nuovaRiga);
-        this.rigaDuplicata = true;
-        if (!this.duplicazioniEffettuate[index]) {
-          this.duplicazioniEffettuate[index] = 1;
-        } else {
-          this.duplicazioniEffettuate[index]++;
-        }
-      }
+    this.rapportinoDto = nuovoRapportino; // Aggiorna il rapportino con la duplicazione
+    this.isFormDuplicated = true; // Imposta a true quando il form è duplicato
 
-      if (this.duplicazioniEffettuate[index] === this.numeroCommessePresenti) {
-        // Disabilita il bottone quando il numero desiderato di duplicazioni è stato raggiunto per questo record
-        // Puoi farlo tramite una variabile booleana o altri meccanismi a seconda del tuo codice
-        this.disabilitaDuplica = true;
-        this.rigaDuplicata = false;
-      }
-    }
   }
 
-  eliminaRigaDuplicata(index: number) {
+
+  eliminaRiga(index: number) {
     // Rimuovi la riga dalla matrice rapportinoDto in base all'indice
     this.rapportinoDto.splice(index, 1);
 
@@ -335,6 +331,7 @@ export class UtenteComponent implements OnInit {
           this.giorniUtili = result['rapportinoDto']['giorniUtili'];
           this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
           //qui andrá l endpoint per verificare la completezza della tabella
+          this.checkRapportinoInviato();
         }
       },
       (error: string) => {
@@ -344,26 +341,26 @@ export class UtenteComponent implements OnInit {
   }
 
   inviaRapportino() {
-    const giorniArray = [];
-    let isDataValid = true;
-    const tableRows =
-      this.editableTable.nativeElement.getElementsByTagName('tr');
-    for (let i = 1; i < tableRows.length; i++) {
-      const row = tableRows[i];
-      const giorno = row.cells[0].innerText;
-      const cliente = row.cells[1].innerText;
-      const oreOrdinarie = row.cells[2].innerText;
-      // Dividi il campo cliente in un array di stringhe
-      const clientiArray = cliente ? cliente.split(',') : null;
-      // Dividi il campo oreOrdinarie in un array di stringhe
-      const oreOrdinarieArray = oreOrdinarie.split(',');
+    // const giorniArray = [];
+    // let isDataValid = true;
+    // const tableRows =
+    //   this.editableTable.nativeElement.getElementsByTagName('tr');
+    // for (let i = 1; i < tableRows.length; i++) {
+    //   const row = tableRows[i];
+    //   const giorno = row.cells[0].innerText;
+    //   const cliente = row.cells[1].innerText;
+    //   const oreOrdinarie = row.cells[2].innerText;
+    //   // Dividi il campo cliente in un array di stringhe
+    //   const clientiArray = cliente ? cliente.split(',') : null;
+    //   // Dividi il campo oreOrdinarie in un array di stringhe
+    //   const oreOrdinarieArray = oreOrdinarie.split(',');
 
-      giorniArray.push({
-        giorno: parseInt(giorno), // Converte il giorno in un numero intero
-        cliente: clientiArray,
-        oreOrdinarie: oreOrdinarieArray.map(parseFloat), // Converte le ore in numeri decimali
-      });
-    }
+    //   giorniArray.push({
+    //     giorno: parseInt(giorno), // Converte il giorno in un numero intero
+    //     cliente: clientiArray,
+    //     oreOrdinarie: oreOrdinarieArray.map(parseFloat), // Converte le ore in numeri decimali
+    //   });
+    // }
     let body = {
       rapportino: {
         nome: this.userLoggedName,
@@ -419,29 +416,66 @@ export class UtenteComponent implements OnInit {
       });
   }
 
-  salvaRapportino() {
+  salvaRapportino(formValue: any) {
+    // const giorniArray = [];
+
+    // const tableRows =this.editableTable.nativeElement.getElementsByTagName('tr');
+    // for (let i = 1; i < tableRows.length; i++) {
+    //   const row = tableRows[i];
+    //   const giorno = row.cells[0].innerText;
+    //   const cliente = row.cells[1].innerText;
+    //   const oreOrdinarie = row.cells[2].innerText;
+    //   // Dividi il campo cliente in un array di stringhe
+    //   const clientiArray = cliente ? cliente.split(',') : null;
+    //   // Dividi il campo oreOrdinarie in un array di stringhe
+    //   const oreOrdinarieArray = oreOrdinarie.split(',');
+
+    //   giorniArray.push({
+    //     giorno: parseInt(giorno), // Converte il giorno in un numero intero
+    //     cliente: clientiArray,
+    //     oreOrdinarie: oreOrdinarieArray.map(parseFloat), // Converte le ore in numeri decimali
+    //   });
+    // }
+
+    // // Crea il corpo del JSON
+    // const body = {
+    //   rapportinoDto: {
+    //     mese: {
+    //       giorni: giorniArray,
+    //     },
+    //     anagrafica: {
+    //       codiceFiscale: this.codiceFiscale,
+    //     },
+    //     note: this.note,
+    //     giorniUtili: this.giorniUtili,
+    //     giorniLavorati: this.giorniLavorati,
+    //     annoRequest: this.selectedAnno,
+    //     meseRequest: this.selectedMese,
+    //   },
+    // };
+
+    // console.log('BODY UPDATE RAPPORTINO:' + JSON.stringify(body));
     const giorniArray = [];
 
-    const tableRows =
-      this.editableTable.nativeElement.getElementsByTagName('tr');
-    for (let i = 1; i < tableRows.length; i++) {
-      const row = tableRows[i];
-      const giorno = row.cells[0].innerText;
-      const cliente = row.cells[1].innerText;
-      const oreOrdinarie = row.cells[2].innerText;
-      // Dividi il campo cliente in un array di stringhe
-      const clientiArray = cliente ? cliente.split(',') : null;
-      // Dividi il campo oreOrdinarie in un array di stringhe
-      const oreOrdinarieArray = oreOrdinarie.split(',');
+    for (let i = 0; i < this.rapportinoDto.length; i++) {
+      let clienteValue = formValue[`cliente${i}`];
+      if (clienteValue) {
+        clienteValue = [clienteValue];
+      }
 
-      giorniArray.push({
-        giorno: parseInt(giorno), // Converte il giorno in un numero intero
-        cliente: clientiArray,
-        oreOrdinarie: oreOrdinarieArray.map(parseFloat), // Converte le ore in numeri decimali
-      });
+      let oreOrdinarieValue = formValue[`oreOrdinarie${i}`];
+      if (oreOrdinarieValue) {
+        oreOrdinarieValue = [oreOrdinarieValue];
+      }
+
+      const giornoData = {
+        giorno: formValue[`giorno${i}`],
+        cliente: clienteValue,
+        oreOrdinarie: oreOrdinarieValue,
+      };
+      giorniArray.push(giornoData);
     }
 
-    // Crea il corpo del JSON
     const body = {
       rapportinoDto: {
         mese: {
@@ -463,32 +497,17 @@ export class UtenteComponent implements OnInit {
       .updateRapportino(localStorage.getItem('token'), body)
       .subscribe(
         (result: any) => {
-          if (
-            (result as any).esito.code !== 200 &&
-            (result as any).esito.target === 'HTTP error code: 400'
-          ) {
+          if ((result as any).esito.code !== 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 Image: '../../../../assets/images/logo.jpeg',
                 title: 'Salvataggio non riuscito:',
-                message: 'Errore di validazione.', //(result as any).esito.target,
+                message: (result as any).esito.target,
               },
             });
             this.rapportinoSalvato = false;
             console.error(result);
           }
-          if ((result as any).esito.code === 500) {
-            const dialogRef = this.dialog.open(AlertDialogComponent, {
-              data: {
-                Image: '../../../../assets/images/logo.jpeg',
-                title: 'Salvataggio non riuscito:',
-                message: 'Errore del server.', //(result as any).esito.target,
-              },
-            });
-            console.error(result);
-            this.rapportinoSalvato = false;
-          }
-
           if ((result as any).esito.code === 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
@@ -509,51 +528,9 @@ export class UtenteComponent implements OnInit {
           );
         }
       );
-    this.getRapportino();
   }
 
-  aggiungiNote() {
-    let body = {
-      rapportinoDto: {
-        note: this.note,
-        anagrafica: {
-          codiceFiscale: this.codiceFiscale,
-        },
-        annoRequest: this.selectedAnno,
-        meseRequest: this.selectedMese,
-      },
-    };
-    console.log('BODY AGGIUNGI NOTE:' + JSON.stringify(body));
 
-    this.rapportinoService.aggiungiNote(this.token, body).subscribe(
-      (result: any) => {
-        if (
-          (result as any).esito.code !== 200 &&
-          (result as any).esito.target === 'HTTP error code: 400'
-        ) {
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-              Image: '../../../../assets/images/logo.jpeg',
-              title: 'Salvataggio delle note non riuscito:',
-              message: 'Errore di validazione.', //(result as any).esito.target,
-            },
-          });
-          console.error(result);
-        } else {
-          console.log('RESULT AGGIUNGI NOTE:' + JSON.stringify(result));
-        }
-      },
-      (error: any) => {
-        const dialogRef = this.dialog.open(AlertDialogComponent, {
-          data: {
-            Image: '../../../../assets/images/logo.jpeg',
-            title: 'Salvataggio delle note non riuscito:',
-            message: JSON.stringify(error),
-          },
-        });
-      }
-    );
-  }
 
   onMeseSelectChange(event: any) {
     console.log('Mese selezionato:', event.target.value);
@@ -660,81 +637,81 @@ export class UtenteComponent implements OnInit {
     );
   }
 
-  validaValore(event: Event) {
-    const target = event.target as HTMLTableCellElement;
-    const value = target.innerText.trim(); // Ottieni il valore senza spazi bianchi
+  // validaValore(event: Event) {
+  //   const target = event.target as HTMLTableCellElement;
+  //   const value = target.innerText.trim(); // Ottieni il valore senza spazi bianchi
 
-    // Verifica se il valore è un numero e rientra nell'intervallo consentito
-    const valoreNumerico = parseInt(value, 10);
+  //   // Verifica se il valore è un numero e rientra nell'intervallo consentito
+  //   const valoreNumerico = parseInt(value, 10);
 
-    if (
-      !isNaN(valoreNumerico) &&
-      valoreNumerico >= 1 &&
-      valoreNumerico <= this.rapportinoDto.length
-    ) {
-      // Il valore è valido, puoi aggiornare il tuo modello qui se necessario
-      // E.g., giornaliero.giorno = valoreNumerico;
-    } else {
-      // Il valore non è valido, puoi gestire l'errore in qualche modo
-      // E.g., reimposta il valore precedente o visualizza un messaggio di errore
-      target.innerText = ''; // Oppure, puoi reimpostare il valore precedente
-      const dialogRef = this.dialog.open(AlertDialogComponent, {
-        data: {
-          Image: '../../../../assets/images/logo.jpeg',
-          title: 'Attenzione:',
-          message:
-            'Il valore deve essere un numero compreso tra 1 e ' +
-            this.rapportinoDto.length,
-        },
-      });
-    }
-  }
+  //   if (
+  //     !isNaN(valoreNumerico) &&
+  //     valoreNumerico >= 1 &&
+  //     valoreNumerico <= this.rapportinoDto.length
+  //   ) {
+  //     // Il valore è valido, puoi aggiornare il tuo modello qui se necessario
+  //     // E.g., giornaliero.giorno = valoreNumerico;
+  //   } else {
+  //     // Il valore non è valido, puoi gestire l'errore in qualche modo
+  //     // E.g., reimposta il valore precedente o visualizza un messaggio di errore
+  //     target.innerText = ''; // Oppure, puoi reimpostare il valore precedente
+  //     const dialogRef = this.dialog.open(AlertDialogComponent, {
+  //       data: {
+  //         Image: '../../../../assets/images/logo.jpeg',
+  //         title: 'Attenzione:',
+  //         message:
+  //           'Il valore deve essere un numero compreso tra 1 e ' +
+  //           this.rapportinoDto.length,
+  //       },
+  //     });
+  //   }
+  // }
 
-  validaValoreTestuale(event: Event) {
-    const target = event.target as HTMLTableCellElement;
-    const value = target.innerText.trim(); // Ottieni il valore senza spazi bianchi
+  // validaValoreTestuale(event: Event) {
+  //   const target = event.target as HTMLTableCellElement;
+  //   const value = target.innerText.trim(); // Ottieni il valore senza spazi bianchi
 
-    // Verifica se il valore contiene numeri
-    if (/\d/.test(value)) {
-      // Il valore contiene numeri, impedisci l'input
-      target.innerText = ''; // Oppure, puoi reimpostare il valore precedente
-      const dialogRef = this.dialog.open(AlertDialogComponent, {
-        data: {
-          Image: '../../../../assets/images/logo.jpeg',
-          title: 'Attenzione:',
-          message: 'Il campo cliente non deve contenere numeri.',
-        },
-      });
-    } else {
-      console.log('Inserito il cliente ' + target.innerText);
-    }
-  }
+  //   // Verifica se il valore contiene numeri
+  //   if (/\d/.test(value)) {
+  //     // Il valore contiene numeri, impedisci l'input
+  //     target.innerText = ''; // Oppure, puoi reimpostare il valore precedente
+  //     const dialogRef = this.dialog.open(AlertDialogComponent, {
+  //       data: {
+  //         Image: '../../../../assets/images/logo.jpeg',
+  //         title: 'Attenzione:',
+  //         message: 'Il campo cliente non deve contenere numeri.',
+  //       },
+  //     });
+  //   } else {
+  //     console.log('Inserito il cliente ' + target.innerText);
+  //   }
+  // }
 
-  validaOreOrdinarie(event: Event) {
-    const target = event.target as HTMLTableCellElement;
-    const value = target.innerText.trim(); // Ottieni il valore senza spazi bianchi
+  // validaOreOrdinarie(event: Event) {
+  //   const target = event.target as HTMLTableCellElement;
+  //   const value = target.innerText.trim(); // Ottieni il valore senza spazi bianchi
 
-    // Verifica se il valore è un numero con incrementi di 0.5 tra 0 e 24
-    const valoreNumerico = parseFloat(value);
+  //   // Verifica se il valore è un numero con incrementi di 0.5 tra 0 e 24
+  //   const valoreNumerico = parseFloat(value);
 
-    if (
-      isNaN(valoreNumerico) ||
-      valoreNumerico < 0 ||
-      valoreNumerico > 24 ||
-      valoreNumerico % 0.5 !== 0
-    ) {
-      target.innerText = '';
-      const dialogRef = this.dialog.open(AlertDialogComponent, {
-        data: {
-          Image: '../../../../assets/images/logo.jpeg',
-          title: 'Attenzione:',
-          message:
-            'Il campo deve essere un numero con incrementi di 0.5 compreso tra 0 e 24.',
-        },
-      });
-    } else {
-    }
-  }
+  //   if (
+  //     isNaN(valoreNumerico) ||
+  //     valoreNumerico < 0 ||
+  //     valoreNumerico > 24 ||
+  //     valoreNumerico % 0.5 !== 0
+  //   ) {
+  //     target.innerText = '';
+  //     const dialogRef = this.dialog.open(AlertDialogComponent, {
+  //       data: {
+  //         Image: '../../../../assets/images/logo.jpeg',
+  //         title: 'Attenzione:',
+  //         message:
+  //           'Il campo deve essere un numero con incrementi di 0.5 compreso tra 0 e 24.',
+  //       },
+  //     });
+  //   } else {
+  //   }
+  // }
 }
 
 interface MenuData {

@@ -67,8 +67,32 @@ export class RapportinoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.delete(this.url + `delete-rapportino-inviato/${id}`);
+    return this.http.delete(this.url + `delete-rapportino-inviato/${id}`, {
+      headers: headers,
+    });
   }
+
+  checkRapportinoInviato(token: any, body: any) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post(this.url + `get-check-rapportino-inviato`, body, {
+      headers: headers,
+    });
+  }
+
+  /*
+    /get-check-rapportino-inviato
+CheckRapportinoInviatoResponse
+/get-check-rapportino-inviato,post
+{
+    "anno":2023,
+    "mese":10,
+    "codiceFiscale":"SLTDVDE31WS"
+}
+  */
 }
 
 /*
@@ -88,4 +112,25 @@ no payload
       { headers: headers }
     );
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 */
