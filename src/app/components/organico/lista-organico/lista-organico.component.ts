@@ -26,7 +26,7 @@ export class ListaOrganicoComponent implements OnInit {
   messaggio: any;
   userlogged: any;
   role: any;
-
+  mobile: any = false;
   //nav
   userLoggedName: any;
   userLoggedSurname: any;
@@ -55,6 +55,19 @@ export class ListaOrganicoComponent implements OnInit {
     const userLogged = localStorage.getItem('userLogged');
     if (userLogged) {
       this.userlogged = userLogged;
+    }
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
     }
   }
 

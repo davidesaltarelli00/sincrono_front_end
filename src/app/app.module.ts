@@ -53,7 +53,7 @@ import { RisultatiFilterOrganicoComponent } from './components/organico/risultat
 import { ListaRapportiniComponent } from './components/lista-rapportini/lista-rapportini.component';
 import { ModaleDettaglioRapportinoComponent } from './components/modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
 import { HeaderComponent } from './header/header.component';
-
+import { MatIconModule } from '@angular/material/icon';
 @NgModule({
   declarations: [
     AppComponent,
@@ -89,6 +89,7 @@ import { HeaderComponent } from './header/header.component';
     HeaderComponent
   ],
   imports: [
+    MatIconModule,
     MatNativeDateModule,
     MatDatepickerModule,
     MatFormFieldModule,

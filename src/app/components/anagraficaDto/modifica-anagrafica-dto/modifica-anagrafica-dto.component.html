@@ -87,29 +87,52 @@
     </style>
   </head>
   <body>
-    <div
-    class="container-toolbar"
-    [hidden]="tokenProvvisorio != null && tokenProvvisorio == null"
-  >
-  <mat-toolbar id="toolbar" *ngIf="token">
-    <a [routerLink]="['/home']" class="logo-link">
-      <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
-    </a>
-    <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
-      <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link" *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
-        {{ menuItem.nome }}
-      </a>
+    <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+      <mat-toolbar id="toolbar" *ngIf="token && !mobile">
+        <a [routerLink]="['/home']" class="logo-link">
+          <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+        </a>
+        <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
+          <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+            *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+            {{ menuItem.nome }}
+          </a>
+        </div>
+        <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+          <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+          <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
+            class="fa fa-user"></i>
+        </span> &nbsp;&nbsp;
+        <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </span>
+      </mat-toolbar>
     </div>
-    <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
-      <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-      <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i class="fa fa-user"></i>
-    </span> &nbsp;&nbsp;
-    <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
-      <i class="fa fa-sign-out" aria-hidden="true"></i>
-    </span>
-  </mat-toolbar>
-
-  </div>
+  
+    <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+      <mat-toolbar id="toolbar" *ngIf="token && mobile">
+        <a [routerLink]="['/home']" class="logo-link">
+          <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+        </a>
+        <button style=" background-color:white;color:black;margin-right: 10px;" mat-button [matMenuTriggerFor]="menu">
+          Menu
+        </button>
+        <mat-menu #menu="matMenu">
+          <button style="background-color:white;color:black" mat-menu-item *ngFor="let menuItem of jsonData.list"
+            [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
+            {{ menuItem.nome }}
+          </button>
+        </mat-menu>
+        <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+          <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+          <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+          <i class="fa fa-user"></i>
+        </span> &nbsp;&nbsp;
+        <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </span>
+      </mat-toolbar>
+    </div>
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">

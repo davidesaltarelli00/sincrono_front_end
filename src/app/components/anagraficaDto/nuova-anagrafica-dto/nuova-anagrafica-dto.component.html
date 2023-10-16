@@ -1,263 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      #toolbar {
-  background-color: #007bff; /* Colore blu aziendale */
-  color: #ffffff; /* Testo bianco */
-  display: flex;
-  background-color: #333;
-  justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
-  align-items: center; /* Allinea verticalmente gli elementi al centro */
-  }
 
-  .logo-link {
-  margin-right: 10px;
-  }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    #toolbar {
+      background-color: #007bff;
+      /* Colore blu aziendale */
+      color: #ffffff;
+      /* Testo bianco */
+      display: flex;
+      background-color: #333;
+      justify-content: space-between;
+      /* Allinea gli elementi a sinistra e a destra */
+      align-items: center;
+      /* Allinea verticalmente gli elementi al centro */
+    }
 
-  .toolbar-menu {
-  display: flex;
-  gap: 10px;
-  background-color: #333;
-  margin-right:auto;
-  }
+    .logo-link {
+      margin-right: 10px;
+    }
 
-  .toolbar-link {
-  text-decoration: none;
-  color: #ffffff;
-  /* padding: 10px; */
-  }
+    .toolbar-menu {
+      display: flex;
+      gap: 10px;
+      background-color: #333;
+      margin-right: auto;
+    }
 
-  a{
-  color: white;
-  }
+    .toolbar-link {
+      text-decoration: none;
+      color: #ffffff;
+      /* padding: 10px; */
+    }
 
-  .toolbar-link:hover {
-  color: #d8d8d8;
-  }
+    a {
+      color: white;
+    }
 
-  .user-icon,
-  .logout-icon {
-  color: #ffffff;
-  cursor: pointer;
-  }
+    .toolbar-link:hover {
+      color: #d8d8d8;
+    }
 
-
-  #toolbar {
-    background-color: #007bff; /* Colore blu aziendale */
-    color: #ffffff; /* Testo bianco */
-    display: flex;
-    background-color: #333;
-    justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
-    align-items: center; /* Allinea verticalmente gli elementi al centro */
-  }
-
-  .logo-link {
-    margin-right: 10px;
-  }
-
-  .toolbar-menu {
-    display: flex;
-    gap: 10px;
-    background-color: #333;
-    margin-right:auto;
-  }
-
-  .toolbar-link {
-    text-decoration: none;
-    color: #ffffff;
-    /* padding: 10px; */
-  }
-
-  a{
-    color: white;
-  }
-
-  .toolbar-link:hover {
-    color: #d8d8d8;
-  }
-
-  .user-icon,
-  .logout-icon {
-    color: #ffffff;
-    cursor: pointer;
-  }
+    .user-icon,
+    .logout-icon {
+      color: #ffffff;
+      cursor: pointer;
+    }
 
 
-    </style>
-  </head>
+    #toolbar {
+      background-color: #007bff;
+      /* Colore blu aziendale */
+      color: #ffffff;
+      /* Testo bianco */
+      display: flex;
+      background-color: #333;
+      justify-content: space-between;
+      /* Allinea gli elementi a sinistra e a destra */
+      align-items: center;
+      /* Allinea verticalmente gli elementi al centro */
+    }
 
-  <body>
-    <div
-    class="container-toolbar"
-    [hidden]="tokenProvvisorio != null && tokenProvvisorio == null"
-  >
-  <mat-toolbar id="toolbar" *ngIf="token">
-    <a [routerLink]="['/home']" class="logo-link">
-      <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
-    </a>
-    <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
-      <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link" *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
-        {{ menuItem.nome }}
+    .logo-link {
+      margin-right: 10px;
+    }
+
+    .toolbar-menu {
+      display: flex;
+      gap: 10px;
+      background-color: #333;
+      margin-right: auto;
+    }
+
+    .toolbar-link {
+      text-decoration: none;
+      color: #ffffff;
+      /* padding: 10px; */
+    }
+
+    a {
+      color: white;
+    }
+
+    .toolbar-link:hover {
+      color: #d8d8d8;
+    }
+
+    .user-icon,
+    .logout-icon {
+      color: #ffffff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
       </a>
-    </div>
-    <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
-      <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-      <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i class="fa fa-user"></i>
-    </span> &nbsp;&nbsp;
-    <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
-      <i class="fa fa-sign-out" aria-hidden="true"></i>
-    </span>
-  </mat-toolbar>
-
-  </div>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
-          <br>
-          <mat-card style="text-align: center;">
-            <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-            <h1>Nuova anagrafica</h1>
-          </mat-card>
-        </div>
+      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
+        <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+          {{ menuItem.nome }}
+        </a>
       </div>
-      <br>
-      <!-- <div class="alert alert-danger" *ngIf="showErrorAlert">
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
+          class="fa fa-user"></i>
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
+
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && mobile">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+      </a>
+      <button style=" background-color:white;color:black;margin-right: 10px;" mat-button [matMenuTriggerFor]="menu">
+        Menu
+      </button>
+      <mat-menu #menu="matMenu">
+        <button style="background-color:white;color:black" mat-menu-item *ngFor="let menuItem of jsonData.list"
+          [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
+          {{ menuItem.nome }}
+        </button>
+      </mat-menu>
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+        <i class="fa fa-user"></i>
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <br>
+        <mat-card style="text-align: center;">
+          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+          <h1>Nuova anagrafica</h1>
+        </mat-card>
+      </div>
+    </div>
+    <br>
+    <!-- <div class="alert alert-danger" *ngIf="showErrorAlert">
       Alcuni campi obbligatori non sono stati compilati correttamente:
       <ul>
         <li *ngFor="let field of missingFields">{{ field }}</li>
       </ul>
     </div> -->
-      <form [formGroup]="AnagraficaDto">
-        <!-- Step 1: Anagrafica -->
-        <div *ngIf="currentStep === 1">
-          <div class="row">
-            <div class="col-12">
-              <mat-stepper #stepper [selectedIndex]="currentStep - 1">
-                <mat-step>
-                  <ng-template matStepLabel>Anagrafica</ng-template>
-                  <mat-card>
-                    <mat-card-content>
-                      <div class="row">
-                        <div class="col-12">
-                          <strong>
-                            <h1 style="text-align: center">Anagrafica</h1>
-                          </strong>
-                        </div>
+    <form [formGroup]="AnagraficaDto">
+      <!-- Step 1: Anagrafica -->
+      <div *ngIf="currentStep === 1">
+        <div class="row">
+          <div class="col-12">
+            <mat-stepper #stepper [selectedIndex]="currentStep - 1">
+              <mat-step>
+                <ng-template matStepLabel>Anagrafica</ng-template>
+                <mat-card>
+                  <mat-card-content>
+                    <div class="row">
+                      <div class="col-12">
+                        <strong>
+                          <h1 style="text-align: center">Anagrafica</h1>
+                        </strong>
                       </div>
-                      <div class="row">
-                        <div class="col-md-3">
-                          <div formGroupName="ruolo" class="form-group">
-                            <label for="filter-ruoli">Ruolo *</label>
-                            <select
-                              [ngStyle]="{
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <div formGroupName="ruolo" class="form-group">
+                          <label for="filter-ruoli">Ruolo *</label>
+                          <select [ngStyle]="{
                                 border: AnagraficaDto.get('ruolo.id')?.hasError(
                                   'required'
                                 )
                                   ? '1px solid red'
                                   : '1px solid green'
-                              }"
-                              class="form-select"
-                              aria-label="Default select example"
-                              formControlName="id"
-                              type="number"
-                            >
-                              <option value="">-- Seleziona un ruolo --</option>
-                              <option
-                                *ngFor="let ruolo of ruoli"
-                                [value]="ruolo.id"
-                              >
-                                {{ ruolo.nome }}
-                              </option>
-                            </select>
-                            <div
-                              *ngIf="
+                              }" class="form-select" aria-label="Default select example" formControlName="id"
+                            type="number">
+                            <option value="">-- Seleziona un ruolo --</option>
+                            <option *ngFor="let ruolo of ruoli" [value]="ruolo.id">
+                              {{ ruolo.nome }}
+                            </option>
+                          </select>
+                          <div *ngIf="
                                 AnagraficaDto.get('ruolo.id')?.hasError(
                                   'required'
                                 )
-                              "
-                              class="text-danger"
-                            >
-                              Il campo ruolo è obbligatorio.
-                            </div>
+                              " class="text-danger">
+                            Il campo ruolo è obbligatorio.
                           </div>
                         </div>
                       </div>
+                    </div>
 
-                      <br />
-                      <div formGroupName="anagrafica">
-                        <div class="row" id="nominativo">
-                          <legend>Dati personali</legend>
-                          <div class="col-md-3">
-                            <label for="nome">Nome* </label>
-                            <div class="form-group">
-                              <input
-                                [ngStyle]="{
+                    <br />
+                    <div formGroupName="anagrafica">
+                      <div class="row" id="nominativo">
+                        <legend>Dati personali</legend>
+                        <div class="col-md-3">
+                          <label for="nome">Nome* </label>
+                          <div class="form-group">
+                            <input [ngStyle]="{
                                   border: AnagraficaDto.get(
                                     'anagrafica.nome'
                                   )?.hasError('required')
                                     ? '1px solid red'
                                     : '1px solid green'
-                                }"
-                                id="anagrafica.nome"
-                                type="text"
-                                class="form-control"
-                                placeholder="Inserire il nome."
-                                formControlName="nome"
-                              />
-                              <div
-                                *ngIf="
+                                }" id="anagrafica.nome" type="text" class="form-control"
+                              placeholder="Inserire il nome." formControlName="nome" />
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.nome'
                                   )?.hasError('required')
-                                "
-                                class="text-danger"
-                              >
-                                Il campo nome è obbligatorio.
-                              </div>
+                                " class="text-danger">
+                              Il campo nome è obbligatorio.
                             </div>
                           </div>
-                          <!--
+                        </div>
+                        <!--
                             && !AnagraficaDto.get('anagrafica.cognome')?.invalid && AnagraficaDto.get('anagrafica.cognome')?.touched"
                             [class.is-invalid]="AnagraficaDto.get('anagrafica.cognome')?.invalid && AnagraficaDto.get('anagrafica.cognome')?.touched"-->
-                          <div class="col-md-3">
-                            <label>Cognome* </label>
-                            <div class="form-group">
-                              <input
-                                [ngStyle]="{
+                        <div class="col-md-3">
+                          <label>Cognome* </label>
+                          <div class="form-group">
+                            <input [ngStyle]="{
                                   border: AnagraficaDto.get(
                                     'anagrafica.cognome'
                                   )?.hasError('required')
                                     ? '1px solid red'
                                     : '1px solid green'
-                                }"
-                                id="anagrafica.cognome"
-                                type="text"
-                                class="form-control"
-                                placeholder="Inserire il cognome."
-                                formControlName="cognome"
-                              />
-                              <div
-                                *ngIf="
+                                }" id="anagrafica.cognome" type="text" class="form-control"
+                              placeholder="Inserire il cognome." formControlName="cognome" />
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.cognome'
                                   )?.hasError('required')
-                                "
-                                class="text-danger"
-                              >
-                                Il campo cognome è obbligatorio.
-                              </div>
+                                " class="text-danger">
+                              Il campo cognome è obbligatorio.
                             </div>
                           </div>
+                        </div>
 
-                          <div class="col-md-3">
-                            <label>Codice Fiscale* </label>
-                            <div class="form-group">
-                              <input
-                                [ngStyle]="{
+                        <div class="col-md-3">
+                          <label>Codice Fiscale* </label>
+                          <div class="form-group">
+                            <input [ngStyle]="{
                                   border:
                                     AnagraficaDto.get(
                                       'anagrafica.codiceFiscale'
@@ -270,895 +270,633 @@
                                     )?.hasError('maxlength')
                                       ? '1px solid red'
                                       : '1px solid green'
-                                }"
-                                id="anagrafica.codiceFiscale"
-                                type="text"
-                                class="form-control"
-                                placeholder="Inserire il codice fiscale."
-                                formControlName="codiceFiscale"
-                              />
-                              <div
-                                *ngIf="
+                                }" id="anagrafica.codiceFiscale" type="text" class="form-control"
+                              placeholder="Inserire il codice fiscale." formControlName="codiceFiscale" />
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.codiceFiscale'
                                   )?.hasError('maxLength')
-                                "
-                                class="text-danger"
-                              >
-                                Il campo non rispetta la lunghezza massima
-                                richiesta (15 caratteri)
-                              </div>
-                              <div
-                                *ngIf="
+                                " class="text-danger">
+                              Il campo non rispetta la lunghezza massima
+                              richiesta (15 caratteri)
+                            </div>
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.codiceFiscale'
                                   )?.hasError('minLength')
-                                "
-                                class="text-danger"
-                              >
-                                Il campo non rispetta la lunghezza minima
-                                richiesta (16 caratteri)
-                              </div>
-                              <div
-                                *ngIf="
+                                " class="text-danger">
+                              Il campo non rispetta la lunghezza minima
+                              richiesta (16 caratteri)
+                            </div>
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.codiceFiscale'
                                   )?.hasError('required')
-                                "
-                                class="text-danger"
-                              >
-                                Campo obbligatorio.
-                              </div>
-                              <div
-                                *ngIf="
+                                " class="text-danger">
+                              Campo obbligatorio.
+                            </div>
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.codiceFiscale'
                                   )?.hasError('required') &&
                                   !AnagraficaDto.get('anagrafica.codiceFiscale')
                                     ?.invalid
-                                "
-                                class="text-danger"
-                              >
-                                Campo non valido.
-                              </div>
+                                " class="text-danger">
+                              Campo non valido.
                             </div>
                           </div>
+                        </div>
 
-                          <div class="col-3">
-                            <label for="filter-Tipo Azienda"
-                              >Nome Azienda</label
-                            >
-                            <div formGroupName="tipoAzienda" class="form-group">
-                              <select
-                                (change)="onChangeTipoAzienda($event)"
-                                class="form-select"
-                                aria-label="Default select example"
-                                formControlName="id"
-                                type="number"
-                              >
-                                <option value="">
-                                  -- Seleziona azienda --
-                                </option>
-                                <option
-                                  *ngFor="let tipoAzienda of tipiAziende"
-                                  [value]="tipoAzienda.id"
-                                >
-                                  {{ tipoAzienda.descrizione }}
-                                </option>
-                              </select>
-                            </div>
+                        <div class="col-3">
+                          <label for="filter-Tipo Azienda">Nome Azienda</label>
+                          <div formGroupName="tipoAzienda" class="form-group">
+                            <select (change)="onChangeTipoAzienda($event)" class="form-select"
+                              aria-label="Default select example" formControlName="id" type="number">
+                              <option value="">
+                                -- Seleziona azienda --
+                              </option>
+                              <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                                {{ tipoAzienda.descrizione }}
+                              </option>
+                            </select>
                           </div>
-
-                          <br />
                         </div>
 
                         <br />
-                        <legend>Recapiti</legend>
-                        <div class="row">
-                          <div class="col-md-3">
-                            <label>Cellulare Privato </label>
-                            <div class="form-group">
-                              <input
-                                type="text"
-                                class="form-control"
-                                formControlName="cellularePrivato"
-                                placeholder="Inserire cellulare privato."
-                              />
-                              <div
-                                *ngIf="
+                      </div>
+
+                      <br />
+                      <legend>Recapiti</legend>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label>Cellulare Privato </label>
+                          <div class="form-group">
+                            <input type="text" class="form-control" formControlName="cellularePrivato"
+                              placeholder="Inserire cellulare privato." />
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.cellularePrivato'
                                   )?.hasError('pattern')
-                                "
-                                class="text-danger"
-                              >
-                                Il formato cellulare privato non é valido: 10
-                                caratteri consentiti.
-                              </div>
-                              <div
-                                *ngIf="
+                                " class="text-danger">
+                              Il formato cellulare privato non é valido: 10
+                              caratteri consentiti.
+                            </div>
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.cellularePrivato'
                                   )?.hasError('minLength')
-                                "
-                                class="text-danger"
-                              >
-                                10 caratteri massimi consentiti.
-                              </div>
-                              <div
-                                *ngIf="
+                                " class="text-danger">
+                              10 caratteri massimi consentiti.
+                            </div>
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.cellularePrivato'
                                   )?.hasError('maxLength')
-                                "
-                                class="text-danger"
-                              >
-                                10 caratteri minimi consentiti.
-                              </div>
+                                " class="text-danger">
+                              10 caratteri minimi consentiti.
                             </div>
                           </div>
-                          <div class="col-md-3">
-                            <label>Cellulare Aziendale </label>
-                            <div class="form-group">
-                              <input
-                                type="text"
-                                class="form-control"
-                                formControlName="cellulareAziendale"
-                                placeholder="Inserire cellulare aziendale."
-                              />
-                              <div
-                                *ngIf="
+                        </div>
+                        <div class="col-md-3">
+                          <label>Cellulare Aziendale </label>
+                          <div class="form-group">
+                            <input type="text" class="form-control" formControlName="cellulareAziendale"
+                              placeholder="Inserire cellulare aziendale." />
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.cellulareAziendale'
                                   )?.hasError('pattern')
-                                "
-                                class="text-danger"
-                              >
-                                Il formato cellulare aziendale non é valido:10
-                                caratteri consentiti.
-                              </div>
+                                " class="text-danger">
+                              Il formato cellulare aziendale non é valido:10
+                              caratteri consentiti.
                             </div>
                           </div>
+                        </div>
 
-                          <div class="col-md-3">
-                            <label>Email Privata </label>
-                            <div class="form-group">
-                              <input
-                                type="text"
-                                class="form-control"
-                                formControlName="mailPrivata"
-                                placeholder="Inserire mail privata."
-                              />
-                              <div
-                                *ngIf="
+                        <div class="col-md-3">
+                          <label>Email Privata </label>
+                          <div class="form-group">
+                            <input type="text" class="form-control" formControlName="mailPrivata"
+                              placeholder="Inserire mail privata." />
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.mailPrivata'
                                   )?.hasError('pattern')
-                                "
-                                class="text-danger"
-                              >
-                                Il formato della mail privata non è valido.
-                              </div>
+                                " class="text-danger">
+                              Il formato della mail privata non è valido.
                             </div>
                           </div>
+                        </div>
 
-                          <div class="col-md-3">
-                            <label>Email Aziendale* </label>
-                            <div class="form-group">
-                              <input
-                                [ngStyle]="{
+                        <div class="col-md-3">
+                          <label>Email Aziendale* </label>
+                          <div class="form-group">
+                            <input [ngStyle]="{
                                   border: AnagraficaDto.get(
                                     'anagrafica.mailAziendale'
                                   )?.hasError('required')
                                     ? '1px solid red'
                                     : '1px solid green'
-                                }"
-                                id="anagrafica.mailAziendale"
-                                type="text"
-                                class="form-control"
-                                formControlName="mailAziendale"
-                                placeholder="Inserire mail aziendale."
-                              />
-                              <div
-                                *ngIf="
+                                }" id="anagrafica.mailAziendale" type="text" class="form-control"
+                              formControlName="mailAziendale" placeholder="Inserire mail aziendale." />
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.mailAziendale'
                                   )?.hasError('required')
-                                "
-                                class="text-danger"
-                              >
-                                Il campo mail aziendale è obbligatorio.
-                              </div>
-                              <div
-                                *ngIf="
+                                " class="text-danger">
+                              Il campo mail aziendale è obbligatorio.
+                            </div>
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.mailAziendale'
                                   )?.hasError('pattern')
-                                "
-                                class="text-danger"
-                              >
-                                Formato non valido.
-                              </div>
+                                " class="text-danger">
+                              Formato non valido.
                             </div>
                           </div>
                         </div>
-                        <div class="row">
-                          <div class="col-md-3">
-                            <label>Email Pec </label>
-                            <div class="form-group">
-                              <input
-                                type="text"
-                                class="form-control"
-                                formControlName="mailPec"
-                                placeholder="Inserire PEC."
-                              />
-                              <div
-                                *ngIf="
+                      </div>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label>Email Pec </label>
+                          <div class="form-group">
+                            <input type="text" class="form-control" formControlName="mailPec"
+                              placeholder="Inserire PEC." />
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.mailPec'
                                   )?.hasError('pattern')
-                                "
-                                class="text-danger"
-                              >
-                                Il formato della PEC non è valido.
-                              </div>
+                                " class="text-danger">
+                              Il formato della PEC non è valido.
                             </div>
                           </div>
                         </div>
-                        <br />
-                        <legend>Competenze</legend>
-                        <div class="row">
-                          <div class="col-md-3">
-                            <label>Titoli di Studio: </label>
-                            <div class="form-group">
-                              <input
-                                type="text"
-                                class="form-control"
-                                formControlName="titoliDiStudio"
-                                placeholder="Inserire titolo di studio."
-                              />
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <label>Altri Titoli </label>
-                            <div class="form-group">
-                              <input
-                                type="text"
-                                class="form-control"
-                                formControlName="altriTitoli"
-                                placeholder="Inserire altri titoli conseguiti."
-                              />
-                            </div>
-                          </div>
-                        </div>
-
-                        <legend>Info Extra</legend>
-                        <div class="row">
-                          <div class="col-md-3">
-                            <label>Data di Nascita </label>
-                            <div class="form-group">
-                              <input
-                                type="date"
-                                placeholder="Data di nascita (Anno-mese-giorno)"
-                                class="form-control"
-                                formControlName="dataDiNascita"
-                              />
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <label>Provincia di Nascita </label>
-                            <div class="form-group">
-                              <input
-                                type="text"
-                                class="form-control"
-                                formControlName="provinciaDiNascita"
-                                placeholder="Inserire provincia di nascita."
-                              />
-                            </div>
-                            <!--formControlName="provinciaDiNascita"-->
-                          </div>
-                          <div class="col-md-3">
-                            <label>Comune di Nascita </label>
-                            <div class="form-group">
-                              <input
-                                type="text"
-                                class="form-control"
-                                formControlName="comuneDiNascita"
-                                placeholder="Inserire comune di nascita."
-                              />
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <label>Stato di Nascita </label>
-                            <div class="form-group">
-                              <input
-                                type="text"
-                                class="form-control"
-                                formControlName="statoDiNascita"
-                                placeholder="Inserire stato di nascita."
-                              />
-                              <!--formControlName="statoDiNascita"-->
-                            </div>
-                          </div>
-                        </div>
-                        <br />
-                        <div class="row">
-                          <div class="col-md-3">
-                            <label>Cittadinanza </label>
-                            <div class="form-group">
-                              <input
-                                type="text"
-                                class="form-control"
-                                formControlName="cittadinanza"
-                                placeholder="Inserire cittadinanza."
-                              />
-                              <!--formControlName="cittadinanza"-->
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <label>Residenza </label>
-                            <div class="form-group">
-                              <input
-                                type="text"
-                                class="form-control"
-                                formControlName="residenza"
-                                placeholder="Inserire residenza."
-                              />
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <label>Domicilio </label>
-                            <div class="form-group">
-                              <input
-                                type="text"
-                                class="form-control"
-                                formControlName="domicilio"
-                                placeholder="Inserire domicilio."
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <br />
-                        <div class="row">
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Coniugato </label>
-                              <label class="toggle-switch">
-                                <div class="form-check">
-                                  <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    style="border-color: black"
-                                    formControlName="coniugato"
-                                    (change)="onChangeConiugato($event)"
-                                  />
-                                  <span class="slider"></span>
-                                </div>
-                              </label>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Figli a Carico</label>
-                              <label class="toggle-switch">
-                                <div class="form-check">
-                                  <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    style="border-color: black"
-                                    (change)="onFigliACaricoChange($event)"
-                                    formControlName="figliACarico"
-                                  />
-                                  <span class="slider"></span>
-                                </div>
-                              </label>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Attesa lavori</label>
-                              <label class="toggle-switch">
-                                <div class="form-check">
-                                  <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    style="border-color: black"
-                                    (change)="onAttesaLavoriChange($event)"
-                                    formControlName="attesaLavori"
-                                  />
-                                  <span class="slider"></span>
-                                </div>
-                              </label>
-                            </div>
-                          </div>
-
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Categoria protetta</label>
-                              <label class="toggle-switch">
-                                <div class="form-check">
-                                  <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    style="border-color: black"
-                                    (change)="onCategoriaProtettaChange($event)"
-                                    formControlName="categoriaProtetta"
-                                  />
-                                  <span class="slider"></span>
-                                </div>
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                        <br />
-                        <br />
                       </div>
-                    </mat-card-content>
-                  </mat-card>
-                </mat-step>
+                      <br />
+                      <legend>Competenze</legend>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label>Titoli di Studio: </label>
+                          <div class="form-group">
+                            <input type="text" class="form-control" formControlName="titoliDiStudio"
+                              placeholder="Inserire titolo di studio." />
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label>Altri Titoli </label>
+                          <div class="form-group">
+                            <input type="text" class="form-control" formControlName="altriTitoli"
+                              placeholder="Inserire altri titoli conseguiti." />
+                          </div>
+                        </div>
+                      </div>
 
-                <mat-step>
-                  <ng-template matStepLabel>Contratto</ng-template>
-                  <div>
-                    <mat-card>
-                      <mat-card-content>
-                        <div formGroupName="contratto">
-                          <strong>
-                            <h1 style="text-align: center">Contratto</h1>
-                          </strong>
-                          <legend>Dati Tipologici</legend>
-                          <div class="row">
-                            <div class="col-md-3" formGroupName="tipoAzienda">
-                              <label for="tipoAzienda">Nome Azienda*</label>
-                              <select
-                                (change)="onChangeTipoAzienda($event)"
-                                class="form-select"
-                                aria-label="Default select example"
-                                id="contratto.tipoAzienda.id"
-                                formControlName="id"
-                                type="number"
-                                [ngStyle]="{
+                      <legend>Info Extra</legend>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label>Data di Nascita </label>
+                          <div class="form-group">
+                            <input type="date" placeholder="Data di nascita (Anno-mese-giorno)" class="form-control"
+                              formControlName="dataDiNascita" />
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label>Provincia di Nascita </label>
+                          <div class="form-group">
+                            <input type="text" class="form-control" formControlName="provinciaDiNascita"
+                              placeholder="Inserire provincia di nascita." />
+                          </div>
+                          <!--formControlName="provinciaDiNascita"-->
+                        </div>
+                        <div class="col-md-3">
+                          <label>Comune di Nascita </label>
+                          <div class="form-group">
+                            <input type="text" class="form-control" formControlName="comuneDiNascita"
+                              placeholder="Inserire comune di nascita." />
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label>Stato di Nascita </label>
+                          <div class="form-group">
+                            <input type="text" class="form-control" formControlName="statoDiNascita"
+                              placeholder="Inserire stato di nascita." />
+                            <!--formControlName="statoDiNascita"-->
+                          </div>
+                        </div>
+                      </div>
+                      <br />
+                      <div class="row">
+                        <div class="col-md-3">
+                          <label>Cittadinanza </label>
+                          <div class="form-group">
+                            <input type="text" class="form-control" formControlName="cittadinanza"
+                              placeholder="Inserire cittadinanza." />
+                            <!--formControlName="cittadinanza"-->
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label>Residenza </label>
+                          <div class="form-group">
+                            <input type="text" class="form-control" formControlName="residenza"
+                              placeholder="Inserire residenza." />
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label>Domicilio </label>
+                          <div class="form-group">
+                            <input type="text" class="form-control" formControlName="domicilio"
+                              placeholder="Inserire domicilio." />
+                          </div>
+                        </div>
+                      </div>
+                      <br />
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Coniugato </label>
+                            <label class="toggle-switch">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" style="border-color: black"
+                                  formControlName="coniugato" (change)="onChangeConiugato($event)" />
+                                <span class="slider"></span>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Figli a Carico</label>
+                            <label class="toggle-switch">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" style="border-color: black"
+                                  (change)="onFigliACaricoChange($event)" formControlName="figliACarico" />
+                                <span class="slider"></span>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Attesa lavori</label>
+                            <label class="toggle-switch">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" style="border-color: black"
+                                  (change)="onAttesaLavoriChange($event)" formControlName="attesaLavori" />
+                                <span class="slider"></span>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Categoria protetta</label>
+                            <label class="toggle-switch">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" style="border-color: black"
+                                  (change)="onCategoriaProtettaChange($event)" formControlName="categoriaProtetta" />
+                                <span class="slider"></span>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <br />
+                      <br />
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </mat-step>
+
+              <mat-step>
+                <ng-template matStepLabel>Contratto</ng-template>
+                <div>
+                  <mat-card>
+                    <mat-card-content>
+                      <div formGroupName="contratto">
+                        <strong>
+                          <h1 style="text-align: center">Contratto</h1>
+                        </strong>
+                        <legend>Dati Tipologici</legend>
+                        <div class="row">
+                          <div class="col-md-3" formGroupName="tipoAzienda">
+                            <label for="tipoAzienda">Nome Azienda*</label>
+                            <select (change)="onChangeTipoAzienda($event)" class="form-select"
+                              aria-label="Default select example" id="contratto.tipoAzienda.id" formControlName="id"
+                              type="number" [ngStyle]="{
                                   border: AnagraficaDto.get(
                                     'contratto.tipoAzienda.id'
                                   )?.hasError('required')
                                     ? '1px solid red'
                                     : '1px solid #f1f1f1'
-                                }"
-                              >
-                                <option value="">--nessuna selezione--</option>
-                                <option
-                                  *ngFor="let tipoAzienda of tipiAziende"
-                                  [value]="tipoAzienda.id"
-                                >
-                                  {{ tipoAzienda.descrizione }}
-                                </option>
-                              </select>
-                              <div
-                                *ngIf="
+                                }">
+                              <option value="">--nessuna selezione--</option>
+                              <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                                {{ tipoAzienda.descrizione }}
+                              </option>
+                            </select>
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'contratto.tipoAzienda.id'
                                   )?.hasError('required')
-                                "
-                                class="text-danger"
-                              >
-                                Il campo nome azienda è obbligatorio.
-                              </div>
+                                " class="text-danger">
+                              Il campo nome azienda è obbligatorio.
                             </div>
+                          </div>
 
-                            <!-- <div *ngIf="AnagraficaDto.get('contratto.tipoAzienda.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoAzienda.id')?.touched" class="text-danger">
+                          <!-- <div *ngIf="AnagraficaDto.get('contratto.tipoAzienda.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoAzienda.id')?.touched" class="text-danger">
                             Il campo Tipo azienda è obbligatorio.
                           </div> -->
-                            <div class="col-md-3">
-                              <div formGroupName="tipoContratto">
-                                <label for="filter-TipoContratto"
-                                  >Tipo Contratto*</label
-                                >
-                                <select
-                                  class="form-select"
-                                  aria-label="Default select example"
-                                  id="contratto.tipoContratto.id"
-                                  formControlName="id"
-                                  (change)="onTipoContrattoChange($event)"
-                                  [ngStyle]="{
+                          <div class="col-md-3">
+                            <div formGroupName="tipoContratto">
+                              <label for="filter-TipoContratto">Tipo Contratto*</label>
+                              <select class="form-select" aria-label="Default select example"
+                                id="contratto.tipoContratto.id" formControlName="id"
+                                (change)="onTipoContrattoChange($event)" [ngStyle]="{
                                     border: AnagraficaDto.get(
                                       'contratto.tipoContratto.id'
                                     )?.hasError('required')
                                       ? '1px solid red'
                                       : '1px solid #f1f1f1'
-                                  }"
-                                >
-                                  <option value="">
-                                    --nessuna selezione--
-                                  </option>
-                                  <option
-                                    *ngFor="let tipoContratto of tipiContratti"
-                                    [value]="tipoContratto.id"
-                                  >
-                                    {{ tipoContratto.descrizione }}
-                                  </option>
-                                </select>
-                                <div
-                                  *ngIf="
+                                  }">
+                                <option value="">
+                                  --nessuna selezione--
+                                </option>
+                                <option *ngFor="let tipoContratto of tipiContratti" [value]="tipoContratto.id">
+                                  {{ tipoContratto.descrizione }}
+                                </option>
+                              </select>
+                              <div *ngIf="
                                     AnagraficaDto.get(
                                       'contratto.tipoContratto.id'
                                     )?.hasError('required')
-                                  "
-                                  class="text-danger"
-                                >
-                                  Il campo tipo contratto è obbligatorio.
-                                </div>
+                                  " class="text-danger">
+                                Il campo tipo contratto è obbligatorio.
                               </div>
                             </div>
+                          </div>
 
-                            <div class="col-md-3">
-                              <label>Mesi Durata </label>
-                              <input
-                                type="number"
-                                class="form-control"
-                                formControlName="mesiDurata"
-                                placeholder="Inserire mesi durata"
-                                [ngStyle]="{
+                          <div class="col-md-3">
+                            <label>Mesi Durata </label>
+                            <input type="number" class="form-control" formControlName="mesiDurata"
+                              placeholder="Inserire mesi durata" [ngStyle]="{
                                   border: AnagraficaDto.get(
                                     'contratto.mesiDurata'
                                   )?.hasError('required')
                                     ? '1px solid red'
                                     : '1px solid #f1f1f1'
-                                }"
-                              />
-                              <div
-                                *ngIf="
+                                }" />
+                            <div *ngIf="
                                   AnagraficaDto.get(
                                     'contratto.mesiDurata'
                                   )?.hasError('required')
-                                "
-                                class="text-danger"
-                              >
-                                Il campo mesi durata è obbligatorio.
-                              </div>
-                              <div
-                                *ngIf="
+                                " class="text-danger">
+                              Il campo mesi durata è obbligatorio.
+                            </div>
+                            <div *ngIf="
                                   AnagraficaDto.get('contratto.mesiDurata')
                                     ?.invalid
-                                "
-                                class="text-danger"
-                              >
-                                Formato non valido.
-                              </div>
+                                " class="text-danger">
+                              Formato non valido.
                             </div>
-                            <div class="col-3">
-                              <div formGroupName="tipoCcnl">
-                                <label for="tipoCcnl">CCNL*</label>
-                                <select
-                                  (change)="onChangeCCNL($event)"
-                                  class="form-select"
-                                  aria-label="Default select example"
-                                  id="contratto.tipoCcnl.id"
-                                  formControlName="id"
-                                  [ngStyle]="{
+                          </div>
+                          <div class="col-3">
+                            <div formGroupName="tipoCcnl">
+                              <label for="tipoCcnl">CCNL*</label>
+                              <select (change)="onChangeCCNL($event)" class="form-select"
+                                aria-label="Default select example" id="contratto.tipoCcnl.id" formControlName="id"
+                                [ngStyle]="{
                                     border: AnagraficaDto.get(
                                       'contratto.tipoCcnl.id'
                                     )?.hasError('required')
                                       ? '1px solid red'
                                       : '1px solid #f1f1f1'
-                                  }"
-                                >
-                                  <option value="">
-                                    --nessuna selezione--
-                                  </option>
-                                  <option
-                                    *ngFor="
+                                  }">
+                                <option value="">
+                                  --nessuna selezione--
+                                </option>
+                                <option *ngFor="
                                       let contrattiNazionale of contrattiNazionali
-                                    "
-                                    [value]="contrattiNazionale.id"
-                                  >
-                                    {{ contrattiNazionale.descrizione }}
-                                  </option>
-                                </select>
-                                <div
-                                  *ngIf="
+                                    " [value]="contrattiNazionale.id">
+                                  {{ contrattiNazionale.descrizione }}
+                                </option>
+                              </select>
+                              <div *ngIf="
                                     AnagraficaDto.get(
                                       'contratto.tipoCcnl.id'
                                     )?.hasError('required')
-                                  "
-                                  class="text-danger"
-                                >
-                                  Il campo CCNL è obbligatorio.
-                                </div>
+                                  " class="text-danger">
+                                Il campo CCNL è obbligatorio.
                               </div>
                             </div>
                           </div>
-                          <br />
-                          <div class="row">
-                            <div class="col-md-3">
-                              <div formGroupName="tipoLivelloContratto">
-                                <label for="filter-LivelloContratto"
-                                  >Livello Contratto*</label
-                                >
-                                <select
-                                  (change)="onChangeLivelloContratto($event)"
-                                  class="form-select"
-                                  aria-label="Default select example"
-                                  id="contratto.tipoLivelloContratto.id"
-                                  formControlName="id"
-                                >
-                                  <option value="">
-                                    --nessuna selezione--
-                                  </option>
-                                  <option
-                                    *ngFor="
+                        </div>
+                        <br />
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div formGroupName="tipoLivelloContratto">
+                              <label for="filter-LivelloContratto">Livello Contratto*</label>
+                              <select (change)="onChangeLivelloContratto($event)" class="form-select"
+                                aria-label="Default select example" id="contratto.tipoLivelloContratto.id"
+                                formControlName="id">
+                                <option value="">
+                                  --nessuna selezione--
+                                </option>
+                                <option *ngFor="
                                       let tipoLivelloContratto of elencoLivelliCCNL
-                                    "
-                                    [value]="tipoLivelloContratto.id"
-                                  >
-                                    {{ tipoLivelloContratto.livello }}
-                                  </option>
-                                </select>
-                                <!-- <div
+                                    " [value]="tipoLivelloContratto.id">
+                                  {{ tipoLivelloContratto.livello }}
+                                </option>
+                              </select>
+                              <!-- <div
                                 *ngIf="AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.touched"
                                 class="text-danger"
                               >
                                 Il campo tipo livello contratto è obbligatorio.
                               </div> -->
-                              </div>
                             </div>
+                          </div>
 
-                            <div class="col-md-3">
-                              <label for="assicurazioneObbligatoria"
-                                >Assicurazione obbligatoria:</label
-                              >
-                              <label class="toggle-switch">
-                                <div class="form-check">
-                                  <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    (change)="
+                          <div class="col-md-3">
+                            <label for="assicurazioneObbligatoria">Assicurazione obbligatoria:</label>
+                            <label class="toggle-switch">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" (change)="
                                       onChangeAssicurazioneObbligatoria($event)
-                                    "
-                                    style="border-color: black"
-                                    [checked]="
+                                    " style="border-color: black" [checked]="
                                       data?.contratto
                                         ?.assicurazioneObbligatoria === true
-                                    "
-                                    formControlName="assicurazioneObbligatoria"
-                                  />
+                                    " formControlName="assicurazioneObbligatoria" />
+                                <span class="slider"></span>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                        <br />
+                        <legend>Dettagli e date</legend>
+                        <div class="row">
+                          <div class="col-md-3">
+                            <label>Qualifica: </label>
+                            <div class="form-group">
+                              <input type="text" class="form-control" placeholder="Inserire qualifica"
+                                formControlName="qualifica" />
+                            </div>
+                          </div>
+
+                          <div class="col-md-3">
+                            <label>Sede Assunzione: </label>
+                            <div class="form-group">
+                              <input type="text" class="form-control" placeholder="Inserire la sede di assunzione"
+                                formControlName="sedeAssunzione" />
+                            </div>
+                          </div>
+
+                          <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
+                            <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
+                            <div class="form-group">
+                              <select (change)="onChamgeCanaleReclutamento($event)" class="form-select"
+                                aria-label="Default select example" id="contratto.tipoCanaleReclutamento.id"
+                                formControlName="id" type="number" [ngStyle]="{
+                                    border: AnagraficaDto.get(
+                                      'contratto.tipoCanaleReclutamento.id'
+                                    )?.hasError('required')
+                                      ? '1px solid red'
+                                      : '1px solid #f1f1f1'
+                                  }">
+                                <option value="">
+                                  --nessuna selezione--
+                                </option>
+                                <option *ngFor="
+                                      let tipoCanaleReclutamento of tipologicaCanaliReclutamento
+                                    " [value]="tipoCanaleReclutamento.id">
+                                  {{ tipoCanaleReclutamento.descrizione }}
+                                </option>
+                              </select>
+                              <div *ngIf="
+                                    AnagraficaDto.get(
+                                      'contratto.tipoCanaleReclutamento.id'
+                                    )?.hasError('required')
+                                  " class="text-danger">
+                                Il campo canale reclutamento è obbligatorio.
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Computer aziendale: </label>
+                            <div class="form-group">
+                              <label class="toggle-switch">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" style="border-color: black"
+                                    [checked]="data?.contratto?.pc === true" (change)="onPChange($event)"
+                                    formControlName="pc" />
                                   <span class="slider"></span>
                                 </div>
                               </label>
                             </div>
                           </div>
-                          <br />
-                          <legend>Dettagli e date</legend>
-                          <div class="row">
-                            <div class="col-md-3">
-                              <label>Qualifica: </label>
-                              <div class="form-group">
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Inserire qualifica"
-                                  formControlName="qualifica"
-                                />
-                              </div>
-                            </div>
-
-                            <div class="col-md-3">
-                              <label>Sede Assunzione: </label>
-                              <div class="form-group">
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Inserire la sede di assunzione"
-                                  formControlName="sedeAssunzione"
-                                />
-                              </div>
-                            </div>
-
-                            <div
-                              class="col-md-3"
-                              formGroupName="tipoCanaleReclutamento"
-                            >
-                              <label for="filter-tipoCanaleReclutamento"
-                                >Canale reclutamento*</label
-                              >
-                              <div class="form-group">
-                                <select
-                                  (change)="onChamgeCanaleReclutamento($event)"
-                                  class="form-select"
-                                  aria-label="Default select example"
-                                  id="contratto.tipoCanaleReclutamento.id"
-                                  formControlName="id"
-                                  type="number"
-                                  [ngStyle]="{
-                                    border: AnagraficaDto.get(
-                                      'contratto.tipoCanaleReclutamento.id'
-                                    )?.hasError('required')
-                                      ? '1px solid red'
-                                      : '1px solid #f1f1f1'
-                                  }"
-                                >
-                                  <option value="">
-                                    --nessuna selezione--
-                                  </option>
-                                  <option
-                                    *ngFor="
-                                      let tipoCanaleReclutamento of tipologicaCanaliReclutamento
-                                    "
-                                    [value]="tipoCanaleReclutamento.id"
-                                  >
-                                    {{ tipoCanaleReclutamento.descrizione }}
-                                  </option>
-                                </select>
-                                <div
-                                  *ngIf="
-                                    AnagraficaDto.get(
-                                      'contratto.tipoCanaleReclutamento.id'
-                                    )?.hasError('required')
-                                  "
-                                  class="text-danger"
-                                >
-                                  Il campo canale reclutamento è obbligatorio.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-3">
-                              <label>Computer aziendale: </label>
-                              <div class="form-group">
-                                <label class="toggle-switch">
-                                  <div class="form-check">
-                                    <input
-                                      class="form-check-input"
-                                      type="checkbox"
-                                      style="border-color: black"
-                                      [checked]="data?.contratto?.pc === true"
-                                      (change)="onPChange($event)"
-                                      formControlName="pc"
-                                    />
-                                    <span class="slider"></span>
-                                  </div>
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                          <br />
-                          <div class="row">
-                            <div class="col-md-3">
-                              <label for="dataAssunzione"
-                                >Data Assunzione*</label
-                              >
-                              <div class="form-group">
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  name="dataInput"
-                                  [ngStyle]="{
+                        </div>
+                        <br />
+                        <div class="row">
+                          <div class="col-md-3">
+                            <label for="dataAssunzione">Data Assunzione*</label>
+                            <div class="form-group">
+                              <input type="date" class="form-control" name="dataInput" [ngStyle]="{
                                     border: AnagraficaDto.get(
                                       'contratto.dataAssunzione'
                                     )?.hasError('required')
                                       ? '1px solid red'
                                       : '1px solid #f1f1f1'
-                                  }"
-                                  formControlName="dataAssunzione"
-                                  placeholder="Inserire data assunzione"
-                                />
-                                <div
-                                  *ngIf="
+                                  }" formControlName="dataAssunzione" placeholder="Inserire data assunzione" />
+                              <div *ngIf="
                                     AnagraficaDto.get(
                                       'contratto.dataAssunzione'
                                     )?.hasError('required')
-                                  "
-                                  class="text-danger"
-                                >
-                                  Il campo Data assunzione è obbligatorio.
-                                </div>
-                                <!-- <div
+                                  " class="text-danger">
+                                Il campo Data assunzione è obbligatorio.
+                              </div>
+                              <!-- <div
                             *ngIf="AnagraficaDto.get('contratto.dataAssunzione')?.invalid" class="text-danger">
                             Formato non valido.
                           </div> -->
-                              </div>
                             </div>
+                          </div>
 
-                            <div class="col-md-3">
-                              <label for="dataFineProva">Data Fine prova</label>
-                              <div class="form-group">
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  name="dataInput"
-                                  formControlName="dataFineProva"
-                                  [ngStyle]="{
+                          <div class="col-md-3">
+                            <label for="dataFineProva">Data Fine prova</label>
+                            <div class="form-group">
+                              <input type="date" class="form-control" name="dataInput" formControlName="dataFineProva"
+                                [ngStyle]="{
                                     border: AnagraficaDto.get(
                                       'contratto.dataFineProva'
                                     )?.hasError('required')
                                       ? '1px solid red'
                                       : '1px solid #f1f1f1'
-                                  }"
-                                />
-                                <div
-                                  *ngIf="
+                                  }" />
+                              <div *ngIf="
                                     AnagraficaDto.get(
                                       'contratto.dataFineProva'
                                     )?.hasError('required')
-                                  "
-                                  class="text-danger"
-                                >
-                                  Il campo Data fine prova è obbligatorio.
-                                </div>
+                                  " class="text-danger">
+                                Il campo Data fine prova è obbligatorio.
                               </div>
                             </div>
+                          </div>
 
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                <label for="dataFineRapporto"
-                                  >Data Fine Rapporto</label
-                                >
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  name="dataInput"
-                                  formControlName="dataFineRapporto"
-                                  [ngStyle]="{
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label for="dataFineRapporto">Data Fine Rapporto</label>
+                              <input type="date" class="form-control" name="dataInput"
+                                formControlName="dataFineRapporto" [ngStyle]="{
                                     border: AnagraficaDto.get(
                                       'contratto.dataFineRapporto'
                                     )?.hasError('required')
                                       ? '1px solid red'
                                       : '1px solid #f1f1f1'
-                                  }"
-                                />
-                                <div
-                                  *ngIf="
+                                  }" />
+                              <div *ngIf="
                                     AnagraficaDto.get(
                                       'contratto.dataFineRapporto'
                                     )?.hasError('required')
-                                  "
-                                  class="text-danger"
-                                >
-                                  Il campo Data Fine rapporto è obbligatorio.
-                                </div>
-                                <!--[disabled]="AnagraficaDto.get('contratto.tipoContratto.id')?.value === '4'"-->
+                                  " class="text-danger">
+                                Il campo Data Fine rapporto è obbligatorio.
+                              </div>
+                              <!--[disabled]="AnagraficaDto.get('contratto.tipoContratto.id')?.value === '4'"-->
+                            </div>
+                          </div>
+                        </div>
+                        <br />
+                        <legend>Livello Dipendente</legend>
+
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Livello attuale: </label>
+                              <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Inserire livello attuale"
+                                  formControlName="livelloAttuale" />
                               </div>
                             </div>
                           </div>
-                          <br />
-                          <legend>Livello Dipendente</legend>
-
-                          <div class="row">
-                            <div class="col-md-3">
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Livello finale: </label>
                               <div class="form-group">
-                                <label>Livello attuale: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Inserire livello attuale"
-                                    formControlName="livelloAttuale"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                <label>Livello finale: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Inserire livello finale"
-                                    formControlName="livelloFinale"
-                                  />
-                                </div>
+                                <input type="text" class="form-control" placeholder="Inserire livello finale"
+                                  formControlName="livelloFinale" />
                               </div>
                             </div>
                           </div>
+                        </div>
 
-                          <!-- <div class="row"> -->
-                          <!-- <div class="col-md-3">
+                        <!-- <div class="row"> -->
+                        <!-- <div class="col-md-3">
                           <label class="form-check-label">Dimissioni: </label>
                           <div class="form-check">
                             <input style="border-color: black" class="form-check-input" type="checkbox"
                               formControlName="dimissioni" />
                           </div>
                         </div> -->
-                          <!-- <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                           <label class="form-check-label">Part Time: </label>
                           <div class="form-check">
                             <input style="border-color: black" class="form-check-input" type="checkbox"
@@ -1177,242 +915,75 @@
                             <input class="form-control" type="number" placeholder="Inserire % part time" formControlName="ralPartTime" />
                           </div>
                         </div> -->
-                          <!-- </div> -->
+                        <!-- </div> -->
 
-                          <div class="container-dati-economici">
-                            <div class="row">
-                              <div class="col-12">
-                                <legend>
-                                  Dati economici <i class="fa fa-euro-sign"></i>
-                                </legend>
+                        <div class="container-dati-economici">
+                          <div class="row">
+                            <div class="col-12">
+                              <legend>
+                                Dati economici <i class="fa fa-euro-sign"></i>
+                              </legend>
+                            </div>
+                          </div>
+
+                          <legend>Retribuzione</legend>
+
+                          <div class="row">
+                            <div class="col-md-3">
+                              <label>Retribuzione Mensile Lorda: </label>
+                              <!--&nbsp; <button class="btn btn-warning" matTooltip="Calcola" (click)="calcolaRetribuzioneMensileLorda()"><i class="fa fa-calculator"></i></button> -->
+                              <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Inserire retribuzione lorda"
+                                  min="0" step="0.01" formControlName="retribuzioneMensileLorda"
+                                  (input)="calcolaMensileTot()" id="retribuzioneMensileLorda" />
                               </div>
                             </div>
 
-                            <legend>Retribuzione</legend>
-
-                            <div class="row">
-                              <div class="col-md-3">
-                                <label>Retribuzione Mensile Lorda: </label>
-                                <!--&nbsp; <button class="btn btn-warning" matTooltip="Calcola" (click)="calcolaRetribuzioneMensileLorda()"><i class="fa fa-calculator"></i></button> -->
-                                <div class="form-group">
-                                  <input
-                                    type="number"
-                                    class="form-control"
-                                    placeholder="Inserire retribuzione lorda"
-                                    min="0"
-                                    step="0.01"
-                                    formControlName="retribuzioneMensileLorda"
-                                    (input)="calcolaMensileTot()"
-                                    id="retribuzioneMensileLorda"
-                                  />
-                                </div>
-                              </div>
-
-                              <div class="col-md-3">
-                                <label>Superminimo Mensile: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="number"
-                                    class="form-control"
-                                    placeholder="Inserire superminimo mensile"
-                                    min="0"
-                                    step="0.01"
-                                    formControlName="superminimoMensile"
-                                    id="superminimoMensile"
-                                    (input)="calcolaMensileTot()"
-                                  />
-                                </div>
-                              </div>
-
-                              <div class="col-md-3">
-                                <label>Scatti Anzianita: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="number"
-                                    class="form-control"
-                                    formControlName="scattiAnzianita"
-                                    placeholder="Inserire scatti anzianitá"
-                                    min="0"
-                                    step="0.01"
-                                    id="scattiAnzianita"
-                                    (input)="calcolaMensileTot()"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-3">
-                                <label for="mensileTOT">Mensile tot</label>
-                                <div class="form-group">
-                                  <input
-                                    type="number"
-                                    readonly
-                                    class="form-control"
-                                    placeholder="Mensile tot"
-                                    id="mensileTOT"
-                                  />
-                                </div>
+                            <div class="col-md-3">
+                              <label>Superminimo Mensile: </label>
+                              <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Inserire superminimo mensile"
+                                  min="0" step="0.01" formControlName="superminimoMensile" id="superminimoMensile"
+                                  (input)="calcolaMensileTot()" />
                               </div>
                             </div>
-                            <br />
-                            <div class="row">
-                              <div class="col-md-3">
-                                <div class="form-group">
-                                  <label for="retribuzioneNettaMensile"
-                                    >Retribuzione netta mensile</label
-                                  >
-                                  <input
-                                    type="number"
-                                    formControlName="retribuzioneNettaMensile"
-                                    placeholder="Inserire retribuzione netta mensile"
-                                    min="0"
-                                    step="0.01"
-                                    class="form-control"
-                                    [ngStyle]="{
+
+                            <div class="col-md-3">
+                              <label>Scatti Anzianita: </label>
+                              <div class="form-group">
+                                <input type="number" class="form-control" formControlName="scattiAnzianita"
+                                  placeholder="Inserire scatti anzianitá" min="0" step="0.01" id="scattiAnzianita"
+                                  (input)="calcolaMensileTot()" />
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <label for="mensileTOT">Mensile tot</label>
+                              <div class="form-group">
+                                <input type="number" readonly class="form-control" placeholder="Mensile tot"
+                                  id="mensileTOT" />
+                              </div>
+                            </div>
+                          </div>
+                          <br />
+                          <div class="row">
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label for="retribuzioneNettaMensile">Retribuzione netta mensile</label>
+                                <input type="number" formControlName="retribuzioneNettaMensile"
+                                  placeholder="Inserire retribuzione netta mensile" min="0" step="0.01"
+                                  class="form-control" [ngStyle]="{
                                       border: AnagraficaDto.get(
                                         'contratto.retribuzioneNettaMensile'
                                       )?.hasError('required')
                                         ? '1px solid red'
                                         : '1px solid #f1f1f1'
-                                    }"
-                                  />
-                                  <div
-                                    *ngIf="
+                                    }" />
+                                <div *ngIf="
                                       AnagraficaDto.get(
                                         'contratto.retribuzioneNettaMensile'
                                       )?.hasError('required')
-                                    "
-                                    class="text-danger"
-                                  >
-                                    Il campo retribuzione netta mensile è
-                                    obbligatorio per questo tipo di contratto.
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <br />
-                            <div class="row">
-                              <legend>RAL</legend>
-                              <div class="col-6">
-                                <label>RAL Annua: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="number"
-                                    class="form-control"
-                                    placeholder="Inserire RAL annua"
-                                    min="0"
-                                    step="0.01"
-                                    formControlName="ralAnnua"
-                                    value="{{ ralAnnua }}"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-6">
-                                <label>Superminimo RAL: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="number"
-                                    class="form-control"
-                                    placeholder="Inserire superminimo RAL"
-                                    min="0"
-                                    step="0.01"
-                                    formControlName="superminimoRal"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <br />
-                            <div class="row">
-                              <legend>Diaria</legend>
-                              <div class="col-md-4">
-                                <label>Diaria Mensile: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="number"
-                                    class="form-control"
-                                    placeholder="Inserire diaria mensile"
-                                    min="0"
-                                    step="0.01"
-                                    formControlName="diariaMensile"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-md-4">
-                                <label>Diaria Giornaliera: </label>
-                                <div class="form-group">
-                                  <input
-                                    type="number"
-                                    class="form-control"
-                                    placeholder="Inserire diaria giornaliera"
-                                    min="0"
-                                    step="0.01"
-                                    formControlName="diariaGiornaliera"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <br />
-                          <legend>Dati economici partita IVA</legend>
-                          <div class="row">
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                <label>Tariffa Partita IVA: </label>
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  formControlName="tariffaPartitaIva"
-                                  placeholder="Inserire tariffa partita iva"
-                                  min="0"
-                                  step="0.01"
-                                  [ngStyle]="{
-                                    border: AnagraficaDto.get(
-                                      'contratto.tariffaPartitaIva'
-                                    )?.hasError('required')
-                                      ? '1px solid red'
-                                      : '1px solid #f1f1f1'
-                                  }"
-                                />
-                              </div>
-                              <div
-                                *ngIf="
-                                  AnagraficaDto.get(
-                                    'contratto.tariffaPartitaIva'
-                                  )?.hasError('required')
-                                "
-                                class="text-danger"
-                              >
-                                Il campo tariffa partita IVA è obbligatorio per
-                                questo tipo di contratto.
-                              </div>
-                            </div>
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                <label for="retribuzioneNettaGiornaliera"
-                                  >Retribuzione netta giornaliera</label
-                                >
-                                <input
-                                  type="number"
-                                  formControlName="retribuzioneNettaGiornaliera"
-                                  placeholder="Inserire retribuzione netta giornaliera"
-                                  min="0"
-                                  step="0.01"
-                                  class="form-control"
-                                  [ngStyle]="{
-                                    border: AnagraficaDto.get(
-                                      'contratto.retribuzioneNettaGiornaliera'
-                                    )?.hasError('required')
-                                      ? '1px solid red'
-                                      : '1px solid #f1f1f1'
-                                  }"
-                                />
-                                <div
-                                  *ngIf="
-                                    AnagraficaDto.get(
-                                      'contratto.retribuzioneNettaGiornaliera'
-                                    )?.hasError('required')
-                                  "
-                                  class="text-danger"
-                                >
-                                  Il campo retribuzione netta giornaliera è
+                                    " class="text-danger">
+                                  Il campo retribuzione netta mensile è
                                   obbligatorio per questo tipo di contratto.
                                 </div>
                               </div>
@@ -1420,220 +991,239 @@
                           </div>
                           <br />
                           <div class="row">
-                            <legend>Part time</legend>
-                            <div class="col-3">
-                              <label for="partTime">Part time:</label> <br />
-                              <label class="toggle-switch">
-                                <div class="form-check">
-                                  <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    style="border-color: black"
-                                    [checked]="
+                            <legend>RAL</legend>
+                            <div class="col-6">
+                              <label>RAL Annua: </label>
+                              <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Inserire RAL annua" min="0"
+                                  step="0.01" formControlName="ralAnnua" value="{{ ralAnnua }}" />
+                              </div>
+                            </div>
+                            <div class="col-6">
+                              <label>Superminimo RAL: </label>
+                              <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Inserire superminimo RAL" min="0"
+                                  step="0.01" formControlName="superminimoRal" />
+                              </div>
+                            </div>
+                          </div>
+                          <br />
+                          <div class="row">
+                            <legend>Diaria</legend>
+                            <div class="col-md-4">
+                              <label>Diaria Mensile: </label>
+                              <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Inserire diaria mensile" min="0"
+                                  step="0.01" formControlName="diariaMensile" />
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <label>Diaria Giornaliera: </label>
+                              <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Inserire diaria giornaliera"
+                                  min="0" step="0.01" formControlName="diariaGiornaliera" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <br />
+                        <legend>Dati economici partita IVA</legend>
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Tariffa Partita IVA: </label>
+                              <input type="number" class="form-control" formControlName="tariffaPartitaIva"
+                                placeholder="Inserire tariffa partita iva" min="0" step="0.01" [ngStyle]="{
+                                    border: AnagraficaDto.get(
+                                      'contratto.tariffaPartitaIva'
+                                    )?.hasError('required')
+                                      ? '1px solid red'
+                                      : '1px solid #f1f1f1'
+                                  }" />
+                            </div>
+                            <div *ngIf="
+                                  AnagraficaDto.get(
+                                    'contratto.tariffaPartitaIva'
+                                  )?.hasError('required')
+                                " class="text-danger">
+                              Il campo tariffa partita IVA è obbligatorio per
+                              questo tipo di contratto.
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label for="retribuzioneNettaGiornaliera">Retribuzione netta giornaliera</label>
+                              <input type="number" formControlName="retribuzioneNettaGiornaliera"
+                                placeholder="Inserire retribuzione netta giornaliera" min="0" step="0.01"
+                                class="form-control" [ngStyle]="{
+                                    border: AnagraficaDto.get(
+                                      'contratto.retribuzioneNettaGiornaliera'
+                                    )?.hasError('required')
+                                      ? '1px solid red'
+                                      : '1px solid #f1f1f1'
+                                  }" />
+                              <div *ngIf="
+                                    AnagraficaDto.get(
+                                      'contratto.retribuzioneNettaGiornaliera'
+                                    )?.hasError('required')
+                                  " class="text-danger">
+                                Il campo retribuzione netta giornaliera è
+                                obbligatorio per questo tipo di contratto.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                          <legend>Part time</legend>
+                          <div class="col-3">
+                            <label for="partTime">Part time:</label> <br />
+                            <label class="toggle-switch">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" style="border-color: black" [checked]="
                                       data?.contratto?.partTime === true
-                                    "
-                                    (change)="onPartTimeChange($event)"
-                                    formControlName="partTime"
-                                  />
-                                  <span class="slider"></span>
-                                </div>
-                              </label>
-                            </div>
-                            <div class="col-md-3">
-                              <label class="form-check-label"
-                                >% Part time:
-                              </label>
-                              <div class="form-group">
-                                <input
-                                  class="form-control"
-                                  type="number"
-                                  formControlName="percentualePartTime"
-                                  placeholder="Percentuale part time (da 40% a 80%)"
-                                  min="40"
-                                  step="10"
-                                  max="80"
-                                  (input)="calculateRalPartTime()"
-                                />
+                                    " (change)="onPartTimeChange($event)" formControlName="partTime" />
+                                <span class="slider"></span>
                               </div>
-                            </div>
-                            <div class="col-3">
-                              <label for="ral part time">RAL Part time</label>
-                              <input
-                                type="text"
-                                class="form-control"
-                                readonly
-                                formControlName="ralPartTime"
-                                [(ngModel)]="percentualePartTimeValue"
-                                placeholder="RAL part time"
-                              />
+                            </label>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-check-label">% Part time:
+                            </label>
+                            <div class="form-group">
+                              <input class="form-control" type="number" formControlName="percentualePartTime"
+                                placeholder="Percentuale part time (da 40% a 80%)" min="40" step="10" max="80"
+                                (input)="calculateRalPartTime()" />
                             </div>
                           </div>
+                          <div class="col-3">
+                            <label for="ral part time">RAL Part time</label>
+                            <input type="text" class="form-control" readonly formControlName="ralPartTime"
+                              [(ngModel)]="percentualePartTimeValue" placeholder="RAL part time" />
+                          </div>
+                        </div>
 
-                          <br />
-                          <legend>Ticket e Agevolazioni</legend>
-                          <br />
-                          <div class="row">
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                <label>Ticket</label>
-                                <label class="toggle-switch">
-                                  <div class="form-check">
-                                    <input
-                                      class="form-check-input"
-                                      type="checkbox"
-                                      style="border-color: black"
-                                      (change)="onValoreTicketChange($event)"
-                                      formControlName="ticket"
-                                    />
-                                    <span class="slider"></span>
-                                  </div>
-                                </label>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <label>Valore Ticket: </label>
-                              <div class="form-group">
-                                <input
-                                  type="number"
-                                  placeholder="Inserire valore ticket"
-                                  min="0"
-                                  step="0.01"
-                                  class="form-control"
-                                  formControlName="valoreTicket"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <br />
-                          <legend>Tutor e PFI</legend>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <label>Piano Formativo Individuale: </label>
-                              <br />
+                        <br />
+                        <legend>Ticket e Agevolazioni</legend>
+                        <br />
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Ticket</label>
                               <label class="toggle-switch">
                                 <div class="form-check">
-                                  <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    style="border-color: black"
-                                    (change)="onPFIChange($event)"
-                                    formControlName="pfi"
-                                  />
+                                  <input class="form-check-input" type="checkbox" style="border-color: black"
+                                    (change)="onValoreTicketChange($event)" formControlName="ticket" />
                                   <span class="slider"></span>
                                 </div>
                               </label>
                             </div>
+                          </div>
+                          <div class="col-md-6">
+                            <label>Valore Ticket: </label>
+                            <div class="form-group">
+                              <input type="number" placeholder="Inserire valore ticket" min="0" step="0.01"
+                                class="form-control" formControlName="valoreTicket" />
+                            </div>
+                          </div>
+                        </div>
+                        <br />
+                        <legend>Tutor e PFI</legend>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label>Piano Formativo Individuale: </label>
+                            <br />
+                            <label class="toggle-switch">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" style="border-color: black"
+                                  (change)="onPFIChange($event)" formControlName="pfi" />
+                                <span class="slider"></span>
+                              </div>
+                            </label>
+                          </div>
 
-                            <div class="col-md-6">
-                              <label>Tutor: </label>
-                              <div class="form-group">
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  formControlName="tutor"
-                                  placeholder="Inserire tutor."
-                                  [ngStyle]="{
+                          <div class="col-md-6">
+                            <label>Tutor: </label>
+                            <div class="form-group">
+                              <input type="text" class="form-control" formControlName="tutor"
+                                placeholder="Inserire tutor." [ngStyle]="{
                                     border: AnagraficaDto.get(
                                       'contratto.tutor'
                                     )?.hasError('required')
                                       ? '1px solid red'
                                       : '1px solid #f1f1f1'
-                                  }"
-                                />
-                                <div
-                                  *ngIf="
+                                  }" />
+                              <div *ngIf="
                                     AnagraficaDto.get(
                                       'contratto.tutor'
                                     )?.hasError('required')
-                                  "
-                                  class="text-danger"
-                                >
-                                  Il campo tutor è obbligatorio.
-                                </div>
+                                  " class="text-danger">
+                                Il campo tutor è obbligatorio.
                               </div>
                             </div>
                           </div>
-                          <br />
-                          <div class="row">
-                            <legend>Corso di sicurezza</legend>
-                            <div class="col-md-6">
+                        </div>
+                        <br />
+                        <div class="row">
+                          <legend>Corso di sicurezza</legend>
+                          <div class="col-md-6">
+                            <div class="form-group">
                               <div class="form-group">
-                                <div class="form-group">
-                                  <label>Corso di Sicurezza: </label>
-                                  <label class="toggle-switch">
-                                    <div class="form-check">
-                                      <input
-                                        class="form-check-input"
-                                        type="checkbox"
-                                        style="border-color: black"
-                                        (change)="
-                                          onCorsoSicurezzaChange($event)
-                                        "
-                                        formControlName="corsoSicurezza"
-                                      />
-                                      <span class="slider"></span>
-                                    </div>
-                                  </label>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group">
-                                <div class="form-group">
-                                  <label>Data corso di Sicurezza: </label>
-                                  <input
-                                    type="date"
-                                    class="form-control"
-                                    name="dataCorsoSicurezza"
-                                    formControlName="dataCorsoSicurezza"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <br />
-
-                          <div class="row">
-                            <div class="col-12">
-                              <h3>Dati medici</h3>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <label>Visita medica: </label>
-                              <div class="form-group">
+                                <label>Corso di Sicurezza: </label>
                                 <label class="toggle-switch">
                                   <div class="form-check">
-                                    <input
-                                      class="form-check-input"
-                                      type="checkbox"
-                                      style="border-color: black"
-                                      (change)="onVisitaMedicaChange($event)"
-                                      formControlName="visitaMedica"
-                                    />
+                                    <input class="form-check-input" type="checkbox" style="border-color: black"
+                                      (change)="
+                                          onCorsoSicurezzaChange($event)
+                                        " formControlName="corsoSicurezza" />
                                     <span class="slider"></span>
                                   </div>
                                 </label>
                               </div>
                             </div>
-                            <div class="col-md-6">
-                              <label for="dataVisitaMedica"
-                                >Data visita medica</label
-                              >
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
                               <div class="form-group">
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  formControlName="dataVisitaMedica"
-                                />
+                                <label>Data corso di Sicurezza: </label>
+                                <input type="date" class="form-control" name="dataCorsoSicurezza"
+                                  formControlName="dataCorsoSicurezza" />
                               </div>
                             </div>
                           </div>
                         </div>
-                      </mat-card-content>
-                    </mat-card>
-                    <br />
-                    <!-- <div class="row">
+                        <br />
+
+                        <div class="row">
+                          <div class="col-12">
+                            <h3>Dati medici</h3>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label>Visita medica: </label>
+                            <div class="form-group">
+                              <label class="toggle-switch">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" style="border-color: black"
+                                    (change)="onVisitaMedicaChange($event)" formControlName="visitaMedica" />
+                                  <span class="slider"></span>
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <label for="dataVisitaMedica">Data visita medica</label>
+                            <div class="form-group">
+                              <input type="date" class="form-control" formControlName="dataVisitaMedica" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                  <br />
+                  <!-- <div class="row">
                     <div class="col-6" style="text-align: end; ">
                       <button mat-button matStepperPrevious>«</button>
                     </div>
@@ -1641,56 +1231,45 @@
                       <button matTooltip="Avanti" mat-button matStepperNext> »</button>
                     </div>
                   </div> -->
-                  </div>
-                </mat-step>
+                </div>
+              </mat-step>
 
-                <mat-step>
-                  <ng-template matStepLabel>Commessa</ng-template>
-                  <div class="row">
-                    <div class="col-12">
-                      <mat-card>
-                        <mat-card-content>
-                          <!-- Utilizzo del formArrayName per le commesse -->
-                          <div formArrayName="commesse">
-                            <div
-                              class="row"
-                              style="margin: auto; text-align: center"
-                            >
-                              <div class="col-12">
-                                <h1>Commesse</h1>
-                                <button
-                                  mat-flat-button
-                                  color="primary"
-                                  (click)="aggiungiCommessa()"
-                                  id="button-duplica"
-                                  *ngIf="commesse.length === 0"
-                                >
-                                  Aggiungi Commessa
-                                </button>
-                                &nbsp;
-                              </div>
+              <mat-step>
+                <ng-template matStepLabel>Commessa</ng-template>
+                <div class="row">
+                  <div class="col-12">
+                    <mat-card>
+                      <mat-card-content>
+                        <!-- Utilizzo del formArrayName per le commesse -->
+                        <div formArrayName="commesse">
+                          <div class="row" style="margin: auto; text-align: center">
+                            <div class="col-12">
+                              <h1>Commesse</h1>
+                              <button mat-flat-button color="primary" (click)="aggiungiCommessa()" id="button-duplica"
+                                *ngIf="commesse.length === 0">
+                                Aggiungi Commessa
+                              </button>
+                              &nbsp;
                             </div>
+                          </div>
 
-                            <div class="row" *ngFor="let commessa of commesse.controls;let i = index"[formGroupName]="i">
-                              <div class="col-12">
-                                <strong>
-                                  <h1 style="text-align: center">
-                                    Commessa {{ i + 1 }}
-                                  </h1>
-                                </strong>
-                              </div>
+                          <div class="row" *ngFor="let commessa of commesse.controls;let i = index" [formGroupName]="i">
+                            <div class="col-12">
+                              <strong>
+                                <h1 style="text-align: center">
+                                  Commessa {{ i + 1 }}
+                                </h1>
+                              </strong>
+                            </div>
                             <br>
                             <div class="row">
                               <div class="col-md-3">
                                 <label>Azienda cliente: </label>
                                 <div class="form-group">
                                   <input
-                                  [ngStyle]="{ 'border': commessa.get('aziendaCliente')?.value=='' ? '1px solid red' : ''}"
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Inserire azienda cliente"
-                                    formControlName="aziendaCliente"
-                                  />
+                                    [ngStyle]="{ 'border': commessa.get('aziendaCliente')?.value=='' ? '1px solid red' : ''}"
+                                    type="text" class="form-control" placeholder="Inserire azienda cliente"
+                                    formControlName="aziendaCliente" />
                                   <div *ngIf="commessa.get('aziendaCliente')?.hasError('required')" class="text-danger">
                                     Il campo Azienda Cliente è obbligatorio.
                                   </div>
@@ -1699,13 +1278,10 @@
                               <div class="col-md-3">
                                 <label>Cliente Finale: </label>
                                 <div class="form-group">
-                                  <input
-                                    type="text"
+                                  <input type="text"
                                     [ngStyle]="{ 'border': commessa.get('clienteFinale')?.value=='' ? '1px solid red' : ''}"
-                                    class="form-control"
-                                    placeholder="Inserire cliente finale"
-                                    formControlName="clienteFinale"
-                                  />
+                                    class="form-control" placeholder="Inserire cliente finale"
+                                    formControlName="clienteFinale" />
                                   <div *ngIf="commessa.get('clienteFinale')?.hasError('required')" class="text-danger">
                                     Il campo Cliente Finale è obbligatorio.
                                   </div>
@@ -1715,14 +1291,12 @@
 
                                 <label>Azienda di fatturazione interna: </label>
                                 <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
+                                  <input type="text" class="form-control"
                                     [ngStyle]="{ 'border': commessa.get('aziendaDiFatturazioneInterna')?.value=='' ? '1px solid red' : ''}"
                                     formControlName="aziendaDiFatturazioneInterna"
-                                    placeholder="Inserire azienda di fatturazione interna"
-                                  />
-                                  <div *ngIf="commessa.get('aziendaDiFatturazioneInterna')?.hasError('required')" class="text-danger">
+                                    placeholder="Inserire azienda di fatturazione interna" />
+                                  <div *ngIf="commessa.get('aziendaDiFatturazioneInterna')?.hasError('required')"
+                                    class="text-danger">
                                     Il campo Azienda di fatturazione interna è obbligatorio.
                                   </div>
                                 </div>
@@ -1730,14 +1304,11 @@
                               <div class="col-md-3">
                                 <label>Titolo Posizione: </label>
                                 <div class="form-group">
-                                  <input
-                                    placeholder="Inserire titolo posizione"
+                                  <input placeholder="Inserire titolo posizione"
                                     [ngStyle]="{ 'border': commessa.get('titoloPosizione')?.value=='' ? '1px solid red' : ''}"
-                                    type="text"
-                                    class="form-control"
-                                    formControlName="titoloPosizione"
-                                  />
-                                  <div *ngIf="commessa.get('titoloPosizione')?.hasError('required')" class="text-danger">
+                                    type="text" class="form-control" formControlName="titoloPosizione" />
+                                  <div *ngIf="commessa.get('titoloPosizione')?.hasError('required')"
+                                    class="text-danger">
                                     Il campo titolo posizione è obbligatorio.
                                   </div>
                                 </div>
@@ -1749,50 +1320,33 @@
                                 Distacco
                               </legend>
 
-                            <div class="col-md-3">
-                              <label>Distacco: </label>
-                              <div class="form-group">
-                                <label class="toggle-switch">
-                                  <div class="form-check">
-                                    <input
-                                      class="form-check-input"
-                                      type="checkbox"
-                                      style="border-color: black"
-                                      (change)="onDistaccoChange($event, i)"
-                                      formControlName="distacco"
-                                    />
-                                    <span class="slider"></span>
-                                  </div>
-                                </label>
+                              <div class="col-md-3">
+                                <label>Distacco: </label>
+                                <div class="form-group">
+                                  <label class="toggle-switch">
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" style="border-color: black"
+                                        (change)="onDistaccoChange($event, i)" formControlName="distacco" />
+                                      <span class="slider"></span>
+                                    </div>
+                                  </label>
 
+                                </div>
                               </div>
-                            </div>
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                <label for="distaccoAzienda"
-                                  >Distacco azienda</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  formControlName="distaccoAzienda"
-                                  placeholder="Inserire distacco azienda."
-                                />
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label for="distaccoAzienda">Distacco azienda</label>
+                                  <input type="text" class="form-control" formControlName="distaccoAzienda"
+                                    placeholder="Inserire distacco azienda." />
+                                </div>
                               </div>
-                            </div>
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                <label for="distaccoData"
-                                  >Data distacco</label
-                                >
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  formControlName="distaccoData"
-                                  placeholder="Inserire data distacco."
-                                />
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label for="distaccoData">Data distacco</label>
+                                  <input type="date" class="form-control" formControlName="distaccoData"
+                                    placeholder="Inserire data distacco." />
+                                </div>
                               </div>
-                            </div>
                             </div>
                             <br>
                             <div class="row">
@@ -1800,23 +1354,17 @@
                               <div class="col-md-3">
                                 <label>Data Inizio: </label>
                                 <div class="form-group">
-                                  <input
-                                    type="date"
-                                    class="form-control"
-                                    formControlName="dataInizio"
-                                    placeholder="Inserire data inizio"
-                                  />
+                                  <input type="date" class="form-control" formControlName="dataInizio"
+                                    placeholder="Inserire data inizio" />
                                 </div>
                               </div>
                               <div class="col-md-3">
-                                <label>Data Fine: <i class="fa fa-question-circle" matTooltip="Inserire la data di fine commessa se la commessa é terminata o si sa una data di fine."></i> </label>
+                                <label>Data Fine: <i class="fa fa-question-circle"
+                                    matTooltip="Inserire la data di fine commessa se la commessa é terminata o si sa una data di fine."></i>
+                                </label>
                                 <div class="form-group">
-                                  <input
-                                    type="date"
-                                    class="form-control"
-                                    formControlName="dataFine"
-                                    placeholder="Inserire data fine"
-                                  />
+                                  <input type="date" class="form-control" formControlName="dataFine"
+                                    placeholder="Inserire data fine" />
                                 </div>
                               </div>
                             </div>
@@ -1826,27 +1374,21 @@
                               <div class="col-md-3">
                                 <label>Tariffa giornaliera: </label>
                                 <div class="form-group">
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    step="0.01"
-                                    class="form-control"
-                                    formControlName="tariffaGiornaliera"
-                                    placeholder="Inserire tariffa giornaliera"
-                                  />
+                                  <input type="number" min="0" step="0.01" class="form-control"
+                                    formControlName="tariffaGiornaliera" placeholder="Inserire tariffa giornaliera" />
                                 </div>
                               </div>
                             </div>
 
 
-                              <!-- <div class="col-md-3">
+                            <!-- <div class="col-md-3">
                               <label>Nominativo: </label>
                               <div class="form-group">
                                 <input type="text" class="form-control" formControlName="nominativo" />
                               </div>
                             </div> -->
 
-                              <!-- <div class="col-md-3">
+                            <!-- <div class="col-md-3">
                               <label>Stato</label>
                               <div class="form-group">
                                 <div class="form-check">
@@ -1856,7 +1398,7 @@
                               </div>
                               se la commessa ha l id vuol dire che esisteva gia e puo essere storicizzata
                             </div> -->
-                              <!-- <div class="col-md-3">
+                            <!-- <div class="col-md-3">
                               <label>Attesa lavori: </label>
                               <div class="form-group">
                                 <div class="form-check">
@@ -1868,40 +1410,27 @@
 
                               <br>
                             </div> -->
-                              <br />
-                              <div class="row">
-                                <div
-                                  class="col-12"
-                                  style="text-align: center; margin: auto"
-                                >
-                                  <button
-                                    mat-flat-button
-                                    color="primary"
-                                    (click)="aggiungiCommessa()"
-                                    id="button-duplica"
-                                    *ngIf="commesse.length != 0"
-                                  >
-                                    Aggiungi Commessa <i class="fa fa-plus" ></i>
-                                  </button>
-                                  &nbsp;
-                                  <button
-                                    mat-flat-button
-                                    color="accent"
-                                    (click)="rimuoviCommessa(i)"
-                                    [matTooltip]="
+                            <br />
+                            <div class="row">
+                              <div class="col-12" style="text-align: center; margin: auto">
+                                <button mat-flat-button color="primary" (click)="aggiungiCommessa()" id="button-duplica"
+                                  *ngIf="commesse.length != 0">
+                                  Aggiungi Commessa <i class="fa fa-plus"></i>
+                                </button>
+                                &nbsp;
+                                <button mat-flat-button color="accent" (click)="rimuoviCommessa(i)" [matTooltip]="
                                       i === 0
                                         ? 'La commessa uno non può essere eliminata'
                                         : ''
-                                    "
-                                  >
-                                    Rimuovi Commessa <i class="fa fa-trash" ></i>
-                                  </button>
-                                </div>
+                                    ">
+                                  Rimuovi Commessa <i class="fa fa-trash"></i>
+                                </button>
                               </div>
                             </div>
                           </div>
-                          <br />
-                          <!-- <div class="row">
+                        </div>
+                        <br />
+                        <!-- <div class="row">
                           <div class="col-6" style="text-align: end;">
                             <button mat-button matStepperPrevious>« </button>
                           </div>
@@ -1909,36 +1438,29 @@
                             <button hidden mat-button matStepperNext>»</button>
                           </div>
                         </div> -->
-                        </mat-card-content>
-                      </mat-card>
-                    </div>
+                      </mat-card-content>
+                    </mat-card>
                   </div>
-                </mat-step>
-              </mat-stepper>
-              <div class="row">
-                <div class="col-6" style="text-align: end">
-                  <button
-                    class="btn btn-info"
-                    type="submit"
-                    [routerLink]="['/lista-anagrafica']"
-                  >
-                    Annulla
-                  </button>
                 </div>
-                <div class="col-6" style="text-align: start">
-                  <button
-                    class="btn btn-success"
-                    [disabled]="AnagraficaDto.invalid"
-                    (click)="inserisci()"
-                  >
-                    Salva
-                  </button>
-                </div>
+              </mat-step>
+            </mat-stepper>
+            <div class="row">
+              <div class="col-6" style="text-align: end">
+                <button class="btn btn-info" type="submit" [routerLink]="['/lista-anagrafica']">
+                  Annulla
+                </button>
+              </div>
+              <div class="col-6" style="text-align: start">
+                <button class="btn btn-success" [disabled]="AnagraficaDto.invalid" (click)="inserisci()">
+                  Salva
+                </button>
               </div>
             </div>
           </div>
         </div>
-      </form>
-    </div>
-  </body>
+      </div>
+    </form>
+  </div>
+</body>
+
 </html>

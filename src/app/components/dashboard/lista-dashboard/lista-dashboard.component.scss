@@ -14,13 +14,6 @@
   margin-right: 10px;
 }
 
-/* Media query for screens smaller than 768px (typical mobile devices) */
-@media screen and (max-width: 768px) {
-  .custom-picker {
-    flex-direction: column; /* Stack the pickers vertically on small screens */
-    align-items: flex-start; /* Align pickers to the left */
-  }
-}
 
 button {
   background-color: rgb(24, 122, 0);
@@ -177,5 +170,59 @@ th {
   td,
   th {
     text-align: center;
+  }
+}
+
+
+
+.mobile-select mat-select {
+  font-size: 16px; // Adjust the font size as needed
+  width: 100%;
+  max-width: 300px;
+}
+
+.mobile-select mat-option {
+  font-size: 16px; // Adjust the font size as needed
+  color: #333; // Change the text color to make it readable
+  background-color: #fff; // Set a background color for the options
+}
+
+
+/* Media query for screens smaller than 768px (typical mobile devices) */
+@media screen and (max-width: 768px) {
+  .custom-picker {
+    flex-direction: column; /* Stack the pickers vertically on small screens */
+    align-items: flex-start; /* Align pickers to the left */
+  }
+}
+@media (max-width: 600px) {
+  .container-toolbar {
+    /* Styles for smaller screens (e.g., mobile devices) */
+    background-color: #333; /* Change background color */
+    padding: 10px; /* Add padding around the container */
+    text-align: center; /* Center the content in the container */
+  }
+
+  .logo-link {
+    display: block; /* Make the logo a block-level element */
+    margin: 0 auto; /* Center the logo horizontally */
+  }
+
+  .logo-image {
+    width: 60px; /* Adjust the logo image size for mobile */
+    height: 60px;
+  }
+
+  .mobile-select {
+    width: 100%; /* Make the select element full-width */
+  }
+
+  .user-icon, .logout-icon {
+    display: block; /* Make the icon buttons block-level elements */
+    margin: 10px auto; /* Center the icon buttons horizontally with some spacing */
+  }
+
+  .user-icon i, .logout-icon i {
+    font-size: 24px; /* Adjust icon size for mobile */
   }
 }

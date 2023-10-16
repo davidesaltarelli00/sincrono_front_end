@@ -31,7 +31,7 @@ export class ListaRapportiniComponent implements OnInit {
   elencoRapportiniFreezati: any[] = [];
   elencoRapportiniNonFreezati: any[] = [];
   checkFreeze = false;
-
+  mobile: any = false;
   selectedAnno: any;
   selectedMese: any;
   currentDate = new Date();
@@ -56,7 +56,22 @@ export class ListaRapportiniComponent implements OnInit {
     private rapportinoService: RapportinoService,
     private listaRapportiniService: ListaRapportiniService,
     private rapportinoDataService: RapportinoDataService
-  ) {}
+  ) {
+
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
+  }
 
   ngOnInit(): void {
     if (this.token != null) {

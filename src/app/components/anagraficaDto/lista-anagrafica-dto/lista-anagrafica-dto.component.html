@@ -1,118 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anagrafica</title>
   <style>
     #toolbar {
-background-color: #007bff; /* Colore blu aziendale */
-color: #ffffff; /* Testo bianco */
-display: flex;
-background-color: #333;
-justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
-align-items: center; /* Allinea verticalmente gli elementi al centro */
-}
+      background-color: #007bff;
+      /* Colore blu aziendale */
+      color: #ffffff;
+      /* Testo bianco */
+      display: flex;
+      background-color: #333;
+      justify-content: space-between;
+      /* Allinea gli elementi a sinistra e a destra */
+      align-items: center;
+      /* Allinea verticalmente gli elementi al centro */
+    }
 
-.logo-link {
-margin-right: 10px;
-}
+    .logo-link {
+      margin-right: 10px;
+    }
 
-.toolbar-menu {
-display: flex;
-gap: 10px;
-background-color: #333;
-margin-right:auto;
-}
+    .toolbar-menu {
+      display: flex;
+      gap: 10px;
+      background-color: #333;
+      margin-right: auto;
+    }
 
-.toolbar-link {
-text-decoration: none;
-color: #ffffff;
-/* padding: 10px; */
-}
+    .toolbar-link {
+      text-decoration: none;
+      color: #ffffff;
+      /* padding: 10px; */
+    }
 
-a{
-color: white;
-}
+    a {
+      color: white;
+    }
 
-.toolbar-link:hover {
-color: #d8d8d8;
-}
+    .toolbar-link:hover {
+      color: #d8d8d8;
+    }
 
-.user-icon,
-.logout-icon {
-color: #ffffff;
-cursor: pointer;
-}
-
-
-#toolbar {
-  background-color: #007bff; /* Colore blu aziendale */
-  color: #ffffff; /* Testo bianco */
-  display: flex;
-  background-color: #333;
-  justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
-  align-items: center; /* Allinea verticalmente gli elementi al centro */
-}
-
-.logo-link {
-  margin-right: 10px;
-}
-
-.toolbar-menu {
-  display: flex;
-  gap: 10px;
-  background-color: #333;
-  margin-right:auto;
-}
-
-.toolbar-link {
-  text-decoration: none;
-  color: #ffffff;
-  /* padding: 10px; */
-}
-
-a{
-  color: white;
-}
-
-.toolbar-link:hover {
-  color: #d8d8d8;
-}
-
-.user-icon,
-.logout-icon {
-  color: #ffffff;
-  cursor: pointer;
-}
+    .user-icon,
+    .logout-icon {
+      color: #ffffff;
+      cursor: pointer;
+    }
 
 
+    #toolbar {
+      background-color: #007bff;
+      /* Colore blu aziendale */
+      color: #ffffff;
+      /* Testo bianco */
+      display: flex;
+      background-color: #333;
+      justify-content: space-between;
+      /* Allinea gli elementi a sinistra e a destra */
+      align-items: center;
+      /* Allinea verticalmente gli elementi al centro */
+    }
+
+    .logo-link {
+      margin-right: 10px;
+    }
+
+    .toolbar-menu {
+      display: flex;
+      gap: 10px;
+      background-color: #333;
+      margin-right: auto;
+    }
+
+    .toolbar-link {
+      text-decoration: none;
+      color: #ffffff;
+      /* padding: 10px; */
+    }
+
+    a {
+      color: white;
+    }
+
+    .toolbar-link:hover {
+      color: #d8d8d8;
+    }
+
+    .user-icon,
+    .logout-icon {
+      color: #ffffff;
+      cursor: pointer;
+    }
   </style>
 </head>
-<body>
-  <div
-  class="container-toolbar"
-  [hidden]="tokenProvvisorio != null && tokenProvvisorio == null"
->
-<mat-toolbar id="toolbar" *ngIf="token">
-  <a [routerLink]="['/home']" class="logo-link">
-    <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
-  </a>
-  <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
-    <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link" *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
-      {{ menuItem.nome }}
-    </a>
-  </div>
-  <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
-    <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-    <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i class="fa fa-user"></i>
-  </span> &nbsp;&nbsp;
-  <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
-    <i class="fa fa-sign-out" aria-hidden="true"></i>
-  </span>
-</mat-toolbar>
 
-</div>
+<body>
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+      </a>
+      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
+        <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+          {{ menuItem.nome }}
+        </a>
+      </div>
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
+          class="fa fa-user"></i>
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
+
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && mobile">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+      </a>
+      <button style=" background-color:white;color:black;margin-right: 10px;" mat-button [matMenuTriggerFor]="menu">
+        Menu
+      </button>
+      <mat-menu #menu="matMenu">
+        <button style="background-color:white;color:black" mat-menu-item *ngFor="let menuItem of jsonData.list"
+          [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
+          {{ menuItem.nome }}
+        </button>
+      </mat-menu>
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+        <i class="fa fa-user"></i>
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
@@ -124,332 +155,379 @@ a{
       </div>
     </div>
     <br>
-  <mat-expansion-panel>
-  <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri">
 
         {{ mostraFiltri ? 'Nascondi filtri' : 'Mostra filtri' }}
-       </mat-expansion-panel-header>
+      </mat-expansion-panel-header>
 
-  <ng-template matExpansionPanelContent>
-    <div *ngIf="mostraFiltri">
-      <form [formGroup]="filterAnagraficaDto">
-          <div class="container-filtri">
-            <div formGroupName="anagrafica">
-              <p>Filtri disponibili per l'anagrafica:</p>
-             <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label for="nome">Nome</label>
-                  <input (keyup)="filter(filterAnagraficaDto.value)" type="text" class="form-control" id="anagrafica.nome" name="nome" placeholder="Inserire il nome." formControlName="nome">
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label for="cognome">Cognome</label>
-                  <input (keyup)="filter(filterAnagraficaDto.value)" type="text" class="form-control" id="anagrafica.cognome" name="cognome" placeholder="Inserire il cognome." formControlName="cognome">
-                </div>
-              </div>
-              <div class="col-md-1">
-                <div class="form-group">
-                  <label for="attivo">Attivo</label> <br>
-                  <input (keyup)="filter(filterAnagraficaDto.value)"  type="checkbox" class="form-check-input" style="border: 1px solid black;" id="anagrafica.attivo" name="attivo" (change)="onChangeAttivo($event)"  formControlName="attivo" checked>
-
-                </div>
-              </div>
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label for="attivo">Attesa lavori</label> <br>
-                  <input (keyup)="filter(filterAnagraficaDto.value)"  type="checkbox" class="form-check-input" style="border: 1px solid black;" id="anagrafica.attesaLavori" name="attesaLavori"  formControlName="attesaLavori">
-                </div>
-              </div>
-              <div class="col-3">
-                <label for="filter-Tipo Azienda">Nome azienda</label>
-                <div class="form-group" formGroupName="tipoAzienda">
-                  <select (keyup)="filter(filterAnagraficaDto.value)"  class="form-select" aria-label="Default select example" id="anagrafica.tipoAzienda.id" formControlName="id">
-                    <option value="" selected>--Nessuna selezione--</option>
-                    <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
-                      {{ tipoAzienda.descrizione }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-             </div>
-            </div>
-            <br>
-            <br>
-            <div formGroupName="contratto" >
-              <p>Filtri disponibili per il contratto:</p>
-              <br>
-              <div class="row">
-                <div class="col-md-3">
-                  <div formGroupName="tipoContratto">
-                    <label for="filter-TipoContratto">Tipo Contratto</label>
-                    <select (keyup)="filter(filterAnagraficaDto.value)"  class="form-select" aria-label="Default select example" id="contratto.tipoContratto.id" formControlName="id" (change)="onTipoContrattoChange($event)" >
-                      <option value="">--nessuna selezione--</option>
-                      <option *ngFor="let tipoContratto of tipiContratti" [value]="tipoContratto.id">
-                        {{ tipoContratto.descrizione }}
-                      </option>
-                    </select>
+      <ng-template matExpansionPanelContent>
+        <div *ngIf="mostraFiltri">
+          <form [formGroup]="filterAnagraficaDto">
+            <div class="container-filtri">
+              <div formGroupName="anagrafica">
+                <p>Filtri disponibili per l'anagrafica:</p>
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="nome">Nome</label>
+                      <input (keyup)="filter(filterAnagraficaDto.value)" type="text" class="form-control"
+                        id="anagrafica.nome" name="nome" placeholder="Inserire il nome." formControlName="nome">
+                    </div>
                   </div>
-
-                </div>
-
-                <div class="col-md-3">
-                  <div formGroupName="tipoCcnl">
-                    <label for="tipoCcnl">CCNL</label>
-                    <select (keyup)="filter(filterAnagraficaDto.value)" (change)="onChangeTipoContrattoValue($event)"
-                    class="form-select" aria-label="Default select example"
-                      id="contratto.tipoCcnl.id"
-                      formControlName="id"
-                    >
-                      <option value="">--nessuna selezione--</option>
-                      <option
-                        *ngFor="let contrattiNazionale of tipiCcnl"
-                        [value]="contrattiNazionale.id"
-                      >
-                        {{ contrattiNazionale.descrizione }}
-                      </option>
-                    </select>
-
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="cognome">Cognome</label>
+                      <input (keyup)="filter(filterAnagraficaDto.value)" type="text" class="form-control"
+                        id="anagrafica.cognome" name="cognome" placeholder="Inserire il cognome."
+                        formControlName="cognome">
+                    </div>
                   </div>
+                  <div class="col-md-1">
+                    <div class="form-group">
+                      <label for="attivo">Attivo</label> <br>
+                      <input (keyup)="filter(filterAnagraficaDto.value)" type="checkbox" class="form-check-input"
+                        style="border: 1px solid black;" id="anagrafica.attivo" name="attivo"
+                        (change)="onChangeAttivo($event)" formControlName="attivo" checked>
 
-
-
-                </div>
-
-                <div class="col-md-3">
-                  <div formGroupName="tipoLivelloContratto">
-                    <label for="filter-LivelloContratto">Livello Contratto</label>
-                    <select (keyup)="filter(filterAnagraficaDto.value)"  class="form-select" aria-label="Default select example" id="contratto.tipoLivelloContratto.id" formControlName="id">
-                      <option value="">--nessuna selezione--</option>
-                      <option
-                        *ngFor="let livello of elencoLivelliCCNL"
-                        [value]="livello.id"
-                      >
-                        {{ livello.livello }}
-                      </option>
-                    </select>
+                    </div>
                   </div>
-                </div>
-
-                <div class="col-md-3" formGroupName="tipoAzienda">
-                  <label for="tipoAzienda">Nome Azienda</label>
-                  <select  (keyup)="filter(filterAnagraficaDto.value)" class="form-select" aria-label="Default select example" id="contratto.tipoAzienda.id" formControlName="id" type="number">
-                    <option value="">--nessuna selezione--</option>
-                    <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
-                      {{ tipoAzienda.descrizione }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <br>
-              <div class="row">
-                <div class="col-4">
-                  <div class="form-group">
-                    <label for="ralAnnua">RAL Annua</label>
-                    <input (keyup)="filter(filterAnagraficaDto.value)"  type="text" id="contratto.ralAnnua" class="form-control" name="ralAnnua" formControlName="ralAnnua" placeholder="Inserire RAL annua" >
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="attivo">Attesa lavori</label> <br>
+                      <input (keyup)="filter(filterAnagraficaDto.value)" type="checkbox" class="form-check-input"
+                        style="border: 1px solid black;" id="anagrafica.attesaLavori" name="attesaLavori"
+                        formControlName="attesaLavori">
+                    </div>
                   </div>
-                </div>
-                <div class="col-4">
-                  <div class="form-group">
-                    <label for="dataAssunzione">Data assunzione</label>
-                    <input (keyup)="filter(filterAnagraficaDto.value)"  type="date" id="contratto.dataAssunzione" class="form-control" name="dataAssunzione" formControlName="dataAssunzione" placeholder="Inserire data assunzione" >
-                  </div>
-                </div>
-                <div class="col-4" *ngIf="inseritoContrattoIndeterminato">
-                  <div class="form-group">
-                    <label for="dataFineRapporto">Data fine rapporto</label>
-                    <input (keyup)="filter(filterAnagraficaDto.value)"  type="date" id="contratto.dataFineRapporto" class="form-control" name="dataFineRapporto" formControlName="dataFineRapporto" placeholder="Inserire data fine rapporto" >
-                  </div>
-                </div>
-              </div>
-              <br>
-              <div class="row">
-                <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
-                  <div class="form-group">
-                    <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
-                    <select (keyup)="filter(filterAnagraficaDto.value)"  class="form-select" aria-label="Default select example" id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
-                      <option value="">--nessuna selezione--</option>
-                      <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento" [value]="tipoCanaleReclutamento.id">
-                        {{ tipoCanaleReclutamento.descrizione }}
-                      </option>
-                    </select>
-                  </div>
-
-                </div>
-
-                <div class="col-md-3">
-                  <div class="form-group"  formGroupName="tipoCausaFineRapporto">
-                  <label>Motivazione Fine Rapporto: </label>
-                  <select (keyup)="filter(filterAnagraficaDto.value)"  class="form-select" aria-label="Default select example" id="contratto.tipoCausaFineRapporto.id" formControlName="id">
-                    <option value="">--nessuna selezione--</option>
-                    <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto" [value]="tipoCausaFineRapporto.id">
-                      {{ tipoCausaFineRapporto.descrizione }}
-                    </option>
-                  </select>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-            <br>
-            <br>
-            <div class="row">
-              <p>Filtri per commesse</p>
-              <div class="col-3">
-                <div formArrayName="commesse">
-                  <div *ngFor="let commessa of commesse.controls; let i = index">
-                    <div [formGroupName]="i">
-                      <div class="form-group">
-                        <label for="aziendaCliente">Azienda cliente</label>
-                      <input  (keyup)="filter(filterAnagraficaDto.value)" type="text" formControlName="aziendaCliente" class="form-control" id="commesse.aziendaCliente" name="aziendaCliente">
-                      </div>
+                  <div class="col-3">
+                    <label for="filter-Tipo Azienda">Nome azienda</label>
+                    <div class="form-group" formGroupName="tipoAzienda">
+                      <select (keyup)="filter(filterAnagraficaDto.value)" class="form-select"
+                        aria-label="Default select example" id="anagrafica.tipoAzienda.id" formControlName="id">
+                        <option value="" selected>--Nessuna selezione--</option>
+                        <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                          {{ tipoAzienda.descrizione }}
+                        </option>
+                      </select>
                     </div>
                   </div>
                 </div>
+              </div>
+              <br>
+              <br>
+              <div formGroupName="contratto">
+                <p>Filtri disponibili per il contratto:</p>
+                <br>
+                <div class="row">
+                  <div class="col-md-3">
+                    <div formGroupName="tipoContratto">
+                      <label for="filter-TipoContratto">Tipo Contratto</label>
+                      <select (keyup)="filter(filterAnagraficaDto.value)" class="form-select"
+                        aria-label="Default select example" id="contratto.tipoContratto.id" formControlName="id"
+                        (change)="onTipoContrattoChange($event)">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let tipoContratto of tipiContratti" [value]="tipoContratto.id">
+                          {{ tipoContratto.descrizione }}
+                        </option>
+                      </select>
+                    </div>
+
+                  </div>
+
+                  <div class="col-md-3">
+                    <div formGroupName="tipoCcnl">
+                      <label for="tipoCcnl">CCNL</label>
+                      <select (keyup)="filter(filterAnagraficaDto.value)" (change)="onChangeTipoContrattoValue($event)"
+                        class="form-select" aria-label="Default select example" id="contratto.tipoCcnl.id"
+                        formControlName="id">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let contrattiNazionale of tipiCcnl" [value]="contrattiNazionale.id">
+                          {{ contrattiNazionale.descrizione }}
+                        </option>
+                      </select>
+
+                    </div>
+
+
+
+                  </div>
+
+                  <div class="col-md-3">
+                    <div formGroupName="tipoLivelloContratto">
+                      <label for="filter-LivelloContratto">Livello Contratto</label>
+                      <select (keyup)="filter(filterAnagraficaDto.value)" class="form-select"
+                        aria-label="Default select example" id="contratto.tipoLivelloContratto.id" formControlName="id">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let livello of elencoLivelliCCNL" [value]="livello.id">
+                          {{ livello.livello }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3" formGroupName="tipoAzienda">
+                    <label for="tipoAzienda">Nome Azienda</label>
+                    <select (keyup)="filter(filterAnagraficaDto.value)" class="form-select"
+                      aria-label="Default select example" id="contratto.tipoAzienda.id" formControlName="id"
+                      type="number">
+                      <option value="">--nessuna selezione--</option>
+                      <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                        {{ tipoAzienda.descrizione }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="ralAnnua">RAL Annua</label>
+                      <input (keyup)="filter(filterAnagraficaDto.value)" type="text" id="contratto.ralAnnua"
+                        class="form-control" name="ralAnnua" formControlName="ralAnnua"
+                        placeholder="Inserire RAL annua">
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="dataAssunzione">Data assunzione</label>
+                      <input (keyup)="filter(filterAnagraficaDto.value)" type="date" id="contratto.dataAssunzione"
+                        class="form-control" name="dataAssunzione" formControlName="dataAssunzione"
+                        placeholder="Inserire data assunzione">
+                    </div>
+                  </div>
+                  <div class="col-4" *ngIf="inseritoContrattoIndeterminato">
+                    <div class="form-group">
+                      <label for="dataFineRapporto">Data fine rapporto</label>
+                      <input (keyup)="filter(filterAnagraficaDto.value)" type="date" id="contratto.dataFineRapporto"
+                        class="form-control" name="dataFineRapporto" formControlName="dataFineRapporto"
+                        placeholder="Inserire data fine rapporto">
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
+                    <div class="form-group">
+                      <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
+                      <select (keyup)="filter(filterAnagraficaDto.value)" class="form-select"
+                        aria-label="Default select example" id="contratto.tipoCanaleReclutamento.id"
+                        formControlName="id" type="number">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento"
+                          [value]="tipoCanaleReclutamento.id">
+                          {{ tipoCanaleReclutamento.descrizione }}
+                        </option>
+                      </select>
+                    </div>
+
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-group" formGroupName="tipoCausaFineRapporto">
+                      <label>Motivazione Fine Rapporto: </label>
+                      <select (keyup)="filter(filterAnagraficaDto.value)" class="form-select"
+                        aria-label="Default select example" id="contratto.tipoCausaFineRapporto.id"
+                        formControlName="id">
+                        <option value="">--nessuna selezione--</option>
+                        <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto"
+                          [value]="tipoCausaFineRapporto.id">
+                          {{ tipoCausaFineRapporto.descrizione }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                </div>
 
               </div>
-            </div>
+              <br>
+              <br>
+              <div class="row">
+                <p>Filtri per commesse</p>
+                <div class="col-3">
+                  <div formArrayName="commesse">
+                    <div *ngFor="let commessa of commesse.controls; let i = index">
+                      <div [formGroupName]="i">
+                        <div class="form-group">
+                          <label for="aziendaCliente">Azienda cliente</label>
+                          <input (keyup)="filter(filterAnagraficaDto.value)" type="text"
+                            formControlName="aziendaCliente" class="form-control" id="commesse.aziendaCliente"
+                            name="aziendaCliente">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-            <div class="row">
-              <div class="col-12" style="margin: auto; text-align: center;" >
-                <button class="btn btn-success" (click)="filter(filterAnagraficaDto.value)" >Cerca <i class="fa fa-search" ></i> </button> &nbsp;
-                <button class="btn btn-info" (click)="reset()" >Annulla filtri<i class="fa fa-undo" ></i> </button>
+                </div>
               </div>
-            </div>
 
+              <div class="row">
+                <div class="col-12" style="margin: auto; text-align: center;">
+                  <button class="btn btn-success" (click)="filter(filterAnagraficaDto.value)">Cerca <i
+                      class="fa fa-search"></i> </button> &nbsp;
+                  <button class="btn btn-info" (click)="reset()">Annulla filtri<i class="fa fa-undo"></i> </button>
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </ng-template>
+    </mat-expansion-panel>
+    <br>
+    <div class="row">
+      <div class="col-6">
+        <mat-card style="height: 100%;">
+          <div
+            style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+            <label>Esporta in excel</label>
+            <button (click)="exportListaAnagraficaToExcel()" style="margin: 5px;" matTooltip="Esporta in excel"
+              class="btn btn-success">
+              <i class="fa-solid fa-file-export"></i>
+            </button>
           </div>
-      </form>
-  </div>
-    </ng-template>
-  </mat-expansion-panel>
-  <br>
-  <div class="row">
-    <div class="col-6">
-      <mat-card style="height: 100%;">
-        <div style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
-          <label>Esporta in excel</label>
-          <button (click)="exportListaAnagraficaToExcel()" style="margin: 5px;" matTooltip="Esporta in excel" class="btn btn-success">
-            <i class="fa-solid fa-file-export"></i>
-          </button>
-        </div>
-      </mat-card>
-    </div>
-
-    <div class="col-6">
-      <mat-card style="height: 100%;">
-        <div style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
-          <label>Inserisci nuova anagrafica</label>
-          <button class="btn btn-success" [routerLink]="['/nuova-anagrafica']">
-            <i matTooltip="Inserisci Nuova Anagrafica" class="fa fa-plus"></i>
-          </button>
-        </div>
-      </mat-card>
-    </div>
-  </div>
-
-<br>
-  <div class="row" *ngIf="pageData.length===0" >
-    <div class="col-12">
-      <h3 style="text-align: center; padding: 20px;"> <i class="fa fa-exclamation-triangle" ></i> Nessun risultato.</h3>
-    </div>
-  </div>
-  <div class="row" *ngIf="pageData.length>0" >
-  <div class="col-12">
-    <div class="table-responsive">
-
-      <table id="table" class="table table-bordered">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Inserimento <br> parziale</th>
-            <th scope="col" >Ruolo</th>
-            <th scope="col">Nome</th>
-            <th scope="col">Cognome</th>
-            <th scope="col">Codice Fiscale</th>
-            <th scope="col">Nome azienda</th>
-            <th scope="col">Mail aziendale</th>
-            <th scope="col">Cell privato</th>
-            <th scope="col" >Contratto</th>
-            <th scope="col" >Commessa</th>
-            <th scope="col" >Attesa lavori</th>
-            <th scope="col">Azioni</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let element of pageData; let i=index" [ngStyle]="{'background-color': (anagraficaLoggata === element.anagrafica.id) ? 'aliceblue' : 'white'}" >
-            <td [routerLink]="['/dettaglio-anagrafica/',element.anagrafica.id]"  >
-              <span [ngStyle]="{'color': isCampoVuoto(element) ? 'red' : 'green'}" >
-                {{isCampoVuoto(element)? 'Si' : 'No'}}
-              </span>
-            </td>
-            <td><i *ngIf="element.ruolo.descrizione==='ADMIN'" matTooltip="{{element.ruolo.descrizione}}" style="color: green;" class="fa-solid fa-user"></i><i  *ngIf="element.ruolo.descrizione==='DIPENDENTE'" style="color: orangered;"  matTooltip="{{element.ruolo.descrizione}}" class="fa-solid fa-user"></i></td>
-            <td>{{ element.anagrafica?.nome |titlecase }}</td>
-            <td>{{ element.anagrafica?.cognome |titlecase }}</td>
-            <td>{{ element.anagrafica?.codiceFiscale |uppercase }}</td>
-            <td>{{ element.anagrafica?.tipoAzienda?.descrizione |titlecase }}</td>
-            <td>{{ element.anagrafica?.mailAziendale  }}</td>
-            <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non inserito'  }}</td>
-            <td style="cursor: pointer;" [ngStyle]="{'color': element?.contratto!=null ? 'black' : 'red'}" [matTooltip]="element?.contratto!=null ? 'Vedi Il contratto di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi contratto a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome" (click)="handleClickContratto(element)">
-              {{ element?.contratto!=null ? element.contratto.tipoContratto.descrizione : 'Non inserito' }}
-              <i *ngIf="element?.contratto!=null" class="fa fa-info-circle" style="cursor:pointer;"></i>
-              <i *ngIf="element?.contratto==null" class="fa fa-plus-circle" style="cursor:pointer;"></i>
-            </td>
-
-            <td *ngIf="element.contratto?.tipoContratto?.descrizione==='#'" >
-              Generico
-            </td>
-            <td style="cursor: pointer;" [ngStyle]="{'color': element?.commesse?.length > 0 ? 'green' : 'red'}" [matTooltip]="element?.commesse?.length > 0 ? 'Vedi le commesse di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi commesse a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome" (click)="handleClick(element)">
-              {{ element?.commesse?.length > 0 ? 'Inserita' : 'Non inserita' }}
-              <i *ngIf="element?.commesse?.length > 0" class="fa fa-info-circle" style="cursor:pointer;"></i>
-              <i *ngIf="element?.commesse?.length == 0" class="fa fa-plus-circle" style="cursor:pointer;"></i>
-            </td>
-            <td>
-              <label class="switch" >
-                <input type="checkbox" disabled [checked]="element.anagrafica.attesaLavori">
-                <span class="slider"></span>
-              </label>
-            </td>
-            <td>
-              <span style="margin:5px;" *ngIf="anagraficaLoggata===element.anagrafica.id" >
-                <a [routerLink]="['/utente/', element?.anagrafica.id]"><button matTooltip="Rapportino {{element.anagrafica.nome}} {{element.anagrafica.cognome}} " [hidden]="anagraficaLoggata!=element.anagrafica.id"  class="btn btn-success"><i class="fa fa-file"></i></button></a>
-              </span>
-              <span style="margin:5px;">
-                <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} " class="btn btn-info"><i class="fa fa-info"></i></button></a>
-              </span>
-              <span style="margin:5px;">
-                <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]" matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i class="fa fa-pencil"></i></button>
-              </span>
-              <span style="margin:5px;" *ngIf="element.anagrafica.attivo==true && anagraficaLoggata!=element.anagrafica.id">
-                <button  class="btn btn-danger" matTooltip="Disattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} " (click)="elimina(element.anagrafica.id)"><i class="fa fa-minus"></i></button>
-              </span>
-              <span style="margin:5px;" *ngIf="element.anagrafica.attivo==false">
-                <button class="btn btn-success"  (click)="riattivaAnagrafica(element.anagrafica.id)" matTooltip="Riattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} " > <i class="fa fa-plus" ></i> </button>
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div *ngIf="messaggio!=null">{{messaggio}}</div>
-      <div class="pagination">
-        <ul>
-          <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-            <span> <i class="fa fa-arrow-left" ></i> </span>
-          </li>
-          <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page" (click)="goToPage(page)">
-            <span>{{ page }}</span>
-          </li>
-          <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
-            <span> <i class="fa fa-arrow-right" ></i> </span>
-          </li>
-        </ul>
+        </mat-card>
       </div>
 
-  </div>
-  </div>
-  </div>
+      <div class="col-6">
+        <mat-card style="height: 100%;">
+          <div
+            style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+            <label>Inserisci nuova anagrafica</label>
+            <button class="btn btn-success" [routerLink]="['/nuova-anagrafica']">
+              <i matTooltip="Inserisci Nuova Anagrafica" class="fa fa-plus"></i>
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+
+    <br>
+    <div class="row" *ngIf="pageData.length===0">
+      <div class="col-12">
+        <h3 style="text-align: center; padding: 20px;"> <i class="fa fa-exclamation-triangle"></i> Nessun risultato.
+        </h3>
+      </div>
+    </div>
+    <div class="row" *ngIf="pageData.length>0">
+      <div class="col-12">
+        <div class="table-responsive">
+
+          <table id="table" class="table table-bordered">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Inserimento <br> parziale</th>
+                <th scope="col">Ruolo</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Cognome</th>
+                <th scope="col">Codice Fiscale</th>
+                <th scope="col">Nome azienda</th>
+                <th scope="col">Mail aziendale</th>
+                <th scope="col">Cell privato</th>
+                <th scope="col">Contratto</th>
+                <th scope="col">Commessa</th>
+                <th scope="col">Attesa lavori</th>
+                <th scope="col">Azioni</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let element of pageData; let i=index"
+                [ngStyle]="{'background-color': (anagraficaLoggata === element.anagrafica.id) ? 'aliceblue' : 'white'}">
+                <td [routerLink]="['/dettaglio-anagrafica/',element.anagrafica.id]">
+                  <span [ngStyle]="{'color': isCampoVuoto(element) ? 'red' : 'green'}">
+                    {{isCampoVuoto(element)? 'Si' : 'No'}}
+                  </span>
+                </td>
+                <td><i *ngIf="element.ruolo.descrizione==='ADMIN'" matTooltip="{{element.ruolo.descrizione}}"
+                    style="color: green;" class="fa-solid fa-user"></i><i
+                    *ngIf="element.ruolo.descrizione==='DIPENDENTE'" style="color: orangered;"
+                    matTooltip="{{element.ruolo.descrizione}}" class="fa-solid fa-user"></i></td>
+                <td>{{ element.anagrafica?.nome |titlecase }}</td>
+                <td>{{ element.anagrafica?.cognome |titlecase }}</td>
+                <td>{{ element.anagrafica?.codiceFiscale |uppercase }}</td>
+                <td>{{ element.anagrafica?.tipoAzienda?.descrizione |titlecase }}</td>
+                <td>{{ element.anagrafica?.mailAziendale }}</td>
+                <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non inserito' }}
+                </td>
+                <td style="cursor: pointer;" [ngStyle]="{'color': element?.contratto!=null ? 'black' : 'red'}"
+                  [matTooltip]="element?.contratto!=null ? 'Vedi Il contratto di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi contratto a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome"
+                  (click)="handleClickContratto(element)">
+                  {{ element?.contratto!=null ? element.contratto.tipoContratto.descrizione : 'Non inserito' }}
+                  <i *ngIf="element?.contratto!=null" class="fa fa-info-circle" style="cursor:pointer;"></i>
+                  <i *ngIf="element?.contratto==null" class="fa fa-plus-circle" style="cursor:pointer;"></i>
+                </td>
+
+                <td *ngIf="element.contratto?.tipoContratto?.descrizione==='#'">
+                  Generico
+                </td>
+                <td style="cursor: pointer;" [ngStyle]="{'color': element?.commesse?.length > 0 ? 'green' : 'red'}"
+                  [matTooltip]="element?.commesse?.length > 0 ? 'Vedi le commesse di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi commesse a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome"
+                  (click)="handleClick(element)">
+                  {{ element?.commesse?.length > 0 ? 'Inserita' : 'Non inserita' }}
+                  <i *ngIf="element?.commesse?.length > 0" class="fa fa-info-circle" style="cursor:pointer;"></i>
+                  <i *ngIf="element?.commesse?.length == 0" class="fa fa-plus-circle" style="cursor:pointer;"></i>
+                </td>
+                <td>
+                  <label class="switch">
+                    <input type="checkbox" disabled [checked]="element.anagrafica.attesaLavori">
+                    <span class="slider"></span>
+                  </label>
+                </td>
+                <td>
+                  <span style="margin:5px;" *ngIf="anagraficaLoggata===element.anagrafica.id">
+                    <a [routerLink]="['/utente/', element?.anagrafica.id]"><button
+                        matTooltip="Rapportino {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
+                        [hidden]="anagraficaLoggata!=element.anagrafica.id" class="btn btn-success"><i
+                          class="fa fa-file"></i></button></a>
+                  </span>
+                  <span style="margin:5px;">
+                    <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button
+                        matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
+                        class="btn btn-info"><i class="fa fa-info"></i></button></a>
+                  </span>
+                  <span style="margin:5px;">
+                    <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
+                      matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
+                        class="fa fa-pencil"></i></button>
+                  </span>
+                  <span style="margin:5px;"
+                    *ngIf="element.anagrafica.attivo==true && anagraficaLoggata!=element.anagrafica.id">
+                    <button class="btn btn-danger"
+                      matTooltip="Disattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
+                      (click)="elimina(element.anagrafica.id)"><i class="fa fa-minus"></i></button>
+                  </span>
+                  <span style="margin:5px;" *ngIf="element.anagrafica.attivo==false">
+                    <button class="btn btn-success" (click)="riattivaAnagrafica(element.anagrafica.id)"
+                      matTooltip="Riattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "> <i
+                        class="fa fa-plus"></i> </button>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="messaggio!=null">{{messaggio}}</div>
+          <div class="pagination">
+            <ul>
+              <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+                <span> <i class="fa fa-arrow-left"></i> </span>
+              </li>
+              <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
+                (click)="goToPage(page)">
+                <span>{{ page }}</span>
+              </li>
+              <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
+                <span> <i class="fa fa-arrow-right"></i> </span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
 
 
   </div>
 </body>
+
 </html>

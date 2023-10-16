@@ -92,7 +92,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       aziendaCliente: new FormControl(null),
     }),
   });
-
+  mobile: any = false;
   userlogged: string = '';
   role: any;
   anagraficaLoggata: any;
@@ -129,6 +129,20 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     private dialog: MatDialog,
     private http: HttpClient
   ) {
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
+
     this.filterAnagraficaDto = this.formBuilder.group({
       anagrafica: new FormGroup({
         nome: new FormControl(null),
@@ -240,7 +254,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
+          error
         );
       }
     );
@@ -268,7 +282,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.log(
             'Si é verificato un errore durante il caricamento dei dati: ' +
-              error
+            error
           );
         }
       );
@@ -298,7 +312,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
             // Hai un campo vuoto in questo record
             console.log(
               `Campo vuoto trovato in record con ID ${record.anagrafica.id}` +
-                `: ${value}`
+              `: ${value}`
             );
           }
         }
@@ -340,7 +354,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.log(
             'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
-              JSON.stringify(error)
+            JSON.stringify(error)
           );
         }
       );
@@ -442,7 +456,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
                   if ((response as any).esito.code != 200) {
                     alert(
                       'Riattivazione non riuscita:\n' +
-                        (response as any).esito.target
+                      (response as any).esito.target
                     );
                   } else {
                     alert('Utente riattivato correttamente.');
@@ -531,39 +545,39 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     };
 
 
-      console.log(
-        'PAYLOAD BACKEND FILTER ORGANICO: ' + JSON.stringify(payload)
-      );
-      this.anagraficaDtoService
-        .filterAnagrafica(localStorage.getItem('token'), payload)
-        .subscribe(
-          (result) => {
-            if ((result as any).esito.code != 200) {
-              alert(
-                'Qualcosa é andato storto\n' +
-                  ': ' +
-                  (result as any).esito.target
-              );
+    console.log(
+      'PAYLOAD BACKEND FILTER ORGANICO: ' + JSON.stringify(payload)
+    );
+    this.anagraficaDtoService
+      .filterAnagrafica(localStorage.getItem('token'), payload)
+      .subscribe(
+        (result) => {
+          if ((result as any).esito.code != 200) {
+            alert(
+              'Qualcosa é andato storto\n' +
+              ': ' +
+              (result as any).esito.target
+            );
+          } else {
+            if (Array.isArray(result.list)) {
+              this.pageData = result.list;
             } else {
-              if (Array.isArray(result.list)) {
-                this.pageData = result.list;
-              } else {
-                this.pageData = [];
-                this.messaggio =
-                  'Nessun risultato trovato per i filtri inseriti, riprova.';
-              }
-              console.log(
-                'Trovati i seguenti risultati: ' + JSON.stringify(result)
-              );
+              this.pageData = [];
+              this.messaggio =
+                'Nessun risultato trovato per i filtri inseriti, riprova.';
             }
-          },
-          (error: any) => {
             console.log(
-              'Si é verificato un errore durante il passaggio dei dati da organico: ' +
-                error
+              'Trovati i seguenti risultati: ' + JSON.stringify(result)
             );
           }
-        );
+        },
+        (error: any) => {
+          console.log(
+            'Si é verificato un errore durante il passaggio dei dati da organico: ' +
+            error
+          );
+        }
+      );
   }
 
   caricaTipoContratto() {
@@ -765,7 +779,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.error(
             'ERRORE DURANTE IL CARICAMENTO DELLE COMMESSE:' +
-              JSON.stringify(error)
+            JSON.stringify(error)
           );
         }
       );
@@ -826,7 +840,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     (error: any) => {
       console.error(
         'Si è verificato un errore durante il recupero della lista delle anagrafiche: ' +
-          error
+        error
       );
     };
   }
@@ -859,13 +873,13 @@ export class ListaAnagraficaDtoComponent implements OnInit {
               this.elencoLivelliCCNL = response.list;
               console.log(
                 '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
-                  JSON.stringify(this.elencoLivelliCCNL)
+                JSON.stringify(this.elencoLivelliCCNL)
               );
             },
             (error: any) => {
               console.error(
                 'Errore durante il caricamento dei livelli di contratto: ' +
-                  error
+                error
               );
             }
           );
@@ -901,7 +915,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.error(
             'ERRORE DURANTE IL CARICAMENTO DELLE INFO SUL CONTRATTO:' +
-              JSON.stringify(error)
+            JSON.stringify(error)
           );
         }
       );
@@ -941,7 +955,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
+          error
         );
       }
     );
@@ -970,7 +984,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
+          error
         );
         this.shouldReloadPage = true;
       }

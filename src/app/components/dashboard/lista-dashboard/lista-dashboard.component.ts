@@ -14,14 +14,14 @@ import {
   FormArray,
   Validators,
 } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { AuthService } from '../../login/login-service';
 import { startWith } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
-
+import { MatSelect } from '@angular/material/select';
 declare var $: any;
 
 @Component({
@@ -31,6 +31,7 @@ declare var $: any;
 })
 export class ListaDashboardComponent {
 
+  
   userLoggedName: any;
   userLoggedSurname: any;
   shouldReloadPage: any;
@@ -72,6 +73,7 @@ export class ListaDashboardComponent {
   annoFineContratto: any;
   genericList: any[] = [];
   years: number[] = [];
+  mobile: any = false;
   filterAnagraficaDto: FormGroup = new FormGroup({
 
     anagrafica: new FormGroup({
@@ -110,6 +112,21 @@ export class ListaDashboardComponent {
     private http: HttpClient,
 
   ) {
+
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
+
     this.userlogged = localStorage.getItem('userLogged');
 
     const userLogged = localStorage.getItem('userLogged');
@@ -613,24 +630,24 @@ export class ListaDashboardComponent {
     ];
 
     this.listaCommesseScadute.forEach((element: any) => {
-    
-        workSheetData.push([
-          `${element[0]} ${element[1]}`,
-          element[2] ? element[2].toString() : '',
-          element[3] ?element[3].toString() : '',
-          element[4] ? element[4].toString() : '',
-          element[5]  ? element[5].toString() : '',
-          element[6] ? element[6].toString() : '',
-          element[7] ? element[7].toString() : '',
-          this.datePipe.transform(element[8] ? element[8].toString() : '', 'yyyy-MM-dd'),
-          element[9] ? element[9].toString() : '',
-          element[10] ? element[10].toString() : '',
-          this.datePipe.transform(element[11] ? element[11].toString() : '', 'yyyy-MM-dd'),
-          this.datePipe.transform(element[12] ? element[12].toString() : '', 'yyyy-MM-dd'),
-          element[13] ? 'Sì' : 'No',
-          element[14] ? 'Sì' : 'No',
-        ]);
-  
+
+      workSheetData.push([
+        `${element[0]} ${element[1]}`,
+        element[2] ? element[2].toString() : '',
+        element[3] ? element[3].toString() : '',
+        element[4] ? element[4].toString() : '',
+        element[5] ? element[5].toString() : '',
+        element[6] ? element[6].toString() : '',
+        element[7] ? element[7].toString() : '',
+        this.datePipe.transform(element[8] ? element[8].toString() : '', 'yyyy-MM-dd'),
+        element[9] ? element[9].toString() : '',
+        element[10] ? element[10].toString() : '',
+        this.datePipe.transform(element[11] ? element[11].toString() : '', 'yyyy-MM-dd'),
+        this.datePipe.transform(element[12] ? element[12].toString() : '', 'yyyy-MM-dd'),
+        element[13] ? 'Sì' : 'No',
+        element[14] ? 'Sì' : 'No',
+      ]);
+
     });
 
 

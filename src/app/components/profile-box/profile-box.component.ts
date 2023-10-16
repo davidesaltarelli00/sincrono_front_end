@@ -18,7 +18,7 @@ export class ProfileBoxComponent {
   username_accesso = null;
   codiceFiscaleUtenteLoggato: any;
   id: any;
-
+  mobile: any = false;
   userLoggedName: any;
   userLoggedSurname: any;
   shouldReloadPage: any;
@@ -37,7 +37,21 @@ export class ProfileBoxComponent {
     private router: Router,
     private dialog: MatDialog,
     private http: HttpClient,
-  ) {}
+  ) {
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
+  }
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
@@ -48,8 +62,8 @@ export class ProfileBoxComponent {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         this.anagrafica = response;
-        this.id=response.anagraficaDto.anagrafica.id;
-        console.log("ID:"+this.id);
+        this.id = response.anagraficaDto.anagrafica.id;
+        console.log("ID:" + this.id);
         this.username_accesso = response.anagraficaDto.anagrafica.mailAziendale;
         this.codiceFiscaleUtenteLoggato =
           response.anagraficaDto.anagrafica.codiceFiscale;
@@ -60,7 +74,7 @@ export class ProfileBoxComponent {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
+          error
         );
       }
     );
@@ -89,7 +103,7 @@ export class ProfileBoxComponent {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
+          error
         );
       }
     );
@@ -118,7 +132,7 @@ export class ProfileBoxComponent {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
+          error
         );
         this.shouldReloadPage = true;
       }
