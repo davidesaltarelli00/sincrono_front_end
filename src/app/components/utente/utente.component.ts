@@ -66,8 +66,6 @@ export class UtenteComponent implements OnInit {
   numeroCommessePresenti: any;
   duplicazioniEffettuate: number[] = [];
   disabilitaDuplica = false;
-  rigaDuplicata = false;
-  isFormDuplicated = false;
   nomiMesi = [
     'gennaio',
     'febbraio',
@@ -82,7 +80,10 @@ export class UtenteComponent implements OnInit {
     'novembre',
     'dicembre',
   ];
-  isDuplicaAbilitato: any;
+  numeroRigheDuplicate: number = 0;
+  conteggioDuplicati: { [giorno: number]: number } = {};
+
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -123,10 +124,37 @@ export class UtenteComponent implements OnInit {
     }
   }
 
+
+  duplicaRiga(index: number) {
+    // Ottieni il "giorno" dalla riga selezionata
+    const giornoDaDuplicare = this.rapportinoDto[index].giorno;
+
+    // Verifica il conteggio delle duplicazioni per il "giorno" selezionato
+    const conteggio = this.conteggioDuplicati[giornoDaDuplicare] || 0;
+
+    // Verifica se è possibile duplicare una riga in più per questo "giorno"
+    if (conteggio < this.elencoCommesse.length - 1) {
+      // Crea una nuova riga con il campo "giorno" impostato
+      const nuovaRiga = { giorno: giornoDaDuplicare, cliente: [], oreOrdinarie: [] };
+
+      // Aggiungi la nuova riga alla fine dell'array
+      this.rapportinoDto.push(nuovaRiga);
+
+      // Incrementa il conteggio delle duplicazioni per il "giorno"
+      this.conteggioDuplicati[giornoDaDuplicare] = conteggio + 1;
+
+      // Disabilita il pulsante se il numero di duplicazioni per questo "giorno" raggiunge il massimo
+      if (conteggio + 1 === this.elencoCommesse.length - 1) {
+        // Disabilita il pulsante "Duplica Riga"
+        this.disabilitaDuplica = true;
+      }
+    }
+  }
+
+
   getCommesseIndices(numeroCommesse: number): number[] {
     return new Array(numeroCommesse);
   }
-
 
   nomeMeseDaNumero(numeroMese: number): string {
     if (numeroMese >= 1 && numeroMese <= 12) {
@@ -203,43 +231,11 @@ export class UtenteComponent implements OnInit {
       });
   }
 
-  // duplicaRiga(index: number) {
-  //   if (this.elencoCommesse.length <= 1 || index < 0 || index >= this.rapportinoDto.length) {
-  //     // La funzione è disabilitata se hai 1 o 0 commesse o l'indice è fuori dai limiti
-  //     return;
-  //   }
-
-  //   const rigaDaDuplicare = this.rapportinoDto[index];
-  //   const nuovaRiga = { ...rigaDaDuplicare };
-
-  //   // Inserisci la nuova riga nella posizione successiva
-  //   this.rapportinoDto.splice(index + 1, 0, nuovaRiga);
-  // }
-
-
 
   isRigaVuota(index: number): boolean {
     const riga = this.rapportinoDto[index];
     return !riga || !riga.giorno;
   }
-
-  duplicaRiga(index: number) {
-    if (index >= 0 && index < this.rapportinoDto.length) {
-      const rigaDaDuplicare = { ...this.rapportinoDto[index] };
-      const nuovaRiga = { ...rigaDaDuplicare };
-
-      // Imposta il campo "giorno" come null o con un valore predefinito
-      nuovaRiga.giorno = null;
-
-      // Aggiungi la nuova riga in coda
-      this.rapportinoDto.push(nuovaRiga);
-
-      // Disabilita il pulsante dopo la duplicazione
-      this.isDuplicaAbilitato = false;
-    }
-  }
-
-
 
   eliminaRiga(index: number) {
     // Rimuovi la riga dalla matrice rapportinoDto in base all'indice
@@ -298,6 +294,7 @@ export class UtenteComponent implements OnInit {
           ];
           this.dettaglioSbagliato = false;
           this.numeroCommessePresenti = this.elencoCommesse.length;
+          console.log('Dati restituiti: ' + JSON.stringify(resp));
         },
         (error: any) => {
           console.error(
@@ -335,6 +332,7 @@ export class UtenteComponent implements OnInit {
           this.note = result['rapportinoDto']['note'];
           this.giorniUtili = result['rapportinoDto']['giorniUtili'];
           this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
+          console.log('Dati get rapportino:: ' + JSON.stringify(result));
           //qui andrá l endpoint per verificare la completezza della tabella
           this.checkRapportinoInviato();
         }
@@ -422,42 +420,6 @@ export class UtenteComponent implements OnInit {
   }
 
   salvaRapportino(formValue: any) {
-    // const giorniArray = [];
-
-    // for (let i = 0; i < this.rapportinoDto.length; i++) {
-    //   let clienteValue = formValue[`cliente${i}`];
-    //   if (clienteValue) {
-    //     clienteValue = [clienteValue];
-    //   }
-
-    //   let oreOrdinarieValue = formValue[`oreOrdinarie${i}`];
-    //   if (oreOrdinarieValue) {
-    //     oreOrdinarieValue = [oreOrdinarieValue];
-    //   }
-
-    //   const giornoData = {
-    //     giorno: formValue[`giorno${i}`],
-    //     cliente: clienteValue,
-    //     oreOrdinarie: oreOrdinarieValue,
-    //   };
-    //   giorniArray.push(giornoData);
-    // }
-
-    // const body = {
-    //   rapportinoDto: {
-    //     mese: {
-    //       giorni: giorniArray,
-    //     },
-    //     anagrafica: {
-    //       codiceFiscale: this.codiceFiscale,
-    //     },
-    //     note: this.note,
-    //     giorniUtili: this.giorniUtili,
-    //     giorniLavorati: this.giorniLavorati,
-    //     annoRequest: this.selectedAnno,
-    //     meseRequest: this.selectedMese,
-    //   },
-    // };
     const giorniArray = this.rapportinoDto.map((giorno, i) => {
       const clienteValue = formValue[`cliente${i}`];
       const oreOrdinarieValue = formValue[`oreOrdinarie${i}`];

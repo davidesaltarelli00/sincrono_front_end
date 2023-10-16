@@ -201,8 +201,7 @@
                     aria-label="Default select example"
                     id="annoSelect"
                     [(ngModel)]="selectedAnno"
-                    name="anno"
-                  >
+                    name="anno">
                     <option selected>---Nessuna selezione---</option>
                     <option *ngFor="let year of anni" [value]="year">
                       {{ year }}
@@ -242,7 +241,7 @@
             <div class="row"  >
               <div class="col-2">
                 <label for="nomeGiorno{{i}}"></label>
-                <input type="text" class="form-control" id="nomeGiorno{{i}}" [value]="getNomeGiorno(giorno.giorno)" disabled>
+                <input type="text" class="form-control" id="nomeGiorno{{i}}" placeholder="Inserisci giorno." [value]="getNomeGiorno(giorno.giorno)" disabled>
               </div>
 
               <div class="col-2">
@@ -262,22 +261,22 @@
               </div>
               <div class="col-1">
                 <label for="duplica"></label>
-                <button class="btn btn-success" (click)="duplicaRiga(i)" [disabled]="isRigaVuota(i)">
+                <button class="btn btn-success" (click)="duplicaRiga(i)" [disabled]="isRigaVuota(i) || disabilitaDuplica==true">
                   <i class="fa fa-clone"></i> Duplica Riga
                 </button>
               </div>
-
-
-              <!-- <div class="col-3">
-                <label for="Duplica"></label> <br>
-                <button type="button" class="btn btn-success" (click)="duplicaRiga(i)">Duplica Riga</button>
-              </div> -->
-
+              <div class="col-1">
+                <label for="elimina"></label>
+                <button class="btn btn-danger" (click)="eliminaRiga(i)" >
+                  <i class="fa fa-trash"></i> Elimina Riga
+                </button>
+              </div>
             </div>
           </div>
           <br>
           <button type="submit" class="btn btn-primary" (click)="salvaRapportino(rapportinoForm.value)">Salva rapportino <i class="fa fa-save" ></i> </button> &nbsp;
         </form>
+
        </mat-card>
       </div>
      </div>
