@@ -102,4 +102,48 @@ table,th,td{
 
 mat-card{
   margin-bottom: 10px;
+}.image-container {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  margin: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 20px;
+  color: #007bff; /* Colore blu per l'icona "Salva" */
+  z-index: 2;
+}
+
+.add-button:hover {
+  color: #0056b3; /* Colore blu più scuro al passaggio del mouse */
+}
+
+.image-preview {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #ccc;
+}
+
+.preview-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.cancel-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  font-size: 20px;
+  color: #ff0000; /* Colore rosso per l'icona "X" */
+  z-index: 1;
 }

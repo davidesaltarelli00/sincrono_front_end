@@ -13,6 +13,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ImageService } from '../../image.service';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 @Component({
   selector: 'app-dettaglio-anagrafica-dto',
   templateUrl: './dettaglio-anagrafica-dto.component.html',
@@ -162,7 +163,12 @@ export class DettaglioAnagraficaDtoComponent {
         );
       });
     } else {
-      console.error('Nessun file selezionato.');
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          title: 'Attenzione:',
+          message: 'Nessuna immagine selezionata.',
+        },
+      });
     }
   }
 
@@ -223,6 +229,13 @@ export class DettaglioAnagraficaDtoComponent {
       reader.onerror = reject;
       reader.readAsDataURL(imageFile);
     });
+  }
+
+  cancelImage() {
+    this.immagineConvertita = undefined;
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
   }
 
   copy(data: any) {

@@ -162,10 +162,21 @@
         <main>
           <div class="row">
             <div class="col-12 text-center">
-              <input type="file" #fileInput accept="image/*" />
-              <button (click)="addImage()">Carica immagine</button>
+              <div class="image-container">
+                <input type="file" #fileInput accept="image/*" class="file-input" (change)="onFileSelected($event)" />
+                <button (click)="addImage()" class="add-button" [disabled]="!immagineConvertita">
+                  <i class="fa fa-save"></i> <!-- Icona per il pulsante "Salva" -->
+                </button>
+                <div class="image-preview" *ngIf="immagineConvertita">
+                  <img [src]="immagineConvertita" alt="Immagine" class="preview-image" />
+                  <span (click)="cancelImage()" class="cancel-icon">&#x2715;</span>
+                </div>
+              </div>
             </div>
           </div>
+
+
+
 
           <div class="row">
             <div class="col-12 text-center">

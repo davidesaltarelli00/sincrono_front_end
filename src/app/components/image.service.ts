@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class ImageService {
   token: any;
   url = `http://localhost:8080/services/`;
+  testUrl=`http://localhost:8085/`;
 
   constructor(private http: HttpClient) {}
 
