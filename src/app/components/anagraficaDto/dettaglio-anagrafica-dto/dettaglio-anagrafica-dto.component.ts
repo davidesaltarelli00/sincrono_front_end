@@ -77,10 +77,11 @@ export class DettaglioAnagraficaDtoComponent {
   idNav: any;
   tokenProvvisorio: any;
   codiceFiscaleDettaglio: any;
-  immagineConvertita: any; // Proprietà per immagine convertita in base64
-  immagineNonConvertita: any; // Proprietà per immagine non convertita in Blob
   immagine: any;
   @ViewChild('fileInput') fileInput: ElementRef | undefined;
+  immagineConvertita: string | null = null;
+  immaginePredefinita: string | null = null; // Aggiungi questa variabile
+
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -179,15 +180,29 @@ export class DettaglioAnagraficaDtoComponent {
     console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
     this.imageService.getImage(this.token, body).subscribe(
       (result: any) => {
-        console.log('RESPONSE GET IMAGE: ' + result);
-        this.immagine = result;
+        this.immagine = (result as any).base64;
+        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+
+        if (this.immagine) {
+          this.convertBase64ToImage(this.immagine);
+          console.log('Valore di immagineConvertita:', this.immagineConvertita);
+        } else {
+          // Assegna un'immagine predefinita se l'immagine non è disponibile
+          this.immaginePredefinita = 'URL_DEL_TUO_FILE_IMMAGINE_PREDEFINITA';
+        }
       },
       (error: any) => {
-        console.error(
-          'errore durante il caricamento dell immagine:' + JSON.stringify(error)
-        );
+        console.error('Errore durante il caricamento dell\'immagine: ' + JSON.stringify(error));
+
+        // Assegna un'immagine predefinita in caso di errore
+        this.immaginePredefinita = 'URL_DEL_TUO_FILE_IMMAGINE_PREDEFINITA';
       }
     );
+  }
+
+
+  convertBase64ToImage(base64String: string): void {
+    this.immagineConvertita = base64String;
   }
 
   onFileSelected(event: any) {
@@ -195,29 +210,12 @@ export class DettaglioAnagraficaDtoComponent {
 
     if (selectedFile) {
       this.convertImageToBase64(selectedFile).then((base64String) => {
-        this.immagineNonConvertita = selectedFile;
         this.immagineConvertita = base64String;
       });
     }
   }
 
-  convertBase64ToImage(base64String: string, format: string): void {
-    this.immagineConvertita = base64String;
-    this.immagineNonConvertita = this.convertBase64ToBlob(base64String, format);
-    console.log(
-      'conversione da base64 a immagine: ' + this.immagineNonConvertita
-    );
-  }
 
-  convertBase64ToBlob(base64String: string, format: string): Blob {
-    const byteCharacters = atob(base64String);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    return new Blob([byteArray], { type: `image/${format}` });
-  }
 
   convertImageToBase64(imageFile: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -231,8 +229,9 @@ export class DettaglioAnagraficaDtoComponent {
     });
   }
 
+
   cancelImage() {
-    this.immagineConvertita = undefined;
+    this.immagineConvertita = null;
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
