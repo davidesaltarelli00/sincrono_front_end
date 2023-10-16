@@ -179,6 +179,14 @@ export class UtenteComponent implements OnInit {
     return nomeGiorno;
   }
 
+  isWeekend(index: number): boolean {
+    const numeroGiorno = index ;
+    const nomeGiorno = this.getNomeGiorno(numeroGiorno);
+
+    return nomeGiorno === 'Saturday' || nomeGiorno === 'Sunday';
+  }
+
+
   selezionaAzienda() {
     console.log('Azienda selezionata:', this.aziendaSelezionata);
   }

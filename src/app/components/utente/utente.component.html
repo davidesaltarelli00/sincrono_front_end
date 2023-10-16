@@ -241,7 +241,8 @@
             <div class="row"  >
               <div class="col-2">
                 <label for="nomeGiorno{{i}}"></label>
-                <input type="text" class="form-control" id="nomeGiorno{{i}}" placeholder="Inserisci giorno." [value]="getNomeGiorno(giorno.giorno)" disabled>
+                <input  type="text" class="form-control" id="nomeGiorno{{i}}" placeholder="Inserisci giorno." [value]="getNomeGiorno(giorno.giorno)" disabled>
+              <!--[style.background-color]="isWeekend(i) ? '#dc3545' : '#0d6efd'" [style.color]="isWeekend(i) ? '#ffffff' : '#000000'"-->
               </div>
 
               <div class="col-2">
@@ -260,15 +261,15 @@
                 <input min="0" max="24" placeholder="Ore" type="number" step="0.5" class="form-control" id="oreOrdinarie{{i}}" name="oreOrdinarie{{i}}" [(ngModel)]="giorno.oreOrdinarie" ngDefaultControl>
               </div>
               <div class="col-1">
-                <label for="duplica"></label>
+                <label for="duplica">Duplica</label>
                 <button class="btn btn-success" (click)="duplicaRiga(i)" [disabled]="isRigaVuota(i) || disabilitaDuplica==true">
-                  <i class="fa fa-clone"></i> Duplica Riga
+                  <i class="fa fa-clone"></i>
                 </button>
               </div>
               <div class="col-1">
-                <label for="elimina"></label>
+                <label for="elimina">Elimina</label>
                 <button class="btn btn-danger" (click)="eliminaRiga(i)" >
-                  <i class="fa fa-trash"></i> Elimina Riga
+                  <i class="fa fa-trash"></i>
                 </button>
               </div>
             </div>
