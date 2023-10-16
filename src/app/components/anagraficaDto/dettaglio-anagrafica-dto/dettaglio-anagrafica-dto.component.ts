@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AnagraficaDtoService } from '../anagraficaDto-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -12,6 +12,7 @@ import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ImageService } from '../../image.service';
 @Component({
   selector: 'app-dettaglio-anagrafica-dto',
   templateUrl: './dettaglio-anagrafica-dto.component.html',
@@ -74,6 +75,11 @@ export class DettaglioAnagraficaDtoComponent {
   userRoleNav: any;
   idNav: any;
   tokenProvvisorio: any;
+  codiceFiscaleDettaglio: any;
+  immagineConvertita: any; // Proprietà per immagine convertita in base64
+  immagineNonConvertita: any; // Proprietà per immagine non convertita in Blob
+  immagine: any;
+  @ViewChild('fileInput') fileInput: ElementRef | undefined;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -87,7 +93,8 @@ export class DettaglioAnagraficaDtoComponent {
     private currencyPipe: CurrencyPipe,
     private datePipe: DatePipe,
     private profileBoxService: ProfileBoxService,
-    private http: HttpClient
+    private http: HttpClient,
+    private imageService: ImageService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -111,16 +118,19 @@ export class DettaglioAnagraficaDtoComponent {
       this.getUserLogged();
       this.getUserRole();
     }
-
     console.log(this.id);
     this.anagraficaDtoService
       .detailAnagraficaDto(this.id, localStorage.getItem('token'))
       .subscribe((resp: any) => {
         console.log(resp);
         this.data = (resp as any)['anagraficaDto'];
-        console.log(this.data);
+        this.codiceFiscaleDettaglio = (resp as any)['anagraficaDto'][
+          'anagrafica'
+        ]['codiceFiscale'];
+        console.log(this.codiceFiscaleDettaglio);
         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
         console.log(this.elencoCommesse);
+        this.getImage();
       });
     const userLogged = localStorage.getItem('userLogged');
     if (userLogged) {
@@ -128,6 +138,91 @@ export class DettaglioAnagraficaDtoComponent {
     }
 
     this.uppercaseCodiceFiscale();
+  }
+
+  addImage() {
+    if (this.fileInput && this.fileInput.nativeElement.files.length > 0) {
+      const selectedFile: File = this.fileInput.nativeElement.files[0];
+
+      this.convertImageToBase64(selectedFile).then((base64String) => {
+        let body = {
+          codiceFiscale: this.codiceFiscaleDettaglio,
+          base64: base64String,
+        };
+        console.log('BODY PER ADD: ' + JSON.stringify(body));
+        this.imageService.addImage(this.token, body).subscribe(
+          (result: any) => {
+            this.immagine = result;
+          },
+          (error: any) => {
+            console.error(
+              'Errore durante l invio dell immagine: ' + JSON.stringify(error)
+            );
+          }
+        );
+      });
+    } else {
+      console.error('Nessun file selezionato.');
+    }
+  }
+
+  getImage() {
+    let body = {
+      codiceFiscale: this.codiceFiscaleDettaglio,
+    };
+    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    this.imageService.getImage(this.token, body).subscribe(
+      (result: any) => {
+        console.log('RESPONSE GET IMAGE: ' + result);
+        this.immagine = result;
+      },
+      (error: any) => {
+        console.error(
+          'errore durante il caricamento dell immagine:' + JSON.stringify(error)
+        );
+      }
+    );
+  }
+
+  onFileSelected(event: any) {
+    const selectedFile = event.target.files[0];
+
+    if (selectedFile) {
+      this.convertImageToBase64(selectedFile).then((base64String) => {
+        this.immagineNonConvertita = selectedFile;
+        this.immagineConvertita = base64String;
+      });
+    }
+  }
+
+  convertBase64ToImage(base64String: string, format: string): void {
+    this.immagineConvertita = base64String;
+    this.immagineNonConvertita = this.convertBase64ToBlob(base64String, format);
+    console.log(
+      'conversione da base64 a immagine: ' + this.immagineNonConvertita
+    );
+  }
+
+  convertBase64ToBlob(base64String: string, format: string): Blob {
+    const byteCharacters = atob(base64String);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: `image/${format}` });
+  }
+
+  convertImageToBase64(imageFile: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        resolve(base64String);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(imageFile);
+    });
   }
 
   copy(data: any) {

@@ -268,6 +268,7 @@ export class UtenteComponent implements OnInit {
     this.elencoCommesse.forEach((commessa: any) => {
       if (commessa.aziendaCliente) {
         this.aziendeClienti.push(commessa.aziendaCliente);
+        console.log("Aziende clienti: "+JSON.stringify(this.aziendeClienti))
       }
     });
   }

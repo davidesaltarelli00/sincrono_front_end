@@ -250,7 +250,7 @@
                 <input min="1" max="{{rapportinoDto.length}}" placeholder="Giorno" type="number" class="form-control" id="giorno{{i}}" name="giorno{{i}}" [(ngModel)]="giorno.giorno" ngDefaultControl>
               </div>
               <div class="col-3">
-                <label for="cliente{{i}}">Cliente</label>
+                <label for="cliente{{i}}">Cliente</label> &nbsp; <i class="fa fa-info-circle" matTooltip="Attenzione: non hai commesse." style="color: red;" *ngIf="aziendeClienti.length==0" ></i>
                 <select class="form-select" id="cliente{{i}}" placeholder="Cliente" name="cliente{{i}}" [(ngModel)]="giorno.cliente">
                   <!-- <option placeholder="Cliente" value="" disabled selected>Scegli un'azienda</option> -->
                   <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>

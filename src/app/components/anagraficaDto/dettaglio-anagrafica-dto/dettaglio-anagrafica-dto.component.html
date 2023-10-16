@@ -162,9 +162,11 @@
         <main>
           <div class="row">
             <div class="col-12 text-center">
-              <img src="../../../../assets/images/logo.jpeg" alt="Logo Sincrono" class="img-fluid">
+              <input type="file" #fileInput accept="image/*" />
+              <button (click)="addImage()">Carica immagine</button>
             </div>
           </div>
+
           <div class="row">
             <div class="col-12 text-center">
               <h5>{{ data?.anagrafica?.nome ? data.anagrafica.nome : 'Dato non inserito' | titlecase }} {{
