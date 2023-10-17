@@ -12,7 +12,7 @@ export class ImageService {
 
   constructor(private http: HttpClient) {}
 
-  getImage(body: any, token: any): Observable<any> {
+  getImage(token: any, body: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
