@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class ProfileBoxService {
   token = localStorage.getItem('token');
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getToken(): string | null {
     console.log('TOKEN SERVICE:' + this.token);
@@ -44,4 +44,5 @@ export class ProfileBoxService {
       headers: headers,
     });
   }
+
 }

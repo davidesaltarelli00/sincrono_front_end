@@ -1,19 +1,21 @@
-import { Component } from '@angular/core';
+import { ImageService } from './../image.service';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from '../login/login-service';
 import { ProfileBoxService } from './profile-box.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
-
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 @Component({
   selector: 'app-profile-box',
   templateUrl: './profile-box.component.html',
   styleUrls: ['./profile-box.component.scss'],
 })
 export class ProfileBoxComponent {
+  immaginePredefinita: string | null = null;
   isRisorseUmane: boolean = false;
-
   anagrafica: any;
   username_accesso = null;
   codiceFiscaleUtenteLoggato: any;
@@ -28,7 +30,23 @@ export class ProfileBoxComponent {
   userRoleNav: any;
   idNav: any;
   tokenProvvisorio: any;
+  base64Data: any;
+  profilePic: any;
+  immagine:any;
+  immagineConvertita: any; // Proprietà per immagine convertita in base64
+  immagineNonConvertita: any; // Proprietà per immagine non convertita in Blob
+  salvaImmagine: boolean=false;
+  immagineCancellata: boolean=false;
+  @ViewChild('fileInput') fileInput: ElementRef | undefined;
+  bodyGet: FormGroup = new FormGroup({
+    codiceFiscale: new FormControl(null)
 
+  });
+  bodyAdd: FormGroup = new FormGroup({
+    codiceFiscale: new FormControl(null),
+    base64: new FormControl(null)
+
+  });
 
 
   constructor(
@@ -37,6 +55,8 @@ export class ProfileBoxComponent {
     private router: Router,
     private dialog: MatDialog,
     private http: HttpClient,
+    private formBuilder: FormBuilder,
+    private imageService: ImageService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -51,12 +71,17 @@ export class ProfileBoxComponent {
     ) {
       this.mobile = true;
     }
+    this.bodyGet = this.formBuilder.group({
+      codiceFiscale: new FormControl(null)
+    })
+
   }
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
-      this.getUserRole();
+      this.getUserRole();   
     }
+    
     const token = localStorage.getItem('token');
     // console.log("profile box component token: "+ token)
     this.profileBoxService.getData().subscribe(
@@ -67,6 +92,10 @@ export class ProfileBoxComponent {
         this.username_accesso = response.anagraficaDto.anagrafica.mailAziendale;
         this.codiceFiscaleUtenteLoggato =
           response.anagraficaDto.anagrafica.codiceFiscale;
+          this.bodyGet.setValue({
+            codiceFiscale: this.codiceFiscaleUtenteLoggato
+          });
+          this.getImage();
         console.log(
           'CODICE FISCALE UTENTE LOGGATO: ' + this.codiceFiscaleUtenteLoggato
         );
@@ -78,16 +107,135 @@ export class ProfileBoxComponent {
         );
       }
     );
+
+  }
+
+  addImage() {
+    if (this.fileInput && this.fileInput.nativeElement.files.length > 0) {
+      const selectedFile: File = this.fileInput.nativeElement.files[0];
+
+      this.convertImageToBase64(selectedFile).then((base64String) => {
+        let body = {
+          codiceFiscale: this.codiceFiscaleUtenteLoggato,
+          base64: base64String,
+        };
+        console.log('BODY PER ADD: ' + JSON.stringify(body));
+        this.imageService.addImage(this.token, body).subscribe(
+          (response: any) => {
+            if ((response as any).esito.code != 200) {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  title: 'Salvataggio non riuscito:',
+                  message: (response as any).esito.target,
+                },
+              });
+            } else {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  title: 'Immagine salvata correttamente:',
+                  message: (response as any).esito.target,
+                },
+              });
+              this.immagine = response;
+              this.getImage();
+            }
+          },
+          (error: any) => {
+            console.error(
+              'Errore durante l invio dell immagine: ' + JSON.stringify(error)
+            );
+          }
+        );
+      });
+    } else {
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          title: 'Attenzione:',
+          message: 'Nessuna immagine selezionata.',
+        },
+      });
+    }
+  }
+
+  getImage() {
+    let body = {
+      codiceFiscale: this.codiceFiscaleUtenteLoggato,
+    };
+    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    this.imageService.getImage(this.token, body).subscribe(
+      (result: any) => {
+        this.immagine = (result as any).base64;
+        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+
+        if (this.immagine) {
+          this.convertBase64ToImage(this.immagine);
+          console.log('Valore di immagineConvertita:', this.immagineConvertita);
+        } else {
+          // Assegna un'immagine predefinita se l'immagine non è disponibile
+          this.immaginePredefinita = '../../../../assets/images/profilePicPlaceholder.png';
+        }
+      },
+      (error: any) => {
+        console.error('Errore durante il caricamento dell\'immagine: ' + JSON.stringify(error));
+
+        // Assegna un'immagine predefinita in caso di errore
+        this.immaginePredefinita = '../../../../assets/images/profilePicPlaceholder.png';
+      }
+    );
+  }
+
+  cancelImage() {
+    this.immagineConvertita = null;
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+      this.immagineCancellata=true;
+    }else{
+      this.immagineCancellata=false;
+    }
+  }
+  onFileSelected(event: any) {
+    const selectedFile = event.target.files[0];
+
+    if (selectedFile) {
+      this.convertImageToBase64(selectedFile).then((base64String) => {
+        this.immagineConvertita = base64String;
+        this.salvaImmagine=true;
+        console.log("CAMPO FILE: "+ selectedFile);
+      });
+    } else{
+      this.salvaImmagine=false;
+    }
   }
 
   goToRapportinoByCodiceFiscale() {
     this.router.navigate(['/utente/' + this.id]);
   }
 
+  convertBase64ToImage(base64String: string): void {
+    this.immagineConvertita = base64String;
+  }
 
 
-
-
+  convertImageToBase64(imageFile: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        resolve(base64String);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(imageFile);
+    });
+  }
+  convertBase64ToBlob(base64String: string, format: string): Blob {
+    const byteCharacters = atob(base64String);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: `image/${format}` });
+  }
 
   logout() {
     this.dialog.open(AlertLogoutComponent);
@@ -178,9 +326,6 @@ export class ProfileBoxComponent {
       }
     );
   }
-
-
-
 
 
 }
