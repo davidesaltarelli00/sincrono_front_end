@@ -160,16 +160,20 @@
           <div class="row">
             <div class="col-12 text-center">
               <div class="image-container">
-                <span  >
-                  <input [hidden]="immagineConvertita" type="file" #fileInput accept="image/*" class="file-input" (change)="onFileSelected($event)" />
-                </span>
-                <div class="image-preview" *ngIf="immagineConvertita">
-                  <img [src]="immagineConvertita" alt="Immagine" class="preview-image" />
-
+                <div class="image-container rounded">
+                  <span>
+                    <input [hidden]="immagineConvertita" type="file" #fileInput accept="image/*" class="file-input"
+                      (change)="onFileSelected($event)" />
+                  </span>
+                  <div class="image-preview" *ngIf="immagineConvertita">
+                    <img [src]="immagineConvertita" alt="Immagine" class="preview-image" />
+                  </div>
                 </div>
               </div>
-              <button (click)="addImage()" matTooltip="Salva immagine" *ngIf="salvaImmagine" class="btn btn-primary"> <i class="fa fa-save"></i></button>
-              <button (click)="cancelImage()" matTooltip="Cancella immagine" *ngIf="!immagineCancellata && immagineConvertita" class="btn btn-danger">&#x2715;</button>
+              <button (click)="addImage()" matTooltip="Salva immagine" *ngIf="salvaImmagine" class="btn btn-primary"> <i
+                  class="fa fa-save"></i></button>
+              <button (click)="cancelImage()" matTooltip="Cancella immagine"
+                *ngIf="!immagineCancellata && immagineConvertita" class="btn btn-danger">&#x2715;</button>
             </div>
           </div>
           <div class="row">

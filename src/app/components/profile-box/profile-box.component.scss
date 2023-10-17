@@ -5,8 +5,10 @@
 
 .profile-pic-container {
   display: flex;
-  align-items: center; /* Vertically center */
-  justify-content: center; /* Horizontally center */
+  align-items: center;
+  /* Vertically center */
+  justify-content: center;
+  /* Horizontally center */
 }
 
 
@@ -59,19 +61,21 @@
   }
 }
 
-mat-card{
+mat-card {
   height: 100%;
 }
 
- /* Stili specifici per schermi di grandi dimensioni (desktop) */
- @media (min-width: 768px) {
+/* Stili specifici per schermi di grandi dimensioni (desktop) */
+@media (min-width: 768px) {
   body {
     font-size: 18px;
   }
+
   /* Altri stili specifici per schermi di grandi dimensioni */
   .container-fluid {
     padding: 20px;
   }
+
   .col-6 {
     width: 50%;
     float: left;
@@ -83,11 +87,13 @@ mat-card{
   body {
     font-size: 16px;
   }
+
   /* Altri stili specifici per schermi di medie dimensioni */
   .col-6 {
     width: 100%;
     float: none;
   }
+
   .banner img {
     max-width: 100%;
   }
@@ -98,14 +104,17 @@ mat-card{
   body {
     font-size: 14px;
   }
+
   /* Altri stili specifici per schermi di piccole dimensioni */
   .container-fluid {
     padding: 10px;
   }
+
   .custom-list-item {
     padding: 10px;
   }
 }
+
 .custom-list {
   list-style: none;
   padding: 0;
@@ -143,7 +152,7 @@ mat-card{
   margin: 10px;
   position: relative;
   overflow: hidden;
-  
+
 }
 
 .add-button {
@@ -154,12 +163,14 @@ mat-card{
   top: 5px;
   right: 5px;
   font-size: 20px;
-  color: #007bff; /* Colore blu per l'icona "Salva" */
+  color: #007bff;
+  /* Colore blu per l'icona "Salva" */
   z-index: 2;
 }
 
 .add-button:hover {
-  color: #0056b3; /* Colore blu più scuro al passaggio del mouse */
+  color: #0056b3;
+  /* Colore blu più scuro al passaggio del mouse */
 }
 
 .image-preview {
@@ -168,10 +179,20 @@ mat-card{
   border: 2px solid #ccc;
 }
 
+.image-container.rounded {
+  border-radius: 50%;
+  overflow: hidden;
+  width: 321px; /* You can adjust the width as needed */
+  height: 431px; /* You can adjust the height as needed */
+  background-color:#333;
+}
+
 .preview-image {
   max-width: 100%;
   height: auto;
+  object-fit: cover;
 }
+
 
 .cancel-icon {
   position: absolute;
