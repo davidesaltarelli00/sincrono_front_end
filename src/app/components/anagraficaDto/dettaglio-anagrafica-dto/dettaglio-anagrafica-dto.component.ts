@@ -83,9 +83,8 @@ export class DettaglioAnagraficaDtoComponent {
   immaginePredefinita: string | null = null;
   idAnagraficaLoggata: any;
   disabilitaImmagine: any;
-  salvaImmagine: boolean=false;
-  immagineCancellata: boolean=false;
-
+  salvaImmagine: boolean = false;
+  immagineCancellata: boolean = false;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -197,29 +196,24 @@ export class DettaglioAnagraficaDtoComponent {
     let body = {
       codiceFiscale: this.codiceFiscaleDettaglio,
     };
-    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
     this.imageService.getImage(this.token, body).subscribe(
       (result: any) => {
         this.immagine = (result as any).base64;
-        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
-
         if (this.immagine) {
           this.convertBase64ToImage(this.immagine);
-          console.log('Valore di immagineConvertita:', this.immagineConvertita);
         } else {
-          // Assegna un'immagine predefinita se l'immagine non è disponibile
-          this.immaginePredefinita = '../../../../assets/images/logo.jpeg';
+          this.immaginePredefinita = '../../../../assets/images/profilePicPlaceholder.png';
         }
       },
       (error: any) => {
-        console.error('Errore durante il caricamento dell\'immagine: ' + JSON.stringify(error));
-
-        // Assegna un'immagine predefinita in caso di errore
-        this.immaginePredefinita = '../../../../assets/images/logo.jpeg';
+        console.error(
+          "Errore durante il caricamento dell'immagine: " +
+            JSON.stringify(error)
+        );
+        this.immaginePredefinita = '../../../../assets/images/danger.png';
       }
     );
   }
-
 
   convertBase64ToImage(base64String: string): void {
     this.immagineConvertita = base64String;
@@ -231,15 +225,13 @@ export class DettaglioAnagraficaDtoComponent {
     if (selectedFile) {
       this.convertImageToBase64(selectedFile).then((base64String) => {
         this.immagineConvertita = base64String;
-        this.salvaImmagine=true;
-        console.log("CAMPO FILE: "+ selectedFile);
+        this.salvaImmagine = true;
+        console.log('CAMPO FILE: ' + selectedFile);
       });
-    } else{
-      this.salvaImmagine=false;
+    } else {
+      this.salvaImmagine = false;
     }
   }
-
-
 
   convertImageToBase64(imageFile: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -253,14 +245,13 @@ export class DettaglioAnagraficaDtoComponent {
     });
   }
 
-
   cancelImage() {
     this.immagineConvertita = null;
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
-      this.immagineCancellata=true;
-    }else{
-      this.immagineCancellata=false;
+      this.immagineCancellata = true;
+    } else {
+      this.immagineCancellata = false;
     }
   }
 
@@ -740,11 +731,11 @@ export class DettaglioAnagraficaDtoComponent {
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
-        console.log("ID ANAGRAFICA LOGGATA:"+this.idAnagraficaLoggata);
-        if(this.id===this.idAnagraficaLoggata){
-          this.disabilitaImmagine=true;
-        }else{
-          this.disabilitaImmagine=false;
+        console.log('ID ANAGRAFICA LOGGATA:' + this.idAnagraficaLoggata);
+        if (this.id === this.idAnagraficaLoggata) {
+          this.disabilitaImmagine = true;
+        } else {
+          this.disabilitaImmagine = false;
         }
       },
       (error: any) => {

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../login/login-service';
 import { Router } from '@angular/router';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ImageService } from '../image.service';
 
 @Component({
   selector: 'app-home',
@@ -22,22 +23,71 @@ export class HomeComponent implements OnInit {
   idNav: any;
   tokenProvvisorio: any;
   ruolo: any;
+  //proprietá per immagini
+  immagine: any;
+  @ViewChild('fileInput') fileInput: ElementRef | undefined;
+  immagineConvertita: string | null = null;
+  immaginePredefinita: string | null = null;
+  idAnagraficaLoggata: any;
+  disabilitaImmagine: any;
+  salvaImmagine: boolean = false;
+  immagineCancellata: boolean = false;
+  codiceFiscaleDettaglio: any;
 
   constructor(
     private authService: AuthService,
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private imageService: ImageService
   ) {}
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
+    } else {
+      console.error('Errore di autenticazione, esegui il login');
     }
   }
 
-  seeSide() {}
+  //metodi immagine
+  getImage() {
+    let body = {
+      codiceFiscale: this.codiceFiscaleDettaglio,
+    };
+    console.log(JSON.stringify(body));
+    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    this.imageService.getImage(this.token, body).subscribe(
+      (result: any) => {
+        this.immagine = (result as any).base64;
+        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+
+        if (this.immagine) {
+          this.convertBase64ToImage(this.immagine);
+          console.log('Valore di immagineConvertita:', this.immagineConvertita);
+        } else {
+          // Assegna un'immagine predefinita se l'immagine non è disponibile
+          this.immaginePredefinita = '../../../../assets/images/profilePicPlaceholder.png';
+        }
+      },
+      (error: any) => {
+        console.error(
+          "Errore durante il caricamento dell'immagine: " +
+            JSON.stringify(error)
+        );
+
+        // Assegna un'immagine predefinita in caso di errore
+        this.immaginePredefinita = '../../../../assets/images/danger.png';
+      }
+    );
+  }
+
+  convertBase64ToImage(base64String: string): void {
+    this.immagineConvertita = base64String;
+  }
+
+  // metodi per navbar
 
   logout() {
     this.dialog.open(AlertLogoutComponent);
@@ -50,7 +100,9 @@ export class HomeComponent implements OnInit {
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.ruolo = response.anagraficaDto.ruolo.nome;
-        console.log('RUOLO UTENTE LOGGATO:' + this.ruolo);
+        this.codiceFiscaleDettaglio =
+          response.anagraficaDto.anagrafica.codiceFiscale;
+        this.getImage();
       },
       (error: any) => {
         console.error(
