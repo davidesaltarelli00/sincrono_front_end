@@ -80,7 +80,11 @@ export class DettaglioAnagraficaDtoComponent {
   immagine: any;
   @ViewChild('fileInput') fileInput: ElementRef | undefined;
   immagineConvertita: string | null = null;
-  immaginePredefinita: string | null = null; // Aggiungi questa variabile
+  immaginePredefinita: string | null = null;
+  idAnagraficaLoggata: any;
+  disabilitaImmagine: any;
+  salvaImmagine: boolean=false;
+  immagineCancellata: boolean=false;
 
 
   constructor(
@@ -153,8 +157,24 @@ export class DettaglioAnagraficaDtoComponent {
         };
         console.log('BODY PER ADD: ' + JSON.stringify(body));
         this.imageService.addImage(this.token, body).subscribe(
-          (result: any) => {
-            this.immagine = result;
+          (response: any) => {
+            if ((response as any).esito.code != 200) {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  title: 'Salvataggio non riuscito:',
+                  message: (response as any).esito.target,
+                },
+              });
+            } else {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  title: 'Immagine salvata correttamente:',
+                  message: (response as any).esito.target,
+                },
+              });
+              this.immagine = response;
+              this.getImage();
+            }
           },
           (error: any) => {
             console.error(
@@ -188,14 +208,14 @@ export class DettaglioAnagraficaDtoComponent {
           console.log('Valore di immagineConvertita:', this.immagineConvertita);
         } else {
           // Assegna un'immagine predefinita se l'immagine non è disponibile
-          this.immaginePredefinita = 'URL_DEL_TUO_FILE_IMMAGINE_PREDEFINITA';
+          this.immaginePredefinita = '../../../../assets/images/logo.jpeg';
         }
       },
       (error: any) => {
         console.error('Errore durante il caricamento dell\'immagine: ' + JSON.stringify(error));
 
         // Assegna un'immagine predefinita in caso di errore
-        this.immaginePredefinita = 'URL_DEL_TUO_FILE_IMMAGINE_PREDEFINITA';
+        this.immaginePredefinita = '../../../../assets/images/logo.jpeg';
       }
     );
   }
@@ -211,7 +231,11 @@ export class DettaglioAnagraficaDtoComponent {
     if (selectedFile) {
       this.convertImageToBase64(selectedFile).then((base64String) => {
         this.immagineConvertita = base64String;
+        this.salvaImmagine=true;
+        console.log("CAMPO FILE: "+ selectedFile);
       });
+    } else{
+      this.salvaImmagine=false;
     }
   }
 
@@ -234,6 +258,9 @@ export class DettaglioAnagraficaDtoComponent {
     this.immagineConvertita = null;
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
+      this.immagineCancellata=true;
+    }else{
+      this.immagineCancellata=false;
     }
   }
 
@@ -712,6 +739,13 @@ export class DettaglioAnagraficaDtoComponent {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        console.log("ID ANAGRAFICA LOGGATA:"+this.idAnagraficaLoggata);
+        if(this.id===this.idAnagraficaLoggata){
+          this.disabilitaImmagine=true;
+        }else{
+          this.disabilitaImmagine=false;
+        }
       },
       (error: any) => {
         console.error(
