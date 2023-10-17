@@ -172,7 +172,7 @@
                 </div>
               </div>
               <button (click)="addImage()" matTooltip="Salva immagine" *ngIf="salvaImmagine" class="btn btn-primary"> <i class="fa fa-save"></i></button>
-              <button (click)="cancelImage()" matTooltip="Cancella immagine" *ngIf="!immagineCancellata && immagineConvertita" class="btn btn-danger">&#x2715;</button>
+              <button (click)="cancelImage()" matTooltip="Cancella immagine" *ngIf="!immagineCancellata && immagineConvertita && idAnagraficaLoggata===data?.anagrafica?.id" class="btn btn-danger">&#x2715;</button>
             </div>
           </div>
 
