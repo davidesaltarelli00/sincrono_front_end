@@ -227,8 +227,7 @@
                   </tr>
                   <tr>
                     <td><strong>Cellulare aziendale:</strong></td>
-                    <td>{{ data?.anagrafica?.cellulareAziendale ? data.anagrafica.cellulareAziendale : 'Dato non
-                      inserito' }}</td>
+                    <td>{{ data?.anagrafica?.cellulareAziendale ? data.anagrafica.cellulareAziendale : 'Dato non inserito' }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -253,8 +252,7 @@
                   <tbody>
                     <tr>
                       <td><strong>Codice Fiscale:</strong></td>
-                      <td>{{ data?.anagrafica?.codiceFiscale ? (data.anagrafica.codiceFiscale | uppercase) : 'Dato non
-                        inserito' }}</td>
+                      <td>{{ data?.anagrafica?.codiceFiscale ? (data.anagrafica.codiceFiscale | uppercase) : 'Dato non inserito' }}</td>
                     </tr>
 
                     <tr>
@@ -290,13 +288,11 @@
                   <tbody>
                     <tr>
                       <td><strong>Data di nascita:</strong></td>
-                      <td>{{ data?.anagrafica?.dataDiNascita ? (data?.anagrafica?.dataDiNascita | date : "dd/MM/yyyy") :
-                        'Dato non inserito' }}</td>
+                      <td>{{ data?.anagrafica?.dataDiNascita ? (data?.anagrafica?.dataDiNascita | date : "dd/MM/yyyy") : 'Dato non inserito' }}</td>
                     </tr>
                     <tr>
                       <td><strong>Provincia di nascita:</strong></td>
-                      <td>{{ data?.anagrafica?.provinciaDiNascita ? data.anagrafica.provinciaDiNascita : 'Dato non
-                        inserito' | titlecase }}</td>
+                      <td>{{ data?.anagrafica?.provinciaDiNascita ? data.anagrafica.provinciaDiNascita : 'Dato non inserito' | titlecase }}</td>
                     </tr>
                     <tr>
                       <td><strong>Comune nascita:</strong></td>
@@ -409,6 +405,16 @@
                   <tr>
                     <td><strong>Sede assunzione:</strong></td>
                     <td>{{ data?.contratto?.sedeAssunzione ? data?.contratto?.sedeAssunzione : 'Dato non inserito' }}
+                    </td>
+                  </tr>
+                  <tr  > <!--[hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' || data?.contratto?.tipoContratto?.descrizione!='Apprendistato' "-->
+                    <td><strong>Tutor:</strong></td>
+                    <td>{{ data?.contratto?.tutor ? data?.contratto?.tutor : 'Dato non inserito' }}
+                    </td>
+                  </tr>
+                  <tr  > <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Stage' || data?.contratto?.tipoContratto?.descrizione==='Apprendistato' "-->
+                    <td><strong>Piano formativo individuale:</strong></td>
+                    <td>{{ data?.contratto?.pfi ?'Si' : 'No' }}
                     </td>
                   </tr>
                 </tbody>
