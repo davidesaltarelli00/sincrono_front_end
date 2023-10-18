@@ -14,6 +14,7 @@ import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component'
 import { MatDialog } from '@angular/material/dialog';
 import { ImageService } from '../../image.service';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { MenuService } from '../../menu.service';
 @Component({
   selector: 'app-dettaglio-anagrafica-dto',
   templateUrl: './dettaglio-anagrafica-dto.component.html',
@@ -99,7 +100,8 @@ export class DettaglioAnagraficaDtoComponent {
     private datePipe: DatePipe,
     private profileBoxService: ProfileBoxService,
     private http: HttpClient,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private menuService:MenuService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -778,13 +780,7 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
   generateMenuByUserRole() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
-    this.http.get<MenuData>(url, { headers: headers }).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idNav).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
@@ -802,13 +798,7 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
   getPermissions(functionId: number) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/operazioni/${functionId}`;
-    this.http.get(url, { headers: headers }).subscribe(
+    this.menuService.getPermissions(this.token, functionId).subscribe(
       (data: any) => {
         console.log('Permessi ottenuti:', data);
       },

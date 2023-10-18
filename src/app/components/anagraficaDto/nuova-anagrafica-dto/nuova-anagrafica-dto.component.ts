@@ -18,6 +18,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
+import { MenuService } from '../../menu.service';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -99,7 +100,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     public dialog: MatDialog,
     public snackBar: MatSnackBar,
     private profileBoxService: ProfileBoxService,
-    private http: HttpClient
+    private http: HttpClient,
+    private menuService:MenuService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -1844,13 +1846,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
-    this.http.get<MenuData>(url, { headers: headers }).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idNav).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
@@ -1868,13 +1864,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   getPermissions(functionId: number) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/operazioni/${functionId}`;
-    this.http.get(url, { headers: headers }).subscribe(
+    this.menuService.getPermissions(this.token, functionId).subscribe(
       (data: any) => {
         console.log('Permessi ottenuti:', data);
       },

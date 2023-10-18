@@ -23,6 +23,7 @@ import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component'
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { AuthService } from '../../login/login-service';
 import { ContrattoService } from '../../contratto/contratto-service';
+import { MenuService } from '../../menu.service';
 
 @Component({
   selector: 'app-modifica-anagrafica-dto',
@@ -84,7 +85,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   userRoleNav: any;
   idNav: any;
   tokenProvvisorio: any;
-  aziendeClienti: any[]=[];
+  aziendeClienti: any[] = [];
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -98,7 +99,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     public profileBoxService: ProfileBoxService,
     private http: HttpClient,
     private contrattoService: ContrattoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private menuService: MenuService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -2370,13 +2372,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
-    this.http.get<MenuData>(url, { headers: headers }).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idNav).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
@@ -2394,13 +2390,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   getPermissions(functionId: number) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/operazioni/${functionId}`;
-    this.http.get(url, { headers: headers }).subscribe(
+    this.menuService.getPermissions(this.token, functionId).subscribe(
       (data: any) => {
         console.log('Permessi ottenuti:', data);
       },
@@ -2409,6 +2399,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       }
     );
   }
+
   private handleLogoutError() {
     sessionStorage.clear();
     window.location.href = 'login';
