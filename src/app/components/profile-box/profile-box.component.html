@@ -172,10 +172,13 @@
               </div>
               <button (click)="addImage()" matTooltip="Salva immagine" *ngIf="salvaImmagine" class="btn btn-primary"> <i
                   class="fa fa-save"></i></button>
+              <button (click)="cancelImage()" matTooltip="Modifica immagine"
+                *ngIf="!immagineCancellata && immagineConvertita" class="btn btn-primary"> <i class="fa fa-pencil" ></i> </button>
               <button (click)="cancelImage()" matTooltip="Cancella immagine"
                 *ngIf="!immagineCancellata && immagineConvertita" class="btn btn-danger">&#x2715;</button>
             </div>
           </div>
+          <br>
           <div class="row">
             <div class="col-6">
               <mat-card class="profile-box">
