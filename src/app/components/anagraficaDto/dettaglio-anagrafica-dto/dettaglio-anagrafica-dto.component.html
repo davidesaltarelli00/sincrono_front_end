@@ -431,8 +431,7 @@
                       </tr>
                       <tr>
                         <td><strong>% part time</strong></td>
-                        <td>{{data?.contratto?.percentualePartTime ? data?.contratto?.percentualePartTime : 'Dato non
-                          inserito' }}</td>
+                        <td>{{data?.contratto?.percentualePartTime ? data?.contratto?.percentualePartTime : 'Dato non inserito' }}</td>
                       </tr>
                       <tr>
                         <td><strong>RAL Part-time</strong></td>
@@ -463,13 +462,11 @@
                   <tbody>
                     <tr>
                       <td><strong>Retribuzione mensile lorda:</strong></td>
-                      <td>{{data?.contratto?.retribuzioneMensileLorda ? data?.contratto?.retribuzioneMensileLorda :'Dato
-                        non inserito'}} </td>
+                      <td>{{data?.contratto?.retribuzioneMensileLorda ? data?.contratto?.retribuzioneMensileLorda :'Dato non inserito'}} </td>
                     </tr>
                     <tr>
                       <td><strong>Superminimo mensile:</strong></td>
-                      <td>{{data?.contratto?.superminimoMensile ? data?.contratto?.superminimoMensile :'Dato non
-                        inserito'}} </td>
+                      <td>{{data?.contratto?.superminimoMensile ? data?.contratto?.superminimoMensile :'Dato non inserito'}} </td>
                     </tr>
                     <tr>
                       <td><strong>Scatti anzianitá:</strong></td>
@@ -478,8 +475,7 @@
                     </tr>
                     <tr>
                       <td><strong>Retribuzione netta mensile:</strong></td>
-                      <td>{{data?.contratto?.retribuzioneNettaMensile ? data?.contratto?.retribuzioneNettaMensile :'Dato
-                        non inserito'}} </td>
+                      <td>{{data?.contratto?.retribuzioneNettaMensile ? data?.contratto?.retribuzioneNettaMensile :'Dato non inserito'}} </td>
                     </tr>
                   </tbody>
                 </table>
@@ -517,8 +513,7 @@
                     </tr>
                     <tr>
                       <td><strong>Diaria giornaliera</strong></td>
-                      <td>{{data?.contratto?.diariaGiornaliera ? data?.contratto?.diariaGiornaliera :'Dato non
-                        inserito'}}</td>
+                      <td>{{data?.contratto?.diariaGiornaliera ? data?.contratto?.diariaGiornaliera :'Dato non inserito'}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -537,8 +532,7 @@
                     </tr>
                     <tr>
                       <td><strong>Retribuzione netta giornaliera</strong></td>
-                      <td>{{data?.contratto?.retribuzioneNettaGiornaliera ?
-                        data?.contratto?.retribuzioneNettaGiornaliera:'Dato non inserito' }}</td>
+                      <td>{{data?.contratto?.retribuzioneNettaGiornaliera ? data?.contratto?.retribuzioneNettaGiornaliera:'Dato non inserito' }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -596,7 +590,7 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let commessa of getCurrentPageItems(); let i = index">
-                      <td>{{ commessa.aziendaCliente }}</td>
+                      <td>{{ commessa.tipoAzienda.descrizione }}</td>
                       <td>{{ commessa.clienteFinale }}</td>
                       <td>{{ commessa.titoloPosizione }}</td>
                       <td>{{ commessa.distacco === true ? 'Si' : (commessa.distacco === false ? 'No' : 'Dato non
