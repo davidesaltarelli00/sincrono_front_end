@@ -582,7 +582,7 @@ export class ListaDashboardComponent {
 
       item.commesse.forEach((commessa: any) => {
         workSheetData.push([
-          commessa.aziendaCliente ? commessa.aziendaCliente.toString() : '',
+          commessa.tipoAzienda.descrizione ? commessa.tipoAzienda.descrizione.toString() : '',
           commessa.clienteFinale ? commessa.clienteFinale.toString() : '',
           commessa.titoloPosizione ? commessa.titoloPosizione.toString() : '',
           commessa.distacco ? commessa.distacco.toString() : '',
