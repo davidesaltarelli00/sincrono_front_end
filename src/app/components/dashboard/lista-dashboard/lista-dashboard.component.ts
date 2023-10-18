@@ -31,7 +31,7 @@ declare var $: any;
 })
 export class ListaDashboardComponent {
 
-  
+  aziendeClienti: any[] = [];
   userLoggedName: any;
   userLoggedSurname: any;
   shouldReloadPage: any;
@@ -161,7 +161,7 @@ export class ListaDashboardComponent {
   isTableVisible1: boolean = false;
 
   ngOnInit(): void {
-
+    this.caricaAziendeClienti();
     this.populateYears()
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
     const commessaFormGroup = this.creaFormCommessa();
@@ -500,7 +500,7 @@ export class ListaDashboardComponent {
   }
   creaFormCommessa(): FormGroup {
     return this.formBuilder.group({
-      aziendaCliente: new FormControl(''),
+      tipoAzienda: new FormControl(''),
     });
   }
   caricaTipoAzienda() {
@@ -800,7 +800,7 @@ export class ListaDashboardComponent {
           item.anagrafica.nome,
           item.anagrafica.cognome,
           item.anagrafica.codiceFiscale,
-          commessa.aziendaCliente,
+          commessa.tipoAzienda.descrizione,
           commessa.clienteFinale,
           commessa.titoloPosizione,
           commessa.distacco,
@@ -816,6 +816,40 @@ export class ListaDashboardComponent {
       });
     });
     return this.genericList;
+  }
+
+  caricaAziendeClienti() {
+    this.contrattoService
+      .getTipoAzienda(localStorage.getItem('token'))
+      .subscribe(
+        (result: any) => {
+          console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+          this.aziendeClienti = (result as any)['list'];
+        },
+        (error: any) => {
+          console.error(
+            'errore durante il caricamento dei nomi azienda:' + error
+          );
+        }
+      );
+  }
+
+  onChangeAziendaCliente(event: any) {
+    const selectedValue = parseInt(event.target.value, 10);
+
+    if (!isNaN(selectedValue)) {
+      const selectedObject = this.tipiAziende.find(
+        (azienda: any) => azienda.id === selectedValue
+      );
+
+      if (selectedObject) {
+        console.log('Azienda cliente selezionata: ', selectedObject);
+      } else {
+        console.log('Azienda non trovata nella lista');
+      }
+    } else {
+      console.log('Valore non valido o azienda non selezionata');
+    }
   }
 
 
