@@ -9,13 +9,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { AnagraficaDtoService } from '../../anagraficaDto/anagraficaDto-service';
-
+import { ImageService } from './../../image.service';
+import { MenuService } from './../../menu.service';
 @Component({
   selector: 'app-lista-organico',
   templateUrl: './lista-organico.component.html',
   styleUrls: ['./lista-organico.component.scss'],
 })
 export class ListaOrganicoComponent implements OnInit {
+  ruolo: any;
   lista: any;
   labelsX: string[] = [];
   currentPage: number = 1;
@@ -38,7 +40,10 @@ export class ListaOrganicoComponent implements OnInit {
   idNav: any;
   tokenProvvisorio: any;
   filteredLista: any[] = [];
-
+  immagine: any;
+  immagineConvertita: string | null = null;
+  immaginePredefinita: string | null = null;
+  codiceFiscaleDettaglio: any;
   originalLista: any;
 
   constructor(
@@ -48,7 +53,9 @@ export class ListaOrganicoComponent implements OnInit {
     private dialog: MatDialog,
     private http: HttpClient,
     private authService: AuthService,
-    private anagraficaDtoService: AnagraficaDtoService
+    private anagraficaDtoService: AnagraficaDtoService,
+    private imageService: ImageService,
+    private menuService: MenuService
   ) {
     this.userlogged = localStorage.getItem('userLogged');
 
@@ -344,7 +351,7 @@ export class ListaOrganicoComponent implements OnInit {
     (error: any) => {
       console.error(
         'Si è verificato un errore durante il recupero della lista dell organico: ' +
-          error
+        error
       );
     };
   }
@@ -386,11 +393,15 @@ export class ListaOrganicoComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.ruolo = response.anagraficaDto.ruolo.nome;
+        this.codiceFiscaleDettaglio =
+          response.anagraficaDto.anagrafica.codiceFiscale;
+        this.getImage();
       },
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
+          error
         );
       }
     );
@@ -419,21 +430,28 @@ export class ListaOrganicoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
+          error
         );
         this.shouldReloadPage = true;
       }
     );
   }
 
+
+
+  getPermissions(functionId: number) {
+    this.menuService.getPermissions(this.token, functionId).subscribe(
+      (data: any) => {
+        console.log('Permessi ottenuti:', data);
+      },
+      (error: any) => {
+        console.error('Errore nella generazione dei permessi:', error);
+      }
+    );
+  }
+
   generateMenuByUserRole() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
-    this.http.get<MenuData>(url, { headers: headers }).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idNav).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
@@ -445,26 +463,44 @@ export class ListaOrganicoComponent implements OnInit {
       (error: any) => {
         console.error('Errore nella generazione del menu:', error);
         this.shouldReloadPage = true;
-        this.jsonData = { list: [] }; // Imposta un valore predefinito per jsonData
+        this.jsonData = { list: [] };
+      }
+    );
+  }
+  getImage() {
+    let body = {
+      codiceFiscale: this.codiceFiscaleDettaglio,
+    };
+    console.log(JSON.stringify(body));
+    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    this.imageService.getImage(this.token, body).subscribe(
+      (result: any) => {
+        this.immagine = (result as any).base64;
+        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+
+        if (this.immagine) {
+          this.convertBase64ToImage(this.immagine);
+          console.log('Valore di immagineConvertita:', this.immagineConvertita);
+        } else {
+          // Assegna un'immagine predefinita se l'immagine non è disponibile
+          this.immaginePredefinita =
+            '../../../../assets/images/profilePicPlaceholder.png';
+        }
+      },
+      (error: any) => {
+        console.error(
+          "Errore durante il caricamento dell'immagine: " +
+          JSON.stringify(error)
+        );
+
+        // Assegna un'immagine predefinita in caso di errore
+        this.immaginePredefinita = '../../../../assets/images/danger.png';
       }
     );
   }
 
-  getPermissions(functionId: number) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/operazioni/${functionId}`;
-    this.http.get(url, { headers: headers }).subscribe(
-      (data: any) => {
-        console.log('Permessi ottenuti:', data);
-      },
-      (error: any) => {
-        console.error('Errore nella generazione dei permessi:', error);
-      }
-    );
+  convertBase64ToImage(base64String: string): void {
+    this.immagineConvertita = base64String;
   }
 }
 

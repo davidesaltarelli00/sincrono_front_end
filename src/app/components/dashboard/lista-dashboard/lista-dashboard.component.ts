@@ -1,9 +1,9 @@
-import { Commessa } from './../../anagraficaDto/nuova-anagrafica-dto/commessa';
+import { ImageService } from './../../image.service';
 import { AnagraficaDtoService } from '../../anagraficaDto/anagraficaDto-service';
 import { ContrattoService } from './../../contratto/contratto-service';
 import { DashboardService } from './../dashboard-service.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { saveAs } from 'file-saver';
+
 import * as XLSX from 'xlsx';
 import { DatePipe } from '@angular/common';
 import {
@@ -14,14 +14,14 @@ import {
   FormArray,
   Validators,
 } from '@angular/forms';
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../login/login-service';
 import { startWith } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
-import { MatSelect } from '@angular/material/select';
+import { MenuService } from './../../menu.service';
 declare var $: any;
 
 @Component({
@@ -30,7 +30,10 @@ declare var $: any;
   styleUrls: ['./lista-dashboard.component.scss'],
 })
 export class ListaDashboardComponent {
-
+  codiceFiscaleDettaglio: any;
+  immagine: any;
+  immagineConvertita: string | null = null;
+  immaginePredefinita: string | null = null;
   aziendeClienti: any[] = [];
   userLoggedName: any;
   userLoggedSurname: any;
@@ -74,6 +77,7 @@ export class ListaDashboardComponent {
   genericList: any[] = [];
   years: number[] = [];
   mobile: any = false;
+  ruolo: any;
   filterAnagraficaDto: FormGroup = new FormGroup({
 
     anagrafica: new FormGroup({
@@ -110,7 +114,8 @@ export class ListaDashboardComponent {
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
     private http: HttpClient,
-
+    private menuService: MenuService,
+    private imageService: ImageService
   ) {
 
     if (window.innerWidth >= 900) {
@@ -867,6 +872,10 @@ export class ListaDashboardComponent {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.ruolo = response.anagraficaDto.ruolo.nome;
+        this.codiceFiscaleDettaglio =
+          response.anagraficaDto.anagrafica.codiceFiscale;
+        this.getImage();
       },
       (error: any) => {
         console.error(
@@ -907,14 +916,21 @@ export class ListaDashboardComponent {
     );
   }
 
+
+
+  getPermissions(functionId: number) {
+    this.menuService.getPermissions(this.token, functionId).subscribe(
+      (data: any) => {
+        console.log('Permessi ottenuti:', data);
+      },
+      (error: any) => {
+        console.error('Errore nella generazione dei permessi:', error);
+      }
+    );
+  }
+
   generateMenuByUserRole() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
-    this.http.get<MenuData>(url, { headers: headers }).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idNav).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
@@ -926,26 +942,46 @@ export class ListaDashboardComponent {
       (error: any) => {
         console.error('Errore nella generazione del menu:', error);
         this.shouldReloadPage = true;
+        this.jsonData = { list: [] };
+      }
+    );
+  }
+  getImage() {
+    let body = {
+      codiceFiscale: this.codiceFiscaleDettaglio,
+    };
+    console.log(JSON.stringify(body));
+    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    this.imageService.getImage(this.token, body).subscribe(
+      (result: any) => {
+        this.immagine = (result as any).base64;
+        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+
+        if (this.immagine) {
+          this.convertBase64ToImage(this.immagine);
+          console.log('Valore di immagineConvertita:', this.immagineConvertita);
+        } else {
+          // Assegna un'immagine predefinita se l'immagine non è disponibile
+          this.immaginePredefinita =
+            '../../../../assets/images/profilePicPlaceholder.png';
+        }
+      },
+      (error: any) => {
+        console.error(
+          "Errore durante il caricamento dell'immagine: " +
+          JSON.stringify(error)
+        );
+
+        // Assegna un'immagine predefinita in caso di errore
+        this.immaginePredefinita = '../../../../assets/images/danger.png';
       }
     );
   }
 
-  getPermissions(functionId: number) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/operazioni/${functionId}`;
-    this.http.get(url, { headers: headers }).subscribe(
-      (data: any) => {
-        console.log('Permessi ottenuti:', data);
-      },
-      (error: any) => {
-        console.error('Errore nella generazione dei permessi:', error);
-      }
-    );
+  convertBase64ToImage(base64String: string): void {
+    this.immagineConvertita = base64String;
   }
+
 }
 
 interface MenuData {
