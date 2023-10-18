@@ -579,8 +579,8 @@
                         </strong>
                         <legend>Dati Tipologici</legend>
                         <div class="row">
-                          <div class="col-md-3" formGroupName="tipoAzienda">
-                            <label for="tipoAzienda">Nome Azienda*</label>
+                          <div class="col-md-2" formGroupName="tipoAzienda">
+                            <label for="tipoAzienda">Azienda*</label>
                             <select (change)="onChangeTipoAzienda($event)" class="form-select"
                               aria-label="Default select example" id="contratto.tipoAzienda.id" formControlName="id"
                               type="number" [ngStyle]="{
@@ -636,7 +636,7 @@
                             </div>
                           </div>
 
-                          <div class="col-md-3">
+                          <div class="col-md-2">
                             <label>Mesi Durata </label>
                             <input type="number" class="form-control" formControlName="mesiDurata"
                               placeholder="Inserire mesi durata" [ngStyle]="{
@@ -690,10 +690,7 @@
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <br />
-                        <div class="row">
-                          <div class="col-md-3">
+                          <div class="col-md-2">
                             <div formGroupName="tipoLivelloContratto">
                               <label for="filter-LivelloContratto">Livello Contratto*</label>
                               <select (change)="onChangeLivelloContratto($event)" class="form-select"
@@ -716,6 +713,10 @@
                               </div> -->
                             </div>
                           </div>
+
+                        </div>
+                        <br />
+                        <div class="row">
 
                           <div class="col-md-3">
                             <label for="assicurazioneObbligatoria">Assicurazione obbligatoria:</label>
@@ -1265,16 +1266,24 @@
                             <div class="row">
                               <div class="col-md-3">
                                 <label>Azienda cliente: </label>
-                                <div class="form-group">
-                                  <input
+                                <div class="form-group" formGroupName="tipoAzienda">
+                                  <select (change)="onChangeAziendaCliente($event)" class="form-select"
+                                  aria-label="Default select example" id="commesse.tipoAzienda.id" formControlName="id">
+                                  <option value="">--nessuna selezione--</option>
+                                  <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
+                                    {{ aziendaCliente.descrizione }}
+                                  </option>
+                                </select>
+
+                                </div>
+                              </div>
+                               <!-- <input
                                     [ngStyle]="{ 'border': commessa.get('aziendaCliente')?.value=='' ? '1px solid red' : ''}"
                                     type="text" class="form-control" placeholder="Inserire azienda cliente"
                                     formControlName="aziendaCliente" />
                                   <div *ngIf="commessa.get('aziendaCliente')?.hasError('required')" class="text-danger">
                                     Il campo Azienda Cliente è obbligatorio.
-                                  </div>
-                                </div>
-                              </div>
+                                  </div> -->
                               <div class="col-md-3">
                                 <label>Cliente Finale: </label>
                                 <div class="form-group">

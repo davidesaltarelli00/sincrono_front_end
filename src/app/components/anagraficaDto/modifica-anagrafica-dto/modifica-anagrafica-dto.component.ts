@@ -22,6 +22,7 @@ import {
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { AuthService } from '../../login/login-service';
+import { ContrattoService } from '../../contratto/contratto-service';
 
 @Component({
   selector: 'app-modifica-anagrafica-dto',
@@ -83,6 +84,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   userRoleNav: any;
   idNav: any;
   tokenProvvisorio: any;
+  aziendeClienti: any[]=[];
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -95,9 +97,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     public dialog: MatDialog,
     public profileBoxService: ProfileBoxService,
     private http: HttpClient,
+    private contrattoService: ContrattoService,
     private authService: AuthService
   ) {
-
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -111,7 +113,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     ) {
       this.mobile = true;
     }
-
 
     console.log(
       '+++++++++++++++++++++++++++ID ANAGRAFICA CORRENTE: ' + this.id
@@ -258,6 +259,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.caricaContrattoNazionale();
       this.changeElencoLivelliCCNL();
       this.caricaDati();
+      this.caricaAziendeClienti();
       this.calculateRalPartTime();
       this.caricaRuoli();
       this.creaFormCommessa();
@@ -372,6 +374,24 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     }
   }
 
+  onChangeAziendaCliente(event: any) {
+    const selectedValue = parseInt(event.target.value, 10);
+
+    if (!isNaN(selectedValue)) {
+      const selectedObject = this.tipiAziende.find(
+        (azienda: any) => azienda.id === selectedValue
+      );
+
+      if (selectedObject) {
+        console.log('Azienda cliente selezionata: ', selectedObject);
+      } else {
+        console.log('Azienda non trovata nella lista');
+      }
+    } else {
+      console.log('Valore non valido o azienda non selezionata');
+    }
+  }
+
   inizializzaStatoCampiDistacco(): void {
     const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
     commesseFormArray.controls.forEach((commessaControl, index) => {
@@ -436,21 +456,21 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       }
       console.log(
         '************************************ \n DATA DISTACCO DELLE COMMESSE CONVERTITE: \n' +
-        '' +
-        commessa.distaccoData +
-        '\n'
+          '' +
+          commessa.distaccoData +
+          '\n'
       );
       console.log(
         'DATE INIZIO DELLE COMMESSE CONVERTITE: \n' +
-        '' +
-        commessa.dataInizio +
-        '\n'
+          '' +
+          commessa.dataInizio +
+          '\n'
       );
       console.log(
         'DATE FINE DELLE COMMESSE CONVERTITE: \n' +
-        '' +
-        commessa.dataFine +
-        '\n'
+          '' +
+          commessa.dataFine +
+          '\n'
       );
     }
   }
@@ -469,15 +489,15 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         ]['tipoContratto']['id'];
         console.log(
           "<<<<<<<<<<<<<<<<<<<<<L'UTENTE CARICATO HA COME ID DEL CONTRATTO " +
-          this.selectedTipoContrattoId +
-          '>>>>>>>>>>>>>>>>>>>>>'
+            this.selectedTipoContrattoId +
+            '>>>>>>>>>>>>>>>>>>>>>'
         );
         this.descrizioneLivelloCCNL = (resp as any)['anagraficaDto'][
           'contratto'
         ]['tipoLivelloContratto']['ccnl'];
         console.log(
           'LIVELLO CONTRATTO IN ARRIVO DAL DETTAGLIO CHE DEVE APPARIRE NELLA SELECT:' +
-          this.descrizioneLivelloCCNL
+            this.descrizioneLivelloCCNL
         );
         this.setForm();
 
@@ -545,32 +565,32 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         }
         console.log(
           '***************************LE DATE SONO STATE CONVERTITE COSI: *************************** \n' +
-          'Data assunzione:' +
-          this.data.contratto.dataAssunzione +
-          '\n' +
-          'Data inizio prova: ' +
-          this.data.contratto.dataInizioProva +
-          '\n' +
-          'Data fine prova: ' +
-          this.data.contratto.dataFineProva +
-          '\n' +
-          'Data fine rapporto: ' +
-          this.data.contratto.dataFineRapporto +
-          '\n' +
-          'Data di nascita: ' +
-          this.data.anagrafica.dataDiNascita +
-          '\n' +
-          'data corso di sicurezza' +
-          this.data.contratto.dataCorsoSicurezza +
-          '\n' +
-          'data visita medica: ' +
-          this.data.contratto.dataVisitaMedica +
-          '\n'
+            'Data assunzione:' +
+            this.data.contratto.dataAssunzione +
+            '\n' +
+            'Data inizio prova: ' +
+            this.data.contratto.dataInizioProva +
+            '\n' +
+            'Data fine prova: ' +
+            this.data.contratto.dataFineProva +
+            '\n' +
+            'Data fine rapporto: ' +
+            this.data.contratto.dataFineRapporto +
+            '\n' +
+            'Data di nascita: ' +
+            this.data.anagrafica.dataDiNascita +
+            '\n' +
+            'data corso di sicurezza' +
+            this.data.contratto.dataCorsoSicurezza +
+            '\n' +
+            'data visita medica: ' +
+            this.data.contratto.dataVisitaMedica +
+            '\n'
         );
 
         console.log(
           '++++++++++++++++++++++++++++++++++++++++++++++++++ELENCO DEI DATI CARICATI: +++++++++++++++++++++++++++++++++++++++++++++++++ ' +
-          JSON.stringify(resp)
+            JSON.stringify(resp)
         );
 
         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
@@ -848,7 +868,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.elencoLivelliCCNL = response['list'];
           console.log(
             '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
-            JSON.stringify(this.elencoLivelliCCNL)
+              JSON.stringify(this.elencoLivelliCCNL)
           );
         },
         (error: any) => {
@@ -891,13 +911,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
               this.elencoLivelliCCNL = response.list;
               console.log(
                 '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
-                JSON.stringify(this.elencoLivelliCCNL)
+                  JSON.stringify(this.elencoLivelliCCNL)
               );
             },
             (error: any) => {
               console.error(
                 'Errore durante il caricamento dei livelli di contratto: ' +
-                error
+                  error
               );
             }
           );
@@ -1415,7 +1435,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   createCommessaFormGroup(commessa: any): FormGroup {
     return this.formBuilder.group({
       id: [commessa.id],
-      aziendaCliente: [commessa.aziendaCliente, Validators.required],
+      tipoAzienda: this.formBuilder.group({
+        id: [''],
+        descrizione: [''],
+      }),
       clienteFinale: [commessa.clienteFinale, Validators.required],
       titoloPosizione: [commessa.titoloPosizione, Validators.required],
       distacco: [commessa.distacco],
@@ -1530,6 +1553,22 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     commesseFormArray.push(this.createCommessaFormGroup(nuovaCommessa));
   }
 
+  caricaAziendeClienti() {
+    this.contrattoService
+      .getTipoAzienda(localStorage.getItem('token'))
+      .subscribe(
+        (result: any) => {
+          console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+          this.aziendeClienti = (result as any)['list'];
+        },
+        (error: any) => {
+          console.error(
+            'errore durante il caricamento dei nomi azienda:' + error
+          );
+        }
+      );
+  }
+
   storicizza(index: number) {
     console.log('ID COMMESSA: ' + JSON.stringify(this.elencoCommesse[index]));
   }
@@ -1592,7 +1631,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.log(
             'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
-            JSON.stringify(error)
+              JSON.stringify(error)
           );
         }
       );
@@ -1645,7 +1684,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
     console.log(
       'Valore di anagrafica: ' +
-      JSON.stringify(this.anagraficaDto.get('anagrafica')?.value)
+        JSON.stringify(this.anagraficaDto.get('anagrafica')?.value)
     );
     const payload = {
       anagraficaDto: this.anagraficaDto.value,
@@ -1779,7 +1818,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.tipiContratti = (result as any)['list'];
           console.log(
             '------------------------TIPI DI CONTRATTI CARICATI:------------------------ ' +
-            JSON.stringify(result)
+              JSON.stringify(result)
           );
         },
         (error: any) => {
@@ -1798,7 +1837,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.livelliContratti = (result as any)['list'];
           console.log(
             '------------------------LIVELLI CONTRATTO CARICATI:------------------------ ' +
-            JSON.stringify(result)
+              JSON.stringify(result)
           );
         },
         (error: any) => {
@@ -1817,7 +1856,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.tipiAziende = (result as any)['list'];
           console.log(
             '------------------------AZIENDE CARICATE:------------------------ ' +
-            JSON.stringify(result)
+              JSON.stringify(result)
           );
         },
         (error: any) => {
@@ -1835,7 +1874,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.ccnl = (result as any)['list'];
           console.log(
             '------------------------CCNL CARICATI:------------------------ ' +
-            JSON.stringify(result)
+              JSON.stringify(result)
           );
           this.changeElencoLivelliCCNL();
         },
@@ -1853,7 +1892,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.ruoli = (result as any)['list'];
         console.log(
           '------------------------RUOLI CARICATI:------------------------ ' +
-          JSON.stringify(result)
+            JSON.stringify(result)
         );
       },
       (error: any) => {
@@ -2252,9 +2291,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.mensileTOT = mensileTot;
       console.log(
         'MENSILE TOTALE CALCOLATO:' +
-        this.mensileTOT +
-        '\n Numero mensilitá: ' +
-        this.numeroMensilitaDaDettaglio
+          this.mensileTOT +
+          '\n Numero mensilitá: ' +
+          this.numeroMensilitaDaDettaglio
       );
       this.calcoloRAL();
     } else {
@@ -2294,7 +2333,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
@@ -2323,7 +2362,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-          error
+            error
         );
         this.shouldReloadPage = true;
       }

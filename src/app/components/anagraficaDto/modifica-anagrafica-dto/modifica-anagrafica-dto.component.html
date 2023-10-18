@@ -108,7 +108,7 @@
         </span>
       </mat-toolbar>
     </div>
-  
+
     <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
       <mat-toolbar id="toolbar" *ngIf="token && mobile">
         <a [routerLink]="['/home']" class="logo-link">
@@ -443,9 +443,9 @@
                         <div formGroupName="contratto" *ngIf="contrattoVuoto==false" >
                           <div class="row">
                             <legend>Tipologiche</legend>
-                            <div class="col-3">
+                            <div class="col-md-2">
                               <div formGroupName="tipoAzienda">
-                                <label for="tipoAzienda">Tipo Azienda</label>
+                                <label for="tipoAzienda">Azienda</label>
                                 <select  class="form-select" aria-label="Default select example" id="contratto.tipoAzienda.id" (change)="onChangeTipoAzienda($event)" formControlName="id" type="number">
                                   <option value="">--nessuna selezione--</option>
                                   <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
@@ -454,7 +454,7 @@
                                 </select>
                               </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-md-3">
                               <div formGroupName="tipoContratto">
                                 <label for="tipoContratto">Tipo Contratto</label>
                                 <select (change)="onTipoContrattoChange($event)"
@@ -473,7 +473,7 @@
                               </div>
                             </div>
 
-                            <div class="col-md-3" >
+                            <div class="col-md-2" >
                               <label>Mesi Durata: </label>
                               <div class="form-group">
                                 <input
@@ -487,7 +487,7 @@
                               </div>
                             </div>
 
-                            <div class="col-3">
+                            <div class="col-md-3">
                               <div formGroupName="tipoCcnl">
                                 <label for="tipoCcnl">CCNL</label>
                                 <select (change)="onChangeCCNL($event)"
@@ -506,10 +506,7 @@
                                 </select>
                               </div>
                             </div>
-                          </div>
-                          <br>
-                          <div class="row">
-                            <div class="col-3">
+                            <div class="col-md-2">
                               <div formGroupName="tipoLivelloContratto">
                                 <label for="tipoLivelloContratto">Livello Contratto</label>
                                 <select (change)="onChangeLivelloContratto($event)" (input)="calcolaMensileTot()"
@@ -529,6 +526,7 @@
                               </div>
                             </div>
                           </div>
+
                           <br>
                               <div class="row">
                                 <legend>Date</legend>
@@ -1165,14 +1163,23 @@
                                 </div>
                                 <div class="row">
                                   <div class="col-3">
-                                    <label>Azienda Cliente</label> <br>
+                                    <!-- <label>Azienda Cliente</label> <br>
                                     <input class="form-control" placeholder="Inserire l' azienda cliente"
                                            [ngStyle]="{ 'border': commessa.get('aziendaCliente')?.value=='' ? '1px solid red' : ''}"
                                            formControlName="aziendaCliente" type="text" />
                                            <div *ngIf="commessa.get('aziendaCliente')?.hasError('required')" class="text-danger">
                                             Il campo Azienda Cliente è obbligatorio.
-                                          </div>
-
+                                          </div> -->
+                                            <label>Azienda cliente: </label>
+                                            <div class="form-group" formGroupName="tipoAzienda">
+                                              <select (change)="onChangeAziendaCliente($event)" class="form-select"
+                                              aria-label="Default select example" id="commesse.tipoAzienda.id" formControlName="id">
+                                              <option value="">--nessuna selezione--</option>
+                                              <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
+                                                {{ aziendaCliente.descrizione }}
+                                              </option>
+                                            </select>
+                                            </div>
                                   </div>
                                   <div class="col-3">
                                     <label>Cliente Finale</label><br>

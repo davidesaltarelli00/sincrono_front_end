@@ -77,6 +77,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   ralAnnua: any;
   tipoContratto: any;
   mobile: boolean;
+  aziendeClienti: any[] = [];
 
   //navbar
   userLoggedName: any;
@@ -245,6 +246,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.caricaTipoContratto();
     // this.caricaLivelloContratto();
     this.caricaTipoAzienda();
+    this.caricaAziendeClienti();
     this.caricaContrattoNazionale();
     // this.caricaTipoCausaFineRapporto();
     this.caricaRuoli();
@@ -1243,7 +1245,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   creaFormCommessa(): FormGroup {
     return this.formBuilder.group({
       id: new FormControl(''),
-      aziendaCliente: new FormControl('', Validators.required),
+      tipoAzienda: new FormGroup({
+        id: new FormControl(''),
+        descrizione: new FormControl(''),
+      }),
       clienteFinale: new FormControl('', Validators.required),
       titoloPosizione: new FormControl('', Validators.required),
       distacco: new FormControl(false),
@@ -1366,12 +1371,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         ) {
           delete obj.tipoLivelloContratto;
         }
-        // if (
-        //   obj.tipoCausaFineRapporto &&
-        //   Object.keys(obj.tipoCausaFineRapporto).length === 0
-        // ) {
-        //   delete obj.tipoCausaFineRapporto;
-        // }
         if (
           obj.tipoCanaleReclutamento &&
           Object.keys(obj.tipoCanaleReclutamento).length === 0
@@ -1385,7 +1384,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.showErrorAlert = false;
     this.missingFields = [];
     if (this.AnagraficaDto.invalid) {
-      console.log('Qualcosa e andato storto, controlla i campi e riprova.');
+      console.log('Qualcosa é andato storto, controlla i campi e riprova.');
     } else {
       const body = JSON.stringify({
         anagraficaDto: this.AnagraficaDto.value,
@@ -1465,6 +1464,22 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         (result: any) => {
           console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
           this.tipiAziende = (result as any)['list'];
+        },
+        (error: any) => {
+          console.error(
+            'errore durante il caricamento dei nomi azienda:' + error
+          );
+        }
+      );
+  }
+
+  caricaAziendeClienti() {
+    this.contrattoService
+      .getTipoAzienda(localStorage.getItem('token'))
+      .subscribe(
+        (result: any) => {
+          console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+          this.aziendeClienti = (result as any)['list'];
         },
         (error: any) => {
           console.error(
@@ -1607,11 +1622,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
             config.duration = 5000;
             config.panelClass = ['custom-snackbar'];
 
-            this.snackBar.open(
-              'ATTENZIONE: tipo di contratto non selezionato.',
-              'Chiudi',
-              config
-            );
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Attenzione',
+                message: 'Il tipo di contratto non é stato selezionato',
+              },
+            });
           }
         } else {
           console.log('Livello contratto non trovato nella lista');
@@ -1700,6 +1716,24 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       livelloControl?.disable();
       livelloControl?.setValue(null);
       this.ccnLSelezionato = false;
+    }
+  }
+
+  onChangeAziendaCliente(event: any) {
+    const selectedValue = parseInt(event.target.value, 10);
+
+    if (!isNaN(selectedValue)) {
+      const selectedObject = this.tipiAziende.find(
+        (azienda: any) => azienda.id === selectedValue
+      );
+
+      if (selectedObject) {
+        console.log('Azienda cliente selezionata: ', selectedObject);
+      } else {
+        console.log('Azienda non trovata nella lista');
+      }
+    } else {
+      console.log('Valore non valido o azienda non selezionata');
     }
   }
 
