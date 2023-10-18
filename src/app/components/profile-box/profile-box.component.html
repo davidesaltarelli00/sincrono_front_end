@@ -180,67 +180,67 @@
             <div class="col-6">
               <mat-card class="profile-box">
                 <h3>Dati anagrafici dell'utente</h3>
-                <div>
-                  <strong>Nome:</strong>
-                  {{ anagrafica?.anagraficaDto.anagrafica?.nome }}
-                </div>
-                <div>
-                  <strong>Cognome:</strong>
-                  {{ anagrafica?.anagraficaDto.anagrafica?.cognome }}
-                </div>
-                <div *ngIf="
-                      anagrafica?.anagraficaDto.anagrafica?.dataDiNascita !=
-                      null
-                    ">
-                  <strong>Data e luogo di nascita:</strong>
-                  {{
-                  anagrafica?.anagraficaDto.anagrafica?.dataDiNascita
-                  | date : "dd/MM/yyyy"
-                  }},
-                  {{ anagrafica?.anagraficaDto.anagrafica?.comuneDiNascita }}
-                </div>
-                <div *ngIf="
-                      anagrafica?.anagraficaDto.anagrafica?.dataDiNascita ==
-                      null
-                    ">
-                  <strong>Data e luogo di nascita:</strong> Dato non inserito.
-                </div>
-                <div>
-                  <strong>Codice fiscale:</strong>
-                  {{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}
-                </div>
+                <table class="table table-bordered">
+                  <tr>
+                    <th>Nome:</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.nome }}</td>
+                  </tr>
+                  <tr>
+                    <th>Cognome:</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.cognome }}</td>
+                  </tr>
+                  <tr *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita != null">
+                    <th>Data e luogo di nascita:</th>
+                    <td>
+                      {{
+                        anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"
+                      }},
+                      {{ anagrafica?.anagraficaDto.anagrafica?.comuneDiNascita }}
+                    </td>
+                  </tr>
+                  <tr *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita == null">
+                    <th>Data e luogo di nascita:</th>
+                    <td>Dato non inserito.</td>
+                  </tr>
+                  <tr>
+                    <th>Codice fiscale:</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}</td>
+                  </tr>
+                </table>
               </mat-card>
+
             </div>
             <div class="col-6">
               <mat-card class="profile-box">
                 <h3>Contatti</h3>
-                <div>
-                  <strong>Cellulare aziendale:</strong>
-                  {{
-                  anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale
-                  }}
-                </div>
-                <div>
-                  <strong>Cellulare privato:</strong>
-                  {{ anagrafica?.anagraficaDto.anagrafica?.cellularePrivato }}
-                </div>
-                <div>
-                  <strong>Mail aziendale:</strong>
-                  {{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}
-                </div>
-                <div>
-                  <strong>Mail privata:</strong>
-                  {{ anagrafica?.anagraficaDto.anagrafica?.mailPrivata }}
-                </div>
-                <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.mailPec!=null">
-                  <strong>Mail PEC:</strong>
-                  {{ anagrafica?.anagraficaDto.anagrafica?.mailPec }}
-                </div>
-                <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.mailPec==null">
-                  <strong>Mail PEC:</strong>
-                  Dato non inserito.
-                </div>
+                <table class="table table-bordered">
+                  <tr>
+                    <th>Cellulare aziendale:</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale ? anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale : 'Dato non inserito' }}</td>
+                  </tr>
+                  <tr>
+                    <th>Cellulare privato:</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.cellularePrivato }}</td>
+                  </tr>
+                  <tr>
+                    <th>Mail aziendale:</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}</td>
+                  </tr>
+                  <tr>
+                    <th>Mail privata:</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailPrivata }}</td>
+                  </tr>
+                  <tr *ngIf="anagrafica?.anagraficaDto.anagrafica?.mailPec != null">
+                    <th>Mail PEC:</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailPec }}</td>
+                  </tr>
+                  <tr *ngIf="anagrafica?.anagraficaDto.anagrafica?.mailPec == null">
+                    <th>Mail PEC:</th>
+                    <td>Dato non inserito.</td>
+                  </tr>
+                </table>
               </mat-card>
+
             </div>
           </div>
         </div>
@@ -250,72 +250,78 @@
             <div class="col-6">
               <mat-card class="profile-box">
                 <h3>Residenza e domicilio</h3>
-                <div>
-                  <strong>Comune di residenza</strong>
-                  {{ anagrafica?.anagraficaDto.anagrafica?.residenza }}
-                </div>
-                <div>
-                  <strong>Comune di domicilio</strong>
-                  {{ anagrafica?.anagraficaDto.anagrafica?.domicilio }}
-                </div>
+                <table class="table table-bordered">
+                  <tr>
+                    <th>Comune di residenza</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.residenza }}</td>
+                  </tr>
+                  <tr>
+                    <th>Comune di domicilio</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.domicilio }}</td>
+                  </tr>
+                </table>
               </mat-card>
             </div>
             <div class="col-6">
               <mat-card class="profile-box">
                 <h3>Referenze</h3>
-                <div>
-                  <strong>Titoli di studio</strong>
-                  {{ anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio }}
-                </div>
-                <div>
-                  <strong>Altri titoli</strong>
-                  {{ anagrafica?.anagraficaDto.anagrafica?.altriTitoli }}
-                </div>
+                <table class="table table-bordered">
+                  <tr>
+                    <th>Titoli di studio</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio }}</td>
+                  </tr>
+                  <tr>
+                    <th>Altri titoli</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.altriTitoli }}</td>
+                  </tr>
+                </table>
               </mat-card>
             </div>
           </div>
         </div>
+
         <br />
         <div class="profile-box-container">
           <div class="row">
             <div class="col-6">
               <mat-card class="profile-box">
                 <h3>Accesso</h3>
-                <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.attivo == true">
-                  <strong>Attivo: </strong>
-                  <mat-icon style="color: blue">check</mat-icon>
-                </div>
-                <div *ngIf="
-                      anagrafica?.anagraficaDto.anagrafica?.attivo == false
-                    ">
-                  <strong>Attivo: </strong>
-                  <mat-icon style="color: red">close</mat-icon>
-                </div>
-                <div>
-                  <strong>Nome utente:</strong>
-                  {{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}
-                </div>
-                <div>
-                  <a style="color: blue !important;" [routerLink]="['/cambia-password']">Cambia password <i
-                      class="fa fa-key" aria-hidden="true"></i> </a>
-                </div>
+                <table class="table table-bordered">
+                  <tr>
+                    <th>Attivo:</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.attivo ? 'Si' : 'No' }}</td>
+                  </tr>
+                  <tr>
+                    <th>Nome utente:</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}</td>
+                  </tr>
+                  <tr>
+                    <th>Cambia password:</th>
+                    <td style="cursor: pointer; color: blue; " [routerLink]="['/cambia-password']" >
+                    Cambia password
+                    </td>
+                  </tr>
+                </table>
               </mat-card>
             </div>
             <div class="col-6">
               <mat-card class="profile-box">
                 <h3>Altre informazioni</h3>
-
-
-                <div>
-                  <strong>Coniugato:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.coniugato ? 'Si':'No'}}
-                </div>
-                <div>
-                  <strong>Coniugato:</strong> {{ anagrafica?.anagraficaDto.anagrafica?.figliACarico ? 'Si':'No'}}
-                </div>
+                <table class="table table-bordered">
+                  <tr>
+                    <th>Coniugato:</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.coniugato ? 'Si' : 'No' }}</td>
+                  </tr>
+                  <tr>
+                    <th>Figli a carico:</th>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.figliACarico ? 'Si' : 'No' }}</td>
+                  </tr>
+                </table>
               </mat-card>
             </div>
           </div>
         </div>
+
         <div class="profile-box-container">
           <div class="row">
             <div class="col-6">

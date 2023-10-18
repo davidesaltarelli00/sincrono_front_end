@@ -19,7 +19,7 @@
 .image-preview {
   position: relative;
   overflow: hidden;
-  border: 2px solid #ccc;
+  border: 2px solid #fff;
 }
 
 .profile-box {
@@ -146,10 +146,8 @@ mat-card {
 }
 
 .image-container {
-  border: 1px solid #ccc;
-  padding: 10px;
   text-align: center;
-  margin: 10px;
+  margin: auto;
   position: relative;
   overflow: hidden;
 
@@ -176,21 +174,17 @@ mat-card {
 .image-preview {
   position: relative;
   overflow: hidden;
-  border: 2px solid #ccc;
 }
 
 .image-container.rounded {
-  border-radius: 50%;
-  overflow: hidden;
-  width: 321px; /* You can adjust the width as needed */
-  height: 431px; /* You can adjust the height as needed */
-  background-color:#333;
+  width: 20%;
 }
 
 .preview-image {
   max-width: 100%;
   height: auto;
   object-fit: cover;
+  border-radius: 100%;
 }
 
 
