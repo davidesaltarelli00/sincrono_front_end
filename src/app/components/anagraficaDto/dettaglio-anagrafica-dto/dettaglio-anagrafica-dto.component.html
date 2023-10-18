@@ -113,8 +113,8 @@
       </div>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
-          class="fa fa-user"></i>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+        <img *ngIf="immagineConvertita!=null" [src]="immagineConvertita" width="40px"  style="border-radius:100%" />
       </span> &nbsp;&nbsp;
       <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
         <i class="fa fa-sign-out" aria-hidden="true"></i>

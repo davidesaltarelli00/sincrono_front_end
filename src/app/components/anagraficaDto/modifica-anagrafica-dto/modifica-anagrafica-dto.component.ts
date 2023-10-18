@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -24,6 +24,7 @@ import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { AuthService } from '../../login/login-service';
 import { ContrattoService } from '../../contratto/contratto-service';
 import { MenuService } from '../../menu.service';
+import { ImageService } from '../../image.service';
 
 @Component({
   selector: 'app-modifica-anagrafica-dto',
@@ -86,6 +87,16 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   idNav: any;
   tokenProvvisorio: any;
   aziendeClienti: any[] = [];
+  //proprietá per immagini
+  immagine: any;
+  @ViewChild('fileInput') fileInput: ElementRef | undefined;
+  immagineConvertita: string | null = null;
+  immaginePredefinita: string | null = null;
+  idAnagraficaLoggata: any;
+  disabilitaImmagine: any;
+  salvaImmagine: boolean = false;
+  immagineCancellata: boolean = false;
+  codiceFiscaleDettaglio: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -95,6 +106,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private renderer: Renderer2,
     private datePipe: DatePipe,
+    private imageService:ImageService,
     public dialog: MatDialog,
     public profileBoxService: ProfileBoxService,
     private http: HttpClient,
@@ -2331,6 +2343,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.codiceFiscaleDettaglio = response.anagraficaDto.anagrafica.codiceFiscale;
+        this.getImage();
       },
       (error: any) => {
         console.error(
@@ -2399,6 +2413,43 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       }
     );
   }
+
+    //metodi immagine
+    getImage() {
+      let body = {
+        codiceFiscale: this.codiceFiscaleDettaglio,
+      };
+      console.log(JSON.stringify(body));
+      console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+      this.imageService.getImage(this.token, body).subscribe(
+        (result: any) => {
+          this.immagine = (result as any).base64;
+          console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+
+          if (this.immagine) {
+            this.convertBase64ToImage(this.immagine);
+            console.log('Valore di immagineConvertita:', this.immagineConvertita);
+          } else {
+            // Assegna un'immagine predefinita se l'immagine non è disponibile
+            this.immaginePredefinita =
+              '../../../../assets/images/profilePicPlaceholder.png';
+          }
+        },
+        (error: any) => {
+          console.error(
+            "Errore durante il caricamento dell'immagine: " +
+              JSON.stringify(error)
+          );
+
+          // Assegna un'immagine predefinita in caso di errore
+          this.immaginePredefinita = '../../../../assets/images/danger.png';
+        }
+      );
+    }
+
+    convertBase64ToImage(base64String: string): void {
+      this.immagineConvertita = base64String;
+    }
 
   private handleLogoutError() {
     sessionStorage.clear();

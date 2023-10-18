@@ -1,5 +1,5 @@
 import { AnagraficaDtoService } from './../anagraficaDto-service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -14,6 +14,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { MenuService } from '../../menu.service';
+import { ImageService } from '../../image.service';
 declare var $: any;
 
 @Component({
@@ -41,6 +42,17 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   inserimentoParziale: any;
   contrattoScaduto: any;
   ruolo: any;
+
+  //immagine
+  immagineConvertita: string | null = null;
+  immaginePredefinita: string | null = null;
+  idAnagraficaLoggata: any;
+  disabilitaImmagine: any;
+  salvaImmagine: boolean = false;
+  immagineCancellata: boolean = false;
+  codiceFiscaleDettaglio: any;
+  immagine: any;
+  @ViewChild('fileInput') fileInput: ElementRef | undefined;
 
   //navbar
   userLoggedName: any;
@@ -128,8 +140,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     private router: Router,
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
-    private menuService:MenuService,
-    private http: HttpClient
+    private menuService: MenuService,
+    private http: HttpClient,
+    private imageService:ImageService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -256,7 +269,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
@@ -284,7 +297,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.log(
             'Si é verificato un errore durante il caricamento dei dati: ' +
-            error
+              error
           );
         }
       );
@@ -314,7 +327,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
             // Hai un campo vuoto in questo record
             console.log(
               `Campo vuoto trovato in record con ID ${record.anagrafica.id}` +
-              `: ${value}`
+                `: ${value}`
             );
           }
         }
@@ -356,7 +369,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.log(
             'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
-            JSON.stringify(error)
+              JSON.stringify(error)
           );
         }
       );
@@ -458,7 +471,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
                   if ((response as any).esito.code != 200) {
                     alert(
                       'Riattivazione non riuscita:\n' +
-                      (response as any).esito.target
+                        (response as any).esito.target
                     );
                   } else {
                     alert('Utente riattivato correttamente.');
@@ -546,19 +559,14 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       },
     };
 
-
-    console.log(
-      'PAYLOAD BACKEND FILTER ORGANICO: ' + JSON.stringify(payload)
-    );
+    console.log('PAYLOAD BACKEND FILTER ORGANICO: ' + JSON.stringify(payload));
     this.anagraficaDtoService
       .filterAnagrafica(localStorage.getItem('token'), payload)
       .subscribe(
         (result) => {
           if ((result as any).esito.code != 200) {
             alert(
-              'Qualcosa é andato storto\n' +
-              ': ' +
-              (result as any).esito.target
+              'Qualcosa é andato storto\n' + ': ' + (result as any).esito.target
             );
           } else {
             if (Array.isArray(result.list)) {
@@ -576,7 +584,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.log(
             'Si é verificato un errore durante il passaggio dei dati da organico: ' +
-            error
+              error
           );
         }
       );
@@ -781,7 +789,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.error(
             'ERRORE DURANTE IL CARICAMENTO DELLE COMMESSE:' +
-            JSON.stringify(error)
+              JSON.stringify(error)
           );
         }
       );
@@ -842,7 +850,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     (error: any) => {
       console.error(
         'Si è verificato un errore durante il recupero della lista delle anagrafiche: ' +
-        error
+          error
       );
     };
   }
@@ -875,13 +883,13 @@ export class ListaAnagraficaDtoComponent implements OnInit {
               this.elencoLivelliCCNL = response.list;
               console.log(
                 '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
-                JSON.stringify(this.elencoLivelliCCNL)
+                  JSON.stringify(this.elencoLivelliCCNL)
               );
             },
             (error: any) => {
               console.error(
                 'Errore durante il caricamento dei livelli di contratto: ' +
-                error
+                  error
               );
             }
           );
@@ -917,7 +925,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.error(
             'ERRORE DURANTE IL CARICAMENTO DELLE INFO SUL CONTRATTO:' +
-            JSON.stringify(error)
+              JSON.stringify(error)
           );
         }
       );
@@ -953,11 +961,14 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.codiceFiscaleDettaglio =
+          response.anagraficaDto.anagrafica.codiceFiscale;
+        this.getImage();
       },
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
@@ -986,7 +997,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-          error
+            error
         );
         this.shouldReloadPage = true;
       }
@@ -1021,6 +1032,44 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       }
     );
   }
+
+    //metodi immagine
+    getImage() {
+      let body = {
+        codiceFiscale: this.codiceFiscaleDettaglio,
+      };
+      console.log(JSON.stringify(body));
+      console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+      this.imageService.getImage(this.token, body).subscribe(
+        (result: any) => {
+          this.immagine = (result as any).base64;
+          console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+
+          if (this.immagine) {
+            this.convertBase64ToImage(this.immagine);
+            console.log('Valore di immagineConvertita:', this.immagineConvertita);
+          } else {
+            // Assegna un'immagine predefinita se l'immagine non è disponibile
+            this.immaginePredefinita =
+              '../../../../assets/images/profilePicPlaceholder.png';
+          }
+        },
+        (error: any) => {
+          console.error(
+            "Errore durante il caricamento dell'immagine: " +
+              JSON.stringify(error)
+          );
+
+          // Assegna un'immagine predefinita in caso di errore
+          this.immaginePredefinita = '../../../../assets/images/danger.png';
+        }
+      );
+    }
+
+    convertBase64ToImage(base64String: string): void {
+      this.immagineConvertita = base64String;
+    }
+
 }
 
 interface MenuData {
