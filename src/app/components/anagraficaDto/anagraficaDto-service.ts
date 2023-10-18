@@ -19,7 +19,7 @@ export class AnagraficaDtoService {
     });
     return this.http.get<any>(`http://localhost:8080/services/list`, {
       headers: headers,
-    }); 
+    });
   }
 
   detailAnagraficaDto(id: any, token: any): Observable<any> {
@@ -112,9 +112,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/utenti-list`, {
-      headers: headers,
-    });
+    return this.http.get<any>(`http://localhost:8080/services/utenti-list`, { headers: headers,});
   }
 
   caricaTipoCausaFineRapporto(token: any): Observable<any> {

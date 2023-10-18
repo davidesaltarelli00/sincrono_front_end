@@ -6,6 +6,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ImageService } from '../image.service';
+import { MenuService } from '../menu.service';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -40,14 +42,21 @@ export class HomeComponent implements OnInit {
     private dialog: MatDialog,
     private http: HttpClient,
     private router: Router,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private menuService: MenuService
   ) {}
+
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
     } else {
-      console.error('Errore di autenticazione, esegui il login');
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          title: 'Attenzione:',
+          message: 'Errore di autenticazione; effettua il login.',
+        },
+      });
     }
   }
 
@@ -68,7 +77,8 @@ export class HomeComponent implements OnInit {
           console.log('Valore di immagineConvertita:', this.immagineConvertita);
         } else {
           // Assegna un'immagine predefinita se l'immagine non è disponibile
-          this.immaginePredefinita = '../../../../assets/images/profilePicPlaceholder.png';
+          this.immaginePredefinita =
+            '../../../../assets/images/profilePicPlaceholder.png';
         }
       },
       (error: any) => {
@@ -144,13 +154,7 @@ export class HomeComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
-    this.http.get<MenuData>(url, { headers: headers }).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idNav).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
@@ -168,13 +172,7 @@ export class HomeComponent implements OnInit {
   }
 
   getPermissions(functionId: number) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/operazioni/${functionId}`;
-    this.http.get(url, { headers: headers }).subscribe(
+    this.menuService.getPermissions(this.token, functionId).subscribe(
       (data: any) => {
         console.log('Permessi ottenuti:', data);
       },
@@ -183,23 +181,4 @@ export class HomeComponent implements OnInit {
       }
     );
   }
-}
-
-interface MenuData {
-  esito: {
-    code: number;
-    target: any;
-    args: any;
-  };
-  list: {
-    id: number;
-    funzione: any;
-    menuItem: number;
-    nome: string;
-    percorso: string;
-    immagine: any;
-    ordinamento: number;
-    funzioni: any;
-    privilegio: any;
-  }[];
 }

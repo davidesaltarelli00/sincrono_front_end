@@ -6,36 +6,49 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MenuService {
-  id: any;
-  url = `http://localhost:8085/funzioni-ruolo/tree/1`;
+  url = `http://localhost:8080/services/`;
+  idNav: any;
 
   constructor(private http: HttpClient) {}
 
-  sendRapportino(token: any, body: any): Observable<any> {
+  generateMenuByUserRole(token: any, idNav: number): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(
-      'http://localhost:8080/services/update-rapportino',
-      body,
-      {
-        headers: headers,
-      }
-    );
-  }
-}
-
-/*
- deleteCommessa(body: any, token: any): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${token}`,
-    });
-    return this.http.put<any>('http://localhost:8080/services/commessa', body, {
+    return this.http.get<MenuData>(this.url + `funzioni-ruolo-tree/${idNav}`, {
       headers: headers,
     });
   }
-*/
+
+  getPermissions(token: any, functionId: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<MenuData>(this.url + `operazioni/${functionId}`, {
+      headers: headers,
+    });
+  }
+}
+
+interface MenuData {
+  esito: {
+    code: number;
+    target: any;
+    args: any;
+  };
+  list: {
+    id: number;
+    funzione: any;
+    menuItem: number;
+    nome: string;
+    percorso: string;
+    immagine: any;
+    ordinamento: number;
+    funzioni: any;
+    privilegio: any;
+  }[];
+}

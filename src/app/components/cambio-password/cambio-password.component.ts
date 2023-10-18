@@ -8,6 +8,10 @@ import {
 import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { CambioPasswordService } from './cambio-password.service';
 import { Router } from '@angular/router';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../login/login-service';
 
 @Component({
   selector: 'app-cambio-password',
@@ -17,15 +21,17 @@ import { Router } from '@angular/router';
 export class CambioPasswordComponent {
   passwordForm: FormGroup;
   anagrafica: any;
-  idUtente=null;
+  idUtente = null;
 
-  result:any; //variabile che conterrá la response del cambio password andato a buon fine
+  result: any; //variabile che conterrá la response del cambio password andato a buon fine
 
   constructor(
     private formBuilder: FormBuilder,
     private profileBoxService: ProfileBoxService,
-    private cambioPasswordService:CambioPasswordService,
-    private router:Router
+    private cambioPasswordService: CambioPasswordService,
+    private router: Router,
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {
     this.passwordForm = this.formBuilder.group(
       {
@@ -47,9 +53,8 @@ export class CambioPasswordComponent {
         this.anagrafica = response;
         const idUtente = response.anagraficaDto.anagrafica.utente.id;
         // console.log('ID UTENTE valorizzato : ' + idUtente);
-        this.idUtente=idUtente;
+        this.idUtente = idUtente;
         // console.log('ID UTENTE valorizzato globalmente: ' + this.idUtente);
-
       },
       (error: any) => {
         console.error(
@@ -110,17 +115,60 @@ export class CambioPasswordComponent {
         this.cambioPasswordService.cambioPassword().subscribe(
           (response: any) => {
             this.result = response;
-           alert("Cambio password avvenuto con successo.");
-           this.router.navigate(['/profile-box']);
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Attenzione:',
+                message: 'Errore di autenticazione; effettua il login.',
+              },
+            });
+            this.authService.logout().subscribe(
+              (response: any) => {
+                if (response.status === 200) {
+                  // Logout effettuato con successo
+                  localStorage.removeItem('token');
+                  localStorage.removeItem('tokenProvvisorio');
+                  sessionStorage.clear();
+                  this.router.navigate(['/login']);
+                  this.dialog.closeAll();
+                } else {
+                  // Gestione di altri stati di risposta (es. 404, 500, ecc.)
+                  console.log(
+                    'Errore durante il logout:',
+                    response.status,
+                    response.body
+                  );
+                  this.handleLogoutError();
+                }
+              },
+              (error: HttpErrorResponse) => {
+                if (error.status === 403) {
+                  // Logout a causa di errore 403 (Forbidden)
+                  console.log('Errore 403: Accesso negato');
+                  this.handleLogoutError();
+                } else {
+                  // Gestione di altri errori di rete o server
+                  console.log('Errore durante il logout:', error.message);
+                  this.handleLogoutError();
+                }
+              }
+            );
           },
           (error: any) => {
-            console.log("Errore durante il cambio password: " + error.message);
+            console.log('Errore durante il cambio password: ' + error.message);
           }
         );
       }
     }
   }
 
+  close() {
+    this.dialog.closeAll();
+  }
 
-
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
+  }
 }
