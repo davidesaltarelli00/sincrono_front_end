@@ -10,6 +10,7 @@ import { ListaRapportiniService } from './lista-rapportini.service';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { ModaleDettaglioRapportinoComponent } from '../modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
 import { RapportinoDataService } from '../modale-dettaglio-rapportino/RapportinoData.service';
+import { MenuService } from '../menu.service';
 
 @Component({
   selector: 'app-lista-rapportini',
@@ -63,7 +64,8 @@ export class ListaRapportiniComponent implements OnInit {
     private router: Router,
     private rapportinoService: RapportinoService,
     private listaRapportiniService: ListaRapportiniService,
-    private rapportinoDataService: RapportinoDataService
+    private rapportinoDataService: RapportinoDataService,
+    private menuService:MenuService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -352,19 +354,13 @@ export class ListaRapportiniComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
-    this.http.get<MenuData>(url, { headers: headers }).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idNav).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
-        // console.log(
-        //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        // );
+        console.log(
+          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+        );
         this.shouldReloadPage = false;
       },
       (error: any) => {
@@ -376,15 +372,9 @@ export class ListaRapportiniComponent implements OnInit {
   }
 
   getPermissions(functionId: number) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/operazioni/${functionId}`;
-    this.http.get(url, { headers: headers }).subscribe(
+    this.menuService.getPermissions(this.token, functionId).subscribe(
       (data: any) => {
-        // console.log('Permessi ottenuti:', data);
+        console.log('Permessi ottenuti:', data);
       },
       (error: any) => {
         console.error('Errore nella generazione dei permessi:', error);
