@@ -412,7 +412,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     return false; // Nessun campo vuoto trovato
   }
 
-
   onChangeAziendaCliente(event: any) {
     const selectedValue = parseInt(event.target.value, 10);
 
@@ -430,7 +429,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       console.log('Valore non valido o azienda non selezionata');
     }
   }
-
 
   elimina(idAnagrafica: number) {
     const confirmation = confirm(
@@ -986,10 +984,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   handleClick(element: any) {
     if (element?.commesse?.length > 0) {
-      // Se ci sono commesse, esegui l'azione desiderata (ad esempio, mostraInfo)
       this.mostraInfo(element.anagrafica?.id);
     } else {
-      // Se non ci sono commesse, reindirizza l'utente a un'altra pagina
       this.router.navigate(['/modifica-anagrafica', element.anagrafica.id]);
     }
   }

@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -25,6 +31,7 @@ import { AuthService } from '../../login/login-service';
 import { ContrattoService } from '../../contratto/contratto-service';
 import { MenuService } from '../../menu.service';
 import { ImageService } from '../../image.service';
+import { StepperService } from 'src/app/stepper.service';
 
 @Component({
   selector: 'app-modifica-anagrafica-dto',
@@ -97,6 +104,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   salvaImmagine: boolean = false;
   immagineCancellata: boolean = false;
   codiceFiscaleDettaglio: any;
+  @ViewChild('stepper') stepper: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -106,13 +114,14 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private renderer: Renderer2,
     private datePipe: DatePipe,
-    private imageService:ImageService,
+    private imageService: ImageService,
     public dialog: MatDialog,
     public profileBoxService: ProfileBoxService,
     private http: HttpClient,
     private contrattoService: ContrattoService,
     private authService: AuthService,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private stepperService: StepperService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -128,9 +137,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.mobile = true;
     }
 
-    console.log(
-      '+++++++++++++++++++++++++++ID ANAGRAFICA CORRENTE: ' + this.id
-    );
+    // console.log(
+    //   '+++++++++++++++++++++++++++ID ANAGRAFICA CORRENTE: ' + this.id
+    // );
     this.dataOdierna = new Date();
     if (this.dataOdierna) {
       this.dataFormattata = this.datePipe.transform(
@@ -138,7 +147,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         'yyyy-MM-dd'
       );
       if (this.dataFormattata) {
-        console.log('DATA DI OGGI FORMATTATA: ' + this.dataFormattata);
+        // console.log('DATA DI OGGI FORMATTATA: ' + this.dataFormattata);
       }
     }
 
@@ -300,11 +309,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         scattiAnzianitaControl?.value != null
       ) {
         // this.calcolaMensileTot();
-        console.log('Il mensile totale si puo calcolare.');
+        // console.log('Il mensile totale si puo calcolare.');
       } else {
-        console.warn(
-          'Non é possibile calcolare il mensile totale perché mancano dei dati.'
-        );
+        // console.warn(
+        //   'Non é possibile calcolare il mensile totale perché mancano dei dati.'
+        // );
       }
 
       //SE IL CONTRATTO É DIVERSO DA PARTITA IVA I CAMPI TARIFFA PARTITA IVA E RETRIBUZIONE NETTA GIORNALIERA SARANNO DISABILITATI
@@ -365,27 +374,28 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             this.dialog.closeAll();
           } else {
             // Gestione di altri stati di risposta (es. 404, 500, ecc.)
-            console.log(
-              'Errore durante il logout:',
-              response.status,
-              response.body
-            );
+            // console.log(
+            //   'Errore durante il logout:',
+            //   response.status,
+            //   response.body
+            // );
             this.handleLogoutError();
           }
         },
         (error: HttpErrorResponse) => {
           if (error.status === 403) {
             // Logout a causa di errore 403 (Forbidden)
-            console.log('Errore 403: Accesso negato');
+            // console.log('Errore 403: Accesso negato');
             this.handleLogoutError();
           } else {
             // Gestione di altri errori di rete o server
-            console.log('Errore durante il logout:', error.message);
+            // console.log('Errore durante il logout:', error.message);
             this.handleLogoutError();
           }
         }
       );
     }
+
   }
 
   onChangeAziendaCliente(event: any) {
@@ -397,12 +407,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       );
 
       if (selectedObject) {
-        console.log('Azienda cliente selezionata: ', selectedObject);
+        // console.log('Azienda cliente selezionata: ', selectedObject);
       } else {
-        console.log('Azienda non trovata nella lista');
+        // console.log('Azienda non trovata nella lista');
       }
     } else {
-      console.log('Valore non valido o azienda non selezionata');
+      // console.log('Valore non valido o azienda non selezionata');
     }
   }
 
@@ -436,12 +446,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         );
 
         if (selectedLivello) {
-          console.log('tipo contratto selezionato: ', selectedLivello);
+          // console.log('tipo contratto selezionato: ', selectedLivello);
         } else {
-          console.log('tipo contratto non trovato nella lista');
+          // console.log('tipo contratto non trovato nella lista');
         }
       } else {
-        console.log('Valore non valido o tipo contratto non selezionato');
+        // console.log('Valore non valido o tipo contratto non selezionato');
       }
     }
   }
@@ -468,24 +478,24 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           'yyyy-MM-dd'
         );
       }
-      console.log(
-        '************************************ \n DATA DISTACCO DELLE COMMESSE CONVERTITE: \n' +
-          '' +
-          commessa.distaccoData +
-          '\n'
-      );
-      console.log(
-        'DATE INIZIO DELLE COMMESSE CONVERTITE: \n' +
-          '' +
-          commessa.dataInizio +
-          '\n'
-      );
-      console.log(
-        'DATE FINE DELLE COMMESSE CONVERTITE: \n' +
-          '' +
-          commessa.dataFine +
-          '\n'
-      );
+      // console.log(
+      //   '************************************ \n DATA DISTACCO DELLE COMMESSE CONVERTITE: \n' +
+      //     '' +
+      //     commessa.distaccoData +
+      //     '\n'
+      // );
+      // console.log(
+      //   'DATE INIZIO DELLE COMMESSE CONVERTITE: \n' +
+      //     '' +
+      //     commessa.dataInizio +
+      //     '\n'
+      // );
+      // console.log(
+      //   'DATE FINE DELLE COMMESSE CONVERTITE: \n' +
+      //     '' +
+      //     commessa.dataFine +
+      //     '\n'
+      // );
     }
   }
 
@@ -577,50 +587,50 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             'yyyy-MM-dd'
           );
         }
-        console.log(
-          '***************************LE DATE SONO STATE CONVERTITE COSI: *************************** \n' +
-            'Data assunzione:' +
-            this.data.contratto.dataAssunzione +
-            '\n' +
-            'Data inizio prova: ' +
-            this.data.contratto.dataInizioProva +
-            '\n' +
-            'Data fine prova: ' +
-            this.data.contratto.dataFineProva +
-            '\n' +
-            'Data fine rapporto: ' +
-            this.data.contratto.dataFineRapporto +
-            '\n' +
-            'Data di nascita: ' +
-            this.data.anagrafica.dataDiNascita +
-            '\n' +
-            'data corso di sicurezza' +
-            this.data.contratto.dataCorsoSicurezza +
-            '\n' +
-            'data visita medica: ' +
-            this.data.contratto.dataVisitaMedica +
-            '\n'
-        );
+        // console.log(
+        //   '***************************LE DATE SONO STATE CONVERTITE COSI: *************************** \n' +
+        //     'Data assunzione:' +
+        //     this.data.contratto.dataAssunzione +
+        //     '\n' +
+        //     'Data inizio prova: ' +
+        //     this.data.contratto.dataInizioProva +
+        //     '\n' +
+        //     'Data fine prova: ' +
+        //     this.data.contratto.dataFineProva +
+        //     '\n' +
+        //     'Data fine rapporto: ' +
+        //     this.data.contratto.dataFineRapporto +
+        //     '\n' +
+        //     'Data di nascita: ' +
+        //     this.data.anagrafica.dataDiNascita +
+        //     '\n' +
+        //     'data corso di sicurezza' +
+        //     this.data.contratto.dataCorsoSicurezza +
+        //     '\n' +
+        //     'data visita medica: ' +
+        //     this.data.contratto.dataVisitaMedica +
+        //     '\n'
+        // );
 
-        console.log(
-          '++++++++++++++++++++++++++++++++++++++++++++++++++ELENCO DEI DATI CARICATI: +++++++++++++++++++++++++++++++++++++++++++++++++ ' +
-            JSON.stringify(resp)
-        );
+        // console.log(
+        //   '++++++++++++++++++++++++++++++++++++++++++++++++++ELENCO DEI DATI CARICATI: +++++++++++++++++++++++++++++++++++++++++++++++++ ' +
+        //     JSON.stringify(resp)
+        // );
 
         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
         this.contratto = (resp as any)['anagraficaDto']['contratto'];
         if (this.contratto == null) {
-          console.log('Niente contratto.');
+          // console.log('Niente contratto.');
           this.contrattoVuoto = true;
         } else {
           this.contrattoVuoto = false;
-          console.log('Dati del contratto: ' + JSON.stringify(this.contratto));
+          // console.log('Dati del contratto: ' + JSON.stringify(this.contratto));
           this.numeroMensilitaDaDettaglio = (resp as any)['anagraficaDto'][
             'contratto'
           ]['tipoCcnl']['numeroMensilita'];
-          console.log(
-            'NUMBER MENSILITA DA DETTAGLIO:' + this.numeroMensilitaDaDettaglio
-          );
+          // console.log(
+          //   'NUMBER MENSILITA DA DETTAGLIO:' + this.numeroMensilitaDaDettaglio
+          // );
 
           this.tipoDiContrattoControl =
             this.contratto.tipoContratto.descrizione;
@@ -732,9 +742,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       const isChecked = target.checked;
 
       if (isChecked) {
-        console.log('Checkbox selezionata, il valore è true');
+        // console.log('Checkbox selezionata, il valore è true');
       } else {
-        console.log('Checkbox deselezionata, il valore è false');
+        // console.log('Checkbox deselezionata, il valore è false');
       }
     }
   }
@@ -783,9 +793,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       const isChecked = target.checked;
 
       if (isChecked) {
-        console.log('Checkbox selezionata, il valore è true');
+        // console.log('Checkbox selezionata, il valore è true');
       } else {
-        console.log('Checkbox deselezionata, il valore è false');
+        // console.log('Checkbox deselezionata, il valore è false');
       }
 
       const ticketControl = this.anagraficaDto.get('contratto.ticket');
@@ -2343,7 +2353,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.codiceFiscaleDettaglio = response.anagraficaDto.anagrafica.codiceFiscale;
+        this.codiceFiscaleDettaglio =
+          response.anagraficaDto.anagrafica.codiceFiscale;
         this.getImage();
       },
       (error: any) => {
@@ -2414,42 +2425,42 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     );
   }
 
-    //metodi immagine
-    getImage() {
-      let body = {
-        codiceFiscale: this.codiceFiscaleDettaglio,
-      };
-      console.log(JSON.stringify(body));
-      console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
-      this.imageService.getImage(this.token, body).subscribe(
-        (result: any) => {
-          this.immagine = (result as any).base64;
-          console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+  //metodi immagine
+  getImage() {
+    let body = {
+      codiceFiscale: this.codiceFiscaleDettaglio,
+    };
+    console.log(JSON.stringify(body));
+    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    this.imageService.getImage(this.token, body).subscribe(
+      (result: any) => {
+        this.immagine = (result as any).base64;
+        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
 
-          if (this.immagine) {
-            this.convertBase64ToImage(this.immagine);
-            console.log('Valore di immagineConvertita:', this.immagineConvertita);
-          } else {
-            // Assegna un'immagine predefinita se l'immagine non è disponibile
-            this.immaginePredefinita =
-              '../../../../assets/images/profilePicPlaceholder.png';
-          }
-        },
-        (error: any) => {
-          console.error(
-            "Errore durante il caricamento dell'immagine: " +
-              JSON.stringify(error)
-          );
-
-          // Assegna un'immagine predefinita in caso di errore
-          this.immaginePredefinita = '../../../../assets/images/danger.png';
+        if (this.immagine) {
+          this.convertBase64ToImage(this.immagine);
+          console.log('Valore di immagineConvertita:', this.immagineConvertita);
+        } else {
+          // Assegna un'immagine predefinita se l'immagine non è disponibile
+          this.immaginePredefinita =
+            '../../../../assets/images/profilePicPlaceholder.png';
         }
-      );
-    }
+      },
+      (error: any) => {
+        console.error(
+          "Errore durante il caricamento dell'immagine: " +
+            JSON.stringify(error)
+        );
 
-    convertBase64ToImage(base64String: string): void {
-      this.immagineConvertita = base64String;
-    }
+        // Assegna un'immagine predefinita in caso di errore
+        this.immaginePredefinita = '../../../../assets/images/danger.png';
+      }
+    );
+  }
+
+  convertBase64ToImage(base64String: string): void {
+    this.immagineConvertita = base64String;
+  }
 
   private handleLogoutError() {
     sessionStorage.clear();

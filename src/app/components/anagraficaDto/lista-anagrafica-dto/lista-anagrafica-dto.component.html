@@ -472,8 +472,7 @@
                   Generico
                 </td>
                 <td style="cursor: pointer;" [ngStyle]="{'color': element?.commesse?.length > 0 ? 'green' : 'red'}"
-                  [matTooltip]="element?.commesse?.length > 0 ? 'Vedi le commesse di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi commesse a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome"
-                  (click)="handleClick(element)">
+                  [matTooltip]="element?.commesse?.length > 0 ? 'Vedi le commesse di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi commesse a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome" (click)="handleClick(element)">
                   {{ element?.commesse?.length > 0 ? 'Inserita' : 'Non inserita' }}
                   <i *ngIf="element?.commesse?.length > 0" class="fa fa-info-circle" style="cursor:pointer;"></i>
                   <i *ngIf="element?.commesse?.length == 0" class="fa fa-plus-circle" style="cursor:pointer;"></i>

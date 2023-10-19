@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { StepperService } from 'src/app/stepper.service';
 
 @Component({
   selector: 'app-modal-info-commesse',
@@ -24,6 +25,7 @@ export class ModalInfoCommesseComponent implements OnInit {
     private anagraficaDtoService: AnagraficaDtoService,
     private clipboard: Clipboard,
     private snackBar: MatSnackBar,
+    private stepperService: StepperService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     if (window.innerWidth >= 900) {
@@ -52,6 +54,7 @@ export class ModalInfoCommesseComponent implements OnInit {
 
   modificaCommessa(id: any) {
     console.log(id);
+    this.stepperService.setCurrentStep(2);
     this.router.navigate(['/modifica-anagrafica/' + id]);
     this.dialog.closeAll();
   }
