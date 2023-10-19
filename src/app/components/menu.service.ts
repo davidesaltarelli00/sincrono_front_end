@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 })
 export class MenuService {
   url = `http://localhost:8080/services/`;
-  idNav: any;
 
   constructor(private http: HttpClient) {}
 

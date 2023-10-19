@@ -43,6 +43,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   contrattoScaduto: any;
   ruolo: any;
 
+  aziendeClienti: any[] = [];
+
   //immagine
   immagineConvertita: string | null = null;
   immaginePredefinita: string | null = null;
@@ -102,7 +104,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       }),
     }),
     commessa: new FormGroup({
-      aziendaCliente: new FormControl(null),
+      tipoAzienda: new FormGroup({
+        id: new FormControl(''),
+        descrizione: new FormControl(''),
+      }),
     }),
   });
   mobile: any = false;
@@ -142,7 +147,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     private dialog: MatDialog,
     private menuService: MenuService,
     private http: HttpClient,
-    private imageService:ImageService
+    private imageService: ImageService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -231,6 +236,22 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     }
   }
 
+  caricaAziendeClienti() {
+    this.contrattoService
+      .getTipoAzienda(localStorage.getItem('token'))
+      .subscribe(
+        (result: any) => {
+          console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+          this.aziendeClienti = (result as any)['list'];
+        },
+        (error: any) => {
+          console.error(
+            'errore durante il caricamento dei nomi azienda:' + error
+          );
+        }
+      );
+  }
+
   onChangeAttivo(event: any) {
     const target = event.target as HTMLInputElement;
     if (target) {
@@ -251,6 +272,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
+      this.caricaAziendeClienti();
     }
 
     const commessaFormGroup = this.creaFormCommessa();
@@ -337,7 +359,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   creaFormCommessa(): FormGroup {
     return this.formBuilder.group({
-      aziendaCliente: new FormControl(''),
+      tipoAzienda: new FormGroup({
+        id: new FormControl(''),
+        descrizione: new FormControl(''),
+      }),
     });
   }
 
@@ -386,6 +411,26 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     }
     return false; // Nessun campo vuoto trovato
   }
+
+
+  onChangeAziendaCliente(event: any) {
+    const selectedValue = parseInt(event.target.value, 10);
+
+    if (!isNaN(selectedValue)) {
+      const selectedObject = this.tipiAziende.find(
+        (azienda: any) => azienda.id === selectedValue
+      );
+
+      if (selectedObject) {
+        console.log('Azienda cliente selezionata: ', selectedObject);
+      } else {
+        console.log('Azienda non trovata nella lista');
+      }
+    } else {
+      console.log('Valore non valido o azienda non selezionata');
+    }
+  }
+
 
   elimina(idAnagrafica: number) {
     const confirmation = confirm(
@@ -1033,43 +1078,42 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     );
   }
 
-    //metodi immagine
-    getImage() {
-      let body = {
-        codiceFiscale: this.codiceFiscaleDettaglio,
-      };
-      console.log(JSON.stringify(body));
-      console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
-      this.imageService.getImage(this.token, body).subscribe(
-        (result: any) => {
-          this.immagine = (result as any).base64;
-          console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+  //metodi immagine
+  getImage() {
+    let body = {
+      codiceFiscale: this.codiceFiscaleDettaglio,
+    };
+    console.log(JSON.stringify(body));
+    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    this.imageService.getImage(this.token, body).subscribe(
+      (result: any) => {
+        this.immagine = (result as any).base64;
+        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
 
-          if (this.immagine) {
-            this.convertBase64ToImage(this.immagine);
-            console.log('Valore di immagineConvertita:', this.immagineConvertita);
-          } else {
-            // Assegna un'immagine predefinita se l'immagine non è disponibile
-            this.immaginePredefinita =
-              '../../../../assets/images/profilePicPlaceholder.png';
-          }
-        },
-        (error: any) => {
-          console.error(
-            "Errore durante il caricamento dell'immagine: " +
-              JSON.stringify(error)
-          );
-
-          // Assegna un'immagine predefinita in caso di errore
-          this.immaginePredefinita = '../../../../assets/images/danger.png';
+        if (this.immagine) {
+          this.convertBase64ToImage(this.immagine);
+          console.log('Valore di immagineConvertita:', this.immagineConvertita);
+        } else {
+          // Assegna un'immagine predefinita se l'immagine non è disponibile
+          this.immaginePredefinita =
+            '../../../../assets/images/profilePicPlaceholder.png';
         }
-      );
-    }
+      },
+      (error: any) => {
+        console.error(
+          "Errore durante il caricamento dell'immagine: " +
+            JSON.stringify(error)
+        );
 
-    convertBase64ToImage(base64String: string): void {
-      this.immagineConvertita = base64String;
-    }
+        // Assegna un'immagine predefinita in caso di errore
+        this.immaginePredefinita = '../../../../assets/images/danger.png';
+      }
+    );
+  }
 
+  convertBase64ToImage(base64String: string): void {
+    this.immagineConvertita = base64String;
+  }
 }
 
 interface MenuData {
