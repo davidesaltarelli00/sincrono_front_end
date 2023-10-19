@@ -243,7 +243,6 @@
                   </tr>
                 </table>
               </mat-card>
-
             </div>
           </div>
         </div>
@@ -284,6 +283,70 @@
         </div>
 
         <br />
+
+        <div class="row">
+          <div class="col-12">
+            <mat-card class="profile-box">
+              <h3>Contratto</h3>
+              <table class="table table-bordered">
+                <!-- <tr>
+                  <th>Tipo Causa Fine Rapporto:</th>
+                  <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto ? anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto : 'Dato non inserito' }}</td>
+                </tr> -->
+                <tr>
+                  <th>Tipo Canale Reclutamento:</th>
+                  <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoCanaleReclutamento?.descrizione ? anagrafica?.anagraficaDto?.contratto?.tipoCanaleReclutamento?.descrizione : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <th>Tipo Contratto:</th>
+                  <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione ? anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <th>Tipo Livello Contratto (CCNL):</th>
+                  <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.ccnl ? anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.ccnl : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <th>Minimi Ret23:</th>
+                  <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.minimiRet23 ? anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.minimiRet23 : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <th>Tipo CCNL:</th>
+                  <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoCcnl?.descrizione ? anagrafica?.anagraficaDto?.contratto?.tipoCcnl?.descrizione : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <th>Attivo:</th>
+                  <td>{{ anagrafica?.anagraficaDto?.contratto?.attivo ? 'Sì' : 'No' }}</td>
+                </tr>
+                <tr>
+                  <th>Qualifica:</th>
+                  <td>{{ anagrafica?.anagraficaDto?.contratto?.qualifica ? anagrafica?.anagraficaDto?.contratto?.qualifica : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <th>Sede Assunzione:</th>
+                  <td>{{ anagrafica?.anagraficaDto?.contratto?.sedeAssunzione ? anagrafica?.anagraficaDto?.contratto?.sedeAssunzione : 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <th>Data assunzione:</th>
+                  <td>{{ anagrafica?.anagraficaDto?.contratto?.dataAssunzione | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <th>Data Fine Prova:</th>
+                  <td>{{ anagrafica?.anagraficaDto?.contratto?.dataFineProva | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <th>Data Fine Rapporto:</th>
+                  <td>{{ anagrafica?.anagraficaDto?.contratto?.dataFineRapporto | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
+                </tr>
+                <tr>
+                  <th>Mesi Durata:</th>
+                  <td>{{ anagrafica?.anagraficaDto?.contratto?.mesiDurata ? anagrafica?.anagraficaDto?.contratto?.mesiDurata : 'Dato non inserito' }}</td>
+                </tr>
+              </table>
+            </mat-card>
+          </div>
+        </div>
+
+        <br>
         <div class="profile-box-container">
           <div class="row">
             <div class="col-6">

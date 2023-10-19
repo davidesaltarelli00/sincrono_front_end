@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { MenuService } from '../menu.service';
 @Component({
   selector: 'app-profile-box',
   templateUrl: './profile-box.component.html',
@@ -32,22 +33,20 @@ export class ProfileBoxComponent {
   tokenProvvisorio: any;
   base64Data: any;
   profilePic: any;
-  immagine:any;
+  immagine: any;
   immagineConvertita: any; // Proprietà per immagine convertita in base64
   immagineNonConvertita: any; // Proprietà per immagine non convertita in Blob
-  salvaImmagine: boolean=false;
-  immagineCancellata: boolean=false;
+  salvaImmagine: boolean = false;
+  immagineCancellata: boolean = false;
   @ViewChild('fileInput') fileInput: ElementRef | undefined;
   bodyGet: FormGroup = new FormGroup({
-    codiceFiscale: new FormControl(null)
-
+    codiceFiscale: new FormControl(null),
   });
   bodyAdd: FormGroup = new FormGroup({
     codiceFiscale: new FormControl(null),
-    base64: new FormControl(null)
-
+    base64: new FormControl(null),
   });
-
+  userLoggedFiscalCode: any;
 
   constructor(
     private authService: AuthService,
@@ -56,7 +55,8 @@ export class ProfileBoxComponent {
     private dialog: MatDialog,
     private http: HttpClient,
     private formBuilder: FormBuilder,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private menuService: MenuService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -72,42 +72,35 @@ export class ProfileBoxComponent {
       this.mobile = true;
     }
     this.bodyGet = this.formBuilder.group({
-      codiceFiscale: new FormControl(null)
-    })
-
+      codiceFiscale: new FormControl(null),
+    });
   }
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
-      this.getUserRole();   
+      this.getUserRole();
     }
-    
+
     const token = localStorage.getItem('token');
-    // console.log("profile box component token: "+ token)
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         this.anagrafica = response;
         this.id = response.anagraficaDto.anagrafica.id;
-        console.log("ID:" + this.id);
         this.username_accesso = response.anagraficaDto.anagrafica.mailAziendale;
         this.codiceFiscaleUtenteLoggato =
           response.anagraficaDto.anagrafica.codiceFiscale;
-          this.bodyGet.setValue({
-            codiceFiscale: this.codiceFiscaleUtenteLoggato
-          });
-          this.getImage();
-        console.log(
-          'CODICE FISCALE UTENTE LOGGATO: ' + this.codiceFiscaleUtenteLoggato
-        );
+        this.bodyGet.setValue({
+          codiceFiscale: this.codiceFiscaleUtenteLoggato,
+        });
+        this.getImage();
       },
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
-
   }
 
   addImage() {
@@ -119,7 +112,7 @@ export class ProfileBoxComponent {
           codiceFiscale: this.codiceFiscaleUtenteLoggato,
           base64: base64String,
         };
-        console.log('BODY PER ADD: ' + JSON.stringify(body));
+        // console.log('BODY PER ADD: ' + JSON.stringify(body));
         this.imageService.addImage(this.token, body).subscribe(
           (response: any) => {
             if ((response as any).esito.code != 200) {
@@ -161,25 +154,25 @@ export class ProfileBoxComponent {
     let body = {
       codiceFiscale: this.codiceFiscaleUtenteLoggato,
     };
-    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    // console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
     this.imageService.getImage(this.token, body).subscribe(
       (result: any) => {
         this.immagine = (result as any).base64;
-        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
-
         if (this.immagine) {
           this.convertBase64ToImage(this.immagine);
-          console.log('Valore di immagineConvertita:', this.immagineConvertita);
         } else {
-          // Assegna un'immagine predefinita se l'immagine non è disponibile
-          this.immaginePredefinita = '../../../../assets/images/profilePicPlaceholder.png';
+          this.immaginePredefinita ='../../../../assets/images/profilePicPlaceholder.png';
         }
       },
       (error: any) => {
-        console.error('Errore durante il caricamento dell\'immagine: ' + JSON.stringify(error));
+        console.error(
+          "Errore durante il caricamento dell'immagine: " +
+            JSON.stringify(error)
+        );
 
         // Assegna un'immagine predefinita in caso di errore
-        this.immaginePredefinita = '../../../../assets/images/profilePicPlaceholder.png';
+        this.immaginePredefinita =
+          '../../../../assets/images/profilePicPlaceholder.png';
       }
     );
   }
@@ -188,9 +181,9 @@ export class ProfileBoxComponent {
     this.immagineConvertita = null;
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
-      this.immagineCancellata=true;
-    }else{
-      this.immagineCancellata=false;
+      this.immagineCancellata = true;
+    } else {
+      this.immagineCancellata = false;
     }
   }
   onFileSelected(event: any) {
@@ -199,11 +192,10 @@ export class ProfileBoxComponent {
     if (selectedFile) {
       this.convertImageToBase64(selectedFile).then((base64String) => {
         this.immagineConvertita = base64String;
-        this.salvaImmagine=true;
-        console.log("CAMPO FILE: "+ selectedFile);
+        this.salvaImmagine = true;
       });
-    } else{
-      this.salvaImmagine=false;
+    } else {
+      this.salvaImmagine = false;
     }
   }
 
@@ -214,7 +206,6 @@ export class ProfileBoxComponent {
   convertBase64ToImage(base64String: string): void {
     this.immagineConvertita = base64String;
   }
-
 
   convertImageToBase64(imageFile: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -247,11 +238,13 @@ export class ProfileBoxComponent {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.userLoggedFiscalCode =
+          response.anagraficaDto.anagrafica.codiceFiscale;
       },
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
@@ -260,7 +253,7 @@ export class ProfileBoxComponent {
   getUserRole() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
-        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+        // console.log('DATI GET USER ROLE:' + JSON.stringify(response));
 
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
@@ -280,7 +273,7 @@ export class ProfileBoxComponent {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-          error
+            error
         );
         this.shouldReloadPage = true;
       }
@@ -288,64 +281,26 @@ export class ProfileBoxComponent {
   }
 
   generateMenuByUserRole() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
-    this.http.get<MenuData>(url, { headers: headers }).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idNav).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
-        console.log(
-          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        );
         this.shouldReloadPage = false;
       },
       (error: any) => {
         console.error('Errore nella generazione del menu:', error);
         this.shouldReloadPage = true;
+        this.jsonData = { list: [] };
       }
     );
   }
 
   getPermissions(functionId: number) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/operazioni/${functionId}`;
-    this.http.get(url, { headers: headers }).subscribe(
-      (data: any) => {
-        console.log('Permessi ottenuti:', data);
-      },
+    this.menuService.getPermissions(this.token, functionId).subscribe(
+      (data: any) => {},
       (error: any) => {
         console.error('Errore nella generazione dei permessi:', error);
       }
     );
   }
-
-
-}
-
-
-interface MenuData {
-  esito: {
-    code: number;
-    target: any;
-    args: any;
-  };
-  list: {
-    id: number;
-    funzione: any;
-    menuItem: number;
-    nome: string;
-    percorso: string;
-    immagine: any;
-    ordinamento: number;
-    funzioni: any;
-    privilegio: any;
-  }[];
 }
