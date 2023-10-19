@@ -395,7 +395,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         }
       );
     }
-
   }
 
   onChangeAziendaCliente(event: any) {
