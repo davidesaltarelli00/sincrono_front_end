@@ -125,6 +125,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 20; // Numero di elementi per pagina
   pageData: any[] = [];
+
   risultatiFilter: any[] = [];
   inseritoContrattoIndeterminato = true;
   elencoCommesse: any;

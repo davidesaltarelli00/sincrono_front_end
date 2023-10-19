@@ -46,6 +46,14 @@ export class ListaRapportiniComponent implements OnInit {
   giorniLavorati: any;
   selectedMeseRapportinoNonFreezato: any;
   selectedAnnoRapportinoNonFreezato: any;
+  // paginazione 1 :tabella rapportini non freezati
+  currentPage: number = 1;
+  itemsPerPage: number = 20;
+  pageData: any[] = [];
+  // paginazione 2: tabella rapportini freezati
+  currentPage2: number = 1;
+  itemsPerPage2: number = 20;
+  pageData2: any[] = [];
 
   constructor(
     private authService: AuthService,
@@ -57,7 +65,6 @@ export class ListaRapportiniComponent implements OnInit {
     private listaRapportiniService: ListaRapportiniService,
     private rapportinoDataService: RapportinoDataService
   ) {
-
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -90,6 +97,8 @@ export class ListaRapportiniComponent implements OnInit {
           this.elencoRapportiniNonFreezati = result['list'];
           this.selectedMeseRapportinoNonFreezato = result['list']['mese'];
           this.selectedAnnoRapportinoNonFreezato = result['list']['anno'];
+          this.currentPage = 1;
+          this.pageData = this.getCurrentPageItems();
           console.log(
             'ELENCO RAPPORTINI NON FREEZATI:' +
               JSON.stringify(this.elencoRapportiniNonFreezati)
@@ -108,6 +117,8 @@ export class ListaRapportiniComponent implements OnInit {
     this.listaRapportiniService.getAllRapportiniFreezati(this.token).subscribe(
       (result: any) => {
         this.elencoRapportiniFreezati = result['list'];
+        this.currentPage2 = 1;
+        this.pageData2 = this.getCurrentPageItems2();
         console.log(
           'Rapportini freezati caricati: ' +
             JSON.stringify(this.elencoRapportiniFreezati)
@@ -266,7 +277,14 @@ export class ListaRapportiniComponent implements OnInit {
     );
   }
 
-  getRapportino(id: any,nome:any, cognome:any, codiceFiscale: any, mese: any, anno: any) {
+  getRapportino(
+    id: any,
+    nome: any,
+    cognome: any,
+    codiceFiscale: any,
+    mese: any,
+    anno: any
+  ) {
     console.log('DATI IN LISTA RAPPORTINI PER ROTTA' + id, mese, anno);
     this.router.navigate([
       '/dettaglio-rapportino',
@@ -373,6 +391,68 @@ export class ListaRapportiniComponent implements OnInit {
       }
     );
   }
+
+  //paginazione tabella rapportini non freezati
+  getCurrentPageItems(): any[] {
+    if (!this.elencoRapportiniNonFreezati) {
+      return [];
+    }
+
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.elencoRapportiniNonFreezati.slice(startIndex, endIndex);
+  }
+
+  goToPage(pageNumber: number) {
+    if (pageNumber >= 1 && pageNumber <= this.getTotalPages()) {
+      this.currentPage = pageNumber;
+      this.pageData = this.getCurrentPageItems();
+    }
+  }
+
+  getTotalPages(): number {
+    return Math.ceil(
+      (this.elencoRapportiniNonFreezati?.length || 0) / this.itemsPerPage
+    );
+  }
+
+  getPaginationArray(): number[] {
+    const totalPages = this.getTotalPages();
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  //fine paginazione tabella rapportini non freezati
+
+  //paginazione tabella rapportini  freezati
+  getCurrentPageItems2(): any[] {
+    if (!this.elencoRapportiniFreezati) {
+      return [];
+    }
+
+    const startIndex = (this.currentPage2 - 1) * this.itemsPerPage2;
+    const endIndex = startIndex + this.itemsPerPage2;
+    return this.elencoRapportiniFreezati.slice(startIndex, endIndex);
+  }
+
+  goToPage2(pageNumber: number) {
+    if (pageNumber >= 1 && pageNumber <= this.getTotalPages2()) {
+      this.currentPage2 = pageNumber;
+      this.pageData2 = this.getCurrentPageItems2();
+    }
+  }
+
+  getTotalPages2(): number {
+    return Math.ceil(
+      (this.elencoRapportiniFreezati?.length || 0) / this.itemsPerPage2
+    );
+  }
+
+  getPaginationArray2(): number[] {
+    const totalPages = this.getTotalPages2();
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  //fine paginazione tabella rapportini  freezati
 }
 interface MenuData {
   esito: {

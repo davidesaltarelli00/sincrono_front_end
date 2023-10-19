@@ -136,7 +136,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let rapportinoNonFreezato of elencoRapportiniNonFreezati; let i = index">
+            <tr *ngFor="let rapportinoNonFreezato of pageData; let i = index">
               <td>{{ rapportinoNonFreezato.nome }} {{ rapportinoNonFreezato.cognome }}</td>
               <td>{{ rapportinoNonFreezato.codiceFiscale }}</td>
               <td>{{ rapportinoNonFreezato.anno }}</td>
@@ -157,7 +157,20 @@
             </tr>
           </tbody>
         </table>
-        <!-- <p *ngIf="elencoRapportiniNonFreezati.length===0" >Nessun risultato.</p> -->
+        <div class="pagination">
+          <ul>
+            <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+              <span> <i class="fa fa-arrow-left"></i> </span>
+            </li>
+            <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
+              (click)="goToPage(page)">
+              <span>{{ page }}</span>
+            </li>
+            <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
+              <span> <i class="fa fa-arrow-right"></i> </span>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <br>
@@ -178,7 +191,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let rapportinoFreezato of elencoRapportiniFreezati; let i = index">
+            <tr *ngFor="let rapportinoFreezato of pageData2; let i = index">
               <td>{{ rapportinoFreezato.nome }} {{ rapportinoFreezato.cognome }}</td>
               <td>{{ rapportinoFreezato.codiceFiscale }}</td>
               <td>{{ rapportinoFreezato.anno }}</td>
@@ -195,6 +208,20 @@
             </tr>
           </tbody>
         </table>
+        <div class="pagination">
+          <ul>
+            <li [class.disabled]="currentPage2 === 1" (click)="goToPage2(currentPage2 - 1)">
+              <span> <i class="fa fa-arrow-left"></i> </span>
+            </li>
+            <li *ngFor="let page of getPaginationArray2()" [class.active]="currentPage2 === page"
+              (click)="goToPage2(page)">
+              <span>{{ page }}</span>
+            </li>
+            <li [class.disabled]="currentPage2 === getTotalPages2()" (click)="goToPage2(currentPage2 + 1)">
+              <span> <i class="fa fa-arrow-right"></i> </span>
+            </li>
+          </ul>
+        </div>
         <!-- <p *ngIf="elencoRapportiniFreezati.length===0" >Nessun risultato.</p> -->
       </div>
     </div>
