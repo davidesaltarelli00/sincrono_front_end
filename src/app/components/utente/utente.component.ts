@@ -82,6 +82,7 @@ export class UtenteComponent implements OnInit {
   ];
   numeroRigheDuplicate: number = 0;
   conteggioDuplicati: { [giorno: number]: number } = {};
+  straordinari: any[]=[];
 
 
 
@@ -266,8 +267,8 @@ export class UtenteComponent implements OnInit {
 
   salvaAziendeClienti() {
     this.elencoCommesse.forEach((commessa: any) => {
-      if (commessa.aziendaCliente) {
-        this.aziendeClienti.push(commessa.aziendaCliente);
+      if (commessa.tipoAzienda.descrizione) {
+        this.aziendeClienti.push(commessa.tipoAzienda.descrizione);
         console.log("Aziende clienti: "+JSON.stringify(this.aziendeClienti))
       }
     });
@@ -338,6 +339,7 @@ export class UtenteComponent implements OnInit {
         } else {
           this.esitoCorretto = true;
           this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
+          this.straordinari=result['rapportinoDto']['mese']['giorni'];['straordinari']
           this.note = result['rapportinoDto']['note'];
           this.giorniUtili = result['rapportinoDto']['giorniUtili'];
           this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
@@ -432,6 +434,7 @@ export class UtenteComponent implements OnInit {
     const giorniArray = this.rapportinoDto.map((giorno, i) => {
       const clienteValue = formValue[`cliente${i}`];
       const oreOrdinarieValue = formValue[`oreOrdinarie${i}`];
+      // const straordinariValue=formValue[``]; //array di oggetti che contiene 3 attributi: fascia1 fascia2 fascia3 (double)
 
       return {
         giorno: formValue[`giorno${i}`],
