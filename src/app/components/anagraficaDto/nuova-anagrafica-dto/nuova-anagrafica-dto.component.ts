@@ -65,6 +65,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   percentualePartTimeValue: number | null = null;
   ccnLSelezionato = false;
   elencoLivelliCCNL: any[] = [];
+  risultatoMensileTOT: any;
 
   //dati per i controlli nei form
   inseritoContrattoIndeterminato = true;
@@ -101,7 +102,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     public snackBar: MatSnackBar,
     private profileBoxService: ProfileBoxService,
     private http: HttpClient,
-    private menuService:MenuService
+    private menuService: MenuService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -421,6 +422,19 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     }
   }
 
+
+  calcoloRal() {
+    if (typeof this.risultatoMensileTOT !== 'undefined' && typeof this.numeroMensilitaCCNL !== 'undefined') {
+      const ralAnnua = this.risultatoMensileTOT * this.numeroMensilitaCCNL;
+      this.AnagraficaDto.get('contratto.ralAnnua')?.setValue(ralAnnua.toFixed(2));
+      this.ralAnnua=ralAnnua;
+      console.log("LA RAL ANNUA É DI " + ralAnnua);
+    } else {
+      console.warn("Dati mancanti per il calcolo della ral");
+    }
+  }
+
+
   onChangeConiugato(event: Event) {
     const target = event.target as HTMLInputElement;
     if (target) {
@@ -448,34 +462,33 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   calcolaMensileTot() {
-    const retribuzioneMensileLorda =
+    let retribuzioneMensileLorda =
       parseFloat(
         (<HTMLInputElement>document.getElementById('retribuzioneMensileLorda'))
           .value
       ) || 0;
-    const superminimoMensile =
+    let superminimoMensile =
       parseFloat(
         (<HTMLInputElement>document.getElementById('superminimoMensile')).value
       ) || 0;
-    const scattiAnzianita =
+    let scattiAnzianita =
       parseFloat(
         (<HTMLInputElement>document.getElementById('scattiAnzianita')).value
       ) || 0;
 
-    if (
-      retribuzioneMensileLorda !== 0 &&
-      superminimoMensile !== 0 &&
-      scattiAnzianita !== 0
-    ) {
-      const mensileTot =
-        retribuzioneMensileLorda + superminimoMensile + scattiAnzianita;
-      document
-        .getElementById('mensileTOT')
-        ?.setAttribute('value', mensileTot.toFixed(2));
-    } else {
-      // Se uno dei campi è vuoto, nascondi il risultato o reimpostalo a zero, a seconda delle tue esigenze
-      document.getElementById('mensileTOT')?.setAttribute('value', '');
-    }
+    // Verifica se un campo è null e imposta il suo valore a 0
+    if (isNaN(retribuzioneMensileLorda)) retribuzioneMensileLorda = 0;
+    if (isNaN(superminimoMensile)) superminimoMensile = 0;
+    if (isNaN(scattiAnzianita)) scattiAnzianita = 0;
+
+    const mensileTot =
+      retribuzioneMensileLorda + superminimoMensile + scattiAnzianita;
+
+    // Assegna il risultato al campo "mensileTOT"
+    document
+      .getElementById('mensileTOT')
+      ?.setAttribute('value', mensileTot.toFixed(2));
+    this.risultatoMensileTOT = mensileTot;
   }
 
   onDistaccoChange(event: Event, commessaIndex: number) {
@@ -1601,9 +1614,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           console.log('Livello contratto selezionato: ', selectedLivello);
           this.minimiRet23 = selectedLivello.minimiRet23;
           console.log('Minimi retributivi 2023:' + this.minimiRet23);
-          const tipoContratto = this.AnagraficaDto.get(
-            'contratto.tipoContratto.id'
-          );
+          console.log('numero mensilitá:' + this.numeroMensilitaCCNL);
+          const tipoContratto = this.AnagraficaDto.get('contratto.tipoContratto.id');
           if (this.tipoContratto != null) {
             if (this.tipoContratto.descrizione === 'Stage') {
               console.log('é uno stage, NO retr lorda');
@@ -1818,7 +1830,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   getUserRole() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
-        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+        // console.log('DATI GET USER ROLE:' + JSON.stringify(response));
 
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
@@ -1850,9 +1862,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
-        console.log(
-          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        );
         this.shouldReloadPage = false;
       },
       (error: any) => {
@@ -1865,31 +1874,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
   getPermissions(functionId: number) {
     this.menuService.getPermissions(this.token, functionId).subscribe(
-      (data: any) => {
-        console.log('Permessi ottenuti:', data);
-      },
+      (data: any) => {},
       (error: any) => {
         console.error('Errore nella generazione dei permessi:', error);
       }
     );
   }
-}
-
-interface MenuData {
-  esito: {
-    code: number;
-    target: any;
-    args: any;
-  };
-  list: {
-    id: number;
-    funzione: any;
-    menuItem: number;
-    nome: string;
-    percorso: string;
-    immagine: any;
-    ordinamento: number;
-    funzioni: any;
-    privilegio: any;
-  }[];
 }
