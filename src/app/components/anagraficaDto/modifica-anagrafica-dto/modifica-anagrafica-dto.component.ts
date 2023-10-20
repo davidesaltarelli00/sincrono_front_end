@@ -507,22 +507,20 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe((resp: any) => {
         console.log(this.activatedRouter.snapshot.params['id']);
         this.data = (resp as any)['anagraficaDto'];
-        this.selectedTipoContrattoId = (resp as any)['anagraficaDto'][
-          'contratto'
-        ]['tipoContratto']['id'];
-        console.log(
-          "<<<<<<<<<<<<<<<<<<<<<L'UTENTE CARICATO HA COME ID DEL CONTRATTO " +
-            this.selectedTipoContrattoId +
-            '>>>>>>>>>>>>>>>>>>>>>'
-        );
-        this.descrizioneLivelloCCNL = (resp as any)['anagraficaDto'][
-          'contratto'
-        ]['tipoLivelloContratto']['ccnl'];
-        console.log(
-          'LIVELLO CONTRATTO IN ARRIVO DAL DETTAGLIO CHE DEVE APPARIRE NELLA SELECT:' +
-            this.descrizioneLivelloCCNL
-        );
+        this.selectedTipoContrattoId = (resp as any)['anagraficaDto']['contratto']['tipoContratto']['id'];
+        this.descrizioneLivelloCCNL = (resp as any)['anagraficaDto']['contratto']['tipoLivelloContratto']['ccnl'];
         this.setForm();
+        this.anagraficaDtoService.changeCCNL(localStorage.getItem('token'),this.descrizioneLivelloCCNL).subscribe(
+          (response: any) => {
+            this.elencoLivelliCCNL = response.list;
+          },
+          (error: any) => {
+            console.error(
+              'Errore durante il caricamento dei livelli di contratto: ' +
+                error
+            );
+          }
+        );
 
         // Iteriamo attraverso le chiavi dell'oggetto
         for (const key in resp) {
@@ -586,35 +584,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             'yyyy-MM-dd'
           );
         }
-        // console.log(
-        //   '***************************LE DATE SONO STATE CONVERTITE COSI: *************************** \n' +
-        //     'Data assunzione:' +
-        //     this.data.contratto.dataAssunzione +
-        //     '\n' +
-        //     'Data inizio prova: ' +
-        //     this.data.contratto.dataInizioProva +
-        //     '\n' +
-        //     'Data fine prova: ' +
-        //     this.data.contratto.dataFineProva +
-        //     '\n' +
-        //     'Data fine rapporto: ' +
-        //     this.data.contratto.dataFineRapporto +
-        //     '\n' +
-        //     'Data di nascita: ' +
-        //     this.data.anagrafica.dataDiNascita +
-        //     '\n' +
-        //     'data corso di sicurezza' +
-        //     this.data.contratto.dataCorsoSicurezza +
-        //     '\n' +
-        //     'data visita medica: ' +
-        //     this.data.contratto.dataVisitaMedica +
-        //     '\n'
-        // );
-
-        // console.log(
-        //   '++++++++++++++++++++++++++++++++++++++++++++++++++ELENCO DEI DATI CARICATI: +++++++++++++++++++++++++++++++++++++++++++++++++ ' +
-        //     JSON.stringify(resp)
-        // );
 
         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
         this.contratto = (resp as any)['anagraficaDto']['contratto'];
@@ -825,13 +794,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           console.log('Livello contratto selezionato: ', selectedLivello);
           this.minimiRet23 = selectedLivello.minimiRet23;
           console.log('Minimi retributivi 2023:' + this.minimiRet23);
-          const tipoContratto = this.anagraficaDto.get(
-            'contratto.tipoContratto.id'
-          );
+          const tipoContratto = this.anagraficaDto.get('contratto.tipoContratto.id');
 
-          const selectedOption = this.anagraficaDto.get(
-            'contratto.retribuzioneMensileLorda'
-          );
+          const selectedOption = this.anagraficaDto.get('contratto.retribuzioneMensileLorda');
 
           if (this.tipoDiContrattoControl.descrizione === 'Stage') {
             console.log('é uno stage, NO retr lorda ma si retribuzione netta.');
@@ -921,21 +886,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         console.log('numero mensilitá:' + this.numeroMensilitaCCNL);
         livelloControl?.enable();
         // Qui andrà la chiamata per l'endpoint per la get del livello contratto
-        this.anagraficaDtoService
-          .changeCCNL(
-            localStorage.getItem('token'),
-            this.descrizioneLivelloCCNL
-          )
-          .subscribe(
+        this.anagraficaDtoService.changeCCNL(localStorage.getItem('token'),this.descrizioneLivelloCCNL).subscribe(
             (response: any) => {
-              console.log(
-                'RESPONSE NUOVA LISTA LIVELLI CCNL:' + JSON.stringify(response)
-              );
               this.elencoLivelliCCNL = response.list;
-              console.log(
-                '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
-                  JSON.stringify(this.elencoLivelliCCNL)
-              );
             },
             (error: any) => {
               console.error(
