@@ -958,10 +958,9 @@
                               </div>
                             </div>
                             <div class="col-md-3">
-                              <label for="mensileTOT">Mensile tot</label>
+                              <label >Mensile tot <i class="fa fa-calculator" matTooltip="Calcola RAL" (click)="calcoloRal()" ></i> </label>
                               <div class="form-group">
-                                <input type="number" readonly class="form-control" placeholder="Mensile tot" (input)="calcoloRal()"
-                                  id="mensileTOT" />
+                                  <input type="number"  class="form-control"  readonly placeholder="Mensile tot" id="mensileTOT" />
                               </div>
                             </div>
                           </div>
@@ -997,7 +996,7 @@
                               <label>RAL Annua: </label>
                               <div class="form-group">
                                 <input type="number" class="form-control" placeholder="Inserire RAL annua" min="0"
-                                  step="0.01" id="ralAnnua" formControlName="ralAnnua" value="{{ ralAnnua }}" />
+                                  step="0.01" id="ralAnnua" formControlName="ralAnnua" (input)="calcoloRal()" />
                               </div>
                             </div>
                             <div class="col-6">
