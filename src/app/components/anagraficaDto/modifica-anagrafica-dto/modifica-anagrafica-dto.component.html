@@ -139,7 +139,7 @@
           <br>
           <mat-card style="text-align: center;">
             <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-            <h1>Modifica anagrafica</h1>
+            <h1>Modifica anagrafica di {{data?.anagrafica.nome}} {{data.anagrafica.cognome}}</h1>
           </mat-card>
         </div>
       </div>
@@ -415,6 +415,10 @@
                     </div>
                     </div>
                       <br>
+                      <div class="text-center">
+                        <!-- <button mat-flat-button matStepperPrevious>«Indietro</button> &nbsp; -->
+                        <button mat-flat-button matStepperNext>Avanti»</button>
+                      </div>
                       </mat-card-content>
                     </mat-card>
                   </div>
@@ -1139,6 +1143,11 @@
                             </div>
                           </div>
                         </div>
+                        <br>
+                        <div class="text-center">
+                          <button mat-flat-button matStepperPrevious>«Indietro</button> &nbsp;
+                          <button mat-flat-button matStepperNext>Avanti»</button>
+                        </div>
                       </mat-card-content>
                     </mat-card>
                   </div>
@@ -1300,6 +1309,11 @@
                         </ng-container>
                       </div>
                     </mat-card-content>
+                    <br>
+                    <div class="text-center">
+                      <button mat-flat-button matStepperPrevious>«Indietro</button> &nbsp;
+                      <!-- <button mat--flat-button matStepperNext>Avanti»</button> -->
+                    </div>
                   </mat-card>
 
                 </div>
