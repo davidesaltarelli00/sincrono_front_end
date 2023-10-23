@@ -42,6 +42,7 @@ export class UtenteComponent implements OnInit {
   rapportinoDto: any[] = [];
   @ViewChild('editableTable') editableTable!: ElementRef;
   aziendeClienti: any[] = [];
+  filteredAziendeClienti: string[] = [];
   aziendaSelezionata: string = '';
   modifiedData: any[] = [];
   anno: any;
@@ -83,6 +84,11 @@ export class UtenteComponent implements OnInit {
   numeroRigheDuplicate: number = 0;
   conteggioDuplicati: { [giorno: number]: number } = {};
   straordinari: any[] = [];
+  giorno: any = {
+    cliente: ''
+  };
+  showError: boolean = false;
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -120,6 +126,23 @@ export class UtenteComponent implements OnInit {
       ) == true
     ) {
       this.mobile = true;
+    }
+  }
+
+  filterOptions() {
+    this.filteredAziendeClienti = this.aziendeClienti.filter(azienda =>
+      azienda.toLowerCase().includes(this.giorno.cliente.toLowerCase())
+    );
+    this.showError = false; // Resetta l'errore quando l'utente inizia a digitare
+  }
+
+  selectAzienda(azienda: string) {
+    if (this.aziendeClienti.includes(azienda)) {
+      this.giorno.cliente = azienda;
+      this.filteredAziendeClienti = []; // Nascondi i suggerimenti dopo la selezione
+      this.showError = false; // Resetta l'errore
+    } else {
+      this.showError = true; // Mostra l'errore se il valore non è valido
     }
   }
 
@@ -265,8 +288,8 @@ export class UtenteComponent implements OnInit {
 
   salvaAziendeClienti() {
     this.elencoCommesse.forEach((commessa: any) => {
-      if (commessa.tipoAzienda.descrizione) {
-        this.aziendeClienti.push(commessa.tipoAzienda.descrizione);
+      if (commessa.tipoAziendaCliente.descrizione) {
+        this.aziendeClienti.push(commessa.tipoAziendaCliente.descrizione);
         console.log('Aziende clienti: ' + JSON.stringify(this.aziendeClienti));
       }
     });
@@ -302,7 +325,7 @@ export class UtenteComponent implements OnInit {
           ];
           this.dettaglioSbagliato = false;
           this.numeroCommessePresenti = this.elencoCommesse.length;
-          console.log('Dati restituiti: ' + JSON.stringify(resp));
+          // console.log('Dati restituiti: ' + JSON.stringify(resp));
         },
         (error: any) => {
           console.error(
@@ -437,7 +460,7 @@ export class UtenteComponent implements OnInit {
               message: (result as any).esito.target,
             },
           });
-          console.log('RESPONSE INSERT RAPPORTINO:' + JSON.stringify(result));
+          // console.log('RESPONSE INSERT RAPPORTINO:' + JSON.stringify(result));
           this.rapportinoInviato = true;
           this.tabellaEditabile = 'false';
         }
@@ -448,20 +471,11 @@ export class UtenteComponent implements OnInit {
     const giorniArray = this.rapportinoDto.map((giorno, i) => {
       const clienteValue = formValue[`cliente${i}`];
       const oreOrdinarieValue = formValue[`oreOrdinarie${i}`];
-      // const straordinariValue=formValue[``]; //array di oggetti che contiene 3 attributi: fascia1 fascia2 fascia3 (double)
 
       return {
         giorno: formValue[`giorno${i}`],
-        cliente: Array.isArray(clienteValue)
-          ? clienteValue
-          : clienteValue
-          ? [clienteValue]
-          : null,
-        oreOrdinarie: Array.isArray(oreOrdinarieValue)
-          ? oreOrdinarieValue
-          : oreOrdinarieValue
-          ? [oreOrdinarieValue]
-          : null,
+        cliente: Array.isArray(clienteValue)? clienteValue : clienteValue ? [clienteValue]: null,
+        oreOrdinarie: Array.isArray(oreOrdinarieValue) ? oreOrdinarieValue : oreOrdinarieValue ? [oreOrdinarieValue] : null,
       };
     });
 
