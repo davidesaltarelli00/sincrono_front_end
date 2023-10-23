@@ -43,6 +43,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   contrattoScaduto: any;
   ruolo: any;
 
+
   aziendeClienti: any[] = [];
 
   //immagine
@@ -104,12 +105,13 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       }),
     }),
     commessa: new FormGroup({
-      tipoAzienda: new FormGroup({
+      tipoAziendaCliente: new FormGroup({
         id: new FormControl(''),
         descrizione: new FormControl(''),
       }),
     }),
   });
+
   mobile: any = false;
   userlogged: string = '';
   role: any;
@@ -239,7 +241,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   caricaAziendeClienti() {
     this.contrattoService
-      .getTipoAzienda(localStorage.getItem('token'))
+      .getAllAziendaCliente(this.token)
       .subscribe(
         (result: any) => {
           console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
@@ -360,7 +362,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   creaFormCommessa(): FormGroup {
     return this.formBuilder.group({
-      tipoAzienda: new FormGroup({
+      tipoAziendaCliente: new FormGroup({
         id: new FormControl(''),
         descrizione: new FormControl(''),
       }),

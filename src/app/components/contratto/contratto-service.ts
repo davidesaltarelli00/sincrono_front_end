@@ -104,6 +104,18 @@ export class ContrattoService {
     });
   }
 
+  getAllAziendaCliente(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(
+      `http://localhost:8080/services/tipo-azienda-cliente-map`,
+      { headers: headers }
+    );
+  }
+
   getContrattoNazionale(token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

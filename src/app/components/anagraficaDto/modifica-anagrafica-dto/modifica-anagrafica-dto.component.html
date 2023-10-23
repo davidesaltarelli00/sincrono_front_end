@@ -1180,9 +1180,9 @@
                                             Il campo Azienda Cliente è obbligatorio.
                                           </div> -->
                                             <label>Azienda cliente: </label>
-                                            <div class="form-group" formGroupName="tipoAzienda">
+                                            <div class="form-group" formGroupName="tipoAziendaCliente">
                                               <select (change)="onChangeAziendaCliente($event)" class="form-select"
-                                              aria-label="Default select example" id="commesse.tipoAzienda.id" formControlName="id">
+                                              aria-label="Default select example" id="commesse.tipoAziendaCliente.id" formControlName="id">
                                               <option value="">--nessuna selezione--</option>
                                               <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
                                                 {{ aziendaCliente.descrizione }}

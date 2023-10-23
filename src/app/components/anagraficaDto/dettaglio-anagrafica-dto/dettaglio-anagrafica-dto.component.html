@@ -587,7 +587,7 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let commessa of getCurrentPageItems(); let i = index">
-                      <td>{{ commessa.tipoAzienda.descrizione }}</td>
+                      <td>{{ commessa.tipoAziendaCliente.descrizione }}</td>
                       <td>{{ commessa.clienteFinale }}</td>
                       <td>{{ commessa.titoloPosizione }}</td>
                       <td>{{ commessa.distacco === true ? 'Si' : (commessa.distacco === false ? 'No' : 'Dato non

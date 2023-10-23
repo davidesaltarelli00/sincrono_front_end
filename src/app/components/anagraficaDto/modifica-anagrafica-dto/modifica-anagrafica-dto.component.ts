@@ -1411,7 +1411,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   createCommessaFormGroup(commessa: any): FormGroup {
     return this.formBuilder.group({
       id: [commessa.id],
-      tipoAzienda: this.formBuilder.group({
+      tipoAziendaCliente: this.formBuilder.group({
         id: [''],
         descrizione: [''],
       }),
@@ -1531,7 +1531,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
   caricaAziendeClienti() {
     this.contrattoService
-      .getTipoAzienda(localStorage.getItem('token'))
+      .getAllAziendaCliente(localStorage.getItem('token'))
       .subscribe(
         (result: any) => {
           console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));

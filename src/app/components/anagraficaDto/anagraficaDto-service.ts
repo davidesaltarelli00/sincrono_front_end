@@ -22,6 +22,18 @@ export class AnagraficaDtoService {
     });
   }
 
+  getAllAziendaCliente(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(
+      `http://localhost8080/services/tipo-azienda-cliente-map`,
+      { headers: headers }
+    );
+  }
+
   detailAnagraficaDto(id: any, token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -112,7 +124,9 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/utenti-list`, { headers: headers,});
+    return this.http.get<any>(`http://localhost:8080/services/utenti-list`, {
+      headers: headers,
+    });
   }
 
   caricaTipoCausaFineRapporto(token: any): Observable<any> {

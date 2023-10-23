@@ -57,8 +57,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let commessa of data.anagraficaDto.commesse">
-                <td *ngIf="commessa.tipoAzienda.descrizione!=null" >{{ commessa.tipoAzienda.descrizione }}</td>
-                <td style="color: red;" *ngIf="commessa.tipoAzienda.descrizione==null" >Dato non inserito.</td>
+                <td *ngIf="commessa.tipoAziendaCliente.descrizione!=null" >{{ commessa.tipoAziendaCliente.descrizione }}</td>
+                <td style="color: red;" *ngIf="commessa.tipoAziendaCliente.descrizione==null" >Dato non inserito.</td>
 
                 <td *ngIf="commessa.clienteFinale!=null" >{{ commessa.clienteFinale }}</td>
                 <td style="color: red;" *ngIf="commessa.clienteFinale==null" >Dato non inserito.</td>
