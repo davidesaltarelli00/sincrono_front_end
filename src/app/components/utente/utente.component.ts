@@ -59,7 +59,7 @@ export class UtenteComponent implements OnInit {
   mobile: boolean = false;
   checkFreeze = false;
   tabellaCompletata: boolean = false;
-
+  etichetteFasce = ['18:00 - 20:00', '20:00 - 22:00', '22:00 - 09:00'];
   nome: any;
   cognome: any;
   codiceFiscale = '';
@@ -82,9 +82,7 @@ export class UtenteComponent implements OnInit {
   ];
   numeroRigheDuplicate: number = 0;
   conteggioDuplicati: { [giorno: number]: number } = {};
-  straordinari: any[]=[];
-
-
+  straordinari: any[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -125,7 +123,6 @@ export class UtenteComponent implements OnInit {
     }
   }
 
-
   duplicaRiga(index: number) {
     // Ottieni il "giorno" dalla riga selezionata
     const giornoDaDuplicare = this.rapportinoDto[index].giorno;
@@ -136,7 +133,11 @@ export class UtenteComponent implements OnInit {
     // Verifica se è possibile duplicare una riga in più per questo "giorno"
     if (conteggio < this.elencoCommesse.length - 1) {
       // Crea una nuova riga con il campo "giorno" impostato
-      const nuovaRiga = { giorno: giornoDaDuplicare, cliente: [], oreOrdinarie: [] };
+      const nuovaRiga = {
+        giorno: giornoDaDuplicare,
+        cliente: [],
+        oreOrdinarie: [],
+      };
 
       // Aggiungi la nuova riga alla fine dell'array
       this.rapportinoDto.push(nuovaRiga);
@@ -151,7 +152,6 @@ export class UtenteComponent implements OnInit {
       }
     }
   }
-
 
   getCommesseIndices(numeroCommesse: number): number[] {
     return new Array(numeroCommesse);
@@ -181,12 +181,11 @@ export class UtenteComponent implements OnInit {
   }
 
   isWeekend(index: number): boolean {
-    const numeroGiorno = index ;
+    const numeroGiorno = index;
     const nomeGiorno = this.getNomeGiorno(numeroGiorno);
 
     return nomeGiorno === 'Saturday' || nomeGiorno === 'Sunday';
   }
-
 
   selezionaAzienda() {
     console.log('Azienda selezionata:', this.aziendaSelezionata);
@@ -240,7 +239,6 @@ export class UtenteComponent implements OnInit {
       });
   }
 
-
   isRigaVuota(index: number): boolean {
     const riga = this.rapportinoDto[index];
     return !riga || !riga.giorno;
@@ -269,7 +267,7 @@ export class UtenteComponent implements OnInit {
     this.elencoCommesse.forEach((commessa: any) => {
       if (commessa.tipoAzienda.descrizione) {
         this.aziendeClienti.push(commessa.tipoAzienda.descrizione);
-        console.log("Aziende clienti: "+JSON.stringify(this.aziendeClienti))
+        console.log('Aziende clienti: ' + JSON.stringify(this.aziendeClienti));
       }
     });
   }
@@ -339,11 +337,27 @@ export class UtenteComponent implements OnInit {
         } else {
           this.esitoCorretto = true;
           this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
-          this.straordinari=result['rapportinoDto']['mese']['giorni'];['straordinari']
-          this.note = result['rapportinoDto']['note'];
+          console.log('Dati get all rapportino:' + JSON.stringify(result));
+          this.straordinari = result['rapportinoDto']['mese']['giorni'].map((giorno: any) => giorno.straordinari);
+          console.log('STRAORDINARI:' + JSON.stringify(this.straordinari));
           this.giorniUtili = result['rapportinoDto']['giorniUtili'];
+          console.log('GIORNI UTILI:' + JSON.stringify(this.giorniUtili));
           this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
-          console.log('Dati get rapportino:: ' + JSON.stringify(result));
+          console.log('GIORNI LAVORATI:' + JSON.stringify(this.giorniLavorati));
+          for (let i = 0; i < this.rapportinoDto.length; i++) {
+            const giorno = this.rapportinoDto[i];
+            if (!giorno.straordinari) {
+              giorno.straordinari = [null, null, null];
+            } else if (giorno.straordinari.length < 3) {
+              while (giorno.straordinari.length < 3) {
+                giorno.straordinari.push(null);
+              }
+            }
+            if (!giorno.cliente) {
+              giorno.cliente = [];
+            }
+          }
+
           //qui andrá l endpoint per verificare la completezza della tabella
           this.checkRapportinoInviato();
         }

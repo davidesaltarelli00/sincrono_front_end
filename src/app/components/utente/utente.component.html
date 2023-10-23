@@ -239,58 +239,63 @@
         <form #rapportinoForm="ngForm" class="form-rapportino"  >
              <div class="form-group" *ngFor="let giorno of rapportinoDto; let i = index"  >
             <div class="row">
-              <div class="col-1">
-                <label for="nomeGiorno{{i}}"></label>
-                <input  type="text" class="form-control" id="nomeGiorno{{i}}" placeholder="Inserisci giorno." [value]="getNomeGiorno(giorno.giorno)" disabled>
-              </div>
-
-              <div class="col-1">
-                <label for="giorno{{i}}">Giorno</label>
-                <input min="1" max="{{rapportinoDto.length}}" placeholder="Giorno" type="number" class="form-control" id="giorno{{i}}" name="giorno{{i}}" [(ngModel)]="giorno.giorno" ngDefaultControl>
+              <div class="col-2">
+                <label for="giorno{{i}}">Giorno <small>{{getNomeGiorno(giorno.giorno)}}</small> </label>
+                 <input min="1" max="{{rapportinoDto.length}}" placeholder="Giorno" type="number" class="form-control" id="giorno{{i}}" name="giorno{{i}}" [(ngModel)]="giorno.giorno" ngDefaultControl>
               </div>
               <div class="col-2">
-                <label for="cliente{{i}}">Cliente</label> &nbsp; <i class="fa fa-info-circle" matTooltip="Attenzione: non hai commesse." style="color: red;" *ngIf="aziendeClienti.length==0" ></i>
-                <select class="form-select" id="cliente{{i}}" placeholder="Cliente" name="cliente{{i}}" [(ngModel)]="giorno.cliente">
-                  <option placeholder="Cliente" value="" selected>--</option>
-                  <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
-                </select>
+                <label for="cliente{{i}}">Cliente</label> &nbsp;
+             <i class="fa fa-info-circle" matTooltip="Attenzione: non hai commesse." style="color: red;" *ngIf="aziendeClienti.length == 0"></i>
+             <select class="form-select" id="cliente{{i}}" placeholder="Cliente" name="cliente{{i}}">
+              <option *ngFor="let cliente of aziendeClienti; let j = index" [value]="cliente" [selected]="cliente === giorno.cliente[j]">{{cliente}}</option>
+          </select>
               </div>
               <div class="col-1">
                 <label for="oreOrdinarie{{i}}">Ore</label>
                 <input min="0" max="24" placeholder="Ore" type="number" step="0.5" class="form-control" id="oreOrdinarie{{i}}" name="oreOrdinarie{{i}}" [(ngModel)]="giorno.oreOrdinarie" ngDefaultControl>
               </div>
+              <div class="col-2">
+                    <div *ngFor="let fascia of giorno.straordinari; let j = index">
+                        <label for="straordinari{{i}}-{{j}}">{{etichetteFasce[j]}}</label>
+                        <input min="0" max="24"  type="number" step="0.5" class="form-control" id="straordinari{{i}}-{{j}}" name="straordinari{{i}}-{{j}}" [(ngModel)]="giorno.straordinari[j]" ngDefaultControl>
+                    </div>
+            </div>
+
               <div class="col-1">
                 <label for="ferie{{i}}">Ferie</label>
                 <input min="0" max="24" placeholder="Ferie" type="number" step="0.5" class="form-control" id="ferie{{i}}" name="ferie{{i}}" [(ngModel)]="giorno.ferie" ngDefaultControl>
               </div>
               <div class="col-1">
-                <label for="permessi{{i}}">Permessi</label>
-                <input min="0" max="24" placeholder="Permessi" type="number" step="0.5" class="form-control" id="permessi{{i}}" name="permessi{{i}}" [(ngModel)]="giorno.permessi" ngDefaultControl>
-              </div>
-              <div class="col-1">
                 <label for="malattie{{i}}">Malattie</label>
                 <input min="0" max="24" placeholder="malattie" type="number" step="0.5" class="form-control" id="malattie{{i}}" name="malattie{{i}}" [(ngModel)]="giorno.malattie" ngDefaultControl>
+              </div>
+              <div class="col-1">
+                <label for="permessi{{i}}">Permessi</label>
+                <input min="0" max="24" placeholder="Permessi" type="number" step="0.5" class="form-control" id="permessi{{i}}" name="permessi{{i}}" [(ngModel)]="giorno.permessi" ngDefaultControl>
               </div>
               <div class="col-2">
                 <label for="note{{i}}">Note</label>
                 <input placeholder="note" type="text" class="form-control" id="note{{i}}" name="note{{i}}" [(ngModel)]="giorno.note" ngDefaultControl>
               </div>
-              <div class="col-1">
+              <!-- <div class="col-1">
                 <label for="duplica">Duplica</label>
                 <button class="btn btn-success" (click)="duplicaRiga(i)" [disabled]="isRigaVuota(i) || disabilitaDuplica==true">
                   <i class="fa fa-clone"></i>
                 </button>
-              </div>
-              <div class="col-1">
-                <label for="elimina">Elimina</label>
-                <button class="btn btn-danger" (click)="eliminaRiga(i)" >
-                  <i class="fa fa-trash"></i>
-                </button>
-              </div>
+              </div> -->
             </div>
           </div>
           <br>
-          <button type="submit" class="btn btn-primary" (click)="salvaRapportino(rapportinoForm.value)">Salva rapportino <i class="fa fa-save" ></i> </button> &nbsp;
+         <div class="row">
+          <div class="col-2">
+            <label for="giorniLavorati">Giorni lavorati</label>
+            <input type="text" class="form-control" readonly value="{{giorniLavorati}}" >
+          </div>
+          <div class="col-4">
+            <label for="salva">Salva</label> <br>
+            <button type="submit" class="btn btn-primary" (click)="salvaRapportino(rapportinoForm.value)">Salva rapportino <i class="fa fa-save" ></i> </button> &nbsp;
+          </div>
+         </div>
         </form>
 
        </mat-card>
