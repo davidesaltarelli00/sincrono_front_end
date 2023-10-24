@@ -148,7 +148,8 @@
         <br>
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Profilo</h1>
+          <h1>Profilo <button class=" btn btn-info " [routerLink]="['/modifica-anagrafica/',id]" > <i class="fa fa-pencil" ></i> </button> </h1>
+          <h3> <i class="fa fa-user" ></i>  {{ anagrafica?.anagraficaDto.anagrafica?.nome }} {{ anagrafica?.anagraficaDto.anagrafica?.cognome }} </h3>
         </mat-card>
       </div>
     </div>
@@ -158,11 +159,11 @@
         <div class="profile-box-container">
           <br />
           <div class="row"  >
-            <div class="col-12"  id="sezione-immagine">
+            <div class="col-4"  id="sezione-immagine">
               <div class="image-container" >
                 <div class="image-container rounded">
-                  <label style="float: right;" for="fileInput" class="file-input-label" *ngIf="!immagineCancellata && immagineConvertita">
-                    <i class="fa fa-pencil" style="cursor: pointer;" matTooltip=" Modifica immagine" ></i>
+                  <label style="float: right;" for="fileInput" class="file-input-label" *ngIf="!immagineCancellata && immagineConvertita && !salvaImmagine">
+                    <i class="fa fa-pencil btn btn-info" style="cursor: pointer;" matTooltip=" Modifica immagine" ></i>
                   </label>
                   <input [hidden]="immagineConvertita" type="file" #fileInput accept="image/*" id="fileInput" (change)="onFileSelected($event)" />
                   <div class="image-preview" *ngIf="immagineConvertita">
@@ -173,9 +174,33 @@
                   </div>
                 </div>
               </div>
-              <button (click)="addImage()" matTooltip="Salva immagine" *ngIf="salvaImmagine" class="btn btn-primary"> <i class="fa fa-save"></i></button>
-              <button (click)="cancelImage()" matTooltip="Annulla" *ngIf="salvaImmagine" class="btn btn-danger">&#x2715;</button>
+              <br>
+             <div class="buttons" *ngIf="salvaImmagine" >
+              <button (click)="addImage()" matTooltip="Salva immagine" class="btn btn-primary"> <i class="fa fa-save"></i></button> &nbsp;
+              <button (click)="cancelImage()" matTooltip="Annulla" class="btn btn-danger">&#x2715;</button>
+             </div>
             </div>
+            <div class="col-6">
+              <table class="table table-striped" style="text-align: center;" >
+               <thead>
+                <tr>
+                  <th>Ruolo</th>
+                  <th>Contratto</th>
+                  <th>Numero commesse</th>
+                  <th>Documenti</th>
+                </tr>
+               </thead>
+               <tbody>
+                <tr>
+                  <td>{{anagrafica?.anagraficaDto?.ruolo?.descrizione}} </td>
+                  <td>{{anagrafica?.anagraficaDto?.ruolo?.descrizione}} </td>
+                  <td>{{elencoCommesse.length}}</td>
+                  <td> Rapportino <button class="btn btn-success" (click)="goToRapportinoByCodiceFiscale()" matTooltip="Rapportino."> <i class="fa fa-file"></i> </button> </td>
+                </tr>
+               </tbody>
+              </table>
+            </div>
+
           </div>
 
           <br>
@@ -195,9 +220,7 @@
                   <tr *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita != null">
                     <th>Data e luogo di nascita:</th>
                     <td>
-                      {{
-                        anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"
-                      }},
+                      {{anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"}},
                       {{ anagrafica?.anagraficaDto.anagrafica?.comuneDiNascita }}
                     </td>
                   </tr>
@@ -347,6 +370,61 @@
         </div>
 
         <br>
+
+
+        <div class="row">
+          <div class="col-12">
+            <mat-card class="profile-box">
+              <mat-card-content>
+                <table id="commessaTable" class="table table-striped" style="font-size: 15px;">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">Cliente</th>
+                      <th scope="col">Cliente Finale</th>
+                      <th scope="col">Titolo Posizione</th>
+                      <th scope="col">Distacco</th>
+                      <th scope="col">Data Inizio</th>
+                      <th scope="col">Data Fine</th>
+                      <th scope="col">Tariffa Giornaliera</th>
+                      <th scope="col">Azienda fatturazione interna</th>
+                      <th scope="col">Archivia</th>
+                      <th scope="col">Modifica</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let commessa of elencoCommesse; let i = index">
+                      <td>{{ commessa.tipoAziendaCliente.descrizione }}</td>
+                      <td>{{ commessa.clienteFinale }}</td>
+                      <td>{{ commessa.titoloPosizione }}</td>
+                      <td>{{ commessa.distacco === true ? 'Si' : (commessa.distacco === false ? 'No' : 'Dato non inserito') | titlecase }}</td>
+                      <td>{{ commessa.dataInizio | date: 'dd/MM/yyyy' }}</td>
+                      <td >{{ commessa.dataFine| date: 'dd/MM/yyyy' }}</td>
+                      <td>{{ commessa.tariffaGiornaliera ? commessa.tariffaGiornaliera: 'Dato non inserito' }} <i [hidden]="!commessa.tariffaGiornaliera" class="fa-solid fa-euro-sign"></i></td>
+                      <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
+                      <td>
+                        <button class="btn btn-success" matTooltip="Archivia commessa"
+                          (click)="storicizzaCommessa(commessa.id, i)">
+                          <i class="fa fa-file"></i>
+                        </button>
+                      </td>
+                      <td>
+                        <button class="btn btn-warning" (click)="modificaCommessa()" matTooltip="Modifica commessa">
+                          <i class="fa fa-pencil"></i>
+                        </button>
+                      </td>
+                      <td>
+                        <!-- <button class="btn btn-danger" (click)="rimuoviCommessa(i)">
+                          <i class="fa fa-trash"></i>
+                        </button> -->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+        <br>
         <div class="profile-box-container">
           <div class="row">
             <div class="col-6">
@@ -388,7 +466,7 @@
           </div>
         </div>
 
-        <div class="profile-box-container">
+        <!-- <div class="profile-box-container">
           <div class="row">
             <div class="col-6">
               <mat-card class="profile-box">
@@ -406,7 +484,7 @@
               </mat-card>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

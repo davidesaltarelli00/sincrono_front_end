@@ -9,6 +9,7 @@ import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { MenuService } from '../menu.service';
+import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 @Component({
   selector: 'app-profile-box',
   templateUrl: './profile-box.component.html',
@@ -47,6 +48,7 @@ export class ProfileBoxComponent {
     base64: new FormControl(null),
   });
   userLoggedFiscalCode: any;
+  elencoCommesse: any[] = [];
 
   constructor(
     private authService: AuthService,
@@ -56,7 +58,8 @@ export class ProfileBoxComponent {
     private http: HttpClient,
     private formBuilder: FormBuilder,
     private imageService: ImageService,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private anagraficaDtoService: AnagraficaDtoService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -162,7 +165,8 @@ export class ProfileBoxComponent {
         if (this.immagine) {
           this.convertBase64ToImage(this.immagine);
         } else {
-          this.immaginePredefinita ='../../../../assets/images/profilePicPlaceholder.png';
+          this.immaginePredefinita =
+            '../../../../assets/images/profilePicPlaceholder.png';
         }
       },
       (error: any) => {
@@ -179,21 +183,15 @@ export class ProfileBoxComponent {
   }
 
   cancelImage() {
-    this.immagineConvertita = null;
-    if (this.fileInput) {
-      this.fileInput.nativeElement.value = '';
-      this.immagineCancellata = true;
-      const dialogRef = this.dialog.open(AlertDialogComponent, {
-        data: {
-          title: '',
-          message: 'Cambio immagine annullato.',
-        },
-      });
-      location.reload();
-    } else {
-      this.immagineCancellata = false;
-    }
+    const dialogRef = this.dialog.open(AlertDialogComponent, {
+      data: {
+        title: '',
+        message: 'Cambio immagine annullato.',
+      },
+    });
+    location.reload();
   }
+
   onFileSelected(event: any) {
     const selectedFile = event.target.files[0];
 
@@ -236,6 +234,47 @@ export class ProfileBoxComponent {
     return new Blob([byteArray], { type: `image/${format}` });
   }
 
+  storicizzaCommessa(id: number, posizione: number) {
+    console.log('ID COMMESSA DA STORICIZZARE: ' + id);
+    console.log("Posizione nell'array: " + posizione);
+
+    // const payload = {
+    //   anagraficaDto: {
+    //     anagrafica: null,
+    //     contratto: null,
+    //     commesse: [this.elencoCommesse[posizione]],
+    //     ruolo: null
+    //   },
+    // };
+    const payload = {
+      commessa: this.elencoCommesse[posizione],
+    };
+
+    console.log(JSON.stringify(payload));
+
+    this.anagraficaDtoService
+      .storicizzaCommessa(payload, localStorage.getItem('token'))
+      .subscribe(
+        (res: any) => {
+          console.log(
+            'Commessa storicizzata correttamente: ' + JSON.stringify(res)
+          );
+          alert('Commessa storicizzata correttamente.');
+          this.ngOnInit();
+        },
+        (error: any) => {
+          alert(
+            'Si è verificato un errore durante la storicizzazione della commessa selezionata: ' +
+              error
+          );
+        }
+      );
+  }
+
+  modificaCommessa() {
+    this.router.navigate(['/modifica-anagrafica/' + this.id]);
+  }
+
   logout() {
     this.dialog.open(AlertLogoutComponent);
   }
@@ -248,6 +287,7 @@ export class ProfileBoxComponent {
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.userLoggedFiscalCode =
           response.anagraficaDto.anagrafica.codiceFiscale;
+        this.elencoCommesse = response.anagraficaDto.commesse;
       },
       (error: any) => {
         console.error(

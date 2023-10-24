@@ -19,7 +19,11 @@
 .image-preview {
   position: relative;
   overflow: hidden;
-  border: 2px solid #fff;
+  // border: 2px solid #fff;
+}
+
+.buttons{
+  text-align: center;
 }
 
 .profile-box {
@@ -74,6 +78,15 @@ mat-card {
   /* Altri stili specifici per schermi di grandi dimensioni */
   .container-fluid {
     padding: 20px;
+    background-color: aliceblue;
+  }
+
+  body {
+    background-color: aliceblue;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 
   .col-6 {
@@ -227,14 +240,14 @@ mat-card {
 }
 
 .image-container.rounded {
-  width: 20%;
-  display: inline-block;
+  width: 60%;
 }
 
 .preview-image {
-  max-width: 100%;
+  width: 100%;
   height: auto;
-  border-radius: 50%;
+  border-radius: 100%;
+  max-width: 100%;
 }
 
 .cancel-icon {
