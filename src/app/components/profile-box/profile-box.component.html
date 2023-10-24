@@ -157,27 +157,27 @@
       <div class="col-12">
         <div class="profile-box-container">
           <br />
-          <div class="row">
-            <div class="col-12 text-center">
-              <div class="image-container">
+          <div class="row"  >
+            <div class="col-12"  id="sezione-immagine">
+              <div class="image-container" >
                 <div class="image-container rounded">
-                  <span>
-                    <input [hidden]="immagineConvertita" type="file" #fileInput accept="image/*" class="file-input"
-                      (change)="onFileSelected($event)" />
-                  </span>
+                  <label style="float: right;" for="fileInput" class="file-input-label" *ngIf="!immagineCancellata && immagineConvertita">
+                    <i class="fa fa-pencil" style="cursor: pointer;" matTooltip=" Modifica immagine" ></i>
+                  </label>
+                  <input [hidden]="immagineConvertita" type="file" #fileInput accept="image/*" id="fileInput" (change)="onFileSelected($event)" />
                   <div class="image-preview" *ngIf="immagineConvertita">
                     <img [src]="immagineConvertita" alt="Immagine" class="preview-image" />
                   </div>
+                  <div class="image-preview" *ngIf="!immagineConvertita">
+                    <img [src]="immaginePredefinita" alt="Immagine" class="preview-image" />
+                  </div>
                 </div>
               </div>
-              <button (click)="addImage()" matTooltip="Salva immagine" *ngIf="salvaImmagine" class="btn btn-primary"> <i
-                  class="fa fa-save"></i></button>
-              <button (click)="cancelImage()" matTooltip="Modifica immagine"
-                *ngIf="!immagineCancellata && immagineConvertita" class="btn btn-primary"> <i class="fa fa-pencil" ></i> </button>
-              <button (click)="cancelImage()" matTooltip="Cancella immagine"
-                *ngIf="!immagineCancellata && immagineConvertita" class="btn btn-danger">&#x2715;</button>
+              <button (click)="addImage()" matTooltip="Salva immagine" *ngIf="salvaImmagine" class="btn btn-primary"> <i class="fa fa-save"></i></button>
+              <button (click)="cancelImage()" matTooltip="Annulla" *ngIf="salvaImmagine" class="btn btn-danger">&#x2715;</button>
             </div>
           </div>
+
           <br>
           <div class="row">
             <div class="col-6">

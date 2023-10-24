@@ -131,6 +131,7 @@ export class ProfileBoxComponent {
               });
               this.immagine = response;
               this.getImage();
+              location.reload();
             }
           },
           (error: any) => {
@@ -182,6 +183,13 @@ export class ProfileBoxComponent {
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
       this.immagineCancellata = true;
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          title: '',
+          message: 'Cambio immagine annullato.',
+        },
+      });
+      location.reload();
     } else {
       this.immagineCancellata = false;
     }
