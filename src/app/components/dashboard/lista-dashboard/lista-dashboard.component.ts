@@ -90,7 +90,10 @@ export class ListaDashboardComponent {
     }),
 
     commessa: new FormGroup({
-      aziendaCliente: new FormControl(null),
+      tipoAziendaCliente: new FormGroup({
+        id: new FormControl(null),
+        descrizione: new FormControl(''),
+      }),
     }),
 
     annoDataFine: new FormControl(null),
@@ -153,7 +156,6 @@ export class ListaDashboardComponent {
       meseDataFine: new FormControl(null),
       annoDataInizio: new FormControl(null),
       meseDataInizio: new FormControl(null),
-
       annoFineContratto: new FormControl(null),
       meseFineContratto: new FormControl(null),
     });
@@ -172,6 +174,7 @@ export class ListaDashboardComponent {
     const commessaFormGroup = this.creaFormCommessa();
     this.commesse.push(commessaFormGroup);
     this.caricaTipoAzienda();
+
 
     this.dashboardService.listaScattiContratto(localStorage.getItem('token')).subscribe(
       (resp: any) => {
@@ -272,6 +275,10 @@ export class ListaDashboardComponent {
         if (obj.commesse && Object.keys(obj.commesse).length === 0) {
           delete obj.commesse;
         }
+        if (obj.tipoAziendaCliente && Object.keys(obj.tipoAziendaCliente).length === 0) {
+          delete obj.tipoAziendaCliente;
+        }
+
         if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
           delete obj.tipoContratto;
         }
@@ -351,16 +358,10 @@ export class ListaDashboardComponent {
           } else {
             if (Array.isArray(result.list)) {
               this.pageData = [];
-
-
               this.listaCommesseScadute = this.createAnagraficaDtoList(result.list);
-
               this.currentPage = 1;
               this.pageData = this.getCurrentPageItems();
-
               console.log("daje" + this.listaCommesseScadute);
-
-
             } else {
               this.pageData = [];
               this.messaggio =
@@ -503,11 +504,16 @@ export class ListaDashboardComponent {
       this.currentPage = pageNumber;
     }
   }
+
   creaFormCommessa(): FormGroup {
     return this.formBuilder.group({
-      tipoAzienda: new FormControl(''),
+      tipoAziendaCliente: new FormGroup({
+        id: new FormControl(''),
+        descrizione: new FormControl(''),
+      }),
     });
   }
+
   caricaTipoAzienda() {
     this.contrattoService
       .getTipoAzienda(localStorage.getItem('token'))
@@ -515,6 +521,7 @@ export class ListaDashboardComponent {
         this.tipiAziende = (result as any)['list'];
       });
   }
+
   exportContrattiInScadenzaToExcel() {
     // Verifica che ci siano dati validi prima di esportare
     console.log('Dati da esportare:', this.listaContrattiInScadenza);
@@ -587,7 +594,7 @@ export class ListaDashboardComponent {
 
       item.commesse.forEach((commessa: any) => {
         workSheetData.push([
-          commessa.tipoAzienda.descrizione ? commessa.tipoAzienda.descrizione.toString() : '',
+          commessa.tipoAziendaCliente.descrizione ? commessa.tipoAziendaCliente.descrizione.toString() : '',
           commessa.clienteFinale ? commessa.clienteFinale.toString() : '',
           commessa.titoloPosizione ? commessa.titoloPosizione.toString() : '',
           commessa.distacco ? commessa.distacco.toString() : '',
@@ -805,7 +812,7 @@ export class ListaDashboardComponent {
           item.anagrafica.nome,
           item.anagrafica.cognome,
           item.anagrafica.codiceFiscale,
-          commessa.tipoAzienda.descrizione,
+          commessa.tipoAziendaCliente.descrizione,
           commessa.clienteFinale,
           commessa.titoloPosizione,
           commessa.distacco,
@@ -824,8 +831,8 @@ export class ListaDashboardComponent {
   }
 
   caricaAziendeClienti() {
-    this.contrattoService
-      .getTipoAzienda(localStorage.getItem('token'))
+    this.dashboardService.
+      getAziendaCliente(localStorage.getItem('token'))
       .subscribe(
         (result: any) => {
           console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
@@ -843,8 +850,8 @@ export class ListaDashboardComponent {
     const selectedValue = parseInt(event.target.value, 10);
 
     if (!isNaN(selectedValue)) {
-      const selectedObject = this.tipiAziende.find(
-        (azienda: any) => azienda.id === selectedValue
+      const selectedObject = this.aziendeClienti.find(
+        (aziendaCliente: any) => aziendaCliente.id === selectedValue
       );
 
       if (selectedObject) {
@@ -955,11 +962,11 @@ export class ListaDashboardComponent {
     this.imageService.getImage(this.token, body).subscribe(
       (result: any) => {
         this.immagine = (result as any).base64;
-        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+        //console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
 
         if (this.immagine) {
           this.convertBase64ToImage(this.immagine);
-          console.log('Valore di immagineConvertita:', this.immagineConvertita);
+          //console.log('Valore di immagineConvertita:', this.immagineConvertita);
         } else {
           // Assegna un'immagine predefinita se l'immagine non è disponibile
           this.immaginePredefinita =

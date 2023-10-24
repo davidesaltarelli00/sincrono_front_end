@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class DashboardService {
   token: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   listaDashboard(token: any): Observable<any> {
     const headers = new HttpHeaders({
@@ -52,54 +52,64 @@ export class DashboardService {
   //lista commesse in scadenza 2.0
 
 
-   getListaCommesseInScadenza(token:any): Observable<any> {
+  getListaCommesseInScadenza(token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>('http://localhost:8080/services/list-commesse',{
-      headers: headers,
-    });
-  } 
- 
-
-
-
-
-//lista contratti in scadenza 2.0
-  getListaContrattiInScadenza(token:any): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${token}`,
-    });
-    return this.http.get<any>('http://localhost:8080/services/list-contratti',{
+    return this.http.get<any>('http://localhost:8080/services/list-commesse', {
       headers: headers,
     });
   }
 
-  getAllCommesseScadute(token:any): Observable<any> {
+
+
+
+
+  //lista contratti in scadenza 2.0
+  getListaContrattiInScadenza(token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>('http://localhost:8080/services/list-all-commesse',{
-    headers: headers,
-  });
-}
+    return this.http.get<any>('http://localhost:8080/services/list-contratti', {
+      headers: headers,
+    });
+  }
 
-commesseListFilter(token:any,body:any): Observable<any> {
-  const headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    Authorization: `Bearer ${token}`,
-  });
-  
-  return this.http.post<any>('http://localhost:8080/services/list-filter',body,{
-  headers: headers, 
-  });
-}
+  getAllCommesseScadute(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>('http://localhost:8080/services/list-all-commesse', {
+      headers: headers,
+    });
+  }
 
+  commesseListFilter(token: any, body: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.post<any>('http://localhost:8080/services/list-filter', body, {
+      headers: headers,
+    });
+  }
+
+  getAziendaCliente(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>('http://localhost:8080/services/tipo-azienda-cliente-map', {
+      headers: headers,
+    });
+  }
 }

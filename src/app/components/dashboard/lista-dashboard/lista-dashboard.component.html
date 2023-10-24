@@ -113,7 +113,8 @@
       </div>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>  <i class="fa fa-user"></i>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
+          class="fa fa-user"></i>
         <!--<img *ngIf="immaginePredefinita" style="border-radius:100%" [src]="immaginePredefinita" alt="Immagine" width="40px"  />-->
       </span> &nbsp;&nbsp;
       <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
@@ -265,7 +266,7 @@
                 <tbody>
                   <ng-container *ngFor="let element of listaCommesseInScadenza">
                     <tr *ngFor="let commessa of element.commesse">
-                      <td>{{ commessa.tipoAzienda.descrizione }}</td>
+                      <td>{{ commessa.tipoAziendaCliente.descrizione }}</td>
                       <td>{{ commessa.clienteFinale }}</td>
                       <td>{{ commessa.titoloPosizione }}</td>
                       <td>{{ commessa.distacco ? 'Sì' : 'No' }}</td>
@@ -447,15 +448,15 @@
                     <div formArrayName="commesse">
                       <div class="col-md-3">
                         <label>Azienda cliente: </label>
-                        <div class="form-group" formGroupName="tipoAzienda">
+                        <div class="form-group" formGroupName="tipoAziendaCliente">
                           <select (change)="onChangeAziendaCliente($event)" class="form-select"
-                            aria-label="Default select example" id="commesse.tipoAzienda.id" formControlName="id">
+                            aria-label="Default select example" id="commesse.tipoAziendaCliente.id"
+                            formControlName="id">
                             <option value="">--nessuna selezione--</option>
                             <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
                               {{ aziendaCliente.descrizione }}
                             </option>
                           </select>
-
                         </div>
                       </div>
                     </div>
