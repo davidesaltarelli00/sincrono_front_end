@@ -1,22 +1,22 @@
-import { ImageService } from './../image.service';
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { AuthService } from '../login/login-service';
-import { ProfileBoxService } from './profile-box.service';
-import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
-import { MenuService } from '../menu.service';
+import { Router } from '@angular/router';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
-import { ImmagineComponent } from '../immagine/immagine.component';
+import { ImageService } from '../image.service';
+import { AuthService } from '../login/login-service';
+import { MenuService } from '../menu.service';
+import { ProfileBoxService } from '../profile-box/profile-box.service';
+import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+
 @Component({
-  selector: 'app-profile-box',
-  templateUrl: './profile-box.component.html',
-  styleUrls: ['./profile-box.component.scss'],
+  selector: 'app-immagine',
+  templateUrl: './immagine.component.html',
+  styleUrls: ['./immagine.component.scss'],
 })
-export class ProfileBoxComponent {
+export class ImmagineComponent implements OnInit {
   immaginePredefinita: string | null = null;
   isRisorseUmane: boolean = false;
   anagrafica: any;
@@ -41,16 +41,11 @@ export class ProfileBoxComponent {
   salvaImmagine: boolean = false;
   immagineCancellata: boolean = false;
   @ViewChild('fileInput') fileInput: ElementRef | undefined;
+  userLoggedFiscalCode: any;
+  elencoCommesse: any[] = [];
   bodyGet: FormGroup = new FormGroup({
     codiceFiscale: new FormControl(null),
   });
-  bodyAdd: FormGroup = new FormGroup({
-    codiceFiscale: new FormControl(null),
-    base64: new FormControl(null),
-  });
-  userLoggedFiscalCode: any;
-  elencoCommesse: any[] = [];
-
   constructor(
     private authService: AuthService,
     private profileBoxService: ProfileBoxService,
@@ -79,11 +74,17 @@ export class ProfileBoxComponent {
       codiceFiscale: new FormControl(null),
     });
   }
+
+  close(){
+    this.dialog.closeAll();
+  }
+
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
     }
+
 
     const token = localStorage.getItem('token');
     this.profileBoxService.getData().subscribe(
@@ -105,10 +106,6 @@ export class ProfileBoxComponent {
         );
       }
     );
-  }
-
-  vediImmagineProfilo(){
-    this.dialog.open(ImmagineComponent);
   }
 
   addImage() {
@@ -239,47 +236,6 @@ export class ProfileBoxComponent {
     return new Blob([byteArray], { type: `image/${format}` });
   }
 
-  storicizzaCommessa(id: number, posizione: number) {
-    console.log('ID COMMESSA DA STORICIZZARE: ' + id);
-    console.log("Posizione nell'array: " + posizione);
-
-    // const payload = {
-    //   anagraficaDto: {
-    //     anagrafica: null,
-    //     contratto: null,
-    //     commesse: [this.elencoCommesse[posizione]],
-    //     ruolo: null
-    //   },
-    // };
-    const payload = {
-      commessa: this.elencoCommesse[posizione],
-    };
-
-    console.log(JSON.stringify(payload));
-
-    this.anagraficaDtoService
-      .storicizzaCommessa(payload, localStorage.getItem('token'))
-      .subscribe(
-        (res: any) => {
-          console.log(
-            'Commessa storicizzata correttamente: ' + JSON.stringify(res)
-          );
-          alert('Commessa storicizzata correttamente.');
-          this.ngOnInit();
-        },
-        (error: any) => {
-          alert(
-            'Si è verificato un errore durante la storicizzazione della commessa selezionata: ' +
-              error
-          );
-        }
-      );
-  }
-
-  modificaCommessa() {
-    this.router.navigate(['/modifica-anagrafica/' + this.id]);
-  }
-
   logout() {
     this.dialog.open(AlertLogoutComponent);
   }
@@ -356,4 +312,5 @@ export class ProfileBoxComponent {
       }
     );
   }
+
 }

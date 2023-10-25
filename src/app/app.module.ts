@@ -54,6 +54,7 @@ import { ListaRapportiniComponent } from './components/lista-rapportini/lista-ra
 import { ModaleDettaglioRapportinoComponent } from './components/modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
 import { HeaderComponent } from './header/header.component';
 import { MatIconModule } from '@angular/material/icon';
+import { ImmagineComponent } from './components/immagine/immagine.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,7 +87,8 @@ import { MatIconModule } from '@angular/material/icon';
     RisultatiFilterOrganicoComponent,
     ListaRapportiniComponent,
     ModaleDettaglioRapportinoComponent,
-    HeaderComponent
+    HeaderComponent,
+    ImmagineComponent
   ],
   imports: [
     MatIconModule,

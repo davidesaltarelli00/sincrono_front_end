@@ -27,6 +27,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { RisultatiFilterOrganicoComponent } from './components/organico/risultati-filter-organico/risultati-filter-organico.component';
 import { ListaRapportiniComponent } from './components/lista-rapportini/lista-rapportini.component';
 import { ModaleDettaglioRapportinoComponent } from './components/modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
+import { ImmagineComponent } from './components/immagine/immagine.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -127,6 +128,11 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: ListaDashboardComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'immagine',
+    component: ImmagineComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
 

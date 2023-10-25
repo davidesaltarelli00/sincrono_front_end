@@ -167,7 +167,7 @@
                   </label>
                   <input [hidden]="immagineConvertita" type="file" #fileInput accept="image/*" id="fileInput" (change)="onFileSelected($event)" />
                   <div class="image-preview" *ngIf="immagineConvertita">
-                    <img [src]="immagineConvertita" alt="Immagine" class="preview-image" />
+                    <img [src]="immagineConvertita" (click)="vediImmagineProfilo()" style="cursor: pointer;" alt="Immagine" class="preview-image" />
                   </div>
                   <div class="image-preview" *ngIf="!immagineConvertita">
                     <img [src]="immaginePredefinita" alt="Immagine" class="preview-image" />
