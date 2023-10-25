@@ -46,6 +46,7 @@ export class ImmagineComponent implements OnInit {
   bodyGet: FormGroup = new FormGroup({
     codiceFiscale: new FormControl(null),
   });
+  idUtente: any;
   constructor(
     private authService: AuthService,
     private profileBoxService: ProfileBoxService,
@@ -265,6 +266,8 @@ export class ImmagineComponent implements OnInit {
         // console.log('DATI GET USER ROLE:' + JSON.stringify(response));
 
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        this.idUtente= response.anagraficaDto.anagrafica.utente.id;
+        console.log("ID UTENTE PER NAV:"+this.idUtente);
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
         ) {

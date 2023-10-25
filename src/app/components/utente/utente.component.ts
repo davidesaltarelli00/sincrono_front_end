@@ -20,6 +20,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 export class UtenteComponent implements OnInit {
   userLoggedName: any;
   userLoggedSurname: any;
+  aziendaSelezionata: any;
   shouldReloadPage: any;
   idFunzione: any;
   jsonData: any;
@@ -43,7 +44,6 @@ export class UtenteComponent implements OnInit {
   @ViewChild('editableTable') editableTable!: ElementRef;
   aziendeClienti: any[] = [];
   filteredAziendeClienti: string[] = [];
-  aziendaSelezionata: string = '';
   modifiedData: any[] = [];
   anno: any;
   selectedAnno: number;
@@ -88,6 +88,8 @@ export class UtenteComponent implements OnInit {
     cliente: ''
   };
   showError: boolean = false;
+  duplicazioniGiornoDto:any[]=[];
+  idUtente: any;
 
 
   constructor(
@@ -210,8 +212,9 @@ export class UtenteComponent implements OnInit {
     return nomeGiorno === 'Saturday' || nomeGiorno === 'Sunday';
   }
 
-  selezionaAzienda() {
-    console.log('Azienda selezionata:', this.aziendaSelezionata);
+  selezionaAzienda(option:any) {
+   this.aziendaSelezionata=option;
+   console.log("Selezionata azienda "+ this.aziendaSelezionata)
   }
 
   ngOnInit(): void {
@@ -346,7 +349,6 @@ export class UtenteComponent implements OnInit {
         meseRequest: this.selectedMese,
       },
     };
-    console.log('BODY PER GET RAPPORTINO:' + JSON.stringify(body));
     this.rapportinoService.getRapportino(this.token, body).subscribe(
       (result: any) => {
         if ((result as any).esito.code !== 200) {
@@ -360,28 +362,8 @@ export class UtenteComponent implements OnInit {
         } else {
           this.esitoCorretto = true;
           this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
-          console.log('Dati get all rapportino:' + JSON.stringify(result));
-          this.straordinari = result['rapportinoDto']['mese']['giorni'].map((giorno: any) => giorno.straordinari);
-          console.log('STRAORDINARI:' + JSON.stringify(this.straordinari));
-          this.giorniUtili = result['rapportinoDto']['giorniUtili'];
-          console.log('GIORNI UTILI:' + JSON.stringify(this.giorniUtili));
-          this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
-          console.log('GIORNI LAVORATI:' + JSON.stringify(this.giorniLavorati));
-          for (let i = 0; i < this.rapportinoDto.length; i++) {
-            const giorno = this.rapportinoDto[i];
-            if (!giorno.straordinari) {
-              giorno.straordinari = [null, null, null];
-            } else if (giorno.straordinari.length < 3) {
-              while (giorno.straordinari.length < 3) {
-                giorno.straordinari.push(null);
-              }
-            }
-            if (!giorno.cliente) {
-              giorno.cliente = [];
-            }
-          }
 
-          //qui andrá l endpoint per verificare la completezza della tabella
+          console.log('Dati get rapportino:' + JSON.stringify(this.rapportinoDto));
           this.checkRapportinoInviato();
         }
       },
@@ -389,7 +371,31 @@ export class UtenteComponent implements OnInit {
         console.error('ERRORE:' + JSON.stringify(error));
       }
     );
+
+
   }
+   // this.rapportinoDto = result;//['rapportinoDto']['mese']['giorni'];
+          // this.straordinari = result['rapportinoDto']['mese']['giorni'].map((giorno: any) => giorno.straordinari);
+          // console.log('STRAORDINARI:' + JSON.stringify(this.straordinari));
+          // this.giorniUtili = result['rapportinoDto']['giorniUtili'];
+          // console.log('GIORNI UTILI:' + JSON.stringify(this.giorniUtili));
+          // this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
+          // console.log('GIORNI LAVORATI:' + JSON.stringify(this.giorniLavorati));
+          // for (let i = 0; i < this.rapportinoDto.length; i++) {
+          //   const giorno = this.rapportinoDto[i];
+          //   if (!giorno.straordinari) {
+          //     giorno.straordinari = [null, null, null];
+          //   } else if (giorno.straordinari.length < 3) {
+          //     while (giorno.straordinari.length < 3) {
+          //       giorno.straordinari.push(null);
+          //     }
+          //   }
+          //   if (!giorno.cliente) {
+          //     giorno.cliente = [];
+          //   }
+          // }
+
+          //qui andrá l endpoint per verificare la completezza della tabella
 
   inviaRapportino() {
     // const giorniArray = [];
@@ -573,6 +579,8 @@ export class UtenteComponent implements OnInit {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        this.idUtente= response.anagraficaDto.anagrafica.utente.id;
+        console.log("ID UTENTE PER NAV:"+this.idUtente);
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
         ) {
@@ -603,7 +611,7 @@ export class UtenteComponent implements OnInit {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${this.token}`,
     });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
+    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idUtente}`;
     this.http.get<MenuData>(url, { headers: headers }).subscribe(
       (data: any) => {
         this.jsonData = data;

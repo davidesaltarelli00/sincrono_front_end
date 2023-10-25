@@ -234,17 +234,157 @@
       <div class="col-12">
        <mat-card>
 
-        <!--
-           <div class="col-2" *ngIf="!giorno.cliente || giorno.cliente.length === 0">
-                <label for="cliente">Cliente</label>
-                <i class="fa fa-info-circle" matTooltip="Attenzione: non hai commesse." style="color: red;" *ngIf="aziendeClienti.length === 0"></i>
-                <input type="text" class="form-control" id="cliente" name="cliente" placeholder="Cliente" [(ngModel)]="giorno.cliente" (input)="filterOptions()">
-                <label for="oreOrdinarie">Ore</label>
-                <input min="0" max="24" placeholder="Ore" type="number" step="0.5" class="form-control" id="oreOrdinarie" name="oreOrdinarie" [(ngModel)]="giorno.oreOrdinarie" ngDefaultControl>
+        <form #rapportinoForm (ngSubmit)="salvaRapportino(rapportinoForm)">
+          <div class="container-form col-12">
+            <div class="row" *ngFor="let giorno of rapportinoDto; let i = index">
+              <div class="col-1" >
+                <div class="form-group">
+                  <label for="giorno-{{ i }}">Giorno:</label>
+                  <input type="number" class="form-control" id="giorno-{{ i }}" name="giorno-{{ i }}" [(ngModel)]="giorno.duplicazioniGiornoDto[0].giorno">
+                </div>
               </div>
-        -->
+              <div class="col-2">
+                <div class="form-group">
+                   <label for="cliente-{{ i }}">Cliente:</label>
+                  <select class="form-select" id="cliente-{{ i }}" name="cliente-{{ i }}" [(ngModel)]="giorno.duplicazioniGiornoDto[0].cliente" (change)="selezionaAzienda($event)">
+                    <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group">
+                  <label for="ore-ordinarie-{{ i }}">Ore:</label>
+                  <input type="number" class="form-control" id="ore-ordinarie-{{ i }}" name="ore-ordinarie-{{ i }}" [(ngModel)]="giorno.duplicazioniGiornoDto[0].oreOrdinarie">
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group">
+                  <label for="fascia1-{{ i }}">Fascia 1:</label>
+                  <input type="number" class="form-control" id="fascia1-{{ i }}" name="fascia1-{{ i }}" [(ngModel)]="giorno.duplicazioniGiornoDto[0].fascia1">
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group">
+                  <label for="fascia2-{{ i }}">Fascia 2:</label>
+                  <input type="number" class="form-control" id="fascia2-{{ i }}" name="fascia2-{{ i }}" [(ngModel)]="giorno.duplicazioniGiornoDto[0].fascia2">
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group">
+                  <label for="fascia3-{{ i }}">Fascia 3:</label>
+                  <input type="number" class="form-control" id="fascia3-{{ i }}" name="fascia3-{{ i }}" [(ngModel)]="giorno.duplicazioniGiornoDto[0].fascia3">
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group">
+                  <label for="permessi-{{ i }}">Permessi:</label>
+                  <input type="number" class="form-control" id="permessi-{{ i }}" name="permessi-{{ i }}" [(ngModel)]="giorno.permessi">
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group">
+                  <label for="ferie-{{ i }}">Ferie:</label> <br>
+                  <input type="checkbox" class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group">
+                  <label for="malattie-{{ i }}">Malattie:</label><br>
+                  <input type="checkbox" class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group">
+                  <label for="note-{{ i }}">Note:</label>
+                  <input type="text" class="form-control" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note">
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="submit">Salva</button>
+        </form>
 
-        <form #rapportinoForm="ngForm" class="form-rapportino">
+
+
+        <!-- <form #rapportinoForm (ngSubmit)="salvaRapportino(rapportinoForm)">
+          <div *ngFor="let giorno of rapportinoDto; let i = index" class="container-form col-12">
+              <div class="row" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index">
+                <div class="col-1">
+                  <div class="form-group">
+                    <label for="giorno-{{ i }}-{{ j }}">Giorno:</label>
+                    <input type="number" class="form-control" id="giorno-{{ i }}-{{ j }}" name="giorno-{{ i }}-{{ j }}" [(ngModel)]="duplicazione.giorno">
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div class="form-group">
+                    <label for="cliente-{{ i }}-{{ j }}">Cliente:</label>
+                    <input type="text" class="form-control" id="cliente-{{ i }}-{{ j }}" name="cliente-{{ i }}-{{ j }}" [(ngModel)]="duplicazione.cliente">
+                  </div>
+                </div>
+
+                <div class="col-1">
+                  <div class="form-group">
+                    <label for="ore-ordinarie-{{ i }}-{{ j }}">Ore:</label>
+                    <input type="number" class="form-control" id="ore-ordinarie-{{ i }}-{{ j }}" name="ore-ordinarie-{{ i }}-{{ j }}" [(ngModel)]="duplicazione.oreOrdinarie">
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="form-group">
+                    <label for="fascia1-{{ i }}-{{ j }}">Fascia 1:</label>
+                    <input type="number" class="form-control" id="fascia1-{{ i }}-{{ j }}" name="fascia1-{{ i }}-{{ j }}" [(ngModel)]="duplicazione.fascia1">
+                  </div>
+                </div>
+               <div class="col-1">
+                <div class="form-group">
+                  <label for="fascia2-{{ i }}-{{ j }}">Fascia 2:</label>
+                  <input type a="number" class="form-control" id="fascia2-{{ i }}-{{ j }}" name="fascia2-{{ i }}-{{ j }}" [(ngModel)]="duplicazione.fascia2">
+                </div>
+               </div>
+                <div class="col-1">
+                  <div class="form-group">
+                    <label for="fascia3-{{ i }}-{{ j }}">Fascia 3:</label>
+                    <input type="number" class="form-control" id="fascia3-{{ i }}-{{ j }}" name="fascia3-{{ i }}-{{ j }}" [(ngModel)]="duplicazione.fascia3">
+                  </div>
+                </div>
+                  <div class="col-1">
+                <div class="form-group">
+                  <label for="permessi-{{ i }}">Permessi:</label>
+                  <input type="number" class="form-control" id="permessi-{{ i }}" name="permessi-{{ i }}" [(ngModel)]="giorno.permessi">
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group">
+                  <label for="ferie-{{ i }}">Ferie:</label>
+                  <input type="checkbox" class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group">
+                  <label for="malattie-{{ i }}">Malattie:</label>
+                  <input type="checkbox" class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group">
+                  <label for="note-{{ i }}">Note:</label>
+                  <input type="text" class="form-control" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note">
+                </div>
+              </div>
+              </div>
+
+          </div>
+        <button type="submit">Salva</button>
+        </form> -->
+
+
+
+
+
+
+
+
+
+        <!-- <form #rapportinoForm="ngForm" class="form-rapportino">
           <div class="form-group" *ngFor="let giorno of rapportinoDto; let i = index;">
             <div class="row">
               <div class="col-1">
@@ -308,7 +448,7 @@
               <button type="submit" class="btn btn-primary" (click)="salvaRapportino(rapportinoForm.value)">Salva rapportino <i class="fa fa-save"></i></button> &nbsp;
             </div>
           </div>
-        </form>
+        </form> -->
 
 
        </mat-card>
