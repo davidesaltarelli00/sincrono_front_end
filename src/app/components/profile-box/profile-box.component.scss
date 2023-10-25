@@ -1,7 +1,114 @@
-/* General styles */
-.container-fluid {
-  padding: 20px;
+body{
+  background-color: aliceblue;
 }
+
+.container-fluid{
+  background-color: aliceblue;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+thead,tbody{
+  border: 1px solid #333;
+}
+
+
+
+@media only screen and (min-width: 600px) {
+  /* For tablets: */
+  .col-s-1 {
+      width: 8.33%;
+  }
+  .col-s-2 {
+      width: 16.66%;
+  }
+  .col-s-3 {
+      width: 25%;
+  }
+  .col-s-4 {
+      width: 33.33%;
+  }
+  .col-s-5 {
+      width: 41.66%;
+  }
+  .col-s-6 {
+      width: 50%;
+  }
+  .col-s-7 {
+      width: 58.33%;
+  }
+  .col-s-8 {
+      width: 66.66%;
+  }
+  .col-s-9 {
+      width: 75%;
+  }
+  .col-s-10 {
+      width: 83.33%;
+  }
+  .col-s-11 {
+      width: 91.66%;
+  }
+  .col-s-12 {
+      width: 100%;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  /* For desktop: */
+  .col-1 {
+      width: 8.33%;
+  }
+  .col-2 {
+      width: 16.66%;
+  }
+  .col-3 {
+      width: 25%;
+  }
+  .col-4 {
+      width: 33.33%;
+  }
+  .col-5 {
+      width: 41.66%;
+  }
+  .col-6 {
+      width: 50%;
+  }
+  .col-7 {
+      width: 58.33%;
+  }
+  .col-8 {
+      width: 66.66%;
+  }
+  .col-9 {
+      width: 75%;
+  }
+  .col-10 {
+      width: 83.33%;
+  }
+  .col-11 {
+      width: 91.66%;
+  }
+  .col-12 {
+      width: 100%;
+  }
+}
+
+/* Stile generale per le tabelle */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+
 
 .profile-pic-container {
   display: flex;
@@ -11,206 +118,18 @@
   /* Horizontally center */
 }
 
-
-.profile-box-container {
-  margin-bottom: 20px;
-}
-
 .image-preview {
   position: relative;
   overflow: hidden;
   // border: 2px solid #fff;
 }
-
-.buttons{
-  text-align: center;
-}
-
 .profile-box {
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-/* Media queries for responsiveness */
-@media screen and (max-width: 768px) {
-  .col-6 {
-    flex-basis: 100%;
-    max-width: 100%;
-  }
-}
 
-@media screen and (max-width: 576px) {
-  .profile-box {
-    padding: 15px;
-  }
-
-  .profile-box h3 {
-    font-size: 1.2rem;
-  }
-}
-
-/* Adjustments for small screen sizes (e.g., smartphones) */
-@media screen and (max-width: 425px) {
-  .container-fluid {
-    padding: 10px;
-  }
-
-  .profile-box {
-    padding: 10px;
-  }
-
-  .profile-box h3 {
-    font-size: 1rem;
-  }
-}
-
-mat-card {
-  height: 100%;
-}
-
-/* Stili specifici per schermi di grandi dimensioni (desktop) */
-@media (min-width: 768px) {
-  body {
-    font-size: 18px;
-  }
-
-  /* Altri stili specifici per schermi di grandi dimensioni */
-  .container-fluid {
-    padding: 20px;
-    background-color: aliceblue;
-  }
-
-  body {
-    background-color: aliceblue;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-
-  .col-6 {
-    width: 50%;
-    float: left;
-  }
-}
-
-/* Stili specifici per schermi di medie dimensioni (tablet) */
-@media (max-width: 768px) {
-  body {
-    font-size: 16px;
-  }
-
-  /* Altri stili specifici per schermi di medie dimensioni */
-  .col-6 {
-    width: 100%;
-    float: none;
-  }
-
-  .banner img {
-    max-width: 100%;
-  }
-}
-
-/* Stili specifici per schermi di piccole dimensioni (dispositivi mobili) */
-@media (max-width: 480px) {
-  body {
-    font-size: 14px;
-  }
-
-  /* Altri stili specifici per schermi di piccole dimensioni */
-  .container-fluid {
-    padding: 10px;
-  }
-
-  .custom-list-item {
-    padding: 10px;
-  }
-}
-
-.custom-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.custom-list-item {
-  margin-bottom: 10px;
-  padding: 5px;
-  background-color: #f5f5f5;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.custom-list-item:hover {
-  background-color: #e0e0e0;
-  cursor: pointer;
-}
-
-.custom-list-item a {
-  text-decoration: none;
-  color: #333;
-}
-
-.custom-list-item a:hover {
-  text-decoration: underline;
-  color: blue;
-
-}
-
-// .image-container {
-//   text-align: center;
-//   margin: auto;
-//   position: relative;
-//   overflow: hidden;
-
-// }
-
-// .add-button {
-//   background-color: transparent;
-//   border: none;
-//   cursor: pointer;
-//   position: absolute;
-//   top: 5px;
-//   right: 5px;
-//   font-size: 20px;
-//   color: #007bff;
-//   /* Colore blu per l'icona "Salva" */
-//   z-index: 2;
-// }
-
-// .add-button:hover {
-//   color: #0056b3;
-//   /* Colore blu più scuro al passaggio del mouse */
-// }
-
-// .image-preview {
-//   position: relative;
-//   overflow: hidden;
-// }
-
-// .image-container.rounded {
-//   width: 20%;
-// }
-
-// .preview-image {
-//   max-width: 100%;
-//   height: auto;
-//   object-fit: cover;
-//   border-radius: 100%;
-// }
-
-
-// .cancel-icon {
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   cursor: pointer;
-//   font-size: 20px;
-//   color: white;
-//   background-color: #ff0000;
-//   z-index: 1;
-// }
 .image-container {
   text-align: center;
   margin: auto;
