@@ -149,34 +149,13 @@ export class UtenteComponent implements OnInit {
   }
 
   duplicaRiga(index: number) {
-    // Ottieni il "giorno" dalla riga selezionata
-    const giornoDaDuplicare = this.rapportinoDto[index].giorno;
+    // Crea una copia dell'oggetto al quale si riferisce l'indice 'index'
+    const copiaGiorno = JSON.parse(JSON.stringify(this.rapportinoDto[index]));
 
-    // Verifica il conteggio delle duplicazioni per il "giorno" selezionato
-    const conteggio = this.conteggioDuplicati[giornoDaDuplicare] || 0;
-
-    // Verifica se è possibile duplicare una riga in più per questo "giorno"
-    if (conteggio < this.elencoCommesse.length - 1) {
-      // Crea una nuova riga con il campo "giorno" impostato
-      const nuovaRiga = {
-        giorno: giornoDaDuplicare,
-        cliente: [],
-        oreOrdinarie: [],
-      };
-
-      // Aggiungi la nuova riga alla fine dell'array
-      this.rapportinoDto.push(nuovaRiga);
-
-      // Incrementa il conteggio delle duplicazioni per il "giorno"
-      this.conteggioDuplicati[giornoDaDuplicare] = conteggio + 1;
-
-      // Disabilita il pulsante se il numero di duplicazioni per questo "giorno" raggiunge il massimo
-      if (conteggio + 1 === this.elencoCommesse.length - 1) {
-        // Disabilita il pulsante "Duplica Riga"
-        this.disabilitaDuplica = true;
-      }
-    }
+    // Aggiungi la copia appena creata all'array rapportinoDto nella posizione desiderata
+    this.rapportinoDto.splice(index + 1, 0, copiaGiorno);
   }
+
 
   getCommesseIndices(numeroCommesse: number): number[] {
     return new Array(numeroCommesse);
@@ -212,9 +191,9 @@ export class UtenteComponent implements OnInit {
     return nomeGiorno === 'Saturday' || nomeGiorno === 'Sunday';
   }
 
-  selezionaAzienda(option:any) {
-   this.aziendaSelezionata=option;
-   console.log("Selezionata azienda "+ this.aziendaSelezionata)
+  selezionaAzienda(event: any) {
+    this.aziendaSelezionata = event.target.value;
+    console.log("Selezionata azienda " + this.aziendaSelezionata);
   }
 
   ngOnInit(): void {
@@ -226,6 +205,29 @@ export class UtenteComponent implements OnInit {
       // this.getRapportinoByMeseAnnoCorrenti();
     } else {
       console.error('ERRORE DI AUTENTICAZIONE');
+    }
+  }
+
+  onChangeFerie(event: any) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      if (isChecked) {
+        console.log('Ferie è true');
+      } else {
+        console.log('Ferie è false');
+      }
+    }
+  }
+  onChangeMalattia(event: any) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      if (isChecked) {
+        console.log('Malattia è true');
+      } else {
+        console.log('Malattia è false');
+      }
     }
   }
 
