@@ -446,17 +446,20 @@
                 <div class="row">
                   <div class="col-md-3">
                     <div formArrayName="commesse">
+                      <div *ngFor="let commessa of commesse.controls; let i = index">
+                        <div [formGroupName]="i">
                       <div class="col-md-3">
                         <label>Azienda cliente: </label>
                         <div class="form-group" formGroupName="tipoAziendaCliente">
                           <select (change)="onChangeAziendaCliente($event)" class="form-select"
-                            aria-label="Default select example" id="commesse.tipoAziendaCliente.id"
-                            formControlName="id">
+                            aria-label="Default select example" id="tipoAziendaCliente.id" formControlName="id">
                             <option value="">--nessuna selezione--</option>
                             <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
                               {{ aziendaCliente.descrizione }}
                             </option>
                           </select>
+                        </div>
+                      </div>
                         </div>
                       </div>
                     </div>
@@ -555,8 +558,8 @@
                   <div class="row">
                     <div class="col-md-6">
                       <br>
-                      <button id="filter-Button" class="btn btn-success" style="float: right;"
-                        [disabled]="filterAnagraficaDto.invalid">Filtra</button>
+                      <button (click)="filter(filterAnagraficaDto.value)" id="filter-Button" class="btn btn-success"
+                        style="float: right;" [disabled]="filterAnagraficaDto.invalid">Filtra</button>
                     </div>
                     <div class="col-6">
                       <br>

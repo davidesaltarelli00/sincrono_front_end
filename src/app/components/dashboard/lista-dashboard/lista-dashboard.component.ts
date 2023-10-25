@@ -89,10 +89,10 @@ export class ListaDashboardComponent {
       }),
     }),
 
-    commessa: new FormGroup({
+    commesse: new FormGroup({
       tipoAziendaCliente: new FormGroup({
         id: new FormControl(null),
-        descrizione: new FormControl(''),
+
       }),
     }),
 
@@ -232,9 +232,7 @@ export class ListaDashboardComponent {
       .getAllCommesseScadute(localStorage.getItem('token'))
       .subscribe(
         (resp: any) => {
-          resp.list.filter((elem: any) => elem.commesse.length > 0);
           this.listaCommesseScadute = this.createAnagraficaDtoList(resp.list);
-
           console.log(
             'Lista commesse scadute: ' +
             JSON.stringify(this.listaCommesseScadute)
@@ -252,11 +250,14 @@ export class ListaDashboardComponent {
       );
 
     this.mostraFiltri = false;
+
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
     }
   }
+
+
   filter(value: any) {
     console.log('Valore del form: ' + JSON.stringify(value));
     const removeEmpty = (obj: any) => {
@@ -334,6 +335,8 @@ export class ListaDashboardComponent {
       });
     };
     removeEmpty(this.filterAnagraficaDto.value);
+   
+
     const body = {
       anagraficaDto: this.filterAnagraficaDto.value,
       annoDataFine: this.filterAnagraficaDto.get('annoDataFine')?.value,
@@ -345,8 +348,8 @@ export class ListaDashboardComponent {
       meseFineContratto:
         this.filterAnagraficaDto.get('meseFineContratto')?.value,
     };
-    console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
 
+    console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
     this.dashboardService
       .commesseListFilter(localStorage.getItem('token'), body)
       .subscribe(
@@ -361,6 +364,7 @@ export class ListaDashboardComponent {
               this.listaCommesseScadute = this.createAnagraficaDtoList(result.list);
               this.currentPage = 1;
               this.pageData = this.getCurrentPageItems();
+              console.log("result is " + JSON.stringify(result.list))
               console.log("daje" + this.listaCommesseScadute);
             } else {
               this.pageData = [];
