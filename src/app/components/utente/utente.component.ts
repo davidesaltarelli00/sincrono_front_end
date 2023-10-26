@@ -13,7 +13,11 @@ import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import * as XLSX from 'xlsx';
 import { MenuService } from '../menu.service';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { RapportinoService } from './rapportino.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -99,7 +103,7 @@ export class UtenteComponent implements OnInit {
   showError: boolean = false;
   duplicazioniGiornoDto: any[] = [];
   idUtente: any;
-  error:any;
+  error: any;
   constructor(
     private activatedRoute: ActivatedRoute,
     private profileBoxService: ProfileBoxService,
@@ -112,7 +116,7 @@ export class UtenteComponent implements OnInit {
     private rapportinoService: RapportinoService,
     private fb: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
-    private authSerice:AuthService
+    private authSerice: AuthService
   ) {
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -159,40 +163,55 @@ export class UtenteComponent implements OnInit {
     }
   }
 
-  eliminaRiga(index: number, j:number) {
-    if(this.rapportinoDto[index].duplicazioniGiornoDto.length!=1){
+  eliminaRiga(index: number, j: number) {
+    if (this.rapportinoDto[index].duplicazioniGiornoDto.length != 1) {
       this.rapportinoDto[index].duplicazioniGiornoDto.splice(j, 1);
-    }else{
+    } else {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
           Image: '../../../../assets/images/logo.jpeg',
           title: 'Non puoi eliminare la riga principale.',
-
         },
       });
     }
-
   }
 
-  duplicaRiga(index: number, j:number) {
+  duplicaRiga(index: number, j: number) {
     let count = 0;
-    for (let i = 0; i < this.rapportinoDto.length; i++) { //itero tutto il rapportino
-      for (let y = 0; y < this.rapportinoDto[i].duplicazioniGiornoDto.length; y++) { //itero tutti i giorni duplicati
-        if (this.rapportinoDto[index].duplicazioniGiornoDto[0].giorno == this.rapportinoDto[i].duplicazioniGiornoDto[y].giorno) {
+    for (let i = 0; i < this.rapportinoDto.length; i++) {
+      //itero tutto il rapportino
+      for (
+        let y = 0;
+        y < this.rapportinoDto[i].duplicazioniGiornoDto.length;
+        y++
+      ) {
+        //itero tutti i giorni duplicati
+        if (
+          this.rapportinoDto[index].duplicazioniGiornoDto[0].giorno ==
+          this.rapportinoDto[i].duplicazioniGiornoDto[y].giorno
+        ) {
           count++;
         }
       }
     }
     console.log(JSON.stringify(this.rapportinoDto));
     if (count < this.aziendeClienti.length) {
-      const copiaGiorno = JSON.parse(JSON.stringify(this.rapportinoDto[index].duplicazioniGiornoDto[0]));
-      this.rapportinoDto[index].duplicazioniGiornoDto.splice(index + 1, 0, copiaGiorno);
+      const copiaGiorno = JSON.parse(
+        JSON.stringify(this.rapportinoDto[index].duplicazioniGiornoDto[0])
+      );
+      this.rapportinoDto[index].duplicazioniGiornoDto.splice(
+        index + 1,
+        0,
+        copiaGiorno
+      );
     } else {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
           Image: '../../../../assets/images/logo.jpeg',
-          title: 'Non puoi duplicare la riga perché hai solo '+ this.aziendeClienti.length +' aziende clienti',
-
+          title:
+            'Non puoi duplicare la riga perché hai solo ' +
+            this.aziendeClienti.length +
+            ' aziende clienti',
         },
       });
     }
@@ -257,7 +276,7 @@ export class UtenteComponent implements OnInit {
             message: 'Effettua il login.',
           },
         });
-       this.authSerice.logout();
+        this.authSerice.logout();
       }
     }
   }
@@ -468,9 +487,11 @@ export class UtenteComponent implements OnInit {
     this.rapportinoService
       .checkRapportinoInviato(this.token, body)
       .subscribe((result: any) => {
-        console.log(
-          'RISULTATO checkRapportinoInviato:' + JSON.stringify(result)
-        );
+        if ((result as any).esito.code == 200) {
+          this.rapportinoInviato = true;
+        } else {
+          this.rapportinoInviato = false;
+        }
       });
   }
 
@@ -478,8 +499,6 @@ export class UtenteComponent implements OnInit {
     const riga = this.rapportinoDto[index];
     return !riga || !riga.giorno;
   }
-
-
 
   eliminaRapportino() {
     this.rapportinoDto = [];
@@ -559,10 +578,24 @@ export class UtenteComponent implements OnInit {
         } else {
           this.esitoCorretto = true;
           this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
-          this.duplicazioniGiornoDto =result['rapportinoDto']['mese']['giorni']['duplicazioniGiornoDto'];
+          this.duplicazioniGiornoDto =
+            result['rapportinoDto']['mese']['giorni']['duplicazioniGiornoDto'];
           this.giorniUtili = result['rapportinoDto']['giorniUtili'];
           this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
-          console.log('Dati get rapportino:' + JSON.stringify(this.rapportinoDto));
+          this.note = result['rapportinoDto']['note'];
+          console.log(
+            'Dati get rapportino:' + JSON.stringify(this.rapportinoDto)
+          );
+          this.checkRapportinoInviato();
+          if (this.note != null) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                Image: '../../../../assets/images/logo.jpeg',
+                title: 'Attenzione:',
+                message: this.note,
+              },
+            });
+          }
         }
       },
       (error: string) => {
@@ -594,26 +627,6 @@ export class UtenteComponent implements OnInit {
   //qui andrá l endpoint per verificare la completezza della tabella
 
   inviaRapportino() {
-    // const giorniArray = [];
-    // let isDataValid = true;
-    // const tableRows =
-    //   this.editableTable.nativeElement.getElementsByTagName('tr');
-    // for (let i = 1; i < tableRows.length; i++) {
-    //   const row = tableRows[i];
-    //   const giorno = row.cells[0].innerText;
-    //   const cliente = row.cells[1].innerText;
-    //   const oreOrdinarie = row.cells[2].innerText;
-    //   // Dividi il campo cliente in un array di stringhe
-    //   const clientiArray = cliente ? cliente.split(',') : null;
-    //   // Dividi il campo oreOrdinarie in un array di stringhe
-    //   const oreOrdinarieArray = oreOrdinarie.split(',');
-
-    //   giorniArray.push({
-    //     giorno: parseInt(giorno), // Converte il giorno in un numero intero
-    //     cliente: clientiArray,
-    //     oreOrdinarie: oreOrdinarieArray.map(parseFloat), // Converte le ore in numeri decimali
-    //   });
-    // }
     let body = {
       rapportino: {
         nome: this.userLoggedName,

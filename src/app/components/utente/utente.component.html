@@ -245,6 +245,7 @@
                    [ngClass]="{'has-error': !duplicazione.giorno}"
                    type="number" class="form-control"
                    id="giorno-{{ i }}{{j}}" name="giorno-{{ i }}{{j}}"
+                   [disabled]="rapportinoInviato"
                    [(ngModel)]="duplicazione.giorno" required>
                   <div *ngIf="!duplicazione.giorno" class="error-message">Campo obbligatorio</div>
                 </div>
@@ -252,7 +253,7 @@
               <div class="col-2" style="margin: 1%;">
                 <div class="form-group">
                    <label for="cliente-{{ i }}{{j}}">Cliente:</label>
-                  <select [disabled]="!duplicazione.giorno" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)">
+                  <select [disabled]="!duplicazione.giorno || rapportinoInviato" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)">
                     <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
                   </select>
                   <div *ngIf="!duplicazione.cliente && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
@@ -261,7 +262,7 @@
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
                   <label for="ore-ordinarie-{{ i }}{{j}}">Ore:</label>
-                  <input [disabled]="!duplicazione.giorno"
+                  <input [disabled]="!duplicazione.giorno || rapportinoInviato"
                   [ngClass]="{'has-error': !duplicazione.oreOrdinarie && duplicazione.giorno}"
                   type="number" class="form-control"
                   step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
@@ -273,7 +274,7 @@
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
                   <label for="fascia1-{{ i }}{{j}}">18-20</label>
-                  <input [disabled]="!duplicazione.giorno"
+                  <input [disabled]="!duplicazione.giorno || rapportinoInviato"
                   type="number" class="form-control"
                   step="0.5" min="0" max="2"
                   id="fascia1-{{ i }}{{j}}" name="fascia1-{{ i }}{{j}}"
@@ -283,7 +284,7 @@
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
                   <label for="fascia2-{{ i }}{{j}}">20-22</label>
-                  <input [disabled]="!duplicazione.giorno"
+                  <input [disabled]="!duplicazione.giorno || rapportinoInviato"
                   type="number" class="form-control"
                   step="0.5" min="0" max="2"
                   id="fascia2-{{ i }}" name="fascia2-{{ i }}{{j}}"
@@ -293,7 +294,7 @@
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
                   <label for="fascia3-{{ i }}{{j}}">22-09</label>
-                  <input [disabled]="!duplicazione.giorno"
+                  <input [disabled]="!duplicazione.giorno || rapportinoInviato"
                   type="number" class="form-control"
                   step="0.5" min="0" max="13"
                   id="fascia3-{{ i }}{{j}}" name="fascia3-{{ i }}{{j}}"
@@ -302,16 +303,16 @@
               </div>
              <div class="row">
               <div class="col-12" style="margin: auto;">
-                <button  class="btn btn-danger" (click)="eliminaRiga(i,j)"  > <i  class="fa fa-trash"></i></button>
+                <button [disabled]="rapportinoInviato"  class="btn btn-danger" (click)="eliminaRiga(i,j)"  > <i  class="fa fa-trash"></i></button>
                 &nbsp;
-                <button  class="btn btn-warning" id="duplica" (click)="duplicaRiga(i,j)"  > <i  class="fa fa-clone"></i></button>
+                <button [disabled]="rapportinoInviato" class="btn btn-warning" id="duplica" (click)="duplicaRiga(i,j)"  > <i  class="fa fa-clone"></i></button>
               </div>
              </div>
              </div>
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
                   <label for="permessi-{{ i }}">Permessi:</label>
-                  <input
+                  <input [disabled]="rapportinoInviato"
                   type="number" class="form-control"
                   step="0.5" min="0" max="8"
                   id="permessi-{{ i }}" name="permessi-{{ i }}"
@@ -321,31 +322,31 @@
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
                   <label for="ferie-{{ i }}">Ferie:</label> <br>
-                  <input  type="checkbox" (change)="onChangeFerie($event,i)" class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
+                  <input [disabled]="rapportinoInviato" type="checkbox" (change)="onChangeFerie($event,i)" class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
                 </div>
               </div>
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
                   <label for="malattie-{{ i }}">Malattie:</label><br>
-                  <input  type="checkbox" (change)="onChangeMalattia($event,i)" class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
+                  <input [disabled]="rapportinoInviato" type="checkbox" (change)="onChangeMalattia($event,i)" class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
                 </div>
               </div>
               <div class="col-2" style="margin: 1%;">
                 <div class="form-group">
                   <label for="note-{{ i }}">Note </label>
-                  <input  [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
+                  <input [disabled]="rapportinoInviato" [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
                   <div *ngIf="!giorno.note" class="error-message">Campo obbligatorio</div>
                 </div>
               </div>
 
             </div>
-          <button class="btn btn-primary" (click)="salvaRapportino(rapportinoForm)" >Salva</button>
+          <button [disabled]="rapportinoInviato" class="btn btn-primary" (click)="salvaRapportino(rapportinoForm)" >Salva</button>
         </form>
        </mat-card>
       </div>
      </div>
      <br>
-     <button class="btn btn-warning"  (click)="inviaRapportino()" >Invia rapportino</button>
+     <button class="btn btn-warning" [disabled]="rapportinoInviato" (click)="inviaRapportino()" >Invia rapportino</button>
       <br /><br /><br />
     </div>
     <div class="container-fluid" *ngIf="dettaglioSbagliato">
