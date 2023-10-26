@@ -621,8 +621,8 @@
                 <td>{{ commessa[12] | date:'dd/MM/yyyy' }}</td>
                 <td>{{ commessa[14] ? 'Sì' : 'No' }}</td>
                 <td >
-                <i class="fa fa-info"  (click)="dettaglioAnagrafica(idAnagraficaCommessaScaduta)"></i> &nbsp;
-                 <i class="fa fa-pencil" (click)="vaiAModificaAnagrafica(idAnagraficaCommessaScaduta)"></i>
+                <i class="fa fa-info"  (click)="dettaglioAnagrafica(commessa[15])"></i> &nbsp;
+                 <i class="fa fa-pencil" (click)="vaiAModificaAnagrafica(commessa[15])"></i>
                 </td>
               </tr>
             </tbody>
