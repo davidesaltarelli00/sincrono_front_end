@@ -104,6 +104,7 @@ export class ListaDashboardComponent {
     annoFineContratto: new FormControl(null),
     meseFineContratto: new FormControl(null),
   });
+  idUtente: any;
 
   constructor(
     private dashboardService: DashboardService,
@@ -335,7 +336,7 @@ export class ListaDashboardComponent {
       });
     };
     removeEmpty(this.filterAnagraficaDto.value);
-   
+
 
     const body = {
       anagraficaDto: this.filterAnagraficaDto.value,
@@ -901,7 +902,8 @@ export class ListaDashboardComponent {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         console.log('DATI GET USER ROLE:' + JSON.stringify(response));
-
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        console.log('ID UTENTE PER NAV:' + this.idUtente);
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
@@ -941,7 +943,7 @@ export class ListaDashboardComponent {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idNav).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;

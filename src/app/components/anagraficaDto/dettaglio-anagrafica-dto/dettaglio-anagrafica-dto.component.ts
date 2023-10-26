@@ -86,6 +86,7 @@ export class DettaglioAnagraficaDtoComponent {
   disabilitaImmagine: any;
   salvaImmagine: boolean = false;
   immagineCancellata: boolean = false;
+  idUtente: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -753,7 +754,8 @@ export class DettaglioAnagraficaDtoComponent {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         console.log('DATI GET USER ROLE:' + JSON.stringify(response));
-
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        console.log('ID UTENTE PER NAV:' + this.idUtente);
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
@@ -780,7 +782,7 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idNav).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
