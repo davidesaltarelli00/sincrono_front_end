@@ -234,7 +234,7 @@
       <div class="col-12">
        <mat-card>
         <form #rapportinoForm="ngForm" >
-            <div class="row container-form" *ngFor="let giorno of rapportinoDto; let i = index" style="border: 5px solid white;">
+            <div class="row container-form" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="border: 5px solid white;">
              <div class="matrice" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto">
               <div class="col-1" style="margin: 1%;" >
                 <div class="form-group" >

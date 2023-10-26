@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -103,7 +103,8 @@ export class UtenteComponent implements OnInit {
     private menuService: MenuService,
     private http: HttpClient,
     private rapportinoService: RapportinoService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
 
 
@@ -153,12 +154,23 @@ export class UtenteComponent implements OnInit {
     }
   }
 
-  duplicaRiga(index: number) {
-    // Crea una copia dell'oggetto al quale si riferisce l'indice 'index'
-    const copiaGiorno = JSON.parse(JSON.stringify(this.rapportinoDto[index]));
+  // duplicaRiga(index: number) {
+  //   const copiaGiorno = JSON.parse(JSON.stringify(this.rapportinoDto[index]));
+  //   console.log("RAPPORTINODTO PRIMA DI SPLICE"+ JSON.stringify(this.rapportinoDto));
+  //   this.rapportinoDto.splice(index + 1, 0, copiaGiorno);
+  //   console.log("RAPPORTINODTO DOPO SPLICE"+ JSON.stringify(this.rapportinoDto));
+  //   this.changeDetectorRef.detectChanges();
+  // }
 
-    // Aggiungi la copia appena creata all'array rapportinoDto nella posizione desiderata
+  duplicaRiga(index: number) {
+    const copiaGiorno = JSON.parse(JSON.stringify(this.rapportinoDto[index]));
+    console.log("RAPPORTINODTO PRIMA DI SPLICE"+ JSON.stringify(this.rapportinoDto));
     this.rapportinoDto.splice(index + 1, 0, copiaGiorno);
+    console.log("RAPPORTINODTO DOPO SPLICE"+ JSON.stringify(this.rapportinoDto));
+  }
+
+  trackByFn(index: number, item: any): number {
+    return index;
   }
 
   getCommesseIndices(numeroCommesse: number): number[] {
