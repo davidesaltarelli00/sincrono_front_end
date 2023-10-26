@@ -300,6 +300,13 @@
                   [(ngModel)]="duplicazione.fascia3">
                 </div>
               </div>
+             <div class="row">
+              <div class="col-12" style="margin: auto;">
+                <button  class="btn btn-danger" (click)="eliminaRiga(i,j)"  > <i  class="fa fa-trash"></i></button>
+                &nbsp;
+                <button  class="btn btn-warning" id="duplica" (click)="duplicaRiga(i,j)"  > <i  class="fa fa-clone"></i></button>
+              </div>
+             </div>
              </div>
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
@@ -330,13 +337,7 @@
                   <div *ngIf="!giorno.note" class="error-message">Campo obbligatorio</div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-12">
-                  <button style="float: right;" class="btn btn-danger" (click)="eliminaRiga(i)"  > <i  class="fa fa-trash"></i></button>
-                  &nbsp;
-                  <button style="float: right;" class="btn btn-warning" id="duplica" (click)="duplicaRiga(i)"  > <i  class="fa fa-clone"></i></button>
-                </div>
-              </div>
+
             </div>
           <button class="btn btn-primary" (click)="salvaRapportino(rapportinoForm)" >Salva</button>
         </form>

@@ -13,12 +13,13 @@ import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import * as XLSX from 'xlsx';
 import { MenuService } from '../menu.service';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { RapportinoService } from './rapportino.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Giorno } from './giorno';
+import { AuthService } from '../login/login-service';
 
 @Component({
   selector: 'app-utente',
@@ -98,7 +99,7 @@ export class UtenteComponent implements OnInit {
   showError: boolean = false;
   duplicazioniGiornoDto: any[] = [];
   idUtente: any;
-
+  error:any;
   constructor(
     private activatedRoute: ActivatedRoute,
     private profileBoxService: ProfileBoxService,
@@ -110,7 +111,8 @@ export class UtenteComponent implements OnInit {
     private http: HttpClient,
     private rapportinoService: RapportinoService,
     private fb: FormBuilder,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private authSerice:AuthService
   ) {
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -157,7 +159,22 @@ export class UtenteComponent implements OnInit {
     }
   }
 
-  duplicaRiga(index: number) {
+  eliminaRiga(index: number, j:number) {
+    if(this.rapportinoDto[index].duplicazioniGiornoDto.length!=1){
+      this.rapportinoDto[index].duplicazioniGiornoDto.splice(j, 1);
+    }else{
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          Image: '../../../../assets/images/logo.jpeg',
+          title: 'Non puoi eliminare la riga principale.',
+
+        },
+      });
+    }
+
+  }
+
+  duplicaRiga(index: number, j:number) {
     let count = 0;
     for (let i = 0; i < this.rapportinoDto.length; i++) { //itero tutto il rapportino
       for (let y = 0; y < this.rapportinoDto[i].duplicazioniGiornoDto.length; y++) { //itero tutti i giorni duplicati
@@ -232,7 +249,16 @@ export class UtenteComponent implements OnInit {
 
       // this.getRapportinoByMeseAnnoCorrenti();
     } else {
-      console.error('ERRORE DI AUTENTICAZIONE');
+      if (this.error.status === 403) {
+        const dialogRef = this.dialog.open(AlertDialogComponent, {
+          data: {
+            Image: '../../../../assets/images/logo.jpeg',
+            title: 'Errore di autenticazione:',
+            message: 'Effettua il login.',
+          },
+        });
+       this.authSerice.logout();
+      }
     }
   }
 
@@ -453,19 +479,7 @@ export class UtenteComponent implements OnInit {
     return !riga || !riga.giorno;
   }
 
-  eliminaRiga(index: number) {
-    // Rimuovi la riga dalla matrice rapportinoDto in base all'indice
-    this.rapportinoDto.splice(index, 1);
 
-    // Verifica se la riga successiva è duplicata (non la prima occorrenza)
-    if (
-      index < this.rapportinoDto.length - 1 &&
-      this.rapportinoDto[index] === this.rapportinoDto[index + 1]
-    ) {
-      // Rimuovi la riga duplicata
-      this.rapportinoDto.splice(index + 1, 1);
-    }
-  }
 
   eliminaRapportino() {
     this.rapportinoDto = [];
