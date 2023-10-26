@@ -596,39 +596,45 @@ export class UtenteComponent implements OnInit {
 
   salvaRapportino(formValue: any) {
     console.log(formValue.value);
+
     const giorni = this.rapportinoDto.map((giorno) => {
       return {
-        duplicazioniGiornoDto: [{
-          giorno: giorno.duplicazioniGiornoDto.giorno,
-          cliente: giorno.duplicazioniGiornoDto.cliente,
-          oreOrdinarie: giorno.duplicazioniGiornoDto.oreOrdinarie,
-          fascia1: giorno.duplicazioniGiornoDto.fascia1,
-          fascia2: giorno.duplicazioniGiornoDto.fascia2,
-          fascia3: giorno.duplicazioniGiornoDto.fascia3
-        }],
+        duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map((duplicazione:any) => {
+          return {
+            giorno: duplicazione.giorno,
+            cliente: duplicazione.cliente,
+            oreOrdinarie: duplicazione.oreOrdinarie,
+            fascia1: duplicazione.fascia1,
+            fascia2: duplicazione.fascia2,
+            fascia3: duplicazione.fascia3
+          };
+        }),
         ferie: giorno.ferie,
         malattie: giorno.malattie,
         permessi: giorno.permessi,
         note: giorno.note
       };
     });
-    let body = {
+
+    const body = {
       rapportinoDto: {
         mese: {
           giorni: giorni
         },
         anagrafica: {
-                codiceFiscale: this.codiceFiscale,
-              },
-              note: this.note,
-              giorniUtili: this.giorniUtili,
-              giorniLavorati: this.giorniLavorati,
-              annoRequest: this.selectedAnno,
-              meseRequest: this.selectedMese,
+          codiceFiscale: this.codiceFiscale,
+        },
+        note: this.note,
+        giorniUtili: this.giorniUtili,
+        giorniLavorati: this.giorniLavorati,
+        annoRequest: this.selectedAnno,
+        meseRequest: this.selectedMese,
       }
     };
-    console.log("BODY PER UPDATE RAPPORTINO:"+ JSON.stringify(body));
-  this.rapportinoService
+
+    console.log("BODY PER UPDATE RAPPORTINO:" + JSON.stringify(body));
+
+    this.rapportinoService
       .updateRapportino(localStorage.getItem('token'), body)
       .subscribe(
         (result: any) => {
@@ -665,86 +671,8 @@ export class UtenteComponent implements OnInit {
           );
         }
       );
-
-
-
-
-
-
-
-
-    // const giorniArray = this.rapportinoDto.map((giorno, i) => {
-    //   const clienteValue = formValue[`cliente${i}`];
-    //   const oreOrdinarieValue = formValue[`oreOrdinarie${i}`];
-
-    //   return {
-    //     giorno: formValue[`giorno${i}`],
-    //     cliente: Array.isArray(clienteValue)
-    //       ? clienteValue
-    //       : clienteValue
-    //       ? [clienteValue]
-    //       : null,
-    //     oreOrdinarie: Array.isArray(oreOrdinarieValue)
-    //       ? oreOrdinarieValue
-    //       : oreOrdinarieValue
-    //       ? [oreOrdinarieValue]
-    //       : null,
-    //   };
-    // });
-
-    // const body = {
-    //   rapportinoDto: {
-    //     mese: {
-    //       giorni: giorniArray,
-    //     },
-    //     anagrafica: {
-    //       codiceFiscale: this.codiceFiscale,
-    //     },
-    //     note: this.note,
-    //     giorniUtili: this.giorniUtili,
-    //     giorniLavorati: this.giorniLavorati,
-    //     annoRequest: this.selectedAnno,
-    //     meseRequest: this.selectedMese,
-    //   },
-    // };
-
-    // this.rapportinoService
-    //   .updateRapportino(localStorage.getItem('token'), body)
-    //   .subscribe(
-    //     (result: any) => {
-    //       if ((result as any).esito.code !== 200) {
-    //         const dialogRef = this.dialog.open(AlertDialogComponent, {
-    //           data: {
-    //             Image: '../../../../assets/images/logo.jpeg',
-    //             title: 'Salvataggio non riuscito:',
-    //             message: (result as any).esito.target,
-    //           },
-    //         });
-    //         this.rapportinoSalvato = false;
-    //         console.error(result);
-    //       }
-    //       if ((result as any).esito.code === 200) {
-    //         const dialogRef = this.dialog.open(AlertDialogComponent, {
-    //           data: {
-    //             title: 'Salvataggio riuscito.',
-    //             message: (result as any).esito.target,
-    //           },
-    //         });
-    //         console.log(JSON.stringify(result));
-    //         if (this.tabellaCompletata) {
-    //           this.rapportinoSalvato = true;
-    //         } else {
-    //           this.rapportinoSalvato = false;
-    //         }
-    //       }
-    //     },
-    //     (error: any) => {
-    //       console.error(
-    //         'Errore durante l invio del rapportino: ' + JSON.stringify(error)
-    //       );
-    //     }
-    //   );
   }
+
 
   onMeseSelectChange(event: any) {
     console.log('Mese selezionato:', event.target.value);

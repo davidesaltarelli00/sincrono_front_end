@@ -110,6 +110,10 @@ form {
   background-color: lightblue;
   transform: translateY(-4px);
 }
+.matrice {
+  display: flex; /* Utilizziamo flexbox per allineare gli elementi in una riga */
+}
+
 
 /* Stile per le etichette dei campi */
 .form-group label {

@@ -236,7 +236,7 @@
         <form #rapportinoForm="ngForm" >
             <div class="row container-form" *ngFor="let giorno of rapportinoDto; let i = index" style="border: 5px solid white;">
              <div class="matrice" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto">
-              <div class="col-1" >
+              <div class="col-1" style="margin: 1%;" >
                 <div class="form-group" >
                   <label for="giorno-{{ i }}">Giorno:</label>
                   <input
@@ -249,7 +249,7 @@
                   <div *ngIf="!duplicazione.giorno" class="error-message">Campo obbligatorio</div>
                 </div>
               </div>
-              <div class="col-2">
+              <div class="col-2" style="margin: 1%;">
                 <div class="form-group">
                    <label for="cliente-{{ i }}">Cliente:</label>
                   <select [disabled]="!duplicazione.giorno" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select" id="cliente-{{ i }}" name="cliente-{{ i }}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)">
@@ -258,7 +258,7 @@
                   <div *ngIf="!duplicazione.cliente && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
                 </div>
               </div>
-              <div class="col-1">
+              <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
                   <label for="ore-ordinarie-{{ i }}">Ore:</label>
                   <input [disabled]="!duplicazione.giorno"
@@ -270,7 +270,7 @@
                   <div *ngIf="!duplicazione.oreOrdinarie && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
                 </div>
               </div>
-              <div class="col-1">
+              <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
                   <label for="fascia1-{{ i }}">18-20</label>
                   <input [disabled]="!duplicazione.giorno"
@@ -280,7 +280,7 @@
                   [(ngModel)]="duplicazione.fascia1">
                 </div>
               </div>
-              <div class="col-1">
+              <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
                   <label for="fascia2-{{ i }}">20-22</label>
                   <input [disabled]="!duplicazione.giorno"
@@ -290,7 +290,7 @@
                   [(ngModel)]="duplicazione.fascia2">
                 </div>
               </div>
-              <div class="col-1">
+              <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
                   <label for="fascia3-{{ i }}">22-09</label>
                   <input [disabled]="!duplicazione.giorno"
@@ -301,33 +301,40 @@
                 </div>
               </div>
              </div>
-              <div class="col-1">
+              <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
                   <label for="permessi-{{ i }}">Permessi:</label>
-                  <input [disabled]="!giorno.duplicazioniGiornoDto.giorno"
+                  <input
                   type="number" class="form-control"
                   step="0.5" min="0" max="8"
                   id="permessi-{{ i }}" name="permessi-{{ i }}"
                   [(ngModel)]="giorno.permessi">
                 </div>
               </div>
-              <div class="col-1">
+              <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
                   <label for="ferie-{{ i }}">Ferie:</label> <br>
-                  <input [disabled]="!giorno.duplicazioniGiornoDto.giorno" type="checkbox" (change)="onChangeFerie($event,i)" class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
+                  <input  type="checkbox" (change)="onChangeFerie($event,i)" class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
                 </div>
               </div>
-              <div class="col-1">
+              <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
                   <label for="malattie-{{ i }}">Malattie:</label><br>
-                  <input [disabled]="!giorno.duplicazioniGiornoDto.giorno" type="checkbox" (change)="onChangeMalattia($event,i)" class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
+                  <input  type="checkbox" (change)="onChangeMalattia($event,i)" class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
                 </div>
               </div>
-              <div class="col-2">
+              <div class="col-2" style="margin: 1%;">
                 <div class="form-group">
-                  <label for="note-{{ i }}">Note &nbsp; <i style="float: right;" class="fa fa-clone" (click)="duplicaRiga(i)" ></i> </label>
-                  <input [disabled]="!giorno.duplicazioniGiornoDto.giorno" [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
-                  <div *ngIf="!giorno.note && giorno.duplicazioniGiornoDto.giorno" class="error-message">Campo obbligatorio</div>
+                  <label for="note-{{ i }}">Note </label>
+                  <input  [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
+                  <div *ngIf="!giorno.note" class="error-message">Campo obbligatorio</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <button style="float: right;" class="btn btn-danger" (click)="eliminaRiga(i)"  > <i  class="fa fa-trash"></i></button>
+                  &nbsp;
+                  <button style="float: right;" class="btn btn-warning" (click)="duplicaRiga(i)"  > <i  class="fa fa-clone"></i></button>
                 </div>
               </div>
             </div>
