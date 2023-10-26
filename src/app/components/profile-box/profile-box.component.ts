@@ -50,6 +50,7 @@ export class ProfileBoxComponent {
   });
   userLoggedFiscalCode: any;
   elencoCommesse: any[] = [];
+  idUtente: any;
 
   constructor(
     private authService: AuthService,
@@ -307,7 +308,7 @@ export class ProfileBoxComponent {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         // console.log('DATI GET USER ROLE:' + JSON.stringify(response));
-
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
@@ -334,7 +335,7 @@ export class ProfileBoxComponent {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idNav).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;

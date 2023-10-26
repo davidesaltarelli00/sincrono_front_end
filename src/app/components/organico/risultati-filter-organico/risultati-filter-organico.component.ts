@@ -45,9 +45,10 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
     contratto: new FormGroup({
       tipoContratto: new FormGroup({
         descrizione: new FormControl(null),
-      }),   
+      }),
     }),
   });
+  idUtente: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -61,11 +62,11 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
     private http: HttpClient
   ) {
     this.filterAnagraficaDto = this.formBuilder.group({
-    
-    
+
+
       contratto: new FormGroup({
 
-        tipoContratto: new FormGroup({  
+        tipoContratto: new FormGroup({
           descrizione: new FormControl(null),
         }),
         tipoAzienda:new FormGroup({
@@ -127,7 +128,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
           },
         },
       };
-  
+
       this.anagraficaDtoService
         .filterAnagrafica(localStorage.getItem('token'), payload)
         .subscribe(
@@ -167,7 +168,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
         this.tipoContrattoFilter;
       this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione =
         this.tipoAziendaFilter;
-      
+
     }
 
 
@@ -211,13 +212,13 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
     };
     console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
 
-   
+
 
 
   }
 
   dettaglioAnagrafica(idAnagrafica: number) {
-    
+
     this.anagraficaDtoService
       .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
       .subscribe((resp: any) => {
@@ -234,7 +235,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
         this.router.navigate(['/modifica-anagrafica/' + idAnagrafica]);
       });
   }
-  
+
   getUserLogged() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
@@ -257,6 +258,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
         // console.log('DATI GET USER ROLE:' + JSON.stringify(response));
 
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
         ) {
@@ -287,7 +289,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${this.token}`,
     });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
+    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idUtente}`;
     this.http.get<MenuData>(url, { headers: headers }).subscribe(
       (data: any) => {
         this.jsonData = data;

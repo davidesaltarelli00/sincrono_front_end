@@ -45,6 +45,7 @@ export class ListaOrganicoComponent implements OnInit {
   immaginePredefinita: string | null = null;
   codiceFiscaleDettaglio: any;
   originalLista: any;
+  idUtente: any;
 
   constructor(
     private organicoService: OrganicoService,
@@ -413,6 +414,8 @@ export class ListaOrganicoComponent implements OnInit {
         console.log('DATI GET USER ROLE:' + JSON.stringify(response));
 
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        // console.log('ID UTENTE PER NAV:' + this.idUtente);
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
         ) {
@@ -451,7 +454,7 @@ export class ListaOrganicoComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idNav).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;

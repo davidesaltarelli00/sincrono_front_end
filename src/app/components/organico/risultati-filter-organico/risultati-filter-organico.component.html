@@ -133,12 +133,36 @@
         <br>
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Risultati sommario Organico</h1>
+          <h1>Risultati Organico</h1>
         </mat-card>
       </div>
     </div>
     <br>
-  
+    <div class="row">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-content>
+            <mat-card-content>
+              <ul>
+                <li [hidden]="tipoContrattoFilter==null" >
+                  <b>Tipo contratto: </b>
+                  <span>{{tipoContrattoFilter ? tipoContrattoFilter : ''}}</span>
+                </li>
+                <li>
+                  <b>Azienda: </b>
+                  <span>{{tipoAziendaFilter ? tipoAziendaFilter : ''}}</span>
+                </li>
+                <li>
+                  <b>Numero dipendenti: </b>
+                  <span>{{pageData.length}}</span>
+                </li>
+              </ul>
+            </mat-card-content>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <br>
     <div class="row">
       <div class="col-12">
         <div class="table-responsive">
@@ -184,6 +208,7 @@
         </div>
       </div>
     </div>
+    <br><br><br><br>
   </div>
 </body>
 

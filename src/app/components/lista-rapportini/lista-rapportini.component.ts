@@ -55,6 +55,7 @@ export class ListaRapportiniComponent implements OnInit {
   currentPage2: number = 1;
   itemsPerPage2: number = 20;
   pageData2: any[] = [];
+  idUtente: any;
 
   constructor(
     private authService: AuthService,
@@ -329,6 +330,7 @@ export class ListaRapportiniComponent implements OnInit {
         // console.log('DATI GET USER ROLE:' + JSON.stringify(response));
 
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
         ) {
@@ -354,7 +356,7 @@ export class ListaRapportiniComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idNav).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
