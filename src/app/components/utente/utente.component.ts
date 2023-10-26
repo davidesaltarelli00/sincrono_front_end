@@ -92,7 +92,6 @@ export class UtenteComponent implements OnInit {
   showError: boolean = false;
   duplicazioniGiornoDto: any[] = [];
   idUtente: any;
-  rapportinoForm: FormGroup;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -106,11 +105,8 @@ export class UtenteComponent implements OnInit {
     private rapportinoService: RapportinoService,
     private fb: FormBuilder
   ) {
-    this.rapportinoForm = this.fb.group({
-      giorni: this.fb.array([]),
-    });
-    const initialData = this.getInitialData(); // Crea una funzione per ottenere i dati iniziali
-    initialData.forEach((giornoData: any) => this.addGiorno(giornoData));
+
+
 
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -138,52 +134,6 @@ export class UtenteComponent implements OnInit {
     ) {
       this.mobile = true;
     }
-  }
-
-  createGiornoFormGroup(giornoData: Giorno) {
-    return this.fb.group({
-      giorno: [giornoData.giorno, Validators.required],
-      cliente: [giornoData.cliente, Validators.required],
-      oreOrdinarie: [giornoData.oreOrdinarie, Validators.required],
-      fascia1: giornoData.fascia1,
-      fascia2: giornoData.fascia2,
-      fascia3: giornoData.fascia3,
-      permessi: giornoData.permessi,
-      ferie: giornoData.ferie,
-      malattie: giornoData.malattie,
-      note: [giornoData.note],
-    });
-  }
-
-  // Funzione per aggiungere un giorno all'array
-  addGiorno(giornoData: Giorno) {
-    const giornoFormGroup = this.createGiornoFormGroup(giornoData);
-    this.giorni.push(giornoFormGroup);
-  }
-
-  // Getter per l'array di giorni
-  get giorni() {
-    return this.rapportinoForm.get('giorni') as FormArray;
-  }
-
-  // Funzione per ottenere dati iniziali
-  getInitialData(): Giorno[] {
-    // Qui dovresti inserire la logica per ottenere i dati iniziali, ad esempio da una chiamata API
-    // Per ora, restituisci un array fittizio
-    return [
-      {
-        giorno: null,
-        cliente: null,
-        oreOrdinarie: null,
-        fascia1: null,
-        fascia2: null,
-        fascia3: null,
-        permessi: null,
-        ferie: null,
-        malattie: null,
-        note: null,
-      },
-    ];
   }
 
   filterOptions() {
@@ -266,33 +216,15 @@ export class UtenteComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
-      const oreElement = document.getElementById(
-        `ore-ordinarie-${i}`
-      ) as HTMLInputElement;
-      const malattieElement = document.getElementById(
-        `malattie-${i}`
-      ) as HTMLInputElement;
-      const fascia1Element = document.getElementById(
-        `fascia1-${i}`
-      ) as HTMLInputElement;
-      const fascia2Element = document.getElementById(
-        `fascia2-${i}`
-      ) as HTMLInputElement;
-      const fascia3Element = document.getElementById(
-        `fascia3-${i}`
-      ) as HTMLInputElement;
-      const permessiElement = document.getElementById(
-        `permessi-${i}`
-      ) as HTMLInputElement;
-      const giornoElement = document.getElementById(
-        `giorno-${i}`
-      ) as HTMLInputElement;
-      const clienteElement = document.getElementById(
-        `cliente-${i}`
-      ) as HTMLSelectElement;
-      const noteElement = document.getElementById(
-        `note-${i}`
-      ) as HTMLInputElement;
+      const oreElement = document.getElementById( `ore-ordinarie-${i}`) as HTMLInputElement;
+      const malattieElement = document.getElementById(`malattie-${i}`) as HTMLInputElement;
+      const fascia1Element = document.getElementById(`fascia1-${i}`) as HTMLInputElement;
+      const fascia2Element = document.getElementById(`fascia2-${i}`) as HTMLInputElement;
+      const fascia3Element = document.getElementById(`fascia3-${i}`) as HTMLInputElement;
+      const permessiElement = document.getElementById(`permessi-${i}`) as HTMLInputElement;
+      const giornoElement = document.getElementById(`giorno-${i}`) as HTMLInputElement;
+      const clienteElement = document.getElementById(`cliente-${i}`) as HTMLSelectElement;
+      const noteElement = document.getElementById(`note-${i}`) as HTMLInputElement;
 
       if (isChecked) {
         // Quando ferie è true, disabilita i campi e imposta valore null se necessario
@@ -315,6 +247,9 @@ export class UtenteComponent implements OnInit {
         noteElement.required=true;
         // Disabilita i campi obbligatori
         oreElement.required=false;
+        noteElement.disabled=false;
+       noteElement.required=false;
+       noteElement.disabled=true;
       } else {
         // Quando ferie è false, reimposta i campi come necessario
         oreElement.disabled = false;
@@ -323,7 +258,9 @@ export class UtenteComponent implements OnInit {
         fascia2Element.disabled = false;
         fascia3Element.disabled = false;
         permessiElement.disabled = false;
-
+        noteElement.disabled=false;
+        noteElement.required=true;
+        noteElement.disabled=false;
         // Rimuovi obbligatorietà
         giornoElement.required = false;
         clienteElement.required = false;
@@ -331,14 +268,85 @@ export class UtenteComponent implements OnInit {
     }
   }
 
-  onChangeMalattia(event: any) {
+  onChangeMalattia(event: any, i:number) {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
+      const oreElement = document.getElementById( `ore-ordinarie-${i}`) as HTMLInputElement;
+      const ferieElement = document.getElementById(`ferie-${i}`) as HTMLInputElement;
+      const malattieElement = document.getElementById(`malattie-${i}`) as HTMLInputElement;
+      const fascia1Element = document.getElementById(`fascia1-${i}`) as HTMLInputElement;
+      const fascia2Element = document.getElementById(`fascia2-${i}`) as HTMLInputElement;
+      const fascia3Element = document.getElementById(`fascia3-${i}`) as HTMLInputElement;
+      const permessiElement = document.getElementById(`permessi-${i}`) as HTMLInputElement;
+      const giornoElement = document.getElementById(`giorno-${i}`) as HTMLInputElement;
+      const clienteElement = document.getElementById(`cliente-${i}`) as HTMLSelectElement;
+      const noteElement = document.getElementById(`note-${i}`) as HTMLInputElement;
       if (isChecked) {
-        console.log('Malattia è true');
+       giornoElement.disabled=false;
+       giornoElement.required=true;
+
+       clienteElement.disabled=true;
+       clienteElement.required=false;
+       clienteElement.value='';
+
+       oreElement.disabled=true;
+       oreElement.required=false;
+       oreElement.value='';
+
+       fascia1Element.value='';
+       fascia1Element.disabled=true;
+
+       fascia2Element.value='';
+       fascia2Element.disabled=true;
+
+       fascia3Element.value='';
+       fascia3Element.disabled=true;
+
+       ferieElement.checked = false;
+       ferieElement.disabled=true;
+       ferieElement.required=false;
+
+       permessiElement.required=false;
+       permessiElement.value='';
+       permessiElement.disabled=true;
+
+       noteElement.disabled=false;
+       noteElement.required=false;
+       noteElement.disabled=true;
+
       } else {
-        console.log('Malattia è false');
+        giornoElement.disabled=false;
+        giornoElement.required=true;
+
+        clienteElement.disabled=false;
+        clienteElement.required=true;
+        clienteElement.value='';
+
+        oreElement.disabled=false;
+        oreElement.required=true;
+        oreElement.value='';
+
+        fascia1Element.value='';
+        fascia1Element.disabled=false;
+
+        fascia2Element.value='';
+        fascia2Element.disabled=false;
+
+        fascia3Element.value='';
+        fascia3Element.disabled=false;
+
+        ferieElement.checked = false;
+        ferieElement.disabled=false;
+        ferieElement.required=false;
+
+        permessiElement.required=false;
+        permessiElement.value='';
+        permessiElement.disabled=false;
+
+        noteElement.disabled=false;
+        noteElement.required=false;
+        noteElement.disabled=false;
       }
     }
   }
@@ -476,11 +484,10 @@ export class UtenteComponent implements OnInit {
         } else {
           this.esitoCorretto = true;
           this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
-
-          console.log(
-            'Dati get rapportino:' + JSON.stringify(this.rapportinoDto)
-          );
-          this.checkRapportinoInviato();
+          this.duplicazioniGiornoDto=result['rapportinoDto']['mese']['giorni']['duplicazioniGiornoDto'];
+          this.giorniUtili = result['rapportinoDto']['giorniUtili'];
+          this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
+          console.log('Dati get rapportino:' + JSON.stringify(this.rapportinoDto));
         }
       },
       (error: string) => {
@@ -588,43 +595,40 @@ export class UtenteComponent implements OnInit {
   }
 
   salvaRapportino(formValue: any) {
-    const giorniArray = this.rapportinoDto.map((giorno, i) => {
-      const clienteValue = formValue[`cliente${i}`];
-      const oreOrdinarieValue = formValue[`oreOrdinarie${i}`];
-
+    console.log(formValue.value);
+    const giorni = this.rapportinoDto.map((giorno) => {
       return {
-        giorno: formValue[`giorno${i}`],
-        cliente: Array.isArray(clienteValue)
-          ? clienteValue
-          : clienteValue
-          ? [clienteValue]
-          : null,
-        oreOrdinarie: Array.isArray(oreOrdinarieValue)
-          ? oreOrdinarieValue
-          : oreOrdinarieValue
-          ? [oreOrdinarieValue]
-          : null,
+        duplicazioniGiornoDto: [{
+          giorno: giorno.duplicazioniGiornoDto.giorno,
+          cliente: giorno.duplicazioniGiornoDto.cliente,
+          oreOrdinarie: giorno.duplicazioniGiornoDto.oreOrdinarie,
+          fascia1: giorno.duplicazioniGiornoDto.fascia1,
+          fascia2: giorno.duplicazioniGiornoDto.fascia2,
+          fascia3: giorno.duplicazioniGiornoDto.fascia3
+        }],
+        ferie: giorno.ferie,
+        malattie: giorno.malattie,
+        permessi: giorno.permessi,
+        note: giorno.note
       };
     });
-
-    const body = {
+    let body = {
       rapportinoDto: {
         mese: {
-          giorni: giorniArray,
+          giorni: giorni
         },
         anagrafica: {
-          codiceFiscale: this.codiceFiscale,
-        },
-        note: this.note,
-        giorniUtili: this.giorniUtili,
-        giorniLavorati: this.giorniLavorati,
-        annoRequest: this.selectedAnno,
-        meseRequest: this.selectedMese,
-      },
+                codiceFiscale: this.codiceFiscale,
+              },
+              note: this.note,
+              giorniUtili: this.giorniUtili,
+              giorniLavorati: this.giorniLavorati,
+              annoRequest: this.selectedAnno,
+              meseRequest: this.selectedMese,
+      }
     };
-
-    // console.log('BODY UPDATE RAPPORTINO:' + JSON.stringify(body));
-    this.rapportinoService
+    console.log("BODY PER UPDATE RAPPORTINO:"+ JSON.stringify(body));
+  this.rapportinoService
       .updateRapportino(localStorage.getItem('token'), body)
       .subscribe(
         (result: any) => {
@@ -647,6 +651,7 @@ export class UtenteComponent implements OnInit {
               },
             });
             console.log(JSON.stringify(result));
+            this.getRapportino();
             if (this.tabellaCompletata) {
               this.rapportinoSalvato = true;
             } else {
@@ -660,6 +665,85 @@ export class UtenteComponent implements OnInit {
           );
         }
       );
+
+
+
+
+
+
+
+
+    // const giorniArray = this.rapportinoDto.map((giorno, i) => {
+    //   const clienteValue = formValue[`cliente${i}`];
+    //   const oreOrdinarieValue = formValue[`oreOrdinarie${i}`];
+
+    //   return {
+    //     giorno: formValue[`giorno${i}`],
+    //     cliente: Array.isArray(clienteValue)
+    //       ? clienteValue
+    //       : clienteValue
+    //       ? [clienteValue]
+    //       : null,
+    //     oreOrdinarie: Array.isArray(oreOrdinarieValue)
+    //       ? oreOrdinarieValue
+    //       : oreOrdinarieValue
+    //       ? [oreOrdinarieValue]
+    //       : null,
+    //   };
+    // });
+
+    // const body = {
+    //   rapportinoDto: {
+    //     mese: {
+    //       giorni: giorniArray,
+    //     },
+    //     anagrafica: {
+    //       codiceFiscale: this.codiceFiscale,
+    //     },
+    //     note: this.note,
+    //     giorniUtili: this.giorniUtili,
+    //     giorniLavorati: this.giorniLavorati,
+    //     annoRequest: this.selectedAnno,
+    //     meseRequest: this.selectedMese,
+    //   },
+    // };
+
+    // this.rapportinoService
+    //   .updateRapportino(localStorage.getItem('token'), body)
+    //   .subscribe(
+    //     (result: any) => {
+    //       if ((result as any).esito.code !== 200) {
+    //         const dialogRef = this.dialog.open(AlertDialogComponent, {
+    //           data: {
+    //             Image: '../../../../assets/images/logo.jpeg',
+    //             title: 'Salvataggio non riuscito:',
+    //             message: (result as any).esito.target,
+    //           },
+    //         });
+    //         this.rapportinoSalvato = false;
+    //         console.error(result);
+    //       }
+    //       if ((result as any).esito.code === 200) {
+    //         const dialogRef = this.dialog.open(AlertDialogComponent, {
+    //           data: {
+    //             title: 'Salvataggio riuscito.',
+    //             message: (result as any).esito.target,
+    //           },
+    //         });
+    //         console.log(JSON.stringify(result));
+    //         if (this.tabellaCompletata) {
+    //           this.rapportinoSalvato = true;
+    //         } else {
+    //           this.rapportinoSalvato = false;
+    //         }
+    //       }
+    //     },
+    //     (error: any) => {
+    //       console.error(
+    //         'Errore durante l invio del rapportino: ' + JSON.stringify(error)
+    //       );
+    //     }
+    //   );
   }
 
   onMeseSelectChange(event: any) {

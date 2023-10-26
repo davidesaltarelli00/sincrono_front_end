@@ -233,191 +233,74 @@
      <div class="row" *ngIf="esitoCorretto">
       <div class="col-12">
        <mat-card>
-
-        <!-- <form [formGroup]="rapportinoForm" (ngSubmit)="salvaRapportino(rapportinoForm)" >
-          <div class="row container-form" formArrayName="giorni" *ngFor="let giorno of rapportinoDto; let i = index" style="border: 5px solid white;">
-            <div class="col-1" >
-              <div class="form-group" >
-                <label for="giorno-{{ i }}">Giorno:</label>
-                <input
-                [min]="1"
-                [max]="rapportinoDto.length"
-                 [ngClass]="{'has-error': !giorno.duplicazioniGiornoDto.giorno}"
-                 type="number" class="form-control"
-                 formControlName="giorno"
-                 id="giorno-{{ i }}" name="giorno-{{ i }}"
-                 [(ngModel)]="giorno.duplicazioniGiornoDto.giorno" required>
-                <div *ngIf="!giorno.duplicazioniGiornoDto.giorno" class="error-message">Campo obbligatorio</div>
-              </div>
-            </div>
-            <div class="col-2">
-              <div class="form-group">
-                 <label for="cliente-{{ i }}">Cliente:</label>
-                <select [disabled]="!giorno.duplicazioniGiornoDto.giorno"
-                [ngClass]="{'has-error': !giorno.duplicazioniGiornoDto.cliente && giorno.duplicazioniGiornoDto.giorno}"
-                class="form-select"
-                formControlName="cliente"
-                id="cliente-{{ i }}" name="cliente-{{ i }}"
-                [(ngModel)]="giorno.duplicazioniGiornoDto.cliente"
-                 (change)="selezionaAzienda($event)">
-                  <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
-                </select>
-                <div *ngIf="!giorno.duplicazioniGiornoDto.cliente && giorno.duplicazioniGiornoDto.giorno" class="error-message">Campo obbligatorio</div>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group">
-                <label for="ore-ordinarie-{{ i }}">Ore:</label>
-                <input [disabled]="!giorno.duplicazioniGiornoDto.giorno"
-                [ngClass]="{'has-error': !giorno.duplicazioniGiornoDto.oreOrdinarie && giorno.duplicazioniGiornoDto.giorno}"
-                type="number" class="form-control"
-                step="0.5" min="0" max="8"
-                formControlName="oreOrdinarie"
-                id="ore-ordinarie-{{ i }}" name="ore-ordinarie-{{ i }}"
-                [(ngModel)]="giorno.duplicazioniGiornoDto.oreOrdinarie">
-                <div *ngIf="!giorno.duplicazioniGiornoDto.oreOrdinarie && giorno.duplicazioniGiornoDto.giorno" class="error-message">Campo obbligatorio</div>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group">
-                <label for="fascia1-{{ i }}">18-20</label>
-                <input [disabled]="!giorno.duplicazioniGiornoDto.giorno"
-                type="number" class="form-control"
-                step="0.5" min="0" max="2"
-                formControlName="fascia1"
-                id="fascia1-{{ i }}" name="fascia1-{{ i }}"
-                [(ngModel)]="giorno.duplicazioniGiornoDto.fascia1">
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group">
-                <label for="fascia2-{{ i }}">20-22</label>
-                <input [disabled]="!giorno.duplicazioniGiornoDto.giorno"
-                type="number" class="form-control"
-                step="0.5" min="0" max="2"
-                formControlName="fascia2"
-                id="fascia2-{{ i }}" name="fascia2-{{ i }}"
-                [(ngModel)]="giorno.duplicazioniGiornoDto.fascia2">
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group">
-                <label for="fascia3-{{ i }}">22-09</label>
-                <input [disabled]="!giorno.duplicazioniGiornoDto.giorno"
-                type="number" class="form-control"
-                step="0.5" min="0" max="13"
-                formControlName="fascia3"
-                id="fascia3-{{ i }}" name="fascia3-{{ i }}"
-                [(ngModel)]="giorno.duplicazioniGiornoDto.fascia3">
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group">
-                <label for="permessi-{{ i }}">Permessi:</label>
-                <input [disabled]="!giorno.duplicazioniGiornoDto.giorno"
-                type="number" class="form-control"
-                step="0.5" min="0" max="8"
-                formControlName="permessi"
-                id="permessi-{{ i }}" name="permessi-{{ i }}"
-                [(ngModel)]="giorno.permessi">
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group">
-                <label for="ferie-{{ i }}">Ferie:</label> <br>
-                <input [disabled]="!giorno.duplicazioniGiornoDto.giorno"
-                type="checkbox" (change)="onChangeFerie($event)"
-                class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}"
-                formControlName="ferie"
-                [(ngModel)]="giorno.ferie">
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group">
-                <label for="malattie-{{ i }}">Malattie:</label><br>
-                <input [disabled]="!giorno.duplicazioniGiornoDto.giorno"  formControlName="malattie" type="checkbox" (change)="onChangeMalattia($event)" class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
-              </div>
-            </div>
-            <div class="col-2">
-              <div class="form-group">
-                <label for="note-{{ i }}">Note &nbsp; <i style="float: right;" class="fa fa-clone" (click)="duplicaRiga(i)" ></i> </label>
-                <input [disabled]="!giorno.duplicazioniGiornoDto.giorno"  formControlName="note" [ngClass]="{'has-error': !giorno.duplicazioniGiornoDto.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
-                <div *ngIf="!giorno.duplicazioniGiornoDto.note && giorno.duplicazioniGiornoDto.giorno" class="error-message">Campo obbligatorio</div>
-              </div>
-            </div>
-
-          </div>
-
-        <button type="submit">Salva</button>
-      </form> -->
-
-
-        <form #rapportinoForm="ngForm" (ngSubmit)="salvaRapportino(rapportinoForm)" >
+        <form #rapportinoForm="ngForm" >
             <div class="row container-form" *ngFor="let giorno of rapportinoDto; let i = index" style="border: 5px solid white;">
+             <div class="matrice" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto">
               <div class="col-1" >
                 <div class="form-group" >
                   <label for="giorno-{{ i }}">Giorno:</label>
                   <input
                   [min]="1"
                   [max]="rapportinoDto.length"
-                   [ngClass]="{'has-error': !giorno.duplicazioniGiornoDto.giorno}"
+                   [ngClass]="{'has-error': !duplicazione.giorno}"
                    type="number" class="form-control"
                    id="giorno-{{ i }}" name="giorno-{{ i }}"
-                   [(ngModel)]="giorno.duplicazioniGiornoDto.giorno" required>
-                  <div *ngIf="!giorno.duplicazioniGiornoDto.giorno" class="error-message">Campo obbligatorio</div>
+                   [(ngModel)]="duplicazione.giorno" required>
+                  <div *ngIf="!duplicazione.giorno" class="error-message">Campo obbligatorio</div>
                 </div>
               </div>
               <div class="col-2">
                 <div class="form-group">
                    <label for="cliente-{{ i }}">Cliente:</label>
-                  <select [disabled]="!giorno.duplicazioniGiornoDto.giorno" [ngClass]="{'has-error': !giorno.duplicazioniGiornoDto.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select" id="cliente-{{ i }}" name="cliente-{{ i }}" [(ngModel)]="giorno.duplicazioniGiornoDto.cliente" (change)="selezionaAzienda($event)">
+                  <select [disabled]="!duplicazione.giorno" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select" id="cliente-{{ i }}" name="cliente-{{ i }}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)">
                     <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
                   </select>
-                  <div *ngIf="!giorno.duplicazioniGiornoDto.cliente && giorno.duplicazioniGiornoDto.giorno" class="error-message">Campo obbligatorio</div>
+                  <div *ngIf="!duplicazione.cliente && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
                 </div>
               </div>
               <div class="col-1">
                 <div class="form-group">
                   <label for="ore-ordinarie-{{ i }}">Ore:</label>
-                  <input [disabled]="!giorno.duplicazioniGiornoDto.giorno"
-                  [ngClass]="{'has-error': !giorno.duplicazioniGiornoDto.oreOrdinarie && giorno.duplicazioniGiornoDto.giorno}"
+                  <input [disabled]="!duplicazione.giorno"
+                  [ngClass]="{'has-error': !duplicazione.oreOrdinarie && duplicazione.giorno}"
                   type="number" class="form-control"
                   step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
                   id="ore-ordinarie-{{ i }}" name="ore-ordinarie-{{ i }}"
-                  [(ngModel)]="giorno.duplicazioniGiornoDto.oreOrdinarie">
-                  <div *ngIf="!giorno.duplicazioniGiornoDto.oreOrdinarie && giorno.duplicazioniGiornoDto.giorno" class="error-message">Campo obbligatorio</div>
+                  [(ngModel)]="duplicazione.oreOrdinarie">
+                  <div *ngIf="!duplicazione.oreOrdinarie && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
                 </div>
               </div>
               <div class="col-1">
                 <div class="form-group">
                   <label for="fascia1-{{ i }}">18-20</label>
-                  <input [disabled]="!giorno.duplicazioniGiornoDto.giorno"
+                  <input [disabled]="!duplicazione.giorno"
                   type="number" class="form-control"
                   step="0.5" min="0" max="2"
                   id="fascia1-{{ i }}" name="fascia1-{{ i }}"
-                  [(ngModel)]="giorno.duplicazioniGiornoDto.fascia1">
+                  [(ngModel)]="duplicazione.fascia1">
                 </div>
               </div>
               <div class="col-1">
                 <div class="form-group">
                   <label for="fascia2-{{ i }}">20-22</label>
-                  <input [disabled]="!giorno.duplicazioniGiornoDto.giorno"
+                  <input [disabled]="!duplicazione.giorno"
                   type="number" class="form-control"
                   step="0.5" min="0" max="2"
                   id="fascia2-{{ i }}" name="fascia2-{{ i }}"
-                  [(ngModel)]="giorno.duplicazioniGiornoDto.fascia2">
+                  [(ngModel)]="duplicazione.fascia2">
                 </div>
               </div>
               <div class="col-1">
                 <div class="form-group">
                   <label for="fascia3-{{ i }}">22-09</label>
-                  <input [disabled]="!giorno.duplicazioniGiornoDto.giorno"
+                  <input [disabled]="!duplicazione.giorno"
                   type="number" class="form-control"
                   step="0.5" min="0" max="13"
                   id="fascia3-{{ i }}" name="fascia3-{{ i }}"
-                  [(ngModel)]="giorno.duplicazioniGiornoDto.fascia3">
+                  [(ngModel)]="duplicazione.fascia3">
                 </div>
               </div>
+             </div>
               <div class="col-1">
                 <div class="form-group">
                   <label for="permessi-{{ i }}">Permessi:</label>
@@ -437,170 +320,24 @@
               <div class="col-1">
                 <div class="form-group">
                   <label for="malattie-{{ i }}">Malattie:</label><br>
-                  <input [disabled]="!giorno.duplicazioniGiornoDto.giorno" type="checkbox" (change)="onChangeMalattia($event)" class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
+                  <input [disabled]="!giorno.duplicazioniGiornoDto.giorno" type="checkbox" (change)="onChangeMalattia($event,i)" class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
                 </div>
               </div>
               <div class="col-2">
                 <div class="form-group">
                   <label for="note-{{ i }}">Note &nbsp; <i style="float: right;" class="fa fa-clone" (click)="duplicaRiga(i)" ></i> </label>
-                  <input [disabled]="!giorno.duplicazioniGiornoDto.giorno" [ngClass]="{'has-error': !giorno.duplicazioniGiornoDto.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
-                  <div *ngIf="!giorno.duplicazioniGiornoDto.note && giorno.duplicazioniGiornoDto.giorno" class="error-message">Campo obbligatorio</div>
+                  <input [disabled]="!giorno.duplicazioniGiornoDto.giorno" [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
+                  <div *ngIf="!giorno.note && giorno.duplicazioniGiornoDto.giorno" class="error-message">Campo obbligatorio</div>
                 </div>
               </div>
-
             </div>
-
-          <button type="submit">Salva</button>
+          <button class="btn btn-primary" (click)="salvaRapportino(rapportinoForm)" >Salva</button>
         </form>
-
-
-
-
-
-
-
        </mat-card>
       </div>
      </div>
      <br>
      <button class="btn btn-warning"  (click)="inviaRapportino()" >Invia rapportino</button>
-     <!-- <div class="row" *ngIf="esitoCorretto  && numeroCommessePresenti>1 " >
-      <div class="col-3">
-        <mat-card>
-          <mat-card-title>
-            Duplica rapportino
-          </mat-card-title>
-          <mat-card-content>
-            <button type="button" class="btn btn-success" (click)="duplicaRapportino()"> <i class="fa fa-clone" ></i> </button> &nbsp;
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div> -->
-
-
-      <!-- <div class="row" *ngIf="esitoCorretto && rapportinoInviato">
-        <div class="col-12">
-          <div class="alert alert-danger" role="alert" *ngIf="note != null">
-           <p><strong>Note:</strong>{{note}}</p>
-          </div>
-        </div>
-        <div class="col-12">
-          <div class="alert alert-success" role="alert" *ngIf="note == null">
-           <strong>Note non presenti.</strong>
-          </div>
-        </div>
-      </div>
-
-      <div class="row" *ngIf="esitoCorretto">
-        <div class="col-10" style="margin: auto">
-          <table class="table table-striped table-excel" #editableTable>
-            <thead>
-              <tr>
-                <th>Giorno</th>
-                <th>Cliente</th>
-                <th>Ore ordinarie</th>
-                <th>Azioni</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let giornaliero of rapportinoDto; let i = index">
-                <td [attr.contentEditable]="tabellaEditabile" (input)="verificaTabellaCompletata()" (input)="validaValore($event)">{{ giornaliero.giorno }}</td>
-                <td [attr.contentEditable]="tabellaEditabile" (input)="verificaTabellaCompletata()" (input)="validaValoreTestuale($event)">{{ giornaliero.cliente }}</td>
-                <td [attr.contentEditable]="tabellaEditabile" (input)="verificaTabellaCompletata()" (input)="validaOreOrdinarie($event)">{{ giornaliero.oreOrdinarie }}</td>
-                <td
-                  id="duplica-riga"
-                  style="background-color: #ffff99; text-align: center"
-                >
-                  <button
-                    class="btn btn-primary"
-                    (click)="duplicaRiga(i)"
-                    [disabled]="elencoCommesse.length <= 1 && disabilitaDuplica && !rigaDuplicata"
-                  >
-                    Duplica riga <i class="fa fa-clone"></i>
-                    <i
-                      class="fa fa-info-circle"
-                      *ngIf="elencoCommesse.length <= 1"
-                      matTooltip="La funzione é disabilitata se hai 1 o 0 commesse."
-                    ></i>
-                  </button>
-                  &nbsp;
-                  <button
-                    class="btn btn-danger"
-                    (click)="eliminaRigaDuplicata(i)"
-                  >
-                    Elimina riga <i class="fa fa-trash"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <br />
-      <div class="row" *ngIf="esitoCorretto">
-        <div class="form-group" style="text-align: center; margin: auto">
-          <label for="giorniLavorati" style="text-align: center; margin: auto"
-            >Giorni lavorati:</label
-          >
-          <br />
-          <input
-            style="width: 30%; text-align: center; margin: auto"
-            type="number"
-            readonly
-            id="giorniLavorati"
-            name="giorniLavorati"
-            class="form-control"
-            [(ngModel)]="giorniLavorati"
-          />
-          <br />
-        </div>
-        <div class="col-12" style="text-align: center; margin: auto">
-          <label for="azioni">Azioni:</label> <br />
-          <button class="btn btn-warning" (click)="salvaRapportino()">
-            Salva rapportino <i class="fa fa-file"></i>
-          </button>
-          &nbsp;
-          <button
-            class="btn btn-primary"
-            [disabled]="!(rapportinoSalvato && tabellaCompletata)"
-            (click)="inviaRapportino()"
-          >
-            Invia rapportino
-            <i class="fa fa-paper-plane" aria-hidden="true"></i>
-          </button>
-          &nbsp;
-          <i
-            *ngIf="!rapportinoSalvato"
-            class="fa fa-info-circle"
-            matTooltip="Il pulsante si abiliterá solo dopo aver completato il rapportino ed averne effettuato il salvataggio."
-          ></i>
-        </div>
-      </div> -->
-      <!-- <div class="row" *ngIf="esitoCorretto" >
-        <div class="col-6">
-          <div class="form-group">
-            <label for="note">Note:</label> <br>
-            <textarea name="note" class="form-control" [(ngModel)]="note" id="note" cols="15" rows="5"  ></textarea>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="form-group">
-            <label for="giorniLavorati">Giorni lavorati:</label> <br>
-            <input style="width: 23%;" type="number" readonly id="giorniLavorati" name="giorniLavorati" class="form-control" [(ngModel)]="giorniLavorati">
-            <br>
-            <button class="btn btn-warning"  (click)="salvaRapportino()" >Salva rapportino <i class="fa fa-file" ></i> </button>
-          </div>
-        </div>
-        <br>
-
-      </div> -->
-
-
-      <!-- <select [(ngModel)]="aziendaSelezionata" (change)="selezionaAzienda()">
-        <option value="" disabled selected>Scegli un'azienda</option>
-        <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
-      </select> -->
-
       <br /><br /><br />
     </div>
     <div class="container-fluid" *ngIf="dettaglioSbagliato">
