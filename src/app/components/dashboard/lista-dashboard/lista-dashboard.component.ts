@@ -399,7 +399,7 @@ export class ListaDashboardComponent {
   }
 
   dettaglioAnagrafica(idAnagrafica: number) {
-    idAnagrafica = this.idutenteCommessaInScadenza;
+   
     this.anagraficaDtoService
       .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
       .subscribe((resp: any) => {
@@ -828,7 +828,8 @@ export class ListaDashboardComponent {
           commessa.dataInizio,
           commessa.dataFine,
           commessa.attivo,
-          commessa.attesaLavori
+          commessa.attesaLavori,
+          item.anagrafica.id
         ]);
       });
     });
