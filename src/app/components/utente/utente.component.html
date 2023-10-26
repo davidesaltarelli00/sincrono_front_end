@@ -235,24 +235,24 @@
        <mat-card>
         <form #rapportinoForm="ngForm" >
             <div class="row container-form" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="border: 5px solid white;">
-             <div class="matrice" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto">
+             <div class="matrice" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
               <div class="col-1" style="margin: 1%;" >
                 <div class="form-group" >
-                  <label for="giorno-{{ i }}">Giorno:</label>
+                  <label for="giorno-{{ i }}{{j}}">Giorno:</label>
                   <input
                   [min]="1"
                   [max]="rapportinoDto.length"
                    [ngClass]="{'has-error': !duplicazione.giorno}"
                    type="number" class="form-control"
-                   id="giorno-{{ i }}" name="giorno-{{ i }}"
+                   id="giorno-{{ i }}{{j}}" name="giorno-{{ i }}{{j}}"
                    [(ngModel)]="duplicazione.giorno" required>
                   <div *ngIf="!duplicazione.giorno" class="error-message">Campo obbligatorio</div>
                 </div>
               </div>
               <div class="col-2" style="margin: 1%;">
                 <div class="form-group">
-                   <label for="cliente-{{ i }}">Cliente:</label>
-                  <select [disabled]="!duplicazione.giorno" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select" id="cliente-{{ i }}" name="cliente-{{ i }}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)">
+                   <label for="cliente-{{ i }}{{j}}">Cliente:</label>
+                  <select [disabled]="!duplicazione.giorno" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)">
                     <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
                   </select>
                   <div *ngIf="!duplicazione.cliente && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
@@ -260,43 +260,43 @@
               </div>
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
-                  <label for="ore-ordinarie-{{ i }}">Ore:</label>
+                  <label for="ore-ordinarie-{{ i }}{{j}}">Ore:</label>
                   <input [disabled]="!duplicazione.giorno"
                   [ngClass]="{'has-error': !duplicazione.oreOrdinarie && duplicazione.giorno}"
                   type="number" class="form-control"
                   step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
-                  id="ore-ordinarie-{{ i }}" name="ore-ordinarie-{{ i }}"
+                  id="ore-ordinarie-{{ i }}{{j}}" name="ore-ordinarie-{{ i }}{{j}}"
                   [(ngModel)]="duplicazione.oreOrdinarie">
                   <div *ngIf="!duplicazione.oreOrdinarie && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
                 </div>
               </div>
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
-                  <label for="fascia1-{{ i }}">18-20</label>
+                  <label for="fascia1-{{ i }}{{j}}">18-20</label>
                   <input [disabled]="!duplicazione.giorno"
                   type="number" class="form-control"
                   step="0.5" min="0" max="2"
-                  id="fascia1-{{ i }}" name="fascia1-{{ i }}"
+                  id="fascia1-{{ i }}{{j}}" name="fascia1-{{ i }}{{j}}"
                   [(ngModel)]="duplicazione.fascia1">
                 </div>
               </div>
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
-                  <label for="fascia2-{{ i }}">20-22</label>
+                  <label for="fascia2-{{ i }}{{j}}">20-22</label>
                   <input [disabled]="!duplicazione.giorno"
                   type="number" class="form-control"
                   step="0.5" min="0" max="2"
-                  id="fascia2-{{ i }}" name="fascia2-{{ i }}"
+                  id="fascia2-{{ i }}" name="fascia2-{{ i }}{{j}}"
                   [(ngModel)]="duplicazione.fascia2">
                 </div>
               </div>
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
-                  <label for="fascia3-{{ i }}">22-09</label>
+                  <label for="fascia3-{{ i }}{{j}}">22-09</label>
                   <input [disabled]="!duplicazione.giorno"
                   type="number" class="form-control"
                   step="0.5" min="0" max="13"
-                  id="fascia3-{{ i }}" name="fascia3-{{ i }}"
+                  id="fascia3-{{ i }}{{j}}" name="fascia3-{{ i }}{{j}}"
                   [(ngModel)]="duplicazione.fascia3">
                 </div>
               </div>
@@ -334,7 +334,7 @@
                 <div class="col-12">
                   <button style="float: right;" class="btn btn-danger" (click)="eliminaRiga(i)"  > <i  class="fa fa-trash"></i></button>
                   &nbsp;
-                  <button style="float: right;" class="btn btn-warning" (click)="duplicaRiga(i)"  > <i  class="fa fa-clone"></i></button>
+                  <button style="float: right;" class="btn btn-warning" id="duplica" (click)="duplicaRiga(i)"  > <i  class="fa fa-clone"></i></button>
                 </div>
               </div>
             </div>

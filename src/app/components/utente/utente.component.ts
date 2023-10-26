@@ -1,5 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -106,9 +112,6 @@ export class UtenteComponent implements OnInit {
     private fb: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef
   ) {
-
-
-
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
     const meseCorrente = oggi.getMonth() + 1;
@@ -154,19 +157,28 @@ export class UtenteComponent implements OnInit {
     }
   }
 
-  // duplicaRiga(index: number) {
-  //   const copiaGiorno = JSON.parse(JSON.stringify(this.rapportinoDto[index]));
-  //   console.log("RAPPORTINODTO PRIMA DI SPLICE"+ JSON.stringify(this.rapportinoDto));
-  //   this.rapportinoDto.splice(index + 1, 0, copiaGiorno);
-  //   console.log("RAPPORTINODTO DOPO SPLICE"+ JSON.stringify(this.rapportinoDto));
-  //   this.changeDetectorRef.detectChanges();
-  // }
-
   duplicaRiga(index: number) {
-    const copiaGiorno = JSON.parse(JSON.stringify(this.rapportinoDto[index]));
-    console.log("RAPPORTINODTO PRIMA DI SPLICE"+ JSON.stringify(this.rapportinoDto));
-    this.rapportinoDto.splice(index + 1, 0, copiaGiorno);
-    console.log("RAPPORTINODTO DOPO SPLICE"+ JSON.stringify(this.rapportinoDto));
+    let count = 0;
+    for (let i = 0; i < this.rapportinoDto.length; i++) { //itero tutto il rapportino
+      for (let y = 0; y < this.rapportinoDto[i].duplicazioniGiornoDto.length; y++) { //itero tutti i giorni duplicati
+        if (this.rapportinoDto[index].duplicazioniGiornoDto[0].giorno == this.rapportinoDto[i].duplicazioniGiornoDto[y].giorno) {
+          count++;
+        }
+      }
+    }
+    console.log(JSON.stringify(this.rapportinoDto));
+    if (count < this.aziendeClienti.length) {
+      const copiaGiorno = JSON.parse(JSON.stringify(this.rapportinoDto[index].duplicazioniGiornoDto[0]));
+      this.rapportinoDto[index].duplicazioniGiornoDto.splice(index + 1, 0, copiaGiorno);
+    } else {
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          Image: '../../../../assets/images/logo.jpeg',
+          title: 'Non puoi duplicare la riga perché hai solo '+ this.aziendeClienti.length +' aziende clienti',
+
+        },
+      });
+    }
   }
 
   trackByFn(index: number, item: any): number {
@@ -228,15 +240,33 @@ export class UtenteComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
-      const oreElement = document.getElementById( `ore-ordinarie-${i}`) as HTMLInputElement;
-      const malattieElement = document.getElementById(`malattie-${i}`) as HTMLInputElement;
-      const fascia1Element = document.getElementById(`fascia1-${i}`) as HTMLInputElement;
-      const fascia2Element = document.getElementById(`fascia2-${i}`) as HTMLInputElement;
-      const fascia3Element = document.getElementById(`fascia3-${i}`) as HTMLInputElement;
-      const permessiElement = document.getElementById(`permessi-${i}`) as HTMLInputElement;
-      const giornoElement = document.getElementById(`giorno-${i}`) as HTMLInputElement;
-      const clienteElement = document.getElementById(`cliente-${i}`) as HTMLSelectElement;
-      const noteElement = document.getElementById(`note-${i}`) as HTMLInputElement;
+      const oreElement = document.getElementById(
+        `ore-ordinarie-${i}`
+      ) as HTMLInputElement;
+      const malattieElement = document.getElementById(
+        `malattie-${i}`
+      ) as HTMLInputElement;
+      const fascia1Element = document.getElementById(
+        `fascia1-${i}`
+      ) as HTMLInputElement;
+      const fascia2Element = document.getElementById(
+        `fascia2-${i}`
+      ) as HTMLInputElement;
+      const fascia3Element = document.getElementById(
+        `fascia3-${i}`
+      ) as HTMLInputElement;
+      const permessiElement = document.getElementById(
+        `permessi-${i}`
+      ) as HTMLInputElement;
+      const giornoElement = document.getElementById(
+        `giorno-${i}`
+      ) as HTMLInputElement;
+      const clienteElement = document.getElementById(
+        `cliente-${i}`
+      ) as HTMLSelectElement;
+      const noteElement = document.getElementById(
+        `note-${i}`
+      ) as HTMLInputElement;
 
       if (isChecked) {
         // Quando ferie è true, disabilita i campi e imposta valore null se necessario
@@ -256,12 +286,12 @@ export class UtenteComponent implements OnInit {
         // Abilita i campi obbligatori
         giornoElement.required = true;
         clienteElement.required = true;
-        noteElement.required=true;
+        noteElement.required = true;
         // Disabilita i campi obbligatori
-        oreElement.required=false;
-        noteElement.disabled=false;
-       noteElement.required=false;
-       noteElement.disabled=true;
+        oreElement.required = false;
+        noteElement.disabled = false;
+        noteElement.required = false;
+        noteElement.disabled = true;
       } else {
         // Quando ferie è false, reimposta i campi come necessario
         oreElement.disabled = false;
@@ -270,9 +300,9 @@ export class UtenteComponent implements OnInit {
         fascia2Element.disabled = false;
         fascia3Element.disabled = false;
         permessiElement.disabled = false;
-        noteElement.disabled=false;
-        noteElement.required=true;
-        noteElement.disabled=false;
+        noteElement.disabled = false;
+        noteElement.required = true;
+        noteElement.disabled = false;
         // Rimuovi obbligatorietà
         giornoElement.required = false;
         clienteElement.required = false;
@@ -280,85 +310,104 @@ export class UtenteComponent implements OnInit {
     }
   }
 
-  onChangeMalattia(event: any, i:number) {
+  onChangeMalattia(event: any, i: number) {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
-      const oreElement = document.getElementById( `ore-ordinarie-${i}`) as HTMLInputElement;
-      const ferieElement = document.getElementById(`ferie-${i}`) as HTMLInputElement;
-      const malattieElement = document.getElementById(`malattie-${i}`) as HTMLInputElement;
-      const fascia1Element = document.getElementById(`fascia1-${i}`) as HTMLInputElement;
-      const fascia2Element = document.getElementById(`fascia2-${i}`) as HTMLInputElement;
-      const fascia3Element = document.getElementById(`fascia3-${i}`) as HTMLInputElement;
-      const permessiElement = document.getElementById(`permessi-${i}`) as HTMLInputElement;
-      const giornoElement = document.getElementById(`giorno-${i}`) as HTMLInputElement;
-      const clienteElement = document.getElementById(`cliente-${i}`) as HTMLSelectElement;
-      const noteElement = document.getElementById(`note-${i}`) as HTMLInputElement;
+      const oreElement = document.getElementById(
+        `ore-ordinarie-${i}`
+      ) as HTMLInputElement;
+      const ferieElement = document.getElementById(
+        `ferie-${i}`
+      ) as HTMLInputElement;
+      const malattieElement = document.getElementById(
+        `malattie-${i}`
+      ) as HTMLInputElement;
+      const fascia1Element = document.getElementById(
+        `fascia1-${i}`
+      ) as HTMLInputElement;
+      const fascia2Element = document.getElementById(
+        `fascia2-${i}`
+      ) as HTMLInputElement;
+      const fascia3Element = document.getElementById(
+        `fascia3-${i}`
+      ) as HTMLInputElement;
+      const permessiElement = document.getElementById(
+        `permessi-${i}`
+      ) as HTMLInputElement;
+      const giornoElement = document.getElementById(
+        `giorno-${i}`
+      ) as HTMLInputElement;
+      const clienteElement = document.getElementById(
+        `cliente-${i}`
+      ) as HTMLSelectElement;
+      const noteElement = document.getElementById(
+        `note-${i}`
+      ) as HTMLInputElement;
       if (isChecked) {
-       giornoElement.disabled=false;
-       giornoElement.required=true;
+        giornoElement.disabled = false;
+        giornoElement.required = true;
 
-       clienteElement.disabled=true;
-       clienteElement.required=false;
-       clienteElement.value='';
+        clienteElement.disabled = true;
+        clienteElement.required = false;
+        clienteElement.value = '';
 
-       oreElement.disabled=true;
-       oreElement.required=false;
-       oreElement.value='';
+        oreElement.disabled = true;
+        oreElement.required = false;
+        oreElement.value = '';
 
-       fascia1Element.value='';
-       fascia1Element.disabled=true;
+        fascia1Element.value = '';
+        fascia1Element.disabled = true;
 
-       fascia2Element.value='';
-       fascia2Element.disabled=true;
+        fascia2Element.value = '';
+        fascia2Element.disabled = true;
 
-       fascia3Element.value='';
-       fascia3Element.disabled=true;
-
-       ferieElement.checked = false;
-       ferieElement.disabled=true;
-       ferieElement.required=false;
-
-       permessiElement.required=false;
-       permessiElement.value='';
-       permessiElement.disabled=true;
-
-       noteElement.disabled=false;
-       noteElement.required=false;
-       noteElement.disabled=true;
-
-      } else {
-        giornoElement.disabled=false;
-        giornoElement.required=true;
-
-        clienteElement.disabled=false;
-        clienteElement.required=true;
-        clienteElement.value='';
-
-        oreElement.disabled=false;
-        oreElement.required=true;
-        oreElement.value='';
-
-        fascia1Element.value='';
-        fascia1Element.disabled=false;
-
-        fascia2Element.value='';
-        fascia2Element.disabled=false;
-
-        fascia3Element.value='';
-        fascia3Element.disabled=false;
+        fascia3Element.value = '';
+        fascia3Element.disabled = true;
 
         ferieElement.checked = false;
-        ferieElement.disabled=false;
-        ferieElement.required=false;
+        ferieElement.disabled = true;
+        ferieElement.required = false;
 
-        permessiElement.required=false;
-        permessiElement.value='';
-        permessiElement.disabled=false;
+        permessiElement.required = false;
+        permessiElement.value = '';
+        permessiElement.disabled = true;
 
-        noteElement.disabled=false;
-        noteElement.required=false;
-        noteElement.disabled=false;
+        noteElement.disabled = false;
+        noteElement.required = false;
+        noteElement.disabled = true;
+      } else {
+        giornoElement.disabled = false;
+        giornoElement.required = true;
+
+        clienteElement.disabled = false;
+        clienteElement.required = true;
+        clienteElement.value = '';
+
+        oreElement.disabled = false;
+        oreElement.required = true;
+        oreElement.value = '';
+
+        fascia1Element.value = '';
+        fascia1Element.disabled = false;
+
+        fascia2Element.value = '';
+        fascia2Element.disabled = false;
+
+        fascia3Element.value = '';
+        fascia3Element.disabled = false;
+
+        ferieElement.checked = false;
+        ferieElement.disabled = false;
+        ferieElement.required = false;
+
+        permessiElement.required = false;
+        permessiElement.value = '';
+        permessiElement.disabled = false;
+
+        noteElement.disabled = false;
+        noteElement.required = false;
+        noteElement.disabled = false;
       }
     }
   }
@@ -496,7 +545,7 @@ export class UtenteComponent implements OnInit {
         } else {
           this.esitoCorretto = true;
           this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
-          this.duplicazioniGiornoDto=result['rapportinoDto']['mese']['giorni']['duplicazioniGiornoDto'];
+          this.duplicazioniGiornoDto =result['rapportinoDto']['mese']['giorni']['duplicazioniGiornoDto'];
           this.giorniUtili = result['rapportinoDto']['giorniUtili'];
           this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
           console.log('Dati get rapportino:' + JSON.stringify(this.rapportinoDto));
@@ -611,27 +660,29 @@ export class UtenteComponent implements OnInit {
 
     const giorni = this.rapportinoDto.map((giorno) => {
       return {
-        duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map((duplicazione:any) => {
-          return {
-            giorno: duplicazione.giorno,
-            cliente: duplicazione.cliente,
-            oreOrdinarie: duplicazione.oreOrdinarie,
-            fascia1: duplicazione.fascia1,
-            fascia2: duplicazione.fascia2,
-            fascia3: duplicazione.fascia3
-          };
-        }),
+        duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
+          (duplicazione: any) => {
+            return {
+              giorno: duplicazione.giorno,
+              cliente: duplicazione.cliente,
+              oreOrdinarie: duplicazione.oreOrdinarie,
+              fascia1: duplicazione.fascia1,
+              fascia2: duplicazione.fascia2,
+              fascia3: duplicazione.fascia3,
+            };
+          }
+        ),
         ferie: giorno.ferie,
         malattie: giorno.malattie,
         permessi: giorno.permessi,
-        note: giorno.note
+        note: giorno.note,
       };
     });
 
     const body = {
       rapportinoDto: {
         mese: {
-          giorni: giorni
+          giorni: giorni,
         },
         anagrafica: {
           codiceFiscale: this.codiceFiscale,
@@ -641,10 +692,10 @@ export class UtenteComponent implements OnInit {
         giorniLavorati: this.giorniLavorati,
         annoRequest: this.selectedAnno,
         meseRequest: this.selectedMese,
-      }
+      },
     };
 
-    console.log("BODY PER UPDATE RAPPORTINO:" + JSON.stringify(body));
+    console.log('BODY PER UPDATE RAPPORTINO:' + JSON.stringify(body));
 
     this.rapportinoService
       .updateRapportino(localStorage.getItem('token'), body)
@@ -684,7 +735,6 @@ export class UtenteComponent implements OnInit {
         }
       );
   }
-
 
   onMeseSelectChange(event: any) {
     console.log('Mese selezionato:', event.target.value);
