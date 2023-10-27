@@ -237,12 +237,6 @@
             <div class="row container-form" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="border: 5px solid white;">
 
              <div class="matrice" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
-              <div class="col-1" style="margin: 1%;" [hidden]="!duplicazione.giorno">
-                <div class="form-group">
-                  <label for="nomeGiorno">Giorno</label>
-                <input type="text" class="form-control" readonly value="{{getNomeGiorno(duplicazione.giorno)}}">
-                </div>
-              </div>
               <div class="col-1" style="margin: 1%;" >
                 <div class="form-group" >
                   <label for="giorno-{{ i }}{{j}}">Giorno </label>
@@ -256,6 +250,9 @@
                    [(ngModel)]="duplicazione.giorno" required>
 
                   <div *ngIf="!duplicazione.giorno" class="error-message">Campo obbligatorio</div>
+                </div>
+                <div class="form-group">
+                <input [hidden]="!duplicazione.giorno" type="text" class="form-control" readonly value="{{getNomeGiorno(duplicazione.giorno)}}">
                 </div>
               </div>
               <div class="col-2" style="margin: 1%;">
@@ -311,9 +308,11 @@
               </div>
              <div class="row">
               <div class="col-12" style="margin: auto;">
-                <button [disabled]="rapportinoInviato"  class="btn btn-danger" (click)="eliminaRiga(i,j)"  > <i  class="fa fa-trash"></i></button>
-                &nbsp;
-                <button [disabled]="rapportinoInviato" class="btn btn-warning" id="duplica" (click)="duplicaRiga(i,j)"  > <i  class="fa fa-clone"></i></button>
+                <div class="form-group">
+                  <button [disabled]="rapportinoInviato || !duplicazione.giorno"  class="btn btn-danger" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"  ><i  class="fa fa-trash"></i></button>
+                  &nbsp;
+                  <button [disabled]="rapportinoInviato || !duplicazione.giorno" class="btn btn-warning" id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga" ><i  class="fa fa-clone"></i></button>
+                </div>
               </div>
              </div>
              </div>
@@ -346,15 +345,23 @@
                   <div *ngIf="!giorno.note" class="error-message">Campo obbligatorio</div>
                 </div>
               </div>
-
+              <button [disabled]="rapportinoInviato || !giorno" class="btn btn-primary" (click)="salvaRigaRapportino(rapportinoForm)" > Salva riga <i class="fa fa-save"></i> </button>
             </div>
-          <button [disabled]="rapportinoInviato" class="btn btn-primary" (click)="salvaRapportino(rapportinoForm)" >Salva</button>
+         <div class="row">
+          <div class="col-12" style="text-align: center;">
+            <div class="text-danger">
+              <h1>Attenzione: devi effettuare prima il salvataggio e poi l'invio del rapportino.</h1>
+            </div>
+            <button [disabled]="rapportinoInviato" class="btn btn-primary" (click)="salvaRapportino(rapportinoForm)" >Salva rapportino <i class="fa fa-save" ></i></button> &nbsp;
+            <button class="btn btn-warning" [disabled]="rapportinoInviato" (click)="inviaRapportino()" >Invia rapportino <i class="fa fa-paper-plane" ></i> </button>
+          </div>
+         </div>
         </form>
        </mat-card>
       </div>
      </div>
      <br>
-     <button class="btn btn-warning" [disabled]="rapportinoInviato" (click)="inviaRapportino()" >Invia rapportino</button>
+
       <br /><br /><br />
     </div>
     <div class="container-fluid" *ngIf="dettaglioSbagliato">

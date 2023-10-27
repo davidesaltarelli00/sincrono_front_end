@@ -787,7 +787,80 @@ export class UtenteComponent implements OnInit {
         },
         (error: any) => {
           console.error(
-            'Errore durante l invio del rapportino: ' + JSON.stringify(error)
+            'Errore durante il salvataggio del rapportino: ' + JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+  salvaRigaRapportino(formValue: any) {
+    console.log(formValue.value);
+
+    const giorni = this.rapportinoDto.map((giorno) => {
+      return {
+        duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
+          (duplicazione: any) => {
+            return {
+              giorno: duplicazione.giorno,
+              cliente: duplicazione.cliente,
+              oreOrdinarie: duplicazione.oreOrdinarie,
+              fascia1: duplicazione.fascia1,
+              fascia2: duplicazione.fascia2,
+              fascia3: duplicazione.fascia3,
+            };
+          }
+        ),
+        ferie: giorno.ferie,
+        malattie: giorno.malattie,
+        permessi: giorno.permessi,
+        note: giorno.note,
+      };
+    });
+
+    const body = {
+      rapportinoDto: {
+        mese: {
+          giorni: giorni,
+        },
+        anagrafica: {
+          codiceFiscale: this.codiceFiscale,
+        },
+        note: this.note,
+        giorniUtili: this.giorniUtili,
+        giorniLavorati: this.giorniLavorati,
+        annoRequest: this.selectedAnno,
+        meseRequest: this.selectedMese,
+      },
+    };
+
+    this.rapportinoService
+      .updateRapportino(localStorage.getItem('token'), body)
+      .subscribe(
+        (result: any) => {
+          if ((result as any).esito.code !== 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                Image: '../../../../assets/images/logo.jpeg',
+                title: 'Salvataggio non riuscito:',
+                message: (result as any).esito.target,
+              },
+            });
+            this.rapportinoSalvato = false;
+            console.error(result);
+          }
+          if ((result as any).esito.code === 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Riga salvata correttamente.',
+                message: (result as any).esito.target,
+              },
+            });
+            this.getRapportino();
+          }
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il salvataggio della riga: ' + JSON.stringify(error)
           );
         }
       );
