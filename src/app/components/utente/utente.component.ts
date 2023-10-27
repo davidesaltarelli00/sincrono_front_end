@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, ViewportScroller } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -126,7 +126,8 @@ export class UtenteComponent implements OnInit {
     private rapportinoService: RapportinoService,
     private fb: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
-    private authSerice: AuthService
+    private authSerice: AuthService,
+    private scroller: ViewportScroller
   ) {
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -631,6 +632,22 @@ export class UtenteComponent implements OnInit {
       }
     );
   }
+
+  goDown() {
+    document.getElementById("finePagina")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
+  }
+  goTop() {
+    document.getElementById("inizioPagina")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
+  }
+
   // this.rapportinoDto = result;//['rapportinoDto']['mese']['giorni'];
   // this.straordinari = result['rapportinoDto']['mese']['giorni'].map((giorno: any) => giorno.straordinari);
   // console.log('STRAORDINARI:' + JSON.stringify(this.straordinari));

@@ -7,6 +7,8 @@
   </head>
 
   <body>
+    <div id="inizioPagina" ></div>
+
     <div
       class="container-toolbar"
       [hidden]="tokenProvvisorio != null && tokenProvvisorio == null"
@@ -56,6 +58,11 @@
       </mat-toolbar>
     </div>
     <div class="container-fluid" *ngIf="!dettaglioSbagliato">
+      <div class="fixed-button-container">
+        <button mat-flat-button color="primary" (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-up fa-beat"></i></button>
+        <button mat-flat-button color="primary" (click)="goDown()" matTooltip="Vai a fine pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-down fa-beat"></i></button>
+      </div>
+
       <div class="row">
         <div class="col-12">
           <br>
@@ -369,7 +376,7 @@
       </div>
      </div>
      <br>
-
+     <div id="finePagina"></div>
       <br /><br /><br />
     </div>
     <div class="container-fluid" *ngIf="dettaglioSbagliato">
