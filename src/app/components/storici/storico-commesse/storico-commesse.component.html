@@ -148,7 +148,7 @@ a{
             </thead>
             <tbody>
                 <tr *ngFor="let data of lista; let i=index">
-                    <td>{{ data.aziendaCliente ? data.aziendaCliente : 'Dato non inserito' }}</td>
+                    <td>{{ data.tipoAziendaCliente.descrizione ? data.tipoAziendaCliente.descrizione : 'Dato non inserito' }}</td>
                     <td>{{ data.clienteFinale ? data.clienteFinale : 'Dato non inserito' }}</td>
                     <td>{{ data.titoloPosizione  ? data.titoloPosizione : 'Dato non inserito' }}</td>
                     <td>{{ data.distacco ? 'Sì' : 'No'}}</td>

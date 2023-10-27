@@ -211,6 +211,21 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
   }
 
+  goDown() {
+    document.getElementById("finePagina")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
+  }
+  goTop() {
+    document.getElementById("inizioPagina")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
+  }
+
   profile() {
     this.router.navigate(['/profile-box/', this.userlogged]);
   }

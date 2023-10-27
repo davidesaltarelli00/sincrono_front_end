@@ -33,6 +33,7 @@ export class StoricoCommesseComponent implements OnInit {
   userRoleNav: any;
   idNav: any;
   tokenProvvisorio: any;
+  idUtente: any;
 
   constructor(
     private router: Router,
@@ -157,6 +158,7 @@ export class StoricoCommesseComponent implements OnInit {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
 
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
@@ -189,7 +191,7 @@ export class StoricoCommesseComponent implements OnInit {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${this.token}`,
     });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
+    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idUtente}`;
     this.http.get<MenuData>(url, { headers: headers }).subscribe(
       (data: any) => {
         this.jsonData = data;

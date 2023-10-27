@@ -100,6 +100,11 @@
 </head>
 
 <body>
+  <div id="inizioPagina"></div>
+  <div class="fixed-button-container">
+    <button mat-flat-button color="primary" (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-up fa-beat"></i></button>
+    <button mat-flat-button color="primary" (click)="goDown()" matTooltip="Vai a fine pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-down fa-beat"></i></button>
+  </div>
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && !mobile">
       <a [routerLink]="['/home']" class="logo-link">
@@ -665,8 +670,9 @@
         </mat-stepper>
       </div>
     </div>
+    <br><br>
   </div>
-
+<div id="finePagina"></div>
 </body>
 
 </html>
