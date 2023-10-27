@@ -113,7 +113,12 @@ form {
 .matrice {
   display: flex; /* Utilizziamo flexbox per allineare gli elementi in una riga */
 }
-
+@media (max-width: 767px) {
+  .matrice {
+    display: flex;
+    flex-direction: column;
+  }
+}
 
 /* Stile per le etichette dei campi */
 .form-group label {
