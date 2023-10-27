@@ -32,7 +32,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
   giorniUtili: any;
   giorniLavorati: any;
   @ViewChild('editableTable') editableTable!: ElementRef;
-
+  mobile = false;
   user: any;
   userLoggedName: any;
   userLoggedSurname: any;
@@ -47,6 +47,13 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
   dettaglioSbagliato: any;
   elencoCommesse: any[] = [];
   numeroCommessePresenti: any;
+  idUtente: any;
+  selectedAnno: number;
+  selectedMese: number;
+  anni: number[] = [];
+  mesi: number[] = [];
+  esitoCorretto: boolean=false;
+  duplicazioniGiornoDto: any[]=[];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -57,15 +64,42 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
     private profileBoxService: ProfileBoxService,
     private anagraficaDtoService: AnagraficaDtoService
   ) {
+    const oggi = new Date();
+    const annoCorrente = oggi.getFullYear();
+    const meseCorrente = oggi.getMonth() + 1;
+
+    for (let anno = 2010; anno <= annoCorrente; anno++) {
+      this.anni.push(anno);
+    }
+
+    this.mesi = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+    this.selectedAnno = annoCorrente;
+    this.selectedMese = meseCorrente;
+
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
+
+  }
+
+  ngOnInit() {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
     } else {
       console.error('ERRORE DI AUTENTICAZIONE');
     }
-  }
-
-  ngOnInit() {
     console.log(
       this.id,
       this.nome,
@@ -74,32 +108,57 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
       this.mese,
       this.anno
     );
-    let body = {
-      rapportinoDto: {
-        anagrafica: {
-          codiceFiscale: this.codiceFiscale,
-        },
-        annoRequest: this.anno,
-        meseRequest: this.mese,
-      },
-    };
-    console.log('BODY PER GET RAPPORTINO:' + JSON.stringify(body));
-    this.rapportinoService.getRapportino(this.token, body).subscribe(
-      (result: any) => {
-        this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
-        this.note = result['rapportinoDto']['note'];
-        this.giorniUtili = result['rapportinoDto']['giorniUtili'];
-        this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
 
-        console.log(
-          'RAPPORTINODTO DETTAGLIO:' + JSON.stringify(this.rapportinoDto)
-        );
-      },
-      (error: any) => {
-        console.error('ERRORE:' + JSON.stringify(error));
-      }
-    );
-  }
+      let body = {
+        rapportinoDto: {
+          anagrafica: {
+            codiceFiscale: this.codiceFiscale,
+          },
+          annoRequest: this.selectedAnno,
+          meseRequest: this.selectedMese,
+        },
+      };
+      this.rapportinoService.getRapportino(this.token, body).subscribe(
+        (result: any) => {
+          if ((result as any).esito.code !== 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                Image: '../../../../assets/images/logo.jpeg',
+                title: 'Caricamento non riuscito:',
+                message: (result as any).esito.target,
+              },
+            });
+          } else {
+            this.esitoCorretto = true;
+            this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
+            this.duplicazioniGiornoDto =
+              result['rapportinoDto']['mese']['giorni']['duplicazioniGiornoDto'];
+            this.giorniUtili = result['rapportinoDto']['giorniUtili'];
+            this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
+            this.note = result['rapportinoDto']['note'];
+            console.log(
+              'Dati get rapportino:' + JSON.stringify(this.rapportinoDto)
+            );
+            if (this.note != null) {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  Image: '../../../../assets/images/logo.jpeg',
+                  title: 'Attenzione:',
+                  message: this.note,
+                },
+              });
+            }
+          }
+        },
+        (error: string) => {
+          console.error('ERRORE:' + JSON.stringify(error));
+        }
+      );
+    }
+
+    trackByFn(index: number, item: any): number {
+      return index;
+    }
 
   resetNote() {
     this.note = null;
@@ -188,6 +247,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
       (response: any) => {
         console.log('DATI GET USER ROLE:' + JSON.stringify(response));
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
         ) {
@@ -218,7 +278,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${this.token}`,
     });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idNav}`;
+    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idUtente}`;
     this.http.get<MenuData>(url, { headers: headers }).subscribe(
       (data: any) => {
         this.jsonData = data;

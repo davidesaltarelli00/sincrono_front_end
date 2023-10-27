@@ -94,6 +94,16 @@ export class UtenteComponent implements OnInit {
     'novembre',
     'dicembre',
   ];
+  giorni=[
+    'Lunedí',
+    'Martedí',
+    'Mercoledí',
+    'Giovedí',
+    'Venerdí',
+    'Sabato',
+    'Domenica',
+  ];
+
   numeroRigheDuplicate: number = 0;
   conteggioDuplicati: { [giorno: number]: number } = {};
   straordinari: any[] = [];
@@ -243,8 +253,28 @@ export class UtenteComponent implements OnInit {
     const meseCorrente = oggi.getMonth() + 1;
 
     const data = new Date(annoCorrente, meseCorrente - 1, numeroGiorno); // Sottrai 1 al mese perché JavaScript inizia da 0 per gennaio
-    const nomeGiorno = this.datePipe.transform(data, 'EEEE'); // 'EEEE' restituirà il nome completo del giorno della settimana
-
+    let nomeGiorno = this.datePipe.transform(data, 'EEEE'); // 'EEEE' restituirà il nome completo del giorno della settimana
+    if(nomeGiorno==='Sunday'){
+      nomeGiorno='Domenica';
+    }
+    if(nomeGiorno==='Monday'){
+      nomeGiorno='Lunedí';
+    }
+    if(nomeGiorno==='Tuesday'){
+      nomeGiorno='Martedí';
+    }
+    if(nomeGiorno==='Wednesday'){
+      nomeGiorno='Mercoledí';
+    }
+    if(nomeGiorno==='Thursday'){
+      nomeGiorno='Giovedí';
+    }
+    if(nomeGiorno==='Friday'){
+      nomeGiorno='Venerdí';
+    }
+    if(nomeGiorno==='Saturday'){
+      nomeGiorno='Sabato';
+    }
     return nomeGiorno;
   }
 

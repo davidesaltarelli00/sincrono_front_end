@@ -235,10 +235,17 @@
        <mat-card>
         <form #rapportinoForm="ngForm" >
             <div class="row container-form" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="border: 5px solid white;">
+
              <div class="matrice" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
+              <div class="col-1" style="margin: 1%;" [hidden]="!duplicazione.giorno">
+                <div class="form-group">
+                  <label for="nomeGiorno">Giorno</label>
+                <input type="text" class="form-control" readonly value="{{getNomeGiorno(duplicazione.giorno)}}">
+                </div>
+              </div>
               <div class="col-1" style="margin: 1%;" >
                 <div class="form-group" >
-                  <label for="giorno-{{ i }}{{j}}">Giorno:</label>
+                  <label for="giorno-{{ i }}{{j}}">Giorno </label>
                   <input
                   [min]="1"
                   [max]="rapportinoDto.length"
@@ -247,12 +254,13 @@
                    id="giorno-{{ i }}{{j}}" name="giorno-{{ i }}{{j}}"
                    [disabled]="rapportinoInviato"
                    [(ngModel)]="duplicazione.giorno" required>
+
                   <div *ngIf="!duplicazione.giorno" class="error-message">Campo obbligatorio</div>
                 </div>
               </div>
               <div class="col-2" style="margin: 1%;">
                 <div class="form-group">
-                   <label for="cliente-{{ i }}{{j}}">Cliente:</label>
+                   <label for="cliente-{{ i }}{{j}}">Cliente</label>
                   <select [disabled]="!duplicazione.giorno || rapportinoInviato" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)">
                     <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
                   </select>
@@ -261,7 +269,7 @@
               </div>
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
-                  <label for="ore-ordinarie-{{ i }}{{j}}">Ore:</label>
+                  <label for="ore-ordinarie-{{ i }}{{j}}">Ore ordinarie</label>
                   <input [disabled]="!duplicazione.giorno || rapportinoInviato"
                   [ngClass]="{'has-error': !duplicazione.oreOrdinarie && duplicazione.giorno}"
                   type="number" class="form-control"
@@ -273,7 +281,7 @@
               </div>
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
-                  <label for="fascia1-{{ i }}{{j}}">18-20</label>
+                  <label for="fascia1-{{ i }}{{j}}">18:00-20:00</label>
                   <input [disabled]="!duplicazione.giorno || rapportinoInviato"
                   type="number" class="form-control"
                   step="0.5" min="0" max="2"
@@ -283,7 +291,7 @@
               </div>
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
-                  <label for="fascia2-{{ i }}{{j}}">20-22</label>
+                  <label for="fascia2-{{ i }}{{j}}">20:00-22:00</label>
                   <input [disabled]="!duplicazione.giorno || rapportinoInviato"
                   type="number" class="form-control"
                   step="0.5" min="0" max="2"
@@ -293,7 +301,7 @@
               </div>
               <div class="col-1" style="margin: 1%;">
                 <div class="form-group">
-                  <label for="fascia3-{{ i }}{{j}}">22-09</label>
+                  <label for="fascia3-{{ i }}{{j}}">22:00-09:00</label>
                   <input [disabled]="!duplicazione.giorno || rapportinoInviato"
                   type="number" class="form-control"
                   step="0.5" min="0" max="13"

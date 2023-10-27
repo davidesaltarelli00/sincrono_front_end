@@ -1162,7 +1162,6 @@
                     <mat-card-content>
                       <div formArrayName="commesse" class="commesse-container">
                         <ng-container *ngFor="let commessa of commesseControls; let i = index">
-                          <mat-card>
                             <mat-card-content>
                               <div class="commessa" [formGroupName]="i">
                                 <div class="row">
@@ -1172,13 +1171,6 @@
                                 </div>
                                 <div class="row">
                                   <div class="col-3">
-                                    <!-- <label>Azienda Cliente</label> <br>
-                                    <input class="form-control" placeholder="Inserire l' azienda cliente"
-                                           [ngStyle]="{ 'border': commessa.get('aziendaCliente')?.value=='' ? '1px solid red' : ''}"
-                                           formControlName="aziendaCliente" type="text" />
-                                           <div *ngIf="commessa.get('aziendaCliente')?.hasError('required')" class="text-danger">
-                                            Il campo Azienda Cliente è obbligatorio.
-                                          </div> -->
                                             <label>Azienda cliente: </label>
                                             <div class="form-group" formGroupName="tipoAziendaCliente">
                                               <select (change)="onChangeAziendaCliente($event)" class="form-select"
@@ -1305,15 +1297,16 @@
                                 <br>
                               </div>
                             </mat-card-content>
-                          </mat-card>
                         </ng-container>
                       </div>
                     </mat-card-content>
                     <br>
-                    <div class="text-center">
-                      <button mat-flat-button matStepperPrevious>«Indietro</button> &nbsp;
-                      <!-- <button mat--flat-button matStepperNext>Avanti»</button> -->
+                    <div class="row"  *ngIf="commesseControls.length > 0">
+                      <div class="col-12" style="margin: auto; text-align: center;">
+                        <button mat-flat-button color="primary" style="margin: auto; text-align: center;" (click)="aggiungiCommessa()">Aggiungi Commessa <i class="fa fa-plus" ></i> </button>
+                      </div>
                     </div>
+                    <br>
                   </mat-card>
 
                 </div>
@@ -1333,10 +1326,10 @@
                     </mat-card>
                   </div>
                 </div>
-                <div class="row"  *ngIf="commesseControls.length > 0">
-                  <div class="col-12" style="margin: auto; text-align: center;">
-                    <button mat-flat-button color="primary" style="margin: auto; text-align: center;" (click)="aggiungiCommessa()">Aggiungi Commessa <i class="fa fa-plus" ></i> </button>
-                  </div>
+
+                <div class="text-center">
+                  <button mat-flat-button matStepperPrevious>«Indietro</button> &nbsp;
+                  <!-- <button mat--flat-button matStepperNext>Avanti»</button> -->
                 </div>
               </mat-step>
             </mat-horizontal-stepper>
