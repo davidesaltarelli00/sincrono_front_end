@@ -278,13 +278,6 @@ export class UtenteComponent implements OnInit {
     return nomeGiorno;
   }
 
-  isWeekend(index: number): boolean {
-    const numeroGiorno = index;
-    const nomeGiorno = this.getNomeGiorno(numeroGiorno);
-
-    return nomeGiorno === 'Saturday' || nomeGiorno === 'Sunday';
-  }
-
   selezionaAzienda(event: any) {
     this.aziendaSelezionata = event.target.value;
     console.log('Selezionata azienda ' + this.aziendaSelezionata);
@@ -384,6 +377,11 @@ export class UtenteComponent implements OnInit {
       }
     }
   }
+
+  isWeekend(giorno: string): boolean {
+    return giorno === 'Sabato' || giorno === 'Domenica';
+  }
+
 
   onChangeMalattia(event: any, i: number) {
     const target = event.target as HTMLInputElement;
