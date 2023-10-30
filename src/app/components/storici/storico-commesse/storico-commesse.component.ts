@@ -19,11 +19,8 @@ export class StoricoCommesseComponent implements OnInit {
   messaggio: any;
   // paginazione
   currentPage: number = 1;
-  itemsPerPage: number = 5; // Numero di elementi per pagina
+  itemsPerPage: number = 3; // Numero di elementi per pagina
   id = this.activatedRouter.snapshot.params['id'];
-
-
-
   userLoggedName: any;
   userLoggedSurname: any;
   shouldReloadPage: any;
@@ -34,7 +31,7 @@ export class StoricoCommesseComponent implements OnInit {
   idNav: any;
   tokenProvvisorio: any;
   idUtente: any;
-
+  pageData: any[] = [];
   constructor(
     private router: Router,
     private activatedRouter: ActivatedRoute,
@@ -42,7 +39,7 @@ export class StoricoCommesseComponent implements OnInit {
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
     private http: HttpClient,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.token != null) {
@@ -55,6 +52,7 @@ export class StoricoCommesseComponent implements OnInit {
       .subscribe(
         (resp: any) => {
           this.lista = resp.list;
+          this.lista = this.getCurrentPageItems();
           console.log(JSON.stringify(resp.list));
         },
         (error: any) => {
@@ -75,7 +73,7 @@ export class StoricoCommesseComponent implements OnInit {
     });
   }
 
- riattivaCommessa(id: number, posizione: number) {
+  riattivaCommessa(id: number, posizione: number) {
     console.log('ID COMMESSA DA RIATTIVARE: ' + id);
     console.log("Posizione nell'array: " + posizione);
 
@@ -98,16 +96,16 @@ export class StoricoCommesseComponent implements OnInit {
             'Commessa riattivata correttamente: ' + JSON.stringify(res)
           );
           alert('Commessa riattivata correttamente.');
-          this.router.navigate(['/dettaglio-anagrafica/',this.id]);
+          this.router.navigate(['/dettaglio-anagrafica/', this.id]);
         },
         (error: any) => {
           alert(
             'Si è verificato un errore durante la storicizzazione della commessa selezionata: ' +
-              error
+            error
           );
         }
       );
- }
+  }
 
   //paginazione
   getCurrentPageItems(): any[] {
@@ -148,7 +146,7 @@ export class StoricoCommesseComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
+          error
         );
       }
     );
@@ -178,7 +176,7 @@ export class StoricoCommesseComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
+          error
         );
         this.shouldReloadPage = true;
       }

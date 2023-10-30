@@ -31,11 +31,13 @@ export class StoricoContrattiComponent implements OnInit {
   idNav: any;
   tokenProvvisorio: any;
   idUtente: any;
-  data: any[]=[];
+  data: any[] = [];
+  listaItem: any[] = [];
   anagrafica: any;
   currentPage: number = 1;
   itemsPerPage: number = 3;
   tipoContratto: any;
+  pageData: any[] = [];
 
   constructor(
     private storicoService: StoricoService,
@@ -46,7 +48,7 @@ export class StoricoContrattiComponent implements OnInit {
     private dialog: MatDialog,
     private http: HttpClient,
     private anagraficaDtoService: AnagraficaDtoService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.token != null) {
@@ -69,8 +71,10 @@ export class StoricoContrattiComponent implements OnInit {
             });
           } else {
             this.lista = resp.list;
-            // this.currentPage = 1;
-            // this.lista = this.getCurrentPageItems();
+            this.pageData = this.getCurrentPageItems();
+            this.currentPage = 1;
+            console.log('currentPage:', this.currentPage);
+            console.log('pageData:', this.pageData);
           }
         },
         (error: any) => {
@@ -80,12 +84,9 @@ export class StoricoContrattiComponent implements OnInit {
         }
       );
   }
-   //paginazione
-   getCurrentPageItems(): any[] {
-    if (!this.lista) {
-      return [];
-    }
 
+  //paginazione
+  getCurrentPageItems(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     return this.lista.slice(startIndex, endIndex);
@@ -94,17 +95,23 @@ export class StoricoContrattiComponent implements OnInit {
   goToPage(pageNumber: number) {
     if (pageNumber >= 1 && pageNumber <= this.getTotalPages()) {
       this.currentPage = pageNumber;
-      // this.lista = this.getCurrentPageItems();
+      this.pageData = this.getCurrentPageItems(); // Update pageData when changing the page
     }
   }
 
   getTotalPages(): number {
-    return Math.ceil((this.lista?.length || 0) / this.itemsPerPage);
+    if (Array.isArray(this.lista)) {
+      return Math.ceil(this.lista.length / this.itemsPerPage);
+    }
+    return 0; // Handle the case where lista is not an array
   }
 
   getPaginationArray(): number[] {
-    const totalPages = this.getTotalPages();
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
+    if (Array.isArray(this.lista)) {
+      const totalPages = this.getTotalPages();
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    return []; // Handle the case where lista is not an array
   }
 
   detailAnagrafica() {
@@ -113,7 +120,7 @@ export class StoricoContrattiComponent implements OnInit {
       .subscribe((resp: any) => {
         console.log(resp);
         this.anagrafica = (resp as any)['anagraficaDto'];
-        console.log("ANAGRAFICA:"+ JSON.stringify(this.anagrafica));
+
       });
   }
 

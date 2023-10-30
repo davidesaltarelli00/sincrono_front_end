@@ -116,19 +116,7 @@ a{
       [routerLink]="['/dettaglio-anagrafica/'+id]">Torna al dettaglio</button>
     -->
     <div class="table-responsive">
-       <div class="pagination">
-        <ul>
-          <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-            <span> <i class="fa fa-arrow-left" ></i> </span>
-          </li>
-          <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page" (click)="goToPage(page)">
-            <span>{{ page }}</span>
-          </li>
-          <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
-            <span> <i class="fa fa-arrow-right" ></i> </span>
-          </li>
-        </ul>
-      </div> 
+       
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
                 <tr>
@@ -162,7 +150,7 @@ a{
 
             </tbody>
         </table>
-        <!-- <div class="pagination">
+         <div class="pagination">
           <ul>
             <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
               <span> <i class="fa fa-arrow-left" ></i> </span>
@@ -174,7 +162,7 @@ a{
               <span> <i class="fa fa-arrow-right" ></i> </span>
             </li>
           </ul>
-        </div> -->
+        </div> 
 
     </div>
   </div>

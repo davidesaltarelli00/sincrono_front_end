@@ -116,89 +116,90 @@
       </span>
     </mat-toolbar>
 
-</div>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-12">
-      <br>
-      <mat-card style="text-align: center;">
-        <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-        <h1>Storico contratti di {{anagrafica?.anagrafica?.nome |titlecase }} {{anagrafica?.anagrafica?.cognome |titlecase}}</h1>
-      </mat-card>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <br>
+        <mat-card style="text-align: center;">
+          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+          <h1>Storico contratti di {{anagrafica?.anagrafica?.nome |titlecase }} {{anagrafica?.anagrafica?.cognome
+            |titlecase}}</h1>
+        </mat-card>
+      </div>
+    </div>
+    <br>
+
+    <div class="row" *ngIf="lista==null">
+      <div class="col-12">
+        <h3 style="text-align: center;">Storico contratti non presente. <i class="fa fa-undo btn btn-primary"
+            [routerLink]="['/dettaglio-anagrafica/'+idAnagrafica]"></i> </h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+
+        <div class="table-responsive" [hidden]="pageData.length===0">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Contratto</th>
+                <th>Mesi durata</th>
+                <th>CCNL</th>
+                <th>Livello</th>
+                <th>Minimi ret 23</th>
+                <th>Mensilitá</th>
+                <th>Azienda</th>
+                <th>Sede assunzione</th>
+                <th>Data inizio</th>
+                <th>Data fine</th>
+                <th>Qualifica</th>
+                <th>Canale reclutamento</th>
+                <th>PC aziendale</th>
+                <th>Tutor</th>
+                <th>PFI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of pageData; let i=index;">
+                <td>{{data.tipoContratto.descrizione ? data.tipoContratto.descrizione : 'Dato non inserito.'}}</td>
+                <td>{{data.mesiDurata ? data.mesiDurata : 'Dato non inserito.'}}</td>
+                <td>{{data.tipoLivelloContratto.ccnl ? data.tipoLivelloContratto.ccnl : 'Dato non inserito'}}</td>
+                <td>{{data.tipoLivelloContratto.livello ? data.tipoLivelloContratto.livello : 'Dato non inserito'}}</td>
+                <td>{{data.tipoLivelloContratto.minimiRet23 ? data.tipoLivelloContratto.minimiRet23 : 'Dato non inserito.'}}</td>
+                <td>{{data.tipoCcnl.numeroMensilita ? data.tipoCcnl.numeroMensilita : 'Dato non inserito.'}}</td>
+                <td>{{data.tipoAzienda.descrizione ? data.tipoAzienda.descrizione : 'Dato non inserito.'}}</td>
+                <td>{{data.sedeAssunzione ? data.sedeAssunzione : 'Dato non inserito.'}}</td>
+                <td>{{data.dataAssunzione | date: 'dd/MM/yyyy'}}</td>
+                <td *ngIf="data.tipoContratto.descrizione!='Indeterminato'">{{data.dataFineRapporto | date:'dd/MM/yyyy'}}</td>
+                <td *ngIf="data.tipoContratto.descrizione=='Indeterminato'"></td>
+                <td>{{data.qualifica ? data.qualifica :'Dato non inserito.'}}</td>
+                <td>{{data.tipoCanaleReclutamento.descrizione ? data.tipoCanaleReclutamento.descrizione: 'Dato non inserito.'}}</td>
+                <td>{{data.pc ? 'Si' : 'No'}}</td>
+                <td>{{data.tutor ? data.tutor : 'Dato non inserito.'}}</td>
+                <td> {{data.pfi ? 'Si' : 'No'}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pagination">
+            <ul>
+              <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+                <span> <i class="fa fa-arrow-left"></i> </span>
+              </li>
+              <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
+                (click)="goToPage(page)">
+                <span>{{ page }}</span>
+              </li>
+              <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
+                <span> <i class="fa fa-arrow-right"></i> </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <br><br>
+      </div>
     </div>
   </div>
-  <br>
-
-  <div class="row" *ngIf="lista==null" >
-    <div class="col-12">
-      <h3 style="text-align: center;">Storico contratti non presente. <i class="fa fa-undo btn btn-primary" [routerLink]="['/dettaglio-anagrafica/'+idAnagrafica]" ></i> </h3>
-    </div>
-  </div>
-<div class="row" >
-  <div class="col-12">
-
-    <div class="table-responsive">
-      <table class="table table-striped" >
-        <thead>
-          <tr>
-            <th>Contratto</th>
-            <th>Mesi durata</th>
-            <th>CCNL</th>
-            <th>Livello</th>
-            <th>Minimi ret 23</th>
-            <th>Mensilitá</th>
-            <th>Azienda</th>
-            <th>Sede assunzione</th>
-            <th>Data inizio</th>
-            <th>Data fine</th>
-            <th>Qualifica</th>
-            <th>Canale reclutamento</th>
-            <th>PC aziendale</th>
-            <th >Tutor</th>
-            <th >PFI</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of lista; let i=index;">
-            <td>{{data.tipoContratto.descrizione ? data.tipoContratto.descrizione : 'Dato non inserito.'}}</td>
-            <td>{{data.mesiDurata ? data.mesiDurata : 'Dato non inserito.'}}</td>
-            <td>{{data.tipoLivelloContratto.ccnl ? data.tipoLivelloContratto.ccnl : 'Dato non inserito'}}</td>
-            <td>{{data.tipoLivelloContratto.livello ? data.tipoLivelloContratto.livello : 'Dato non inserito'}}</td>
-            <td>{{data.tipoLivelloContratto.minimiRet23 ? data.tipoLivelloContratto.minimiRet23 : 'Dato non inserito.'}}</td>
-            <td>{{data.tipoCcnl.numeroMensilita ? data.tipoCcnl.numeroMensilita : 'Dato non inserito.'}}</td>
-            <td>{{data.tipoAzienda.descrizione ? data.tipoAzienda.descrizione : 'Dato non inserito.'}}</td>
-            <td>{{data.sedeAssunzione ? data.sedeAssunzione : 'Dato non inserito.'}}</td>
-            <td>{{data.dataAssunzione | date: 'dd/MM/yyyy'}}</td>
-            <td *ngIf="data.tipoContratto.descrizione!='Indeterminato'" >{{data.dataFineRapporto | date: 'dd/MM/yyyy'}}</td>
-            <td *ngIf="data.tipoContratto.descrizione=='Indeterminato'" ></td>
-            <td>{{data.qualifica ? data.qualifica :'Dato non inserito.'}}</td>
-            <td>{{data.tipoCanaleReclutamento.descrizione ? data.tipoCanaleReclutamento.descrizione: 'Dato non inserito.'}}</td>
-            <td>{{data.pc ? 'Si' : 'No'}}</td>
-            <td  >{{data.tutor ? data.tutor : 'Dato non inserito.'}}</td>
-            <td > {{data.pfi ? 'Si' : 'No'}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <br><br>
-     <div class="pagination">
-      <ul>
-        <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-          <span> <i class="fa fa-arrow-left"></i> </span>
-        </li>
-        <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
-          (click)="goToPage(page)">
-          <span>{{ page }}</span>
-        </li>
-        <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
-          <span> <i class="fa fa-arrow-right"></i> </span>
-        </li>
-      </ul>
-    </div> 
-
-  </div>
-</div>
-</div>
 
 
 
