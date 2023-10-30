@@ -75,7 +75,6 @@ export class HomeComponent implements OnInit {
 
         if (this.immagine) {
           this.convertBase64ToImage(this.immagine);
-          console.log('Valore di immagineConvertita:', this.immagineConvertita);
         } else {
           // Assegna un'immagine predefinita se l'immagine non è disponibile
           this.immaginePredefinita =

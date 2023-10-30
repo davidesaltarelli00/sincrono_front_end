@@ -4,92 +4,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sincrono CRM</title>
-    <style>
-      #toolbar {
-  background-color: #007bff; /* Colore blu aziendale */
-  color: #ffffff; /* Testo bianco */
-  display: flex;
-  background-color: #333;
-  justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
-  align-items: center; /* Allinea verticalmente gli elementi al centro */
-}
-
-.logo-link {
-  margin-right: 10px;
-}
-
-.toolbar-menu {
-  display: flex;
-  gap: 10px;
-  background-color: #333;
-  margin-right:auto;
-}
-
-.toolbar-link {
-  text-decoration: none;
-  color: #ffffff;
-  /* padding: 10px; */
-}
-
-a{
-  color: white;
-}
-
-.toolbar-link:hover {
-  color: #d8d8d8;
-}
-
-.user-icon,
-.logout-icon {
-  color: #ffffff;
-  cursor: pointer;
-}
-
-    </style>
   </head>
-
   <body>
-
-    <!-- <div
-      class="container-toolbar"
-      [hidden]="tokenProvvisorio != null && tokenProvvisorio == null"
-    >
-    <mat-toolbar id="toolbar" *ngIf="token">
-      <a [routerLink]="['/home']" class="logo-link">
-        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
-      </a>
-      <div class="toolbar-menu">
-        <a   (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link" *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
-          {{ menuItem.nome }}
-        </a>
-      </div>
-      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
-        <small *ngIf="userRole===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-        <small *ngIf="userRole===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i class="fa fa-user"></i>
-      </span> &nbsp;&nbsp;
-      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
-        <i class="fa fa-sign-out" aria-hidden="true"></i>
-      </span>
-    </mat-toolbar>
-
-    </div> -->
 
     <div *ngIf="tokenProvvisorio && isRecuperoPassword">
       <app-form-recupero-password></app-form-recupero-password>
     </div>
     <router-outlet></router-outlet>
 
-    <footer *ngIf="token">
-
-      <div class="row">
-        <div class="col-8">
-      <p>© {{currentDateTime}} CRM Sincrono. Tutti i diritti riservati.</p>
-        </div>
-        <div class="col-4">
-          <button mat-flat-button  (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-up fa-beat"></i></button> &nbsp;
-          <button mat-flat-button  (click)="goDown()" matTooltip="Vai a fine pagina" matTooltipPosition="right"><i class="fa-solid fa-arrow-down fa-beat"></i></button>
-        </div>
+    <div class="row">
+      <div class="col-12">
+        <footer *ngIf="token" class="footer">
+          <div class="row">
+            <div class="col-1">
+              <button mat-flat-button (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left">
+                <i class="fa-solid fa-arrow-up fa-beat circle"></i>
+              </button>
+            </div>
+            <div class="col-5" style="display: flex; align-items: center;">
+              <p class="copyright">© {{currentDateTime  | date : "dd/MM/yyyy"}} CRM Sincrono. Tutti i diritti riservati.</p>
+            </div>
+            <div class="col-5" style="display: flex; align-items: center;">
+              <p><b>Indirizzo:</b> Via Vinicio Cortese, 147F, 00128 Roma RM</p>
+            </div>
+            <div class="col-1">
+              <button mat-flat-button (click)="goDown()" matTooltip="Vai a fine pagina" matTooltipPosition="right">
+                <i class="fa-solid fa-arrow-down fa-beat"></i>
+              </button>
+            </div>
+          </div>
+        </footer>
       </div>
-    </footer>
+    </div>
+
+
   </body>
 </html>

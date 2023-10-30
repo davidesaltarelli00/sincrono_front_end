@@ -1,9 +1,18 @@
 import { ImageService } from './../image.service';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { AuthService } from '../login/login-service';
 import { ProfileBoxService } from './profile-box.service';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
@@ -51,6 +60,8 @@ export class ProfileBoxComponent {
   userLoggedFiscalCode: any;
   elencoCommesse: any[] = [];
   idUtente: any;
+  tokenExpirationTime: any;
+  timer: any;
 
   constructor(
     private authService: AuthService,
@@ -61,7 +72,8 @@ export class ProfileBoxComponent {
     private formBuilder: FormBuilder,
     private imageService: ImageService,
     private menuService: MenuService,
-    private anagraficaDtoService: AnagraficaDtoService
+    private anagraficaDtoService: AnagraficaDtoService,
+    private cdRef: ChangeDetectorRef
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -80,13 +92,83 @@ export class ProfileBoxComponent {
       codiceFiscale: new FormControl(null),
     });
   }
+  close() {
+    this.dialog.closeAll();
+  }
+
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
+  }
+
   ngOnInit(): void {
+    // Recupera il token dal localStorage
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      // Formatta il token
+      const tokenParts = token.split('.');
+      const tokenPayload = JSON.parse(atob(tokenParts[1]));
+      // Calcola il tempo rimanente del token
+      const currentTime = Date.now() / 1000;
+      this.tokenExpirationTime = Math.floor(tokenPayload.exp - currentTime);
+
+      // Avvia il timer per aggiornare il tempo rimanente ogni secondo
+      this.timer = setInterval(() => {
+        this.tokenExpirationTime -= 1;
+        this.cdRef.detectChanges(); // Forza l'aggiornamento del template
+
+        if (this.tokenExpirationTime === 0) {
+
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              Image: '../../../../assets/images/logo.jpeg',
+              title: 'Attenzione:',
+              message: 'Sessione terminata; esegui il login.',
+            },
+          });
+
+          this.authService.logout().subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                // Logout effettuato con successo
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenProvvisorio');
+                sessionStorage.clear();
+                this.router.navigate(['/login']);
+                this.dialog.closeAll();
+              } else {
+                // Gestione di altri stati di risposta (es. 404, 500, ecc.)
+                console.log(
+                  'Errore durante il logout:',
+                  response.status,
+                  response.body
+                );
+                this.handleLogoutError();
+              }
+            },
+            (error: HttpErrorResponse) => {
+              if (error.status === 403) {
+                // Logout a causa di errore 403 (Forbidden)
+                console.log('Errore 403: Accesso negato');
+                this.handleLogoutError();
+              } else {
+                // Gestione di altri errori di rete o server
+                console.log('Errore durante il logout:', error.message);
+                this.handleLogoutError();
+              }
+            }
+          );
+        }
+      }, 1000);
+    }
+
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
     }
-
-    const token = localStorage.getItem('token');
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         this.anagrafica = response;
@@ -108,7 +190,20 @@ export class ProfileBoxComponent {
     );
   }
 
-  vediImmagineProfilo(){
+  formatTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(
+      remainingSeconds
+    )}`;
+  }
+
+  pad(value: number): string {
+    return value.toString().padStart(2, '0');
+  }
+
+  vediImmagineProfilo() {
     this.dialog.open(ImmagineComponent);
   }
 
@@ -335,18 +430,20 @@ export class ProfileBoxComponent {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-        this.jsonData = { list: [] };
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
 
   getPermissions(functionId: number) {
@@ -356,5 +453,11 @@ export class ProfileBoxComponent {
         console.error('Errore nella generazione dei permessi:', error);
       }
     );
+  }
+
+  ngOnDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
   }
 }

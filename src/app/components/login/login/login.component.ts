@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   passwordVisible = false;
   loginForm: FormGroup;
   recuperoPasswordInCorso: boolean = false;
+  tokenExpirationTime: any;
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -61,12 +62,6 @@ export class LoginComponent implements OnInit {
     this.authService.authenticate(username, password).subscribe(
       (response) => {
         if ((response as any).esito.code !== 200) {
-          // alert(
-          //   'Inserimento non riuscito\n' +
-          //     'Target: ' +
-          //     (response as any).esito.target
-          // );
-
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
               title: 'Login non riuscito:',
@@ -74,33 +69,27 @@ export class LoginComponent implements OnInit {
             },
           });
         } else {
-          // const dialogRef = this.dialog.open(AlertDialogComponent, {
-          //   data: {
-          //     title: 'Login effettuato correttamente:',
-          //     message: (response as any).esito.target,
-          //   },
-          // });
           this.router.navigate(['/home']);
-
           // Formatta il token
           const tokenParts = response.token.split('.');
           const tokenHeader = JSON.parse(atob(tokenParts[0]));
           const tokenPayload = JSON.parse(atob(tokenParts[1]));
-
+          // Calcola il tempo rimanente del token
+          const currentTime = Date.now() / 1000;
+          this.tokenExpirationTime = tokenPayload.exp - currentTime;
           // Puoi accedere alle parti del token come oggetti JSON
           console.log('Token header:', tokenHeader);
           console.log('Token payload:', tokenPayload);
-
+          console.log("DURATA TOKEN: "+ JSON.stringify(this.tokenExpirationTime));
           // Memorizza il token nel localStorage e assegna alla variabile token
           localStorage.setItem('token', response.token);
           this.token = response.token;
           console.log("Si é loggato l'utente " + tokenPayload.sub);
-          console.log("Token generato: "+localStorage.getItem('token'));
+          console.log('Token generato: ' + localStorage.getItem('token'));
         }
       },
       (error) => {
-        // Login failed, handle the error
-        console.error('Login failed', error);
+        console.error('Login fallito:', JSON.stringify(error));
       }
     );
   }
