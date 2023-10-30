@@ -87,6 +87,7 @@ export class DettaglioAnagraficaDtoComponent {
   salvaImmagine: boolean = false;
   immagineCancellata: boolean = false;
   idUtente: any;
+  vediStoricoCommesse: boolean=false;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -371,6 +372,22 @@ export class DettaglioAnagraficaDtoComponent {
   }
   getStoricoCommessa(idAnagrafica: any) {
     this.router.navigate(['/storico-commesse-anagrafica', idAnagrafica]);
+    this.vediStoricoCommesse=true;
+  }
+
+  goDown() {
+    document.getElementById("finePagina")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
+  }
+  goTop() {
+    document.getElementById("inizioPagina")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
   }
 
   uppercaseCodiceFiscale(): string {

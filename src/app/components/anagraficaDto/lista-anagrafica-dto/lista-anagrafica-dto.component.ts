@@ -211,6 +211,21 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
   }
 
+  goDown() {
+    document.getElementById("finePagina")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
+  }
+  goTop() {
+    document.getElementById("inizioPagina")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
+  }
+
   profile() {
     this.router.navigate(['/profile-box/', this.userlogged]);
   }
@@ -276,6 +291,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       this.getUserLogged();
       this.getUserRole();
       this.caricaAziendeClienti();
+    } else{
+      console.error("errore di autenticazione.")
     }
 
     const commessaFormGroup = this.creaFormCommessa();
@@ -1010,10 +1027,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         this.getImage();
       },
       (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
-        );
+        console.error('Si é verificato il seguente errore durante il recupero dei dati : ' +error);
+        this.authService.logout();
       }
     );
   }

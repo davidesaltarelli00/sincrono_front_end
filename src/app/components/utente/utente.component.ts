@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, ViewportScroller } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -94,6 +94,16 @@ export class UtenteComponent implements OnInit {
     'novembre',
     'dicembre',
   ];
+  giorni=[
+    'Lunedí',
+    'Martedí',
+    'Mercoledí',
+    'Giovedí',
+    'Venerdí',
+    'Sabato',
+    'Domenica',
+  ];
+
   numeroRigheDuplicate: number = 0;
   conteggioDuplicati: { [giorno: number]: number } = {};
   straordinari: any[] = [];
@@ -116,7 +126,8 @@ export class UtenteComponent implements OnInit {
     private rapportinoService: RapportinoService,
     private fb: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
-    private authSerice: AuthService
+    private authSerice: AuthService,
+    private scroller: ViewportScroller
   ) {
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -243,16 +254,29 @@ export class UtenteComponent implements OnInit {
     const meseCorrente = oggi.getMonth() + 1;
 
     const data = new Date(annoCorrente, meseCorrente - 1, numeroGiorno); // Sottrai 1 al mese perché JavaScript inizia da 0 per gennaio
-    const nomeGiorno = this.datePipe.transform(data, 'EEEE'); // 'EEEE' restituirà il nome completo del giorno della settimana
-
+    let nomeGiorno = this.datePipe.transform(data, 'EEEE'); // 'EEEE' restituirà il nome completo del giorno della settimana
+    if(nomeGiorno==='Sunday'){
+      nomeGiorno='Domenica';
+    }
+    if(nomeGiorno==='Monday'){
+      nomeGiorno='Lunedí';
+    }
+    if(nomeGiorno==='Tuesday'){
+      nomeGiorno='Martedí';
+    }
+    if(nomeGiorno==='Wednesday'){
+      nomeGiorno='Mercoledí';
+    }
+    if(nomeGiorno==='Thursday'){
+      nomeGiorno='Giovedí';
+    }
+    if(nomeGiorno==='Friday'){
+      nomeGiorno='Venerdí';
+    }
+    if(nomeGiorno==='Saturday'){
+      nomeGiorno='Sabato';
+    }
     return nomeGiorno;
-  }
-
-  isWeekend(index: number): boolean {
-    const numeroGiorno = index;
-    const nomeGiorno = this.getNomeGiorno(numeroGiorno);
-
-    return nomeGiorno === 'Saturday' || nomeGiorno === 'Sunday';
   }
 
   selezionaAzienda(event: any) {
@@ -354,6 +378,11 @@ export class UtenteComponent implements OnInit {
       }
     }
   }
+
+  isWeekend(giorno: string): boolean {
+    return giorno === 'Sabato' || giorno === 'Domenica';
+  }
+
 
   onChangeMalattia(event: any, i: number) {
     const target = event.target as HTMLInputElement;
@@ -603,6 +632,22 @@ export class UtenteComponent implements OnInit {
       }
     );
   }
+
+  goDown() {
+    document.getElementById("finePagina")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
+  }
+  goTop() {
+    document.getElementById("inizioPagina")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
+  }
+
   // this.rapportinoDto = result;//['rapportinoDto']['mese']['giorni'];
   // this.straordinari = result['rapportinoDto']['mese']['giorni'].map((giorno: any) => giorno.straordinari);
   // console.log('STRAORDINARI:' + JSON.stringify(this.straordinari));
@@ -757,7 +802,80 @@ export class UtenteComponent implements OnInit {
         },
         (error: any) => {
           console.error(
-            'Errore durante l invio del rapportino: ' + JSON.stringify(error)
+            'Errore durante il salvataggio del rapportino: ' + JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+  salvaRigaRapportino(formValue: any) {
+    console.log(formValue.value);
+
+    const giorni = this.rapportinoDto.map((giorno) => {
+      return {
+        duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
+          (duplicazione: any) => {
+            return {
+              giorno: duplicazione.giorno,
+              cliente: duplicazione.cliente,
+              oreOrdinarie: duplicazione.oreOrdinarie,
+              fascia1: duplicazione.fascia1,
+              fascia2: duplicazione.fascia2,
+              fascia3: duplicazione.fascia3,
+            };
+          }
+        ),
+        ferie: giorno.ferie,
+        malattie: giorno.malattie,
+        permessi: giorno.permessi,
+        note: giorno.note,
+      };
+    });
+
+    const body = {
+      rapportinoDto: {
+        mese: {
+          giorni: giorni,
+        },
+        anagrafica: {
+          codiceFiscale: this.codiceFiscale,
+        },
+        note: this.note,
+        giorniUtili: this.giorniUtili,
+        giorniLavorati: this.giorniLavorati,
+        annoRequest: this.selectedAnno,
+        meseRequest: this.selectedMese,
+      },
+    };
+
+    this.rapportinoService
+      .updateRapportino(localStorage.getItem('token'), body)
+      .subscribe(
+        (result: any) => {
+          if ((result as any).esito.code !== 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                Image: '../../../../assets/images/logo.jpeg',
+                title: 'Salvataggio non riuscito:',
+                message: (result as any).esito.target,
+              },
+            });
+            this.rapportinoSalvato = false;
+            console.error(result);
+          }
+          if ((result as any).esito.code === 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Riga salvata correttamente.',
+                message: (result as any).esito.target,
+              },
+            });
+            this.getRapportino();
+          }
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il salvataggio della riga: ' + JSON.stringify(error)
           );
         }
       );
