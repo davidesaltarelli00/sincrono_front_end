@@ -121,6 +121,7 @@
       </div>
     </div>
     <br>
+      <br>
     <div class="row">
       <div class="col-12">
         <legend>Rapportini inviati da controllare</legend>
@@ -177,7 +178,7 @@
     <br>
     <div class="row">
       <div class="col-12">
-        <legend>Rapportini verificati <i class="fa fa-info-circle"
+        <legend>Rapportini controllati <i class="fa fa-info-circle"
             matTooltip="Se scongelerai il rapportino, quest'ultimo verrá eliminato."></i> </legend>
         <table class="table table-striped">
           <thead>
@@ -226,6 +227,68 @@
         <!-- <p *ngIf="elencoRapportiniFreezati.length===0" >Nessun risultato.</p> -->
       </div>
     </div>
+    <br>
+    <div class="row">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-title>
+            <h3>Export excel</h3>
+          </mat-card-title>
+          <mat-card-content>
+            <form #fileExport="ngForm" (ngSubmit)="scarica(fileExport)" >
+              <div class="row">
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="meseSelect">Seleziona il mese:</label>
+                    <select
+                      (change)="onMeseSelectChange($event)"
+                      class="form-select"
+                      aria-label="Default select example"
+                      id="meseSelect"
+                      [(ngModel)]="selectedMese"
+                      name="mese"
+                    >
+                      <option selected>---Nessuna selezione---</option>
+                      <option
+                        *ngFor="let month of mesi; let i = index"
+                        [value]="i + 1"
+                      >
+                        {{ i + 1 }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="annoSelect">Seleziona l'anno:</label>
+                    <select
+                      (change)="onAnnoSelectChange($event)"
+                      class="form-select"
+                      aria-label="Default select example"
+                      id="annoSelect"
+                      [(ngModel)]="selectedAnno"
+                      name="anno">
+                      <option selected>---Nessuna selezione---</option>
+                      <option *ngFor="let year of anni" [value]="year">
+                        {{ year }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <label for="getRapportino">Azioni</label><br />
+                  <button
+                    class="btn btn-success"
+                    [disabled]="selectedMese == null || selectedAnno == null" matTooltip="Esporta in excel" matTooltipPosition="right">
+                    <i class="fa fa-file-export" aria-hidden="true"></i></button>
+                </div>
+              </div>
+              <br />
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+     </div>
     <br><br><br><br>
     <div id="finePagina"></div>
   </div>

@@ -11,6 +11,8 @@ import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.componen
 import { ModaleDettaglioRapportinoComponent } from '../modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
 import { RapportinoDataService } from '../modale-dettaglio-rapportino/RapportinoData.service';
 import { MenuService } from '../menu.service';
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-lista-rapportini',
@@ -66,8 +68,20 @@ export class ListaRapportiniComponent implements OnInit {
     private rapportinoService: RapportinoService,
     private listaRapportiniService: ListaRapportiniService,
     private rapportinoDataService: RapportinoDataService,
-    private menuService:MenuService
+    private menuService: MenuService
   ) {
+    const oggi = new Date();
+    const annoCorrente = oggi.getFullYear();
+    const meseCorrente = oggi.getMonth() + 1;
+
+    for (let anno = 2010; anno <= annoCorrente; anno++) {
+      this.anni.push(anno);
+    }
+
+    this.mesi = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+    this.selectedAnno = annoCorrente;
+    this.selectedMese = meseCorrente;
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -180,6 +194,7 @@ export class ListaRapportiniComponent implements OnInit {
           .subscribe(
             (result: any) => {
               console.log('RAPPORTINO CONGELATO:' + JSON.stringify(result));
+              //fare insert db
               this.getAllRapportiniFreezati();
               this.getAllRapportiniNonFreezati();
             },
@@ -280,6 +295,54 @@ export class ListaRapportiniComponent implements OnInit {
     );
   }
 
+  onMeseSelectChange(event: any) {
+    console.log('Mese selezionato:', event.target.value);
+  }
+
+  onAnnoSelectChange(event: any) {
+    console.log('Anno selezionato:', event.target.value);
+  }
+
+  scarica(value: any) {
+    console.log(value.value);
+    if (value.valid) {
+      let body = {
+        anno: this.selectedAnno,
+        mese: this.selectedMese,
+      };
+      console.log('Body per file export' + JSON.stringify(body));
+      this.listaRapportiniService
+        .exportFileRapportino(this.token, body)
+        .subscribe(
+          (result: any) => {
+            // console.log('Response export rapportino: ', JSON.stringify(result));
+            const rapportinoBase64 = result.rapportinoB64;
+            console.log('BASE64: ' + rapportinoBase64);
+            // Decodifica il Base64 in un array di byte
+            const byteCharacters = atob(rapportinoBase64);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+              byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+
+            // Crea un oggetto Blob dal byte array
+            const blob = new Blob([byteArray], {
+              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            });
+
+            // Salva il file Excel utilizzando FileSaver
+            FileSaver.saveAs(blob, 'rapportino.xlsx');
+          },
+          (error: any) => {
+            console.error(
+              'Errore durante l export del rapportino:' + JSON.stringify(error)
+            );
+          }
+        );
+    }
+  }
+
   getRapportino(
     id: any,
     nome: any,
@@ -356,21 +419,23 @@ export class ListaRapportiniComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        console.log(
-          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        );
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-        this.jsonData = { list: [] };
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          console.log(
+            JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          );
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
 
   getPermissions(functionId: number) {

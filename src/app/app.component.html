@@ -16,16 +16,16 @@
       <div class="col-12">
         <footer *ngIf="token" class="footer">
           <div class="row">
+            <div class="col-5">
+              <p class="copyright">© {{currentDateTime  | date : "dd/MM/yyyy"}} CRM Sincrono. Tutti i diritti riservati.</p>
+            </div>
+            <div class="col-5">
+              <p><b>Indirizzo:</b> Via Vinicio Cortese 147F 00128 Roma RM</p>
+            </div>
             <div class="col-1">
               <button mat-flat-button (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left">
                 <i class="fa-solid fa-arrow-up fa-beat circle"></i>
               </button>
-            </div>
-            <div class="col-5" style="display: flex; align-items: center;">
-              <p class="copyright">© {{currentDateTime  | date : "dd/MM/yyyy"}} CRM Sincrono. Tutti i diritti riservati.</p>
-            </div>
-            <div class="col-5" style="display: flex; align-items: center;">
-              <p><b>Indirizzo:</b> Via Vinicio Cortese, 147F, 00128 Roma RM</p>
             </div>
             <div class="col-1">
               <button mat-flat-button (click)="goDown()" matTooltip="Vai a fine pagina" matTooltipPosition="right">

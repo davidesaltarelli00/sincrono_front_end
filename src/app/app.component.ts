@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   OnInit,
   Renderer2,
@@ -11,8 +12,13 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { ProfileBoxService } from './components/profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -32,6 +38,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   id: any;
   currentDateTime: any;
   shouldReloadPage: boolean = false;
+  tokenExpirationTime: any;
+  timer: any;
+  alertShown: boolean = false;
 
   constructor(
     private router: Router,
@@ -40,10 +49,93 @@ export class AppComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private http: HttpClient,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private cdRef: ChangeDetectorRef
   ) {}
 
+  formatTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(
+      remainingSeconds
+    )}`;
+  }
+
+  pad(value: number): string {
+    return value.toString().padStart(2, '0');
+  }
+
   ngOnInit() {
+    // Recupera il token dal localStorage
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      // Formatta il token
+      const tokenParts = token.split('.');
+      const tokenPayload = JSON.parse(atob(tokenParts[1]));
+      // Calcola il tempo rimanente del token
+      const currentTime = Date.now() / 1000;
+      this.tokenExpirationTime = Math.floor(tokenPayload.exp - currentTime);
+
+      // Avvia il timer per aggiornare il tempo rimanente ogni secondo
+      this.timer = setInterval(() => {
+        this.tokenExpirationTime -= 1;
+        this.cdRef.detectChanges(); // Forza l'aggiornamento del template
+
+        if (this.tokenExpirationTime === 600000) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              title: 'Attenzione:',
+              message: `Mancano 10 minuti alla scadenza del token.`,
+            },
+          });
+        }
+
+        if (this.tokenExpirationTime === 0) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              Image: '../../../../assets/images/logo.jpeg',
+              title: 'Attenzione:',
+              message: 'Sessione terminata; esegui il login.',
+            },
+          });
+
+          this.authService.logout().subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                // Logout effettuato con successo
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenProvvisorio');
+                sessionStorage.clear();
+                this.router.navigate(['/login']);
+                this.dialog.closeAll();
+              } else {
+                // Gestione di altri stati di risposta (es. 404, 500, ecc.)
+                console.log(
+                  'Errore durante il logout:',
+                  response.status,
+                  response.body
+                );
+                this.handleLogoutError();
+              }
+            },
+            (error: HttpErrorResponse) => {
+              if (error.status === 403) {
+                // Logout a causa di errore 403 (Forbidden)
+                console.log('Errore 403: Accesso negato');
+                this.handleLogoutError();
+              } else {
+                // Gestione di altri errori di rete o server
+                console.log('Errore durante il logout:', error.message);
+                this.handleLogoutError();
+              }
+            }
+          );
+        }
+      }, 1000);
+    }
+
     const currentDate = new Date();
     this.currentDateTime = this.datePipe.transform(currentDate, 'yyyy-MM-dd'); // HH:mm:ss
     this.token = localStorage.getItem('tokenProvvisorio');
@@ -64,8 +156,14 @@ export class AppComponent implements OnInit, AfterViewInit {
     // }
   }
 
-  ngAfterViewInit(): void {}
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
+  }
 
+  ngAfterViewInit(): void {}
 
   goDown() {
     document.getElementById('finePagina')?.scrollIntoView({
