@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StoricoService } from '../storico-service';
-import { ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -19,11 +19,11 @@ declare var $: any;
 
 
 
-export class StoricoContrattiComponent implements OnInit  {
+export class StoricoContrattiComponent implements OnInit {
 
 
   lista: any;
-  idAnagrafica:any;
+  idAnagrafica: any;
 
   userLoggedName: any;
   userLoggedSurname: any;
@@ -34,7 +34,8 @@ export class StoricoContrattiComponent implements OnInit  {
   userRoleNav: any;
   idNav: any;
   tokenProvvisorio: any;
-
+  currentPage: number = 1;
+  itemsPerPage: number = 20;
   constructor(
     private storicoService: StoricoService,
     private formBuilder: FormBuilder,
@@ -43,7 +44,7 @@ export class StoricoContrattiComponent implements OnInit  {
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
     private http: HttpClient,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
 
@@ -53,7 +54,7 @@ export class StoricoContrattiComponent implements OnInit  {
     }
 
     this.idAnagrafica = this.activatedRoute.snapshot.params['id'];
-//TO DO           DA CONTROLLARE
+    //TO DO           DA CONTROLLARE
     this.storicoService.getStoricoContratti(this.idAnagrafica, localStorage.getItem("token")).subscribe((resp: any) => {
 
       if ((resp as any).esito.code !== 200) {
@@ -63,16 +64,36 @@ export class StoricoContrattiComponent implements OnInit  {
             message: (resp as any).esito.target,
           },
         });
-      } else{
+      } else {
         this.lista = resp.list;
-        console.log("lista contratti:"+ resp.list);
+        console.log("lista contratti:" + resp.list);
       }
-    }, (error:any)=>{
-      console.error("Si e verificato un errore durante il caricamento dei dati:"+ error);
+    }, (error: any) => {
+      console.error("Si e verificato un errore durante il caricamento dei dati:" + error);
     });
   }
 
+  getCurrentPageItems(): any[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.lista.slice(startIndex, endIndex);
+  }
 
+  getPaginationArray(): number[] {
+    const totalPages = this.getTotalPages();
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  getTotalPages(): number {
+    return Math.ceil(this.lista.length / this.itemsPerPage);
+  }
+
+  goToPage(pageNumber: number) {
+    if (pageNumber >= 1 && pageNumber <= this.getTotalPages()) {
+      this.currentPage = pageNumber;
+    }
+  }
+  
   //metodi nav
   logout() {
     this.dialog.open(AlertLogoutComponent);
@@ -88,7 +109,7 @@ export class StoricoContrattiComponent implements OnInit  {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
+          error
         );
       }
     );
@@ -117,7 +138,7 @@ export class StoricoContrattiComponent implements OnInit  {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
+          error
         );
         this.shouldReloadPage = true;
       }
