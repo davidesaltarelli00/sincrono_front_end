@@ -80,7 +80,16 @@ a{
     <router-outlet></router-outlet>
 
     <footer *ngIf="token">
+
+      <div class="row">
+        <div class="col-8">
       <p>© {{currentDateTime}} CRM Sincrono. Tutti i diritti riservati.</p>
+        </div>
+        <div class="col-4">
+          <button mat-flat-button  (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-up fa-beat"></i></button> &nbsp;
+          <button mat-flat-button  (click)="goDown()" matTooltip="Vai a fine pagina" matTooltipPosition="right"><i class="fa-solid fa-arrow-down fa-beat"></i></button>
+        </div>
+      </div>
     </footer>
   </body>
 </html>

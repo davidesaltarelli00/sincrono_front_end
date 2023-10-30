@@ -55,6 +55,7 @@ import { ModaleDettaglioRapportinoComponent } from './components/modale-dettagli
 import { HeaderComponent } from './header/header.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ImmagineComponent } from './components/immagine/immagine.component';
+import { BottoniComponent } from './bottoni/bottoni.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,7 +89,8 @@ import { ImmagineComponent } from './components/immagine/immagine.component';
     ListaRapportiniComponent,
     ModaleDettaglioRapportinoComponent,
     HeaderComponent,
-    ImmagineComponent
+    ImmagineComponent,
+    BottoniComponent
   ],
   imports: [
     MatIconModule,

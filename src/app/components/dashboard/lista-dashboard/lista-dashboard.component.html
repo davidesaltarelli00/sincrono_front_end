@@ -100,6 +100,7 @@
 </head>
 
 <body>
+  <div id="inizioPagina"></div>
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && !mobile">
       <a [routerLink]="['/home']" class="logo-link">
@@ -645,6 +646,7 @@
         </div>
       </div>
     </div>
+    <div id="finePagina"></div>
   </div>
 </body>
 

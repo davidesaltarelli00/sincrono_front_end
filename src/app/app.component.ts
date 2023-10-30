@@ -66,6 +66,22 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {}
 
+
+  goDown() {
+    document.getElementById('finePagina')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
+    });
+  }
+  goTop() {
+    document.getElementById('inizioPagina')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
+    });
+  }
+
   // getUserLogged() {
   //   const token = localStorage.getItem('token');
   //   this.profileBoxService.getData().subscribe(
