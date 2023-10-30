@@ -104,6 +104,7 @@ export class UtenteComponent implements OnInit {
     'Domenica',
   ];
 
+  day:any;
   numeroRigheDuplicate: number = 0;
   conteggioDuplicati: { [giorno: number]: number } = {};
   straordinari: any[] = [];
@@ -257,24 +258,31 @@ export class UtenteComponent implements OnInit {
     let nomeGiorno = this.datePipe.transform(data, 'EEEE'); // 'EEEE' restituirà il nome completo del giorno della settimana
     if(nomeGiorno==='Sunday'){
       nomeGiorno='Domenica';
+      this.day=nomeGiorno;
     }
     if(nomeGiorno==='Monday'){
       nomeGiorno='Lunedí';
+      this.day=nomeGiorno;
     }
     if(nomeGiorno==='Tuesday'){
       nomeGiorno='Martedí';
+      this.day=nomeGiorno;
     }
     if(nomeGiorno==='Wednesday'){
       nomeGiorno='Mercoledí';
+      this.day=nomeGiorno;
     }
     if(nomeGiorno==='Thursday'){
       nomeGiorno='Giovedí';
+      this.day=nomeGiorno;
     }
     if(nomeGiorno==='Friday'){
       nomeGiorno='Venerdí';
+      this.day=nomeGiorno;
     }
     if(nomeGiorno==='Saturday'){
       nomeGiorno='Sabato';
+      this.day=nomeGiorno;
     }
     return nomeGiorno;
   }
@@ -379,7 +387,7 @@ export class UtenteComponent implements OnInit {
     }
   }
 
-  isWeekend(giorno: string): boolean {
+  isWeekend(giorno: string):any {
     return giorno === 'Sabato' || giorno === 'Domenica';
   }
 

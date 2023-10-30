@@ -58,10 +58,10 @@
       </mat-toolbar>
     </div>
     <div class="container-fluid" *ngIf="!dettaglioSbagliato">
-      <div class="fixed-button-container">
+      <!-- <div class="fixed-button-container">
         <button mat-flat-button color="primary" (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-up fa-beat"></i></button>
         <button mat-flat-button color="primary" (click)="goDown()" matTooltip="Vai a fine pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-down fa-beat"></i></button>
-      </div>
+      </div> -->
 
       <div class="row">
         <div class="col-12">
@@ -69,8 +69,8 @@
           <mat-card style="text-align: center;">
             <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
             <h1 style="text-align: center">
-              Rapportino {{ user?.anagrafica?.nome }}
-              {{ user?.anagrafica?.cognome }}
+              Rapportino {{ user?.anagrafica?.nome |titlecase }}
+              {{ user?.anagrafica?.cognome |titlecase }}
             </h1>
           </mat-card>
         </div>
@@ -117,7 +117,7 @@
                           <strong>Nome</strong>
                         </td>
                         <td style="background-color: #ffff99; color: black">
-                          {{ user?.anagrafica?.nome }}
+                          {{ user?.anagrafica?.nome |titlecase }}
                         </td>
                         <td
                           style="
@@ -135,7 +135,7 @@
                           <strong>Cognome</strong>
                         </td>
                         <td style="background-color: #ffff99; color: black">
-                          {{ user?.anagrafica?.cognome }}
+                          {{ user?.anagrafica?.cognome |titlecase }}
                         </td>
                       </tr>
                     </tbody>
@@ -243,7 +243,7 @@
         <form #rapportinoForm="ngForm" >
             <div class="row container-form" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="border: 5px solid white;">
 
-             <div class="matrice"  [ngStyle]="{'background-color': isWeekend(getNomeGiorno(duplicazione.giorno)) ? 'red' : 'lightblue'}" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
+             <div class="matrice"  [ngStyle]="{'background-color': isWeekend(getNomeGiorno(duplicazione.giorno)) ? '#0d6efd' : 'lightblue'}" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
               <div class="col-1" style="margin: 1%;" >
                 <div class="form-group" >
                   <label for="giorno-{{ i }}{{j}}">Giorno </label>
@@ -361,6 +361,15 @@
                 </div>
               </div>
               <button [disabled]="rapportinoInviato || !giorno" class="btn btn-primary" (click)="salvaRigaRapportino(rapportinoForm)" > Salva riga <i class="fa fa-save"></i> </button>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <table class="table table-striped">
+                  <tr>
+                    <td style="background-color: #ffff99;">Giorni lavorati: {{giorniLavorati}}</td>
+                  </tr>
+                </table>
+              </div>
             </div>
          <div class="row">
           <div class="col-12" style="text-align: center;">
