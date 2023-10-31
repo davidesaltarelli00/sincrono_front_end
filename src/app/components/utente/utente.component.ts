@@ -125,6 +125,7 @@ export class UtenteComponent implements OnInit {
     'Sabato',
     'Domenica',
   ];
+  risultatoCheckFreeze: any;
   constructor(
     private activatedRoute: ActivatedRoute,
     private profileBoxService: ProfileBoxService,
@@ -539,8 +540,14 @@ export class UtenteComponent implements OnInit {
       .checkRapportinoInviato(this.token, body)
       .subscribe((result: any) => {
         if ((result as any).esito.code == 200) {
+          console.log("RESULT CHECKFREEZE: "+ JSON.stringify(result));
+          this.risultatoCheckFreeze=result['checkInviato'];
+          console.log(this.risultatoCheckFreeze);
           this.rapportinoInviato = true;
         } else {
+          console.log("RESULT CHECKFREEZE: "+ JSON.stringify(result));
+          this.risultatoCheckFreeze=result['checkInviato'];
+          console.log(this.risultatoCheckFreeze);
           this.rapportinoInviato = false;
         }
       });
@@ -743,7 +750,7 @@ export class UtenteComponent implements OnInit {
               message: (result as any).esito.target,
             },
           });
-          // console.log('RESPONSE INSERT RAPPORTINO:' + JSON.stringify(result));
+          console.log('RESPONSE INSERT RAPPORTINO:' + JSON.stringify(result));
           this.rapportinoInviato = true;
           this.tabellaEditabile = 'false';
         }
