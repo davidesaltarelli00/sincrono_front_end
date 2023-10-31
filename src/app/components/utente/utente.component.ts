@@ -138,7 +138,8 @@ export class UtenteComponent implements OnInit {
     private fb: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     private authSerice: AuthService,
-    private scroller: ViewportScroller
+    private scroller: ViewportScroller,
+    private cdRef: ChangeDetectorRef
   ) {
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -634,9 +635,10 @@ export class UtenteComponent implements OnInit {
           this.giorniUtili = result['rapportinoDto']['giorniUtili'];
           this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
           this.note = result['rapportinoDto']['note'];
-          console.log(
-            'Dati get rapportino:' + JSON.stringify(this.rapportinoDto)
-          );
+          // console.log(
+          //   'Dati get rapportino:' + JSON.stringify(this.rapportinoDto)
+          // );
+          this.cdRef.detectChanges();
           this.checkRapportinoInviato();
           if (this.note != null) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
