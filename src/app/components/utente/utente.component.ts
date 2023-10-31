@@ -94,7 +94,7 @@ export class UtenteComponent implements OnInit {
     'novembre',
     'dicembre',
   ];
-  giorni=[
+  giorni = [
     'Lunedí',
     'Martedí',
     'Mercoledí',
@@ -104,7 +104,7 @@ export class UtenteComponent implements OnInit {
     'Domenica',
   ];
 
-  day:any;
+  day: any;
   numeroRigheDuplicate: number = 0;
   conteggioDuplicati: { [giorno: number]: number } = {};
   straordinari: any[] = [];
@@ -115,6 +115,16 @@ export class UtenteComponent implements OnInit {
   duplicazioniGiornoDto: any[] = [];
   idUtente: any;
   error: any;
+  checkstraordinari = false;
+  giorniSettimana: string[] = [
+    'Lunedì',
+    'Martedì',
+    'Mercoledì',
+    'Giovedì',
+    'Venerdì',
+    'Sabato',
+    'Domenica',
+  ];
   constructor(
     private activatedRoute: ActivatedRoute,
     private profileBoxService: ProfileBoxService,
@@ -164,6 +174,11 @@ export class UtenteComponent implements OnInit {
     );
     this.showError = false; // Resetta l'errore quando l'utente inizia a digitare
   }
+
+  toggleCheckStraordinari(duplicazione: any) {
+    duplicazione.checkstraordinari = !duplicazione.checkstraordinari;
+  }
+
 
   selectAzienda(azienda: string) {
     if (this.aziendeClienti.includes(azienda)) {
@@ -256,33 +271,33 @@ export class UtenteComponent implements OnInit {
 
     const data = new Date(annoCorrente, meseCorrente - 1, numeroGiorno); // Sottrai 1 al mese perché JavaScript inizia da 0 per gennaio
     let nomeGiorno = this.datePipe.transform(data, 'EEEE'); // 'EEEE' restituirà il nome completo del giorno della settimana
-    if(nomeGiorno==='Sunday'){
-      nomeGiorno='Domenica';
-      this.day=nomeGiorno;
+    if (nomeGiorno === 'Sunday') {
+      nomeGiorno = 'Domenica';
+      this.day = nomeGiorno;
     }
-    if(nomeGiorno==='Monday'){
-      nomeGiorno='Lunedí';
-      this.day=nomeGiorno;
+    if (nomeGiorno === 'Monday') {
+      nomeGiorno = 'Lunedí';
+      this.day = nomeGiorno;
     }
-    if(nomeGiorno==='Tuesday'){
-      nomeGiorno='Martedí';
-      this.day=nomeGiorno;
+    if (nomeGiorno === 'Tuesday') {
+      nomeGiorno = 'Martedí';
+      this.day = nomeGiorno;
     }
-    if(nomeGiorno==='Wednesday'){
-      nomeGiorno='Mercoledí';
-      this.day=nomeGiorno;
+    if (nomeGiorno === 'Wednesday') {
+      nomeGiorno = 'Mercoledí';
+      this.day = nomeGiorno;
     }
-    if(nomeGiorno==='Thursday'){
-      nomeGiorno='Giovedí';
-      this.day=nomeGiorno;
+    if (nomeGiorno === 'Thursday') {
+      nomeGiorno = 'Giovedí';
+      this.day = nomeGiorno;
     }
-    if(nomeGiorno==='Friday'){
-      nomeGiorno='Venerdí';
-      this.day=nomeGiorno;
+    if (nomeGiorno === 'Friday') {
+      nomeGiorno = 'Venerdí';
+      this.day = nomeGiorno;
     }
-    if(nomeGiorno==='Saturday'){
-      nomeGiorno='Sabato';
-      this.day=nomeGiorno;
+    if (nomeGiorno === 'Saturday') {
+      nomeGiorno = 'Sabato';
+      this.day = nomeGiorno;
     }
     return nomeGiorno;
   }
@@ -387,10 +402,9 @@ export class UtenteComponent implements OnInit {
     }
   }
 
-  isWeekend(giorno: string):any {
+  isWeekend(giorno: string): any {
     return giorno === 'Sabato' || giorno === 'Domenica';
   }
-
 
   onChangeMalattia(event: any, i: number) {
     const target = event.target as HTMLInputElement;
@@ -642,17 +656,17 @@ export class UtenteComponent implements OnInit {
   }
 
   goDown() {
-    document.getElementById("finePagina")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "nearest"
+    document.getElementById('finePagina')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
     });
   }
   goTop() {
-    document.getElementById("inizioPagina")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "nearest"
+    document.getElementById('inizioPagina')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
     });
   }
 
@@ -752,6 +766,7 @@ export class UtenteComponent implements OnInit {
             };
           }
         ),
+        // giorno:giorno.giorno,
         ferie: giorno.ferie,
         malattie: giorno.malattie,
         permessi: giorno.permessi,
@@ -810,7 +825,8 @@ export class UtenteComponent implements OnInit {
         },
         (error: any) => {
           console.error(
-            'Errore durante il salvataggio del rapportino: ' + JSON.stringify(error)
+            'Errore durante il salvataggio del rapportino: ' +
+              JSON.stringify(error)
           );
         }
       );
