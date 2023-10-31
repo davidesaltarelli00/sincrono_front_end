@@ -180,7 +180,6 @@ export class UtenteComponent implements OnInit {
     duplicazione.checkstraordinari = !duplicazione.checkstraordinari;
   }
 
-
   selectAzienda(azienda: string) {
     if (this.aziendeClienti.includes(azienda)) {
       this.giorno.cliente = azienda;
@@ -768,11 +767,12 @@ export class UtenteComponent implements OnInit {
             };
           }
         ),
-        // giorno:giorno.giorno,
         ferie: giorno.ferie,
         malattie: giorno.malattie,
         permessi: giorno.permessi,
         note: giorno.note,
+        numeroGiorno: giorno.numeroGiorno,
+        nomeGiorno: giorno.nomeGiorno,
       };
     });
 
@@ -855,6 +855,8 @@ export class UtenteComponent implements OnInit {
         malattie: giorno.malattie,
         permessi: giorno.permessi,
         note: giorno.note,
+        numeroGiorno: giorno.numeroGiorno,
+        nomeGiorno: giorno.nomeGiorno,
       };
     });
 
