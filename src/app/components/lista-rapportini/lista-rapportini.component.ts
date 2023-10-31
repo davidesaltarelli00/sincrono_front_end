@@ -171,7 +171,7 @@ export class ListaRapportiniComponent implements OnInit {
     console.log(index);
   }
 
-  onChangecheckFreeze(event: any, index: number) {
+  onChangecheckFreeze(event: any, index: number, anno: number, mese: number) {
     const isChecked = event.target.checked;
     //console.log(`Valore del checkbox al rapportino numero ${index} è ${isChecked}`);
 
@@ -184,6 +184,9 @@ export class ListaRapportiniComponent implements OnInit {
         let body = {
           rapportino: {
             id: index,
+            codiceFiscale: this.codiceFiscale,
+            anno: anno,
+            mese: mese,
             checkFreeze: this.checkFreeze,
           },
         };
@@ -220,6 +223,9 @@ export class ListaRapportiniComponent implements OnInit {
         let body = {
           rapportino: {
             id: index,
+            codiceFiscale: this.codiceFiscale,
+            anno: anno,
+            mese: mese,
             checkFreeze: this.checkFreeze,
           },
         };

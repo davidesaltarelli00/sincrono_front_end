@@ -248,7 +248,7 @@
        <div *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
         <mat-card-content>
           <div class="row">
-            <div class="col-3">
+            <!-- <div class="col-3">
              <div class="form-group">
               <label for="giorno-{{ i }}{{j}}">Giorno </label>
               <input
@@ -260,21 +260,21 @@
                [disabled]="rapportinoInviato"
                [(ngModel)]="duplicazione.giorno" required>
              </div>
-            </div>
+            </div> -->
             <div class="col-6">
               <div class="form-group">
                 <label for="cliente-{{ i }}{{j}}">Cliente</label>
-                <select [disabled]="!duplicazione.giorno || rapportinoInviato || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)">
+                <select [disabled]="rapportinoInviato || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)">
                   <option value=" " selected></option>
                   <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
                 </select>
                 <div *ngIf="!duplicazione.cliente && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-6">
               <div class="form-group">
                 <label for="ore-ordinarie-{{ i }}{{j}}">Ore</label>
-                  <input [disabled]="!duplicazione.giorno || rapportinoInviato || giorno.malattie || giorno.ferie"
+                  <input [disabled]=" rapportinoInviato || giorno.malattie || giorno.ferie"
                   [ngClass]="{'has-error': !duplicazione.oreOrdinarie && duplicazione.giorno}"
                   type="number" class="form-control"
                   step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
@@ -291,7 +291,7 @@
             <div class="col-4">
              <div class="form-group">
               <label for="fascia1-{{ i }}{{j}}">18:00-20:00</label>
-              <input [disabled]="!duplicazione.giorno || rapportinoInviato || giorno.malattie || giorno.ferie"
+              <input [disabled]=" rapportinoInviato || giorno.malattie || giorno.ferie"
               type="number" class="form-control"
               step="0.5" min="0" max="2"
               id="fascia1-{{ i }}{{j}}" name="fascia1-{{ i }}{{j}}"
@@ -301,7 +301,7 @@
             <div class="col-4">
              <div class="form-group">
               <label for="fascia2-{{ i }}{{j}}">20:00-22:00</label>
-              <input [disabled]="!duplicazione.giorno || rapportinoInviato || giorno.malattie || giorno.ferie"
+              <input [disabled]=" rapportinoInviato || giorno.malattie || giorno.ferie"
               type="number" class="form-control"
               step="0.5" min="0" max="2"
               id="fascia2-{{ i }}" name="fascia2-{{ i }}{{j}}"
@@ -311,7 +311,7 @@
             <div class="col-4" >
               <div class="form-group">
                 <label for="fascia3-{{ i }}{{j}}">22:00-09:00</label>
-                <input [disabled]="!duplicazione.giorno || rapportinoInviato || giorno.malattie || giorno.ferie"
+                <input [disabled]=" rapportinoInviato || giorno.malattie || giorno.ferie"
                 type="number" class="form-control"
                 step="0.5" min="0" max="13"
                 id="fascia3-{{ i }}{{j}}" name="fascia3-{{ i }}{{j}}"
@@ -324,10 +324,10 @@
         <mat-card-footer>
           <div class="row">
             <div class="col-6">
-              <button style="float: right;" [disabled]="rapportinoInviato || !duplicazione.giorno || giorno.malattie || giorno.ferie" class="btn btn-warning" id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga" ><i  class="fa fa-clone"></i></button> <br>
+              <button style="float: right;" [disabled]="rapportinoInviato ||  giorno.malattie || giorno.ferie" class="btn btn-warning" id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga" ><i  class="fa fa-clone"></i></button> <br>
             </div>
             <div class="col-6">
-              <button [disabled]="rapportinoInviato || !duplicazione.giorno || giorno.malattie || giorno.ferie"  class="btn btn-danger" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"  ><i  class="fa fa-trash"></i></button>
+              <button [disabled]="rapportinoInviato || giorno.malattie || giorno.ferie"  class="btn btn-danger" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"  ><i  class="fa fa-trash"></i></button>
             </div>
           </div>
         </mat-card-footer>

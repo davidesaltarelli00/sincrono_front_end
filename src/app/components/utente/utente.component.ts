@@ -206,22 +206,22 @@ export class UtenteComponent implements OnInit {
 
   duplicaRiga(index: number, j: number) {
     let count = 0;
-    for (let i = 0; i < this.rapportinoDto.length; i++) {
-      //itero tutto il rapportino
-      for (
-        let y = 0;
-        y < this.rapportinoDto[i].duplicazioniGiornoDto.length;
-        y++
-      ) {
-        //itero tutti i giorni duplicati
-        if (
-          this.rapportinoDto[index].duplicazioniGiornoDto[0].giorno ==
-          this.rapportinoDto[i].duplicazioniGiornoDto[y].giorno
-        ) {
-          count++;
-        }
-      }
-    }
+    // for (let i = 0; i < this.rapportinoDto.length; i++) {
+    //   //itero tutto il rapportino
+    //   for (
+    //     let y = 0;
+    //     y < this.rapportinoDto[i].duplicazioniGiornoDto.length;
+    //     y++
+    //   ) {
+    //     //itero tutti i giorni duplicati
+    //     if (
+    //       this.rapportinoDto[index].duplicazioniGiornoDto[0].giorno ==
+    //       this.rapportinoDto[i].duplicazioniGiornoDto[y].giorno
+    //     ) {
+    //       count++;
+    //     }
+    //   }
+    // }
     console.log(JSON.stringify(this.rapportinoDto));
     if (count < this.aziendeClienti.length) {
       const copiaGiorno = JSON.parse(
@@ -765,7 +765,7 @@ export class UtenteComponent implements OnInit {
         duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
           (duplicazione: any) => {
             return {
-              giorno: duplicazione.giorno,
+              // giorno: duplicazione.giorno,
               cliente: duplicazione.cliente,
               oreOrdinarie: duplicazione.oreOrdinarie,
               fascia1: duplicazione.fascia1,
@@ -849,7 +849,7 @@ export class UtenteComponent implements OnInit {
         duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
           (duplicazione: any) => {
             return {
-              giorno: duplicazione.giorno,
+              // giorno: duplicazione.giorno,
               cliente: duplicazione.cliente,
               oreOrdinarie: duplicazione.oreOrdinarie,
               fascia1: duplicazione.fascia1,
@@ -901,7 +901,7 @@ export class UtenteComponent implements OnInit {
           if ((result as any).esito.code === 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                title: 'Riga salvata correttamente.',
+                title: 'Cella salvata correttamente.',
                 message: (result as any).esito.target,
               },
             });

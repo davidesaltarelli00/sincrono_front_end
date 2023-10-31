@@ -145,7 +145,7 @@
               <td>{{ rapportinoNonFreezato.mese }}</td>
               <td>
                 <label class="switch">
-                  <input (change)="onChangecheckFreeze($event, rapportinoNonFreezato.id)" class="form-check-input"
+                  <input (change)="onChangecheckFreeze($event, rapportinoNonFreezato.id,rapportinoNonFreezato.anno, rapportinoNonFreezato.mese)" class="form-check-input"
                     type="checkbox" [checked]="rapportinoNonFreezato.checkFreeze">
                   <span class="slider"></span>
                 </label>
@@ -200,7 +200,7 @@
               <td>{{ rapportinoFreezato.mese }}</td>
               <td>
                 <label class="switch">
-                  <input (change)="onChangecheckFreeze($event, rapportinoFreezato.id)" class="form-check-input"
+                  <input (change)="onChangecheckFreeze($event, rapportinoFreezato.id,rapportinoFreezato.anno, rapportinoFreezato.mese)" class="form-check-input"
                     type="checkbox" [checked]="rapportinoFreezato.checkFreeze">
                   <span class="slider"></span>
                 </label>
