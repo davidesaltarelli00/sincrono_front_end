@@ -58,10 +58,10 @@
       </mat-toolbar>
     </div>
     <div class="container-fluid" *ngIf="!dettaglioSbagliato">
-      <!-- <div class="fixed-button-container">
-        <button mat-flat-button color="primary" (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-up fa-beat"></i></button>
-        <button mat-flat-button color="primary" (click)="goDown()" matTooltip="Vai a fine pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-down fa-beat"></i></button>
-      </div> -->
+      <!-- <div class="fixed-button-container" *ngIf="esitoCorretto" > -->
+        <!-- <button mat-flat-button color="primary" (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-up fa-beat"></i></button> -->
+        <!-- <button mat-flat-button color="primary" (click)="goDown()" matTooltip="Vai a fine pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-down fa-beat"></i></button> -->
+      <!-- </div> -->
 
       <div class="row">
         <div class="col-12">
@@ -248,19 +248,6 @@
        <div *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
         <mat-card-content>
           <div class="row">
-            <!-- <div class="col-3">
-             <div class="form-group">
-              <label for="giorno-{{ i }}{{j}}">Giorno </label>
-              <input
-              [min]="1"
-              [max]="rapportinoDto.length"
-               [ngClass]="{'has-error': !duplicazione.giorno}"
-               type="number" class="form-control"
-               id="giorno-{{ i }}{{j}}" name="giorno-{{ i }}{{j}}"
-               [disabled]="rapportinoInviato"
-               [(ngModel)]="duplicazione.giorno" required>
-             </div>
-            </div> -->
             <div class="col-6">
               <div class="form-group">
                 <label for="cliente-{{ i }}{{j}}">Cliente</label>
@@ -275,12 +262,13 @@
               <div class="form-group">
                 <label for="ore-ordinarie-{{ i }}{{j}}">Ore</label>
                   <input [disabled]=" rapportinoInviato || giorno.malattie || giorno.ferie"
-                  [ngClass]="{'has-error': !duplicazione.oreOrdinarie && duplicazione.giorno}"
+                  [ngClass]="{'has-error': !isValidOreOrdinarie(duplicazione.oreOrdinarie)}"
                   type="number" class="form-control"
                   step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
                   id="ore-ordinarie-{{ i }}{{j}}" name="ore-ordinarie-{{ i }}{{j}}"
                   [(ngModel)]="duplicazione.oreOrdinarie">
-                  <div *ngIf="!duplicazione.oreOrdinarie && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
+                  <div *ngIf="!duplicazione.oreOrdinarie" class="error-message">Campo obbligatorio</div>
+                  <div *ngIf="!isValidOreOrdinarie(duplicazione.oreOrdinarie)" class="error-message">Valore non valido.</div>
               </div>
             </div>
           </div>
@@ -370,17 +358,41 @@
           <div class="col-6">
         <button [disabled]="rapportinoInviato || !giorno" class="btn btn-primary" (click)="salvaRigaRapportino(giorno)" > Salva riga <i class="fa fa-save"></i> </button>
           </div>
-          <div class="col-6">
-            Giorni lavorati: {{giorniLavorati}}
-          </div>
         </div>
       </mat-card-footer>
       </mat-card>
        <br>
-
       </div>
       <div class="row">
         <div class="col-12">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Tot giorni ferie</th>
+                <th>Tot ore permesso</th>
+                <th>Tot giorni malattia</th>
+                <th>Tot ore lavorate</th>
+                <th>Tot ore straordinari</th>
+                <th>Tot giorni lavorati</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{totaleFerie}}</td>
+                <td>{{totaleOrePermessi}}</td>
+                <td>{{totaleMalattia}}</td>
+              <td > {{totaleOreLavorate}}</td>
+              <td>{{totaleStraordinari}}</td>
+              <td >{{giorniLavorati}} / {{giorniUtili}} </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+       </div>
+       <div class="row">
+        <div class="col-6">
+          <button [disabled]="rapportinoInviato || !giorno" class="btn btn-primary" (click)="salvaRapportino(giorno)" > Salva rapportino <i class="fa fa-save"></i> </button>
+          &nbsp;
           <button class="btn btn-warning" [disabled]="risultatoCheckFreeze" (click)="inviaRapportino()" >Invia rapportino <i class="fa fa-file" ></i></button>
         </div>
        </div>

@@ -126,6 +126,12 @@ export class UtenteComponent implements OnInit {
     'Domenica',
   ];
   risultatoCheckFreeze: any;
+  //totali
+  totaleOreLavorate: any;
+  totaleStraordinari: any;
+  totaleFerie: any;
+  totaleMalattia: any;
+  totaleOrePermessi: any;
   constructor(
     private activatedRoute: ActivatedRoute,
     private profileBoxService: ProfileBoxService,
@@ -313,8 +319,6 @@ export class UtenteComponent implements OnInit {
       this.getUserLogged();
       this.getUserRole();
       this.getAnagraficaRapportino();
-
-      // this.getRapportinoByMeseAnnoCorrenti();
     } else {
       if (this.error.status === 403) {
         const dialogRef = this.dialog.open(AlertDialogComponent, {
@@ -540,13 +544,13 @@ export class UtenteComponent implements OnInit {
       .checkRapportinoInviato(this.token, body)
       .subscribe((result: any) => {
         if ((result as any).esito.code == 200) {
-          console.log("RESULT CHECKFREEZE: "+ JSON.stringify(result));
-          this.risultatoCheckFreeze=result['checkInviato'];
+          console.log('RESULT CHECKFREEZE: ' + JSON.stringify(result));
+          this.risultatoCheckFreeze = result['checkInviato'];
           console.log(this.risultatoCheckFreeze);
           this.rapportinoInviato = true;
         } else {
-          console.log("RESULT CHECKFREEZE: "+ JSON.stringify(result));
-          this.risultatoCheckFreeze=result['checkInviato'];
+          console.log('RESULT CHECKFREEZE: ' + JSON.stringify(result));
+          this.risultatoCheckFreeze = result['checkInviato'];
           console.log(this.risultatoCheckFreeze);
           this.rapportinoInviato = false;
         }
@@ -644,8 +648,14 @@ export class UtenteComponent implements OnInit {
           // console.log(
           //   'Dati get rapportino:' + JSON.stringify(this.rapportinoDto)
           // );
+          this.calcolaTotaleOreLavorate();
+          this.calcolaTotaleStraordinari();
+          this.calcolaTotaleFerie();
+          this.calcolaTotaleMalattia();
+          this.calcolaTotaleOrePermessi();
           this.cdRef.detectChanges();
           this.checkRapportinoInviato();
+
           if (this.note != null) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
@@ -914,6 +924,81 @@ export class UtenteComponent implements OnInit {
           );
         }
       );
+  }
+
+  isValidOreOrdinarie(value: number) {
+    return value >= 0.5 && value <= 8;
+  }
+
+  calcolaTotaleOreLavorate() {
+    let totale = 0;
+
+    for (const giorno of this.rapportinoDto) {
+      for (const duplicazione of giorno.duplicazioniGiornoDto) {
+        if (duplicazione.oreOrdinarie) {
+          totale += duplicazione.oreOrdinarie;
+        }
+      }
+    }
+
+    this.totaleOreLavorate = totale;
+  }
+
+  calcolaTotaleFerie() {
+    let totale = 0;
+
+    for (const giorno of this.rapportinoDto) {
+      if (giorno.ferie) {
+        totale += 1;
+      }
+    }
+
+    this.totaleFerie = totale;
+  }
+
+  calcolaTotaleMalattia() {
+    let totale = 0;
+
+    for (const giorno of this.rapportinoDto) {
+      if (giorno.malattie) {
+        totale += 1;
+      }
+    }
+
+    this.totaleMalattia = totale;
+  }
+
+  calcolaTotaleStraordinari() {
+    let totale = 0;
+
+    for (const giorno of this.rapportinoDto) {
+      for (const duplicazione of giorno.duplicazioniGiornoDto) {
+        // Assicurati che i campi straordinari siano definiti (potrebbero essere null o undefined)
+        if (duplicazione.fascia1) {
+          totale += duplicazione.fascia1;
+        }
+        if (duplicazione.fascia2) {
+          totale += duplicazione.fascia2;
+        }
+        if (duplicazione.fascia3) {
+          totale += duplicazione.fascia3;
+        }
+      }
+    }
+
+    this.totaleStraordinari = totale;
+  }
+
+  calcolaTotaleOrePermessi() {
+    let totale = 0;
+
+    for (const giorno of this.rapportinoDto) {
+      if (giorno.permessi) {
+        totale += giorno.permessi; // Aggiungi le ore di permesso al totale
+      }
+    }
+
+    this.totaleOrePermessi = totale;
   }
 
   onMeseSelectChange(event: any) {
