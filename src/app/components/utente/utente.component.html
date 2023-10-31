@@ -355,9 +355,12 @@
       </div>
       <mat-card-footer style="text-align: center;">
         <div class="row">
-          <div class="col-6">
-        <button [disabled]="rapportinoInviato || !giorno" class="btn btn-primary" (click)="salvaRigaRapportino(giorno)" > Salva riga <i class="fa fa-save"></i> </button>
+          <div class="col-12">
+        <button [disabled]="rapportinoInviato" mat-flat-button color="primary"  (click)="salvaRigaRapportino(giorno)" > Salva riga <i class="fa fa-save"></i> </button>
           </div>
+          <!-- <div class="col-6">
+            <button [disabled]="rapportinoInviato " class="btn btn-danger" (click)="svuotaCampi()" > Svuota riga <i class="fa fa-undo"></i> </button>
+          </div> -->
         </div>
       </mat-card-footer>
       </mat-card>

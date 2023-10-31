@@ -944,6 +944,22 @@ export class UtenteComponent implements OnInit {
     this.totaleOreLavorate = totale;
   }
 
+  svuotaCampi() {
+    for (const giorno of this.rapportinoDto) {
+      for (const duplicazione of giorno.duplicazioniGiornoDto) {
+        duplicazione.cliente='';
+        duplicazione.oreOrdinarie=null;
+        duplicazione.fascia1=null;
+        duplicazione.fascia2=null;
+        duplicazione.fascia3=null;
+      }
+      giorno.permessi = null;
+      giorno.note = '';
+      giorno.ferie = false;
+      giorno.malattie = false;
+    }
+  }
+
   calcolaTotaleFerie() {
     let totale = 0;
 
