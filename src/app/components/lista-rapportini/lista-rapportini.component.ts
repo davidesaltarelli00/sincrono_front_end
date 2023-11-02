@@ -13,6 +13,9 @@ import { RapportinoDataService } from '../modale-dettaglio-rapportino/Rapportino
 import { MenuService } from '../menu.service';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ContrattoService } from '../contratto/contratto-service';
+import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 
 @Component({
   selector: 'app-lista-rapportini',
@@ -58,6 +61,69 @@ export class ListaRapportiniComponent implements OnInit {
   itemsPerPage2: number = 20;
   pageData2: any[] = [];
   idUtente: any;
+  getAllRapportiniNotFreezeCorretto=false;
+  //tutto il necessario per i filtri
+  tipiContratti: any = [];
+  livelliContratti: any = [];
+  tipiAziende: any = [];
+  tipiCcnl: any = [];
+  contrattiNazionali: any = [];
+  tipologicaCanaliReclutamento: any[] = [];
+  motivazioniFineRapporto: any[] = [];
+  ccnLSelezionato: any;
+  numeroMensilitaCCNL: any;
+  idCCNLselezionato: any;
+  commesse!: FormArray;
+
+  filterAnagraficaDto: FormGroup = new FormGroup({
+    anagrafica: new FormGroup({
+      nome: new FormControl(null),
+      cognome: new FormControl(null),
+      // attivo: new FormControl(true),
+      attesaLavori: new FormControl(null),
+      tipoAzienda: new FormGroup({
+        id: new FormControl(null),
+        descrizione: new FormControl(null),
+      }),
+    }),
+
+    contratto: new FormGroup({
+      ralAnnua: new FormControl(null),
+      dataAssunzione: new FormControl(null),
+      dataFineRapporto: new FormControl(null),
+
+      tipoLivelloContratto: new FormGroup({
+        id: new FormControl(null),
+      }),
+      tipoCcnl: new FormGroup({
+        id: new FormControl(null),
+      }),
+      tipoContratto: new FormGroup({
+        id: new FormControl(null),
+      }),
+      tipoAzienda: new FormGroup({
+        id: new FormControl(null),
+      }),
+      tipoCanaleReclutamento: new FormGroup({
+        id: new FormControl(null),
+      }),
+      tipoCausaFineRapporto: new FormGroup({
+        id: new FormControl(null),
+      }),
+    }),
+    commessa: new FormGroup({
+      tipoAziendaCliente: new FormGroup({
+        id: new FormControl(''),
+        descrizione: new FormControl(''),
+      }),
+    }),
+  });
+  aziendeClienti: any[] = [];
+  lista: any[] = [];
+  elencoLivelliCCNL: any[] = [];
+  inseritoContrattoIndeterminato: any;
+  messaggio: any;
+  mostraFiltri = false;
 
   constructor(
     private authService: AuthService,
@@ -65,10 +131,13 @@ export class ListaRapportiniComponent implements OnInit {
     private dialog: MatDialog,
     private http: HttpClient,
     private router: Router,
+    private formBuilder: FormBuilder,
     private rapportinoService: RapportinoService,
     private listaRapportiniService: ListaRapportiniService,
     private rapportinoDataService: RapportinoDataService,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private contrattoService: ContrattoService,
+    private anagraficaDtoService: AnagraficaDtoService
   ) {
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -95,17 +164,372 @@ export class ListaRapportiniComponent implements OnInit {
     ) {
       this.mobile = true;
     }
+
+    this.filterAnagraficaDto = this.formBuilder.group({
+      anagrafica: new FormGroup({
+        nome: new FormControl(null),
+        cognome: new FormControl(null),
+        // attivo: new FormControl(true),
+        attesaLavori: new FormControl(null),
+        tipoAzienda: new FormGroup({
+          id: new FormControl(null),
+          descrizione: new FormControl(null),
+        }),
+      }),
+      contratto: new FormGroup({
+        ralAnnua: new FormControl(null),
+        dataAssunzione: new FormControl(null),
+        dataFineRapporto: new FormControl(null),
+        tipoLivelloContratto: new FormGroup({
+          id: new FormControl(),
+          livello: new FormControl(null),
+        }),
+        tipoCcnl: new FormGroup({
+          id: new FormControl(),
+          descrizione: new FormControl(null),
+        }),
+        tipoContratto: new FormGroup({
+          id: new FormControl(),
+          descrizione: new FormControl(null),
+        }),
+        tipoAzienda: new FormGroup({
+          id: new FormControl(),
+          descrizione: new FormControl(null),
+        }),
+        tipoCanaleReclutamento: new FormGroup({
+          id: new FormControl(),
+          descrizione: new FormControl(null),
+        }),
+        tipoCausaFineRapporto: new FormGroup({
+          id: new FormControl(),
+        }),
+      }),
+      commesse: this.formBuilder.array([]),
+    });
+
+    this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
   }
 
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
+      this.caricaAziendeClienti();
+      this.caricaTipoContratto();
+      this.caricaTipoAzienda();
+      this.caricaContrattoNazionale();
+      this.caricaTipoCanaleReclutamento();
+      this.caricaTipoCausaFineRapporto();
+
+      const commessaFormGroup = this.creaFormCommessa();
+      this.commesse.push(commessaFormGroup);
       // this.getAllRapportiniNonFreezati();
       // this.getAllRapportiniFreezati();
     }
   }
 
+  creaFormCommessa(): FormGroup {
+    return this.formBuilder.group({
+      tipoAziendaCliente: new FormGroup({
+        id: new FormControl(''),
+        descrizione: new FormControl(''),
+      }),
+    });
+  }
+
+  caricaTipoCausaFineRapporto() {
+    this.anagraficaDtoService
+      .caricaTipoCausaFineRapporto(localStorage.getItem('token'))
+      .subscribe(
+        (res: any) => {
+          this.motivazioniFineRapporto = (res as any)['list'];
+          console.log('Elenco motivazioni fine rapporto:', JSON.stringify(res));
+        },
+        (error: any) => {
+          console.log(
+            'Errore durante il caricamento della tipologica Motivazione fine rapporto:',
+            JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+  caricaTipoCanaleReclutamento() {
+    this.anagraficaDtoService
+      .caricaTipoCanaleReclutamento(localStorage.getItem('token'))
+      .subscribe(
+        (res: any) => {
+          this.tipologicaCanaliReclutamento = (res as any)['list'];
+          console.log('ElencoCanali reclutamento:' + JSON.stringify(res));
+        },
+        (error: any) => {
+          console.log(
+            'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+  onChangeAziendaCliente(event: any) {
+    const selectedValue = parseInt(event.target.value, 10);
+
+    if (!isNaN(selectedValue)) {
+      const selectedObject = this.tipiAziende.find(
+        (azienda: any) => azienda.id === selectedValue
+      );
+
+      if (selectedObject) {
+        console.log('Azienda cliente selezionata: ', selectedObject);
+      } else {
+        console.log('Azienda non trovata nella lista');
+      }
+    } else {
+      console.log('Valore non valido o azienda non selezionata');
+    }
+  }
+
+  // onChangeAttivo(event: any) {
+  //   const target = event.target as HTMLInputElement;
+  //   if (target) {
+  //     const isChecked = target.checked;
+  //     if (isChecked) {
+  //       console.log('Checkbox selezionata, il valore è true');
+  //     } else {
+  //       console.log('Checkbox deselezionata, il valore è false');
+  //     }
+  //   }
+  // }
+
+  onTipoContrattoChange(event: Event) {
+    const selectedTipoContratto = (event.target as HTMLSelectElement).value;
+    const dataFineRapportoControl = this.filterAnagraficaDto.get(
+      'contratto.dataFineRapporto'
+    );
+
+    if (dataFineRapportoControl) {
+      if (selectedTipoContratto === 'Indeterminato') {
+        console.log('Selezionato contratto: ' + selectedTipoContratto);
+        this.inseritoContrattoIndeterminato = false;
+        dataFineRapportoControl.disable();
+      } else {
+        console.log('Selezionato contratto: ' + selectedTipoContratto);
+        dataFineRapportoControl.enable();
+        this.inseritoContrattoIndeterminato = true;
+      }
+    }
+  }
+
+  caricaAziendeClienti() {
+    this.contrattoService.getAllAziendaCliente(this.token).subscribe(
+      (result: any) => {
+        console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+        this.aziendeClienti = (result as any)['list'];
+      },
+      (error: any) => {
+        console.error(
+          'errore durante il caricamento dei nomi azienda:' + error
+        );
+      }
+    );
+  }
+
+  caricaTipoContratto() {
+    this.contrattoService
+      .getTipoContratto(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        this.tipiContratti = (result as any)['list'];
+      });
+  }
+
+  caricaTipoAzienda() {
+    this.contrattoService
+      .getTipoAzienda(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        this.tipiAziende = (result as any)['list'];
+      });
+  }
+
+  caricaContrattoNazionale() {
+    this.contrattoService
+      .getContrattoNazionale(localStorage.getItem('token'))
+      .subscribe((result: any) => {
+        this.tipiCcnl = (result as any)['list'];
+      });
+  }
+
+  checkCommesse(
+    filtroCliente: any,
+    filtroAzienda: any,
+    filtroNominativo: any,
+    commesse: any
+  ) {
+    var check = false;
+
+    if (commesse.length == 0) {
+      return check;
+    } else {
+      for (const element of commesse) {
+        if (
+          element.cliente == filtroCliente ||
+          element.azienda == filtroAzienda ||
+          element.nominativo == filtroNominativo
+        ) {
+          check = true;
+        }
+      }
+    }
+
+    return check;
+  }
+
+  onChangeTipoContrattoValue(event: any) {
+    const selectedValue = parseInt(event.target.value, 10);
+
+    const livelliCCNL = this.filterAnagraficaDto.get(
+      'contratto.tipoLivelloContratto.id'
+    );
+
+    if (!isNaN(selectedValue)) {
+      // Cerca l'opzione selezionata nei contratti nazionali
+      const selectedOption = this.tipiCcnl.find(
+        (canale: any) => canale.id === selectedValue
+      );
+
+      if (selectedOption) {
+        console.log('Opzione selezionata: ', selectedOption);
+        this.idCCNLselezionato = selectedOption.descrizione;
+        livelliCCNL?.enable();
+
+        this.anagraficaDtoService
+          .changeCCNL(localStorage.getItem('token'), this.idCCNLselezionato)
+          .subscribe(
+            (response: any) => {
+              console.log(
+                'RESPONSE NUOVA LISTA LIVELLI CCNL:' + JSON.stringify(response)
+              );
+              this.elencoLivelliCCNL = response.list;
+              console.log(
+                '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
+                  JSON.stringify(this.elencoLivelliCCNL)
+              );
+            },
+            (error: any) => {
+              console.error(
+                'Errore durante il caricamento dei livelli di contratto: ' +
+                  error
+              );
+            }
+          );
+      } else {
+        console.log('Opzione non trovata ');
+      }
+    } else {
+      console.log('Valore non valido ');
+    }
+  }
+
+  filterListNotFreeze(value: any) {
+    const removeEmpty = (obj: any) => {
+      Object.keys(obj).forEach((key) => {
+        if (obj[key] && typeof obj[key] === 'object') {
+          removeEmpty(obj[key]);
+          // Rimuovi l'array se è un array vuoto o un oggetto vuoto
+          if (Array.isArray(obj[key]) && obj[key].length === 0) {
+            delete obj[key];
+          } else if (Object.keys(obj[key]).length === 0) {
+            delete obj[key];
+          }
+        } else if (obj[key] === '' || obj[key] === null) {
+          delete obj[key];
+        }
+        if (obj.anagrafica && Object.keys(obj.anagrafica).length === 0) {
+          delete obj.anagrafica;
+        }
+        if (obj.contratto && Object.keys(obj.contratto).length === 0) {
+          delete obj.contratto;
+        }
+        if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
+          delete obj.tipoContratto;
+        }
+        if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
+          delete obj.tipoAzienda;
+        }
+        if (obj.tipoCcnl && Object.keys(obj.tipoCcnl).length === 0) {
+          delete obj.tipoCcnl;
+        }
+        if (
+          obj.tipoLivelloContratto &&
+          Object.keys(obj.tipoLivelloContratto).length === 0
+        ) {
+          delete obj.tipoLivelloContratto;
+        }
+
+        if (
+          obj.tipoCanaleReclutamento &&
+          Object.keys(obj.tipoCanaleReclutamento).length === 0
+        ) {
+          delete obj.tipoCanaleReclutamento;
+        }
+        if (
+          obj.tipoCausaFineRapporto &&
+          Object.keys(obj.tipoCausaFineRapporto).length === 0
+        ) {
+          delete obj.tipoCausaFineRapporto;
+        }
+      });
+    };
+
+    removeEmpty(this.filterAnagraficaDto.value);
+    const body = {
+      anagraficaDto: this.filterAnagraficaDto.value,
+      anno: this.selectedAnno,
+      mese: this.selectedMese,
+    };
+    console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
+
+    this.listaRapportiniService
+      .filterNotFreeze(localStorage.getItem('token'), body)
+      .subscribe(
+        (result) => {
+          if ((result as any).esito.code != 200) {
+            alert(
+              'Qualcosa é andato storto\n' + ': ' + (result as any).esito.target
+            );
+          } else {
+            if (Array.isArray(result.list)) {
+              this.pageData = result.list;
+            } else {
+              this.pageData = [];
+              this.messaggio =
+                'Nessun risultato trovato per i filtri inseriti, riprova.';
+            }
+            console.log(
+              'Trovati i seguenti risultati: ' + JSON.stringify(result)
+            );
+          }
+        },
+        (error: any) => {
+          console.log('Si é verificato un errore: ' + error);
+        }
+      );
+  }
+
+  annullaFiltri() {
+    this.anagraficaDtoService
+      .listAnagraficaDto(localStorage.getItem('token'))
+      .subscribe((resp: any) => {
+        this.lista = resp.list;
+        location.reload();
+      });
+  }
+
+  reset() {
+    this.filterAnagraficaDto.reset();
+    location.reload();
+  }
+
+  //fine roba filtri
   getAllRapportiniNonFreezati() {
     let body = {
       anno: this.selectedAnno,
@@ -116,6 +540,7 @@ export class ListaRapportiniComponent implements OnInit {
       .getAllRapportiniNonFreezati(this.token, body)
       .subscribe(
         (result: any) => {
+          this.getAllRapportiniNotFreezeCorretto=true;
           this.elencoRapportiniNonFreezati = result['list'];
           this.selectedMeseRapportinoNonFreezato = result['list']['mese'];
           this.selectedAnnoRapportinoNonFreezato = result['list']['anno'];

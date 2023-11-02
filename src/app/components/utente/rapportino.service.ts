@@ -44,7 +44,7 @@ export class RapportinoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(this.url + 'insert-rapportino', body, {
+    return this.http.put<any>(this.url + 'invia-rapportino', body, {
       headers: headers,
     });
   }
