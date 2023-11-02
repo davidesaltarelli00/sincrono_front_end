@@ -445,25 +445,19 @@
                 <br><br>
                 <div class="row">
                   <b>Filtri per commesse</b>
+                
+                  <!-- Azienda Cliente -->
                   <div class="col-md-3">
-                    <div formArrayName="commesse">
-                      <div *ngFor="let commessa of commesse.controls; let i = index">
-                        <div [formGroupName]="i">
-                          <div class="col-md-3">
-                            <label>Azienda cliente:</label>
-                            <select (change)="onChangeAziendaCliente($event)" class="form-select"
-                              aria-label="Azienda cliente" id="tipoAziendaCliente.id" formControlName="id">
-                              <option value="">--nessuna selezione--</option>
-                              <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
-                                {{ aziendaCliente.descrizione }}
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <label for="tipoAziendaCliente">Azienda cliente:</label>
+                    <select (change)="onChangeAziendaCliente($event)" class="form-select" id="tipoAziendaCliente.id" formControlName="id">
+                      <option value="">--nessuna selezione--</option>
+                      <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
+                        {{ aziendaCliente.descrizione }}
+                      </option>
+                    </select>
                   </div>
-
+                
+                  <!-- Anno di inizio commessa -->
                   <div class="col-md-3 custom-picker">
                     <label for="annoDataInizio">Anno di inizio commessa:</label>
                     <select class="form-select" id="annoDataInizio" formControlName="annoDataInizio">
@@ -471,8 +465,9 @@
                       <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                     </select>
                   </div>
-
+                
                   <div class="col-md-3 custom-picker" *ngIf="filterAnagraficaDto.get('annoDataInizio')?.value !== null">
+                    <!-- Mese di inizio commessa -->
                     <label for="meseDataInizio">Mese di inizio commessa:</label>
                     <select class="form-select" id="meseDataInizio" formControlName="meseDataInizio">
                       <option value="1">Gennaio</option>
@@ -489,7 +484,8 @@
                       <option value="12">Dicembre</option>
                     </select>
                   </div>
-
+                
+                  <!-- Anno di fine commessa -->
                   <div class="col-md-3 custom-picker">
                     <label for="annoDataFine">Anno di fine commessa:</label>
                     <select class="form-select" id="annoDataFine" formControlName="annoDataFine">
@@ -497,8 +493,9 @@
                       <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                     </select>
                   </div>
-
+                
                   <div class="col-md-3 custom-picker" *ngIf="filterAnagraficaDto.get('annoDataFine')?.value !== null">
+                    <!-- Mese di fine commessa -->
                     <label for="meseDataFine">Mese di fine commessa:</label>
                     <select class="form-select" id="meseDataFine" formControlName="meseDataFine">
                       <option value="1">Gennaio</option>
@@ -516,11 +513,11 @@
                     </select>
                   </div>
                 </div>
-
-
+                
                 <div class="row">
                   <b>Filtri per data fine rapporto contratto</b>
-
+                
+                  <!-- Anno di fine rapporto contratto -->
                   <div class="col-md-3 custom-picker">
                     <label for="annoFineContratto">Anno di fine rapporto:</label>
                     <select class="form-select" id="annoFineContratto" formControlName="annoFineContratto">
@@ -528,9 +525,9 @@
                       <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                     </select>
                   </div>
-
-                  <div class="col-md-3 custom-picker"
-                    *ngIf="filterAnagraficaDto.get('annoFineContratto')?.value !== null">
+                
+                  <div class="col-md-3 custom-picker" *ngIf="filterAnagraficaDto.get('annoFineContratto')?.value !== null">
+                    <!-- Mese di fine rapporto contratto -->
                     <label for="meseFineContratto">Mese di fine rapporto:</label>
                     <select class="form-select" id="meseFineContratto" formControlName="meseFineContratto">
                       <option value="1">Gennaio</option>
@@ -548,7 +545,7 @@
                     </select>
                   </div>
                 </div>
-
+                
                 <br>
                 <div class="row">
                   <br>
