@@ -443,116 +443,112 @@
                   </div>
                 </div>
                 <br><br>
-                <b>Filtri per commesse</b>
                 <div class="row">
+                  <b>Filtri per commesse</b>
                   <div class="col-md-3">
                     <div formArrayName="commesse">
                       <div *ngFor="let commessa of commesse.controls; let i = index">
                         <div [formGroupName]="i">
-                      <div class="col-md-3">
-                        <label>Azienda cliente: </label>
-                        <div class="form-group" formGroupName="tipoAziendaCliente">
-                          <select (change)="onChangeAziendaCliente($event)" class="form-select"
-                            aria-label="Default select example" id="tipoAziendaCliente.id" formControlName="id">
-                            <option value="">--nessuna selezione--</option>
-                            <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
-                              {{ aziendaCliente.descrizione }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
+                          <div class="col-md-3">
+                            <label>Azienda cliente:</label>
+                            <select (change)="onChangeAziendaCliente($event)" class="form-select"
+                              aria-label="Azienda cliente" id="tipoAziendaCliente.id" formControlName="id">
+                              <option value="">--nessuna selezione--</option>
+                              <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
+                                {{ aziendaCliente.descrizione }}
+                              </option>
+                            </select>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <!-- Move the labels and input fields inside the formGroup div -->
+
                   <div class="col-md-3 custom-picker">
-                    <mat-form-field appearance="fill">
-                      <mat-label>Anno di inizio commessa:</mat-label>
-                      <mat-select placeholder="Seleziona anno di inizio commessa" formControlName="annoDataInizio">
-                        <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
+                    <label for="annoDataInizio">Anno di inizio commessa:</label>
+                    <select class="form-select" id="annoDataInizio" formControlName="annoDataInizio">
+                      <option value="">Seleziona anno di inizio commessa</option>
+                      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                    </select>
                   </div>
+
                   <div class="col-md-3 custom-picker" *ngIf="filterAnagraficaDto.get('annoDataInizio')?.value !== null">
-                    <mat-form-field appearance="fill" class="compact-form-field">
-                      <mat-label for="meseInizioCommessa">Mese di inizio commessa:</mat-label>
-                      <mat-select placeholder="Seleziona il mese di inizio commessa" formControlName="meseDataInizio">
-                        <mat-option value="1">Gennaio</mat-option>
-                        <mat-option value="2">Febbraio</mat-option>
-                        <mat-option value="3">Marzo</mat-option>
-                        <mat-option value="4">Aprile</mat-option>
-                        <mat-option value="5">Maggio</mat-option>
-                        <mat-option value="6">Giugno</mat-option>
-                        <mat-option value="7">Luglio</mat-option>
-                        <mat-option value="8">Agosto</mat-option>
-                        <mat-option value="9">Settembre</mat-option>
-                        <mat-option value="10">Ottobre</mat-option>
-                        <mat-option value="11">Novembre</mat-option>
-                        <mat-option value="12">Dicembre</mat-option>
-                      </mat-select>
-                    </mat-form-field>
+                    <label for="meseDataInizio">Mese di inizio commessa:</label>
+                    <select class="form-select" id="meseDataInizio" formControlName="meseDataInizio">
+                      <option value="1">Gennaio</option>
+                      <option value="2">Febbraio</option>
+                      <option value="3">Marzo</option>
+                      <option value="4">Aprile</option>
+                      <option value="5">Maggio</option>
+                      <option value="6">Giugno</option>
+                      <option value="7">Luglio</option>
+                      <option value="8">Agosto</option>
+                      <option value="9">Settembre</option>
+                      <option value="10">Ottobre</option>
+                      <option value="11">Novembre</option>
+                      <option value="12">Dicembre</option>
+                    </select>
                   </div>
+
                   <div class="col-md-3 custom-picker">
-                    <mat-form-field appearance="fill">
-                      <mat-label>Anno di fine commessa:</mat-label>
-                      <mat-select placeholder="Seleziona anno di fine commessa" formControlName="annoDataFine">
-                        <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
+                    <label for="annoDataFine">Anno di fine commessa:</label>
+                    <select class="form-select" id="annoDataFine" formControlName="annoDataFine">
+                      <option value="">Seleziona anno di fine commessa</option>
+                      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                    </select>
                   </div>
+
                   <div class="col-md-3 custom-picker" *ngIf="filterAnagraficaDto.get('annoDataFine')?.value !== null">
-                    <mat-form-field appearance="fill" class="compact-form-field">
-                      <mat-label for="meseFineCommessa">Mese di fine commessa:</mat-label>
-                      <mat-select placeholder="Seleziona il mese di fine commessa" formControlName="meseDataFine">
-                        <mat-option value="1">Gennaio</mat-option>
-                        <mat-option value="2">Febbraio</mat-option>
-                        <mat-option value="3">Marzo</mat-option>
-                        <mat-option value="4">Aprile</mat-option>
-                        <mat-option value="5">Maggio</mat-option>
-                        <mat-option value="6">Giugno</mat-option>
-                        <mat-option value="7">Luglio</mat-option>
-                        <mat-option value="8">Agosto</mat-option>
-                        <mat-option value="9">Settembre</mat-option>
-                        <mat-option value="10">Ottobre</mat-option>
-                        <mat-option value="11">Novembre</mat-option>
-                        <mat-option value="12">Dicembre</mat-option>
-                      </mat-select>
-                    </mat-form-field>
+                    <label for="meseDataFine">Mese di fine commessa:</label>
+                    <select class="form-select" id="meseDataFine" formControlName="meseDataFine">
+                      <option value="1">Gennaio</option>
+                      <option value="2">Febbraio</option>
+                      <option value="3">Marzo</option>
+                      <option value="4">Aprile</option>
+                      <option value="5">Maggio</option>
+                      <option value="6">Giugno</option>
+                      <option value="7">Luglio</option>
+                      <option value="8">Agosto</option>
+                      <option value="9">Settembre</option>
+                      <option value="10">Ottobre</option>
+                      <option value="11">Novembre</option>
+                      <option value="12">Dicembre</option>
+                    </select>
                   </div>
                 </div>
 
+
                 <div class="row">
                   <b>Filtri per data fine rapporto contratto</b>
+
                   <div class="col-md-3 custom-picker">
-                    <mat-form-field appearance="fill">
-                      <mat-label>Anno di fine rapporto:</mat-label>
-                      <mat-select placeholder="Seleziona anno di fine contratto" formControlName="annoFineContratto">
-                        <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
+                    <label for="annoFineContratto">Anno di fine rapporto:</label>
+                    <select class="form-select" id="annoFineContratto" formControlName="annoFineContratto">
+                      <option value="">Seleziona anno di fine rapporto</option>
+                      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                    </select>
                   </div>
+
                   <div class="col-md-3 custom-picker"
                     *ngIf="filterAnagraficaDto.get('annoFineContratto')?.value !== null">
-                    <mat-form-field appearance="fill" class="compact-form-field">
-                      <mat-label for="meseFineContratto">Mese di fine rapporto:</mat-label>
-                      <mat-select placeholder="Seleziona il mese di fine rapporto" formControlName="meseFineContratto">
-                        <mat-option value="1">Gennaio</mat-option>
-                        <mat-option value="2">Febbraio</mat-option>
-                        <mat-option value="3">Marzo</mat-option>
-                        <mat-option value="4">Aprile</mat-option>
-                        <mat-option value="5">Maggio</mat-option>
-                        <mat-option value="6">Giugno</mat-option>
-                        <mat-option value="7">Luglio</mat-option>
-                        <mat-option value="8">Agosto</mat-option>
-                        <mat-option value="9">Settembre</mat-option>
-                        <mat-option value="10">Ottobre</mat-option>
-                        <mat-option value="11">Novembre</mat-option>
-                        <mat-option value="12">Dicembre</mat-option>
-                      </mat-select>
-                    </mat-form-field>
+                    <label for="meseFineContratto">Mese di fine rapporto:</label>
+                    <select class="form-select" id="meseFineContratto" formControlName="meseFineContratto">
+                      <option value="1">Gennaio</option>
+                      <option value="2">Febbraio</option>
+                      <option value="3">Marzo</option>
+                      <option value="4">Aprile</option>
+                      <option value="5">Maggio</option>
+                      <option value="6">Giugno</option>
+                      <option value="7">Luglio</option>
+                      <option value="8">Agosto</option>
+                      <option value="9">Settembre</option>
+                      <option value="10">Ottobre</option>
+                      <option value="11">Novembre</option>
+                      <option value="12">Dicembre</option>
+                    </select>
                   </div>
                 </div>
+
                 <br>
                 <div class="row">
                   <br>
@@ -601,7 +597,7 @@
                 <th>Data <br> Inizio</th>
                 <th>Data <br> Fine</th>
                 <th>Attesa <br> lavori</th>
-                <th>Azioni</th>
+                <th class="text-center" colspan="2">Azioni</th>
                 <!-- <th>Modifica</th> -->
                 <!-- <th>Anagrafica</th> -->
               </tr>
@@ -621,9 +617,9 @@
                 <td>{{ commessa[11] | date:'dd/MM/yyyy' }}</td>
                 <td>{{ commessa[12] | date:'dd/MM/yyyy' }}</td>
                 <td>{{ commessa[14] ? 'Sì' : 'No' }}</td>
-                <td >
-                <i class="fa fa-info"  (click)="dettaglioAnagrafica(commessa[15])"></i> &nbsp;
-                 <i class="fa fa-pencil" (click)="vaiAModificaAnagrafica(commessa[15])"></i>
+                <td>
+                  <button class="fa fa-info" (click)="dettaglioAnagrafica(commessa[15])"></button> &nbsp;
+                  <button class="fa fa-pencil" (click)="vaiAModificaAnagrafica(commessa[15])"></button>
                 </td>
               </tr>
             </tbody>
@@ -634,7 +630,7 @@
                 <span> <i class="fa fa-arrow-left"></i> </span>
               </li>
               <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
-                (click)="goToPage(page)">
+                (click)="goToPage(page)"> 
                 <span>{{ page }}</span>
               </li>
               <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
