@@ -51,7 +51,7 @@ export class ListaRapportiniComponent implements OnInit {
   selectedAnnoRapportinoNonFreezato: any;
   // paginazione 1 :tabella rapportini non freezati
   currentPage: number = 1;
-  itemsPerPage: number = 20;
+  itemsPerPage: number = 5;
   pageData: any[] = [];
   // paginazione 2: tabella rapportini freezati
   currentPage2: number = 1;
@@ -101,14 +101,19 @@ export class ListaRapportiniComponent implements OnInit {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
-      this.getAllRapportiniNonFreezati();
-      this.getAllRapportiniFreezati();
+      // this.getAllRapportiniNonFreezati();
+      // this.getAllRapportiniFreezati();
     }
   }
 
   getAllRapportiniNonFreezati() {
+    let body = {
+      anno: this.selectedAnno,
+      mese: this.selectedMese,
+    };
+    console.log('BODY RAPPORTINI DA CONTROLLARE: ' + JSON.stringify(body));
     this.listaRapportiniService
-      .getAllRapportiniNonFreezati(this.token)
+      .getAllRapportiniNonFreezati(this.token, body)
       .subscribe(
         (result: any) => {
           this.elencoRapportiniNonFreezati = result['list'];
@@ -120,6 +125,7 @@ export class ListaRapportiniComponent implements OnInit {
             'ELENCO RAPPORTINI NON FREEZATI:' +
               JSON.stringify(this.elencoRapportiniNonFreezati)
           );
+          this.getAllRapportiniFreezati();
         },
         (error: any) => {
           console.error(
@@ -131,23 +137,31 @@ export class ListaRapportiniComponent implements OnInit {
   }
 
   getAllRapportiniFreezati() {
-    this.listaRapportiniService.getAllRapportiniFreezati(this.token).subscribe(
-      (result: any) => {
-        this.elencoRapportiniFreezati = result['list'];
-        this.currentPage2 = 1;
-        this.pageData2 = this.getCurrentPageItems2();
-        console.log(
-          'Rapportini freezati caricati: ' +
-            JSON.stringify(this.elencoRapportiniFreezati)
-        );
-      },
-      (error: any) => {
-        console.error(
-          'Si é verificato un errore durante il caricamento dei rapportini freezati: ' +
-            JSON.stringify(error)
-        );
-      }
-    );
+    let body = {
+      anno: this.selectedAnno,
+      mese: this.selectedMese,
+    };
+    console.log('BODY RAPPORTINI CONTROLLATI: ' + JSON.stringify(body));
+
+    this.listaRapportiniService
+      .getAllRapportiniFreezati(this.token, body)
+      .subscribe(
+        (result: any) => {
+          this.elencoRapportiniFreezati = result['list'];
+          this.currentPage2 = 1;
+          this.pageData2 = this.getCurrentPageItems2();
+          console.log(
+            'Rapportini freezati caricati: ' +
+              JSON.stringify(this.elencoRapportiniFreezati)
+          );
+        },
+        (error: any) => {
+          console.error(
+            'Si é verificato un errore durante il caricamento dei rapportini freezati: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
   }
 
   eliminaRapportinoNonFreezato(id: number) {
@@ -171,87 +185,35 @@ export class ListaRapportiniComponent implements OnInit {
     console.log(index);
   }
 
-  onChangecheckFreeze(event: any, index: number, anno: number, mese: number) {
-    const isChecked = event.target.checked;
-    //console.log(`Valore del checkbox al rapportino numero ${index} è ${isChecked}`);
-
-    if (isChecked) {
-      const confirmation = window.confirm(
-        'Sei sicuro di voler congelare il metodo?'
-      );
-      if (confirmation) {
-        this.checkFreeze = isChecked;
-        let body = {
-          rapportino: {
-            id: index,
-            codiceFiscale: this.codiceFiscale,
-            anno: anno,
-            mese: mese,
-            checkFreeze: this.checkFreeze,
-          },
-        };
-        console.log('PAYLOAD CHECKFREEZE TRUE:' + JSON.stringify(body));
-
-        this.listaRapportiniService
-          .UpdateCheckFreeze(this.token, body)
-          .subscribe(
-            (result: any) => {
-              console.log('RAPPORTINO CONGELATO:' + JSON.stringify(result));
-              //fare insert db
-              this.getAllRapportiniFreezati();
-              this.getAllRapportiniNonFreezati();
-            },
-            (error: any) => {
-              console.error(
-                'Errore durante il congelamento del rapportino: ' +
-                  JSON.stringify(error)
-              );
-            }
-          );
-      } else {
-        //console.log('niente');
-        // In questo caso, il checkbox non viene selezionato perché l'utente ha annullato la conferma.
-        event.target.checked = false;
+  onChangecheckFreeze(
+    checkFreeze: boolean,
+    index: number,
+    anno: number,
+    mese: number
+  ) {
+    const body = {
+      rapportino: {
+        id: index,
+        codiceFiscale: this.codiceFiscale,
+        anno: anno,
+        mese: mese,
+        checkFreeze: checkFreeze,
+      },
+    };
+    console.log('PAYLOAD CHECKFREEZE TRUE:' + JSON.stringify(body));
+    this.listaRapportiniService.UpdateCheckFreeze(this.token, body).subscribe(
+      (result: any) => {
+        console.log('RAPPORTINO CONGELATO:' + JSON.stringify(result));
+        this.getAllRapportiniFreezati();
+        this.getAllRapportiniNonFreezati();
+      },
+      (error: any) => {
+        console.error(
+          'Errore durante il congelamento del rapportino: ' +
+            JSON.stringify(error)
+        );
       }
-    } else {
-      const confirmation = window.confirm(
-        'Sei sicuro di voler congelare il rapportino?'
-      );
-      if (confirmation) {
-        //console.log('parte metodo false');
-        this.checkFreeze = isChecked;
-        let body = {
-          rapportino: {
-            id: index,
-            codiceFiscale: this.codiceFiscale,
-            anno: anno,
-            mese: mese,
-            checkFreeze: this.checkFreeze,
-          },
-        };
-        console.log('PAYLOAD CHECKFREEZE FALSE :' + JSON.stringify(body));
-
-        this.listaRapportiniService
-          .UpdateCheckFreeze(this.token, body)
-          .subscribe(
-            (result: any) => {
-              console.log('RAPPORTINO SCONGELATO:' + JSON.stringify(result));
-              this.getAllRapportiniFreezati();
-              this.getAllRapportiniNonFreezati();
-            },
-            (error: any) => {
-              console.error(
-                'Errore durante lo scongelamento del rapportino: ' +
-                  JSON.stringify(error)
-              );
-            }
-          );
-      } else {
-        console.log('niente');
-        // In questo caso, il checkbox non viene deselezionato perché l'utente ha annullato la conferma.
-        event.target.checked = true;
-      }
-    }
+    );
   }
 
   resetNote() {
@@ -357,7 +319,14 @@ export class ListaRapportiniComponent implements OnInit {
     mese: any,
     anno: any
   ) {
-    console.log('DATI IN LISTA RAPPORTINI PER ROTTA' + id, mese, anno);
+    console.log(
+      'DATI IN LISTA RAPPORTINI PER ROTTA ' + id,
+      nome,
+      cognome,
+      codiceFiscale,
+      mese,
+      anno
+    );
     this.router.navigate([
       '/dettaglio-rapportino',
       id,
@@ -431,9 +400,9 @@ export class ListaRapportiniComponent implements OnInit {
         (data: any) => {
           this.jsonData = data;
           this.idFunzione = data.list[0].id;
-          console.log(
-            JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-          );
+          // console.log(
+          //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          // );
           this.shouldReloadPage = false;
         },
         (error: any) => {
@@ -447,7 +416,7 @@ export class ListaRapportiniComponent implements OnInit {
   getPermissions(functionId: number) {
     this.menuService.getPermissions(this.token, functionId).subscribe(
       (data: any) => {
-        console.log('Permessi ottenuti:', data);
+        // console.log('Permessi ottenuti:', data);
       },
       (error: any) => {
         console.error('Errore nella generazione dei permessi:', error);

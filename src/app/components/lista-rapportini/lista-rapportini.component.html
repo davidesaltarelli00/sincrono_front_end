@@ -121,175 +121,169 @@
       </div>
     </div>
     <br>
-      <br>
-    <div class="row">
-      <div class="col-12">
-        <legend>Rapportini inviati da controllare</legend>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Nominativo</th>
-              <th>Codice Fiscale</th>
-              <th>Anno</th>
-              <th>Mese</th>
-              <th>Verificato</th>
-              <th>Azioni</th>
-
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let rapportinoNonFreezato of pageData; let i = index">
-              <td>{{ rapportinoNonFreezato.nome }} {{ rapportinoNonFreezato.cognome }}</td>
-              <td>{{ rapportinoNonFreezato.codiceFiscale }}</td>
-              <td>{{ rapportinoNonFreezato.anno }}</td>
-              <td>{{ rapportinoNonFreezato.mese }}</td>
-              <td>
-                <label class="switch">
-                  <input (change)="onChangecheckFreeze($event, rapportinoNonFreezato.id,rapportinoNonFreezato.anno, rapportinoNonFreezato.mese)" class="form-check-input"
-                    type="checkbox" [checked]="rapportinoNonFreezato.checkFreeze">
-                  <span class="slider"></span>
-                </label>
-              </td>
-              <td>
-                <button class="btn btn-info"
-                  (click)="getRapportino(rapportinoNonFreezato.id,rapportinoNonFreezato.nome ,rapportinoNonFreezato.cognome, rapportinoNonFreezato.codiceFiscale, rapportinoNonFreezato.mese, rapportinoNonFreezato.anno)">
-                  <i class="fa fa-info"></i> </button>
-                <!-- <button class="btn btn-danger" (click)="eliminaRapportinoNonFreezato(rapportinoNonFreezato.id)" > <i class="fa fa-trash" ></i> </button></td> -->
-
-            </tr>
-          </tbody>
-        </table>
-        <div class="pagination">
-          <ul>
-            <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-              <span> <i class="fa fa-arrow-left"></i> </span>
-            </li>
-            <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
-              (click)="goToPage(page)">
-              <span>{{ page }}</span>
-            </li>
-            <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
-              <span> <i class="fa fa-arrow-right"></i> </span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-12">
-        <legend>Rapportini controllati <i class="fa fa-info-circle"
-            matTooltip="Se scongelerai il rapportino, quest'ultimo verrá eliminato."></i> </legend>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Nominativo</th>
-              <th>Codice Fiscale</th>
-              <th>Anno</th>
-              <th>Mese</th>
-              <th>Verificato</th>
-              <!-- <th>Azioni</th> -->
-
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let rapportinoFreezato of pageData2; let i = index">
-              <td>{{ rapportinoFreezato.nome }} {{ rapportinoFreezato.cognome }}</td>
-              <td>{{ rapportinoFreezato.codiceFiscale }}</td>
-              <td>{{ rapportinoFreezato.anno }}</td>
-              <td>{{ rapportinoFreezato.mese }}</td>
-              <td>
-                <label class="switch">
-                  <input (change)="onChangecheckFreeze($event, rapportinoFreezato.id,rapportinoFreezato.anno, rapportinoFreezato.mese)" class="form-check-input"
-                    type="checkbox" [checked]="rapportinoFreezato.checkFreeze">
-                  <span class="slider"></span>
-                </label>
-              </td>
-              <!-- <td><button class="btn btn-danger" (click)="eliminaRapportinoFreezato(rapportinoFreezato.id)" > <i class="fa fa-trash" ></i> </button></td> -->
-
-            </tr>
-          </tbody>
-        </table>
-        <div class="pagination">
-          <ul>
-            <li [class.disabled]="currentPage2 === 1" (click)="goToPage2(currentPage2 - 1)">
-              <span> <i class="fa fa-arrow-left"></i> </span>
-            </li>
-            <li *ngFor="let page of getPaginationArray2()" [class.active]="currentPage2 === page"
-              (click)="goToPage2(page)">
-              <span>{{ page }}</span>
-            </li>
-            <li [class.disabled]="currentPage2 === getTotalPages2()" (click)="goToPage2(currentPage2 + 1)">
-              <span> <i class="fa fa-arrow-right"></i> </span>
-            </li>
-          </ul>
-        </div>
-        <!-- <p *ngIf="elencoRapportiniFreezati.length===0" >Nessun risultato.</p> -->
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-12">
+    <div class="row" style="margin: auto; text-align: center;">
+      <div class="col-6" style="margin: auto; text-align: center;">
         <mat-card>
-          <mat-card-title>
-            <h3>Export excel</h3>
-          </mat-card-title>
-          <mat-card-content>
-            <form #fileExport="ngForm" (ngSubmit)="scarica(fileExport)" >
-              <div class="row">
-                <div class="col-4">
-                  <div class="form-group">
-                    <label for="meseSelect">Seleziona il mese:</label>
-                    <select
-                      (change)="onMeseSelectChange($event)"
-                      class="form-select"
-                      aria-label="Default select example"
-                      id="meseSelect"
-                      [(ngModel)]="selectedMese"
-                      name="mese"
+          <form>
+            <div class="row" style="margin: auto; text-align: center;">
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="meseSelect">Seleziona il mese:</label>
+                  <select
+                    (change)="onMeseSelectChange($event)"
+                    class="form-select"
+                    aria-label="Default select example"
+                    id="meseSelect"
+                    [(ngModel)]="selectedMese"
+                    name="mese"
+                  >
+                    <option
+                      *ngFor="let month of mesi; let i = index"
+                      [value]="i + 1"
                     >
-                      <option selected>---Nessuna selezione---</option>
-                      <option
-                        *ngFor="let month of mesi; let i = index"
-                        [value]="i + 1"
-                      >
-                        {{ i + 1 }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-4">
-                  <div class="form-group">
-                    <label for="annoSelect">Seleziona l'anno:</label>
-                    <select
-                      (change)="onAnnoSelectChange($event)"
-                      class="form-select"
-                      aria-label="Default select example"
-                      id="annoSelect"
-                      [(ngModel)]="selectedAnno"
-                      name="anno">
-                      <option selected>---Nessuna selezione---</option>
-                      <option *ngFor="let year of anni" [value]="year">
-                        {{ year }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-4">
-                  <label for="getRapportino">Azioni</label><br />
-                  <button
-                    class="btn btn-success"
-                    [disabled]="selectedMese == null || selectedAnno == null" matTooltip="Esporta in excel" matTooltipPosition="right">
-                    <i class="fa fa-file-export" aria-hidden="true"></i></button>
+                      {{ i + 1 }}
+                    </option>
+                  </select>
                 </div>
               </div>
-              <br />
-            </form>
-          </mat-card-content>
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="annoSelect">Seleziona l'anno:</label>
+                  <select
+                    (change)="onAnnoSelectChange($event)"
+                    class="form-select"
+                    aria-label="Default select example"
+                    id="annoSelect"
+                    [(ngModel)]="selectedAnno"
+                    name="anno">
+                    <option *ngFor="let year of anni" [value]="year">
+                      {{ year }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-4">
+                <label for="getRapportino">Azioni</label><br />
+                <button
+                 mat-flat-button color="primary"
+                  (click)="getAllRapportiniNonFreezati()"
+                  [disabled]="selectedMese == null || selectedAnno == null"
+                >
+                  Carica lista
+                  <i class="fa fa-print" aria-hidden="true"></i></button
+                >
+              </div>
+            </div>
+            <br />
+          </form>
         </mat-card>
       </div>
      </div>
-    <br><br><br><br>
+     <br>
+     <div class="row">
+      <div class="col-12">
+        <mat-card>
+         <mat-card-title>
+          <h1>Rapportini da controllare</h1>
+         </mat-card-title>
+         <mat-card-content>
+
+          <table class="table table-striped" >
+            <thead>
+              <tr>
+                <th>Ruolo</th>
+                <th>Nominativo</th>
+                <th>Codice fiscale</th>
+                <th>Mail aziendale</th>
+                <th>Rapportino inviato</th>
+                <th>Azioni</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rapportinoNonFreezato of pageData; let i=index" >
+                <td>{{rapportinoNonFreezato.ruolo.descrizione}}</td>
+                <td>{{rapportinoNonFreezato.anagrafica.nome}}  {{rapportinoNonFreezato.anagrafica.cognome}}</td>
+                <td>{{rapportinoNonFreezato.anagrafica.codiceFiscale}}</td>
+                <td>{{rapportinoNonFreezato.anagrafica.mailAziendale}}</td>
+                <td *ngIf="rapportinoNonFreezato.anagrafica.checkInviato" >
+                 Si  <button mat-flat-button (click)="onChangecheckFreeze( true, rapportinoNonFreezato.anagrafica.id,selectedAnno, selectedMese)" >Congela <i class="fa fa-lock"></i></button>
+                </td>
+                <td *ngIf="!rapportinoNonFreezato.anagrafica.checkInviato" >No <button mat-flat-button color="warn" matTooltip="Premendo questo pulsante invierai una mail di sollecitazione a {{rapportinoNonFreezato.anagrafica.nome}}  {{rapportinoNonFreezato.anagrafica.cognome}} " >Sollecita <i class="fa fa-envelope" aria-hidden="true"></i></button>  </td>
+                <td> <button [disabled]="!rapportinoNonFreezato.anagrafica.checkInviato" mat-fab color="primary" (click)="getRapportino(rapportinoNonFreezato.anagrafica.id,rapportinoNonFreezato.anagrafica.nome ,rapportinoNonFreezato.anagrafica.cognome, rapportinoNonFreezato.anagrafica.codiceFiscale, selectedMese, selectedAnno)" > <mat-icon>info</mat-icon> </button> </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pagination">
+            <ul>
+              <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+                <span> <i class="fa fa-arrow-left"></i> </span>
+              </li>
+              <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
+                (click)="goToPage(page)">
+                <span>{{ page }}</span>
+              </li>
+              <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
+                <span> <i class="fa fa-arrow-right"></i> </span>
+              </li>
+            </ul>
+          </div>
+         </mat-card-content>
+        </mat-card>
+        <br><br><br>
+      </div>
+     </div>
+     <br>
+     <div class="row">
+      <div class="col-12">
+        <mat-card>
+         <mat-card-title>
+          <h1>Rapportini controllati</h1>
+         </mat-card-title>
+         <mat-card-content>
+          <table class="table table-striped" >
+            <thead>
+              <tr>
+                <th>Ruolo</th>
+                <th>Nominativo</th>
+                <th>Codice fiscale</th>
+                <th>Mail aziendale</th>
+                <th>Rapportino inviato</th>
+                <th>Azioni</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rapportinoFreezato of pageData2; let i=index" >
+                <td>{{rapportinoFreezato.ruolo.descrizione}}</td>
+                <td>{{rapportinoFreezato.anagrafica.nome}}  {{rapportinoFreezato.anagrafica.cognome}}</td>
+                <td>{{rapportinoFreezato.anagrafica.codiceFiscale}}</td>
+                <td>{{rapportinoFreezato.anagrafica.mailAziendale}}</td>
+                <td *ngIf="rapportinoFreezato.anagrafica.checkInviato" >
+                 Si  <button mat-flat-button (click)="onChangecheckFreeze( false, rapportinoFreezato.anagrafica.id,selectedAnno, selectedMese)" >Congela <i class="fa fa-lock"></i></button>
+                </td>
+                <td *ngIf="!rapportinoFreezato.anagrafica.checkInviato" >No <button mat-flat-button color="warn" matTooltip="Premendo questo pulsante invierai una mail di sollecitazione a {{rapportinoFreezato.anagrafica.nome}}  {{rapportinoFreezato.anagrafica.cognome}} " >Sollecita <i class="fa fa-envelope" aria-hidden="true"></i></button>  </td>
+                <td> <button [disabled]="!rapportinoFreezato.anagrafica.checkInviato" mat-fab color="primary" (click)="getRapportino(rapportinoFreezato.anagrafica.id,rapportinoFreezato.anagrafica.nome ,rapportinoFreezato.anagrafica.cognome, rapportinoFreezato.anagrafica.codiceFiscale, selectedMese, selectedAnno)" > <mat-icon>info</mat-icon> </button> </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pagination">
+            <ul>
+              <li [class.disabled]="currentPage2 === 1" (click)="goToPage2(currentPage2 - 1)">
+                <span> <i class="fa fa-arrow-left"></i> </span>
+              </li>
+              <li *ngFor="let page of getPaginationArray2()" [class.active]="currentPage2 === page"
+                (click)="goToPage2(page)">
+                <span>{{ page }}</span>
+              </li>
+              <li [class.disabled]="currentPage2 === getTotalPages2()" (click)="goToPage2(currentPage2 + 1)">
+                <span> <i class="fa fa-arrow-right"></i> </span>
+              </li>
+            </ul>
+          </div>
+         </mat-card-content>
+        </mat-card>
+        <br><br><br>
+      </div>
+     </div>
     <div id="finePagina"></div>
   </div>
 </body>

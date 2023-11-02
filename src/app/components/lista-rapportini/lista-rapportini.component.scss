@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  text-align: center;
 }
 
 body {
@@ -151,3 +152,8 @@ input[type="checkbox"]:disabled + .slider::before {
   color: #333;
   border: 1px solid #333;
 }
+
+mat-card-title{
+  text-align: center;
+}
+
