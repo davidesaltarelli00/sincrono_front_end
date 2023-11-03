@@ -648,13 +648,13 @@ export class UtenteComponent implements OnInit {
           // console.log(
           //   'Dati get rapportino:' + JSON.stringify(this.rapportinoDto)
           // );
+          this.checkRapportinoInviato();
           this.calcolaTotaleOreLavorate();
           this.calcolaTotaleStraordinari();
           this.calcolaTotaleFerie();
           this.calcolaTotaleMalattia();
           this.calcolaTotaleOrePermessi();
           this.cdRef.detectChanges();
-          this.checkRapportinoInviato();
 
           if (this.note != null) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {

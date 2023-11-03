@@ -354,26 +354,8 @@
                               </option>
                             </select>
                           </div>
-
                         </div>
-
-                        <!-- <div class="col-md-3">
-                          <div class="form-group" formGroupName="tipoCausaFineRapporto">
-                            <label>Motivazione Fine Rapporto: </label>
-                            <select  class="form-select"
-                              aria-label="Default select example" id="contratto.tipoCausaFineRapporto.id"
-                              formControlName="id">
-                              <option value="">--nessuna selezione--</option>
-                              <option *ngFor="let tipoCausaFineRapporto of motivazioniFineRapporto"
-                                [value]="tipoCausaFineRapporto.id">
-                                {{ tipoCausaFineRapporto.descrizione }}
-                              </option>
-                            </select>
-                          </div>
-                        </div> -->
-
                       </div>
-
                     </div>
                     <br>
                     <br>
@@ -467,6 +449,214 @@
           <h1>Rapportini controllati</h1>
          </mat-card-title>
          <mat-card-content>
+          <br>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri">
+
+              {{ mostraFiltri ? 'Nascondi filtri' : 'Mostra filtri' }}
+            </mat-expansion-panel-header>
+
+            <ng-template matExpansionPanelContent>
+              <div *ngIf="mostraFiltri">
+                <form [formGroup]="filterAnagraficaDto">
+                  <div class="container-filtri">
+                    <div formGroupName="anagrafica">
+                      <p>Filtri disponibili per l'anagrafica:</p>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="nome">Nome</label>
+                            <input  type="text" class="form-control"
+                              id="anagrafica.nome" name="nome" placeholder="Inserire il nome." formControlName="nome">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="cognome">Cognome</label>
+                            <input  type="text" class="form-control"
+                              id="anagrafica.cognome" name="cognome" placeholder="Inserire il cognome."
+                              formControlName="cognome">
+                          </div>
+                        </div>
+                        <!-- <div class="col-md-1">
+                          <div class="form-group">
+                            <label for="attivo">Attivo</label> <br>
+                            <input  type="checkbox" class="form-check-input"
+                              style="border: 1px solid black;" id="anagrafica.attivo" name="attivo"
+                              (change)="onChangeAttivo($event)" formControlName="attivo" checked>
+
+                          </div>
+                        </div> -->
+                        <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="attivo">Attesa lavori</label> <br>
+                            <input  type="checkbox" class="form-check-input"
+                              style="border: 1px solid black;" id="anagrafica.attesaLavori" name="attesaLavori"
+                              formControlName="attesaLavori">
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <label for="filter-Tipo Azienda">Nome azienda</label>
+                          <div class="form-group" formGroupName="tipoAzienda">
+                            <select  class="form-select"
+                              aria-label="Default select example" id="anagrafica.tipoAzienda.id" formControlName="id">
+                              <option value="" selected>--Nessuna selezione--</option>
+                              <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                                {{ tipoAzienda.descrizione }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div formGroupName="contratto">
+                      <p>Filtri disponibili per il contratto:</p>
+                      <br>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div formGroupName="tipoContratto">
+                            <label for="filter-TipoContratto">Tipo Contratto</label>
+                            <select  class="form-select"
+                              aria-label="Default select example" id="contratto.tipoContratto.id" formControlName="id"
+                              (change)="onTipoContrattoChange($event)">
+                              <option value="">--nessuna selezione--</option>
+                              <option *ngFor="let tipoContratto of tipiContratti" [value]="tipoContratto.id">
+                                {{ tipoContratto.descrizione }}
+                              </option>
+                            </select>
+                          </div>
+
+                        </div>
+
+                        <div class="col-md-3">
+                          <div formGroupName="tipoCcnl">
+                            <label for="tipoCcnl">CCNL</label>
+                            <select  (change)="onChangeTipoContrattoValue($event)"
+                              class="form-select" aria-label="Default select example" id="contratto.tipoCcnl.id"
+                              formControlName="id">
+                              <option value="">--nessuna selezione--</option>
+                              <option *ngFor="let contrattiNazionale of tipiCcnl" [value]="contrattiNazionale.id">
+                                {{ contrattiNazionale.descrizione }}
+                              </option>
+                            </select>
+
+                          </div>
+
+
+
+                        </div>
+
+                        <div class="col-md-3">
+                          <div formGroupName="tipoLivelloContratto">
+                            <label for="filter-LivelloContratto">Livello Contratto</label>
+                            <select  class="form-select"
+                              aria-label="Default select example" id="contratto.tipoLivelloContratto.id" formControlName="id">
+                              <option value="">--nessuna selezione--</option>
+                              <option *ngFor="let livello of elencoLivelliCCNL" [value]="livello.id">
+                                {{ livello.livello }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3" formGroupName="tipoAzienda">
+                          <label for="tipoAzienda">Nome Azienda</label>
+                          <select class="form-select"
+                            aria-label="Default select example" id="contratto.tipoAzienda.id" formControlName="id"
+                            type="number">
+                            <option value="">--nessuna selezione--</option>
+                            <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                              {{ tipoAzienda.descrizione }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-4">
+                          <div class="form-group">
+                            <label for="ralAnnua">RAL Annua</label>
+                            <input  type="text" id="contratto.ralAnnua"
+                              class="form-control" name="ralAnnua" formControlName="ralAnnua"
+                              placeholder="Inserire RAL annua">
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="form-group">
+                            <label for="dataAssunzione">Data assunzione</label>
+                            <input  type="date" id="contratto.dataAssunzione"
+                              class="form-control" name="dataAssunzione" formControlName="dataAssunzione"
+                              placeholder="Inserire data assunzione">
+                          </div>
+                        </div>
+                        <div class="col-4" *ngIf="inseritoContrattoIndeterminato">
+                          <div class="form-group">
+                            <label for="dataFineRapporto">Data fine rapporto</label>
+                            <input  type="date" id="contratto.dataFineRapporto"
+                              class="form-control" name="dataFineRapporto" formControlName="dataFineRapporto"
+                              placeholder="Inserire data fine rapporto">
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
+                          <div class="form-group">
+                            <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
+                            <select  class="form-select"
+                              aria-label="Default select example" id="contratto.tipoCanaleReclutamento.id"
+                              formControlName="id" type="number">
+                              <option value="">--nessuna selezione--</option>
+                              <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento"
+                                [value]="tipoCanaleReclutamento.id">
+                                {{ tipoCanaleReclutamento.descrizione }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row">
+                      <p>Filtri per commesse</p>
+                      <div class="col-3">
+                        <div formArrayName="commesse">
+                          <div *ngFor="let commessa of commesse.controls; let i = index">
+                            <div [formGroupName]="i">
+                              <div class="form-group" formGroupName="tipoAziendaCliente">
+                                <select (change)="onChangeAziendaCliente($event)" class="form-select"
+                                aria-label="Default select example" id="commesse.tipoAziendaCliente.id" formControlName="id">
+                                <option value="">--nessuna selezione--</option>
+                                <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
+                                  {{ aziendaCliente.descrizione }}
+                                </option>
+                              </select>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-12" style="margin: auto; text-align: center;">
+                        <button class="btn btn-success" (click)="filterListFreeze(filterAnagraficaDto.value)">Cerca <i
+                            class="fa fa-search"></i> </button> &nbsp;
+                        <button class="btn btn-info" (click)="reset()">Annulla filtri<i class="fa fa-undo"></i> </button>
+                      </div>
+                    </div>
+
+                  </div>
+                </form>
+              </div>
+            </ng-template>
+          </mat-expansion-panel>
+          <br>
           <table class="table table-striped" >
             <thead>
               <tr>

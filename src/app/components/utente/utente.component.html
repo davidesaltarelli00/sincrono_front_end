@@ -251,7 +251,7 @@
             <div class="col-6">
               <div class="form-group">
                 <label for="cliente-{{ i }}{{j}}">Cliente</label>
-                <select [disabled]="rapportinoInviato || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)">
+                <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)">
                   <option value=" " selected></option>
                   <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
                 </select>
@@ -261,7 +261,7 @@
             <div class="col-6">
               <div class="form-group">
                 <label for="ore-ordinarie-{{ i }}{{j}}">Ore</label>
-                  <input [disabled]=" rapportinoInviato || giorno.malattie || giorno.ferie"
+                  <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
                   [ngClass]="{'has-error': !isValidOreOrdinarie(duplicazione.oreOrdinarie)}"
                   type="number" class="form-control"
                   step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
@@ -279,7 +279,7 @@
             <div class="col-4">
              <div class="form-group">
               <label for="fascia1-{{ i }}{{j}}">18:00-20:00</label>
-              <input [disabled]=" rapportinoInviato || giorno.malattie || giorno.ferie"
+              <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
               type="number" class="form-control"
               step="0.5" min="0" max="2"
               id="fascia1-{{ i }}{{j}}" name="fascia1-{{ i }}{{j}}"
@@ -289,7 +289,7 @@
             <div class="col-4">
              <div class="form-group">
               <label for="fascia2-{{ i }}{{j}}">20:00-22:00</label>
-              <input [disabled]=" rapportinoInviato || giorno.malattie || giorno.ferie"
+              <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
               type="number" class="form-control"
               step="0.5" min="0" max="2"
               id="fascia2-{{ i }}" name="fascia2-{{ i }}{{j}}"
@@ -299,7 +299,7 @@
             <div class="col-4" >
               <div class="form-group">
                 <label for="fascia3-{{ i }}{{j}}">22:00-09:00</label>
-                <input [disabled]=" rapportinoInviato || giorno.malattie || giorno.ferie"
+                <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
                 type="number" class="form-control"
                 step="0.5" min="0" max="13"
                 id="fascia3-{{ i }}{{j}}" name="fascia3-{{ i }}{{j}}"
@@ -312,10 +312,10 @@
         <mat-card-footer>
           <div class="row">
             <div class="col-6">
-              <button style="float: right;" [disabled]="rapportinoInviato ||  giorno.malattie || giorno.ferie" class="btn btn-warning" id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga" ><i  class="fa fa-clone"></i></button> <br>
+              <button style="float: right;" [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie" class="btn btn-warning" id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga" ><i  class="fa fa-clone"></i></button> <br>
             </div>
             <div class="col-6">
-              <button [disabled]="rapportinoInviato || giorno.malattie || giorno.ferie"  class="btn btn-danger" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"  ><i  class="fa fa-trash"></i></button>
+              <button [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"  class="btn btn-danger" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"  ><i  class="fa fa-trash"></i></button>
             </div>
           </div>
         </mat-card-footer>
@@ -325,7 +325,7 @@
         <div class="col-4">
          <div class="form-group">
           <label for="permessi-{{ i }}">Permessi</label>
-          <input [disabled]="rapportinoInviato || giorno.malattie || giorno.ferie"
+          <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
           type="number" class="form-control"
           step="0.5" min="0" max="8"
           id="permessi-{{ i }}" name="permessi-{{ i }}"
@@ -335,13 +335,13 @@
         <div class="col-4">
          <div class="form-group">
           <label for="ferie-{{ i }}">Ferie</label> <br>
-          <input [disabled]="rapportinoInviato" type="checkbox" (change)="onChangeFerie($event,i)" class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
+          <input [disabled]="risultatoCheckFreeze" type="checkbox" (change)="onChangeFerie($event,i)" class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
          </div>
         </div>
         <div class="col-4">
         <div class="form-group">
           <label for="malattie-{{i}}">Malattia</label><br>
-          <input [disabled]="rapportinoInviato" type="checkbox" (change)="onChangeMalattia($event,i)" class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
+          <input [disabled]="risultatoCheckFreeze" type="checkbox" (change)="onChangeMalattia($event,i)" class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
         </div>
         </div>
       </div>
@@ -349,17 +349,17 @@
         <div class="col-12">
         <div class="form-group">
           <label for="note-{{ i }}">Note  </label> <!--<div *ngIf="!giorno.note" class="error-message">Campo obbligatorio</div>-->
-          <input [disabled]="rapportinoInviato || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
+          <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
         </div>
         </div>
       </div>
       <mat-card-footer style="text-align: center;">
         <div class="row">
           <div class="col-12">
-        <button [disabled]="rapportinoInviato" mat-flat-button color="primary"  (click)="salvaRigaRapportino(giorno)" > Salva riga <i class="fa fa-save"></i> </button>
+        <button [disabled]="risultatoCheckFreeze" mat-flat-button color="primary"  (click)="salvaRigaRapportino(giorno)" > Salva riga <i class="fa fa-save"></i> </button>
           </div>
           <!-- <div class="col-6">
-            <button [disabled]="rapportinoInviato " class="btn btn-danger" (click)="svuotaCampi()" > Svuota riga <i class="fa fa-undo"></i> </button>
+            <button [disabled]="risultatoCheckFreeze " class="btn btn-danger" (click)="svuotaCampi()" > Svuota riga <i class="fa fa-undo"></i> </button>
           </div> -->
         </div>
       </mat-card-footer>
@@ -394,7 +394,7 @@
        </div>
        <div class="row">
         <div class="col-6">
-          <button [disabled]="rapportinoInviato || !giorno" class="btn btn-primary" (click)="salvaRapportino(giorno)" > Salva rapportino <i class="fa fa-save"></i> </button>
+          <button [disabled]="risultatoCheckFreeze || !giorno" class="btn btn-primary" (click)="salvaRapportino(giorno)" > Salva rapportino <i class="fa fa-save"></i> </button>
           &nbsp;
           <button class="btn btn-warning" [disabled]="risultatoCheckFreeze" (click)="inviaRapportino()" >Invia rapportino <i class="fa fa-file" ></i></button>
         </div>

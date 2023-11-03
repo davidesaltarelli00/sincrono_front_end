@@ -515,6 +515,93 @@ export class ListaRapportiniComponent implements OnInit {
       );
   }
 
+
+  filterListFreeze(value: any) {
+    const removeEmpty = (obj: any) => {
+      Object.keys(obj).forEach((key) => {
+        if (obj[key] && typeof obj[key] === 'object') {
+          removeEmpty(obj[key]);
+          // Rimuovi l'array se è un array vuoto o un oggetto vuoto
+          if (Array.isArray(obj[key]) && obj[key].length === 0) {
+            delete obj[key];
+          } else if (Object.keys(obj[key]).length === 0) {
+            delete obj[key];
+          }
+        } else if (obj[key] === '' || obj[key] === null) {
+          delete obj[key];
+        }
+        if (obj.anagrafica && Object.keys(obj.anagrafica).length === 0) {
+          delete obj.anagrafica;
+        }
+        if (obj.contratto && Object.keys(obj.contratto).length === 0) {
+          delete obj.contratto;
+        }
+        if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
+          delete obj.tipoContratto;
+        }
+        if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
+          delete obj.tipoAzienda;
+        }
+        if (obj.tipoCcnl && Object.keys(obj.tipoCcnl).length === 0) {
+          delete obj.tipoCcnl;
+        }
+        if (
+          obj.tipoLivelloContratto &&
+          Object.keys(obj.tipoLivelloContratto).length === 0
+        ) {
+          delete obj.tipoLivelloContratto;
+        }
+
+        if (
+          obj.tipoCanaleReclutamento &&
+          Object.keys(obj.tipoCanaleReclutamento).length === 0
+        ) {
+          delete obj.tipoCanaleReclutamento;
+        }
+        if (
+          obj.tipoCausaFineRapporto &&
+          Object.keys(obj.tipoCausaFineRapporto).length === 0
+        ) {
+          delete obj.tipoCausaFineRapporto;
+        }
+      });
+    };
+
+    removeEmpty(this.filterAnagraficaDto.value);
+    const body = {
+      anagraficaDto: this.filterAnagraficaDto.value,
+      anno: this.selectedAnno,
+      mese: this.selectedMese,
+    };
+    console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
+
+    this.listaRapportiniService
+      .filterFreeze(localStorage.getItem('token'), body)
+      .subscribe(
+        (result) => {
+          if ((result as any).esito.code != 200) {
+            alert(
+              'Qualcosa é andato storto\n' + ': ' + (result as any).esito.target
+            );
+          } else {
+            if (Array.isArray(result.list)) {
+              this.pageData2 = result.list;
+            } else {
+              this.pageData2 = [];
+              this.messaggio =
+                'Nessun risultato trovato per i filtri inseriti, riprova.';
+            }
+            console.log(
+              'Trovati i seguenti risultati: ' + JSON.stringify(result)
+            );
+          }
+        },
+        (error: any) => {
+          console.log('Si é verificato un errore: ' + error);
+        }
+      );
+  }
+
   annullaFiltri() {
     this.anagraficaDtoService
       .listAnagraficaDto(localStorage.getItem('token'))
