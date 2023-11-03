@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
   immagineCancellata: boolean = false;
   codiceFiscaleDettaglio: any;
   idUtente: any;
-
+  mobile: any = false;
   constructor(
     private authService: AuthService,
     private profileBoxService: ProfileBoxService,
@@ -45,7 +45,23 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private imageService: ImageService,
     private menuService: MenuService
-  ) {}
+  ) {
+
+    
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
+  }
 
   ngOnInit(): void {
     if (this.token != null) {
