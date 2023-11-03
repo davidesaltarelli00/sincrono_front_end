@@ -1041,7 +1041,8 @@ export class UtenteComponent implements OnInit {
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.idUtenteLoggato = response.anagraficaDto.anagrafica.id;
-
+        console.log('ID:' + this.id);
+        console.log('IDUTENTELOGGATO:' + this.idUtenteLoggato);
         if (this.idUtenteLoggato != this.id) {
           this.dettaglioSbagliato = true;
         } else {
