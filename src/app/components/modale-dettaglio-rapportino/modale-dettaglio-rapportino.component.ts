@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Inject,
@@ -27,7 +28,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
   mese: any = this.activatedRoute.snapshot.params['mese'];
   anno: any = this.activatedRoute.snapshot.params['anno'];
   token = localStorage.getItem('token');
-  rapportinoDto: any;
+  rapportinoDto: any[]=[];
   note: any;
   giorniUtili: any;
   giorniLavorati: any;
@@ -52,8 +53,14 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
   selectedMese: number;
   anni: number[] = [];
   mesi: number[] = [];
-  esitoCorretto: boolean=false;
-  duplicazioniGiornoDto: any[]=[];
+  esitoCorretto: boolean = false;
+  duplicazioniGiornoDto: any[] = [];
+  //calcoli
+  totaleOreLavorate: any;
+  totaleFerie: any;
+  totaleMalattia: any;
+  totaleStraordinari: any;
+  totaleOrePermessi: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -62,7 +69,8 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
     private router: Router,
     private http: HttpClient,
     private profileBoxService: ProfileBoxService,
-    private anagraficaDtoService: AnagraficaDtoService
+    private anagraficaDtoService: AnagraficaDtoService,
+    private cdRef: ChangeDetectorRef
   ) {
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -90,24 +98,20 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
     ) {
       this.mobile = true;
     }
-
   }
 
   ngOnInit() {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
-    } else {
-      console.error('ERRORE DI AUTENTICAZIONE');
-    }
-    console.log(
-      this.id,
-      this.nome,
-      this.cognome,
-      this.codiceFiscale,
-      this.mese,
-      this.anno
-    );
+      console.log(
+        this.id,
+        this.nome,
+        this.cognome,
+        this.codiceFiscale,
+        this.mese,
+        this.anno
+      );
 
       let body = {
         rapportinoDto: {
@@ -132,7 +136,9 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
             this.esitoCorretto = true;
             this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
             this.duplicazioniGiornoDto =
-              result['rapportinoDto']['mese']['giorni']['duplicazioniGiornoDto'];
+              result['rapportinoDto']['mese']['giorni'][
+                'duplicazioniGiornoDto'
+              ];
             this.giorniUtili = result['rapportinoDto']['giorniUtili'];
             this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
             this.note = result['rapportinoDto']['note'];
@@ -154,11 +160,20 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
           console.error('ERRORE:' + JSON.stringify(error));
         }
       );
+      this.calcolaTotaleFerie();
+      this.calcolaTotaleMalattia();
+      this.calcolaTotaleOreLavorate();
+      this.calcolaTotaleOrePermessi();
+      this.calcolaTotaleStraordinari();
+      this.cdRef.detectChanges();
+    } else {
+      console.error('ERRORE DI AUTENTICAZIONE');
     }
+  }
 
-    trackByFn(index: number, item: any): number {
-      return index;
-    }
+  trackByFn(index: number, item: any): number {
+    return index;
+  }
 
   resetNote() {
     this.note = null;
@@ -213,6 +228,80 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
       }
     );
   }
+
+  //calcoli
+  calcolaTotaleOreLavorate() {
+    let totale = 0;
+
+    for (const giorno of this.rapportinoDto) {
+      for (const duplicazione of giorno.duplicazioniGiornoDto) {
+        if (duplicazione.oreOrdinarie) {
+          totale += duplicazione.oreOrdinarie;
+        }
+      }
+    }
+
+    this.totaleOreLavorate = totale;
+  }
+
+  calcolaTotaleFerie() {
+    let totale = 0;
+
+    for (const giorno of this.rapportinoDto) {
+      if (giorno.ferie) {
+        totale += 1;
+      }
+    }
+
+    this.totaleFerie = totale;
+  }
+
+  calcolaTotaleMalattia() {
+    let totale = 0;
+
+    for (const giorno of this.rapportinoDto) {
+      if (giorno.malattie) {
+        totale += 1;
+      }
+    }
+
+    this.totaleMalattia = totale;
+  }
+
+  calcolaTotaleStraordinari() {
+    let totale = 0;
+
+    for (const giorno of this.rapportinoDto) {
+      for (const duplicazione of giorno.duplicazioniGiornoDto) {
+        // Assicurati che i campi straordinari siano definiti (potrebbero essere null o undefined)
+        if (duplicazione.fascia1) {
+          totale += duplicazione.fascia1;
+        }
+        if (duplicazione.fascia2) {
+          totale += duplicazione.fascia2;
+        }
+        if (duplicazione.fascia3) {
+          totale += duplicazione.fascia3;
+        }
+      }
+    }
+
+    this.totaleStraordinari = totale;
+  }
+
+  calcolaTotaleOrePermessi() {
+    let totale = 0;
+
+    for (const giorno of this.rapportinoDto) {
+      if (giorno.permessi) {
+        totale += giorno.permessi; // Aggiungi le ore di permesso al totale
+      }
+    }
+
+    this.totaleOrePermessi = totale;
+  }
+
+  //metodi navbar
 
   logout() {
     this.dialog.open(AlertLogoutComponent);

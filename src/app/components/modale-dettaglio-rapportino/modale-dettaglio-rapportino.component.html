@@ -213,112 +213,47 @@
     </mat-card>
      <br>
     </div>
-    <!-- <div class="col-12">
-      <form #rapportinoForm="ngForm" >
-        <div class="row container-form" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="border: 5px solid white;">
-         <div class="matrice" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
-          <div class="col-1" style="margin: 1%;" >
-            <div class="form-group" >
-              <label for="giorno-{{ i }}{{j}}">Giorno:</label>
-              <input
-              [min]="1"
-              [max]="rapportinoDto.length"
-              disabled
-               type="number" class="form-control"
-               id="giorno-{{ i }}{{j}}" name="giorno-{{ i }}{{j}}"
-               [(ngModel)]="duplicazione.giorno" >
-            </div>
-          </div>
-          <div class="col-2" style="margin: 1%;">
-            <div class="form-group">
-               <label for="cliente-{{ i }}{{j}}">Cliente:</label>
-              <input type="text" disabled class="form-control" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente">
-            </div>
-          </div>
-          <div class="col-1" style="margin: 1%;">
-            <div class="form-group">
-              <label for="ore-ordinarie-{{ i }}{{j}}">Ore:</label>
-              <input disabled
-              type="number" class="form-control"
-              step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
-              id="ore-ordinarie-{{ i }}{{j}}" name="ore-ordinarie-{{ i }}{{j}}"
-              [(ngModel)]="duplicazione.oreOrdinarie">
-            </div>
-          </div>
-          <div class="col-1" style="margin: 1%;">
-            <div class="form-group">
-              <label for="fascia1-{{ i }}{{j}}">18-20</label>
-              <input disabled
-              type="number" class="form-control"
-              step="0.5" min="0" max="2"
-              id="fascia1-{{ i }}{{j}}" name="fascia1-{{ i }}{{j}}"
-              [(ngModel)]="duplicazione.fascia1">
-            </div>
-          </div>
-          <div class="col-1" style="margin: 1%;">
-            <div class="form-group">
-              <label for="fascia2-{{ i }}{{j}}">20-22</label>
-              <input disabled
-              type="number" class="form-control"
-              step="0.5" min="0" max="2"
-              id="fascia2-{{ i }}" name="fascia2-{{ i }}{{j}}"
-              [(ngModel)]="duplicazione.fascia2">
-            </div>
-          </div>
-          <div class="col-1" style="margin: 1%;">
-            <div class="form-group">
-              <label for="fascia3-{{ i }}{{j}}">22-09</label>
-              <input disabled
-              type="number" class="form-control"
-              step="0.5" min="0" max="13"
-              id="fascia3-{{ i }}{{j}}" name="fascia3-{{ i }}{{j}}"
-              [(ngModel)]="duplicazione.fascia3">
-            </div>
-          </div>
-
-         </div>
-          <div class="col-1" style="margin: 1%;">
-            <div class="form-group">
-              <label for="permessi-{{ i }}">Permessi:</label>
-              <input disabled
-              type="number" class="form-control"
-              step="0.5" min="0" max="8"
-              id="permessi-{{ i }}" name="permessi-{{ i }}"
-              [(ngModel)]="giorno.permessi">
-            </div>
-          </div>
-          <div class="col-1" style="margin: 1%;">
-            <div class="form-group">
-              <label for="ferie-{{ i }}">Ferie:</label> <br>
-              <input disabled class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
-            </div>
-          </div>
-          <div class="col-1" style="margin: 1%;">
-            <div class="form-group">
-              <label for="malattie-{{ i }}">Malattie:</label><br>
-              <input disabled class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
-            </div>
-          </div>
-          <div class="col-2" style="margin: 1%;">
-            <div class="form-group">
-              <label for="note-{{ i }}">Note </label>
-              <input disabled type="text" class="form-control" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
-            </div>
-          </div>
-
-        </div>
-    </form>
-    </div> -->
   </div>
   <br>
   <div class="row">
     <div class="col-6">
       <div class="form-group">
         <label for="note">Note:</label> <br>
-        <textarea name="note" class="form-control" [(ngModel)]="note" id="note" cols="15" rows="5"  ></textarea> <br>
-        <button class="btn btn-warning" (click)="aggiungiNote()" [disabled]="note==null" >Salva note <i class="fa fa-save" ></i> </button> &nbsp;
-        <button class="btn btn-info" (click)="resetNote()" >Cancella <i class="fa fa-undo" ></i> </button> <br>
+        <textarea name="note" class="form-control" placeholder="Inserisci eventuali note" [(ngModel)]="note" id="note" cols="15" rows="5"  ></textarea> <br>
+        <button class="btn btn-warning" (click)="aggiungiNote()" [disabled]="note==null" >Salva e torna alla lista <i class="fa fa-save" ></i> </button> &nbsp;
+        <button class="btn btn-info" (click)="resetNote()" >Cancella note<i class="fa fa-undo" ></i> </button> <br>
       </div>
+    </div>
+    <div class="col-6">
+      <label for="calcoli"></label>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Tot giorni ferie</th>
+            <th>Tot ore permesso</th>
+            <th>Tot giorni malattia</th>
+            <th>Tot ore lavorate</th>
+            <th>Tot ore straordinari</th>
+            <th>Tot giorni lavorati</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{totaleFerie}}</td>
+            <td>{{totaleOrePermessi}}</td>
+            <td>{{totaleMalattia}}</td>
+          <td > {{totaleOreLavorate}}</td>
+          <td>{{totaleStraordinari}}</td>
+          <td >{{giorniLavorati}} / {{giorniUtili}} </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br><br>
+  <div class="row">
+    <div class="col-12">
+      <button mat-flat-button color="primary" [routerLink]="['/lista-rapportini']" >Torna alla lista dei rapportini</button>
     </div>
   </div>
   <br><br><br><br>
