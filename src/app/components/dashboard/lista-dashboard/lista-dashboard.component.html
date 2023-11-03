@@ -216,7 +216,7 @@
                     <td>{{ element.contratto.ticket ? 'Sì' : 'No' }}</td>
                     <td>{{ element.contratto.categoriaProtetta }}</td>
                     <td>{{ element.contratto.tutor }}</td>
-                    <td>{{ element.contratto.pfi }}</td>
+                    <td>{{ element.contratto.pfi ? 'Si' : 'No'}}</td>
                     <td (click)="dettaglioAnagrafica(element.anagrafica.id)"> <button class="btn btn-primary"><i
                           class="fa fa-info"></i></button> </td>
                     <td (click)="vaiAModificaAnagrafica(element.anagrafica.id)"><button class="btn btn-warning"><i
