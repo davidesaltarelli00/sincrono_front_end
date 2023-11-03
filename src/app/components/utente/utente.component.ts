@@ -211,34 +211,15 @@ export class UtenteComponent implements OnInit {
   }
 
   duplicaRiga(index: number, j: number) {
-    let count = 0;
-    // for (let i = 0; i < this.rapportinoDto.length; i++) {
-    //   //itero tutto il rapportino
-    //   for (
-    //     let y = 0;
-    //     y < this.rapportinoDto[i].duplicazioniGiornoDto.length;
-    //     y++
-    //   ) {
-    //     //itero tutti i giorni duplicati
-    //     if (
-    //       this.rapportinoDto[index].duplicazioniGiornoDto[0].giorno ==
-    //       this.rapportinoDto[i].duplicazioniGiornoDto[y].giorno
-    //     ) {
-    //       count++;
-    //     }
-    //   }
-    // }
-    console.log(JSON.stringify(this.rapportinoDto));
-    if (count < this.aziendeClienti.length) {
-      const copiaGiorno = JSON.parse(
-        JSON.stringify(this.rapportinoDto[index].duplicazioniGiornoDto[0])
-      );
-      this.rapportinoDto[index].duplicazioniGiornoDto.splice(
-        index + 1,
-        0,
-        copiaGiorno
-      );
-    } else {
+    console.log(
+      'lunghezza rapportino:' +
+        this.rapportinoDto[index].duplicazioniGiornoDto.length
+    );
+
+    if (
+      this.rapportinoDto[index].duplicazioniGiornoDto.length ===
+      this.numeroCommessePresenti
+    ) {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
           Image: '../../../../assets/images/logo.jpeg',
@@ -248,7 +229,31 @@ export class UtenteComponent implements OnInit {
             ' aziende clienti',
         },
       });
+    } else {
+      const copiaGiorno = JSON.parse(
+        JSON.stringify(this.rapportinoDto[index].duplicazioniGiornoDto[j])
+      );
+      this.rapportinoDto[index].duplicazioniGiornoDto.splice(
+        index + 1,
+        0,
+        copiaGiorno
+      );
     }
+
+    //itero tutto il rapportino
+    // for (
+    //   let y = 0;
+    //   y < this.rapportinoDto[i].duplicazioniGiornoDto.length;
+    //   y++
+    // ) {
+    //   //itero tutti i giorni duplicati
+    //   if (
+    //     this.rapportinoDto[index].duplicazioniGiornoDto[0].giorno ==
+    //     this.rapportinoDto[i].duplicazioniGiornoDto[y].giorno
+    //   ) {
+    //     count++;
+    //   }
+    // }
   }
 
   trackByFn(index: number, item: any): number {
@@ -947,11 +952,11 @@ export class UtenteComponent implements OnInit {
   svuotaCampi() {
     for (const giorno of this.rapportinoDto) {
       for (const duplicazione of giorno.duplicazioniGiornoDto) {
-        duplicazione.cliente='';
-        duplicazione.oreOrdinarie=null;
-        duplicazione.fascia1=null;
-        duplicazione.fascia2=null;
-        duplicazione.fascia3=null;
+        duplicazione.cliente = '';
+        duplicazione.oreOrdinarie = null;
+        duplicazione.fascia1 = null;
+        duplicazione.fascia2 = null;
+        duplicazione.fascia3 = null;
       }
       giorno.permessi = null;
       giorno.note = '';
