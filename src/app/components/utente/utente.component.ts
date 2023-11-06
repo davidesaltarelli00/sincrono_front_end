@@ -716,6 +716,10 @@ export class UtenteComponent implements OnInit {
 
   //qui andrá l endpoint per verificare la completezza della tabella
 
+  handleInput(event: any) {
+    event.target.value = parseFloat(event.target.value).toFixed(1);
+  }
+
   inviaRapportino() {
     let body = {
       rapportino: {
@@ -903,13 +907,13 @@ export class UtenteComponent implements OnInit {
       .subscribe(
         (result: any) => {
           if ((result as any).esito.code !== 200) {
-            const dialogRef = this.dialog.open(AlertDialogComponent, {
-              data: {
-                Image: '../../../../assets/images/logo.jpeg',
-                title: 'Salvataggio non riuscito:',
-                message: (result as any).esito.target,
-              },
-            });
+            // const dialogRef = this.dialog.open(AlertDialogComponent, {
+            //   data: {
+            //     Image: '../../../../assets/images/logo.jpeg',
+            //     title: 'Salvataggio non riuscito:',
+            //     message: (result as any).esito.target,
+            //   },
+            // });
             this.rapportinoSalvato = false;
             console.error(result);
           }
@@ -918,6 +922,15 @@ export class UtenteComponent implements OnInit {
               data: {
                 title: 'Cella salvata correttamente.',
                 message: (result as any).esito.target,
+              },
+            });
+            this.getRapportino();
+          }
+          if ((result as any).esito.target === 'HTTP error code: 400') {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Hai inserito un valore non valido.',
+                message: 'Controlla e riprova.',
               },
             });
             this.getRapportino();

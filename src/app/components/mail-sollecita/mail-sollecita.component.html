@@ -9,7 +9,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12" style="float: right;">
-        <i style="float: right;" class="fa fa-close" (click)="closeModal()" ></i>
+       <button mat-flat-button style="float: right; cursor: pointer;" (click)="closeModal()"  >  <i  class="fa fa-close" ></i> </button>
       </div>
     </div>
     <div class="row">
@@ -32,7 +32,7 @@
                   <div class="form-group">
                     <label for="toRapportini">To Rapportini</label>
                     <input disabled type="text" id="toRapportini" name="toRapportini" [(ngModel)]="toRapportini" class="form-control">
-                    <small class="form-text text-muted">Inserisci gli indirizzi email separati da virgola.</small>
+                    <small class="form-text text-muted">Per inviare la mail ad altri utenti, selezionali dalla lista.</small>
                   </div>
                 </div>
               </div>

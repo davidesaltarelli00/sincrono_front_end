@@ -239,8 +239,8 @@
       </p>
      <div class="row" *ngIf="esitoCorretto">
 
-      <div class="col-4" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"  >
-        <mat-card style="padding: 5%;" [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'lightblue' : '#ffff99'}" >
+      <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"  >
+        <mat-card style="padding: 5%;" [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aqua' : 'rgb(214, 234, 251)'}" >
           <mat-card-title style="text-align: center;">
             <p> <button mat-fab color color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}</p>
           </mat-card-title>
@@ -251,37 +251,37 @@
             <div class="col-6">
               <div class="form-group">
                 <label for="cliente-{{ i }}{{j}}">Cliente</label>
-                <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)">
+                <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-control form-control-sm" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)">
                   <option value=" " selected></option>
                   <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
                 </select>
                 <div *ngIf="!duplicazione.cliente && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
               </div>
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <div class="form-group">
                 <label for="ore-ordinarie-{{ i }}{{j}}">Ore</label>
-                  <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
-                  [ngClass]="{'has-error': !isValidOreOrdinarie(duplicazione.oreOrdinarie)}"
-                  type="number" class="form-control"
-                  step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
-                  id="ore-ordinarie-{{ i }}{{j}}" name="ore-ordinarie-{{ i }}{{j}}"
-                  [(ngModel)]="duplicazione.oreOrdinarie">
-                  <div *ngIf="!duplicazione.oreOrdinarie" class="error-message">Campo obbligatorio</div>
-                  <div *ngIf="!isValidOreOrdinarie(duplicazione.oreOrdinarie)" class="error-message">Valore non valido.</div>
+                <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+                [ngClass]="{'has-error': !isValidOreOrdinarie(duplicazione.oreOrdinarie)}"
+                type="text"  class="form-control form-control-sm"
+                step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
+                id="ore-ordinarie-{{ i }}{{j}}" name="ore-ordinarie-{{ i }}{{j}}"
+                [(ngModel)]="duplicazione.oreOrdinarie"
+                oninput="this.value = Math.abs(this.value)">
+
+                  <!-- <div *ngIf="!duplicazione.oreOrdinarie" class="error-message">Campo obbligatorio</div> -->
+                  <!-- <div *ngIf="!isValidOreOrdinarie(duplicazione.oreOrdinarie)" class="error-message">Valore non valido.</div> -->
               </div>
             </div>
           </div>
-          <div class="straordinari" id="straordinari">
-            <!-- <button mat-flat-button name="straordinari" id="straordinari" (click)="toggleCheckStraordinari(duplicazione)" >Straordinari</button> -->
-           <div class="row" > <!--*ngIf="checkstraordinari"-->
-            <label for="straordinari" style="text-align: center; font-weight: bold;">Straordinari</label>
+           <div class="row" >
+            <!-- <label for="straordinari" style="text-align: center; font-weight: bold;">Straordinari</label> -->
             <div class="col-4">
              <div class="form-group">
               <label for="fascia1-{{ i }}{{j}}">18:00-20:00</label>
               <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
-              type="number" class="form-control"
-              step="0.5" min="0" max="2"
+              type="text" class="form-control form-control form-control-sm"
+              step="0.5" min="0" max="2" pattern="[0-8](\.[05])?"
               id="fascia1-{{ i }}{{j}}" name="fascia1-{{ i }}{{j}}"
               [(ngModel)]="duplicazione.fascia1">
              </div>
@@ -290,8 +290,8 @@
              <div class="form-group">
               <label for="fascia2-{{ i }}{{j}}">20:00-22:00</label>
               <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
-              type="number" class="form-control"
-              step="0.5" min="0" max="2"
+              type="text" class="form-control form-control form-control-sm"
+              step="0.5" min="0" max="2" pattern="[0-8](\.[05])?"
               id="fascia2-{{ i }}" name="fascia2-{{ i }}{{j}}"
               [(ngModel)]="duplicazione.fascia2">
              </div>
@@ -300,22 +300,21 @@
               <div class="form-group">
                 <label for="fascia3-{{ i }}{{j}}">22:00-09:00</label>
                 <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
-                type="number" class="form-control"
-                step="0.5" min="0" max="13"
+                type="text" class="form-control form-control form-control-sm"
+                step="0.5" min="0" max="13" pattern="[0-8](\.[05])?"
                 id="fascia3-{{ i }}{{j}}" name="fascia3-{{ i }}{{j}}"
                 [(ngModel)]="duplicazione.fascia3">
               </div>
             </div>
            </div>
-          </div>
         </mat-card-content>
         <mat-card-footer>
           <div class="row">
             <div class="col-6">
-              <button style="float: right;" [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie" class="btn btn-warning" id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga" ><i  class="fa fa-clone"></i></button> <br>
+              <button style="float: right;" [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie" class="btn btn-warning btn-sm" id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga" ><i  class="fa fa-clone"></i></button> <br>
             </div>
             <div class="col-6">
-              <button [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"  class="btn btn-danger" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"  ><i  class="fa fa-trash"></i></button>
+              <button [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"  class="btn btn-danger btn-sm" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"  ><i  class="fa fa-trash"></i></button>
             </div>
           </div>
         </mat-card-footer>
@@ -326,8 +325,8 @@
          <div class="form-group">
           <label for="permessi-{{ i }}">Permessi</label>
           <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
-          type="number" class="form-control"
-          step="0.5" min="0" max="8"
+          type="text" class="form-control form-control-sm"
+          step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
           id="permessi-{{ i }}" name="permessi-{{ i }}"
           [(ngModel)]="giorno.permessi">
          </div>
@@ -346,10 +345,10 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-12">
+        <div class="col-sm-12">
         <div class="form-group">
           <label for="note-{{ i }}">Note  </label> <!--<div *ngIf="!giorno.note" class="error-message">Campo obbligatorio</div>-->
-          <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
+          <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control form-control-sm" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
         </div>
         </div>
       </div>
