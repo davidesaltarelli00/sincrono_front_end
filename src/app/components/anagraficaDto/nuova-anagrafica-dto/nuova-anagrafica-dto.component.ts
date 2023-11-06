@@ -19,6 +19,7 @@ import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { MenuService } from '../../menu.service';
+import { MapsService } from './maps.service';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -92,6 +93,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   idNav: any;
   tokenProvvisorio: any;
   idUtente: any;
+  nazioni: string[] = [];
+  capitali: any[] = [];
+  province: any[] = [];
+  dati: any = [];
+  statoDiNascita: any;
+  provinciaDiNascita: string = '';
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -103,7 +110,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     public snackBar: MatSnackBar,
     private profileBoxService: ProfileBoxService,
     private http: HttpClient,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private mapsService: MapsService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -261,6 +269,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
+      this.caricaMappa();
     }
 
     //INIZIO porzione di codice necessaria alla disabilitazione dei campi "distaccoAzienda" e "DistaccoData" nelle commesseç
@@ -402,6 +411,54 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.calcoloRAL();
   }
 
+  caricaMappa() {
+    this.mapsService.getData().subscribe((data: any) => {
+      this.dati = data;
+      this.nazioni = this.dati.map((item: any) => item.nazione);
+    });
+  }
+
+  onChangeNazione(event: any) {
+    this.statoDiNascita = event.target.value; // Imposta la nazione selezionata
+
+    // Inizializza le capitali con un array vuoto
+    this.capitali = [];
+
+    // Se "Italia" è selezionata, ottieni tutte le province italiane
+    if (this.statoDiNascita === 'Italia') {
+      this.province = this.dati
+        .find((item: any) => item.nazione === 'Italia')
+        ?.province.flatMap((regione: any) => regione.province) || [];
+
+      // Inoltre, imposta le capitali italiane
+      this.capitali = this.dati
+        .find((item: any) => item.nazione === 'Italia')
+        ?.province.map((regione: any) => regione.capitale) || [];
+    } else {
+      // Altrimenti, filtra le province in base alla nazione selezionata
+      this.province = this.dati
+        .find((item: any) => item.nazione === this.statoDiNascita)
+        ?.province || [];
+
+      // Recupera la capitale della nazione selezionata
+      const capitaleNazione = this.dati
+        .find((item: any) => item.nazione === this.statoDiNascita)?.capitale;
+
+      // Se la capitale è definita, aggiungila all'array delle capitali
+      if (capitaleNazione) {
+        this.capitali.push(capitaleNazione);
+      }
+    }
+
+    console.log("Nazione selezionata: " + this.statoDiNascita);
+    console.log("Province selezionate: " + JSON.stringify(this.province));
+    console.log("Capitali selezionate: " + JSON.stringify(this.capitali));
+  }
+
+
+
+
+
   calcoloRAL() {
     const retribuzioneMensileLorda = this.AnagraficaDto.get(
       'contratto.retribuzioneMensileLorda'
@@ -423,18 +480,21 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-
   calcoloRal() {
-    if (typeof this.risultatoMensileTOT !== 'undefined' && typeof this.numeroMensilitaCCNL !== 'undefined') {
+    if (
+      typeof this.risultatoMensileTOT !== 'undefined' &&
+      typeof this.numeroMensilitaCCNL !== 'undefined'
+    ) {
       const ralAnnua = this.risultatoMensileTOT * this.numeroMensilitaCCNL;
-      this.AnagraficaDto.get('contratto.ralAnnua')?.setValue(ralAnnua.toFixed(2));
-      this.ralAnnua=ralAnnua;
-      console.log("LA RAL ANNUA É DI " + ralAnnua);
+      this.AnagraficaDto.get('contratto.ralAnnua')?.setValue(
+        ralAnnua.toFixed(2)
+      );
+      this.ralAnnua = ralAnnua;
+      console.log('LA RAL ANNUA É DI ' + ralAnnua);
     } else {
-      console.warn("Dati mancanti per il calcolo della ral");
+      console.warn('Dati mancanti per il calcolo della ral');
     }
   }
-
 
   onChangeConiugato(event: Event) {
     const target = event.target as HTMLInputElement;
@@ -1616,7 +1676,9 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           this.minimiRet23 = selectedLivello.minimiRet23;
           console.log('Minimi retributivi 2023:' + this.minimiRet23);
           console.log('numero mensilitá:' + this.numeroMensilitaCCNL);
-          const tipoContratto = this.AnagraficaDto.get('contratto.tipoContratto.id');
+          const tipoContratto = this.AnagraficaDto.get(
+            'contratto.tipoContratto.id'
+          );
           if (this.tipoContratto != null) {
             if (this.tipoContratto.descrizione === 'Stage') {
               console.log('é uno stage, NO retr lorda');
@@ -1860,18 +1922,20 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-        this.jsonData = { list: [] };
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
 
   getPermissions(functionId: number) {

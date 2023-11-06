@@ -460,14 +460,27 @@
                               formControlName="dataDiNascita" />
                           </div>
                         </div>
+
                         <div class="col-md-3">
-                          <label>Provincia di Nascita </label>
+                          <label>Stato di Nascita</label>
                           <div class="form-group">
-                            <input type="text" class="form-control" formControlName="provinciaDiNascita"
-                              placeholder="Inserire provincia di nascita." />
+                            <select class="form-select" (change)="onChangeNazione($event)" formControlName="statoDiNascita" name="statoDiNascita">
+                              <option value="" disabled selected>Seleziona una nazione</option>
+                              <option *ngFor="let nazione of nazioni" [value]="nazione">{{nazione}}</option>
+                            </select>
                           </div>
-                          <!--formControlName="provinciaDiNascita"-->
                         </div>
+
+                        <div class="col-md-3">
+                          <label>Provincia di Nascita</label>
+                          <div class="form-group">
+                            <select class="form-select" formControlName="provinciaDiNascita" name="provinciaDiNascita">
+                              <option value="" disabled selected>Seleziona una provincia</option>
+                              <option *ngFor="let provincia of province" [value]="provincia?.nome">{{provincia?.nome}}</option>
+                            </select>
+                          </div>
+                        </div>
+
                         <div class="col-md-3">
                           <label>Comune di Nascita </label>
                           <div class="form-group">
@@ -475,14 +488,7 @@
                               placeholder="Inserire comune di nascita." />
                           </div>
                         </div>
-                        <div class="col-md-3">
-                          <label>Stato di Nascita </label>
-                          <div class="form-group">
-                            <input type="text" class="form-control" formControlName="statoDiNascita"
-                              placeholder="Inserire stato di nascita." />
-                            <!--formControlName="statoDiNascita"-->
-                          </div>
-                        </div>
+
                       </div>
                       <br />
                       <div class="row">
