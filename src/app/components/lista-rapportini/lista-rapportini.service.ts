@@ -84,6 +84,17 @@ export class ListaRapportiniService {
     });
   }
 
+  mailSollecita(token:any, body:any):Observable<any>{ ///mail/send-rapportini
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<any>(this.url + `mail/send-rapportini`, body, {
+      headers: headers,
+    });
+  }
+
   //converte il rapportino in un file excel
 
   exportFileRapportino(token: any, body: any): Observable<any> {

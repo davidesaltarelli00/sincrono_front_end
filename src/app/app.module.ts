@@ -56,6 +56,7 @@ import { HeaderComponent } from './header/header.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ImmagineComponent } from './components/immagine/immagine.component';
 import { BottoniComponent } from './bottoni/bottoni.component';
+import { MailSollecitaComponent } from './components/mail-sollecita/mail-sollecita.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -90,7 +91,8 @@ import { BottoniComponent } from './bottoni/bottoni.component';
     ModaleDettaglioRapportinoComponent,
     HeaderComponent,
     ImmagineComponent,
-    BottoniComponent
+    BottoniComponent,
+    MailSollecitaComponent
   ],
   imports: [
     MatIconModule,

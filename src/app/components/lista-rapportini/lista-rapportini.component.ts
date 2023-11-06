@@ -16,6 +16,7 @@ import * as XLSX from 'xlsx';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ContrattoService } from '../contratto/contratto-service';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
+import { MailSollecitaComponent } from '../mail-sollecita/mail-sollecita.component';
 
 @Component({
   selector: 'app-lista-rapportini',
@@ -33,7 +34,7 @@ export class ListaRapportiniComponent implements OnInit {
   idNav: any;
   tokenProvvisorio: any;
   ruolo: any;
-
+  elencoMail: string[] = [];
   elencoRapportiniFreezati: any[] = [];
   elencoRapportiniNonFreezati: any[] = [];
   checkFreeze = false;
@@ -61,7 +62,7 @@ export class ListaRapportiniComponent implements OnInit {
   itemsPerPage2: number = 20;
   pageData2: any[] = [];
   idUtente: any;
-  getAllRapportiniNotFreezeCorretto=false;
+  getAllRapportiniNotFreezeCorretto = false;
   //tutto il necessario per i filtri
   tipiContratti: any = [];
   livelliContratti: any = [];
@@ -74,6 +75,8 @@ export class ListaRapportiniComponent implements OnInit {
   numeroMensilitaCCNL: any;
   idCCNLselezionato: any;
   commesse!: FormArray;
+  target: { [key: number]: boolean } = {};
+
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -137,7 +140,7 @@ export class ListaRapportiniComponent implements OnInit {
     private rapportinoDataService: RapportinoDataService,
     private menuService: MenuService,
     private contrattoService: ContrattoService,
-    private anagraficaDtoService: AnagraficaDtoService
+    private anagraficaDtoService: AnagraficaDtoService,
   ) {
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -515,7 +518,6 @@ export class ListaRapportiniComponent implements OnInit {
       );
   }
 
-
   filterListFreeze(value: any) {
     const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
@@ -627,7 +629,7 @@ export class ListaRapportiniComponent implements OnInit {
       .getAllRapportiniNonFreezati(this.token, body)
       .subscribe(
         (result: any) => {
-          this.getAllRapportiniNotFreezeCorretto=true;
+          this.getAllRapportiniNotFreezeCorretto = true;
           this.elencoRapportiniNonFreezati = result['list'];
           this.selectedMeseRapportinoNonFreezato = result['list']['mese'];
           this.selectedAnnoRapportinoNonFreezato = result['list']['anno'];
@@ -822,6 +824,32 @@ export class ListaRapportiniComponent implements OnInit {
         );
     }
   }
+
+
+  sollecita(mailAziendale: string) {
+    const dialogRef = this.dialog.open(MailSollecitaComponent, {
+      data: { elencoMail: this.elencoMail }
+    });
+  }
+
+  selezionaRiga(mailAziendale: string, rapportino: any) {
+    rapportino.rowSelected = !rapportino.rowSelected;
+    if (rapportino.rowSelected) {
+      this.elencoMail.push(mailAziendale);
+    } else {
+      const index = this.elencoMail.indexOf(mailAziendale);
+      if (index !== -1) {
+        this.elencoMail.splice(index, 1);
+      }
+    }
+    console.log("L'elenco al momento contiene le seguenti mail: " + JSON.stringify(this.elencoMail));
+  }
+
+
+
+
+
+
 
   getRapportino(
     id: any,

@@ -184,7 +184,7 @@
       <div class="col-12">
         <mat-card>
          <mat-card-title>
-          <h1>Rapportini da controllare</h1>
+          <h1>Rapportini da controllare ( {{elencoRapportiniNonFreezati.length}} ) </h1>
          </mat-card-title>
          <mat-card-content>
 
@@ -397,9 +397,10 @@
           </mat-expansion-panel>
           <br>
 
-          <table class="table table-striped" >
+          <table class="table table-striped">
             <thead>
               <tr>
+                <th>Seleziona</th>
                 <th>Ruolo</th>
                 <th>Nominativo</th>
                 <th>Codice fiscale</th>
@@ -409,19 +410,36 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let rapportinoNonFreezato of pageData; let i=index" >
+              <tr *ngFor="let rapportinoNonFreezato of pageData; let i=index">
+                <td>
+                  <input type="checkbox" (change)="selezionaRiga(rapportinoNonFreezato.anagrafica.mailAziendale, rapportinoNonFreezato)">
+                </td>
                 <td>{{rapportinoNonFreezato.ruolo.descrizione}}</td>
                 <td>{{rapportinoNonFreezato.anagrafica.nome}}  {{rapportinoNonFreezato.anagrafica.cognome}}</td>
                 <td>{{rapportinoNonFreezato.anagrafica.codiceFiscale}}</td>
                 <td>{{rapportinoNonFreezato.anagrafica.mailAziendale}}</td>
-                <td *ngIf="rapportinoNonFreezato.anagrafica.checkInviato" >
-                 Inviato, da controllare  <button mat-flat-button (click)="onChangecheckFreeze( true, rapportinoNonFreezato.anagrafica.id,selectedAnno, selectedMese)" >Congela <i class="fa fa-lock"></i></button>
+                <td *ngIf="rapportinoNonFreezato.anagrafica.checkInviato">
+                  Inviato, da controllare
+                  <button mat-flat-button (click)="onChangecheckFreeze(true, rapportinoNonFreezato.anagrafica.id, selectedAnno, selectedMese)">Congela <i class="fa fa-lock"></i></button>
                 </td>
-                <td *ngIf="!rapportinoNonFreezato.anagrafica.checkInviato" >Non inviato <button mat-flat-button color="warn" matTooltip="Premendo questo pulsante invierai una mail di sollecitazione a {{rapportinoNonFreezato.anagrafica.nome}}  {{rapportinoNonFreezato.anagrafica.cognome}} " >Sollecita <i class="fa fa-envelope" aria-hidden="true"></i></button>  </td>
-                <td> <button [disabled]="!rapportinoNonFreezato.anagrafica.checkInviato" mat-fab color="primary" (click)="getRapportino(rapportinoNonFreezato.anagrafica.id,rapportinoNonFreezato.anagrafica.nome ,rapportinoNonFreezato.anagrafica.cognome, rapportinoNonFreezato.anagrafica.codiceFiscale, selectedMese, selectedAnno)" > <mat-icon>info</mat-icon> </button> </td>
+                <td *ngIf="!rapportinoNonFreezato.anagrafica.checkInviato">
+                  Non inviato
+                  <button mat-flat-button color="warn"
+                   (click)="sollecita(rapportinoNonFreezato.anagrafica.mailAziendale)"
+                   matTooltip="Premendo questo pulsante invierai una mail di sollecitazione a {{rapportinoNonFreezato.anagrafica.nome}}  {{rapportinoNonFreezato.anagrafica.cognome}}"
+                  [disabled]="!rapportinoNonFreezato.rowSelected">Sollecita <i class="fa fa-envelope" aria-hidden="true"></i></button>
+                </td>
+                <td>
+                  <button [disabled]="!rapportinoNonFreezato.anagrafica.checkInviato"
+                          mat-fab color="primary"
+                          (click)="getRapportino(rapportinoNonFreezato.anagrafica.id, rapportinoNonFreezato.anagrafica.nome, rapportinoNonFreezato.anagrafica.cognome, rapportinoNonFreezato.anagrafica.codiceFiscale, selectedMese, selectedAnno)">
+                    <mat-icon>info</mat-icon>
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
+
           <div class="pagination">
             <ul>
               <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
@@ -446,7 +464,7 @@
       <div class="col-12">
         <mat-card>
          <mat-card-title>
-          <h1>Rapportini controllati</h1>
+          <h1>Rapportini controllati ( {{elencoRapportiniFreezati.length}} )</h1>
          </mat-card-title>
          <mat-card-content>
           <br>
