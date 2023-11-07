@@ -226,8 +226,6 @@ export class ListaRapportiniComponent implements OnInit {
 
       const commessaFormGroup = this.creaFormCommessa();
       this.commesse.push(commessaFormGroup);
-      // this.getAllRapportiniNonFreezati();
-      // this.getAllRapportiniFreezati();
     }
   }
 
@@ -246,10 +244,10 @@ export class ListaRapportiniComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.motivazioniFineRapporto = (res as any)['list'];
-          console.log('Elenco motivazioni fine rapporto:', JSON.stringify(res));
+          // console.log('Elenco motivazioni fine rapporto:', JSON.stringify(res));
         },
         (error: any) => {
-          console.log(
+          console.error(
             'Errore durante il caricamento della tipologica Motivazione fine rapporto:',
             JSON.stringify(error)
           );
@@ -263,10 +261,10 @@ export class ListaRapportiniComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.tipologicaCanaliReclutamento = (res as any)['list'];
-          console.log('ElencoCanali reclutamento:' + JSON.stringify(res));
+          // console.log('ElencoCanali reclutamento:' + JSON.stringify(res));
         },
         (error: any) => {
-          console.log(
+          console.error(
             'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
               JSON.stringify(error)
           );
@@ -292,18 +290,6 @@ export class ListaRapportiniComponent implements OnInit {
     }
   }
 
-  // onChangeAttivo(event: any) {
-  //   const target = event.target as HTMLInputElement;
-  //   if (target) {
-  //     const isChecked = target.checked;
-  //     if (isChecked) {
-  //       console.log('Checkbox selezionata, il valore è true');
-  //     } else {
-  //       console.log('Checkbox deselezionata, il valore è false');
-  //     }
-  //   }
-  // }
-
   onTipoContrattoChange(event: Event) {
     const selectedTipoContratto = (event.target as HTMLSelectElement).value;
     const dataFineRapportoControl = this.filterAnagraficaDto.get(
@@ -326,7 +312,7 @@ export class ListaRapportiniComponent implements OnInit {
   caricaAziendeClienti() {
     this.contrattoService.getAllAziendaCliente(this.token).subscribe(
       (result: any) => {
-        console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+        // console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
         this.aziendeClienti = (result as any)['list'];
       },
       (error: any) => {
@@ -408,14 +394,14 @@ export class ListaRapportiniComponent implements OnInit {
           .changeCCNL(localStorage.getItem('token'), this.idCCNLselezionato)
           .subscribe(
             (response: any) => {
-              console.log(
-                'RESPONSE NUOVA LISTA LIVELLI CCNL:' + JSON.stringify(response)
-              );
+              // console.log(
+              //   'RESPONSE NUOVA LISTA LIVELLI CCNL:' + JSON.stringify(response)
+              // );
               this.elencoLivelliCCNL = response.list;
-              console.log(
-                '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
-                  JSON.stringify(this.elencoLivelliCCNL)
-              );
+              // console.log(
+              //   '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
+              //     JSON.stringify(this.elencoLivelliCCNL)
+              // );
             },
             (error: any) => {
               console.error(
@@ -489,7 +475,7 @@ export class ListaRapportiniComponent implements OnInit {
       anno: this.selectedAnno,
       mese: this.selectedMese,
     };
-    console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
+    // console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
 
     this.listaRapportiniService
       .filterNotFreeze(localStorage.getItem('token'), body)
@@ -507,13 +493,13 @@ export class ListaRapportiniComponent implements OnInit {
               this.messaggio =
                 'Nessun risultato trovato per i filtri inseriti, riprova.';
             }
-            console.log(
-              'Trovati i seguenti risultati: ' + JSON.stringify(result)
-            );
+            // console.log(
+            //   'Trovati i seguenti risultati: ' + JSON.stringify(result)
+            // );
           }
         },
         (error: any) => {
-          console.log('Si é verificato un errore: ' + error);
+          console.error('Si é verificato un errore: ' + JSON.stringify(error));
         }
       );
   }
@@ -575,7 +561,7 @@ export class ListaRapportiniComponent implements OnInit {
       anno: this.selectedAnno,
       mese: this.selectedMese,
     };
-    console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
+    // console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
 
     this.listaRapportiniService
       .filterFreeze(localStorage.getItem('token'), body)
@@ -593,13 +579,13 @@ export class ListaRapportiniComponent implements OnInit {
               this.messaggio =
                 'Nessun risultato trovato per i filtri inseriti, riprova.';
             }
-            console.log(
-              'Trovati i seguenti risultati: ' + JSON.stringify(result)
-            );
+            // console.log(
+            //   'Trovati i seguenti risultati: ' + JSON.stringify(result)
+            // );
           }
         },
         (error: any) => {
-          console.log('Si é verificato un errore: ' + error);
+          console.error('Si é verificato un errore: ' + error);
         }
       );
   }
@@ -619,12 +605,13 @@ export class ListaRapportiniComponent implements OnInit {
   }
 
   //fine roba filtri
+
   getAllRapportiniNonFreezati() {
     let body = {
       anno: this.selectedAnno,
       mese: this.selectedMese,
     };
-    console.log('BODY RAPPORTINI DA CONTROLLARE: ' + JSON.stringify(body));
+    // console.log('BODY RAPPORTINI DA CONTROLLARE: ' + JSON.stringify(body));
     this.listaRapportiniService
       .getAllRapportiniNonFreezati(this.token, body)
       .subscribe(
@@ -635,10 +622,10 @@ export class ListaRapportiniComponent implements OnInit {
           this.selectedAnnoRapportinoNonFreezato = result['list']['anno'];
           this.currentPage = 1;
           this.pageData = this.getCurrentPageItems();
-          console.log(
-            'ELENCO RAPPORTINI NON FREEZATI:' +
-              JSON.stringify(this.elencoRapportiniNonFreezati)
-          );
+          // console.log(
+          //   'ELENCO RAPPORTINI NON FREEZATI:' +
+          //     JSON.stringify(this.elencoRapportiniNonFreezati)
+          // );
           this.getAllRapportiniFreezati();
         },
         (error: any) => {
@@ -655,7 +642,7 @@ export class ListaRapportiniComponent implements OnInit {
       anno: this.selectedAnno,
       mese: this.selectedMese,
     };
-    console.log('BODY RAPPORTINI CONTROLLATI: ' + JSON.stringify(body));
+    // console.log('BODY RAPPORTINI CONTROLLATI: ' + JSON.stringify(body));
 
     this.listaRapportiniService
       .getAllRapportiniFreezati(this.token, body)
@@ -664,10 +651,10 @@ export class ListaRapportiniComponent implements OnInit {
           this.elencoRapportiniFreezati = result['list'];
           this.currentPage2 = 1;
           this.pageData2 = this.getCurrentPageItems2();
-          console.log(
-            'Rapportini freezati caricati: ' +
-              JSON.stringify(this.elencoRapportiniFreezati)
-          );
+          // console.log(
+          //   'Rapportini freezati caricati: ' +
+          //     JSON.stringify(this.elencoRapportiniFreezati)
+          // );
         },
         (error: any) => {
           console.error(
@@ -682,12 +669,12 @@ export class ListaRapportiniComponent implements OnInit {
     console.log(id);
     this.rapportinoService.deleteRapportino(this.token, id).subscribe(
       (result: any) => {
-        console.log(
-          'RAPPORTINO NUMERO ' +
-            id +
-            ' ELIMINATO CORRETTAMENTE: ' +
-            JSON.stringify(result)
-        );
+        // console.log(
+        //   'RAPPORTINO NUMERO ' +
+        //     id +
+        //     ' ELIMINATO CORRETTAMENTE: ' +
+        //     JSON.stringify(result)
+        // );
       },
       (error: any) => {
         console.error('ERRORE:' + JSON.stringify(error));

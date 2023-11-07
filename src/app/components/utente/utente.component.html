@@ -84,7 +84,7 @@
             <mat-card-content>
               <div class="row">
                 <div class="col-12">
-                  <table class="table table-bordered table-excel">
+                  <!-- <table class="table table-bordered table-excel">
                     <tbody>
                       <tr>
                         <td style="background-color: #007bff; color: white">
@@ -139,7 +139,7 @@
                         </td>
                       </tr>
                     </tbody>
-                  </table>
+                  </table> -->
                 </div>
               </div>
               <br />
@@ -239,10 +239,31 @@
       </p>
      <div class="row" *ngIf="esitoCorretto">
 
+      <div class="row">
+        <div class="col-12" style="text-align: center;" >
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Nominativo</th>
+                <th>Periodo di riferimento</th>
+                <th>Giorni utili di lavoro</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ user?.anagrafica?.nome |titlecase }} {{ user?.anagrafica?.cognome |titlecase }}</td>
+                <td>{{ selectedMese }} - {{ selectedAnno }}</td>
+                <td>{{giorniUtili}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"  >
         <mat-card style="padding: 5%;" [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aqua' : 'rgb(214, 234, 251)'}" >
           <mat-card-title style="text-align: center;">
-            <p> <button mat-fab color color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}</p>
+            <p> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}</p>
           </mat-card-title>
 
        <div *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
@@ -258,12 +279,12 @@
                 <div *ngIf="!duplicazione.cliente && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-6">
               <div class="form-group">
                 <label for="ore-ordinarie-{{ i }}{{j}}">Ore</label>
                 <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
                 [ngClass]="{'has-error': !isValidOreOrdinarie(duplicazione.oreOrdinarie)}"
-                type="text"  class="form-control form-control-sm"
+                type="number"  class="form-control form-control-sm"
                 step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
                 id="ore-ordinarie-{{ i }}{{j}}" name="ore-ordinarie-{{ i }}{{j}}"
                 [(ngModel)]="duplicazione.oreOrdinarie"

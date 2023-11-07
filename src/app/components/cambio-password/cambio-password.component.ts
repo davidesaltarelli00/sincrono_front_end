@@ -112,51 +112,63 @@ export class CambioPasswordComponent {
         this.cambioPasswordService.passwordVecchia = oldPassword;
         this.cambioPasswordService.passwordNuova = newPassword;
 
-        this.cambioPasswordService.cambioPassword().subscribe(
-          (response: any) => {
-            this.result = response;
-            const dialogRef = this.dialog.open(AlertDialogComponent, {
-              data: {
-                title: 'Attenzione:',
-                message: 'Errore di autenticazione; effettua il login.',
-              },
-            });
-            this.authService.logout().subscribe(
-              (response: any) => {
-                if (response.status === 200) {
-                  // Logout effettuato con successo
-                  localStorage.removeItem('token');
-                  localStorage.removeItem('tokenProvvisorio');
-                  sessionStorage.clear();
-                  this.router.navigate(['/login']);
-                  this.dialog.closeAll();
-                } else {
-                  // Gestione di altri stati di risposta (es. 404, 500, ecc.)
-                  console.log(
-                    'Errore durante il logout:',
-                    response.status,
-                    response.body
-                  );
-                  this.handleLogoutError();
+        const body = {
+          id: this.idUtente,
+          passwordVecchia: oldPassword,
+          passwordNuova: newPassword,
+        };
+
+        console.log("BODY CAMBIO PSW: "+ JSON.stringify(body));
+
+        this.cambioPasswordService
+          .cambioPassword(localStorage.getItem('token'), body)
+          .subscribe(
+            (response: any) => {
+              this.result = response;
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  title: 'Attenzione:',
+                  message: 'Password modificata; rieffettua il login.',
+                },
+              });
+              this.authService.logout().subscribe(
+                (response: any) => {
+                  if (response.status === 200) {
+                    // Logout effettuato con successo
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('tokenProvvisorio');
+                    sessionStorage.clear();
+                    this.router.navigate(['/login']);
+                    this.dialog.closeAll();
+                  } else {
+                    // Gestione di altri stati di risposta (es. 404, 500, ecc.)
+                    console.log(
+                      'Errore durante il logout:',
+                      response.status,
+                      response.body
+                    );
+                    this.handleLogoutError();
+                  }
+                },
+                (error: HttpErrorResponse) => {
+                  if (error.status === 403) {
+                    // Logout a causa di errore 403 (Forbidden)
+                    console.log('Errore 403: Accesso negato');
+                    this.handleLogoutError();
+                  } else {
+                    // Gestione di altri errori di rete o server
+                    console.log('Errore durante il logout:', error.message);
+                    this.handleLogoutError();
+                  }
                 }
-              },
-              (error: HttpErrorResponse) => {
-                if (error.status === 403) {
-                  // Logout a causa di errore 403 (Forbidden)
-                  console.log('Errore 403: Accesso negato');
-                  this.handleLogoutError();
-                } else {
-                  // Gestione di altri errori di rete o server
-                  console.log('Errore durante il logout:', error.message);
-                  this.handleLogoutError();
-                }
-              }
-            );
-          },
-          (error: any) => {
-            console.log('Errore durante il cambio password: ' + error.message);
-          }
-        );
+              );
+            },
+            (error: any) => {
+              console.log(
+                'Errore durante il cambio password: ' + error.message
+              );
+            }
+          );
       }
     }
   }

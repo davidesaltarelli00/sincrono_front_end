@@ -35,13 +35,7 @@ export class CambioPasswordService {
     );
   }
 
-  cambioPassword() {
-    const token = localStorage.getItem('token');
-    const body = {
-      id: this.idUtente,
-      passwordVecchia: this.passwordVecchia,
-      passwordNuova: this.passwordNuova,
-    };
+  cambioPassword(token:any, body:any) {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',

@@ -901,7 +901,7 @@ export class UtenteComponent implements OnInit {
         meseRequest: this.selectedMese,
       },
     };
-
+    console.log(JSON.stringify(body));
     this.rapportinoService
       .updateRapportino(localStorage.getItem('token'), body)
       .subscribe(
