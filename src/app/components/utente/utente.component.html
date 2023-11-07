@@ -237,7 +237,12 @@
       <p style="text-align: center;" *ngIf="esitoCorretto">
         Rapportino relativo a {{nomeMeseDaNumero(selectedMese)}} - {{selectedAnno}} caricato correttamente.
       </p>
-     <div class="row" *ngIf="esitoCorretto">
+      <div class="rapportino-inviato" *ngIf="risultatoCheckFreeze">
+        <p style="text-align: center;"  >Il rapportino é giá stato inviato.</p>
+        <p style="text-align: center;" >Non puoi piú modificarlo a meno che l'admin non te lo rimandi indietro.</p>
+
+      </div>
+       <div class="row" *ngIf="esitoCorretto">
 
       <div class="row">
         <div class="col-12" style="text-align: center;" >
