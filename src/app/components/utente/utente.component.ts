@@ -907,13 +907,13 @@ export class UtenteComponent implements OnInit {
       .subscribe(
         (result: any) => {
           if ((result as any).esito.code !== 200) {
-            // const dialogRef = this.dialog.open(AlertDialogComponent, {
-            //   data: {
-            //     Image: '../../../../assets/images/logo.jpeg',
-            //     title: 'Salvataggio non riuscito:',
-            //     message: (result as any).esito.target,
-            //   },
-            // });
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                Image: '../../../../assets/images/logo.jpeg',
+                title: 'Salvataggio non riuscito:',
+                message: (result as any).esito.target,
+              },
+            });
             this.rapportinoSalvato = false;
             console.error(result);
           }

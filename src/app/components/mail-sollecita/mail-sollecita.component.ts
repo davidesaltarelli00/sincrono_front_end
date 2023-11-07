@@ -68,6 +68,7 @@ export class MailSollecitaComponent {
   reset() {
     this.subject = '';
     this.body = '';
+    this.toRapportini=[];
   }
 
   closeModal() {
