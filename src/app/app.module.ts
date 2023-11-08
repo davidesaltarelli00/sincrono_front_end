@@ -57,6 +57,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ImmagineComponent } from './components/immagine/immagine.component';
 import { BottoniComponent } from './bottoni/bottoni.component';
 import { MailSollecitaComponent } from './components/mail-sollecita/mail-sollecita.component';
+import { RichiesteComponent } from './components/richieste/richieste.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -82,6 +83,7 @@ import { MailSollecitaComponent } from './components/mail-sollecita/mail-solleci
     FormRecuperoPasswordComponent,
     AlertLogoutComponent,
     UtenteComponent,
+    RichiesteComponent,
     GiornoComponent,
     NotFoundComponent,
     AlertDialogComponent,

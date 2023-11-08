@@ -868,7 +868,6 @@ export class UtenteComponent implements OnInit {
         duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
           (duplicazione: any) => {
             return {
-              // giorno: duplicazione.giorno,
               cliente: duplicazione.cliente,
               oreOrdinarie: duplicazione.oreOrdinarie,
               fascia1: duplicazione.fascia1,
@@ -906,6 +905,8 @@ export class UtenteComponent implements OnInit {
       .updateRapportino(localStorage.getItem('token'), body)
       .subscribe(
         (result: any) => {
+          const message = (result as any).esito.target;
+
           if ((result as any).esito.code !== 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
@@ -915,22 +916,32 @@ export class UtenteComponent implements OnInit {
               },
             });
             this.rapportinoSalvato = false;
-            console.error(result);
-          }
-          if ((result as any).esito.code === 200) {
-            const dialogRef = this.dialog.open(AlertDialogComponent, {
-              data: {
-                title: 'Cella salvata correttamente.',
-                message: (result as any).esito.target,
-              },
-            });
-            this.getRapportino();
+            console.error(JSON.stringify(result));
           }
           if ((result as any).esito.target === 'HTTP error code: 400') {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
+                Image: '../../../../assets/images/logo.jpeg',
                 title: 'Hai inserito un valore non valido.',
                 message: 'Controlla e riprova.',
+              },
+            });
+          }
+          if ((result as any).esito.target === 'ERRORE_GENERICO') {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                Image: '../../../../assets/images/logo.jpeg',
+                title: 'Attenzione:',
+                message: 'Qualcosa é andato storto, controlla e riprova.',
+              },
+            });
+          }
+          if ((result as any).esito.code === 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                Image: '../../../../assets/images/logo.jpeg',
+                title: 'Cella salvata correttamente.',
+                message: (result as any).esito.target,
               },
             });
             this.getRapportino();

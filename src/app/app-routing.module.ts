@@ -28,6 +28,7 @@ import { RisultatiFilterOrganicoComponent } from './components/organico/risultat
 import { ListaRapportiniComponent } from './components/lista-rapportini/lista-rapportini.component';
 import { ModaleDettaglioRapportinoComponent } from './components/modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
 import { ImmagineComponent } from './components/immagine/immagine.component';
+import { RichiesteComponent } from './components/richieste/richieste.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -175,6 +176,11 @@ const routes: Routes = [
   {
     path: 'storico-commesse-anagrafica/:id',
     component: StoricoCommesseComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'richieste',
+    component: RichiesteComponent,
     canActivate: [AuthGuard],
   },
 
