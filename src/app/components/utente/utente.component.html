@@ -278,7 +278,7 @@
         <mat-card-footer>
           <div class="row">
             <div class="col-6">
-              <button style="float: right;" [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie" class="btn btn-warning btn-sm" id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga" ><i  class="fa fa-clone"></i></button> <br>
+              <button style="float: right;" [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie || aziendeClienti.length<1 " class="btn btn-warning btn-sm" id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga" ><i  class="fa fa-clone"></i></button> <br>
             </div>
             <div class="col-6">
               <button [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"  class="btn btn-danger btn-sm" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"  ><i  class="fa fa-trash"></i></button>
