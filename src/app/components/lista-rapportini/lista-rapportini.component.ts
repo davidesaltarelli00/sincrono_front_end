@@ -774,9 +774,9 @@ export class ListaRapportiniComponent implements OnInit {
     console.log('Anno selezionato:', event.target.value);
   }
 
-  scarica(value: any) {
-    console.log(value.value);
-    if (value.valid) {
+  scarica() {
+    // console.log(value.value);
+    // if (value.valid) {
       let body = {
         anno: this.selectedAnno,
         mese: this.selectedMese,
@@ -811,7 +811,7 @@ export class ListaRapportiniComponent implements OnInit {
             );
           }
         );
-    }
+    // }
   }
 
 
