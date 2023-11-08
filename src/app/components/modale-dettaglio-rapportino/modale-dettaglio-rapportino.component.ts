@@ -195,14 +195,14 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
     this.rapportinoService.aggiungiNote(this.token, body).subscribe(
       (result: any) => {
         if (
-          (result as any).esito.code !== 200 &&
+          (result as any).esito.code !== 200 ||
           (result as any).esito.target === 'HTTP error code: 400'
         ) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
               Image: '../../../../assets/images/logo.jpeg',
               title: 'Salvataggio delle note non riuscito:',
-              message: 'Errore di validazione.', //(result as any).esito.target,
+              message: (result as any).esito.target, //(result as any).esito.target,
             },
           });
           console.error(result);
