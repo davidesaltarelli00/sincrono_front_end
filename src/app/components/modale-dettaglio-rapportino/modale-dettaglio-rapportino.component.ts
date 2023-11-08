@@ -211,7 +211,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
               Image: '../../../../assets/images/logo.jpeg',
-              title: 'Salvataggio delle note effettuato',
+              title: 'Note salvate e rapportino rispedito all utente.',
             },
           });
           this.router.navigate(['/lista-rapportini']);
