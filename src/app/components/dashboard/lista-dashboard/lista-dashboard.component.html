@@ -219,12 +219,14 @@
                     <td>{{ element.contratto.pfi ? 'Si' : 'No'}}</td>
                     <td>
                       <span style="margin:5px;">
-                        <button class="fa fa-info" (click)="dettaglioAnagrafica(element.anagrafica.id)"
-                          matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "></button>
+                        <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button
+                            matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
+                            class="btn btn-info"><i class="fa fa-info"></i></button></a>
                       </span>
                       <span style="margin:5px;">
-                        <button class="fa fa-pencil" (click)="vaiAModificaAnagrafica(element.anagrafica.id)"
-                          matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "></button>
+                        <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
+                          matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
+                            class="fa fa-pencil"></i></button>
                       </span>
                     </td>
                   </tr>
@@ -286,13 +288,14 @@
                       <td>{{ commessa.attesaLavori ? 'Sì' : 'No' }}</td>
                       <td>
                         <span style="margin:5px;">
-                          <button class="fa fa-info" (click)="dettaglioAnagrafica(element.anagrafica.id)"
-                            matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "></button>
+                          <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button
+                              matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
+                              class="btn btn-info"><i class="fa fa-info"></i></button></a>
                         </span>
-
                         <span style="margin:5px;">
-                          <button class="fa fa-pencil" (click)="vaiAModificaAnagrafica(element.anagrafica.id)"
-                            matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "></button>
+                          <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
+                            matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
+                              class="fa fa-pencil"></i></button>
                         </span>
                       </td>
                     </tr>
@@ -347,7 +350,7 @@
                     <th>Tutor</th>
                     <th>PFI</th>
                     <th class="text-center" colspan="2">Azioni</th>
-                 
+
                     <!-- <th>Corso Sicurezza</th> -->
                     <!-- <th>Data Corso Sicurezza</th>
                       <th>PC</th>
@@ -382,12 +385,14 @@
                     <td>{{ element.contratto.pfi }}</td>
                     <td>
                       <span style="margin:5px;">
-                        <button class="fa fa-info" (click)="dettaglioAnagrafica(element.anagrafica.id)"
-                          matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "></button>
+                        <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button
+                            matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
+                            class="btn btn-info"><i class="fa fa-info"></i></button></a>
                       </span>
                       <span style="margin:5px;">
-                        <button class="fa fa-info" (click)="vaiAModificaAnagrafica(element.anagrafica.id)"
-                          matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "></button>
+                        <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
+                          matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
+                            class="fa fa-pencil"></i></button>
                       </span>
                     </td>
                     <!-- <td>{{ contratto.contratto.corsoSicurezza }}</td> -->
@@ -466,15 +471,31 @@
                   <b>Filtri per commesse</b>
 
                   <!-- Azienda Cliente -->
-                  <div class="col-md-3">
-                    <label for="tipoAziendaCliente">Azienda cliente:</label>
-                    <select (change)="onChangeAziendaCliente($event)" class="form-select" id="tipoAziendaCliente.id"
-                      formControlName="id">
-                      <option value="">--nessuna selezione--</option>
-                      <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
-                        {{ aziendaCliente.descrizione }}
-                      </option>
-                    </select>
+                  <div class="col-3">
+                    <div formArrayName="commesse">
+                      <div *ngFor="let commessa of commesse.controls; let i = index">
+                        <div [formGroupName]="i">
+                          <!-- <div class="form-group">
+                            <label for="aziendaCliente">Azienda cliente</label>
+                            <input (keyup)="filter(filterAnagraficaDto.value)" type="text"
+                              formControlName="aziendaCliente" class="form-control" id="commesse.aziendaCliente"
+                              name="aziendaCliente">
+                          </div> -->
+                          <div class="form-group" formGroupName="tipoAziendaCliente">
+                            <select (change)="onChangeAziendaCliente($event)" class="form-select"
+                              aria-label="Default select example" id="commesse.tipoAziendaCliente.id"
+                              formControlName="id">
+                              <option value="">--nessuna selezione--</option>
+                              <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
+                                {{ aziendaCliente.descrizione }}
+                              </option>
+                            </select>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
 
                   <!-- Anno di inizio commessa -->
@@ -637,13 +658,13 @@
                 <td>{{ commessa[14] ? 'Sì' : 'No' }}</td>
                 <td>
                   <span style="margin:5px;">
-                    <button class="fa fa-info" (click)="dettaglioAnagrafica(commessa[15])"
-                      matTooltip="Dettaglio {{commessa[0]}} {{commessa[1]}} "></button>
-
+                    <a [routerLink]="['/dettaglio-anagrafica', commessa[15]]"><button
+                        matTooltip="Dettaglio {{commessa[0]}} {{commessa[1]}} " class="btn btn-info"><i
+                          class="fa fa-info"></i></button></a>
                   </span>
                   <span style="margin:5px;">
-                    <button class="fa fa-pencil" (click)="vaiAModificaAnagrafica(commessa[15])"
-                      matTooltip="Modifica {{commessa[0]}} {{commessa[1]}} "></button>
+                    <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica',commessa[15]]"
+                      matTooltip="Modifica {{commessa[0]}} {{commessa[1]}} "><i class="fa fa-pencil"></i></button>
                   </span>
                 </td>
 

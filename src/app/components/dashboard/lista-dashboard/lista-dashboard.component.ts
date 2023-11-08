@@ -86,13 +86,14 @@ export class ListaDashboardComponent {
       // attivo: new FormControl(null),
       tipoAzienda: new FormGroup({
         id: new FormControl(null),
+        descrizione: new FormControl(''),
       }),
     }),
 
     commesse: new FormGroup({
       tipoAziendaCliente: new FormGroup({
         id: new FormControl(null),
-
+        descrizione: new FormControl(null),
       }),
     }),
 
@@ -149,6 +150,7 @@ export class ListaDashboardComponent {
         // attivo: new FormControl(null),
         tipoAzienda: new FormGroup({
           id: new FormControl(null),
+          descrizione: new FormControl(null),
         }),
       }),
 
@@ -398,15 +400,6 @@ export class ListaDashboardComponent {
       });
   }
 
-  dettaglioAnagrafica(idAnagrafica: number) {
-   
-    this.anagraficaDtoService
-      .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
-      .subscribe((resp: any) => {
-        console.log(resp);
-        this.router.navigate(['/dettaglio-anagrafica/' + idAnagrafica]);
-      });
-  }
 
   dettaglioAnagraficaCommessaScaduta(idAnagrafica: number) {
     idAnagrafica = this.idAnagraficaCommessaScaduta;
@@ -417,15 +410,6 @@ export class ListaDashboardComponent {
         this.router.navigate(['/dettaglio-anagrafica/' + idAnagrafica]);
       });
   }
-  vaiAModificaAnagrafica(idAnagrafica: number) {
-    this.anagraficaDtoService
-      .update(idAnagrafica, localStorage.getItem('token'))
-      .subscribe((resp: any) => {
-        console.log(resp);
-        this.router.navigate(['/modifica-anagrafica/' + idAnagrafica]);
-      });
-  }
-
 
   profile() {
     this.router.navigate(['/profile-box/', this.userlogged]);
