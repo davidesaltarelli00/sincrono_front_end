@@ -688,14 +688,16 @@ export class ListaRapportiniComponent implements OnInit {
 
   onChangecheckFreeze(
     checkFreeze: boolean,
+    codiceFiscale:string,
     index: number,
     anno: number,
-    mese: number
+    mese: number,
+
   ) {
     const body = {
       rapportino: {
         id: index,
-        codiceFiscale: this.codiceFiscale,
+        codiceFiscale: codiceFiscale,
         anno: anno,
         mese: mese,
         checkFreeze: checkFreeze,

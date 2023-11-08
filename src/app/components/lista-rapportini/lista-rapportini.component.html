@@ -420,7 +420,7 @@
                 <td>{{rapportinoNonFreezato.anagrafica.mailAziendale}}</td>
                 <td *ngIf="rapportinoNonFreezato.anagrafica.checkInviato">
                   Inviato, da controllare
-                  <button mat-flat-button (click)="onChangecheckFreeze(true, rapportinoNonFreezato.anagrafica.id, selectedAnno, selectedMese)">Congela <i class="fa fa-lock"></i></button>
+                  <button mat-flat-button (click)="onChangecheckFreeze(true, rapportinoNonFreezato.anagrafica.codiceFiscale, rapportinoNonFreezato.anagrafica.id, selectedAnno, selectedMese)">Congela <i class="fa fa-lock"></i></button>
                 </td>
                 <td *ngIf="!rapportinoNonFreezato.anagrafica.checkInviato">
                   Non inviato
@@ -694,7 +694,7 @@
                 <td>{{rapportinoFreezato.anagrafica.mailAziendale}}</td>
                 <td >Controllato  </td>
                 <td>
-                  <button (click)="onChangecheckFreeze( false, rapportinoFreezato.anagrafica.id,selectedAnno, selectedMese)" mat-flat-button color="warn">Rimuovi</button>
+                  <button (click)="onChangecheckFreeze( false, rapportinoFreezato.anagrafica.codiceFiscale, rapportinoFreezato.anagrafica.id,selectedAnno, selectedMese)" mat-flat-button color="warn">Rimuovi</button>
                 </td>
               </tr>
             </tbody>
