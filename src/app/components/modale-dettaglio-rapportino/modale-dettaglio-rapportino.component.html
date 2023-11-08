@@ -206,7 +206,7 @@
       <div class="col-12">
       <div class="form-group">
         <label for="note-{{ i }}">Note  </label> <!--<div *ngIf="!giorno.note" class="error-message">Campo obbligatorio</div>-->
-        <input disabled type="text" class="form-control" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
+        <input disabled type="text" class="form-control" id="note-{{ i }}" [disabled]="note==null" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
       </div>
       </div>
     </div>
