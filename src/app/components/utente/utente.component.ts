@@ -44,6 +44,8 @@ export class UtenteComponent implements OnInit {
   tabellaEditabile: string = 'true';
   data: any[] = [];
   user: any;
+  contrattoUser:any;
+  showTooltip = false;
   messaggio = '';
   currentDate = new Date();
   currentMonth: any;
@@ -606,9 +608,9 @@ export class UtenteComponent implements OnInit {
           this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
           this.salvaAziendeClienti();
           this.contratto = (resp as any)['anagraficaDto']['contratto'];
-          this.codiceFiscale = (resp as any)['anagraficaDto']['anagrafica'][
-            'codiceFiscale'
-          ];
+          // this.codiceFiscale = (resp as any)['anagraficaDto']['anagrafica'][
+          //   'codiceFiscale'
+          // ];
           this.dettaglioSbagliato = false;
           this.numeroCommessePresenti = this.elencoCommesse.length;
           // console.log('Dati restituiti: ' + JSON.stringify(resp));
@@ -632,6 +634,7 @@ export class UtenteComponent implements OnInit {
         meseRequest: this.selectedMese,
       },
     };
+    console.log(JSON.stringify(body));
     this.rapportinoService.getRapportino(this.token, body).subscribe(
       (result: any) => {
         if ((result as any).esito.code !== 200) {
@@ -772,6 +775,7 @@ export class UtenteComponent implements OnInit {
           console.log('RESPONSE INSERT RAPPORTINO:' + JSON.stringify(result));
           this.rapportinoInviato = true;
           this.tabellaEditabile = 'false';
+          this.checkRapportinoInviato();
         }
       });
   }
@@ -1065,8 +1069,20 @@ export class UtenteComponent implements OnInit {
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.idUtenteLoggato = response.anagraficaDto.anagrafica.id;
+        this.contrattoUser=response.anagraficaDto.contratto.tipoContratto.descrizione;
+        this.codiceFiscale=response.anagraficaDto.anagrafica.codiceFiscale;
+        if(this.contrattoUser=='Stage' || this.contrattoUser==='P.Iva'){
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              Image: '../../../../assets/images/logo.jpeg',
+              title: 'Attenzione:',
+              message: 'Il tuo contratto non prevede ferie e malattie.',
+            },
+          });
+        }
         console.log('ID:' + this.id);
         console.log('IDUTENTELOGGATO:' + this.idUtenteLoggato);
+        console.log("codice fiscale utente loggato:"+this.codiceFiscale);
         if (this.idUtenteLoggato != this.id) {
           this.dettaglioSbagliato = true;
         } else {

@@ -289,6 +289,42 @@ img{
         </mat-card>
       </div>
     </div>
+    <div class="row">
+      <div class="col-12">
+          <form [formGroup]="myForm" (ngSubmit)="inviaRichiesta()" class="mb-4">
+            <div class="col-3">
+              <label for="giorno" class="form-label">Giorno:</label>
+              <input type="text" id="giorno" formControlName="giorno" class="form-control">
+            </div>
+
+            <div class="col-3">
+              <label for="mese" class="form-label">Mese:</label>
+              <input type="text" id="mese" formControlName="mese" class="form-control">
+            </div>
+
+            <div class="col-3">
+              <label for="anno" class="form-label">Anno:</label>
+              <input type="text" id="anno" formControlName="anno" class="form-control">
+            </div>
+
+            <div class="col-3">
+              <label for="oggettoRichiesta" class="form-label">Oggetto Richiesta:</label>
+              <input type="text" id="oggettoRichiesta" formControlName="oggettoRichiesta" class="form-control">
+            </div>
+
+            <div class="col-3">
+              <label for="testoRichiesta" class="form-label">Testo Richiesta:</label>
+              <textarea id="testoRichiesta" formControlName="testoRichiesta" class="form-control"></textarea>
+            </div>
+            <br>
+            <div class="col-3">
+              <button type="submit" class="btn btn-primary">Invia</button> &nbsp;
+              <button type="button" (click)="resetForm()" class="btn btn-secondary">Resetta</button>
+            </div>
+          </form>
+          <br><br><br><br>
+      </div>
+    </div>
   </div>
 </body>
 </html>

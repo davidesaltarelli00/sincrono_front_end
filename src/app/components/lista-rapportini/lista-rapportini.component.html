@@ -427,7 +427,7 @@
                   <button mat-flat-button color="warn"
                    (click)="sollecita(rapportinoNonFreezato.anagrafica.mailAziendale)"
                    matTooltip="Premendo questo pulsante invierai una mail di sollecitazione a {{rapportinoNonFreezato.anagrafica.nome}}  {{rapportinoNonFreezato.anagrafica.cognome}}"
-                  [disabled]="!rapportinoNonFreezato.rowSelected">Sollecita <i class="fa fa-envelope" aria-hidden="true"></i></button>
+                  >Sollecita <i class="fa fa-envelope" aria-hidden="true"></i></button> <!--[disabled]="!rapportinoNonFreezato.rowSelected"-->
                 </td>
                 <td>
                   <button [disabled]="!rapportinoNonFreezato.anagrafica.checkInviato"

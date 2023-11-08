@@ -389,6 +389,10 @@
                     <td>{{ data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy' }}</td>
                   </tr>
                   <tr>
+                    <td><strong>Canale reclutamento</strong></td>
+                    <td>{{data?.contratto?.tipoCanaleReclutamento.descrizione ? data?.contratto?.tipoCanaleReclutamento.descrizione : 'Dato non inserito.'}}</td>
+                  </tr>
+                  <tr>
                     <td><strong>Livello attuale:</strong></td>
                     <td>{{ data?.contratto?.livelloAttuale ? data?.contratto?.livelloAttuale : 'Dato non inserito' }}
                     </td>

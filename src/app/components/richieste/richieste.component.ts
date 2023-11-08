@@ -8,6 +8,7 @@ import { ImageService } from '../image.service';
 import { MenuService } from '../menu.service';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-richieste',
@@ -45,6 +46,8 @@ export class RichiesteComponent implements OnInit {
   selectedGiorno: number;
   esitoCorretto=false;
   elencoRichieste: any[]=[];
+  myForm: FormGroup;
+
 
   constructor(
     private authService: AuthService,
@@ -52,6 +55,7 @@ export class RichiesteComponent implements OnInit {
     private dialog: MatDialog,
     private http: HttpClient,
     private router: Router,
+    private formBuilder: FormBuilder,
     private imageService: ImageService,
     private menuService: MenuService
   ) {
@@ -91,6 +95,13 @@ export class RichiesteComponent implements OnInit {
     ) {
       this.mobile = true;
     }
+    this.myForm = this.formBuilder.group({
+      giorno: ['', Validators.required],
+      mese: ['', Validators.required],
+      anno: ['', Validators.required],
+      oggettoRichiesta: ['', Validators.required],
+      testoRichiesta: ['', Validators.required],
+    });
   }
 
   ngOnInit(): void {
@@ -111,6 +122,14 @@ export class RichiesteComponent implements OnInit {
     console.log("Hai selezionato il seguente periodo:"+ JSON.stringify(this.selectedGiorno)+'-'+ JSON.stringify(this.selectedMese)+'-'+ JSON.stringify(this.selectedAnno));
     this.esitoCorretto=true;
     this.elencoRichieste=[]
+  }
+
+  inviaRichiesta() {
+    console.log(this.myForm.value);
+  }
+
+  resetForm() {
+    this.myForm.reset();
   }
 
   //metodi form selezione periodo

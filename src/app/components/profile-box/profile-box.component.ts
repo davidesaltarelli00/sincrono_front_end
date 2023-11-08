@@ -62,6 +62,7 @@ export class ProfileBoxComponent {
   idUtente: any;
   tokenExpirationTime: any;
   timer: any;
+  ruolo: any;
 
   constructor(
     private authService: AuthService,
@@ -389,6 +390,7 @@ export class ProfileBoxComponent {
         this.userLoggedFiscalCode =
           response.anagraficaDto.anagrafica.codiceFiscale;
         this.elencoCommesse = response.anagraficaDto.commesse;
+        this.ruolo = response.anagraficaDto.ruolo.descrizione;
       },
       (error: any) => {
         console.error(

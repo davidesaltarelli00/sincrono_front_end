@@ -703,7 +703,13 @@
                           <div class="col-md-2">
                             <div formGroupName="tipoLivelloContratto">
                               <label for="filter-LivelloContratto">Livello Contratto*</label>
-                              <select (change)="onChangeLivelloContratto($event)" class="form-select"
+                              <select (change)="onChangeLivelloContratto($event)" class="form-select" [ngStyle]="{
+                                border: AnagraficaDto.get(
+                                  'contratto.tipoLivelloContratto.id'
+                                )?.hasError('required')
+                                  ? '1px solid red'
+                                  : '1px solid #f1f1f1'
+                              }"
                                 aria-label="Default select example" id="contratto.tipoLivelloContratto.id"
                                 formControlName="id">
                                 <option value="">
@@ -715,12 +721,12 @@
                                   {{ tipoLivelloContratto.livello }}
                                 </option>
                               </select>
-                              <!-- <div
+                              <div
                                 *ngIf="AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.touched"
                                 class="text-danger"
                               >
                                 Il campo tipo livello contratto è obbligatorio.
-                              </div> -->
+                              </div>
                             </div>
                           </div>
 

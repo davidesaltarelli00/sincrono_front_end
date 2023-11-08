@@ -149,7 +149,7 @@
         <br>
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Profilo <button class=" btn btn-info " [routerLink]="['/modifica-anagrafica/',id]" > <i class="fa fa-pencil" ></i> </button> </h1>
+          <h1>Profilo <button [hidden]="ruolo==='DIPENDENTE'" class=" btn btn-info " [routerLink]="['/modifica-anagrafica/',id]" > <i class="fa fa-pencil" ></i> </button> </h1>
           <h3> <i class="fa fa-user" ></i>  {{ anagrafica?.anagraficaDto.anagrafica?.nome }} {{ anagrafica?.anagraficaDto.anagrafica?.cognome }} </h3>
         </mat-card>
       </div>
@@ -447,13 +447,13 @@
                         <td>{{ commessa.tariffaGiornaliera ? commessa.tariffaGiornaliera: 'Dato non inserito' }} <i [hidden]="!commessa.tariffaGiornaliera" class="fa-solid fa-euro-sign"></i></td>
                         <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
                         <td>
-                          <button class="btn btn-success" matTooltip="Archivia commessa"
+                          <button  [hidden]="ruolo==='DIPENDENTE'" class="btn btn-success" matTooltip="Archivia commessa"
                             (click)="storicizzaCommessa(commessa.id, i)">
                             <i class="fa fa-file"></i>
                           </button>
                         </td>
                         <td>
-                          <button class="btn btn-warning" (click)="modificaCommessa()" matTooltip="Modifica commessa">
+                          <button [hidden]="ruolo==='DIPENDENTE'" class="btn btn-warning" (click)="modificaCommessa()" matTooltip="Modifica commessa">
                             <i class="fa fa-pencil"></i>
                           </button>
                         </td>

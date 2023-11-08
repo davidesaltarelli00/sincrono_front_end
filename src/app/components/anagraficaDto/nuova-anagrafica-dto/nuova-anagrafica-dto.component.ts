@@ -194,7 +194,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           id: new FormControl('', Validators.required),
         }),
         tipoLivelloContratto: new FormGroup({
-          id: new FormControl(''),
+          id: new FormControl('', Validators.required),
         }),
         tipoCcnl: new FormGroup({
           id: new FormControl('', Validators.required),
