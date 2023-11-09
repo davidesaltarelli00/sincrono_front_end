@@ -78,6 +78,7 @@ export class ListaDashboardComponent {
   years: number[] = [];
   mobile: any = false;
   ruolo: any;
+  idUtente: any;
   filterAnagraficaDto: FormGroup = new FormGroup({
 
     anagrafica: new FormGroup({
@@ -105,7 +106,7 @@ export class ListaDashboardComponent {
     annoFineContratto: new FormControl(null),
     meseFineContratto: new FormControl(null),
   });
-  idUtente: any;
+  
 
   constructor(
     private dashboardService: DashboardService,
