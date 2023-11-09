@@ -118,8 +118,8 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
           anagrafica: {
             codiceFiscale: this.codiceFiscale,
           },
-          annoRequest: this.selectedAnno,
-          meseRequest: this.selectedMese,
+          annoRequest: this.anno,
+          meseRequest: this.mese,
         },
       };
       this.rapportinoService.getRapportino(this.token, body).subscribe(
