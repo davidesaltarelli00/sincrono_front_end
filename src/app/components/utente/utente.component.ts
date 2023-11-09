@@ -52,7 +52,7 @@ export class UtenteComponent implements OnInit {
   currentYear: any;
   id = this.activatedRoute.snapshot.params['id'];
   idUtenteLoggato: any;
-  elencoCommesse: any;
+  elencoCommesse: any[]=[];
   contratto: any;
   dettaglioSbagliato: any;
   rapportinoDto: any[] = [];
@@ -134,6 +134,7 @@ export class UtenteComponent implements OnInit {
   totaleFerie: any;
   totaleMalattia: any;
   totaleOrePermessi: any;
+  aziendaUser: any;
   constructor(
     private activatedRoute: ActivatedRoute,
     private profileBoxService: ProfileBoxService,
@@ -325,7 +326,8 @@ export class UtenteComponent implements OnInit {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
-      this.getAnagraficaRapportino();
+      this.salvaAziendeClienti();
+      // this.getAnagraficaRapportino();
     } else {
       if (this.error.status === 403) {
         const dialogRef = this.dialog.open(AlertDialogComponent, {
@@ -341,6 +343,7 @@ export class UtenteComponent implements OnInit {
   }
 
   onChangeFerie(event: any, i: number) {
+
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
@@ -351,9 +354,11 @@ export class UtenteComponent implements OnInit {
       const fascia2Element = document.getElementById(`fascia2-${i}`) as HTMLInputElement;
       const fascia3Element = document.getElementById(`fascia3-${i}`) as HTMLInputElement;
       const permessiElement = document.getElementById(`permessi-${i}`) as HTMLInputElement;
+      let ferieElement = document.getElementById(`ferie-${i}`) as HTMLInputElement;
 
       if (isChecked) {
         // Quando ferie è true, disabilita i campi e imposta valore null se necessario
+        ferieElement.checked = true;
         this.disableAndClearField(oreElement);
         this.disableAndClearField(malattieElement);
         this.disableAndClearField(fascia1Element);
@@ -362,6 +367,7 @@ export class UtenteComponent implements OnInit {
         this.disableAndClearField(permessiElement);
       } else {
         // Quando ferie è false, reimposta i campi come necessario
+        ferieElement.checked = false;
         this.enableField(oreElement);
         this.enableField(malattieElement);
         this.enableField(fascia1Element);
@@ -473,28 +479,6 @@ export class UtenteComponent implements OnInit {
     }
   }
 
-
-  verificaTabellaCompletata() {
-    const tableRows =
-      this.editableTable.nativeElement.getElementsByTagName('tr');
-    let tabellaCompleta = true;
-    console.log('Controllo se la tabella é completa...');
-    for (let i = 1; i < tableRows.length; i++) {
-      const row = tableRows[i];
-      const giorno = row.cells[0].innerText;
-      const cliente = row.cells[1].innerText;
-      const oreOrdinarie = row.cells[2].innerText;
-
-      if (!giorno || !cliente || !oreOrdinarie) {
-        tabellaCompleta = false;
-        break;
-      }
-    }
-
-    this.tabellaCompletata = tabellaCompleta;
-    console.log('Esito tabella completa: ' + this.tabellaCompletata);
-  }
-
   checkRapportinoInviato() {
     let body = {
       anno: this.selectedAnno,
@@ -516,11 +500,6 @@ export class UtenteComponent implements OnInit {
           this.rapportinoInviato = false;
         }
       });
-  }
-
-  isRigaVuota(index: number): boolean {
-    const riga = this.rapportinoDto[index];
-    return !riga || !riga.giorno;
   }
 
   eliminaRapportino() {
@@ -553,30 +532,30 @@ export class UtenteComponent implements OnInit {
     return nomeGiorno;
   }
 
-  getAnagraficaRapportino() {
-    this.anagraficaDtoService
-      .detailAnagraficaDto(this.id, localStorage.getItem('token'))
-      .subscribe(
-        (resp: any) => {
-          this.user = (resp as any)['anagraficaDto'];
-          this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
-          this.salvaAziendeClienti();
-          this.contratto = (resp as any)['anagraficaDto']['contratto'];
-          // this.codiceFiscale = (resp as any)['anagraficaDto']['anagrafica'][
-          //   'codiceFiscale'
-          // ];
-          this.dettaglioSbagliato = false;
-          this.numeroCommessePresenti = this.elencoCommesse.length;
-          // console.log('Dati restituiti: ' + JSON.stringify(resp));
-        },
-        (error: any) => {
-          console.error(
-            'ERRORE DURANTE IL CARICAMENTO DELL ANAGRAFICA :' +
-              JSON.stringify(error)
-          );
-        }
-      );
-  }
+  // getAnagraficaRapportino() {
+  //   this.anagraficaDtoService
+  //     .detailAnagraficaDto(this.id, localStorage.getItem('token'))
+  //     .subscribe(
+  //       (resp: any) => {
+  //         this.user = (resp as any)['anagraficaDto'];
+  //         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
+  //         this.salvaAziendeClienti();
+  //         this.contratto = (resp as any)['anagraficaDto']['contratto'];
+  //         // this.codiceFiscale = (resp as any)['anagraficaDto']['anagrafica'][
+  //         //   'codiceFiscale'
+  //         // ];
+  //         this.dettaglioSbagliato = false;
+  //         this.numeroCommessePresenti = this.elencoCommesse.length;
+  //         // console.log('Dati restituiti: ' + JSON.stringify(resp));
+  //       },
+  //       (error: any) => {
+  //         console.error(
+  //           'ERRORE DURANTE IL CARICAMENTO DELL ANAGRAFICA :' +
+  //             JSON.stringify(error)
+  //         );
+  //       }
+  //     );
+  // }
 
   getRapportino() {
     let body = {
@@ -1035,6 +1014,15 @@ export class UtenteComponent implements OnInit {
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.idUtenteLoggato = response.anagraficaDto.anagrafica.id;
         this.contrattoUser=response.anagraficaDto.contratto.tipoContratto.descrizione;
+        this.aziendaUser=response.anagraficaDto.contratto.tipoAzienda.descrizione;
+        this.elencoCommesse=response.anagraficaDto.commesse;
+        this.numeroCommessePresenti = this.elencoCommesse.length;
+        this.elencoCommesse.forEach((commessa: any) => {
+          if (commessa.tipoAziendaCliente.descrizione) {
+            this.aziendeClienti.push(commessa.tipoAziendaCliente.descrizione);
+            console.log('Aziende clienti: ' + JSON.stringify(this.aziendeClienti));
+          }
+        });
         this.codiceFiscale=response.anagraficaDto.anagrafica.codiceFiscale;
         if(this.contrattoUser=='Stage' || this.contrattoUser==='P.Iva'){
           const dialogRef = this.dialog.open(AlertDialogComponent, {
