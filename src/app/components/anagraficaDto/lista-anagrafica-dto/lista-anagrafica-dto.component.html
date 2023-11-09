@@ -285,7 +285,7 @@
                 </div>
                 <br>
                 <div class="row">
-                  <div class="col-4">
+                  <div class="col-md-3">
                     <div class="form-group">
                       <label for="ralAnnua">RAL Annua</label>
                       <input (keyup)="filter(filterAnagraficaDto.value)" type="text" id="contratto.ralAnnua"
@@ -293,25 +293,6 @@
                         placeholder="Inserire RAL annua">
                     </div>
                   </div>
-                  <!-- <div class="col-4">
-                    <div class="form-group">
-                      <label for="dataAssunzione">Data assunzione</label>
-                      <input (keyup)="filter(filterAnagraficaDto.value)" type="date" id="contratto.dataAssunzione"
-                        class="form-control" name="dataAssunzione" formControlName="dataAssunzione"
-                        placeholder="Inserire data assunzione">
-                    </div>
-                  </div>
-                  <div class="col-4" *ngIf="inseritoContrattoIndeterminato">
-                    <div class="form-group">
-                      <label for="dataFineRapporto">Data fine rapporto</label>
-                      <input (keyup)="filter(filterAnagraficaDto.value)" type="date" id="contratto.dataFineRapporto"
-                        class="form-control" name="dataFineRapporto" formControlName="dataFineRapporto"
-                        placeholder="Inserire data fine rapporto">
-                    </div>
-                  </div> -->
-                </div>
-                <br>
-                <div class="row">
                   <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
                     <div class="form-group">
                       <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
@@ -342,9 +323,24 @@
                       </select>
                     </div>
                   </div>
-
+                  <!-- <div class="col-4">
+                    <div class="form-group">
+                      <label for="dataAssunzione">Data assunzione</label>
+                      <input (keyup)="filter(filterAnagraficaDto.value)" type="date" id="contratto.dataAssunzione"
+                        class="form-control" name="dataAssunzione" formControlName="dataAssunzione"
+                        placeholder="Inserire data assunzione">
+                    </div>
+                  </div>
+                  <div class="col-4" *ngIf="inseritoContrattoIndeterminato">
+                    <div class="form-group">
+                      <label for="dataFineRapporto">Data fine rapporto</label>
+                      <input (keyup)="filter(filterAnagraficaDto.value)" type="date" id="contratto.dataFineRapporto"
+                        class="form-control" name="dataFineRapporto" formControlName="dataFineRapporto"
+                        placeholder="Inserire data fine rapporto">
+                    </div>
+                  </div> -->
                 </div>
-
+                <br>
               </div>
               <br>
               <br>
@@ -361,6 +357,7 @@
                             name="aziendaCliente">
                         </div> -->
                         <div class="form-group" formGroupName="tipoAziendaCliente">
+                          <label for="aziendaCliente">Azienda cliente</label>
                           <select (change)="onChangeAziendaCliente($event)" class="form-select"
                           aria-label="Default select example" id="commesse.tipoAziendaCliente.id" formControlName="id">
                           <option value="">--nessuna selezione--</option>
