@@ -342,32 +342,41 @@ export class UtenteComponent implements OnInit {
     }
   }
 
-  onChangeFerie(event: any, i: number) {
 
+  onChangeFerie(event: any, i: number) {
     const target = event.target as HTMLInputElement;
+
     if (target) {
       const isChecked = target.checked;
 
+      const oreElement = document.getElementById(`ore-ordinarie-${i}`) as HTMLInputElement;
+      const malattieElement = document.getElementById(`malattie-${i}`) as HTMLInputElement;
+      const fascia1Element = document.getElementById(`fascia1-${i}`) as HTMLInputElement;
+      const fascia2Element = document.getElementById(`fascia2-${i}`) as HTMLInputElement;
+      const fascia3Element = document.getElementById(`fascia3-${i}`) as HTMLInputElement;
+      const permessiElement = document.getElementById(`permessi-${i}`) as HTMLInputElement;
+      const noteElement = document.getElementById(`note-${i}`) as HTMLInputElement;
+      const clienteElement = document.getElementById(`cliente-${i}`) as HTMLInputElement;
+
+      // Aggiungi altri campi necessari
+
       if (isChecked) {
-        // Quando ferie è true, disabilita i campi e imposta valore null se necessario
-        console.log(isChecked);
-      } else {
-        // Quando ferie è false, reimposta i campi come necessario
-        console.log(isChecked);
+        // Quando ferie è true, svuota i campi
+        this.clearFieldValue(oreElement);
+        this.clearFieldValue(malattieElement);
+        this.clearFieldValue(fascia1Element);
+        this.clearFieldValue(fascia2Element);
+        this.clearFieldValue(fascia3Element);
+        this.clearFieldValue(permessiElement);
+        this.clearFieldValue(noteElement);
+        this.clearFieldValue(clienteElement);
       }
     }
   }
 
-   disableAndClearField(element: HTMLInputElement) {
+  private clearFieldValue(element: HTMLInputElement): void {
     if (element) {
-      element.disabled = true;
       element.value = '';
-    }
-  }
-
-   enableField(element: HTMLInputElement) {
-    if (element) {
-      element.disabled = false;
     }
   }
 

@@ -206,45 +206,52 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12">
+            <div class="col-6">
               <mat-card class="profile-box">
-                <h3>Dati anagrafici <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                  matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
-                  <i class="fa fa-exclamation-triangle"></i> </button></h3>
-                <div class="table-responsive">
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>Nome</th>
-                        <th>Cognome</th>
-                        <th>Data e luogo di nascita</th>
-                        <th>Codice fiscale</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }}</td>
-                        <td>{{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }}</td>
-                        <td *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita != null">
-                          {{anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"}},
-                          {{ anagrafica?.anagraficaDto.anagrafica?.comuneDiNascita }}
-                        </td>
-                        <td *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita == null">Dato non inserito.</td>
-                        <td>{{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <mat-card-title>
+                  <h3>Dati anagrafici <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                    matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                    <i class="fa fa-exclamation-triangle"></i> </button></h3>
+                </mat-card-title>
+                <mat-card-content>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th>Cognome</th>
+                          <th>Data e luogo di nascita</th>
+                          <th>Codice fiscale</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }}</td>
+                          <td>{{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }}</td>
+                          <td *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita != null">
+                            {{anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"}},
+                            {{ anagrafica?.anagraficaDto.anagrafica?.comuneDiNascita }}
+                          </td>
+                          <td *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita == null">Dato non inserito.</td>
+                          <td>{{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </mat-card-content>
+
               </mat-card>
+
+
             </div>
-          </div>
-          <br>
-          <div class="row">
-            <div class="col-12">
+            <div class="col-6">
               <mat-card class="profile-box">
+               <mat-card-title>
                 <h3>Contatti <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
                   matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                   <i class="fa fa-exclamation-triangle"></i> </button></h3>
+               </mat-card-title>
+               <mat-card-content>
                 <div class="table-responsive">
                   <table class="table table-striped">
                     <thead>
@@ -267,6 +274,8 @@
                     </tbody>
                   </table>
                 </div>
+               </mat-card-content>
+
 
               </mat-card>
 
@@ -274,55 +283,60 @@
           </div>
           <br>
           <div class="row">
-            <div class="col-12">
+            <div class="col-6">
               <mat-card class="profile-box">
-                <h3>Residenza e domicilio <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                  matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
-                  <i class="fa fa-exclamation-triangle"></i> </button></h3>
-                <div class="table-responsive">
-                  <table class="table table-striped">
-                    <thead>
-                     <tr>
-                       <th>Comune di residenza</th>
-                       <th>Comune di domicilio</th>
-                     </tr>
-                    </thead>
-                     <tbody>
+                <mat-card-title>
+                  <h3>Residenza e domicilio <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                    matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                    <i class="fa fa-exclamation-triangle"></i> </button></h3>
+                </mat-card-title>
+                <mat-card-content>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
                        <tr>
-                         <td>{{ anagrafica?.anagraficaDto.anagrafica?.residenza ? anagrafica?.anagraficaDto.anagrafica?.residenza : 'Dato non inserito' }}</td>
-                         <td>{{ anagrafica?.anagraficaDto.anagrafica?.domicilio ? anagrafica?.anagraficaDto.anagrafica?.domicilio : 'Dato non inserito.' }}</td>
+                         <th>Residenza</th>
+                         <th>Domicilio</th>
                        </tr>
-                     </tbody>
-                   </table>
-                </div>
+                      </thead>
+                       <tbody>
+                         <tr>
+                           <td>{{ anagrafica?.anagraficaDto.anagrafica?.residenza ? anagrafica?.anagraficaDto.anagrafica?.residenza : 'Dato non inserito' }}</td>
+                           <td>{{ anagrafica?.anagraficaDto.anagrafica?.domicilio ? anagrafica?.anagraficaDto.anagrafica?.domicilio : 'Dato non inserito.' }}</td>
+                         </tr>
+                       </tbody>
+                     </table>
+                  </div>
+                </mat-card-content>
+
               </mat-card>
             </div>
-          </div>
-          <br>
-          <div class="row">
-            <div class="col-12">
+            <div class="col-6">
               <mat-card class="profile-box">
-                <h3>Referenze <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                  matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
-                  <i class="fa fa-exclamation-triangle"></i> </button></h3>
-                <div class="table-responsive">
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>Titoli di studio</th>
-                        <th>Altri titoli</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{{ anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio ? anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio: 'Dato non inserito.' }}</td>
-                        <td>{{ anagrafica?.anagraficaDto.anagrafica?.altriTitoli ? anagrafica?.anagraficaDto.anagrafica?.altriTitoli : 'Dato non inserito.' }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <mat-card-title>
+                  <h3>Referenze <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                    matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                    <i class="fa fa-exclamation-triangle"></i> </button></h3>
+                </mat-card-title>
+                <mat-card-content>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Titoli di studio</th>
+                          <th>Altri titoli</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{ anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio ? anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio: 'Dato non inserito.' }}</td>
+                          <td>{{ anagrafica?.anagraficaDto.anagrafica?.altriTitoli ? anagrafica?.anagraficaDto.anagrafica?.altriTitoli : 'Dato non inserito.' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </mat-card-content>
               </mat-card>
-
             </div>
           </div>
           <br>

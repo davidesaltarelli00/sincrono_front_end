@@ -303,7 +303,7 @@
           <div class="col-4">
            <div class="form-group">
             <label for="ferie-{{ i }}">Ferie</label> <br>
-            <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva'"
+            <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.malattie "
             type="checkbox" (change)="onChangeFerie($event,i)" class="form-check-input"
             id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
            </div>
@@ -311,7 +311,7 @@
           <div class="col-4">
           <div class="form-group">
             <label for="malattie-{{i}}">Malattia</label><br>
-            <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva'" type="checkbox" (change)="onChangeMalattia($event,i)" class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
+            <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.ferie " type="checkbox" (change)="onChangeMalattia($event,i)" class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
           </div>
           </div>
         </div>

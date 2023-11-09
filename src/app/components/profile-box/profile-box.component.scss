@@ -164,6 +164,7 @@ table {
   width: 60%;
 }
 
+
 .preview-image {
   width: 100%;
   height: auto;
@@ -187,4 +188,8 @@ table {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+mat-card{
+  height: 100%;
 }
