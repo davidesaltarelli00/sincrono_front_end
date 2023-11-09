@@ -348,32 +348,12 @@ export class UtenteComponent implements OnInit {
     if (target) {
       const isChecked = target.checked;
 
-      const oreElement = document.getElementById(`ore-ordinarie-${i}`) as HTMLInputElement;
-      const malattieElement = document.getElementById(`malattie-${i}`) as HTMLInputElement;
-      const fascia1Element = document.getElementById(`fascia1-${i}`) as HTMLInputElement;
-      const fascia2Element = document.getElementById(`fascia2-${i}`) as HTMLInputElement;
-      const fascia3Element = document.getElementById(`fascia3-${i}`) as HTMLInputElement;
-      const permessiElement = document.getElementById(`permessi-${i}`) as HTMLInputElement;
-      let ferieElement = document.getElementById(`ferie-${i}`) as HTMLInputElement;
-
       if (isChecked) {
         // Quando ferie è true, disabilita i campi e imposta valore null se necessario
-        ferieElement.checked = true;
-        this.disableAndClearField(oreElement);
-        this.disableAndClearField(malattieElement);
-        this.disableAndClearField(fascia1Element);
-        this.disableAndClearField(fascia2Element);
-        this.disableAndClearField(fascia3Element);
-        this.disableAndClearField(permessiElement);
+        console.log(isChecked);
       } else {
         // Quando ferie è false, reimposta i campi come necessario
-        ferieElement.checked = false;
-        this.enableField(oreElement);
-        this.enableField(malattieElement);
-        this.enableField(fascia1Element);
-        this.enableField(fascia2Element);
-        this.enableField(fascia3Element);
-        this.enableField(permessiElement);
+        console.log(isChecked);
       }
     }
   }
