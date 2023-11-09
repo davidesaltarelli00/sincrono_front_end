@@ -436,35 +436,46 @@
               <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter(filterAnagraficaDto.value)">
                 <!-- Remove the container div to eliminate extra spacing -->
                 <div formGroupName="anagrafica">
-                  <div class="row">
-                    <div class="col-md-4">
-                      <div class="form-group">
                         <b>Filtri per anagrafica</b>
                         <br>
                         <br>
-                        <label for="nome">Nome:</label>
-                        <input type="text" id="anagrafica.nome" class="form-control" placeholder="Inserire nome "
-                          formControlName="nome">
+                        <div class="row">
+                          <div class="col-3">
+                            <div class="form-group">
+                              <label for="nome">Nome:</label>
+                            <input type="text" id="anagrafica.nome" class="form-control" placeholder="Inserire nome "
+                             formControlName="nome">
+                            </div>
+                          </div>
+                          <div class="col-3">
+                            <div class="form-group">
                         <label for="cognome">Cognome:</label>
                         <input type="text" id="anagrafica.cognome" class="form-control" formControlName="cognome"
                           placeholder="Inserire cognome">
-                      </div>
-                      <label for="filter-Tipo Azienda">Nome azienda</label>
-                      <div class="form-group" formGroupName="tipoAzienda">
-                        <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
-                          <option value="">--nessuna selezione--</option>
-                          <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">{{
-                            tipoAzienda.descrizione }}</option>
-                        </select>
-                      </div>
-                    </div>
+                            </div>
+                          </div>
+                          <div class="col-3">
+                            <label for="filter-Tipo Azienda">Nome azienda</label>
+                            <div class="form-group" formGroupName="tipoAzienda">
+                              <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
+                                <option value="">--nessuna selezione--</option>
+                                <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">{{
+                                  tipoAzienda.descrizione }}</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+
                     <!-- <div class="col-md-1">
                               <div class="form-group">
                                 <label for="attivo">Attivo</label> <br>
                                 <input type="checkbox" class="form-check-input" style="border: 1px solid black;" id="anagrafica.attivo" name="attivo" (change)="onChangeAttivo($event)"  formControlName="attivo" checked>
                               </div>
                             </div> -->
-                  </div>
+
                 </div>
                 <br><br>
                 <div class="row">
@@ -620,7 +631,7 @@
     <div class="row" [hidden]="pageData.length===0" style="margin: auto;">
       <div class="col-12">
         <div class="table-responsive">
-          <table class="table table-striped" style="font-size: 15px;">
+          <table class="table table-striped" style="font-size: 13px;">
             <thead>
               <tr>
                 <th>Nominativo</th>
