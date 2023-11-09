@@ -117,8 +117,8 @@
   </div>
   <br>
   <div class="row">
-    <div class="col-4" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"  >
-      <mat-card style="padding: 5%;" [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'lightblue' : '#ffff99'}" >
+    <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"  >
+      <mat-card [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'lightblue' : 'aliceblue'}" >
         <mat-card-title style="text-align: center;">
           <p> <button mat-fab color color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}</p>
         </mat-card-title>
@@ -128,13 +128,13 @@
      <div *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
       <mat-card-content>
         <div class="row">
-          <div class="col-6">
+          <div class="col-8">
             <div class="form-group">
               <label for="cliente-{{ i }}{{j}}">Cliente</label>
               <input type="text" id="cliente-{{ i }}{{j}}" class="form-control" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" disabled>
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-4">
             <div class="form-group">
               <label for="ore-ordinarie-{{ i }}{{j}}">Ore</label>
                 <input disabled
@@ -146,10 +146,10 @@
         </div>
         <div class="straordinari" id="straordinari">
          <div class="row" > <!--*ngIf="checkstraordinari"-->
-          <label for="straordinari" style="text-align: center; font-weight: bold;">Straordinari</label>
+          <!-- <label for="straordinari" style="text-align: center; font-weight: bold;">Straordinari</label> -->
           <div class="col-4">
            <div class="form-group">
-            <label for="fascia1-{{ i }}{{j}}">18:00-20:00</label>
+            <label for="fascia1-{{ i }}{{j}}">18-20</label>
             <input disabled
             type="number" class="form-control"
             id="fascia1-{{ i }}{{j}}" name="fascia1-{{ i }}{{j}}"
@@ -158,7 +158,7 @@
           </div>
           <div class="col-4">
            <div class="form-group">
-            <label for="fascia2-{{ i }}{{j}}">20:00-22:00</label>
+            <label for="fascia2-{{ i }}{{j}}">20-22</label>
             <input disabled
             type="number" class="form-control"
             id="fascia2-{{ i }}" name="fascia2-{{ i }}{{j}}"
@@ -167,7 +167,7 @@
           </div>
           <div class="col-4" >
             <div class="form-group">
-              <label for="fascia3-{{ i }}{{j}}">22:00-09:00</label>
+              <label for="fascia3-{{ i }}{{j}}">22-09</label>
               <input disabled
               type="number" class="form-control"
               id="fascia3-{{ i }}{{j}}" name="fascia3-{{ i }}{{j}}"
