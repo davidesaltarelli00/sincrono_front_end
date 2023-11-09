@@ -46,7 +46,7 @@ export class RichiesteComponent implements OnInit {
   selectedGiorno: number;
   esitoCorretto=false;
   elencoRichieste: any[]=[];
-  myForm: FormGroup;
+  requestForm: FormGroup;
 
 
   constructor(
@@ -95,7 +95,7 @@ export class RichiesteComponent implements OnInit {
     ) {
       this.mobile = true;
     }
-    this.myForm = this.formBuilder.group({
+    this.requestForm = this.formBuilder.group({
       giorno: ['', Validators.required],
       mese: ['', Validators.required],
       anno: ['', Validators.required],
@@ -125,11 +125,11 @@ export class RichiesteComponent implements OnInit {
   }
 
   inviaRichiesta() {
-    console.log(this.myForm.value);
+    console.log(this.requestForm.value);
   }
 
   resetForm() {
-    this.myForm.reset();
+    this.requestForm.reset();
   }
 
   //metodi form selezione periodo

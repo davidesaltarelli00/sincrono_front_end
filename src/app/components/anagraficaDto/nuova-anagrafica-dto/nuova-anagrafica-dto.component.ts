@@ -67,7 +67,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   ccnLSelezionato = false;
   elencoLivelliCCNL: any[] = [];
   risultatoMensileTOT: any;
-
+//org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : it.sincrono.entities.Commessa.tipoAziendaCliente -> it.sincrono.entities.TipoAziendaCliente"
   //dati per i controlli nei form
   inseritoContrattoIndeterminato = true;
   idLivelloContratto: any;
@@ -1479,7 +1479,18 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                   message: (result as any).esito.target,
                 },
               });
-            } else {
+            }
+            if ((result as any).esito.target === "org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : it.sincrono.entities.Commessa.tipoAziendaCliente -> it.sincrono.entities.TipoAziendaCliente") {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  Image: '../../../../assets/images/logo.jpeg',
+                  title: 'Inserimento non riuscito:',
+                  message: "Non hai inserito l'azienda cliente in una o piú commesse.",
+                },
+              });
+            }
+
+            else {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
                   title: 'Inserimento riuscito',

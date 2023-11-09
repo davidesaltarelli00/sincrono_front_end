@@ -832,6 +832,16 @@ export class UtenteComponent implements OnInit {
         nomeGiorno: giorno.nomeGiorno,
       };
     });
+    for (const giorno of giorni) {
+      if (!giorno.ferie) {
+        giorno.ferie = null;
+      }
+
+      if (!giorno.malattie) {
+        giorno.malattie = null;
+      }
+      console.log("Oggetto giorniArray iterato: "+JSON.stringify(giorno, null, 2));
+    }
 
     const body = {
       rapportinoDto: {
@@ -848,7 +858,7 @@ export class UtenteComponent implements OnInit {
         meseRequest: this.selectedMese,
       },
     };
-    console.log(JSON.stringify(body));
+    // console.log(JSON.stringify(body));
     this.rapportinoService
       .updateRapportino(localStorage.getItem('token'), body)
       .subscribe(
