@@ -464,7 +464,7 @@
       <div class="col-12">
         <mat-card>
          <mat-card-title>
-          <h1>Rapportini controllati ( {{elencoRapportiniFreezati.length}} ) <button mat-fab color="primary" (click)="scarica()" matTooltip="Converti in excel" > <i class="fa fa-file" ></i> </button> </h1>
+          <h1>Rapportini controllati ( {{elencoRapportiniFreezati.length}} ) <button [disabled]="elencoRapportiniFreezati.length<1" mat-fab color="primary" (click)="scarica()" matTooltip="Converti in excel" > <i class="fa fa-file" ></i> </button> </h1>
          </mat-card-title>
          <mat-card-content>
           <br>
