@@ -150,7 +150,7 @@
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
           <h1>Profilo <button [hidden]="ruolo==='DIPENDENTE'" class=" btn btn-info " [routerLink]="['/modifica-anagrafica/',id]" > <i class="fa fa-pencil" ></i> </button> </h1>
-          <h3> <i class="fa fa-user" ></i>  {{ anagrafica?.anagraficaDto.anagrafica?.nome }} {{ anagrafica?.anagraficaDto.anagrafica?.cognome }} </h3>
+          <h3> <i class="fa fa-user" ></i>  {{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }} {{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }} </h3>
         </mat-card>
       </div>
     </div>
@@ -223,8 +223,8 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{{ anagrafica?.anagraficaDto.anagrafica?.nome }}</td>
-                        <td>{{ anagrafica?.anagraficaDto.anagrafica?.cognome }}</td>
+                        <td>{{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }}</td>
+                        <td>{{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }}</td>
                         <td *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita != null">
                           {{anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"}},
                           {{ anagrafica?.anagraficaDto.anagrafica?.comuneDiNascita }}
