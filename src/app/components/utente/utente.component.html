@@ -214,7 +214,7 @@
 
       <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"  >
         <mat-card [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aqua' : 'rgb(214, 234, 251)'}" >
-          <p style="text-align: center;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}</p>
+          <p style="text-align: center; margin: 0;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}</p>
        <div class="container-card" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
         <mat-card-content>
           <div class="row">

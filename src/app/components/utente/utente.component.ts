@@ -793,7 +793,18 @@ export class UtenteComponent implements OnInit {
             this.rapportinoSalvato = false;
             console.error(result);
           }
-          if ((result as any).esito.code === 200) {
+          if ( (result as any).esito.target==='ERRORE_GENERICO') {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                Image: '../../../../assets/images/logo.jpeg',
+                title: 'Salvataggio non riuscito:',
+                message: 'Qualcosa é andato storto; riprova.',
+              },
+            });
+            this.rapportinoSalvato = false;
+            console.error(result);
+          }
+          if ((result as any).esito.code === 200 && (result as any).esito.target==null) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 title: 'Salvataggio riuscito.',
