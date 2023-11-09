@@ -344,75 +344,47 @@ export class UtenteComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
-      const oreElement = document.getElementById(
-        `ore-ordinarie-${i}`
-      ) as HTMLInputElement;
-      const malattieElement = document.getElementById(
-        `malattie-${i}`
-      ) as HTMLInputElement;
-      const fascia1Element = document.getElementById(
-        `fascia1-${i}`
-      ) as HTMLInputElement;
-      const fascia2Element = document.getElementById(
-        `fascia2-${i}`
-      ) as HTMLInputElement;
-      const fascia3Element = document.getElementById(
-        `fascia3-${i}`
-      ) as HTMLInputElement;
-      const permessiElement = document.getElementById(
-        `permessi-${i}`
-      ) as HTMLInputElement;
-      const giornoElement = document.getElementById(
-        `giorno-${i}`
-      ) as HTMLInputElement;
-      const clienteElement = document.getElementById(
-        `cliente-${i}`
-      ) as HTMLSelectElement;
-      const noteElement = document.getElementById(
-        `note-${i}`
-      ) as HTMLInputElement;
+
+      const oreElement = document.getElementById(`ore-ordinarie-${i}`) as HTMLInputElement;
+      const malattieElement = document.getElementById(`malattie-${i}`) as HTMLInputElement;
+      const fascia1Element = document.getElementById(`fascia1-${i}`) as HTMLInputElement;
+      const fascia2Element = document.getElementById(`fascia2-${i}`) as HTMLInputElement;
+      const fascia3Element = document.getElementById(`fascia3-${i}`) as HTMLInputElement;
+      const permessiElement = document.getElementById(`permessi-${i}`) as HTMLInputElement;
 
       if (isChecked) {
         // Quando ferie è true, disabilita i campi e imposta valore null se necessario
-        oreElement.disabled = true;
-        malattieElement.disabled = true;
-        fascia1Element.disabled = true;
-        fascia2Element.disabled = true;
-        fascia3Element.disabled = true;
-        permessiElement.disabled = true;
-        oreElement.value = '';
-        malattieElement.checked = false;
-        fascia1Element.value = '';
-        fascia2Element.value = '';
-        fascia3Element.value = '';
-        permessiElement.value = '';
-
-        // Abilita i campi obbligatori
-        giornoElement.required = true;
-        clienteElement.required = true;
-        noteElement.required = true;
-        // Disabilita i campi obbligatori
-        oreElement.required = false;
-        noteElement.disabled = false;
-        noteElement.required = false;
-        noteElement.disabled = true;
+        this.disableAndClearField(oreElement);
+        this.disableAndClearField(malattieElement);
+        this.disableAndClearField(fascia1Element);
+        this.disableAndClearField(fascia2Element);
+        this.disableAndClearField(fascia3Element);
+        this.disableAndClearField(permessiElement);
       } else {
         // Quando ferie è false, reimposta i campi come necessario
-        oreElement.disabled = false;
-        malattieElement.disabled = false;
-        fascia1Element.disabled = false;
-        fascia2Element.disabled = false;
-        fascia3Element.disabled = false;
-        permessiElement.disabled = false;
-        noteElement.disabled = false;
-        noteElement.required = true;
-        noteElement.disabled = false;
-        // Rimuovi obbligatorietà
-        giornoElement.required = false;
-        clienteElement.required = false;
+        this.enableField(oreElement);
+        this.enableField(malattieElement);
+        this.enableField(fascia1Element);
+        this.enableField(fascia2Element);
+        this.enableField(fascia3Element);
+        this.enableField(permessiElement);
       }
     }
   }
+
+   disableAndClearField(element: HTMLInputElement) {
+    if (element) {
+      element.disabled = true;
+      element.value = '';
+    }
+  }
+
+   enableField(element: HTMLInputElement) {
+    if (element) {
+      element.disabled = false;
+    }
+  }
+
 
   isWeekend(giorno: string): any {
     return giorno === 'Sabato' || giorno === 'Domenica';
@@ -422,36 +394,18 @@ export class UtenteComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
-      const oreElement = document.getElementById(
-        `ore-ordinarie-${i}`
-      ) as HTMLInputElement;
-      const ferieElement = document.getElementById(
-        `ferie-${i}`
-      ) as HTMLInputElement;
-      const malattieElement = document.getElementById(
-        `malattie-${i}`
-      ) as HTMLInputElement;
-      const fascia1Element = document.getElementById(
-        `fascia1-${i}`
-      ) as HTMLInputElement;
-      const fascia2Element = document.getElementById(
-        `fascia2-${i}`
-      ) as HTMLInputElement;
-      const fascia3Element = document.getElementById(
-        `fascia3-${i}`
-      ) as HTMLInputElement;
-      const permessiElement = document.getElementById(
-        `permessi-${i}`
-      ) as HTMLInputElement;
-      const giornoElement = document.getElementById(
-        `giorno-${i}`
-      ) as HTMLInputElement;
-      const clienteElement = document.getElementById(
-        `cliente-${i}`
-      ) as HTMLSelectElement;
-      const noteElement = document.getElementById(
-        `note-${i}`
-      ) as HTMLInputElement;
+
+      const oreElement = document.getElementById(`ore-ordinarie-${i}`) as HTMLInputElement;
+      const ferieElement = document.getElementById(`ferie-${i}`) as HTMLInputElement;
+      const malattieElement = document.getElementById(`malattie-${i}`) as HTMLInputElement;
+      const fascia1Element = document.getElementById(`fascia1-${i}`) as HTMLInputElement;
+      const fascia2Element = document.getElementById(`fascia2-${i}`) as HTMLInputElement;
+      const fascia3Element = document.getElementById(`fascia3-${i}`) as HTMLInputElement;
+      const permessiElement = document.getElementById(`permessi-${i}`) as HTMLInputElement;
+      const giornoElement = document.getElementById(`giorno-${i}`) as HTMLInputElement;
+      const clienteElement = document.getElementById(`cliente-${i}`) as HTMLSelectElement;
+      const noteElement = document.getElementById(`note-${i}`) as HTMLInputElement;
+
       if (isChecked) {
         giornoElement.disabled = false;
         giornoElement.required = true;
@@ -493,7 +447,6 @@ export class UtenteComponent implements OnInit {
         clienteElement.value = '';
 
         oreElement.disabled = false;
-        oreElement.required = true;
         oreElement.value = '';
 
         fascia1Element.value = '';
@@ -519,6 +472,7 @@ export class UtenteComponent implements OnInit {
       }
     }
   }
+
 
   verificaTabellaCompletata() {
     const tableRows =
