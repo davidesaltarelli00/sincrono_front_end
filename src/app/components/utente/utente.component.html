@@ -167,10 +167,13 @@
                 >
                   Carica rapportino
                   <i class="fa fa-print" aria-hidden="true"></i></button
-                >&nbsp;
+                >
+                <!--
+                  &nbsp;
                 <button class="btn btn-danger" (click)="eliminaRapportino()">
-                  Elimina rapportino <i class="fa fa-trash" aria-hidden="true"></i>
+                  Nascondi rapportino <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
+                -->
               </div>
             </div>
             <br />
@@ -179,16 +182,15 @@
       </div>
      </div>
       <br>
-      <p style="text-align: center;" *ngIf="esitoCorretto">
-        Rapportino relativo a {{nomeMeseDaNumero(selectedMese)}} - {{selectedAnno}} caricato correttamente.
-      </p>
-      <div class="rapportino-inviato" *ngIf="risultatoCheckFreeze">
-        <p style="text-align: center;"  >Il rapportino é giá stato inviato.</p>
-        <p style="text-align: center;" >Non puoi piú modificarlo a meno che l'admin non te lo rimandi indietro.</p>
 
-      </div>
        <div class="row" *ngIf="esitoCorretto">
-
+        <!-- <p style="text-align: center;" >
+          Rapportino relativo a {{nomeMeseDaNumero(selectedMese)}} - {{selectedAnno}} caricato correttamente.
+        </p> -->
+        <div class="rapportino-inviato" *ngIf="risultatoCheckFreeze">
+          <p style="text-align: center;"  >Il rapportino é giá stato inviato.</p>
+          <p style="text-align: center;" >Non puoi piú modificarlo a meno che l'admin non te lo rimandi indietro.</p>
+        </div>
       <div class="row">
         <div class="col-12" style="text-align: center;" >
           <table class="table table-striped">
@@ -219,8 +221,9 @@
             <div class="col-6">
               <div class="form-group">
                 <label for="cliente-{{ i }}{{j}}">Cliente</label>
-                <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-control form-control-sm" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)">
-                  <option selected>Attesa lavori</option>
+                <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-control form-control-sm" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)" matTooltip="{{duplicazione.cliente}}">
+                  <option selected [ngValue]="null"></option>
+                  <option>Attesa lavori</option>
                   <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
                 </select>
                 <div *ngIf="!duplicazione.cliente && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
@@ -228,14 +231,13 @@
             </div>
             <div class="col-6">
               <div class="form-group">
-                <label for="ore-ordinarie-{{ i }}{{j}}">Ore</label>
+                <label for="ore-ordinarie-{{ i }}{{j}}" matTooltipPosition="above" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Ore ordinarie</label>
                 <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
                 type="number"  class="form-control form-control-sm"
                 step="0.5" min="0" max="8"
                 id="ore-ordinarie-{{ i }}{{j}}" name="ore-ordinarie-{{ i }}{{j}}"
-                [(ngModel)]="duplicazione.oreOrdinarie" style="width: 70%;"
-                oninput="this.value = Math.abs(this.value)">
-                <!-- [ngClass]="{'has-error': !isValidOreOrdinarie(duplicazione.oreOrdinarie)}" -->
+                [(ngModel)]="duplicazione.oreOrdinarie" style="width: 70%;">
+                <!-- oninput="this.value = Math.abs(this.value)" [ngClass]="{'has-error': !isValidOreOrdinarie(duplicazione.oreOrdinarie)}" -->
                   <!-- <div *ngIf="!duplicazione.oreOrdinarie" class="error-message">Campo obbligatorio</div> -->
                   <!-- <div *ngIf="!isValidOreOrdinarie(duplicazione.oreOrdinarie)" class="error-message">Valore non valido.</div> -->
               </div>
@@ -247,7 +249,7 @@
              <div class="form-group">
               <label for="fascia1-{{ i }}{{j}}">18-20</label>
               <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
-              type="number" class="form-control form-control form-control-sm"
+              type="text" class="form-control form-control-sm"
               step="0.5" min="0" max="2"
               id="fascia1-{{ i }}{{j}}" name="fascia1-{{ i }}{{j}}"
               [(ngModel)]="duplicazione.fascia1">
@@ -257,7 +259,7 @@
              <div class="form-group">
               <label for="fascia2-{{ i }}{{j}}">20-22</label>
               <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
-              type="number" class="form-control form-control form-control-sm"
+              type="text" class="form-control form-control-sm"
               step="0.5" min="0" max="2"
               id="fascia2-{{ i }}" name="fascia2-{{ i }}{{j}}"
               [(ngModel)]="duplicazione.fascia2">
@@ -267,7 +269,7 @@
               <div class="form-group">
                 <label for="fascia3-{{ i }}{{j}}">22-09</label>
                 <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
-                type="number" class="form-control form-control form-control-sm"
+                type="text" class="form-control form-control-sm"
                 step="0.5" min="0" max="13"
                 id="fascia3-{{ i }}{{j}}" name="fascia3-{{ i }}{{j}}"
                 [(ngModel)]="duplicazione.fascia3">
