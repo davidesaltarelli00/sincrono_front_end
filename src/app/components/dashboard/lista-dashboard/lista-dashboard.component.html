@@ -493,6 +493,7 @@
                               name="aziendaCliente">
                           </div> -->
                           <div class="form-group" formGroupName="tipoAziendaCliente">
+                            <label for="aziendaCliente">Azienda cliente</label>
                             <select (change)="onChangeAziendaCliente($event)" class="form-select"
                               aria-label="Default select example" id="commesse.tipoAziendaCliente.id"
                               formControlName="id">
@@ -565,7 +566,7 @@
                     </select>
                   </div>
                 </div>
-
+                <br>
                 <div class="row">
                   <b>Filtri per data fine rapporto contratto</b>
 
@@ -647,9 +648,8 @@
                 <th>Data <br> Inizio</th>
                 <th>Data <br> Fine</th>
                 <th>Attesa <br> lavori</th>
-                <th class="text-center" colspan="2">Azioni</th>
-                <!-- <th>Modifica</th> -->
-                <!-- <th>Anagrafica</th> -->
+                <th>Anagrafica</th>
+                <th>Modifica</th>
               </tr>
             </thead>
             <tbody>
@@ -668,15 +668,13 @@
                 <td>{{ commessa[12] | date:'dd/MM/yyyy' }}</td>
                 <td>{{ commessa[14] ? 'Sì' : 'No' }}</td>
                 <td>
-                  <span style="margin:5px;">
                     <a [routerLink]="['/dettaglio-anagrafica', commessa[15]]"><button
                         matTooltip="Dettaglio {{commessa[0]}} {{commessa[1]}} " class="btn btn-info"><i
                           class="fa fa-info"></i></button></a>
-                  </span>
-                  <span style="margin:5px;">
-                    <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica',commessa[15]]"
-                      matTooltip="Modifica {{commessa[0]}} {{commessa[1]}} "><i class="fa fa-pencil"></i></button>
-                  </span>
+                </td>
+                <td>
+                  <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica',commessa[15]]"
+                  matTooltip="Modifica {{commessa[0]}} {{commessa[1]}} "><i class="fa fa-pencil"></i></button>
                 </td>
 
               </tr>

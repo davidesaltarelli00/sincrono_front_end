@@ -432,8 +432,8 @@
                         <th scope="col">Data Fine</th>
                         <th scope="col">Tariffa Giornaliera</th>
                         <th scope="col">Azienda fatturazione interna</th>
-                        <th scope="col">Archivia</th>
-                        <th scope="col">Modifica</th>
+                        <th scope="col" [hidden]="ruolo==='DIPENDENTE'">Archivia</th>
+                        <th scope="col" [hidden]="ruolo==='DIPENDENTE'">Modifica</th>
                       </tr>
                     </thead>
                     <tbody>
