@@ -327,7 +327,7 @@
           <div class="form-group">
             <label for="onSite-{{i}}">On site</label><br>
             <div class="form-check form-switch">
-              <input style="margin: auto;" (change)="onChangePresenza($event)" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" class="form-check-input" type="checkbox" id="onSite-{{i}}">
+              <input style="margin: auto;" (change)="onChangePresenza($event)" [(ngModel)]="giorno.checkOnSite" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" class="form-check-input" type="checkbox" id="onSite-{{i}}">
             </div>
           </div>
         </div>
@@ -335,7 +335,7 @@
           <div class="form-group">
             <label for="smartworking-{{i}}">Smartworking</label><br>
             <div class="form-check form-switch">
-              <input style="margin: auto;" (change)="onChangeSmartworking($event)" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" class="form-check-input" type="checkbox" id="smartworking-{{i}}">
+              <input style="margin: auto;" (change)="onChangeSmartworking($event)" [(ngModel)]="giorno.checkSmartWorking" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" class="form-check-input" type="checkbox" id="smartworking-{{i}}">
             </div>
           </div>
         </div>
