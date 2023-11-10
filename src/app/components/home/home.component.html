@@ -180,10 +180,10 @@ img{
       <mat-card style=" height: 100%;">
         <mat-card-content>
           <mat-list role="list" class="custom-list">
-            <mat-list-item role="listitem" [routerLink]="['/lista-anagrafica']" class="custom-list-item">
+            <mat-list-item role="listitem" [routerLink]="['/lista-anagrafica']" class="custom-list-item" (mouseover)="startVoiceActionListaAnagrafica()" (click)="openDetailsPageListaAnagrafica()">
               <a href="/lista-anagrafica">Lista anagrafica</a>
             </mat-list-item>
-            <mat-list-item role="listitem" [routerLink]="['/dashboard']" class="custom-list-item">
+            <mat-list-item role="listitem" [routerLink]="['/dashboard']" class="custom-list-item" (mouseover)="startVoiceActionDashboard()" (click)="openDetailsPageDashboard()">
               <a href="/dashboard">Dashboard</a>
             </mat-list-item>
             <mat-list-item role="listitem" [routerLink]="['/organico']" class="custom-list-item">

@@ -212,13 +212,14 @@
         </div>
       </div>
 
+     <div class="row">
       <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"  >
-        <mat-card [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aqua' : 'rgb(214, 234, 251)'}" >
+        <mat-card [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' : 'rgb(214, 234, 251)'}" >
           <p style="text-align: center; margin: 0;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}</p>
        <div class="container-card" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
         <mat-card-content>
           <div class="row">
-            <div class="col-6">
+            <div class="col-12">
               <div class="form-group">
                 <label for="cliente-{{ i }}{{j}}">Cliente</label>
                 <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-control form-control-sm" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)" matTooltip="{{duplicazione.cliente}}">
@@ -229,6 +230,8 @@
                 <div *ngIf="!duplicazione.cliente && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
               </div>
             </div>
+          </div>
+          <div class="row">
             <div class="col-6">
               <div class="form-group">
                 <label for="ore-ordinarie-{{ i }}{{j}}" matTooltipPosition="above" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Ore ordinarie</label>
@@ -237,15 +240,19 @@
                 step="0.5" min="0" max="8"
                 id="ore-ordinarie-{{ i }}{{j}}" name="ore-ordinarie-{{ i }}{{j}}"
                 [(ngModel)]="duplicazione.oreOrdinarie" style="width: 70%;">
-                <!-- oninput="this.value = Math.abs(this.value)" [ngClass]="{'has-error': !isValidOreOrdinarie(duplicazione.oreOrdinarie)}" -->
-                  <!-- <div *ngIf="!duplicazione.oreOrdinarie" class="error-message">Campo obbligatorio</div> -->
-                  <!-- <div *ngIf="!isValidOreOrdinarie(duplicazione.oreOrdinarie)" class="error-message">Valore non valido.</div> -->
               </div>
             </div>
+            <div class="col-6">
+             <div class="form-group">
+              <label for="straordinari">Straordinari</label>
+              <button (click)=" mostraNascondiStraordinari(i,j)" class="btn btn-success btn-sm" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Straordinari" > <i class="fa fa-clock" ></i> </button>
+             </div>
+            </div>
           </div>
-           <div class="row" >
-            <!-- <label for="straordinari" style="text-align: center; font-weight: bold;">Straordinari</label> -->
-            <div class="col-4">
+
+          <!--straordinari-->
+           <div class="row" *ngIf="checkstraordinari || showStraordinari[i]?.[j]"  > <!---->
+            <div class="col-4" >
              <div class="form-group">
               <label for="fascia1-{{ i }}{{j}}">18-20</label>
               <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
@@ -255,7 +262,7 @@
               [(ngModel)]="duplicazione.fascia1">
              </div>
             </div>
-            <div class="col-4">
+            <div class="col-4" >
              <div class="form-group">
               <label for="fascia2-{{ i }}{{j}}">20-22</label>
               <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
@@ -330,17 +337,24 @@
           <button [disabled]="risultatoCheckFreeze" mat-mini-fab color="primary"  (click)="salvaRigaRapportino(giorno)" matTooltip="Salva riga" ><i class="fa fa-save"></i> </button>
             </div>
           </div>
+
+        </div>
+      </div>
+      </mat-card>
+       <br>
+      </div>
+     </div>
+
+          <!-- oninput="this.value = Math.abs(this.value)" [ngClass]="{'has-error': !isValidOreOrdinarie(duplicazione.oreOrdinarie)}" -->
+                  <!-- <div *ngIf="!duplicazione.oreOrdinarie" class="error-message">Campo obbligatorio</div> -->
+                  <!-- <div *ngIf="!isValidOreOrdinarie(duplicazione.oreOrdinarie)" class="error-message">Valore non valido.</div> -->
           <!-- <div class="col-2">
             <div class="form-group">
               <label for="svuotaCella">Cancella</label>
               <button mat-mini-fab color="warn" matTooltip="Svuota riga" (click)="cancellaRigaRapportino(giorno)" ><i class="fa fa-undo" ></i></button>
             </div>
           </div> -->
-        </div>
-      </div>
-      </mat-card>
-       <br>
-      </div>
+
       <div class="row">
         <div class="col-12">
           <table class="table table-bordered">
@@ -369,7 +383,7 @@
        </div>
        <div class="row">
         <div class="col-6">
-          <!-- <button [disabled]="risultatoCheckFreeze || !giorno" class="btn btn-primary" (click)="salvaRapportino(giorno)" > Salva rapportino <i class="fa fa-save"></i> </button> -->
+          <button [disabled]="risultatoCheckFreeze || !giorno" class="btn btn-primary" (click)="salvaRapportino(giorno)" > Salva rapportino <i class="fa fa-save"></i> </button>
           &nbsp;
           <button class="btn btn-warning" [disabled]="risultatoCheckFreeze" (click)="inviaRapportino()" >Invia rapportino <i class="fa fa-file" ></i></button>
         </div>

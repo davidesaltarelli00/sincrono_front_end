@@ -37,6 +37,8 @@ export class HomeComponent implements OnInit {
   codiceFiscaleDettaglio: any;
   idUtente: any;
   mobile: any = false;
+  isVoiceActionActivated = false;
+
   constructor(
     private authService: AuthService,
     private profileBoxService: ProfileBoxService,
@@ -47,7 +49,7 @@ export class HomeComponent implements OnInit {
     private menuService: MenuService
   ) {
 
-    
+
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -107,6 +109,59 @@ export class HomeComponent implements OnInit {
         this.immaginePredefinita = '../../../../assets/images/danger.png';
       }
     );
+  }
+
+  startVoiceActionListaAnagrafica() {
+    if (!this.isVoiceActionActivated) {
+      const message = "Apri lista anagrafiche";
+      this.speakListaAnagrafica(message);
+      this.isVoiceActionActivated = true;
+    }
+  }
+
+  openDetailsPageListaAnagrafica() {
+    this.router.navigate(['/lista-anagrafica']);
+  }
+
+  speakListaAnagrafica(message: string) {
+    if ('speechSynthesis' in window) {
+      const speech = new SpeechSynthesisUtterance(message);
+
+      // Aggiungi un evento onend per reimpostare lo stato quando la sintesi vocale è completata
+      speech.onend = () => {
+        this.isVoiceActionActivated = false;
+      };
+
+      speechSynthesis.speak(speech);
+    } else {
+      console.error('La sintesi vocale non è supportata dal tuo browser.');
+    }
+  }
+  startVoiceActionDashboard() {
+    if (!this.isVoiceActionActivated) {
+      const message = "Apri dashboard";
+      this.speakListaAnagrafica(message);
+      this.isVoiceActionActivated = true;
+    }
+  }
+
+  openDetailsPageDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
+
+  speakDashboard(message: string) {
+    if ('speechSynthesis' in window) {
+      const speech = new SpeechSynthesisUtterance(message);
+
+      // Aggiungi un evento onend per reimpostare lo stato quando la sintesi vocale è completata
+      speech.onend = () => {
+        this.isVoiceActionActivated = false;
+      };
+
+      speechSynthesis.speak(speech);
+    } else {
+      console.error('La sintesi vocale non è supportata dal tuo browser.');
+    }
   }
 
   convertBase64ToImage(base64String: string): void {

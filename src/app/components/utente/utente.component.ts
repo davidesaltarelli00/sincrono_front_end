@@ -118,6 +118,7 @@ export class UtenteComponent implements OnInit {
   idUtente: any;
   error: any;
   checkstraordinari = false;
+  showStraordinari: boolean[][] = [];
   giorniSettimana: string[] = [
     'Lunedì',
     'Martedì',
@@ -186,10 +187,6 @@ export class UtenteComponent implements OnInit {
     this.showError = false; // Resetta l'errore quando l'utente inizia a digitare
   }
 
-  toggleCheckStraordinari(duplicazione: any) {
-    duplicazione.checkstraordinari = !duplicazione.checkstraordinari;
-  }
-
   selectAzienda(azienda: string) {
     if (this.aziendeClienti.includes(azienda)) {
       this.giorno.cliente = azienda;
@@ -214,15 +211,8 @@ export class UtenteComponent implements OnInit {
   }
 
   duplicaRiga(index: number, j: number) {
-    console.log(
-      'lunghezza rapportino:' +
-        this.rapportinoDto[index].duplicazioniGiornoDto.length
-    );
-
-    if (
-      this.rapportinoDto[index].duplicazioniGiornoDto.length ===
-      this.numeroCommessePresenti
-    ) {
+    console.log('lunghezza rapportino:' +this.rapportinoDto[index].duplicazioniGiornoDto.length);
+    if (this.rapportinoDto[index].duplicazioniGiornoDto.length === this.numeroCommessePresenti) {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
           Image: '../../../../assets/images/logo.jpeg',
@@ -233,31 +223,11 @@ export class UtenteComponent implements OnInit {
         },
       });
     } else {
-      const copiaGiorno = JSON.parse(
-        JSON.stringify(this.rapportinoDto[index].duplicazioniGiornoDto[j])
-      );
-      this.rapportinoDto[index].duplicazioniGiornoDto.splice(
-        index + 1,
-        0,
-        copiaGiorno
-      );
+      const copiaGiorno = JSON.parse(JSON.stringify(this.rapportinoDto[index].duplicazioniGiornoDto[j]));
+      this.rapportinoDto[index].duplicazioniGiornoDto.splice(index + 1, 0,copiaGiorno);
     }
-
-    //itero tutto il rapportino
-    // for (
-    //   let y = 0;
-    //   y < this.rapportinoDto[i].duplicazioniGiornoDto.length;
-    //   y++
-    // ) {
-    //   //itero tutti i giorni duplicati
-    //   if (
-    //     this.rapportinoDto[index].duplicazioniGiornoDto[0].giorno ==
-    //     this.rapportinoDto[i].duplicazioniGiornoDto[y].giorno
-    //   ) {
-    //     count++;
-    //   }
-    // }
   }
+
 
   trackByFn(index: number, item: any): number {
     return index;
@@ -578,6 +548,8 @@ export class UtenteComponent implements OnInit {
           // console.log(
           //   'Dati get rapportino:' + JSON.stringify(this.rapportinoDto)
           // );
+          // this.checkstraordinari = this.verificaStraordinariCompilati(this.rapportinoDto);
+          this.gestisciStraordinari(this.rapportinoDto);
           this.checkRapportinoInviato();
           this.calcolaTotaleOreLavorate();
           this.calcolaTotaleStraordinari();
@@ -602,6 +574,94 @@ export class UtenteComponent implements OnInit {
       }
     );
   }
+
+
+  gestisciStraordinari(rapportinoDto: any[]) {
+    const giorni = rapportinoDto.map((giorno) => {
+      return {
+        duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
+          (duplicazione: any) => {
+            return {
+              cliente: duplicazione.cliente,
+              oreOrdinarie: duplicazione.oreOrdinarie,
+              fascia1: duplicazione.fascia1,
+              fascia2: duplicazione.fascia2,
+              fascia3: duplicazione.fascia3,
+            };
+          }
+        ),
+        ferie: giorno.ferie,
+        malattie: giorno.malattie,
+        permessi: giorno.permessi,
+        note: giorno.note,
+        numeroGiorno: giorno.numeroGiorno,
+        nomeGiorno: giorno.nomeGiorno,
+      };
+    });
+
+    let indiceCellaConStraordinari: number | null = null;
+
+    for (let i = 0; i < giorni.length; i++) {
+      const giorno = giorni[i];
+
+      for (let j = 0; j < giorno.duplicazioniGiornoDto.length; j++) {
+        const duplicazione = giorno.duplicazioniGiornoDto[j];
+
+        if (duplicazione.fascia1 || duplicazione.fascia2 || duplicazione.fascia3) {
+          // Trovato una cella con almeno un campo tra fascia1, fascia2, e fascia3 valorizzato
+          indiceCellaConStraordinari = i;
+          break;
+        }
+      }
+
+      if (indiceCellaConStraordinari !== null) {
+        // Se abbiamo trovato una cella con straordinari, impostiamo la visibilità solo per quella cella
+        this.showStraordinari[indiceCellaConStraordinari] = giorno.duplicazioniGiornoDto.map(() => true);
+      } else {
+        // Se non abbiamo trovato una cella con straordinari, impostiamo la visibilità a false per tutte le celle
+        this.showStraordinari[i] = giorno.duplicazioniGiornoDto.map(() => false);
+      }
+    }
+  }
+
+  mostraNascondiStraordinari(index: number, j: number) {
+    // Inizializza l'array per la cella corrente se non esiste già
+    if (!this.showStraordinari[index]) {
+      this.showStraordinari[index] = [];
+    }
+
+    // Cambia lo stato di visualizzazione per la cella corrente
+    this.showStraordinari[index][j] = !this.showStraordinari[index][j];
+  }
+
+  verificaStraordinariCompilati(rapportinoDto: any): boolean {
+    let hasStraordinariCompilati = false;
+
+    for (let i = 0; i < rapportinoDto.length; i++) {
+      for (let j = 0; j < rapportinoDto[i].duplicazioniGiornoDto.length; j++) {
+        const duplicazione = rapportinoDto[i].duplicazioniGiornoDto[j];
+
+        if (duplicazione && (duplicazione.fascia1 || duplicazione.fascia2 || duplicazione.fascia3)) {
+          // Se almeno una cella ha straordinari compilati, impostare checkStraordinari a true
+          hasStraordinariCompilati = true;
+        }
+
+        // Aggiungi la logica per inizializzare showStraordinari
+        if (!this.showStraordinari[i]) {
+          this.showStraordinari[i] = [];
+        }
+
+        // Aggiorna showStraordinari solo se la cella corrente ha almeno un campo compilato
+        this.showStraordinari[i][j] = duplicazione && (duplicazione.fascia1 || duplicazione.fascia2 || duplicazione.fascia3);
+      }
+    }
+
+    return hasStraordinariCompilati;
+  }
+
+
+
+
 
   goDown() {
     document.getElementById('finePagina')?.scrollIntoView({
