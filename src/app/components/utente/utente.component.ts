@@ -599,26 +599,33 @@ export class UtenteComponent implements OnInit {
       };
     });
 
-    let indiceCellaConStraordinari: number | null = null;
-
     for (let i = 0; i < giorni.length; i++) {
       const giorno = giorni[i];
+
+      let almenoUnCampoStraordinariValorizzato = false;
 
       for (let j = 0; j < giorno.duplicazioniGiornoDto.length; j++) {
         const duplicazione = giorno.duplicazioniGiornoDto[j];
 
         if (duplicazione.fascia1 || duplicazione.fascia2 || duplicazione.fascia3) {
-          // Trovato una cella con almeno un campo tra fascia1, fascia2, e fascia3 valorizzato
-          indiceCellaConStraordinari = i;
+          almenoUnCampoStraordinariValorizzato = true;
           break;
         }
       }
 
-      if (indiceCellaConStraordinari !== null) {
-        // Se abbiamo trovato una cella con straordinari, impostiamo la visibilità solo per quella cella
-        this.showStraordinari[indiceCellaConStraordinari] = giorno.duplicazioniGiornoDto.map(() => true);
+      // Verifica se tutti i campi straordinari sono null
+      const tuttiCampiStraordinariNull = giorno.duplicazioniGiornoDto.every(
+        (duplicazione: any) =>
+          duplicazione.fascia1 === null &&
+          duplicazione.fascia2 === null &&
+          duplicazione.fascia3 === null
+      );
+
+      if (almenoUnCampoStraordinariValorizzato && !tuttiCampiStraordinariNull) {
+        // Se troviamo almeno un campo straordinario valorizzato, impostiamo la visibilità a true solo per quella cella
+        this.showStraordinari[i] = giorno.duplicazioniGiornoDto.map(() => true);
       } else {
-        // Se non abbiamo trovato una cella con straordinari, impostiamo la visibilità a false per tutte le celle
+        // Altrimenti, impostiamo la visibilità a false per tutte le celle
         this.showStraordinari[i] = giorno.duplicazioniGiornoDto.map(() => false);
       }
     }
