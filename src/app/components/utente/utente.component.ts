@@ -355,6 +355,21 @@ export class UtenteComponent implements OnInit {
     return giorno === 'Sabato' || giorno === 'Domenica';
   }
 
+  onChangePresenza(event:any){
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      console.log("On site "+isChecked);
+    }
+  }
+  onChangeSmartworking(event:any){
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      console.log("Smartworking "+isChecked);
+    }
+  }
+
   onChangeMalattia(event: any, i: number) {
     const target = event.target as HTMLInputElement;
     if (target) {
