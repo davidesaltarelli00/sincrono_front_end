@@ -213,16 +213,16 @@
       </div>
 
      <div class="row">
-      <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"  >
+      <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="text-align: center;" >
         <mat-card [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' : 'rgb(214, 234, 251)'}" >
-          <p style="text-align: center; margin: 0;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}</p>
+          <p style=" margin: 0;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}</p>
        <div class="container-card" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
         <mat-card-content>
           <div class="row">
             <div class="col-12">
               <div class="form-group">
                 <label for="cliente-{{ i }}{{j}}">Cliente</label>
-                <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-control form-control-sm" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)" matTooltip="{{duplicazione.cliente}}">
+                <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select form-select-sm" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)" matTooltip="{{duplicazione.cliente}}">
                   <option selected [ngValue]="null"></option>
                   <option>Attesa lavori</option>
                   <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
@@ -234,12 +234,12 @@
           <div class="row">
             <div class="col-6">
               <div class="form-group">
-                <label for="ore-ordinarie-{{ i }}{{j}}" matTooltipPosition="above" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Ore ordinarie</label>
+                <label for="ore-ordinarie-{{ i }}{{j}}" matTooltipPosition="above" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Ore</label>
                 <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
-                type="number"  class="form-control form-control-sm"
+                type="text"  class="form-control form-control-sm"
                 step="0.5" min="0" max="8"
                 id="ore-ordinarie-{{ i }}{{j}}" name="ore-ordinarie-{{ i }}{{j}}"
-                [(ngModel)]="duplicazione.oreOrdinarie" style="width: 70%;">
+                [(ngModel)]="duplicazione.oreOrdinarie">
               </div>
             </div>
             <div class="col-6">
@@ -301,7 +301,7 @@
            <div class="form-group">
             <label for="permessi-{{ i }}">Permessi</label>
             <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
-            type="number" class="form-control form-control-sm"
+            type="text" class="form-control form-control-sm"
             step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
             id="permessi-{{ i }}" name="permessi-{{ i }}"
             [(ngModel)]="giorno.permessi">
