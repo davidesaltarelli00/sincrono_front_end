@@ -48,7 +48,7 @@ a {
 .form-group label {
   font-weight: bold;
   margin-bottom: 5px;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 /* Stile per gli input e le caselle di controllo */
@@ -90,6 +90,10 @@ button[type="submit"]:hover {
 // input[type="number"] {
 //   text-align: left;
 // }
+
+input{
+  border: 1px solid black;
+}
 
 /* Responsive */
 

@@ -362,14 +362,13 @@ export class UtenteComponent implements OnInit {
 
       const oreElement = document.getElementById(`ore-ordinarie-${i}`) as HTMLInputElement;
       const ferieElement = document.getElementById(`ferie-${i}`) as HTMLInputElement;
-      const malattieElement = document.getElementById(`malattie-${i}`) as HTMLInputElement;
       const fascia1Element = document.getElementById(`fascia1-${i}`) as HTMLInputElement;
       const fascia2Element = document.getElementById(`fascia2-${i}`) as HTMLInputElement;
       const fascia3Element = document.getElementById(`fascia3-${i}`) as HTMLInputElement;
       const permessiElement = document.getElementById(`permessi-${i}`) as HTMLInputElement;
       const giornoElement = document.getElementById(`giorno-${i}`) as HTMLInputElement;
       const clienteElement = document.getElementById(`cliente-${i}`) as HTMLSelectElement;
-      const noteElement = document.getElementById(`note-${i}`) as HTMLInputElement;
+      // const noteElement = document.getElementById(`note-${i}`) as HTMLInputElement;
 
       if (isChecked) {
         giornoElement.disabled = false;
@@ -400,9 +399,9 @@ export class UtenteComponent implements OnInit {
         permessiElement.value = '';
         permessiElement.disabled = true;
 
-        noteElement.disabled = false;
-        noteElement.required = false;
-        noteElement.disabled = true;
+        // noteElement.disabled = false;
+        // noteElement.required = false;
+        // noteElement.disabled = true;
       } else {
         giornoElement.disabled = false;
         giornoElement.required = true;
@@ -431,9 +430,9 @@ export class UtenteComponent implements OnInit {
         permessiElement.value = '';
         permessiElement.disabled = false;
 
-        noteElement.disabled = false;
-        noteElement.required = false;
-        noteElement.disabled = false;
+        // noteElement.disabled = false;
+        // noteElement.required = false;
+        // noteElement.disabled = false;
       }
     }
   }
@@ -777,7 +776,6 @@ export class UtenteComponent implements OnInit {
         duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
           (duplicazione: any) => {
             return {
-              // giorno: duplicazione.giorno,
               cliente: duplicazione.cliente,
               oreOrdinarie: duplicazione.oreOrdinarie,
               fascia1: duplicazione.fascia1,
@@ -789,6 +787,8 @@ export class UtenteComponent implements OnInit {
         ferie: giorno.ferie,
         malattie: giorno.malattie,
         permessi: giorno.permessi,
+        //onSite:giorno.onSite,
+        //smartworking: giorno.smartworking,
         note: giorno.note,
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
@@ -883,6 +883,8 @@ export class UtenteComponent implements OnInit {
         ferie: giorno.ferie,
         malattie: giorno.malattie,
         permessi: giorno.permessi,
+        //onSite:giorno.onSite,
+        //smartworking: giorno.smartworking,
         note: giorno.note,
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
