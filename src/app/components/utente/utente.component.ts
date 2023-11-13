@@ -654,11 +654,14 @@ export class UtenteComponent implements OnInit {
           this.calcolaTotaleOrePermessi();
           this.cdRef.detectChanges();
 
-          if (this.note != null) {
+          if (this.note === null || this.note==='' || this.note==="") {
+            console.log("non hai note.");
+          } else{
+            console.log("Hai note: "+ JSON.stringify(this.note));
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 Image: '../../../../assets/images/logo.jpeg',
-                title: 'Attenzione:',
+                title: 'Attenzione, hai delle note:',
                 message: this.note,
               },
             });
@@ -873,53 +876,68 @@ export class UtenteComponent implements OnInit {
   }
 
   salvaNoteDipendente() {
-    let body = {
-      rapportinoDto: {
-        noteDipendente: this.noteDipendente,
-        anagrafica: {
-          nome:this.userLoggedName,
-          cognome:this.userLoggedSurname,
-          codiceFiscale: this.codiceFiscale,
-        },
-        annoRequest: this.selectedAnno,
-        meseRequest: this.selectedMese,
-      },
-    };
-    console.log(
-      'invia al dipendente le seguenti note: ' + JSON.stringify(body)
+    const confirmation = confirm(
+      "Se confermi l'invio, il rapportino verrá disabilitato finché l'admin non ti risponderá."
     );
-    this.rapportinoService.aggiungiNoteDipendente(this.token, body).subscribe(
-      (result: any) => {
-        if ((result as any).esito.code !== 200) {
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-              Image: '../../../../assets/images/logo.jpeg',
-              title: 'Invio non riuscito:',
-              message: (result as any).esito.target, //(result as any).esito.target,
-            },
-          });
+    if (confirmation) {
+      let body = {
+        rapportinoDto: {
+          noteDipendente: this.noteDipendente,
+          anagrafica: {
+            nome:this.userLoggedName,
+            cognome:this.userLoggedSurname,
+            codiceFiscale: this.codiceFiscale,
+          },
+          annoRequest: this.selectedAnno,
+          meseRequest: this.selectedMese,
+        },
+      };
+      console.log(
+        'invia al dipendente le seguenti note: ' + JSON.stringify(body)
+      );
+      this.rapportinoService.aggiungiNoteDipendente(this.token, body).subscribe(
+        (result: any) => {
+          if ((result as any).esito.code !== 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                Image: '../../../../assets/images/logo.jpeg',
+                title: 'Invio non riuscito:',
+                message: (result as any).esito.target, //(result as any).esito.target,
+              },
+            });
+            console.error(
+              'Errore durante l invio delle note all admin: ' +
+                JSON.stringify(result)
+            );
+          }
+          if ((result as any).esito.code === 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                Image: '../../../../assets/images/logo.jpeg',
+                title: 'Invio riuscito',
+                message: 'Note inviate correttamente all admin',
+              },
+            });
+            this.checkRapportinoInviato();
+          }
+        },
+        (error: any) => {
           console.error(
-            'Errore durante l invio delle note all admin: ' +
-              JSON.stringify(result)
+            'Errore durante l invio delle note al dipendente:' +
+              JSON.stringify(error)
           );
         }
-        if ((result as any).esito.code === 200) {
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-              Image: '../../../../assets/images/logo.jpeg',
-              title: 'Invio riuscito',
-              message: 'Note inviate correttamente all admin',
-            },
-          });
-        }
-      },
-      (error: any) => {
-        console.error(
-          'Errore durante l invio delle note al dipendente:' +
-            JSON.stringify(error)
-        );
-      }
-    );
+      );
+    }else{
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          Image: '../../../../assets/images/logo.jpeg',
+          title: 'Attenzione',
+          message: "Invio delle note all'admin annullato.",
+        },
+      });
+    }
+
   }
 
   goDown() {

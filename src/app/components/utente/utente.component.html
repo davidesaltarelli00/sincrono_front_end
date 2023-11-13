@@ -131,7 +131,7 @@
                     [(ngModel)]="selectedMese"
                     name="mese"
                   >
-                    <option selected>---Nessuna selezione---</option>
+                    <option selected>Nessuna selezione</option>
                     <option
                       *ngFor="let month of mesi; let i = index"
                       [value]="i + 1"
@@ -227,8 +227,10 @@
             <div class="col-8">
               <div class="form-group">
                 <label for="cliente-{{ i }}{{j}}">Cliente</label>
-                <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select form-select-sm" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)" matTooltip="{{duplicazione.cliente}}">
-                  <option selected [ngValue]="null"></option>
+                <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}"
+                class="form-select" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}"
+                [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)" matTooltip="{{duplicazione.cliente}}">
+                  <option selected [ngValue]="null">--Nessuna opzione---</option>
                   <option>Attesa lavori</option>
                   <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
                 </select>
@@ -471,7 +473,7 @@
        <br> <br>
        <div class="row" *ngIf="inviaNoteAlDipendente" >
         <div class="col-8">
-          <textarea name="noteDipendente" id="noteDipendente" class="form-control" cols="30" rows="10" [(ngModel)]="noteDipendente" placeholder="Inserisci una nota da inviare all'admin." ></textarea>
+          <textarea [disabled]="risultatoCheckFreeze" name="noteDipendente" id="noteDipendente" class="form-control" cols="30" rows="10" [(ngModel)]="noteDipendente" placeholder="Inserisci una nota da inviare all'admin." ></textarea>
         </div>
         <div class="col-2">
           <button mat-flat-button color="primary" (click)="salvaNoteDipendente()" >Invia nota <i class="fa fa-info"></i> </button>
