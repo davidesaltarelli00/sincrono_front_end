@@ -224,7 +224,7 @@
           <p style=" margin: 0;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}</p>
        <div class="container-card" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
           <div class="row">
-            <div class="col-12">
+            <div class="col-8">
               <div class="form-group">
                 <label for="cliente-{{ i }}{{j}}">Cliente</label>
                 <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}" class="form-select form-select-sm" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)" matTooltip="{{duplicazione.cliente}}">
@@ -235,8 +235,6 @@
                 <div *ngIf="!duplicazione.cliente && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
               </div>
             </div>
-          </div>
-          <div class="row">
             <div class="col-4">
               <div class="form-group">
                 <label for="ore-ordinarie-{{ i }}{{j}}" matTooltipPosition="above"
@@ -248,28 +246,25 @@
                 [(ngModel)]="duplicazione.oreOrdinarie">
               </div>
             </div>
-            <div class="col-2">
-             <div class="form-group">
-              <label for="straordinari"></label>
+          </div>
+          <div class="row">
+
+            <div class="col-3">
               <button style="width: 30px; height: 30px;" (click)=" mostraNascondiStraordinari(i,j)" mat-mini-fab color="primary" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Extra time" > <i class="fa fa-clock" ></i> </button>
-             </div>
             </div>
-            <div class="col-2">
-             <div class="form-group">
-              <label for="duplica"></label>
+            <div class="col-3">
+              <button style="width: 30px; height: 30px;" (click)="mostraNascondiPermessi(i)" mat-mini-fab color="primary" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Assenze" > <i class="fa fa-ban" ></i> </button>
+            </div>
+            <div class="col-3">
               <button style="width: 30px; height: 30px;" [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie || aziendeClienti.length<1 " mat-mini-fab id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga"><i  class="fa fa-clone"></i></button>
-             </div>
             </div>
-            <div class="col-2">
-              <div class="form-group">
-                <label for="elimina"></label>
+            <div class="col-3">
               <button style="width: 30px; height: 30px;" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" mat-mini-fab color="warn" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga" ><i  class="fa fa-trash"></i></button>
-              </div>
             </div>
           </div>
 
           <!--straordinari-->
-           <div class="row" *ngIf="checkstraordinari || showStraordinari[i]?.[j]"  > <!---->
+           <div class="row" *ngIf="checkstraordinari || showStraordinari[i]?.[j]"  >
             <div class="col-4" >
              <div class="form-group">
               <label for="fascia1-{{ i }}{{j}}">18-20</label>
@@ -302,8 +297,23 @@
             </div>
            </div>
        </div>
+       <!--PERMESSI-->
+       <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] " >
+        <div class="col-12">
+          <div class="form-group">
+            <label for="assenze-{{i}}">Assenze</label>
+            <select name="assenze-{{i}}" id="assenze-{{i}}" class="form-select form-select-sm"
+            [(ngModel)]="opzionePermessoSelezionata" (change)="changeOptionAssenza($event, i)" >
+              <option selected [ngValue]="null">--Nessuna selezione---</option>
+              <option>Permessi</option>
+              <option>Permessi role</option>
+              <option>Permessi ex festivitá</option>
+            </select>
+          </div>
+        </div>
+       </div>
         <div class="row">
-          <div class="col-4">
+          <div class="col-4" *ngIf="showPermessi[i]">
            <div class="form-group">
             <label for="permessi-{{ i }}">Permessi</label>
             <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
@@ -313,20 +323,45 @@
             [(ngModel)]="giorno.permessi">
            </div>
           </div>
-          <div class="col-4">
+          <div class="col-4" *ngIf="showPermessiRole[i]">
            <div class="form-group">
-            <label for="ferie-{{ i }}">Ferie</label> <br>
-            <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.malattie "
-            type="checkbox" (change)="onChangeFerie($event,i)" class="form-check-input"
-            id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
+            <label for="permessiRole-{{ i }}">Role</label>
+            <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+            type="text" class="form-control form-control-sm"
+            step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
+            id="permessiRole-{{ i }}" name="permessiRole-{{ i }}"
+            [(ngModel)]="giorno.permessiRole">
            </div>
           </div>
+          <div class="col-4" *ngIf="showPermessiExfestivita[i]">
+           <div class="form-group">
+            <label for="permessiExfestivita-{{ i }}">Festivitá</label>
+            <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+            type="text" class="form-control form-control-sm"
+            step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
+            id="permessiExfestivita-{{ i }}" name="permessiExfestivita-{{ i }}"
+            [(ngModel)]="giorno.permessiExfestivita">
+           </div>
+          </div>
+        </div>
+
+        <div class="row">
           <div class="col-4">
-          <div class="form-group">
-            <label for="malattie-{{i}}">Malattia</label><br>
-            <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.ferie " type="checkbox" (change)="onChangeMalattia($event,i)" class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
-          </div>
-          </div>
+            <div class="form-group">
+             <label for="ferie-{{ i }}">Ferie</label> <br>
+             <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.malattie "
+             type="checkbox" (change)="onChangeFerie($event,i)" class="form-check-input"
+             id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
+            </div>
+           </div>
+           <div class="col-4">
+           <div class="form-group">
+             <label for="malattie-{{i}}">Malattia</label><br>
+             <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.ferie "
+             type="checkbox" (change)="onChangeMalattia($event,i)" class="form-check-input"
+             id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
+           </div>
+           </div>
         </div>
       <div class="row">
         <div class="col-6">

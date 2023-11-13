@@ -56,6 +56,17 @@ export class RapportinoService {
       Authorization: `Bearer ${token}`,
     });
 
+    return this.http.post<any>(this.url + 'aggiungi-note', body, {
+      headers: headers,
+    });
+  }
+  aggiungiNoteDipendente(token: any, body: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+
     return this.http.post<any>(this.url + 'aggiungi-note-dipendente', body, {
       headers: headers,
     });

@@ -44,7 +44,7 @@ export class UtenteComponent implements OnInit {
   tabellaEditabile: string = 'true';
   data: any[] = [];
   user: any;
-  contrattoUser:any;
+  contrattoUser: any;
   showTooltip = false;
   messaggio = '';
   currentDate = new Date();
@@ -52,7 +52,7 @@ export class UtenteComponent implements OnInit {
   currentYear: any;
   id = this.activatedRoute.snapshot.params['id'];
   idUtenteLoggato: any;
-  elencoCommesse: any[]=[];
+  elencoCommesse: any[] = [];
   contratto: any;
   dettaglioSbagliato: any;
   rapportinoDto: any[] = [];
@@ -118,6 +118,7 @@ export class UtenteComponent implements OnInit {
   idUtente: any;
   error: any;
   checkstraordinari = false;
+  checkpermessi = false;
   showStraordinari: boolean[][] = [];
   giorniSettimana: string[] = [
     'Lunedì',
@@ -137,7 +138,12 @@ export class UtenteComponent implements OnInit {
   totaleOrePermessi: any;
   aziendaUser: any;
   noteDipendente: any;
-  inviaNoteAlDipendente=false;
+  inviaNoteAlDipendente = false;
+  opzionePermessoSelezionata:any;
+  showPermessi: boolean[] = [];
+  showPermessiRole: boolean[] = [];
+  showPermessiExfestivita: boolean[] = [];
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private profileBoxService: ProfileBoxService,
@@ -213,8 +219,14 @@ export class UtenteComponent implements OnInit {
   }
 
   duplicaRiga(index: number, j: number) {
-    console.log('lunghezza rapportino:' +this.rapportinoDto[index].duplicazioniGiornoDto.length);
-    if (this.rapportinoDto[index].duplicazioniGiornoDto.length === this.numeroCommessePresenti) {
+    console.log(
+      'lunghezza rapportino:' +
+        this.rapportinoDto[index].duplicazioniGiornoDto.length
+    );
+    if (
+      this.rapportinoDto[index].duplicazioniGiornoDto.length ===
+      this.numeroCommessePresenti
+    ) {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
           Image: '../../../../assets/images/logo.jpeg',
@@ -225,11 +237,16 @@ export class UtenteComponent implements OnInit {
         },
       });
     } else {
-      const copiaGiorno = JSON.parse(JSON.stringify(this.rapportinoDto[index].duplicazioniGiornoDto[j]));
-      this.rapportinoDto[index].duplicazioniGiornoDto.splice(index + 1, 0,copiaGiorno);
+      const copiaGiorno = JSON.parse(
+        JSON.stringify(this.rapportinoDto[index].duplicazioniGiornoDto[j])
+      );
+      this.rapportinoDto[index].duplicazioniGiornoDto.splice(
+        index + 1,
+        0,
+        copiaGiorno
+      );
     }
   }
-
 
   trackByFn(index: number, item: any): number {
     return index;
@@ -314,25 +331,21 @@ export class UtenteComponent implements OnInit {
     }
   }
 
-
-
-
   private clearFieldValue(element: HTMLInputElement): void {
     if (element) {
       element.value = '';
     }
   }
 
-
   isWeekend(giorno: string): any {
     return giorno === 'Sabato' || giorno === 'Domenica';
   }
 
-  onChangePresenza(event:any){
+  onChangePresenza(event: any) {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
-      console.log("On site "+isChecked);
+      console.log('On site ' + isChecked);
     }
     const giorni = this.rapportinoDto.map((giorno) => {
       return {
@@ -351,7 +364,7 @@ export class UtenteComponent implements OnInit {
         malattie: giorno.malattie,
         permessi: giorno.permessi,
         checkSmartWorking: giorno.checkSmartWorking,
-        checkOnSite:giorno.checkOnSite,
+        checkOnSite: giorno.checkOnSite,
         note: giorno.note,
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
@@ -364,11 +377,11 @@ export class UtenteComponent implements OnInit {
       // console.log("Oggetto giorniArray iterato checkSmartworking: "+JSON.stringify(giorno, null, 2));
     }
   }
-  onChangeSmartworking(event:any){
+  onChangeSmartworking(event: any) {
     const target = event.target as HTMLInputElement;
     if (target) {
       const isChecked = target.checked;
-      console.log("Smartworking "+isChecked);
+      console.log('Smartworking ' + isChecked);
     }
     const giorni = this.rapportinoDto.map((giorno) => {
       return {
@@ -387,7 +400,7 @@ export class UtenteComponent implements OnInit {
         malattie: giorno.malattie,
         permessi: giorno.permessi,
         checkSmartWorking: giorno.checkSmartWorking,
-        checkOnSite:giorno.checkOnSite,
+        checkOnSite: giorno.checkOnSite,
         note: giorno.note,
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
@@ -399,7 +412,6 @@ export class UtenteComponent implements OnInit {
       }
       // console.log("Oggetto giorniArray iterato checkSmartworking: "+JSON.stringify(giorno, null, 2));
     }
-
   }
 
   onChangeFerie(event: any, i: number) {
@@ -408,14 +420,30 @@ export class UtenteComponent implements OnInit {
     if (target) {
       const isChecked = target.checked;
 
-      const oreElement = document.getElementById(`ore-ordinarie-${i}`) as HTMLInputElement;
-      const malattieElement = document.getElementById(`malattie-${i}`) as HTMLInputElement;
-      const fascia1Element = document.getElementById(`fascia1-${i}`) as HTMLInputElement;
-      const fascia2Element = document.getElementById(`fascia2-${i}`) as HTMLInputElement;
-      const fascia3Element = document.getElementById(`fascia3-${i}`) as HTMLInputElement;
-      const permessiElement = document.getElementById(`permessi-${i}`) as HTMLInputElement;
-      const noteElement = document.getElementById(`note-${i}`) as HTMLInputElement;
-      const clienteElement = document.getElementById(`cliente-${i}`) as HTMLInputElement;
+      const oreElement = document.getElementById(
+        `ore-ordinarie-${i}`
+      ) as HTMLInputElement;
+      const malattieElement = document.getElementById(
+        `malattie-${i}`
+      ) as HTMLInputElement;
+      const fascia1Element = document.getElementById(
+        `fascia1-${i}`
+      ) as HTMLInputElement;
+      const fascia2Element = document.getElementById(
+        `fascia2-${i}`
+      ) as HTMLInputElement;
+      const fascia3Element = document.getElementById(
+        `fascia3-${i}`
+      ) as HTMLInputElement;
+      const permessiElement = document.getElementById(
+        `permessi-${i}`
+      ) as HTMLInputElement;
+      const noteElement = document.getElementById(
+        `note-${i}`
+      ) as HTMLInputElement;
+      const clienteElement = document.getElementById(
+        `cliente-${i}`
+      ) as HTMLInputElement;
 
       // Aggiungi altri campi necessari
 
@@ -438,14 +466,30 @@ export class UtenteComponent implements OnInit {
     if (target) {
       const isChecked = target.checked;
 
-      const oreElement = document.getElementById(`ore-ordinarie-${i}`) as HTMLInputElement;
-      const ferieElement = document.getElementById(`ferie-${i}`) as HTMLInputElement;
-      const fascia1Element = document.getElementById(`fascia1-${i}`) as HTMLInputElement;
-      const fascia2Element = document.getElementById(`fascia2-${i}`) as HTMLInputElement;
-      const fascia3Element = document.getElementById(`fascia3-${i}`) as HTMLInputElement;
-      const permessiElement = document.getElementById(`permessi-${i}`) as HTMLInputElement;
-      const giornoElement = document.getElementById(`giorno-${i}`) as HTMLInputElement;
-      const clienteElement = document.getElementById(`cliente-${i}`) as HTMLSelectElement;
+      const oreElement = document.getElementById(
+        `ore-ordinarie-${i}`
+      ) as HTMLInputElement;
+      const ferieElement = document.getElementById(
+        `ferie-${i}`
+      ) as HTMLInputElement;
+      const fascia1Element = document.getElementById(
+        `fascia1-${i}`
+      ) as HTMLInputElement;
+      const fascia2Element = document.getElementById(
+        `fascia2-${i}`
+      ) as HTMLInputElement;
+      const fascia3Element = document.getElementById(
+        `fascia3-${i}`
+      ) as HTMLInputElement;
+      const permessiElement = document.getElementById(
+        `permessi-${i}`
+      ) as HTMLInputElement;
+      const giornoElement = document.getElementById(
+        `giorno-${i}`
+      ) as HTMLInputElement;
+      const clienteElement = document.getElementById(
+        `cliente-${i}`
+      ) as HTMLSelectElement;
       // const noteElement = document.getElementById(`note-${i}`) as HTMLInputElement;
 
       if (isChecked) {
@@ -568,30 +612,7 @@ export class UtenteComponent implements OnInit {
     return nomeGiorno;
   }
 
-  // getAnagraficaRapportino() {
-  //   this.anagraficaDtoService
-  //     .detailAnagraficaDto(this.id, localStorage.getItem('token'))
-  //     .subscribe(
-  //       (resp: any) => {
-  //         this.user = (resp as any)['anagraficaDto'];
-  //         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
-  //         this.salvaAziendeClienti();
-  //         this.contratto = (resp as any)['anagraficaDto']['contratto'];
-  //         // this.codiceFiscale = (resp as any)['anagraficaDto']['anagrafica'][
-  //         //   'codiceFiscale'
-  //         // ];
-  //         this.dettaglioSbagliato = false;
-  //         this.numeroCommessePresenti = this.elencoCommesse.length;
-  //         // console.log('Dati restituiti: ' + JSON.stringify(resp));
-  //       },
-  //       (error: any) => {
-  //         console.error(
-  //           'ERRORE DURANTE IL CARICAMENTO DELL ANAGRAFICA :' +
-  //             JSON.stringify(error)
-  //         );
-  //       }
-  //     );
-  // }
+
 
   getRapportino() {
     let body = {
@@ -624,6 +645,7 @@ export class UtenteComponent implements OnInit {
           this.note = result['rapportinoDto']['note'];
           this.noteDipendente = result['rapportinoDto']['noteDipendente'];
           this.gestisciStraordinari(this.rapportinoDto);
+          this.gestisciPermessi(this.rapportinoDto);
           this.checkRapportinoInviato();
           this.calcolaTotaleOreLavorate();
           this.calcolaTotaleStraordinari();
@@ -649,7 +671,6 @@ export class UtenteComponent implements OnInit {
     );
   }
 
-
   gestisciStraordinari(rapportinoDto: any[]) {
     const giorni = rapportinoDto.map((giorno) => {
       return {
@@ -667,9 +688,12 @@ export class UtenteComponent implements OnInit {
         ferie: giorno.ferie,
         malattie: giorno.malattie,
         permessi: giorno.permessi,
+        permessiRole: giorno.permessiRole,
+        permessiExfestivita: giorno.permessiExfestivita,
         note: giorno.note,
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
+        festivitàNazionale: giorno.festivitàNazionale,
       };
     });
 
@@ -681,7 +705,11 @@ export class UtenteComponent implements OnInit {
       for (let j = 0; j < giorno.duplicazioniGiornoDto.length; j++) {
         const duplicazione = giorno.duplicazioniGiornoDto[j];
 
-        if (duplicazione.fascia1 || duplicazione.fascia2 || duplicazione.fascia3) {
+        if (
+          duplicazione.fascia1 ||
+          duplicazione.fascia2 ||
+          duplicazione.fascia3
+        ) {
           almenoUnCampoStraordinariValorizzato = true;
           break;
         }
@@ -700,10 +728,15 @@ export class UtenteComponent implements OnInit {
         this.showStraordinari[i] = giorno.duplicazioniGiornoDto.map(() => true);
       } else {
         // Altrimenti, impostiamo la visibilità a false per tutte le celle
-        this.showStraordinari[i] = giorno.duplicazioniGiornoDto.map(() => false);
+        this.showStraordinari[i] = giorno.duplicazioniGiornoDto.map(
+          () => false
+        );
       }
     }
   }
+
+
+
 
   mostraNascondiStraordinari(index: number, j: number) {
     // Inizializza l'array per la cella corrente se non esiste già
@@ -715,78 +748,158 @@ export class UtenteComponent implements OnInit {
     this.showStraordinari[index][j] = !this.showStraordinari[index][j];
   }
 
-  verificaStraordinariCompilati(rapportinoDto: any): boolean {
-    let hasStraordinariCompilati = false;
 
-    for (let i = 0; i < rapportinoDto.length; i++) {
-      for (let j = 0; j < rapportinoDto[i].duplicazioniGiornoDto.length; j++) {
-        const duplicazione = rapportinoDto[i].duplicazioniGiornoDto[j];
 
-        if (duplicazione && (duplicazione.fascia1 || duplicazione.fascia2 || duplicazione.fascia3)) {
-          // Se almeno una cella ha straordinari compilati, impostare checkStraordinari a true
-          hasStraordinariCompilati = true;
-        }
-
-        // Aggiungi la logica per inizializzare showStraordinari
-        if (!this.showStraordinari[i]) {
-          this.showStraordinari[i] = [];
-        }
-
-        // Aggiorna showStraordinari solo se la cella corrente ha almeno un campo compilato
-        this.showStraordinari[i][j] = duplicazione && (duplicazione.fascia1 || duplicazione.fascia2 || duplicazione.fascia3);
-      }
+  mostraNascondiPermessi(index: number) {
+    if (!this.showPermessi[index]) {
+      this.showPermessi[index] = false;
     }
-
-    return hasStraordinariCompilati;
+    this.showPermessi[index] = !this.showPermessi[index];
   }
 
-aggiungiNoteDipendente(){
-  this.inviaNoteAlDipendente=!this.noteDipendente;
-}
+  gestisciPermessi(rapportinoDto: any[]) {
+    const giorni = rapportinoDto.map((giorno) => {
+      return {
+        duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
+          (duplicazione: any) => {
+            return {
+              cliente: duplicazione.cliente,
+              oreOrdinarie: duplicazione.oreOrdinarie,
+              fascia1: duplicazione.fascia1,
+              fascia2: duplicazione.fascia2,
+              fascia3: duplicazione.fascia3,
+            };
+          }
+        ),
+        ferie: giorno.ferie,
+        malattie: giorno.malattie,
+        permessi: giorno.permessi,
+        permessiRole: giorno.permessiRole,
+        permessiExfestivita: giorno.permessiExfestivita,
+        note: giorno.note,
+        numeroGiorno: giorno.numeroGiorno,
+        nomeGiorno: giorno.nomeGiorno,
+        festivitàNazionale: giorno.festivitàNazionale,
+      };
+    });
 
-salvaNoteDipendente(){
-  let body = {
-    rapportinoDto: {
-      noteDipendente: this.noteDipendente,
-      anagrafica: {
-        codiceFiscale: this.codiceFiscale,
-      },
-      annoRequest: this.selectedAnno,
-      meseRequest: this.selectedMese,
-    },
-  };
-  console.log("invia al dipendente le seguenti note: "+ JSON.stringify(body));
-  this.rapportinoService.aggiungiNote(this.token, body).subscribe(
-    (result:any)=>{
-      if (
-        (result as any).esito.code !== 200 ) {
-        const dialogRef = this.dialog.open(AlertDialogComponent, {
-          data: {
-            Image: '../../../../assets/images/logo.jpeg',
-            title: 'Invio non riuscito:',
-            message: (result as any).esito.target, //(result as any).esito.target,
-          },
-        });
-        console.error("Errore durante l invio delle note all admin: "+JSON.stringify(result));
-      }
-      if (
-        (result as any).esito.code === 200 ) {
-        const dialogRef = this.dialog.open(AlertDialogComponent, {
-          data: {
-            Image: '../../../../assets/images/logo.jpeg',
-            title: 'Invio riuscito',
-            message: 'Note inviate correttamente all admin',
-          },
-        });
-      }
+    for (let i = 0; i < giorni.length; i++) {
+      const giorno = giorni[i];
+      let almenoUnCampoPermessiValorizzato = false;
+        if (
+          giorno.permessi ||
+          giorno.permessiRole ||
+          giorno.permessiExfestivita
+        ) {
+          almenoUnCampoPermessiValorizzato = true;
+          break;
+        }
 
-    },
-    (error:any)=>{
-      console.error("Errore durante l invio delle note al dipendente:"+ JSON.stringify(error));
+      // Verifica se tutti i campi straordinari sono null
+      const tuttiCampiPermessiNull = giorno.duplicazioniGiornoDto.every(
+        (duplicazione: any) =>
+          duplicazione.permessi === null &&
+          duplicazione.permessiRole === null &&
+          duplicazione.permessiExfestivita === null
+      );
+
+      if (almenoUnCampoPermessiValorizzato && !tuttiCampiPermessiNull) {
+        // Se troviamo almeno un campo straordinario valorizzato, impostiamo la visibilità a true solo per quella cella
+        this.showPermessi[i] = giorno.duplicazioniGiornoDto.map(() => true);
+      } else {
+        // Altrimenti, impostiamo la visibilità a false per tutte le celle
+        this.showStraordinari[i] = giorno.duplicazioniGiornoDto.map(
+          () => false
+        );
+      }
     }
-  )
-}
+  }
 
+  changeOptionAssenza(event: any, index: number) {
+    // Ottieni l'opzione selezionata
+    const selectedOption = event.target.value;
+
+    // Imposta la visibilità dei campi in base all'opzione selezionata
+    switch (selectedOption) {
+      case 'Permessi':
+        this.showPermessi[index] = true;
+        this.showPermessiRole[index] = false;
+        this.showPermessiExfestivita[index] = false;
+        break;
+      case 'Permessi role':
+        this.showPermessi[index] = false;
+        this.showPermessiRole[index] = true;
+        this.showPermessiExfestivita[index] = false;
+        break;
+      case 'Permessi ex festivitá':
+        this.showPermessi[index] = false;
+        this.showPermessiRole[index] = false;
+        this.showPermessiExfestivita[index] = true;
+        break;
+      default:
+        // Nessuna selezione o selezione non riconosciuta
+        this.checkpermessi=false;
+        this.showPermessi[index] = false;
+        this.showPermessiRole[index] = false;
+        this.showPermessiExfestivita[index] = false;
+    }
+  }
+
+
+
+  aggiungiNoteDipendente() {
+    this.inviaNoteAlDipendente = !this.noteDipendente;
+  }
+
+  salvaNoteDipendente() {
+    let body = {
+      rapportinoDto: {
+        noteDipendente: this.noteDipendente,
+        anagrafica: {
+          nome:this.userLoggedName,
+          cognome:this.userLoggedSurname,
+          codiceFiscale: this.codiceFiscale,
+        },
+        annoRequest: this.selectedAnno,
+        meseRequest: this.selectedMese,
+      },
+    };
+    console.log(
+      'invia al dipendente le seguenti note: ' + JSON.stringify(body)
+    );
+    this.rapportinoService.aggiungiNoteDipendente(this.token, body).subscribe(
+      (result: any) => {
+        if ((result as any).esito.code !== 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              Image: '../../../../assets/images/logo.jpeg',
+              title: 'Invio non riuscito:',
+              message: (result as any).esito.target, //(result as any).esito.target,
+            },
+          });
+          console.error(
+            'Errore durante l invio delle note all admin: ' +
+              JSON.stringify(result)
+          );
+        }
+        if ((result as any).esito.code === 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              Image: '../../../../assets/images/logo.jpeg',
+              title: 'Invio riuscito',
+              message: 'Note inviate correttamente all admin',
+            },
+          });
+        }
+      },
+      (error: any) => {
+        console.error(
+          'Errore durante l invio delle note al dipendente:' +
+            JSON.stringify(error)
+        );
+      }
+    );
+  }
 
   goDown() {
     document.getElementById('finePagina')?.scrollIntoView({
@@ -907,14 +1020,16 @@ salvaNoteDipendente(){
         malattie: giorno.malattie,
         permessi: giorno.permessi,
         checkSmartWorking: giorno.checkSmartWorking,
-        checkOnSite:giorno.checkOnSite,
+        checkOnSite: giorno.checkOnSite,
+        permessiRole: giorno.permessiRole,
+        permessiExfestivita: giorno.permessiExfestivita,
         note: giorno.note,
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
+        festivitàNazionale: giorno.festivitàNazionale,
       };
     });
     for (const giorno of giorni) {
-
       //imposto a null i booleani a false
 
       if (!giorno.ferie) {
@@ -932,7 +1047,9 @@ salvaNoteDipendente(){
         giorno.checkOnSite = null;
       }
 
-      console.log("Oggetto giorniArray iterato: "+JSON.stringify(giorno, null, 2));
+      console.log(
+        'Oggetto giorniArray iterato: ' + JSON.stringify(giorno, null, 2)
+      );
     }
 
     const body = {
@@ -968,7 +1085,7 @@ salvaNoteDipendente(){
             this.rapportinoSalvato = false;
             console.error(result);
           }
-          if ( (result as any).esito.target==='ERRORE_GENERICO') {
+          if ((result as any).esito.target === 'ERRORE_GENERICO') {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 Image: '../../../../assets/images/logo.jpeg',
@@ -979,7 +1096,10 @@ salvaNoteDipendente(){
             this.rapportinoSalvato = false;
             console.error(result);
           }
-          if ((result as any).esito.code === 200 && (result as any).esito.target==null) {
+          if (
+            (result as any).esito.code === 200 &&
+            (result as any).esito.target == null
+          ) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 title: 'Salvataggio riuscito.',
@@ -1024,14 +1144,16 @@ salvaNoteDipendente(){
         malattie: giorno.malattie,
         permessi: giorno.permessi,
         checkSmartWorking: giorno.checkSmartWorking,
-        checkOnSite:giorno.checkOnSite,
+        checkOnSite: giorno.checkOnSite,
+        permessiRole: giorno.permessiRole,
+        permessiExfestivita: giorno.permessiExfestivita,
         note: giorno.note,
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
+        festivitàNazionale: giorno.festivitàNazionale,
       };
     });
     for (const giorno of giorni) {
-
       //imposto a null i booleani a false
 
       if (!giorno.ferie) {
@@ -1049,7 +1171,9 @@ salvaNoteDipendente(){
         giorno.checkOnSite = null;
       }
 
-      console.log("Oggetto giorniArray iterato: "+JSON.stringify(giorno, null, 2));
+      console.log(
+        'Oggetto giorniArray iterato: ' + JSON.stringify(giorno, null, 2)
+      );
     }
 
     const body = {
@@ -1122,7 +1246,7 @@ salvaNoteDipendente(){
       );
   }
 
-  annulla(){
+  annulla() {
     this.getRapportino();
   }
 
@@ -1236,18 +1360,22 @@ salvaNoteDipendente(){
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.idUtenteLoggato = response.anagraficaDto.anagrafica.id;
-        this.contrattoUser=response.anagraficaDto.contratto.tipoContratto.descrizione;
-        this.aziendaUser=response.anagraficaDto.contratto.tipoAzienda.descrizione;
-        this.elencoCommesse=response.anagraficaDto.commesse;
+        this.contrattoUser =
+          response.anagraficaDto.contratto.tipoContratto.descrizione;
+        this.aziendaUser =
+          response.anagraficaDto.contratto.tipoAzienda.descrizione;
+        this.elencoCommesse = response.anagraficaDto.commesse;
         this.numeroCommessePresenti = this.elencoCommesse.length;
         this.elencoCommesse.forEach((commessa: any) => {
           if (commessa.tipoAziendaCliente.descrizione) {
             this.aziendeClienti.push(commessa.tipoAziendaCliente.descrizione);
-            console.log('Aziende clienti: ' + JSON.stringify(this.aziendeClienti));
+            console.log(
+              'Aziende clienti: ' + JSON.stringify(this.aziendeClienti)
+            );
           }
         });
-        this.codiceFiscale=response.anagraficaDto.anagrafica.codiceFiscale;
-        if(this.contrattoUser=='Stage' || this.contrattoUser==='P.Iva'){
+        this.codiceFiscale = response.anagraficaDto.anagrafica.codiceFiscale;
+        if (this.contrattoUser == 'Stage' || this.contrattoUser === 'P.Iva') {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
               Image: '../../../../assets/images/logo.jpeg',
@@ -1258,7 +1386,7 @@ salvaNoteDipendente(){
         }
         console.log('ID:' + this.id);
         console.log('IDUTENTELOGGATO:' + this.idUtenteLoggato);
-        console.log("codice fiscale utente loggato:"+this.codiceFiscale);
+        console.log('codice fiscale utente loggato:' + this.codiceFiscale);
         if (this.idUtenteLoggato != this.id) {
           this.dettaglioSbagliato = true;
         } else {
@@ -1279,8 +1407,8 @@ salvaNoteDipendente(){
       (response: any) => {
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
-        this.userLoggedName=response.anagraficaDto.anagrafica.nome;
-        this.userLoggedSurname=response.anagraficaDto.anagrafica.cognome;
+        this.userLoggedName = response.anagraficaDto.anagrafica.nome;
+        this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         console.log('ID UTENTE PER NAV:' + this.idUtente);
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
@@ -1437,3 +1565,59 @@ interface MenuData {
     privilegio: any;
   }[];
 }
+
+  // verificaStraordinariCompilati(rapportinoDto: any): boolean {
+  //   let hasStraordinariCompilati = false;
+
+  //   for (let i = 0; i < rapportinoDto.length; i++) {
+  //     for (let j = 0; j < rapportinoDto[i].duplicazioniGiornoDto.length; j++) {
+  //       const duplicazione = rapportinoDto[i].duplicazioniGiornoDto[j];
+
+  //       if (
+  //         duplicazione &&
+  //         (duplicazione.fascia1 || duplicazione.fascia2 || duplicazione.fascia3)
+  //       ) {
+  //         // Se almeno una cella ha straordinari compilati, impostare checkStraordinari a true
+  //         hasStraordinariCompilati = true;
+  //       }
+
+  //       // Aggiungi la logica per inizializzare showStraordinari
+  //       if (!this.showStraordinari[i]) {
+  //         this.showStraordinari[i] = [];
+  //       }
+
+  //       // Aggiorna showStraordinari solo se la cella corrente ha almeno un campo compilato
+  //       this.showStraordinari[i][j] =
+  //         duplicazione &&
+  //         (duplicazione.fascia1 ||
+  //           duplicazione.fascia2 ||
+  //           duplicazione.fascia3);
+  //     }
+  //   }
+
+  //   return hasStraordinariCompilati;
+  // }
+// getAnagraficaRapportino() {
+  //   this.anagraficaDtoService
+  //     .detailAnagraficaDto(this.id, localStorage.getItem('token'))
+  //     .subscribe(
+  //       (resp: any) => {
+  //         this.user = (resp as any)['anagraficaDto'];
+  //         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
+  //         this.salvaAziendeClienti();
+  //         this.contratto = (resp as any)['anagraficaDto']['contratto'];
+  //         // this.codiceFiscale = (resp as any)['anagraficaDto']['anagrafica'][
+  //         //   'codiceFiscale'
+  //         // ];
+  //         this.dettaglioSbagliato = false;
+  //         this.numeroCommessePresenti = this.elencoCommesse.length;
+  //         // console.log('Dati restituiti: ' + JSON.stringify(resp));
+  //       },
+  //       (error: any) => {
+  //         console.error(
+  //           'ERRORE DURANTE IL CARICAMENTO DELL ANAGRAFICA :' +
+  //             JSON.stringify(error)
+  //         );
+  //       }
+  //     );
+  // }
