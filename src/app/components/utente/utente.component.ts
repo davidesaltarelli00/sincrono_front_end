@@ -139,7 +139,7 @@ export class UtenteComponent implements OnInit {
   aziendaUser: any;
   noteDipendente: any;
   inviaNoteAlDipendente = false;
-  opzionePermessoSelezionata:any;
+  opzionePermessoSelezionata: string | null = null;
   showPermessi: boolean[] = [];
   showPermessiRole: boolean[] = [];
   showPermessiExfestivita: boolean[] = [];
@@ -786,16 +786,12 @@ export class UtenteComponent implements OnInit {
     for (let i = 0; i < giorni.length; i++) {
       const giorno = giorni[i];
       let almenoUnCampoPermessiValorizzato = false;
-        if (
-          giorno.permessi ||
-          giorno.permessiRole ||
-          giorno.permessiExfestivita
-        ) {
-          almenoUnCampoPermessiValorizzato = true;
-          break;
-        }
 
-      // Verifica se tutti i campi straordinari sono null
+      if (giorno.permessi || giorno.permessiRole || giorno.permessiExfestivita) {
+        almenoUnCampoPermessiValorizzato = true;
+      }
+
+      // Verifica se tutti i campi permessi sono null
       const tuttiCampiPermessiNull = giorno.duplicazioniGiornoDto.every(
         (duplicazione: any) =>
           duplicazione.permessi === null &&
@@ -803,21 +799,47 @@ export class UtenteComponent implements OnInit {
           duplicazione.permessiExfestivita === null
       );
 
-      if (almenoUnCampoPermessiValorizzato && !tuttiCampiPermessiNull) {
-        // Se troviamo almeno un campo straordinario valorizzato, impostiamo la visibilità a true solo per quella cella
-        this.showPermessi[i] = giorno.duplicazioniGiornoDto.map(() => true);
-      } else {
-        // Altrimenti, impostiamo la visibilità a false per tutte le celle
-        this.showStraordinari[i] = giorno.duplicazioniGiornoDto.map(
-          () => false
-        );
-      }
+      // Imposta la visibilità in base alla condizione
+      this.showPermessi[i] = almenoUnCampoPermessiValorizzato && !tuttiCampiPermessiNull;
     }
+
+
+    // for (let i = 0; i < giorni.length; i++) {
+    //   const giorno = giorni[i];
+    //   let almenoUnCampoPermessiValorizzato = false;
+    //     if (
+    //       giorno.permessi ||
+    //       giorno.permessiRole ||
+    //       giorno.permessiExfestivita
+    //     ) {
+    //       almenoUnCampoPermessiValorizzato = true;
+    //       break;
+    //     }
+
+    //   // Verifica se tutti i campi straordinari sono null
+    //   const tuttiCampiPermessiNull = giorno.duplicazioniGiornoDto.every(
+    //     (duplicazione: any) =>
+    //       duplicazione.permessi === null &&
+    //       duplicazione.permessiRole === null &&
+    //       duplicazione.permessiExfestivita === null
+    //   );
+
+    //   if (almenoUnCampoPermessiValorizzato && !tuttiCampiPermessiNull) {
+    //     // Se troviamo almeno un campo straordinario valorizzato, impostiamo la visibilità a true solo per quella cella
+    //     this.showPermessi[i] = giorno.duplicazioniGiornoDto.map(() => true);
+    //   } else {
+    //     // Altrimenti, impostiamo la visibilità a false per tutte le celle
+    //     this.showPermessi[i] = giorno.duplicazioniGiornoDto.map(
+    //       () => false
+    //     );
+    //   }
+    // }
   }
 
   changeOptionAssenza(event: any, index: number) {
     // Ottieni l'opzione selezionata
     const selectedOption = event.target.value;
+    console.log(selectedOption);
 
     // Imposta la visibilità dei campi in base all'opzione selezionata
     switch (selectedOption) {
@@ -837,7 +859,6 @@ export class UtenteComponent implements OnInit {
         this.showPermessiExfestivita[index] = true;
         break;
       default:
-        // Nessuna selezione o selezione non riconosciuta
         this.checkpermessi=false;
         this.showPermessi[index] = false;
         this.showPermessiRole[index] = false;

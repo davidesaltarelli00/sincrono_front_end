@@ -304,7 +304,7 @@
             <label for="assenze-{{i}}">Assenze</label>
             <select name="assenze-{{i}}" id="assenze-{{i}}" class="form-select form-select-sm"
             [(ngModel)]="opzionePermessoSelezionata" (change)="changeOptionAssenza($event, i)" >
-              <option selected [ngValue]="null">--Nessuna selezione---</option>
+              <option selected [ngValue]="null"></option>
               <option>Permessi</option>
               <option>Permessi role</option>
               <option>Permessi ex festivitá</option>
