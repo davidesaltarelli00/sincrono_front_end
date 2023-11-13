@@ -298,7 +298,7 @@
            </div>
        </div>
        <!--PERMESSI-->
-       <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] " >
+       <!-- <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] " >
         <div class="col-12">
           <div class="form-group">
             <label for="assenze-{{i}}">Assenze</label>
@@ -311,9 +311,9 @@
             </select>
           </div>
         </div>
-       </div>
-        <div class="row">
-          <div class="col-4" *ngIf="showPermessi[i]">
+       </div> -->
+        <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] ">
+          <div class="col-4" >
            <div class="form-group">
             <label for="permessi-{{ i }}">Permessi</label>
             <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
@@ -323,7 +323,7 @@
             [(ngModel)]="giorno.permessi">
            </div>
           </div>
-          <div class="col-4" *ngIf="showPermessiRole[i]">
+          <div class="col-4" >
            <div class="form-group">
             <label for="permessiRole-{{ i }}">Role</label>
             <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
@@ -333,7 +333,7 @@
             [(ngModel)]="giorno.permessiRole">
            </div>
           </div>
-          <div class="col-4" *ngIf="showPermessiExfestivita[i]">
+          <div class="col-4" >
            <div class="form-group">
             <label for="permessiExfestivita-{{ i }}">Festivitá</label>
             <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
@@ -344,7 +344,6 @@
            </div>
           </div>
         </div>
-
         <div class="row">
           <div class="col-4">
             <div class="form-group">
