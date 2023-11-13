@@ -56,7 +56,7 @@ export class RapportinoService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.post<any>(this.url + 'aggiungi-note', body, {
+    return this.http.post<any>(this.url + 'aggiungi-note-dipendente', body, {
       headers: headers,
     });
   }
