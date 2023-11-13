@@ -76,7 +76,7 @@
         </div>
       </div>
       <br>
-
+<!--
       <br />
       <div class="row">
         <div class="col-12">
@@ -114,7 +114,7 @@
           </mat-card>
         </div>
       </div>
-      <br />
+      <br /> -->
      <div class="row">
       <div class="col-12">
         <mat-card>
@@ -197,13 +197,19 @@
             <thead>
               <tr>
                 <th>Nominativo</th>
+                <th>Azienda</th>
+                <th>Numero commesse</th>
+                <th>Contratto</th>
                 <th>Periodo di riferimento</th>
                 <th>Giorni utili di lavoro</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>{{ user?.anagrafica?.nome |titlecase }} {{ user?.anagrafica?.cognome |titlecase }}</td>
+                <td>{{ userLoggedName |titlecase }} {{ userLoggedSurname |titlecase }}</td>
+                <td> {{ aziendaUser }}</td>
+                <td>{{numeroCommessePresenti}}</td>
+                <td> {{contrattoUser}}</td>
                 <td>{{ selectedMese }} - {{ selectedAnno }}</td>
                 <td>{{giorniUtili}}</td>
               </tr>
@@ -232,10 +238,10 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-4">
               <div class="form-group">
                 <label for="ore-ordinarie-{{ i }}{{j}}" matTooltipPosition="above"
-                 matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Ore ordinarie</label>
+                 matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Ore</label>
                 <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
                 type="text"  class="form-control form-control-sm"
                 step="0.5" min="0" max="8"
@@ -243,11 +249,23 @@
                 [(ngModel)]="duplicazione.oreOrdinarie">
               </div>
             </div>
-            <div class="col-6">
+            <div class="col-2">
              <div class="form-group">
-              <label for="straordinari">Straordinari</label>
-              <button (click)=" mostraNascondiStraordinari(i,j)" class="btn btn-success btn-sm" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Straordinari" > <i class="fa fa-clock" ></i> </button>
+              <label for="straordinari"></label>
+              <button style="width: 30px; height: 30px;" (click)=" mostraNascondiStraordinari(i,j)" mat-mini-fab color="primary" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Straordinari" > <i class="fa fa-clock" ></i> </button>
              </div>
+            </div>
+            <div class="col-2">
+             <div class="form-group">
+              <label for="duplica"></label>
+              <button style="width: 30px; height: 30px;" [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie || aziendeClienti.length<1 " mat-mini-fab id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga"><i  class="fa fa-clone"></i></button>
+             </div>
+            </div>
+            <div class="col-2">
+              <div class="form-group">
+                <label for="elimina"></label>
+              <button style="width: 30px; height: 30px;" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" mat-mini-fab color="warn" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga" ><i  class="fa fa-trash"></i></button>
+              </div>
             </div>
           </div>
 
@@ -285,7 +303,7 @@
             </div>
            </div>
         </mat-card-content>
-        <mat-card-footer>
+        <!-- <mat-card-footer>
           <div class="row">
             <div class="col-6">
               <button style="float: right;" [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie || aziendeClienti.length<1 " class="btn btn-warning btn-sm" id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga" ><i  class="fa fa-clone"></i></button> <br>
@@ -294,7 +312,7 @@
               <button [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"  class="btn btn-danger btn-sm" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"  ><i  class="fa fa-trash"></i></button>
             </div>
           </div>
-        </mat-card-footer>
+        </mat-card-footer> -->
        </div>
         <div class="row">
           <div class="col-4">
@@ -327,7 +345,7 @@
           <div class="form-group">
             <label for="onSite-{{i}}">On site</label><br>
             <div class="form-check form-switch">
-              <input style="margin: auto;" (change)="onChangePresenza($event)" [(ngModel)]="giorno.checkOnSite" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" class="form-check-input" type="checkbox" id="onSite-{{i}}">
+              <input style="margin: auto;" (change)="onChangePresenza($event)" [(ngModel)]="giorno.checkOnSite" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkSmartworking" class="form-check-input" type="checkbox" id="onSite-{{i}}">
             </div>
           </div>
         </div>
@@ -335,22 +353,28 @@
           <div class="form-group">
             <label for="smartworking-{{i}}">Smartworking</label><br>
             <div class="form-check form-switch">
-              <input style="margin: auto;" (change)="onChangeSmartworking($event)" [(ngModel)]="giorno.checkSmartWorking" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" class="form-check-input" type="checkbox" id="smartworking-{{i}}">
+              <input style="margin: auto;" (change)="onChangeSmartworking($event)" [(ngModel)]="giorno.checkSmartWorking" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite" class="form-check-input" type="checkbox" id="smartworking-{{i}}">
             </div>
           </div>
         </div>
       </div>
         <div class="row">
-          <div class="col-7">
+          <div class="col-5">
           <div class="form-group">
             <label for="note-{{ i }}">Note</label>
-            <input [disabled]="risultatoCheckFreeze  || giorno.ferie" [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control form-control-sm" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
+            <input [disabled]="risultatoCheckFreeze  || giorno.ferie" [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control form-control-sm" matTooltip="{{giorno.note}}" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
           </div>
           </div>
-          <div class="col-2">
+          <div class="col-3">
             <div class="form-group">
               <label for="salvaRiga">Salva</label>
           <button [disabled]="risultatoCheckFreeze" mat-mini-fab color="primary"  (click)="salvaRigaRapportino(giorno)" matTooltip="Salva riga" ><i class="fa fa-save"></i> </button>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label for="salvaRiga">Annulla</label>
+          <button [disabled]="risultatoCheckFreeze" mat-mini-fab color="warn"  (click)="annulla()" matTooltip="Annulla" ><i class="fa fa-undo"></i> </button>
             </div>
           </div>
 

@@ -313,6 +313,93 @@ export class UtenteComponent implements OnInit {
   }
 
 
+
+
+  private clearFieldValue(element: HTMLInputElement): void {
+    if (element) {
+      element.value = '';
+    }
+  }
+
+
+  isWeekend(giorno: string): any {
+    return giorno === 'Sabato' || giorno === 'Domenica';
+  }
+
+  onChangePresenza(event:any){
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      console.log("On site "+isChecked);
+    }
+    const giorni = this.rapportinoDto.map((giorno) => {
+      return {
+        duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
+          (duplicazione: any) => {
+            return {
+              cliente: duplicazione.cliente,
+              oreOrdinarie: duplicazione.oreOrdinarie,
+              fascia1: duplicazione.fascia1,
+              fascia2: duplicazione.fascia2,
+              fascia3: duplicazione.fascia3,
+            };
+          }
+        ),
+        ferie: giorno.ferie,
+        malattie: giorno.malattie,
+        permessi: giorno.permessi,
+        checkSmartWorking: giorno.checkSmartWorking,
+        checkOnSite:giorno.checkOnSite,
+        note: giorno.note,
+        numeroGiorno: giorno.numeroGiorno,
+        nomeGiorno: giorno.nomeGiorno,
+      };
+    });
+    for (const giorno of giorni) {
+      if (!giorno.checkSmartWorking) {
+        giorno.checkSmartWorking = null;
+      }
+      // console.log("Oggetto giorniArray iterato checkSmartworking: "+JSON.stringify(giorno, null, 2));
+    }
+  }
+  onChangeSmartworking(event:any){
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.checked;
+      console.log("Smartworking "+isChecked);
+    }
+    const giorni = this.rapportinoDto.map((giorno) => {
+      return {
+        duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
+          (duplicazione: any) => {
+            return {
+              cliente: duplicazione.cliente,
+              oreOrdinarie: duplicazione.oreOrdinarie,
+              fascia1: duplicazione.fascia1,
+              fascia2: duplicazione.fascia2,
+              fascia3: duplicazione.fascia3,
+            };
+          }
+        ),
+        ferie: giorno.ferie,
+        malattie: giorno.malattie,
+        permessi: giorno.permessi,
+        checkSmartWorking: giorno.checkSmartWorking,
+        checkOnSite:giorno.checkOnSite,
+        note: giorno.note,
+        numeroGiorno: giorno.numeroGiorno,
+        nomeGiorno: giorno.nomeGiorno,
+      };
+    });
+    for (const giorno of giorni) {
+      if (!giorno.checkSmartWorking) {
+        giorno.checkSmartWorking = null;
+      }
+      // console.log("Oggetto giorniArray iterato checkSmartworking: "+JSON.stringify(giorno, null, 2));
+    }
+
+  }
+
   onChangeFerie(event: any, i: number) {
     const target = event.target as HTMLInputElement;
 
@@ -341,32 +428,6 @@ export class UtenteComponent implements OnInit {
         this.clearFieldValue(noteElement);
         this.clearFieldValue(clienteElement);
       }
-    }
-  }
-
-  private clearFieldValue(element: HTMLInputElement): void {
-    if (element) {
-      element.value = '';
-    }
-  }
-
-
-  isWeekend(giorno: string): any {
-    return giorno === 'Sabato' || giorno === 'Domenica';
-  }
-
-  onChangePresenza(event:any){
-    const target = event.target as HTMLInputElement;
-    if (target) {
-      const isChecked = target.checked;
-      console.log("On site "+isChecked);
-    }
-  }
-  onChangeSmartworking(event:any){
-    const target = event.target as HTMLInputElement;
-    if (target) {
-      const isChecked = target.checked;
-      console.log("Smartworking "+isChecked);
     }
   }
 
@@ -809,6 +870,27 @@ export class UtenteComponent implements OnInit {
         nomeGiorno: giorno.nomeGiorno,
       };
     });
+    for (const giorno of giorni) {
+
+      //imposto a null i booleani a false
+
+      if (!giorno.ferie) {
+        giorno.ferie = null;
+      }
+
+      if (!giorno.malattie) {
+        giorno.malattie = null;
+      }
+
+      if (!giorno.checkSmartWorking) {
+        giorno.checkSmartWorking = null;
+      }
+      if (!giorno.checkOnSite) {
+        giorno.checkOnSite = null;
+      }
+
+      console.log("Oggetto giorniArray iterato: "+JSON.stringify(giorno, null, 2));
+    }
 
     const body = {
       rapportinoDto: {
@@ -906,6 +988,9 @@ export class UtenteComponent implements OnInit {
       };
     });
     for (const giorno of giorni) {
+
+      //imposto a null i booleani a false
+
       if (!giorno.ferie) {
         giorno.ferie = null;
       }
@@ -913,6 +998,14 @@ export class UtenteComponent implements OnInit {
       if (!giorno.malattie) {
         giorno.malattie = null;
       }
+
+      if (!giorno.checkSmartWorking) {
+        giorno.checkSmartWorking = null;
+      }
+      if (!giorno.checkOnSite) {
+        giorno.checkOnSite = null;
+      }
+
       console.log("Oggetto giorniArray iterato: "+JSON.stringify(giorno, null, 2));
     }
 
@@ -984,6 +1077,10 @@ export class UtenteComponent implements OnInit {
           );
         }
       );
+  }
+
+  annulla(){
+    this.getRapportino();
   }
 
   isValidOreOrdinarie(value: number) {
@@ -1139,6 +1236,8 @@ export class UtenteComponent implements OnInit {
       (response: any) => {
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        this.userLoggedName=response.anagraficaDto.anagrafica.nome;
+        this.userLoggedSurname=response.anagraficaDto.anagrafica.cognome;
         console.log('ID UTENTE PER NAV:' + this.idUtente);
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
