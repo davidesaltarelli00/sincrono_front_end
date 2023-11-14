@@ -872,7 +872,7 @@ export class UtenteComponent implements OnInit {
 
 
   aggiungiNoteDipendente() {
-    this.inviaNoteAlDipendente = !this.noteDipendente;
+    this.inviaNoteAlDipendente = !this.inviaNoteAlDipendente;
   }
 
   salvaNoteDipendente() {

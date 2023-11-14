@@ -88,6 +88,7 @@ export class DettaglioAnagraficaDtoComponent {
   immagineCancellata: boolean = false;
   idUtente: any;
   vediStoricoCommesse: boolean=false;
+  ruolo: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -751,6 +752,7 @@ export class DettaglioAnagraficaDtoComponent {
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        this.ruolo=response.anagraficaDto.ruolo.nome;
         console.log('ID ANAGRAFICA LOGGATA:' + this.idAnagraficaLoggata);
         if (this.id === this.idAnagraficaLoggata) {
           this.disabilitaImmagine = true;

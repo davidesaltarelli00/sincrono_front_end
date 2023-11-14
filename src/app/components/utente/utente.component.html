@@ -118,66 +118,69 @@
      <div class="row">
       <div class="col-12">
         <mat-card>
-          <form>
-            <div class="row">
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="meseSelect">Seleziona il mese:</label>
-                  <select
-                    (change)="onMeseSelectChange($event)"
-                    class="form-select"
-                    aria-label="Default select example"
-                    id="meseSelect"
-                    [(ngModel)]="selectedMese"
-                    name="mese"
-                  >
-                    <option selected>Nessuna selezione</option>
-                    <option
-                      *ngFor="let month of mesi; let i = index"
-                      [value]="i + 1"
+          <mat-card-content>
+            <form>
+              <div class="row">
+                <div class="col-2">
+                  <div class="form-group">
+                    <legend for="meseSelect">Seleziona il mese</legend>
+                    <select
+                      (change)="onMeseSelectChange($event)"
+                      class="form-select"
+                      aria-label="Default select example"
+                      id="meseSelect"
+                      [(ngModel)]="selectedMese"
+                      name="mese"
                     >
-                      {{ i + 1 }}
-                    </option>
-                  </select>
+                      <option selected>Nessuna selezione</option>
+                      <option
+                        *ngFor="let month of mesi; let i = index"
+                        [value]="i + 1"
+                      >
+                        {{ i + 1 }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div class="form-group">
+                    <legend for="annoSelect">Seleziona l'anno</legend>
+                    <select
+                      (change)="onAnnoSelectChange($event)"
+                      class="form-select"
+                      aria-label="Default select example"
+                      id="annoSelect"
+                      [(ngModel)]="selectedAnno"
+                      name="anno">
+                      <option selected>---Nessuna selezione---</option>
+                      <option *ngFor="let year of anni" [value]="year">
+                        {{ year }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <legend for="getRapportino">Azioni</legend><br />
+                  <button
+                    class="btn btn-primary"
+                    (click)="getRapportino()"
+                    [disabled]="selectedMese == null || selectedAnno == null"
+                  >
+                    Carica rapportino
+                    <i class="fa fa-print" aria-hidden="true"></i></button
+                  >
+                  <!--
+                    &nbsp;
+                  <button class="btn btn-danger" (click)="eliminaRapportino()">
+                    Nascondi rapportino <i class="fa fa-trash" aria-hidden="true"></i>
+                  </button>
+                  -->
                 </div>
               </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="annoSelect">Seleziona l'anno:</label>
-                  <select
-                    (change)="onAnnoSelectChange($event)"
-                    class="form-select"
-                    aria-label="Default select example"
-                    id="annoSelect"
-                    [(ngModel)]="selectedAnno"
-                    name="anno">
-                    <option selected>---Nessuna selezione---</option>
-                    <option *ngFor="let year of anni" [value]="year">
-                      {{ year }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-4">
-                <label for="getRapportino">Azioni</label><br />
-                <button
-                  class="btn btn-primary"
-                  (click)="getRapportino()"
-                  [disabled]="selectedMese == null || selectedAnno == null"
-                >
-                  Carica rapportino
-                  <i class="fa fa-print" aria-hidden="true"></i></button
-                >
-                <!--
-                  &nbsp;
-                <button class="btn btn-danger" (click)="eliminaRapportino()">
-                  Nascondi rapportino <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
-                -->
-              </div>
-            </div>
-            <br />
-          </form>
+              <br />
+            </form>
+          </mat-card-content>
+
         </mat-card>
       </div>
      </div>
@@ -252,7 +255,7 @@
           <div class="row">
 
             <div class="col-3">
-              <button style="width: 30px; height: 30px;" (click)=" mostraNascondiStraordinari(i,j)" mat-mini-fab color="primary" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Extra time" > <i class="fa fa-clock" ></i> </button>
+              <button style="width: 30px; height: 30px;"  mat-mini-fab color="primary" (click)=" mostraNascondiStraordinari(i,j)" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Extra time" > <i class="fa fa-clock" ></i> </button>
             </div>
             <div class="col-3">
               <button style="width: 30px; height: 30px;" (click)="mostraNascondiPermessi(i)" mat-mini-fab color="primary" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Assenze" > <i class="fa fa-ban" ></i> </button>
@@ -347,41 +350,40 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-4">
+           <div class="col-3">
+            <div class="form-group">
+              <label for="onSite-{{i}}">Sede</label><br>
+                <input (change)="onChangePresenza($event)" [(ngModel)]="giorno.checkOnSite"
+                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkSmartworking"
+                class="form-check-input" type="checkbox" id="onSite-{{i}}">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label for="smartworking-{{i}}">Smart</label><br>
+                <input (change)="onChangeSmartworking($event)" [(ngModel)]="giorno.checkSmartWorking"
+                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite"
+                class="form-check-input" type="checkbox" id="smartworking-{{i}}">
+            </div>
+          </div>
+          <div class="col-2">
             <div class="form-group">
              <label for="ferie-{{ i }}">Ferie</label> <br>
-             <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.malattie "
+             <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.malattie || giorno.checkOnSite || giorno.checkSmartWorking "
              type="checkbox" (change)="onChangeFerie($event,i)" class="form-check-input"
              id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
             </div>
            </div>
-           <div class="col-4">
+           <div class="col-2">
            <div class="form-group">
              <label for="malattie-{{i}}">Malattia</label><br>
-             <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.ferie "
+             <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.ferie || giorno.checkOnSite || giorno.checkSmartWorking "
              type="checkbox" (change)="onChangeMalattia($event,i)" class="form-check-input"
              id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
            </div>
            </div>
         </div>
-      <div class="row">
-        <div class="col-6">
-          <div class="form-group">
-            <label for="onSite-{{i}}">On site</label><br>
-            <div class="form-check form-switch">
-              <input style="margin: auto;" (change)="onChangePresenza($event)" [(ngModel)]="giorno.checkOnSite" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkSmartworking" class="form-check-input" type="checkbox" id="onSite-{{i}}">
-            </div>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="form-group">
-            <label for="smartworking-{{i}}">Smartworking</label><br>
-            <div class="form-check form-switch">
-              <input style="margin: auto;" (change)="onChangeSmartworking($event)" [(ngModel)]="giorno.checkSmartWorking" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite" class="form-check-input" type="checkbox" id="smartworking-{{i}}">
-            </div>
-          </div>
-        </div>
-      </div>
+
         <div class="row">
           <div class="col-5">
           <div class="form-group">

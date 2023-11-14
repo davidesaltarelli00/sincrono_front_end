@@ -149,7 +149,7 @@
     </mat-toolbar>
   </div>
 
-  <div class="container-fluid">
+  <div class="container-fluid" *ngIf="ruolo==='ADMIN'">
     <div class="row">
       <div class="col-12">
         <br>
@@ -699,6 +699,18 @@
       </div>
     </div>
     <div id="finePagina"></div>
+  </div>
+  <div class="container-fluid" *ngIf="ruolo==='DIPENDENTE'">
+    <div class="row">
+      <div class="col-12">
+        <br>
+        <mat-card style="text-align: center;">
+          <h1><img src="../../../../assets/images/danger.png" alt="Logo Sincrono"></h1>
+          <h1>Non hai i permessi per accedere a questa sezione.</h1>
+           <a mat-stroked-button [routerLink]="['/home']" target="_blank">Vai alla home.</a>
+        </mat-card>
+      </div>
+    </div>
   </div>
 </body>
 

@@ -148,7 +148,7 @@
       </span>
     </mat-toolbar>
   </div>
-  <div class="container-fluid">
+  <div class="container-fluid"  *ngIf="ruolo==='ADMIN'">
     <div class="row">
       <div class="col-12">
         <br>
@@ -276,6 +276,10 @@
                       <td>{{ data?.anagrafica?.altriTitoli ? data?.anagrafica?.altriTitoli: 'Dato non inserito' }}</td>
                     </tr>
                     <tr>
+                      <td><strong>Canale reclutamento</strong></td>
+                      <td>{{data?.contratto?.tipoCanaleReclutamento.descrizione ? data?.contratto?.tipoCanaleReclutamento.descrizione : 'Dato non inserito.'}}</td>
+                    </tr>
+                    <tr>
                       <td><strong>Attesa lavori</strong></td>
                       <td>{{data?.anagrafica.attesaLavori ? 'Si': 'No'}}</td>
                     </tr>
@@ -391,10 +395,6 @@
                   <tr> <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
                     <td><strong>Data fine rapporto:</strong></td>
                     <td>{{ data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy' }}</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Canale reclutamento</strong></td>
-                    <td>{{data?.contratto?.tipoCanaleReclutamento.descrizione ? data?.contratto?.tipoCanaleReclutamento.descrizione : 'Dato non inserito.'}}</td>
                   </tr>
                   <tr>
                     <td><strong>Livello attuale:</strong></td>
@@ -600,11 +600,9 @@
                       <td>{{ commessa.tipoAziendaCliente.descrizione }}</td>
                       <td>{{ commessa.clienteFinale }}</td>
                       <td>{{ commessa.titoloPosizione }}</td>
-                      <td>{{ commessa.distacco === true ? 'Si' : (commessa.distacco === false ? 'No' : 'Dato non
-                        inserito') | titlecase }}</td>
+                      <td>{{ commessa.distacco === true ? 'Si' : (commessa.distacco === false ? 'No' : 'Dato non inserito') | titlecase }}</td>
                       <td>{{ commessa.dataInizio | date: 'dd/MM/yyyy' }}</td>
-                      <td [ngStyle]="{'color': commessa.dataFine <= dataOdierna ? 'red' : 'green'}">{{ commessa.dataFine
-                        | date: 'dd/MM/yyyy' }}</td>
+                      <td [ngStyle]="{'color': commessa.dataFine <= dataOdierna ? 'red' : 'green'}">{{ commessa.dataFine | date: 'dd/MM/yyyy' }}</td>
                       <td>{{ commessa.tariffaGiornaliera }} <i class="fa-solid fa-euro-sign"></i></td>
                       <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
                       <td>
@@ -676,6 +674,18 @@
       </div>
     </div>
     <br><br>
+  </div>
+  <div class="container-fluid" *ngIf="ruolo==='DIPENDENTE'">
+    <div class="row">
+      <div class="col-12">
+        <br>
+        <mat-card style="text-align: center;">
+          <h1><img src="../../../../assets/images/danger.png" alt="Logo Sincrono"></h1>
+          <h1>Non hai i permessi per accedere a questa sezione.</h1>
+           <a mat-stroked-button [routerLink]="['/home']" target="_blank">Vai alla home.</a>
+        </mat-card>
+      </div>
+    </div>
   </div>
 <div id="finePagina"></div>
 </body>

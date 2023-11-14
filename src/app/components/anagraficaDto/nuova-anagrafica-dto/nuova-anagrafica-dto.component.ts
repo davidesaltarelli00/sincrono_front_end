@@ -99,6 +99,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   dati: any = [];
   statoDiNascita: any;
   provinciaDiNascita: string = '';
+  ruolo: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -1891,6 +1892,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.ruolo=response.anagraficaDto.ruolo.nome;
       },
       (error: any) => {
         console.error(
