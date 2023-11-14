@@ -175,8 +175,7 @@ export class ProfileBoxComponent {
         this.anagrafica = response;
         this.id = response.anagraficaDto.anagrafica.id;
         this.username_accesso = response.anagraficaDto.anagrafica.mailAziendale;
-        this.codiceFiscaleUtenteLoggato =
-          response.anagraficaDto.anagrafica.codiceFiscale;
+        this.codiceFiscaleUtenteLoggato =response.anagraficaDto.anagrafica.codiceFiscale;
         this.bodyGet.setValue({
           codiceFiscale: this.codiceFiscaleUtenteLoggato,
         });
@@ -385,6 +384,7 @@ export class ProfileBoxComponent {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         localStorage.getItem('token');
+        console.log(JSON.stringify(response));
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.userLoggedFiscalCode =

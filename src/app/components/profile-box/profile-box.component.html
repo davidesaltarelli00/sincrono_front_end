@@ -220,7 +220,7 @@
                         <tr>
                           <th>Nome</th>
                           <th>Cognome</th>
-                          <th>Data e luogo di nascita</th>
+                          <!-- <th>Data e luogo di nascita</th> -->
                           <th>Codice fiscale</th>
                         </tr>
                       </thead>
@@ -228,12 +228,35 @@
                         <tr>
                           <td>{{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }}</td>
                           <td>{{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }}</td>
-                          <td *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita != null">
+                          <!-- <td *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita != null">
                             {{anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"}},
                             {{ anagrafica?.anagraficaDto.anagrafica?.comuneDiNascita }}
-                          </td>
+                          </td> -->
                           <td *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita == null">Dato non inserito.</td>
                           <td>{{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <br>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Cittadinanza</th>
+                          <th>Data di nascita</th>
+                          <th>Nazione di nascita</th>
+                          <th>Provincia di nascita</th>
+                          <th>Comune di nascita</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{anagrafica?.anagraficaDto.anagrafica?.cittadinanza ? anagrafica?.anagraficaDto.anagrafica?.cittadinanza : 'Dato non inserito' }}</td>
+                          <td>{{anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"  }}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita : 'Dato non inserito.'  }}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita : 'Dato non inserito.'  }}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita : 'Dato non inserito.'  }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -258,15 +281,27 @@
                       <tr>
                         <th>Cellulare aziendale</th>
                         <th>Cellulare privato</th>
-                        <th>Mail aziendale</th>
-                        <th>Mail privata</th>
-                        <th>Mail PEC</th>
+
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td>{{ anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale ? anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale : 'Dato non inserito.' }}</td>
                         <td>{{ anagrafica?.anagraficaDto.anagrafica?.cellularePrivato ? anagrafica?.anagraficaDto.anagrafica?.cellularePrivato : 'Dato non inserito.' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <br>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <th>Mail aziendale</th>
+                      <th>Mail privata</th>
+                      <th>Mail PEC</th>
+                    </thead>
+                    <tbody>
+                      <tr>
                         <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale ?  anagrafica?.anagraficaDto.anagrafica?.mailAziendale : 'Dato non inserito.' }}</td>
                         <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailPrivata ? anagrafica?.anagraficaDto.anagrafica?.mailPrivata : 'Dato non inserito.' }}</td>
                         <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailPec ? anagrafica?.anagraficaDto.anagrafica?.mailPec : 'Dato non inserito.' }}</td>
@@ -347,14 +382,20 @@
                 <table class="table table-striped">
                   <thead>
                     <tr>
-                      <th>Coniugato:</th>
-                      <th>Figli a carico:</th>
+                      <th>Coniugato</th>
+                      <th>Figli a carico</th>
+                      <th>Attesa lavori</th>
+                      <th>Categoria protetta</th>
+                      <th>Canale di reclutamento</th>
                     </tr>
                   </thead>
                  <tbody>
                   <tr>
                     <td>{{ anagrafica?.anagraficaDto.anagrafica?.coniugato ? 'Si' : 'No' }}</td>
                     <td>{{ anagrafica?.anagraficaDto.anagrafica?.figliACarico ? 'Si' : 'No' }}</td>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.attesaLavori ? 'Si' : 'No' }}</td>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.categoriaProtetta ? 'Si' : 'No' }}</td>
+                    <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoCanaleReclutamento?.descrizione ? anagrafica?.anagraficaDto?.contratto?.tipoCanaleReclutamento?.descrizione : 'Dato non inserito' }}</td>
                   </tr>
                  </tbody>
                 </table>
@@ -379,7 +420,6 @@
                         <th>Data Fine Rapporto</th>
                         <th>Sede Assunzione</th>
                         <th>Qualifica</th>
-                        <th>Canale reclutamento</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -391,7 +431,6 @@
                       <td>{{ anagrafica?.anagraficaDto?.contratto?.dataFineRapporto | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
                       <td>{{ anagrafica?.anagraficaDto?.contratto?.sedeAssunzione ? anagrafica?.anagraficaDto?.contratto?.sedeAssunzione : 'Dato non inserito' }}</td>
                       <td>{{ anagrafica?.anagraficaDto?.contratto?.qualifica ? anagrafica?.anagraficaDto?.contratto?.qualifica : 'Dato non inserito' }}</td>
-                      <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoCanaleReclutamento?.descrizione ? anagrafica?.anagraficaDto?.contratto?.tipoCanaleReclutamento?.descrizione : 'Dato non inserito' }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -409,17 +448,38 @@
                     <tbody>
                       <tr>
                         <td>
-                          {{anagrafica.anagraficaDto.contratto.tipoLivelloContratto.ccnl ? anagrafica.anagraficaDto.contratto.tipoLivelloContratto.ccnl :'Dato non inserito' }}
+                          {{anagrafica?.anagraficaDto.contratto?.tipoLivelloContratto?.ccnl ? anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.ccnl :'Dato non inserito' }}
                         </td>
                         <td>
-                          {{anagrafica.anagraficaDto.contratto.tipoLivelloContratto.livello ? anagrafica.anagraficaDto.contratto.tipoLivelloContratto.livello : 'Dato non inserito.'}}
+                          {{anagrafica?.anagraficaDto.contratto?.tipoLivelloContratto?.livello ? anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.livello : 'Dato non inserito.'}}
                         </td>
                         <td>
-                          {{anagrafica.anagraficaDto.contratto.tipoLivelloContratto.minimiRet23 ? anagrafica.anagraficaDto.contratto.tipoLivelloContratto.minimiRet23 : 'Dato non inserito.'}}
+                          {{anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.minimiRet23 ? anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.minimiRet23 : 'Dato non inserito.'}}
                         </td>
                         <td>
-                          {{anagrafica.anagraficaDto.contratto.tipoCcnl.numeroMensilita ? anagrafica.anagraficaDto.contratto.tipoCcnl.numeroMensilita : 'Dato non inserito.'}}
+                          {{anagrafica?.anagraficaDto?.contratto?.tipoCcnl?.numeroMensilita ? anagrafica?.anagraficaDto?.contratto?.tipoCcnl?.numeroMensilita : 'Dato non inserito.'}}
                         </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Retribuzione mensile lorda</th>
+                        <th>Superminimo mensile</th>
+                        <th>Scatti anzianitá</th>
+                        <th>Retribuzione netta mensile</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{anagrafica?.anagraficaDto.contratto?.retribuzioneMensileLorda ? anagrafica?.anagraficaDto.contratto?.retribuzioneMensileLorda : 'Dato non inserito' }}</td>
+                        <td>{{anagrafica?.anagraficaDto.contratto?.superminimoMensile ? anagrafica?.anagraficaDto.contratto?.superminimoMensile : 'Dato non inserito'}}</td>
+                        <td>{{anagrafica?.anagraficaDto.contratto?.scattiAnzianita ? anagrafica?.anagraficaDto.contratto?.scattiAnzianita : 'Dato non inserito'}}</td>
+                        <td>{{anagrafica?.anagraficaDto.contratto?.retribuzioneNettaMensile ? anagrafica?.anagraficaDto.contratto?.retribuzioneNettaMensile : 'Dato non inserito'}}</td>
+                        <td></td>
                       </tr>
                     </tbody>
                   </table>
@@ -456,8 +516,9 @@
                         <td>{{ commessa.clienteFinale }}</td>
                         <td>{{ commessa.titoloPosizione }}</td>
                         <td>{{ commessa.distacco === true ? 'Si' : (commessa.distacco === false ? 'No' : 'Dato non inserito') | titlecase }}</td>
-                        <td>{{ commessa.dataInizio | date: 'dd/MM/yyyy' }}</td>
-                        <td >{{ commessa.dataFine| date: 'dd/MM/yyyy' }}</td>
+                        <!--<td>{{ data?.anagrafica?.dataDiNascita ? (data?.anagrafica?.dataDiNascita | date : "dd/MM/yyyy") : 'Dato non inserito' }}</td>-->
+                        <td>{{ commessa.dataInizio ? (commessa.dataInizio | date: 'dd/MM/yyyy') : 'Dato non inserito' }}</td>
+                        <td >{{ commessa.dataFine ? (commessa.dataFine | date: 'dd/MM/yyyy') : 'Dato non inserito' }}</td>
                         <td>{{ commessa.tariffaGiornaliera ? commessa.tariffaGiornaliera: 'Dato non inserito' }} <i [hidden]="!commessa.tariffaGiornaliera" class="fa-solid fa-euro-sign"></i></td>
                         <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
                         <td>
