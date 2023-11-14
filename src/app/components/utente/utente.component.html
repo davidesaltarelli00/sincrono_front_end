@@ -253,26 +253,27 @@
             </div>
           </div>
           <div class="row">
-
-            <div class="col-3">
+            <div class="col-2"></div>
+            <div class="col-2">
               <button style="width: 30px; height: 30px;"  mat-mini-fab color="primary" (click)=" mostraNascondiStraordinari(i,j)" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Extra time" > <i class="fa fa-clock" ></i> </button>
             </div>
-            <div class="col-3">
+            <div class="col-2">
               <button style="width: 30px; height: 30px;" (click)="mostraNascondiPermessi(i)" mat-mini-fab color="primary" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Assenze" > <i class="fa fa-ban" ></i> </button>
             </div>
-            <div class="col-3">
+            <div class="col-2">
               <button style="width: 30px; height: 30px;" [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie || aziendeClienti.length<1 " mat-mini-fab id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga"><i  class="fa fa-clone"></i></button>
             </div>
-            <div class="col-3">
+            <div class="col-2">
               <button style="width: 30px; height: 30px;" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" mat-mini-fab color="warn" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga" ><i  class="fa fa-trash"></i></button>
             </div>
+            <div class="col-2"></div>
           </div>
 
           <!--straordinari-->
            <div class="row" *ngIf="checkstraordinari || showStraordinari[i]?.[j]"  >
             <div class="col-4" >
              <div class="form-group">
-              <label for="fascia1-{{ i }}{{j}}">18-20</label>
+              <label for="fascia1-{{ i }}{{j}}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">18-20</label>
               <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
               type="text" class="form-control form-control-sm"
               step="0.5" min="0" max="2"
@@ -282,7 +283,7 @@
             </div>
             <div class="col-4" >
              <div class="form-group">
-              <label for="fascia2-{{ i }}{{j}}">20-22</label>
+              <label for="fascia2-{{ i }}{{j}}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">20-22</label>
               <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
               type="text" class="form-control form-control-sm"
               step="0.5" min="0" max="2"
@@ -292,7 +293,7 @@
             </div>
             <div class="col-4" >
               <div class="form-group">
-                <label for="fascia3-{{ i }}{{j}}">22-09</label>
+                <label for="fascia3-{{ i }}{{j}}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">22-09</label>
                 <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
                 type="text" class="form-control form-control-sm"
                 step="0.5" min="0" max="13"
@@ -320,7 +321,7 @@
         <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] ">
           <div class="col-4" >
            <div class="form-group">
-            <label for="permessi-{{ i }}">Permessi</label>
+            <label for="permessi-{{ i }}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Permessi</label>
             <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
             type="text" class="form-control form-control-sm"
             step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
@@ -330,7 +331,7 @@
           </div>
           <div class="col-4" >
            <div class="form-group">
-            <label for="permessiRole-{{ i }}">Role</label>
+            <label for="permessiRole-{{ i }}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Role</label>
             <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
             type="text" class="form-control form-control-sm"
             step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
@@ -340,7 +341,7 @@
           </div>
           <div class="col-4" >
            <div class="form-group">
-            <label for="permessiExfestivita-{{ i }}">Festivitá</label>
+            <label for="permessiExfestivita-{{ i }}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Festivitá</label>
             <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
             type="text" class="form-control form-control-sm"
             step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"

@@ -932,7 +932,7 @@ export class UtenteComponent implements OnInit {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
           Image: '../../../../assets/images/logo.jpeg',
-          title: 'Attenzione',
+          // title: 'Attenzione',
           message: "Invio delle note all'admin annullato.",
         },
       });
