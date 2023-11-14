@@ -224,7 +224,7 @@
      <div class="row">
       <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="text-align: center;" >
         <mat-card [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' : 'rgb(214, 234, 251)'}" >
-          <p style=" margin: 0;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}</p>
+          <p style=" margin: 0;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }} <i class="fa fa-calendar" matTooltip="Segna come festivo."></i></p>
        <div class="container-card" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
           <div class="row">
             <div class="col-8">
@@ -256,9 +256,6 @@
             <div class="col-2"></div>
             <div class="col-2">
               <button style="width: 30px; height: 30px;"  mat-mini-fab color="primary" (click)=" mostraNascondiStraordinari(i,j)" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Extra time" > <i class="fa fa-clock" ></i> </button>
-            </div>
-            <div class="col-2">
-              <button style="width: 30px; height: 30px;" (click)="mostraNascondiPermessi(i)" mat-mini-fab color="primary" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Assenze" > <i class="fa fa-ban" ></i> </button>
             </div>
             <div class="col-2">
               <button style="width: 30px; height: 30px;" [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie || aziendeClienti.length<1 " mat-mini-fab id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga"><i  class="fa fa-clone"></i></button>
@@ -318,7 +315,33 @@
           </div>
         </div>
        </div> -->
-        <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] ">
+
+        <div class="row">
+           <div class="col-4">
+            <div class="form-group">
+              <label for="onSite-{{i}}">On site</label><br>
+                <input (change)="onChangePresenza($event)" [(ngModel)]="giorno.checkOnSite"
+                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkSmartworking"
+                class="form-check-input" type="checkbox" id="onSite-{{i}}">
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <label for="smartworking-{{i}}">Smartworking</label><br>
+                <input (change)="onChangeSmartworking($event)" [(ngModel)]="giorno.checkSmartWorking"
+                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite"
+                class="form-check-input" type="checkbox" id="smartworking-{{i}}">
+            </div>
+          </div>
+           <div class="col-4">
+            <div class="form-group">
+              <label for="assenze">Assenza</label>
+            <button style="width: 30px; height: 30px;" (click)="mostraNascondiPermessi(i)" mat-mini-fab color="primary"
+            [disabled]="risultatoCheckFreeze" matTooltip="Assenze" > <i class="fa fa-ban" ></i> </button>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] " style="border-top: 1px solid #f1f1f1;">
           <div class="col-4" >
            <div class="form-group">
             <label for="permessi-{{ i }}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Permessi</label>
@@ -349,25 +372,7 @@
             [(ngModel)]="giorno.permessiExfestivita">
            </div>
           </div>
-        </div>
-        <div class="row">
-           <div class="col-3">
-            <div class="form-group">
-              <label for="onSite-{{i}}">Sede</label><br>
-                <input (change)="onChangePresenza($event)" [(ngModel)]="giorno.checkOnSite"
-                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkSmartworking"
-                class="form-check-input" type="checkbox" id="onSite-{{i}}">
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="form-group">
-              <label for="smartworking-{{i}}">Smart</label><br>
-                <input (change)="onChangeSmartworking($event)" [(ngModel)]="giorno.checkSmartWorking"
-                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite"
-                class="form-check-input" type="checkbox" id="smartworking-{{i}}">
-            </div>
-          </div>
-          <div class="col-2">
+          <div class="col-4">
             <div class="form-group">
              <label for="ferie-{{ i }}">Ferie</label> <br>
              <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.malattie || giorno.checkOnSite || giorno.checkSmartWorking "
@@ -375,7 +380,7 @@
              id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
             </div>
            </div>
-           <div class="col-2">
+           <div class="col-4">
            <div class="form-group">
              <label for="malattie-{{i}}">Malattia</label><br>
              <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.ferie || giorno.checkOnSite || giorno.checkSmartWorking "
@@ -384,7 +389,6 @@
            </div>
            </div>
         </div>
-
         <div class="row">
           <div class="col-5">
           <div class="form-group">

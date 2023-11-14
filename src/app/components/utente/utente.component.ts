@@ -790,7 +790,7 @@ export class UtenteComponent implements OnInit {
       const giorno = giorni[i];
       let almenoUnCampoPermessiValorizzato = false;
 
-      if (giorno.permessi || giorno.permessiRole || giorno.permessiExfestivita) {
+      if (giorno.permessi || giorno.permessiRole || giorno.permessiExfestivita || giorno.ferie || giorno.malattie ) {
         almenoUnCampoPermessiValorizzato = true;
       }
 
@@ -799,7 +799,8 @@ export class UtenteComponent implements OnInit {
         (duplicazione: any) =>
           duplicazione.permessi === null &&
           duplicazione.permessiRole === null &&
-          duplicazione.permessiExfestivita === null
+          duplicazione.permessiExfestivita === null &&
+          duplicazione.ferie === null && duplicazione.malattie === null
       );
 
       // Imposta la visibilità in base alla condizione
