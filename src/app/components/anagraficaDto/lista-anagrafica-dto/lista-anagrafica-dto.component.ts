@@ -42,8 +42,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   inserimentoParziale: any;
   contrattoScaduto: any;
   ruolo: any;
-  toggleMode: boolean=false;
-
+  toggleMode: boolean = false;
 
   aziendeClienti: any[] = [];
 
@@ -83,8 +82,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
     contratto: new FormGroup({
       ralAnnua: new FormControl(null),
-      dataAssunzione: new FormControl(null),
-      dataFineRapporto: new FormControl(null),
+      meseAssunzione: new FormControl(null),
+      annoAssunzione: new FormControl(null),
+      meseFineRapporto: new FormControl(null),
+      annoFineRapporto: new FormControl(null),
 
       tipoLivelloContratto: new FormGroup({
         id: new FormControl(null),
@@ -139,6 +140,11 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   idCCNLselezionato: any;
   contratto: any;
 
+  // Dichiarazione dell'array dei mesi
+  mesi: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+  anni: number[] = [];
+
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
@@ -180,8 +186,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       }),
       contratto: new FormGroup({
         ralAnnua: new FormControl(null),
-        dataAssunzione: new FormControl(null),
-        dataFineRapporto: new FormControl(null),
+        meseAssunzione: new FormControl(null),
+        annoAssunzione: new FormControl(null),
+        meseFineRapporto: new FormControl(null),
+        annoFineRapporto: new FormControl(null),
         tipoLivelloContratto: new FormGroup({
           id: new FormControl(),
           livello: new FormControl(null),
@@ -210,20 +218,36 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     });
 
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
+
+
+    this.popolaAnni();
+  }
+
+  getOpzioniMesi(): number[] {
+    return this.mesi;
+  }
+
+  // Metodo per popolare l'array degli anni dal 2010 all'anno corrente
+  popolaAnni(): void {
+    const annoCorrente = new Date().getFullYear();
+
+    for (let anno = 2010; anno <= annoCorrente; anno++) {
+      this.anni.push(anno);
+    }
   }
 
   goDown() {
-    document.getElementById("finePagina")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "nearest"
+    document.getElementById('finePagina')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
     });
   }
   goTop() {
-    document.getElementById("inizioPagina")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "nearest"
+    document.getElementById('inizioPagina')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
     });
   }
 
@@ -256,19 +280,17 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   caricaAziendeClienti() {
-    this.contrattoService
-      .getAllAziendaCliente(this.token)
-      .subscribe(
-        (result: any) => {
-          console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
-          this.aziendeClienti = (result as any)['list'];
-        },
-        (error: any) => {
-          console.error(
-            'errore durante il caricamento dei nomi azienda:' + error
-          );
-        }
-      );
+    this.contrattoService.getAllAziendaCliente(this.token).subscribe(
+      (result: any) => {
+        console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+        this.aziendeClienti = (result as any)['list'];
+      },
+      (error: any) => {
+        console.error(
+          'errore durante il caricamento dei nomi azienda:' + error
+        );
+      }
+    );
   }
 
   onChangeAttivo(event: any) {
@@ -292,8 +314,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       this.getUserLogged();
       this.getUserRole();
       this.caricaAziendeClienti();
-    } else{
-      console.error("errore di autenticazione.")
+    } else {
+      console.error('errore di autenticazione.');
     }
 
     const commessaFormGroup = this.creaFormCommessa();
@@ -1028,7 +1050,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         this.getImage();
       },
       (error: any) => {
-        console.error('Si é verificato il seguente errore durante il recupero dei dati : ' +error);
+        console.error(
+          'Si é verificato il seguente errore durante il recupero dei dati : ' +
+            error
+        );
         this.authService.logout();
       }
     );
@@ -1066,21 +1091,23 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        console.log(
-          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        );
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-        this.jsonData = { list: [] };
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          console.log(
+            JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          );
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
 
   getPermissions(functionId: number) {
@@ -1133,8 +1160,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   toggleDarkMode() {
     this.toggleMode = !this.toggleMode;
   }
-
-
 }
 
 interface MenuData {

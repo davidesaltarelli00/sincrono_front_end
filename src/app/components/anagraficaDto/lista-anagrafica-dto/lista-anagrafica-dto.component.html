@@ -343,6 +343,45 @@
                 <div class="row">
                   <div class="col-md-3">
                     <div class="form-group">
+                      <label for="meseAssunzione">Mese di assunzione</label>
+                      <select name="meseAssunzione" id="meseAssunzione" class="form-select" formControlName="meseAssunzione">
+                        <option value="" selected [value]="null">---Nessuna selezione---</option>
+                        <option *ngFor="let mese of getOpzioniMesi()" [value]="mese">{{ mese }}</option>
+                      </select>
+
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="annoAssunzione">Anno di assunzione</label>
+                    <select name="annoAssunzione" id="annoAssunzione" class="form-select" formControlName="annoAssunzione">
+                      <option value="" selected [value]="null">---Nessuna selezione---</option>
+                      <option *ngFor="let anno of anni" [value]="anno">{{ anno }}</option>
+                    </select>
+
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="meseFineRapporto">Mese di fine rapporto</label>
+                      <select name="meseFineRapporto" id="meseFineRapporto" class="form-select" formControlName="meseFineRapporto">
+                        <option value="" selected [value]="null">---Nessuna selezione---</option>
+                        <option *ngFor="let mese of getOpzioniMesi()" [value]="mese">{{ mese }}</option>
+                      </select>
+
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="annoAssunzione">Anno di fine rapporto</label>
+                    <select name="annoFineRapporto" id="annoFineRapporto" class="form-select" formControlName="annoFineRapporto">
+                      <option value="" selected [value]="null">---Nessuna selezione---</option>
+                      <option *ngFor="let anno of anni" [value]="anno">{{ anno }}</option>
+                    </select>
+
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group">
                       <label for="ralAnnua">RAL Annua</label>
                       <input (keyup)="filter(filterAnagraficaDto.value)" type="text" id="contratto.ralAnnua"
                         class="form-control" name="ralAnnua" formControlName="ralAnnua"
