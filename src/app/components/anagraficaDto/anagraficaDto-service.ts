@@ -251,4 +251,16 @@ export class AnagraficaDtoService {
       headers: headers,
     });
   }
+
+  salvaDocumento(body: any, token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<any>(`http://localhost:8080/services/inserisci-excel`, body, {
+      headers: headers,
+    });
+  }
+
 }

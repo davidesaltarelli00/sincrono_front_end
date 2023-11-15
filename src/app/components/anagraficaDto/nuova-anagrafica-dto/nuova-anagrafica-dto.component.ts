@@ -20,6 +20,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { MenuService } from '../../menu.service';
 import { MapsService } from './maps.service';
+import * as XLSX from 'xlsx';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -67,7 +68,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   ccnLSelezionato = false;
   elencoLivelliCCNL: any[] = [];
   risultatoMensileTOT: any;
-//org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : it.sincrono.entities.Commessa.tipoAziendaCliente -> it.sincrono.entities.TipoAziendaCliente"
+  //org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : it.sincrono.entities.Commessa.tipoAziendaCliente -> it.sincrono.entities.TipoAziendaCliente"
   //dati per i controlli nei form
   inseritoContrattoIndeterminato = true;
   idLivelloContratto: any;
@@ -81,7 +82,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   tipoContratto: any;
   mobile: boolean;
   aziendeClienti: any[] = [];
-
+  selectedFileName: string = '';
+  previewData: string | undefined;
   //navbar
   userLoggedName: any;
   userLoggedSurname: any;
@@ -100,6 +102,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   statoDiNascita: any;
   provinciaDiNascita: string = '';
   ruolo: any;
+  base64Documento:any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -427,23 +430,26 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
     // Se "Italia" è selezionata, ottieni tutte le province italiane
     if (this.statoDiNascita === 'Italia') {
-      this.province = this.dati
-        .find((item: any) => item.nazione === 'Italia')
-        ?.province.flatMap((regione: any) => regione.province) || [];
+      this.province =
+        this.dati
+          .find((item: any) => item.nazione === 'Italia')
+          ?.province.flatMap((regione: any) => regione.province) || [];
 
       // Inoltre, imposta le capitali italiane
-      this.capitali = this.dati
-        .find((item: any) => item.nazione === 'Italia')
-        ?.province.map((regione: any) => regione.capitale) || [];
+      this.capitali =
+        this.dati
+          .find((item: any) => item.nazione === 'Italia')
+          ?.province.map((regione: any) => regione.capitale) || [];
     } else {
       // Altrimenti, filtra le province in base alla nazione selezionata
-      this.province = this.dati
-        .find((item: any) => item.nazione === this.statoDiNascita)
-        ?.province || [];
+      this.province =
+        this.dati.find((item: any) => item.nazione === this.statoDiNascita)
+          ?.province || [];
 
       // Recupera la capitale della nazione selezionata
-      const capitaleNazione = this.dati
-        .find((item: any) => item.nazione === this.statoDiNascita)?.capitale;
+      const capitaleNazione = this.dati.find(
+        (item: any) => item.nazione === this.statoDiNascita
+      )?.capitale;
 
       // Se la capitale è definita, aggiungila all'array delle capitali
       if (capitaleNazione) {
@@ -451,14 +457,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       }
     }
 
-    console.log("Nazione selezionata: " + this.statoDiNascita);
-    console.log("Province selezionate: " + JSON.stringify(this.province));
-    console.log("Capitali selezionate: " + JSON.stringify(this.capitali));
+    console.log('Nazione selezionata: ' + this.statoDiNascita);
+    console.log('Province selezionate: ' + JSON.stringify(this.province));
+    console.log('Capitali selezionate: ' + JSON.stringify(this.capitali));
   }
-
-
-
-
 
   calcoloRAL() {
     const retribuzioneMensileLorda = this.AnagraficaDto.get(
@@ -1481,27 +1483,29 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                 },
               });
             }
-            if ((result as any).esito.target === "org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : it.sincrono.entities.Commessa.tipoAziendaCliente -> it.sincrono.entities.TipoAziendaCliente") {
+            if (
+              (result as any).esito.target ===
+              'org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : it.sincrono.entities.Commessa.tipoAziendaCliente -> it.sincrono.entities.TipoAziendaCliente'
+            ) {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
                   image: '../../../../assets/images/danger.png',
                   title: 'Inserimento non riuscito:',
-                  message: "Non hai inserito l'azienda cliente in una o piú commesse.",
+                  message:
+                    "Non hai inserito l'azienda cliente in una o piú commesse.",
                 },
               });
-            }
-
-            else {
+            } else {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
                   image: '../../../../assets/images/logo.jpeg',
                   title: 'Inserimento effettuato.',
-                  message: " E' stata inviata una mail all'utente con la password per accedere al sistema. " ,
+                  message:
+                    " E' stata inviata una mail all'utente con la password per accedere al sistema. ",
                 },
               });
               // console.log(this.AnagraficaDto.value);
               this.router.navigate(['/lista-anagrafica']);
-
             }
           },
           (error: any) => {
@@ -1894,7 +1898,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.ruolo=response.anagraficaDto.ruolo.nome;
+        this.ruolo = response.anagraficaDto.ruolo.nome;
       },
       (error: any) => {
         console.error(
@@ -1961,4 +1965,63 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       }
     );
   }
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+
+    if (file) {
+      this.selectedFileName = file.name;
+
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        const data: ArrayBuffer = e.target.result;
+        const base64String: string = this.arrayBufferToBase64(data);
+        this.previewExcel(base64String);
+        this.base64Documento=base64String;
+      };
+
+      reader.readAsArrayBuffer(file);
+    }
+  }
+
+  arrayBufferToBase64(buffer: ArrayBuffer): string {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+
+    return btoa(binary);
+  }
+
+  previewExcel(base64String: string): void {
+    const workbook: XLSX.WorkBook = XLSX.read(base64String, { type: 'base64' });
+
+    // Assuming the first sheet is the one you want to preview
+    const firstSheetName = workbook.SheetNames[0];
+    const worksheet: XLSX.WorkSheet = workbook.Sheets[firstSheetName];
+
+    // Convert the worksheet to HTML
+    const htmlString: string = XLSX.write(workbook, { bookType: 'html', type: 'string' });
+
+    // Display the preview
+    this.previewData = htmlString;
+  }
+
+  salvaDocumento(){
+    let body={
+      base64: this.base64Documento
+    };
+    console.log("BODY PER SALVATAGGIO DOCUMENTI: "+JSON.stringify(body));
+    this.anagraficaDtoService.salvaDocumento(body, this.token).subscribe(
+      (result:any)=>{
+        console.log("RISULTATO SALVATAGGIO DOCUMENTI: " + JSON.stringify(result) )
+      },
+      (error:any)=>{
+        console.error(error);
+      }
+    );
+  }
+
 }

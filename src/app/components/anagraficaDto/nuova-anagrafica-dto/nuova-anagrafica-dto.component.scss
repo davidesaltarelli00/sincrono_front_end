@@ -390,3 +390,16 @@ input[type="text"] {
     margin-bottom: 10px;
   }
 }
+
+.preview-container {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+}
+
+.excel-preview {
+  overflow-x: auto; /* Per gestire l'overflow orizzontale in caso di tabelle lunghe */
+  max-height: 300px; /* Imposta un'altezza massima per evitare che l'anteprima diventi troppo grande */
+}

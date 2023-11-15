@@ -1460,12 +1460,46 @@
                         <br />
                         <div class="text-center">
                           <button mat-button matStepperPrevious>«Indietro</button> &nbsp;
+                          <button mat-button matStepperNext>Avanti»</button>
+
                         </div>
                       </mat-card-content>
                     </mat-card>
                   </div>
                 </div>
               </mat-step>
+              <mat-step>
+                <ng-template matStepLabel>Documenti</ng-template>
+                <div class="row">
+                  <div class="col-12">
+                    <mat-card>
+                      <mat-card-title class="text-center" ><h1>Caricamento documenti</h1></mat-card-title>
+                      <mat-card-subtitle class="text-center"><h3>Carica qui i tuoi documenti</h3></mat-card-subtitle>
+                      <mat-card-content class="text-center" >
+
+                        <div *ngIf="!previewData" >
+                          <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" accept=".xlsx, .xls">
+                          <button class="text-center" mat-raised-button color="primary" (click)="fileInput.click()">
+                            <mat-icon>cloud_upload</mat-icon> Carica file Excel
+                          </button>
+                        </div>
+                      <div *ngIf="previewData" class="preview-container">
+                   <h4>{{ selectedFileName }}</h4>
+                     <div [innerHTML]="previewData" class="excel-preview"></div>
+                      </div>
+                      </mat-card-content>
+                      <mat-card-footer class="text-center" *ngIf="previewData">
+                        <button class="btn btn-success" mattooltip="Salva documento" (click)="salvaDocumento()"  > <i class="fa fa-save" ></i> </button>
+                      </mat-card-footer>
+                    </mat-card>
+
+                  </div>
+                </div>
+                <div class="text-center">
+                  <button mat-button matStepperPrevious>«Indietro</button> &nbsp;
+                  <!-- <button mat-button matStepperNext>Avanti»</button> -->
+                </div>
+                </mat-step>
             </mat-stepper>
             <div class="row">
               <div class="col-6" style="text-align: end">
