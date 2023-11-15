@@ -1,1 +1,232 @@
+<<<<<<< HEAD
 button {  background-color: rgb(24, 122, 0);  color: white;}button:hover {  background-color: rgb(24, 122, 0);  color: white;}mat-expansion-panel{  margin: 5px;  box-shadow: 2px #ccc;}footer {  position: fixed;  left: 0;  bottom: 0;  width: 100%;  background-color: #333;  color: #fff;  padding: 10px;  text-align: center;}  .pagination {    display: flex;    justify-content: center;    align-items: center;    margin-top: 20px;  }  .pagination ul {    list-style: none;    padding: 0;    display: flex;    align-items: center;  }  .pagination li {    margin: 0 5px;    cursor: pointer;    padding: 5px 10px;    border: 1px solid #ccc;    border-radius: 5px;    transition: background-color 0.3s, color 0.3s;  }  .pagination li.disabled {    pointer-events: none;    background-color: #f5f5f5;    color: #ccc;    border: 1px solid #ccc;  }  .pagination li.active {    background-color: #007bff;    color: #fff;    border: 1px solid #007bff;  }  .pagination li:hover {    background-color: #ccc;    color: #333;    border: 1px solid #333;  }
+=======
+* {
+  box-sizing: border-box;
+}
+
+.custom-picker {
+  display: flex;
+  flex-wrap: wrap; /* Ensure it wraps to the next line if needed */
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.custom-picker mat-form-field {
+  flex: 1; /* Let the form field take as much space as possible */
+  margin-right: 10px;
+}
+
+
+button {
+  background-color: rgb(24, 122, 0);
+  color: white;
+  padding: 2px 4px;
+  margin-left: 10px;
+}
+
+
+button:hover {
+  background-color: rgb(24, 122, 0);
+  color: white;
+}
+
+mat-expansion-panel {
+  margin: 5px;
+  box-shadow: 2px #ccc;
+
+}
+
+body {
+  background-color: aliceblue;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+
+/* Reduce padding for table cells */
+.table th,
+.table td {
+  padding: 4px 8px;
+  /* Adjust as needed */
+}
+
+/* Reduce line height for table cells */
+.table th,
+.table td {
+  line-height: 1;
+  /* Adjust as needed */
+}
+
+/* Reduce the spacing between table rows */
+.table tbody tr {
+  margin-bottom: 5px;
+  /* Adjust as needed */
+}
+
+/* Reduce spacing between table header and cells */
+.table thead th,
+.table tbody td {
+  padding-top: 6px;
+  /* Adjust as needed */
+  padding-bottom: 6px;
+  /* Adjust as needed */
+}
+
+/* Reduce spacing between table rows when hovered */
+.table tbody tr:hover {
+  background-color: transparent;
+  /* Remove hover background color if desired */
+}
+
+
+
+// paginazione
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.pagination li {
+  margin: 0 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination li.disabled {
+  pointer-events: none;
+  background-color: #f5f5f5;
+  color: #ccc;
+  border: 1px solid #ccc;
+}
+
+.pagination li.active {
+  background-color: #007bff;
+  color: #fff;
+  border: 1px solid #007bff;
+}
+
+.pagination li:hover {
+  background-color: #ccc;
+  color: #333;
+  border: 1px solid #333;
+}
+
+.container-fluid {
+  background-color: aliceblue;
+}
+
+tr:hover {
+  background-color: aliceblue;
+}
+
+table {
+  width: 100%;
+  overflow-x: auto;
+  display: block;
+  /* Ensure the table has a block-level container */
+}
+
+@media (max-width: 768px) {
+  table {
+    font-size: 14px;
+    /* Reduce font size for smaller screens */
+  }
+
+  th,
+  td {
+    padding: 5px;
+    /* Adjust padding for smaller screens */
+  }
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+
+  td,
+  th {
+    text-align: center;
+  }
+}
+
+
+
+.mobile-select mat-select {
+  font-size: 16px; // Adjust the font size as needed
+  width: 100%;
+  max-width: 300px;
+}
+
+.mobile-select mat-option {
+  font-size: 16px; // Adjust the font size as needed
+  color: #333; // Change the text color to make it readable
+  background-color: #fff; // Set a background color for the options
+}
+
+
+/* Media query for screens smaller than 768px (typical mobile devices) */
+@media screen and (max-width: 768px) {
+  .custom-picker {
+    flex-direction: column; /* Stack the pickers vertically on small screens */
+    align-items: flex-start; /* Align pickers to the left */
+  }
+}
+@media (max-width: 600px) {
+  .container-toolbar {
+    /* Styles for smaller screens (e.g., mobile devices) */
+    background-color: #333; /* Change background color */
+    padding: 10px; /* Add padding around the container */
+    text-align: center; /* Center the content in the container */
+  }
+
+  .logo-link {
+    display: block; /* Make the logo a block-level element */
+    margin: 0 auto; /* Center the logo horizontally */
+  }
+
+  .logo-image {
+    width: 60px; /* Adjust the logo image size for mobile */
+    height: 60px;
+  }
+
+  .mobile-select {
+    width: 100%; /* Make the select element full-width */
+  }
+
+  .user-icon, .logout-icon {
+    display: block; /* Make the icon buttons block-level elements */
+    margin: 10px auto; /* Center the icon buttons horizontally with some spacing */
+  }
+
+  .user-icon i, .logout-icon i {
+    font-size: 24px; /* Adjust icon size for mobile */
+  }
+}
+>>>>>>> develop

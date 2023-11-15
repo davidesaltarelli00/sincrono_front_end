@@ -23,6 +23,12 @@ import { FormRecuperoPasswordComponent } from './components/form-recupero-passwo
 import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
 import { UtenteComponent } from './components/utente/utente.component';
 import { GiornoComponent } from './components/giorno/giorno.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { RisultatiFilterOrganicoComponent } from './components/organico/risultati-filter-organico/risultati-filter-organico.component';
+import { ListaRapportiniComponent } from './components/lista-rapportini/lista-rapportini.component';
+import { ModaleDettaglioRapportinoComponent } from './components/modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
+import { ImmagineComponent } from './components/immagine/immagine.component';
+import { RichiesteComponent } from './components/richieste/richieste.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -125,6 +131,11 @@ const routes: Routes = [
     component: ListaDashboardComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
+  {
+    path: 'immagine',
+    component: ImmagineComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
 
   //ORGANICO
   {
@@ -143,6 +154,23 @@ const routes: Routes = [
     component: StoricoContrattiComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'lista-rapportini',
+    component: ListaRapportiniComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'dettaglio-rapportino/:id/:nome/:cognome/:codiceFiscale/:mese/:anno',
+    component: ModaleDettaglioRapportinoComponent,
+    canActivate: [AuthGuard],
+  },
+
+  {
+    path: 'risultati-filter-organico',
+    component: RisultatiFilterOrganicoComponent,
+    canActivate: [AuthGuard],
+    pathMatch: 'full',
+  },
 
   //STORICO COMMESSE
   {
@@ -150,10 +178,15 @@ const routes: Routes = [
     component: StoricoCommesseComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'richieste',
+    component: RichiesteComponent,
+    canActivate: [AuthGuard],
+  },
 
   //CALENDARIO
   {
-    path: 'utente',
+    path: 'utente/:id',
     component: UtenteComponent,
     canActivate: [AuthGuard],
   },
@@ -162,6 +195,8 @@ const routes: Routes = [
     component: GiornoComponent,
     canActivate: [AuthGuard],
   },
+  { path: 'not-found', component: NotFoundComponent },
+  { path: '**', redirectTo: '/not-found' },
 ];
 
 @NgModule({

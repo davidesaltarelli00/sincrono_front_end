@@ -1,28 +1,32 @@
-/* Stile generale */
-.container-fluid {
-  padding: 20px;
+/* Stili per schermi di larghezza superiore a 768px (desktop) */
+
+body{
+  background-color: aliceblue;
+
 }
 
-/* Titolo principale */
-h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
+.container-fluid{
+  background-color: aliceblue;
+
 }
 
-/* Sezioni */
-.row {
-  margin-bottom: 20px;
+table,th,td{
+  text-align: center;
+  margin: auto;
 }
 
-/* Colonnes */
-.col-md-6 {
-  flex-basis: calc(50% - 20px);
-  padding: 10px;
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }
 
-/* Lista con titoli */
-ul {
+.pagination ul {
   list-style: none;
+<<<<<<< HEAD
   padding-left: 0;
 }
 
@@ -65,9 +69,14 @@ ul li {
 ul {
   list-style: none;
   /* Rimuove i bullet points predefiniti */
+=======
+>>>>>>> develop
   padding: 0;
+  display: flex;
+  align-items: center;
 }
 
+<<<<<<< HEAD
 /* Stile per gli elementi <li> all'interno della lista */
 ul li {
   margin-bottom: 10px;
@@ -141,4 +150,141 @@ img {
   background-color: #ccc;
   color: #333;
   border: 1px solid #333;
+=======
+.pagination li {
+  margin: 0 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination li.disabled {
+  pointer-events: none;
+  background-color: #f5f5f5;
+  color: #ccc;
+  border: 1px solid #ccc;
+}
+
+.pagination li.active {
+  background-color: #007bff;
+  color: #fff;
+  border: 1px solid #007bff;
+}
+
+.pagination li:hover {
+  background-color: #ccc;
+  color: #333;
+  border: 1px solid #333;
+}
+
+
+@media (min-width: 769px) {
+  .container-fluid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: aliceblue;
+  }
+  .row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px 0;
+  }
+  .col-4 {
+    width: 33.33%;
+    padding: 10px;
+  }
+}
+
+/* Stili per schermi di larghezza inferiore o uguale a 768px (mobile) */
+@media (max-width: 768px) {
+  .container-fluid {
+    padding: 10px;
+    background-color: aliceblue;
+  }
+  .row {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+  }
+  .col-4 {
+    width: 100%;
+    padding: 10px;
+  }
+  /* Aggiungi altri stili CSS per adattare il contenuto mobile secondo le tue esigenze */
+}
+
+
+mat-card{
+  margin-bottom: 10px;
+}.image-container {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  margin: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 20px;
+  color: #007bff; /* Colore blu per l'icona "Salva" */
+  z-index: 2;
+}
+
+.add-button:hover {
+  color: #0056b3; /* Colore blu più scuro al passaggio del mouse */
+}
+
+.image-preview {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #ccc;
+}
+
+.preview-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.cancel-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  font-size: 20px;
+  color: white;
+  background-color: #ff0000;
+  z-index: 1;
+}
+
+.fixed-button-container {
+  position: fixed;
+  bottom: 40px;
+  right: 15px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.fixed-button-container button {
+  margin: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 100%;
+>>>>>>> develop
 }

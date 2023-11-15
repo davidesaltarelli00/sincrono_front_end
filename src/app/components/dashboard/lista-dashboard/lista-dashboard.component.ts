@@ -1,9 +1,9 @@
-import { Commessa } from './../../anagraficaDto/nuova-anagrafica-dto/commessa';
+import { ImageService } from './../../image.service';
 import { AnagraficaDtoService } from '../../anagraficaDto/anagraficaDto-service';
 import { ContrattoService } from './../../contratto/contratto-service';
 import { DashboardService } from './../dashboard-service.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { saveAs } from 'file-saver';
+
 import * as XLSX from 'xlsx';
 import { DatePipe } from '@angular/common';
 import {
@@ -17,7 +17,11 @@ import {
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../login/login-service';
 import { startWith } from 'rxjs';
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ProfileBoxService } from '../../profile-box/profile-box.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
+import { MenuService } from './../../menu.service';
 declare var $: any;
 
 @Component({
@@ -26,10 +30,22 @@ declare var $: any;
   styleUrls: ['./lista-dashboard.component.scss'],
 })
 export class ListaDashboardComponent {
-
+  codiceFiscaleDettaglio: any;
+  immagine: any;
+  immagineConvertita: string | null = null;
+  immaginePredefinita: string | null = null;
+  aziendeClienti: any[] = [];
+  userLoggedName: any;
+  userLoggedSurname: any;
+  shouldReloadPage: any;
+  idFunzione: any;
+  jsonData: any;
+  token = localStorage.getItem('token');
+  userRoleNav: any;
+  idNav: any;
+  tokenProvvisorio: any;
   lista: any;
   data: any;
-  token: any;
   livelliContrattuali: any = [];
   check1: boolean = false;
   check2: boolean = false;
@@ -43,29 +59,45 @@ export class ListaDashboardComponent {
   listaContrattiInScadenza: any[] = []; //array 2.0
   listaCommesseScadute: any[] = []; //array 2.0
   listaContrattiFromBatch: any[] = []; //array 2.0
+  listaAnagraficheCommesseScadute: any[] = [];
+  listaAnagraficaDtoFromResponse: any[] = [];
   mostraFiltri = false;
   originalLista: any;
   tipiAziende: any = [];
+  idAnagraficaCommessaScaduta: any;
   idutenteCommessaInScadenza: any;
   idContrattoInScadenza = this.activatedRouter.snapshot.params['id'];
   idCommessaScaduta = this.activatedRouter.snapshot.params['id'];
   pageData: any[] = [];
   messaggio: any;
   commesse!: FormArray;
-
+  annoDataInizio: any;
+  annoDataFine: any;
+  annoFineContratto: any;
+  genericList: any[] = [];
+  years: number[] = [];
+  mobile: any = false;
+  ruolo: any;
+  idUtente: any;
   filterAnagraficaDto: FormGroup = new FormGroup({
+
     anagrafica: new FormGroup({
       nome: new FormControl(null),
       cognome: new FormControl(null),
       // attivo: new FormControl(null),
       tipoAzienda: new FormGroup({
         id: new FormControl(null),
+        descrizione: new FormControl(''),
       }),
     }),
 
     commesse: new FormGroup({
-      aziendaCliente: new FormControl(null),
+      tipoAziendaCliente: new FormGroup({
+        id: new FormControl(null),
+        descrizione: new FormControl(null),
+      }),
     }),
+
     annoDataFine: new FormControl(null),
     meseDataFine: new FormControl(null),
     annoDataInizio: new FormControl(null),
@@ -74,6 +106,7 @@ export class ListaDashboardComponent {
     annoFineContratto: new FormControl(null),
     meseFineContratto: new FormControl(null),
   });
+  
 
   constructor(
     private dashboardService: DashboardService,
@@ -84,8 +117,27 @@ export class ListaDashboardComponent {
     private formBuilder: FormBuilder,
     private activatedRouter: ActivatedRoute,
     private datePipe: DatePipe,
-
+    private profileBoxService: ProfileBoxService,
+    private dialog: MatDialog,
+    private http: HttpClient,
+    private menuService: MenuService,
+    private imageService: ImageService
   ) {
+
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
+
     this.userlogged = localStorage.getItem('userLogged');
 
     const userLogged = localStorage.getItem('userLogged');
@@ -99,6 +151,7 @@ export class ListaDashboardComponent {
         // attivo: new FormControl(null),
         tipoAzienda: new FormGroup({
           id: new FormControl(null),
+          descrizione: new FormControl(null),
         }),
       }),
 
@@ -107,38 +160,25 @@ export class ListaDashboardComponent {
       meseDataFine: new FormControl(null),
       annoDataInizio: new FormControl(null),
       meseDataInizio: new FormControl(null),
-
       annoFineContratto: new FormControl(null),
       meseFineContratto: new FormControl(null),
     });
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
 
-    const commessaFormGroup = this.creaFormCommessa();
-    this.commesse.push(commessaFormGroup);
+
   }
   isTableVisible: boolean = false;
   isTable2Visible: boolean = false;
   isTableVisible1: boolean = false;
 
   ngOnInit(): void {
-    // this.dashboardService
-    //   .listaDashboard(localStorage.getItem('token'))
-    //   .subscribe((resp: any) => {
-    //     this.lista = resp.list;
-    //     console.log(this.lista);
-    //   });
-
-    // this.dashboardService
-    //   .listaScattiContratto(localStorage.getItem('token'))
-    //   .subscribe((resp: any) => {
-    //     this.data = resp.list;
-    //   });
-
-
+    this.caricaAziendeClienti();
+    this.populateYears()
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
     const commessaFormGroup = this.creaFormCommessa();
     this.commesse.push(commessaFormGroup);
     this.caricaTipoAzienda();
+
 
     this.dashboardService.listaScattiContratto(localStorage.getItem('token')).subscribe(
       (resp: any) => {
@@ -166,14 +206,14 @@ export class ListaDashboardComponent {
           });
           console.log(
             'UTENTE CON LA COMMESSA IN SCADENZA:' +
-              this.idutenteCommessaInScadenza
+            this.idutenteCommessaInScadenza
           );
           console.log('Lista commesse in scadenza: ' + JSON.stringify(resp));
         },
         (error: any) => {
           console.error(
             'Si é verificato un errore durante il recupero della lista delle commesse in scadenza: ' +
-              error
+            error
           );
         }
       );
@@ -187,38 +227,43 @@ export class ListaDashboardComponent {
         (error: any) => {
           console.error(
             'Si é verificato un errore durante il recupero della lista dei contratti in scadenza: ' +
-              error
+            error
           );
         }
       );
+
     this.dashboardService
       .getAllCommesseScadute(localStorage.getItem('token'))
       .subscribe(
         (resp: any) => {
-          this.listaCommesseScadute = [];
-          for (const item of resp.list) {
-            for (const commesse of item.commesse) {
-              this.listaCommesseScadute.push(commesse);
-            }
-          }
+          this.listaCommesseScadute = this.createAnagraficaDtoList(resp.list);
           console.log(
             'Lista commesse scadute: ' +
-              JSON.stringify(this.listaCommesseScadute)
+            JSON.stringify(this.listaCommesseScadute)
           );
+
           this.currentPage = 1;
           this.pageData = this.getCurrentPageItems();
         },
         (error: any) => {
           console.error(
             'Si è verificato un errore durante il recupero della lista delle commesse: ' +
-              error
+            error
           );
         }
       );
 
     this.mostraFiltri = false;
+
+    if (this.token != null) {
+      this.getUserLogged();
+      this.getUserRole();
+    }
   }
+
+
   filter(value: any) {
+    console.log('Valore del form: ' + JSON.stringify(value));
     const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
         if (obj[key] && typeof obj[key] === 'object') {
@@ -235,6 +280,10 @@ export class ListaDashboardComponent {
         if (obj.commesse && Object.keys(obj.commesse).length === 0) {
           delete obj.commesse;
         }
+        if (obj.tipoAziendaCliente && Object.keys(obj.tipoAziendaCliente).length === 0) {
+          delete obj.tipoAziendaCliente;
+        }
+
         if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
           delete obj.tipoContratto;
         }
@@ -291,6 +340,7 @@ export class ListaDashboardComponent {
     };
     removeEmpty(this.filterAnagraficaDto.value);
 
+
     const body = {
       anagraficaDto: this.filterAnagraficaDto.value,
       annoDataFine: this.filterAnagraficaDto.get('annoDataFine')?.value,
@@ -302,8 +352,8 @@ export class ListaDashboardComponent {
       meseFineContratto:
         this.filterAnagraficaDto.get('meseFineContratto')?.value,
     };
-    console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
 
+    console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
     this.dashboardService
       .commesseListFilter(localStorage.getItem('token'), body)
       .subscribe(
@@ -315,15 +365,11 @@ export class ListaDashboardComponent {
           } else {
             if (Array.isArray(result.list)) {
               this.pageData = [];
-              for (const item of result.list) {
-                if (Array.isArray(item.commesse)) {
-                  for (const commesse of item.commesse) {
-                    this.pageData.push(commesse);
-                  }
-                } else if (typeof item.commesse === 'object') {
-                  // Gestisci il caso in cui item.commesse è un oggetto
-                }
-              }
+              this.listaCommesseScadute = this.createAnagraficaDtoList(result.list);
+              this.currentPage = 1;
+              this.pageData = this.getCurrentPageItems();
+              console.log("result is " + JSON.stringify(result.list))
+              console.log("daje" + this.listaCommesseScadute);
             } else {
               this.pageData = [];
               this.messaggio =
@@ -341,12 +387,9 @@ export class ListaDashboardComponent {
   }
 
   annullaFiltri() {
-    this.anagraficaDtoService
-      .listAnagraficaDto(localStorage.getItem('token'))
-      .subscribe((resp: any) => {
-        this.lista = resp.list;
-        location.reload();
-      });
+
+    location.reload();
+
   }
 
   dettaglioAnagraficaContrattoInScadenza(idAnagrafica: number) {
@@ -358,8 +401,9 @@ export class ListaDashboardComponent {
       });
   }
 
-  dettaglioAnagrafica(idAnagrafica: number) {
-    idAnagrafica = this.idutenteCommessaInScadenza;
+
+  dettaglioAnagraficaCommessaScaduta(idAnagrafica: number) {
+    idAnagrafica = this.idAnagraficaCommessaScaduta;
     this.anagraficaDtoService
       .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
       .subscribe((resp: any) => {
@@ -372,131 +416,7 @@ export class ListaDashboardComponent {
     this.router.navigate(['/profile-box/', this.userlogged]);
   }
 
-  calcolaPeriodi(mesiDurata: any, descrizione: any): any {
-    if (descrizione == 'METALMECCANICO PMI CONFAPI') {
-      return mesiDurata / 3;
-    }
 
-    return mesiDurata / 2;
-  }
-
-  calcolaMesiPassati(dataAssunzione: Date, dataOdierna: Date): number {
-    if (!dataAssunzione || !dataOdierna) {
-      return 0;
-    }
-
-    const startYear = dataAssunzione.getFullYear();
-    const startMonth = dataAssunzione.getMonth() + 1;
-    const endYear = dataOdierna.getFullYear();
-    const endMonth = dataOdierna.getMonth() + 1;
-    return (endYear - startYear) * 12 + (endMonth - startMonth);
-  }
-
-  calcolaScadenzaImminentePeriodo(
-    dataAssunzione: Date,
-    mesiDurata: number,
-    descrizione: string
-  ) {
-    const currentDataAssunzione = new Date(dataAssunzione);
-    const dataOdierna = new Date();
-
-    if (descrizione == 'METALMECCANICO PMI CONFAPI') {
-      if (
-        this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) ==
-        mesiDurata - 1
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      if (
-        this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) ==
-        mesiDurata - 1
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-
-  calcolaScadenzaImminentePeriodo2(
-    dataAssunzione: Date,
-    mesiDurata: number,
-    descrizione: string
-  ) {
-    const currentDataAssunzione = new Date(dataAssunzione);
-    const dataOdierna = new Date();
-
-    if (descrizione == 'METALMECCANICO PMI CONFAPI') {
-      if (
-        this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) ==
-        mesiDurata * 2 - 1
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      if (
-        this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) ==
-        mesiDurata * 2 - 1
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-
-  calcolaScadenzaImminentePeriodo3(dataAssunzione: Date, mesiDurata: number) {
-    const currentDataAssunzione = new Date(dataAssunzione);
-    const dataOdierna = new Date();
-
-    if (
-      this.calcolaMesiPassati(currentDataAssunzione, dataOdierna) ==
-      mesiDurata * 3 - 1
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  scadenzaContratti40Giorni(dataAssunzione: any, mesiDurata: any) {
-    var currentDataAssunzione = new Date(dataAssunzione);
-    var fineContratto = new Date(dataAssunzione);
-    var year = currentDataAssunzione.getFullYear();
-    fineContratto.setFullYear(
-      year + Math.floor(mesiDurata / 12),
-      currentDataAssunzione.getMonth() + (mesiDurata % 12),
-      currentDataAssunzione.getDate()
-    );
-    var currentDate = new Date();
-
-    // Calculate the difference in days between the end date and current date
-    var daysRemaining = Math.ceil(
-      (fineContratto.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24)
-    );
-
-    // Determine if the remaining days are within the specified threshold
-    var thresholdDays = 40; // Adjust this value as per your requirement
-    return daysRemaining <= thresholdDays;
-  }
-
-  scadenzaCommesse40Giorni(dataFine: any) {
-    var dataAttuale = new Date();
-    var fineCommessa = new Date(dataFine);
-    // Calculate the difference in days between the end date and current date
-    var daysRemaining = Math.ceil(
-      (dataAttuale.getTime() - fineCommessa.getTime()) / (1000 * 60 * 60 * 24)
-    );
-
-    // Determine if the remaining days are within the specified threshold
-    var thresholdDays = 40; // Adjust this value as per your requirement
-    return daysRemaining <= thresholdDays;
-  }
 
   transformDate(dateString: string): string {
     const dateObject = new Date(dateString);
@@ -546,7 +466,13 @@ export class ListaDashboardComponent {
         }
       });
   }
+  populateYears() {
 
+    for (let year = 1999; year <= 2099; year++) {
+      this.years.push(year);
+    }
+
+  }
   //paginazione
   getCurrentPageItems(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -568,11 +494,16 @@ export class ListaDashboardComponent {
       this.currentPage = pageNumber;
     }
   }
+
   creaFormCommessa(): FormGroup {
     return this.formBuilder.group({
-      aziendaCliente: new FormControl(''),
+      tipoAziendaCliente: new FormGroup({
+        id: new FormControl(''),
+        descrizione: new FormControl(''),
+      }),
     });
   }
+
   caricaTipoAzienda() {
     this.contrattoService
       .getTipoAzienda(localStorage.getItem('token'))
@@ -580,6 +511,7 @@ export class ListaDashboardComponent {
         this.tipiAziende = (result as any)['list'];
       });
   }
+
   exportContrattiInScadenzaToExcel() {
     // Verifica che ci siano dati validi prima di esportare
     console.log('Dati da esportare:', this.listaContrattiInScadenza);
@@ -652,7 +584,7 @@ export class ListaDashboardComponent {
 
       item.commesse.forEach((commessa: any) => {
         workSheetData.push([
-          commessa.aziendaCliente ? commessa.aziendaCliente.toString() : '',
+          commessa.tipoAziendaCliente.descrizione ? commessa.tipoAziendaCliente.descrizione.toString() : '',
           commessa.clienteFinale ? commessa.clienteFinale.toString() : '',
           commessa.titoloPosizione ? commessa.titoloPosizione.toString() : '',
           commessa.distacco ? commessa.distacco.toString() : '',
@@ -696,32 +628,28 @@ export class ListaDashboardComponent {
 
     const workSheetData = [
       // Intestazioni delle colonne
-      ["Azienda Cliente", "Cliente finale", "Titolo posizione", "Distacco", "Distacco azienda", "Distacco data", "Tariffa giornaliera", "Azienda di fatturazione interna", "Data inizio", "Data fine"]
+      ["Nominativo", "Codice fiscale", "Azienda Cliente", "Cliente finale", "Titolo posizione", "Distacco", "Distacco azienda", "Distacco data", "Tariffa giornaliera", "Azienda di fatturazione interna", "Data inizio", "Data fine", "Attivo", "Attesa lavori"]
     ];
 
-    // Aggiungi dati
-    this.listaCommesseScadute.forEach((item: any) => {
-
+    this.listaCommesseScadute.forEach((element: any) => {
 
       workSheetData.push([
-        item.aziendaCliente ? item.aziendaCliente.toString() : '',
-        item.clienteFinale ? item.clienteFinale.toString() : '',
-        item.titoloPosizione ? item.titoloPosizione.toString() : '',
-        item.distacco ? item.distacco.toString() : '',
-        item.distaccoAzienda ? item.distaccoAzienda.toString() : '',
-        this.datePipe.transform(
-          item.distaccoData ? item.distaccoData.toString() : '', 'yyyy-MM-dd'
-        ),
-        item.tariffaGiornaliera ? item.tariffaGiornaliera.toString() : '',
-        item.aziendaDiFatturazioneInterna ? item.aziendaDiFatturazioneInterna.toString() : '',
-        this.datePipe.transform(
-          item.dataInizio ? item.dataInizio.toString() : '', 'yyyy-MM-dd'
-        ),
-        this.datePipe.transform(
-          item.dataFine ? item.dataFine.toString() : '', 'yyyy-MM-dd'
-        ),
-
+        `${element[0]} ${element[1]}`,
+        element[2] ? element[2].toString() : '',
+        element[3] ? element[3].toString() : '',
+        element[4] ? element[4].toString() : '',
+        element[5] ? element[5].toString() : '',
+        element[6] ? element[6].toString() : '',
+        element[7] ? element[7].toString() : '',
+        this.datePipe.transform(element[8] ? element[8].toString() : '', 'yyyy-MM-dd'),
+        element[9] ? element[9].toString() : '',
+        element[10] ? element[10].toString() : '',
+        this.datePipe.transform(element[11] ? element[11].toString() : '', 'yyyy-MM-dd'),
+        this.datePipe.transform(element[12] ? element[12].toString() : '', 'yyyy-MM-dd'),
+        element[13] ? 'Sì' : 'No',
+        element[14] ? 'Sì' : 'No',
       ]);
+
     });
 
 
@@ -743,61 +671,56 @@ export class ListaDashboardComponent {
     // Verifica che ci siano dati validi prima di esportare
     console.log('Dati da esportare:', this.listaContrattiFromBatch);
 
-  
-        // Crea un nuovo libro Excel
-        const workBook = XLSX.utils.book_new();
 
-        const workSheetData = [
-          // Intestazioni delle colonne
-          ["Nome", "Cognome", "Tipo contratto", "CCNL", "Sede di assunzione", "Data Assunzione", "Mesi durata", "livello attuale", "livello finale", "RAL", "Ticket", "Categoria protetta", "Tutor", "PFI", "Sede di assunzione"]
-        ];
+    // Crea un nuovo libro Excel
+    const workBook = XLSX.utils.book_new();
 
-        // Aggiungi dati
-        this.listaContrattiFromBatch.forEach((item: any) => {
-          workSheetData.push([
-            item.anagrafica.nome ? item.anagrafica.nome.toString() : '',
-            item.anagrafica.cognome ? item.anagrafica.cognome.toString() : '',
-            item.contratto.tipoContratto.descrizione ? item.contratto.tipoContratto.descrizione.toString() : '',
-            item.contratto.tipoLivelloContratto.ccnl ? item.contratto.tipoLivelloContratto.ccnl.toString() : '',
-            item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : '',
-            this.datePipe.transform(
-              item.contratto.dataAssunzione ? item.contratto.dataAssunzione.toString() : '',
-              'yyyy-MM-dd'
-            ),
-            item.contratto.mesiDurata ? item.contratto.mesiDurata.toString() : '',
-            item.contratto.livelloAttuale ? item.contratto.livelloAttuale.toString() : '',
-            item.contratto.livelloFinale ? item.contratto.livelloFinale.toString() : '',
-            item.contratto.retribuzioneMensileLorda ? item.contratto.retribuzioneMensileLorda.toString() : '',
-            item.contratto.ticket ? item.contratto.ticket.toString() : '',
-            item.contratto.categoriaProtetta ? item.contratto.categoriaProtetta.toString() : '',
-            item.contratto.tutor ? item.contratto.tutor.toString() : '',
-            item.contratto.pfi ? item.contratto.pfi.toString() : '',
-            item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : ''
-          ]);
-        });
+    const workSheetData = [
+      // Intestazioni delle colonne
+      ["Nome", "Cognome", "Tipo contratto", "CCNL", "Sede di assunzione", "Data Assunzione", "Mesi durata", "livello attuale", "livello finale", "RAL", "Ticket", "Categoria protetta", "Tutor", "PFI", "Sede di assunzione"]
+    ];
 
-        const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
+    // Aggiungi dati
+    this.listaContrattiFromBatch.forEach((item: any) => {
+      workSheetData.push([
+        item.anagrafica.nome ? item.anagrafica.nome.toString() : '',
+        item.anagrafica.cognome ? item.anagrafica.cognome.toString() : '',
+        item.contratto.tipoContratto.descrizione ? item.contratto.tipoContratto.descrizione.toString() : '',
+        item.contratto.tipoLivelloContratto.ccnl ? item.contratto.tipoLivelloContratto.ccnl.toString() : '',
+        item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : '',
+        this.datePipe.transform(
+          item.contratto.dataAssunzione ? item.contratto.dataAssunzione.toString() : '',
+          'yyyy-MM-dd'
+        ),
+        item.contratto.mesiDurata ? item.contratto.mesiDurata.toString() : '',
+        item.contratto.livelloAttuale ? item.contratto.livelloAttuale.toString() : '',
+        item.contratto.livelloFinale ? item.contratto.livelloFinale.toString() : '',
+        item.contratto.retribuzioneMensileLorda ? item.contratto.retribuzioneMensileLorda.toString() : '',
+        item.contratto.ticket ? item.contratto.ticket.toString() : '',
+        item.contratto.categoriaProtetta ? item.contratto.categoriaProtetta.toString() : '',
+        item.contratto.tutor ? item.contratto.tutor.toString() : '',
+        item.contratto.pfi ? item.contratto.pfi.toString() : '',
+        item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : ''
+      ]);
+    });
 
-        console.log('Dati nel foglio di lavoro:', workSheet);
+    const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
 
-        XLSX.utils.book_append_sheet(workBook, workSheet, 'ContrattiScattoLivello');
-        // Esporta il libro Excel in un file
-        XLSX.writeFile(workBook, 'contratti_scatto_livello.xlsx');
-     
-      (error: any) => {
-        console.error(
-          'Si è verificato un errore durante il recupero della lista dei contratti con scatto livello effettuato: ' +
-          error
-        );
-      }
-   
+    console.log('Dati nel foglio di lavoro:', workSheet);
+
+    XLSX.utils.book_append_sheet(workBook, workSheet, 'ContrattiScattoLivello');
+    // Esporta il libro Excel in un file
+    XLSX.writeFile(workBook, 'contratti_scatto_livello.xlsx');
+
+    (error: any) => {
+      console.error(
+        'Si è verificato un errore durante il recupero della lista dei contratti con scatto livello effettuato: ' +
+        error
+      );
+    }
+
 
   }
-
-
-
-
-
 
   setForm() {
     const meseDataFine = this.filterAnagraficaDto.get(
@@ -871,5 +794,210 @@ export class ListaDashboardComponent {
     }
   }
 
+  createAnagraficaDtoList(resp: any) {
+    this.genericList = [];
+    resp.forEach((item: any) => {
+      item.commesse.forEach((commessa: any) => {
+        this.genericList.push([
+          item.anagrafica.nome,
+          item.anagrafica.cognome,
+          item.anagrafica.codiceFiscale,
+          commessa.tipoAziendaCliente.descrizione,
+          commessa.clienteFinale,
+          commessa.titoloPosizione,
+          commessa.distacco,
+          commessa.distaccoAzienda,
+          commessa.distaccoData,
+          commessa.tariffaGiornaliera,
+          commessa.aziendaDiFatturazioneInterna,
+          commessa.dataInizio,
+          commessa.dataFine,
+          commessa.attivo,
+          commessa.attesaLavori,
+          item.anagrafica.id
+        ]);
+      });
+    });
+    return this.genericList;
+  }
 
+  caricaAziendeClienti() {
+    this.dashboardService.
+      getAziendaCliente(localStorage.getItem('token'))
+      .subscribe(
+        (result: any) => {
+          console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+          this.aziendeClienti = (result as any)['list'];
+        },
+        (error: any) => {
+          console.error(
+            'errore durante il caricamento dei nomi azienda:' + error
+          );
+        }
+      );
+  }
+
+  onChangeAziendaCliente(event: any) {
+    const selectedValue = parseInt(event.target.value, 10);
+
+    if (!isNaN(selectedValue)) {
+      const selectedObject = this.aziendeClienti.find(
+        (aziendaCliente: any) => aziendaCliente.id === selectedValue
+      );
+
+      if (selectedObject) {
+        console.log('Azienda cliente selezionata: ', selectedObject);
+      } else {
+        console.log('Azienda non trovata nella lista');
+      }
+    } else {
+      console.log('Valore non valido o azienda non selezionata');
+    }
+  }
+
+
+
+
+  //metodi nav
+
+  logout() {
+    this.dialog.open(AlertLogoutComponent);
+  }
+
+  getUserLogged() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        localStorage.getItem('token');
+        this.userLoggedName = response.anagraficaDto.anagrafica.nome;
+        this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.ruolo = response.anagraficaDto.ruolo.nome;
+        this.codiceFiscaleDettaglio =
+          response.anagraficaDto.anagrafica.codiceFiscale;
+        this.getImage();
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato il seguente errore durante il recupero dei dati : ' +
+          error
+        );
+      }
+    );
+  }
+
+  getUserRole() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        console.log('ID UTENTE PER NAV:' + this.idUtente);
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
+      },
+      (error: any) => {
+        console.error(
+          'Si è verificato il seguente errore durante il recupero del ruolo: ' +
+          error
+        );
+        this.shouldReloadPage = true;
+      }
+    );
+  }
+
+
+
+  getPermissions(functionId: number) {
+    this.menuService.getPermissions(this.token, functionId).subscribe(
+      (data: any) => {
+        console.log('Permessi ottenuti:', data);
+      },
+      (error: any) => {
+        console.error('Errore nella generazione dei permessi:', error);
+      }
+    );
+  }
+
+  generateMenuByUserRole() {
+    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
+      (data: any) => {
+        this.jsonData = data;
+        this.idFunzione = data.list[0].id;
+        console.log(
+          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+        );
+        this.shouldReloadPage = false;
+      },
+      (error: any) => {
+        console.error('Errore nella generazione del menu:', error);
+        this.shouldReloadPage = true;
+        this.jsonData = { list: [] };
+      }
+    );
+  }
+  getImage() {
+    let body = {
+      codiceFiscale: this.codiceFiscaleDettaglio,
+    };
+    console.log(JSON.stringify(body));
+    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    this.imageService.getImage(this.token, body).subscribe(
+      (result: any) => {
+        this.immagine = (result as any).base64;
+        //console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+
+        if (this.immagine) {
+          this.convertBase64ToImage(this.immagine);
+          //console.log('Valore di immagineConvertita:', this.immagineConvertita);
+        } else {
+          // Assegna un'immagine predefinita se l'immagine non è disponibile
+          this.immaginePredefinita =
+            '../../../../assets/images/profilePicPlaceholder.png';
+        }
+      },
+      (error: any) => {
+        console.error(
+          "Errore durante il caricamento dell'immagine: " +
+          JSON.stringify(error)
+        );
+
+        // Assegna un'immagine predefinita in caso di errore
+        this.immaginePredefinita = '../../../../assets/images/danger.png';
+      }
+    );
+  }
+
+  convertBase64ToImage(base64String: string): void {
+    this.immagineConvertita = base64String;
+  }
+
+}
+
+interface MenuData {
+  esito: {
+    code: number;
+    target: any;
+    args: any;
+  };
+  list: {
+    id: number;
+    funzione: any;
+    menuItem: number;
+    nome: string;
+    percorso: string;
+    immagine: any;
+    ordinamento: number;
+    funzioni: any;
+    privilegio: any;
+  }[];
 }

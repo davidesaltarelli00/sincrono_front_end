@@ -1,68 +1,398 @@
-.calendar {
+img {
+  max-height: 50%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: aliceblue;
+}
+
+.container-fluid {
+  background-color: aliceblue;
+}
+
+
+
+.not-found-container {
+  text-align: center;
+  padding: 50px;
+}
+
+h2 {
+  font-size: 3rem;
+  color: #f00;
+}
+
+
+table.th,
+td {
+  text-align: center;
+  text-decoration: none;
+}
+
+p {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+}
+
+/* Stile per le etichette dei campi */
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 11px;
+}
+
+/* Stile per gli input e le caselle di controllo */
+.form-control {
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: #fff;
+  margin-bottom: 10px;
 }
 
-button:disabled {
-  opacity: 0.6; /* Riduce l'opacità del pulsante quando è disabilitato */
-  cursor: not-allowed; /* Cambia il cursore del mouse per indicare che il pulsante non è cliccabile */
+/* Stile per il pulsante "Salva" */
+button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
 }
 
-.calendar table {
-  width: 100%;
-  border-collapse: collapse;
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.has-error {
+  border: 1px solid red;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+}
+
+.form-group{
   text-align: center;
 }
 
-.calendar th,
-.calendar td {
-  padding: 8px;
-  border: 1px solid #e0e0e0;
+// input[type="number"] {
+//   text-align: left;
+// }
+
+input{
+  border: 1px solid black;
 }
 
-.calendar th {
-  font-weight: bold;
-  background-color: #f5f5f5;
+/* Responsive */
+
+
+/* For mobile phones: */
+
+[class*="col-"] {
+  width: 100%;
 }
 
-.calendar td {
-  cursor: pointer;
-}
+@media only screen and (min-width: 600px) {
 
-.calendar td:hover {
-  background-color: #f5f5f5;
-}
+  /* For tablets: */
+  .col-s-1 {
+    width: 8.33%;
+  }
 
-.calendar button {
-  font-size: 14px;
-  padding: 8px 16px;
-  margin: 0 4px;
-  border: none;
-  border-radius: 4px;
-  background-color: #4285f4;
-  color: #fff;
-  cursor: pointer;
-}
+  .col-s-2 {
+    width: 16.66%;
+  }
 
-.calendar button:hover {
-  background-color: #3367d6;
-}
+  .col-s-3 {
+    width: 25%;
+  }
 
-@media (max-width: 600px) {
-  .calendar {
-    padding: 8px;
+  .col-s-4 {
+    width: 33.33%;
+  }
+
+  .col-s-5 {
+    width: 41.66%;
+  }
+
+  .col-s-6 {
+    width: 50%;
+  }
+
+  .col-s-7 {
+    width: 58.33%;
+  }
+
+  .col-s-8 {
+    width: 66.66%;
+  }
+
+  .col-s-9 {
+    width: 75%;
+  }
+
+  .col-s-10 {
+    width: 83.33%;
+  }
+
+  .col-s-11 {
+    width: 91.66%;
+  }
+
+  .col-s-12 {
+    width: 100%;
   }
 }
 
 
-.current-day {
-  background-color: #c1e4f6;
+
+@media only screen and (min-width: 768px) {
+
+  /* For desktop: */
+  .col-1 {
+    width: 8.33%;
+  }
+
+  .col-2 {
+    width: 16.66%;
+  }
+
+  .col-3 {
+    width: 25%;
+  }
+
+  .col-4 {
+    width: 33.33%;
+  }
+
+  .col-5 {
+    width: 41.66%;
+  }
+
+  .col-6 {
+    width: 50%;
+  }
+
+  .col-7 {
+    width: 58.33%;
+  }
+
+  .col-8 {
+    width: 66.66%;
+  }
+
+  .col-9 {
+    width: 75%;
+  }
+
+  .col-10 {
+    width: 83.33%;
+  }
+
+  .col-11 {
+    width: 91.66%;
+  }
+
+  .col-12 {
+    width: 100%;
+  }
 }
-.current-day:hover {
-  background-color: #c1e4f6;
+
+//navbar
+
+
+
+#toolbar {
+  background-color: #007bff;
+  /* Colore blu aziendale */
+  color: #ffffff;
+  /* Testo bianco */
+  display: flex;
+  background-color: #333;
+  justify-content: space-between;
+  /* Allinea gli elementi a sinistra e a destra */
+  align-items: center;
+  /* Allinea verticalmente gli elementi al centro */
+}
+
+.logo-link {
+  margin-right: 10px;
+}
+
+.toolbar-menu {
+  display: flex;
+  gap: 10px;
+  background-color: #333;
+  margin-right: auto;
+}
+
+.toolbar-link {
+  text-decoration: none;
+  color: #ffffff;
+  /* padding: 10px; */
+}
+
+a {
+  color: white;
+  font-weight: 500;
+}
+
+.toolbar-link:hover {
+  color: #d8d8d8;
+}
+
+.user-icon,
+.logout-icon {
+  color: #ffffff;
+  cursor: pointer;
+}
+
+/* Stile per la lista dei suggerimenti */
+.suggestion-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: red;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: green;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+.sabato-dom {
+  background-color: rgb(222, 237, 251);
+}
+
+.festivita-red {
+  background-color: red;
+}
+
+/* styles.css o nel tuo componente-specifico.css */
+.dark-mode {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode mat-card {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #f1f1f1;
+}
+
+.dark-mode input, .dark-mode textarea, .dark-mode select {
+  background-color: #444;
+  color: #fff;
+}
+
+.dark-mode table {
+  border-color: #555;
+}
+
+.dark-mode th, .dark-mode td {
+  border-color: #777;
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode button, .dark-mode .btn {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Stili comuni per i bottoni */
+button.toggle-button {
+  padding: 8px 16px;
+  margin: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Stili specifici per dark mode */
+.dark-mode button.toggle-button {
+  background-color: #333;
+  color: #fff;
+  /* Altri stili specifici per il dark mode per il bottone di toggle */
 }

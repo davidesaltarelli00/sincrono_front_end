@@ -1,0 +1,1146 @@
+[
+  {
+    "nazione": "Albania",
+    "capitale": "Tirana",
+    "province": [
+      { "nome": "Berat" },
+      { "nome": "Dibër" },
+      { "nome": "Durres" },
+      { "nome": "Elbasan" },
+      { "nome": "Fier" },
+      { "nome": "Gjirokastër" },
+      { "nome": "Korçë" },
+      { "nome": "Kukës" },
+      { "nome": "Lezhë" },
+      { "nome": "Shkodër" },
+      { "nome": "Tiranë" },
+      { "nome": "Vlorë" },
+      { "nome": "Altro..." }
+    ]
+  },
+  {
+    "nazione": "Andorra",
+    "capitale": "Andorra la Vella",
+    "province": [
+      { "nome": "Andorra la Vella" },
+      { "nome": "Canillo" },
+      { "nome": "Encamp" },
+      { "nome": "Escaldes-Engordany" },
+      { "nome": "La Massana" },
+      { "nome": "Ordino" },
+      { "nome": "Sant Julià de Lòria" },{ "nome": "Altro..." }
+    ]
+  },
+  {
+    "nazione": "Austria",
+    "capitale": "Vienna",
+    "province": [
+      { "nome": "Burgenland" },
+      { "nome": "Carinzia" },
+      { "nome": "Alta Austria" },
+      { "nome": "Bassa Austria" },
+      { "nome": "Salisburgo" },
+      { "nome": "Stiria" },
+      { "nome": "Tirolo" },
+      { "nome": "Vorarlberg" },
+      { "nome": "Vienna" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Belgio",
+    "capitale": "Bruxelles",
+    "province": [
+      { "nome": "Anversa" },
+      { "nome": "Fiandre orientali" },
+      { "nome": "Fiandre occidentali" },
+      { "nome": "Hainaut" },
+      { "nome": "Limburgo" },
+      { "nome": "Lussemburgo" },
+      { "nome": "Namur" },
+      { "nome": "Fiandre occidentali" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Bielorussia",
+    "capitale": "Minsk",
+    "province": [
+      { "nome": "Brest" },
+      { "nome": "Vitebsk" },
+      { "nome": "Gomel" },
+      { "nome": "Minsk" },
+      { "nome": "Mogilev" },
+      { "nome": "Grodno" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Bielorussia",
+    "capitale": "Minsk",
+    "province": [
+      { "nome": "Brest" },
+      { "nome": "Vitebsk" },
+      { "nome": "Gomel" },
+      { "nome": "Minsk" },
+      { "nome": "Mogilev" },
+      { "nome": "Grodno" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Bulgaria",
+    "capitale": "Sofia",
+    "province": [
+      { "nome": "Blagoevgrad" },
+      { "nome": "Burgas" },
+      { "nome": "Dobrich" },
+      { "nome": "Gabrovo" },
+      { "nome": "Haskovo" },
+      { "nome": "Kardzhali" },
+      { "nome": "Kyustendil" },
+      { "nome": "Lovech" },
+      { "nome": "Montana" },
+      { "nome": "Pazardzhik" },
+      { "nome": "Pernik" },
+      { "nome": "Pleven" },
+      { "nome": "Plovdiv" },
+      { "nome": "Razgrad" },
+      { "nome": "Ruse" },
+      { "nome": "Shumen" },
+      { "nome": "Silistra" },
+      { "nome": "Sliven" },
+      { "nome": "Smolyan" },
+      { "nome": "Sofia" },
+      { "nome": "Stara Zagora" },
+      { "nome": "Targovishte" },
+      { "nome": "Varna" },
+      { "nome": "Veliko Tarnovo" },
+      { "nome": "Vidin" },
+      { "nome": "Vratsa" },
+      { "nome": "Yambol" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Cipro",
+    "capitale": "Nicosia",
+    "province": [
+      { "nome": "Nicosia" },
+      { "nome": "Limassol" },
+      { "nome": "Larnaca" },
+      { "nome": "Paphos" },
+      { "nome": "Famagosta" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Croazia",
+    "capitale": "Zagabria",
+    "province": [
+      { "nome": "Zagabria" },
+      { "nome": "Krapina-Zagorje" },
+      { "nome": "Sisak-Moslavina" },
+      { "nome": "Karlovačka" },
+      { "nome": "Varaždin" },
+      { "nome": "Koprivnica-Križevci" },
+      { "nome": "Bjelovar-Bilogora" },
+      { "nome": "Primorje-Gorski Kotar" },
+      { "nome": "Lika-Senj" },
+      { "nome": "Virovitica-Podravina" },
+      { "nome": "Požega-Slavonia" },
+      { "nome": "Brod-Posavina" },
+      { "nome": "Zadar" },
+      { "nome": "Šibenik-Knin" },
+      { "nome": "Vukovar-Sirmia" },
+      { "nome": "Osijek-Baranja" },
+      { "nome": "Virovitica-Podravina" },
+      { "nome": "Požega-Slavonia" },
+      { "nome": "Brod-Posavina" },
+      { "nome": "Zadar" },
+      { "nome": "Šibenik-Knin" },
+      { "nome": "Vukovar-Sirmia" },
+      { "nome": "Osijek-Baranja" },
+      { "nome": "Vukovar-Sirmia" },
+      { "nome": "Osijek-Baranja" },
+      { "nome": "Zadar" },
+      { "nome": "Šibenik-Knin" },
+      { "nome": "Vukovar-Sirmia" },
+      { "nome": "Osijek-Baranja" },
+      { "nome": "Brod-Posavina" },
+      { "nome": "Zadar" },
+      { "nome": "Šibenik-Knin" },
+      { "nome": "Vukovar-Sirmia" },
+      { "nome": "Osijek-Baranja" },
+      { "nome": "Vukovar-Sirmia" },
+      { "nome": "Osijek-Baranja" },
+      { "nome": "Zadar" },
+      { "nome": "Šibenik-Knin" },
+      { "nome": "Vukovar-Sirmia" },
+      { "nome": "Osijek-Baranja" },
+      { "nome": "Zadar" },
+      { "nome": "Šibenik-Knin" },
+      { "nome": "Vukovar-Sirmia" },
+      { "nome": "Osijek-Baranja" },
+      { "nome": "Zadar" },
+      { "nome": "Šibenik-Knin" },
+      { "nome": "Vukovar-Sirmia" },
+      { "nome": "Osijek-Baranja" },
+      { "nome": "Vukovar-Sirmia" },
+      { "nome": "Osijek-Baranja" },
+      { "nome": "Zadar" },
+      { "nome": "Šibenik-Knin" },
+      { "nome": "Vukovar-Sirmia" },
+      { "nome": "Osijek-Baranja" },
+      { "nome": "Vukovar-Sirmia" },
+      { "nome": "Osijek-Baranja" },
+      { "nome": "Zadar" },
+      { "nome": "Šibenik-Knin" },
+      { "nome": "Vukovar-Sirmia" },
+      { "nome": "Osijek-Baranja" },
+      { "nome": "Dubrovnik-Neretva" },
+      { "nome": "Medimurje" },
+      { "nome": "Zagabria" },
+      { "nome": "Karlovac" },
+      { "nome": "Varaždin" },
+      { "nome": "Koprivnica-Križevci" },
+      { "nome": "Bjelovar-Bilogora" },
+      { "nome": "Primorje-Gorski Kotar" },
+      { "nome": "Lika-Senj" },
+      { "nome": "Virovitica-Podravina" },
+      { "nome": "Požega-Slavonia" },
+      { "nome": "Brod-Posavina" },
+      { "nome": "Sisak-Moslavina" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Danimarca",
+    "capitale": "Copenaghen",
+    "province": [
+      { "nome": "Hovedstaden" },
+      { "nome": "Midtjylland" },
+      { "nome": "Nordjylland" },
+      { "nome": "Sjælland" },
+      { "nome": "Syddanmark" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Estonia",
+    "capitale": "Tallinn",
+    "province": [
+      { "nome": "Harju" },
+      { "nome": "Hiiu" },
+      { "nome": "Ida-Viru" },
+      { "nome": "Järva" },
+      { "nome": "Jõgeva" },
+      { "nome": "Lääne" },
+      { "nome": "Lääne-Viru" },
+      { "nome": "Põlva" },
+      { "nome": "Pärnu" },
+      { "nome": "Rapla" },
+      { "nome": "Saare" },
+      { "nome": "Tartu" },
+      { "nome": "Valga" },
+      { "nome": "Viljandi" },
+      { "nome": "Võru" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Finlandia",
+    "capitale": "Helsinki",
+    "province": [
+      { "nome": "Aland Islands" },
+      { "nome": "Central Finland" },
+      { "nome": "Central Ostrobothnia" },
+      { "nome": "Kainuu" },
+      { "nome": "Kymenlaakso" },
+      { "nome": "Lapland" },
+      { "nome": "North Karelia" },
+      { "nome": "Northern Ostrobothnia" },
+      { "nome": "Northern Savonia" },
+      { "nome": "Ostrobothnia" },
+      { "nome": "Pirkanmaa" },
+      { "nome": "Päijät-Häme" },
+      { "nome": "Satakunta" },
+      { "nome": "South Karelia" },
+      { "nome": "Southern Ostrobothnia" },
+      { "nome": "Southern Savonia" },
+      { "nome": "Uusimaa" },
+      { "nome": "Varsinais-Suomi" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Francia",
+    "capitale": "Parigi",
+    "province": [
+      { "nome": "Auvergne-Rhône-Alpes" },
+      { "nome": "Bourgogne-Franche-Comté" },
+      { "nome": "Brittany" },
+      { "nome": "Centre-Val de Loire" },
+      { "nome": "Corsica" },
+      { "nome": "Grand Est" },
+      { "nome": "Hauts-de-France" },
+      { "nome": "Île-de-France" },
+      { "nome": "Normandy" },
+      { "nome": "Nouvelle-Aquitaine" },
+      { "nome": "Occitanie" },
+      { "nome": "Pays de la Loire" },
+      { "nome": "Provence-Alpes-Côte d'Azur" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Germania",
+    "capitale": "Berlino",
+    "province": [
+      { "nome": "Baden-Württemberg" },
+      { "nome": "Bayern" },
+      { "nome": "Berlin" },
+      { "nome": "Brandenburg" },
+      { "nome": "Bremen" },
+      { "nome": "Hamburg" },
+      { "nome": "Hessen" },
+      { "nome": "Mecklenburg-Vorpommern" },
+      { "nome": "Niedersachsen" },
+      { "nome": "Nordrhein-Westfalen" },
+      { "nome": "Rheinland-Pfalz" },
+      { "nome": "Saarland" },
+      { "nome": "Sachsen" },
+      { "nome": "Sachsen-Anhalt" },
+      { "nome": "Schleswig-Holstein" },
+      { "nome": "Thüringen" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Grecia",
+    "capitale": "Atene",
+    "province": [
+      { "nome": "Central Greece" },
+      { "nome": "Central Macedonia" },
+      { "nome": "Crete" },
+      { "nome": "Eastern Macedonia and Thrace" },
+      { "nome": "Epirus" },
+      { "nome": "Ionian Islands" },
+      { "nome": "North Aegean" },
+      { "nome": "Peloponnese" },
+      { "nome": "South Aegean" },
+      { "nome": "Thessaly" },
+      { "nome": "Western Greece" },
+      { "nome": "Western Macedonia" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Irlanda",
+    "capitale": "Dublino",
+    "province": [
+      { "nome": "Connacht" },
+      { "nome": "Leinster" },
+      { "nome": "Munster" },
+      { "nome": "Ulster" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Islanda",
+    "capitale": "Reykjavik",
+    "province": [
+      { "nome": "Capital Region" },
+      { "nome": "Northeast" },
+      { "nome": "Northwest" },
+      { "nome": "Southeast" },
+      { "nome": "South" },
+      { "nome": "West" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Italia",
+    "capitale": "Roma",
+    "province": [
+      {
+        "nome": "Abruzzo",
+        "province": [
+          { "nome": "L'Aquila" },
+          { "nome": "Teramo" },
+          { "nome": "Pescara" },
+          { "nome": "Chieti" }
+        ]
+      },
+      {
+        "nome": "Basilicata",
+        "province": [
+          { "nome": "Potenza" },
+          { "nome": "Matera" }
+        ]
+      },
+      {
+        "nome": "Calabria",
+        "province": [
+          { "nome": "Catanzaro" },
+          { "nome": "Cosenza" },
+          { "nome": "Reggio Calabria" },
+          { "nome": "Crotone" },
+          { "nome": "Vibo Valentia" }
+        ]
+      },
+      {
+        "nome": "Campania",
+        "province": [
+          { "nome": "Napoli" },
+          { "nome": "Salerno" },
+          { "nome": "Avellino" },
+          { "nome": "Benevento" },
+          { "nome": "Caserta" }
+        ]
+      },
+      {
+        "nome": "Emilia-Romagna",
+        "province": [
+          { "nome": "Bologna" },
+          { "nome": "Ferrara" },
+          { "nome": "Forlì-Cesena" },
+          { "nome": "Modena" },
+          { "nome": "Parma" },
+          { "nome": "Piacenza" },
+          { "nome": "Ravenna" },
+          { "nome": "Reggio Emilia" },
+          { "nome": "Rimini" }
+        ]
+      },
+      {
+        "nome": "Friuli-Venezia Giulia",
+        "province": [
+          { "nome": "Udine" },
+          { "nome": "Gorizia" },
+          { "nome": "Pordenone" },
+          { "nome": "Trieste" }
+        ]
+      },
+      {
+        "nome": "Lazio",
+        "province": [
+          { "nome": "Roma" },
+          { "nome": "Viterbo" },
+          { "nome": "Rieti" },
+          { "nome": "Latina" },
+          { "nome": "Frosinone" }
+        ]
+      },
+      {
+        "nome": "Liguria",
+        "province": [
+          { "nome": "Genova" },
+          { "nome": "Imperia" },
+          { "nome": "La Spezia" },
+          { "nome": "Savona" }
+        ]
+      },
+      {
+        "nome": "Lombardia",
+        "province": [
+          { "nome": "Milano" },
+          { "nome": "Bergamo" },
+          { "nome": "Brescia" },
+          { "nome": "Como" },
+          { "nome": "Cremona" },
+          { "nome": "Lecco" },
+          { "nome": "Lodi" },
+          { "nome": "Mantova" },
+          { "nome": "Monza e Brianza" },
+          { "nome": "Pavia" },
+          { "nome": "Sondrio" },
+          { "nome": "Varese" }
+        ]
+      },
+      {
+        "nome": "Marche",
+        "province": [
+          { "nome": "Ancona" },
+          { "nome": "Ascoli Piceno" },
+          { "nome": "Fermo" },
+          { "nome": "Macerata" },
+          { "nome": "Pesaro e Urbino" }
+        ]
+      },
+      {
+        "nome": "Molise",
+        "province": [
+          { "nome": "Campobasso" },
+          { "nome": "Isernia" }
+        ]
+      },
+      {
+        "nome": "Piemonte",
+        "province": [
+          { "nome": "Torino" },
+          { "nome": "Alessandria" },
+          { "nome": "Asti" },
+          { "nome": "Biella" },
+          { "nome": "Cuneo" },
+          { "nome": "Novara" },
+          { "nome": "Verbano-Cusio-Ossola" },
+          { "nome": "Vercelli" }
+        ]
+      },
+      {
+        "nome": "Puglia",
+        "province": [
+          { "nome": "Bari" },
+          { "nome": "Barletta-Andria-Trani" },
+          { "nome": "Brindisi" },
+          { "nome": "Foggia" },
+          { "nome": "Lecce" },
+          { "nome": "Taranto" }
+        ]
+      },
+      {
+        "nome": "Sardegna",
+        "province": [
+          { "nome": "Cagliari" },
+          { "nome": "Carbonia-Iglesias" },
+          { "nome": "Medio Campidano" },
+          { "nome": "Nuoro" },
+          { "nome": "Ogliastra" },
+          { "nome": "Olbia-Tempio" },
+          { "nome": "Oristano" },
+          { "nome": "Sassari" }
+        ]
+      },
+      {
+        "nome": "Sicilia",
+        "province": [
+          { "nome": "Agrigento" },
+          { "nome": "Caltanissetta" },
+          { "nome": "Catania" },
+          { "nome": "Enna" },
+          { "nome": "Messina" },
+          { "nome": "Palermo" },
+          { "nome": "Ragusa" },
+          { "nome": "Siracusa" },
+          { "nome": "Trapani" }
+        ]
+      },
+      {
+        "nome": "Toscana",
+        "province": [
+          { "nome": "Firenze" },
+          { "nome": "Arezzo" },
+          { "nome": "Grosseto" },
+          { "nome": "Livorno" },
+          { "nome": "Lucca" },
+          { "nome": "Massa-Carrara" },
+          { "nome": "Pisa" },
+          { "nome": "Pistoia" },
+          { "nome": "Prato" },
+          { "nome": "Siena" }
+        ]
+      },
+      {
+        "nome": "Trentino-Alto Adige",
+        "province": [
+          { "nome": "Bolzano" },
+          { "nome": "Trento" }
+        ]
+      },
+      {
+        "nome": "Umbria",
+        "province": [
+          { "nome": "Perugia" },
+          { "nome": "Terni" }
+        ]
+      },
+      {
+        "nome": "Valle d'Aosta",
+        "province": [
+          { "nome": "Aosta" }
+        ]
+      },
+      {
+        "nome": "Veneto",
+        "province": [
+          { "nome": "Belluno" },
+          { "nome": "Padova" },
+          { "nome": "Rovigo" },
+          { "nome": "Treviso" },
+          { "nome": "Venezia" },
+          { "nome": "Verona" },
+          { "nome": "Vicenza" }
+        ]
+      }
+    ]
+  },
+  {
+    "nazione": "Kosovo",
+    "capitale": "Pristina",
+    "province": [
+      { "nome": "District of Ferizaj" },
+      { "nome": "District of Gjakova" },
+      { "nome": "District of Mitrovica" },
+      { "nome": "District of Peja" },
+      { "nome": "District of Pristina" },
+      { "nome": "District of Prizren" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Lettonia",
+    "capitale": "Riga",
+    "province": [
+      { "nome": "Vidzeme" },
+      { "nome": "Latgale" },
+      { "nome": "Kurzeme" },
+      { "nome": "Zemgale" },
+      { "nome": "Riga" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Liechtenstein",
+    "capitale": "Vaduz",
+    "province": [
+      { "nome": "Vaduz" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Lituania",
+    "capitale": "Vilnius",
+    "province": [
+      { "nome": "Alytus County" },
+      { "nome": "Kaunas County" },
+      { "nome": "Klaipėda County" },
+      { "nome": "Marijampolė County" },
+      { "nome": "Panevėžys County" },
+      { "nome": "Šiauliai County" },
+      { "nome": "Tauragė County" },
+      { "nome": "Telšiai County" },
+      { "nome": "Utena County" },
+      { "nome": "Vilnius County" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Norvegia",
+    "capitale": "Oslo",
+    "province": [
+      { "nome": "Akershus" },
+      { "nome": "Aust-Agder" },
+      { "nome": "Buskerud" },
+      { "nome": "Finnmark" },
+      { "nome": "Hedmark" },
+      { "nome": "Hordaland" },
+      { "nome": "Møre og Romsdal" },
+      { "nome": "Nordland" },
+      { "nome": "Nord-Trøndelag" },
+      { "nome": "Oppland" },
+      { "nome": "Oslo" },
+      { "nome": "Rogaland" },
+      { "nome": "Sogn og Fjordane" },
+      { "nome": "Sør-Trøndelag" },
+      { "nome": "Telemark" },
+      { "nome": "Troms" },
+      { "nome": "Vest-Agder" },
+      { "nome": "Vestfold" },
+      { "nome": "Østfold" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Paesi Bassi",
+    "capitale": "Amsterdam",
+    "province": [
+      { "nome": "Drenthe", "città": ["Assen"] },
+      { "nome": "Flevoland", "città": ["Lelystad"] },
+      { "nome": "Friesland", "città": ["Leeuwarden"] },
+      { "nome": "Gelderland", "città": ["Arnhem"] },
+      { "nome": "Groningen", "città": ["Groninga"] },
+      { "nome": "Limburg", "città": ["Maastricht"] },
+      { "nome": "Noord-Brabant", "città": ["'s-Hertogenbosch"] },
+      { "nome": "Noord-Holland", "città": ["Haarlem"] },
+      { "nome": "Overijssel", "città": ["Zwolle"] },
+      { "nome": "Utrecht", "città": ["Utrecht"] },
+      { "nome": "Zeeland", "città": ["Middelburg"] },
+      { "nome": "Zuid-Holland", "città": ["Rotterdam", "Den Haag"] },
+      { "nome": "Altro...", "città": ["Altro..."] }
+    ]
+  }
+
+  ,
+  {
+    "nazione": "Polonia",
+    "capitale": "Varsavia",
+    "province": [
+      { "nome": "Basso Slesia" },
+      { "nome": "Cuiavia-Pomerania" },
+      { "nome": "Lubusz" },
+      { "nome": "Łódź" },
+      { "nome": "Małopolska" },
+      { "nome": "Mazovia" },
+      { "nome": "Opole" },
+      { "nome": "Podlachia" },
+      { "nome": "Pomerania" },
+      { "nome": "Santacroce" },
+      { "nome": "Slesia" },
+      { "nome": "Varmia-Masuria" },
+      { "nome": "Grande Polonia" },
+      { "nome": "Pomerania Occidentale" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Portogallo",
+    "capitale": "Lisbona",
+    "province": [
+      { "nome": "Aveiro" },
+      { "nome": "Beja" },
+      { "nome": "Braga" },
+      { "nome": "Bragança" },
+      { "nome": "Castelo Branco" },
+      { "nome": "Coimbra" },
+      { "nome": "Évora" },
+      { "nome": "Faro" },
+      { "nome": "Guarda" },
+      { "nome": "Leiria" },
+      { "nome": "Lisbona" },
+      { "nome": "Portalegre" },
+      { "nome": "Porto" },
+      { "nome": "Santarem" },
+      { "nome": "Setúbal" },
+      { "nome": "Viana do Castelo" },
+      { "nome": "Vila Real" },
+      { "nome": "Viseu" },
+      { "nome": "Azzorre" },
+      { "nome": "Madeira" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Regno Unito",
+    "capitale": "Londra",
+    "province": [
+      { "nome": "Londra" },
+      { "nome": "Manchester" },
+      { "nome": "Liverpool" },
+      { "nome": "Birmingham" },
+      { "nome": "Leeds" },
+      { "nome": "Bristol" },
+      { "nome": "Sheffield" },
+      { "nome": "Newcastle upon Tyne" },
+      { "nome": "Nottingham" },
+      { "nome": "Leicester" },
+      { "nome": "Southampton" },
+      { "nome": "Oxford" },
+      { "nome": "Edimburgo" },
+      { "nome": "Glasgow" },
+      { "nome": "Aberdeen" },
+      { "nome": "Dundee" },
+      { "nome": "Inverness" },
+      { "nome": "Stirling" },
+      { "nome": "Perth" },
+      { "nome": "Cardiff" },
+      { "nome": "Swansea" },
+      { "nome": "Newport" },
+      { "nome": "Belfast" },
+      { "nome": "Londonderry" },
+      { "nome": "Newry" },
+      { "nome": "Bangor" },
+      { "nome": "Armagh" },
+      { "nome": "Enniskillen" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Repubblica Ceca",
+    "capitale": "Praga",
+    "province": [
+      { "nome": "Boemia" },
+      { "nome": "Moravia" },
+      { "nome": "Slesia" },
+      { "nome": "Pardubice" },
+      { "nome": "Liberec" },
+      { "nome": "Karlovy Vary" },
+      { "nome": "Hradec Králové" },
+      { "nome": "Olomouc" },
+      { "nome": "Plzeň" },
+      { "nome": "Praga" },
+      { "nome": "Ústí nad Labem" },
+      { "nome": "Vysočina" },
+      { "nome": "Zlín" },
+      { "nome": "Altro..." }
+    ]
+  }
+
+  ,
+  {
+    "nazione": "Romania",
+    "capitale": "Bucarest",
+    "province": [
+      { "nome": "Alba" },
+      { "nome": "Arad" },
+      { "nome": "Argeș" },
+      { "nome": "Bacău" },
+      { "nome": "Bihor" },
+      { "nome": "Bistrița-Năsăud" },
+      { "nome": "Botoșani" },
+      { "nome": "Brăila" },
+      { "nome": "Brașov" },
+      { "nome": "Buzău" },
+      { "nome": "Călărași" },
+      { "nome": "Caraș-Severin" },
+      { "nome": "Cluj" },
+      { "nome": "Constanța" },
+      { "nome": "Covasna" },
+      { "nome": "Dâmbovița" },
+      { "nome": "Dolj" },
+      { "nome": "Galați" },
+      { "nome": "Giurgiu" },
+      { "nome": "Gorj" },
+      { "nome": "Harghita" },
+      { "nome": "Hunedoara" },
+      { "nome": "Ialomița" },
+      { "nome": "Iași" },
+      { "nome": "Ilfov" },
+      { "nome": "Maramureș" },
+      { "nome": "Mehedinți" },
+      { "nome": "Mureș" },
+      { "nome": "Neamț" },
+      { "nome": "Olt" },
+      { "nome": "Prahova" },
+      { "nome": "Sălaj" },
+      { "nome": "Satu Mare" },
+      { "nome": "Sibiu" },
+      { "nome": "Suceava" },
+      { "nome": "Teleorman" },
+      { "nome": "Timiș" },
+      { "nome": "Tulcea" },
+      { "nome": "Vâlcea" },
+      { "nome": "Vaslui" },
+      { "nome": "Vrancea" },
+      { "nome": "Bucarest" },
+      { "nome": "Città di Bucarest" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Russia",
+    "capitale": "Mosca",
+    "province": [
+      { "nome": "Mosca" },
+      { "nome": "San Pietroburgo" },
+      { "nome": "Novosibirsk" },
+      { "nome": "Ekaterinburg" },
+      { "nome": "Nizhny Novgorod" },
+      { "nome": "Samara" },
+      { "nome": "Omsk" },
+      { "nome": "Kazan" },
+      { "nome": "Chelyabinsk" },
+      { "nome": "Rostov sul Don" },
+      { "nome": "Ufa" },
+      { "nome": "Volgograd" },
+      { "nome": "Perm" },
+      { "nome": "Krasnoyarsk" },
+      { "nome": "Voronezh" },
+      { "nome": "Saratov" },
+      { "nome": "Krasnodar" },
+      { "nome": "Toljatti" },
+      { "nome": "Izhevsk" },
+      { "nome": "Ulyanovsk" },
+      { "nome": "Barnaul" },
+      { "nome": "Vladivostok" },
+      { "nome": "Yaroslavl" },
+      { "nome": "Irkutsk" },
+      { "nome": "Tyumen" },
+      { "nome": "Khabarovsk" },
+      { "nome": "Orenburg" },
+      { "nome": "Novokuznetsk" },
+      { "nome": "Kemerovo" },
+      { "nome": "Vladimir" },
+{ "nome": "Ryazan" },
+{ "nome": "Penza" },
+{ "nome": "Kirov" },
+{ "nome": "Tula" },
+{ "nome": "Kursk" },
+{ "nome": "Kaluga" },
+{ "nome": "Bryansk" },
+{ "nome": "Smolensk" },
+{ "nome": "Tambov" },
+{ "nome": "Lipetsk" },
+{ "nome": "Yakutsk" },
+{ "nome": "Surgut" },
+{ "nome": "Vladikavkaz" },
+{ "nome": "Stavropol" },
+{ "nome": "Arkhangelsk" },
+{ "nome": "Murmansk" },
+{ "nome": "Petrozavodsk" },
+{ "nome": "Kaliningrad" },
+{ "nome": "Yoshkar-Ola" },
+{ "nome": "Tver" },
+{ "nome": "Belgorod" },
+{ "nome": "Nalchik" },
+{ "nome": "Ivanovo" },
+{ "nome": "Kurgan" },
+{ "nome": "Nizhnevartovsk" },
+{ "nome": "Novorossiysk" },
+{ "nome": "Volzhsky" },
+{ "nome": "Nizhnekamsk" },
+{ "nome": "Volgodonsk" },
+{ "nome": "Taganrog" },
+{ "nome": "Altro..." }
+    ]
+  }
+
+  ,
+  {
+    "nazione": "San Marino",
+    "capitale": "San Marino"
+  },
+  {
+    "nazione": "Serbia",
+    "capitale": "Belgrado",
+    "province":[
+      { "nome": "Belgrado" },
+{ "nome": "Vojvodina" },
+{ "nome": "Banato" },
+{ "nome": "Bačka" },
+{ "nome": "Srem" },
+{ "nome": "Pomoravlje" },
+{ "nome": "Podunavlje" },
+{ "nome": "Mačva" },
+{ "nome": "Šumadija" },
+{ "nome": "Pomoravlje" },
+{ "nome": "Rasina" },
+{ "nome": "Raška" },
+{ "nome": "Moravica" },
+{ "nome": "Zlatibor" },
+{ "nome": "Moravica" },
+{ "nome": "Zlatibor" },
+{ "nome": "Pčinja" },
+{ "nome": "Toplica" },
+{ "nome": "Nišava" },
+{ "nome": "Pirot" },
+{ "nome": "Jablanica" },
+{ "nome": "Pčinja" },
+{ "nome": "Toplica" },
+{ "nome": "Nišava" },
+{ "nome": "Pirot" },
+{ "nome": "Jablanica" },
+{ "nome": "Pčinja" },
+{ "nome": "Altro..." }
+    ]
+  },
+  {
+    "nazione": "Slovacchia",
+    "capitale": "Bratislava",
+    "province":[
+      { "nome": "Bratislava" },
+{ "nome": "Trnava" },
+{ "nome": "Trenčín" },
+{ "nome": "Nitra" },
+{ "nome": "Žilina" },
+{ "nome": "Banská Bystrica" },
+{ "nome": "Prešov" },
+{ "nome": "Košice" },
+{ "nome": "Altro..." }
+    ]
+  },
+  {
+    "nazione": "Slovenia",
+    "capitale": "Lubiana",
+    "province": [
+      { "nome": "Alta Carniola" },
+      { "nome": "Gorenjska" },
+      { "nome": "Primorsko-notranjska" },
+      { "nome": "Goriška" },
+      { "nome": "Obalno-kraška" },
+      { "nome": "Lubiana" },
+      { "nome": "Osrednjeslovenska" },
+      { "nome": "Posavska" },
+      { "nome": "Podravska" },
+      { "nome": "Koroška" },
+      { "nome": "Pomurska" },
+      { "nome": "Jugovzhodna Slovenija" },
+      { "nome": "Altro..." }
+    ]
+  },
+
+  {
+    "nazione": "Spagna",
+    "capitale": "Madrid",
+    "province": [
+      { "nome": "Andalusia" },
+      { "nome": "Aragona" },
+      { "nome": "Asturie" },
+      { "nome": "Isole Baleari" },
+      { "nome": "Canarie" },
+      { "nome": "Cantabria" },
+      { "nome": "Castiglia e León" },
+      { "nome": "Castiglia-La Mancia" },
+      { "nome": "Catalogna" },
+      { "nome": "Estremadura" },
+      { "nome": "Galizia" },
+      { "nome": "Madrid" },
+      { "nome": "Murcia" },
+      { "nome": "Navarra" },
+      { "nome": "La Rioja" },
+      { "nome": "Paesi Baschi" },
+      { "nome": "Valencia" },
+      { "nome": "Altro..." }
+    ]
+  },
+
+  {
+    "nazione": "Svezia",
+    "capitale": "Stoccolma",
+    "province": [
+      { "nome": "Blekinge" },
+      { "nome": "Dalarna" },
+      { "nome": "Gotland" },
+      { "nome": "Gävleborg" },
+      { "nome": "Halland" },
+      { "nome": "Jämtland" },
+      { "nome": "Jönköping" },
+      { "nome": "Kalmar" },
+      { "nome": "Kronoberg" },
+      { "nome": "Norrbotten" },
+      { "nome": "Örebro" },
+      { "nome": "Östergötland" },
+      { "nome": "Skåne" },
+      { "nome": "Södermanland" },
+      { "nome": "Stockholm" },
+      { "nome": "Uppsala" },
+      { "nome": "Värmland" },
+      { "nome": "Västerbotten" },
+      { "nome": "Västernorrland" },
+      { "nome": "Västmanland" },
+      { "nome": "Västra Götaland" },
+      { "nome": "Altro..." },
+      { "nome": "Altro..." }
+
+    ]
+  }
+  ,
+  {
+    "nazione": "Svizzera",
+    "capitale": "Berna",
+    "province": [
+      { "nome": "Aargau" },
+      { "nome": "Appenzell Ausserrhoden" },
+      { "nome": "Appenzell Innerrhoden" },
+      { "nome": "Basilea Campagna" },
+      { "nome": "Basilea Città" },
+      { "nome": "Berna" },
+      { "nome": "Friburgo" },
+      { "nome": "Ginevra" },
+      { "nome": "Glarona" },
+      { "nome": "Giura" },
+      { "nome": "Losanna" },
+      { "nome": "Lucerna" },
+      { "nome": "Neuchâtel" },
+      { "nome": "Nidvaldo" },
+      { "nome": "Obvaldo" },
+      { "nome": "Svitto" },
+      { "nome": "Ticino" },
+      { "nome": "Uri" },
+      { "nome": "Vallese" },
+      { "nome": "Vaud" },
+      { "nome": "Zugo" },
+      { "nome": "Zurigo" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Ucraina",
+    "capitale": "Kiev",
+    "province": [
+      { "nome": "Cherkasy" },
+      { "nome": "Chernihiv" },
+      { "nome": "Chernivtsi" },
+      { "nome": "Dnipropetrovsk" },
+      { "nome": "Donetsk" },
+      { "nome": "Ivano-Frankivsk" },
+      { "nome": "Kharkiv" },
+      { "nome": "Kherson" },
+      { "nome": "Khmelnytskyi" },
+      { "nome": "Kiev" },
+      { "nome": "Kirovohrad" },
+      { "nome": "Luhansk" },
+      { "nome": "Lviv" },
+      { "nome": "Mykolaiv" },
+      { "nome": "Odessa" },
+      { "nome": "Poltava" },
+      { "nome": "Rivne" },
+      { "nome": "Sumy" },
+      { "nome": "Ternopil" },
+      { "nome": "Vinnytsia" },
+      { "nome": "Volyn" },
+      { "nome": "Zakarpattia" },
+      { "nome": "Zaporizhia" },
+      { "nome": "Zhytomyr" },
+      { "nome": "Altro..." }
+    ]
+  }
+  ,
+  {
+    "nazione": "Ungheria",
+    "capitale": "Budapest",
+    "province": [
+      { "nome": "Budapest" },
+      { "nome": "Baranya" },
+      { "nome": "Bács-Kiskun" },
+      { "nome": "Békés" },
+      { "nome": "Borsod-Abaúj-Zemplén" },
+      { "nome": "Csongrád" },
+      { "nome": "Fejér" },
+      { "nome": "Győr-Moson-Sopron" },
+      { "nome": "Hajdú-Bihar" },
+      { "nome": "Heves" },
+      { "nome": "Jász-Nagykun-Szolnok" },
+      { "nome": "Komárom-Esztergom" },
+      { "nome": "Nógrád" },
+      { "nome": "Pest" },
+      { "nome": "Somogy" },
+      { "nome": "Szabolcs-Szatmár-Bereg" },
+      { "nome": "Tolna" },
+      { "nome": "Vas" },
+      { "nome": "Veszprém" },
+      { "nome": "Zala" }
+    ]
+  }
+  ,
+  {
+    "nazione": "Vaticano",
+    "capitale": "Città del Vaticano"
+  }
+
+]

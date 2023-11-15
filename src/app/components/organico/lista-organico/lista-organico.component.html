@@ -1,122 +1,280 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-12">
-      <h1 style="text-align: center; margin: auto;">Organico</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>organico</title>
+  <style>
+    #toolbar {
+      background-color: #007bff;
+      /* Colore blu aziendale */
+      color: #ffffff;
+      /* Testo bianco */
+      display: flex;
+      background-color: #333;
+      justify-content: space-between;
+      /* Allinea gli elementi a sinistra e a destra */
+      align-items: center;
+      /* Allinea verticalmente gli elementi al centro */
+    }
+
+    .logo-link {
+      margin-right: 10px;
+    }
+
+    .toolbar-menu {
+      display: flex;
+      gap: 10px;
+      background-color: #333;
+      margin-right: auto;
+    }
+
+    .toolbar-link {
+      text-decoration: none;
+      color: #ffffff;
+      /* padding: 10px; */
+    }
+
+    a {
+      color: white;
+    }
+
+    .toolbar-link:hover {
+      color: #d8d8d8;
+    }
+
+    .user-icon,
+    .logout-icon {
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+
+    #toolbar {
+      background-color: #007bff;
+      /* Colore blu aziendale */
+      color: #ffffff;
+      /* Testo bianco */
+      display: flex;
+      background-color: #333;
+      justify-content: space-between;
+      /* Allinea gli elementi a sinistra e a destra */
+      align-items: center;
+      /* Allinea verticalmente gli elementi al centro */
+    }
+
+    .logo-link {
+      margin-right: 10px;
+    }
+
+    .toolbar-menu {
+      display: flex;
+      gap: 10px;
+      background-color: #333;
+      margin-right: auto;
+    }
+
+    .toolbar-link {
+      text-decoration: none;
+      color: #ffffff;
+      /* padding: 10px; */
+    }
+
+    a {
+      color: white;
+    }
+
+    .toolbar-link:hover {
+      color: #d8d8d8;
+    }
+
+    .user-icon,
+    .logout-icon {
+      color: #ffffff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="inizioPagina"></div>
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+      </a>
+      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
+        <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+          {{ menuItem.nome }}
+        </a>
+      </div>
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>  <i class="fa fa-user"></i>
+        <!--<img *ngIf="immaginePredefinita" style="border-radius:100%" [src]="immaginePredefinita" alt="Immagine" width="40px"  />-->
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
+
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && mobile">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+      </a>
+      <button style=" background-color:white;color:black;margin-right: 10px;" mat-button [matMenuTriggerFor]="menu">
+        Menu
+      </button>
+      <mat-menu #menu="matMenu">
+        <button style="background-color:white;color:black" mat-menu-item *ngFor="let menuItem of jsonData.list"
+          [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
+          {{ menuItem.nome }}
+        </button>
+      </mat-menu>
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+        <i class="fa fa-user"></i>
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
+
+
+  <div class="container-fluid" *ngIf="ruolo==='ADMIN'">
+    <div class="row">
+      <div class="col-12">
+        <br>
+        <mat-card style="text-align: center;">
+          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+          <h1>Organico</h1>
+        </mat-card>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Azienda</th>
+                <th scope="col">Numero <br>dipendenti</th>
+                <th scope="col">Indeterminati</th>
+                <th scope="col">Determinati</th>
+                <th scope="col">Apprendistato</th>
+                <th scope="col">Consulenza</th>
+                <th scope="col">Stage</th>
+                <th scope="col">Partita<br> Iva</th>
+                <th scope="col">Potenziale<br> stage</th>
+                <th scope="col">Slot<br> stage</th>
+                <th scope="col">Potenziale<br> apprendistato</th>
+                <th scope="col">Slot<br> apprendistato</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let element of lista">
+                <td>{{ element?.azienda }}</td>
+                <td>
+                  <div *ngIf="element.numeroDipendenti === 0;else elseBlock1">
+                    {{ element.numeroDipendenti }}
+                  </div>
+                  <ng-template #elseBlock1>
+                    <button (click)="filter(null,element?.azienda)" class="btn btn-link">
+                      {{ element.numeroDipendenti }}
+                    </button>
+                  </ng-template>
+                <td>
+                  <div *ngIf="element.indeterminati === 0;else elseBlock2">
+                    {{ element.indeterminati }}
+                  </div>
+                  <ng-template #elseBlock2>
+                    <button (click)="filter('Indeterminato',element?.azienda)" class="btn btn-link">
+                      {{ element.indeterminati }}
+                    </button>
+                  </ng-template>
+                </td>
+                <td>
+                  <div *ngIf="element.determinati === 0;else elseBlock3">
+                    {{ element.determinati}}
+                  </div>
+                  <ng-template #elseBlock3>
+                    <button (click)="filter('Determinato',element?.azienda)" class="btn btn-link">
+                      {{ element.determinati}}
+                    </button>
+                  </ng-template>
+                </td>
+                <td>
+                  <div *ngIf="element.apprendistato === 0;else elseBlock4">
+                    {{ element.apprendistato }}
+                  </div>
+                  <ng-template #elseBlock4>
+                    <button (click)="filter('Apprendistato',element?.azienda)" class="btn btn-link">
+                      {{ element.apprendistato }}
+                    </button>
+                  </ng-template>
+                </td>
+                <td>
+                  <div *ngIf="element.consulenza === 0;else elseBlock5">
+                    {{ element.consulenza }}
+                  </div>
+                  <ng-template #elseBlock5>
+                    <button (click)="filter('Consulenza',element?.azienda)" class="btn btn-link">
+                      {{ element.consulenza }}
+                    </button>
+                  </ng-template>
+                </td>
+                <td>
+                  <div *ngIf="element.stage === 0;else elseBlock6">
+                    {{ element.stage }}
+                  </div>
+                  <ng-template #elseBlock6>
+                    <button (click)="filter('Stage',element?.azienda)" class="btn btn-link">
+                      {{ element.stage }}
+                    </button>
+                  </ng-template>
+                </td>
+                <td>
+                  <div *ngIf="element.partitaIva === 0;else elseBlock7">
+                    {{ element.partitaIva }}
+                  </div>
+                  <ng-template #elseBlock7>
+                    <button (click)="filter('PartitaIva',element?.azienda)" class="btn btn-link">
+                      {{ element.partitaIva }}
+                    </button>
+                  </ng-template>
+                </td>
+                <td>{{ element.potenzialeStage }}</td>
+                <td>{{ element.slotStage }}</td>
+                <td>{{ element.potenzialeApprendistato}}</td>
+                <td>{{ element.slotApprendistato }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+<div id="finePagina"></div>
+  </div>
+  <div class="container-fluid" *ngIf="ruolo==='DIPENDENTE'">
+    <div class="row">
+      <div class="col-12">
+        <br>
+        <mat-card style="text-align: center;">
+          <h1><img src="../../../../assets/images/danger.png" alt="Logo Sincrono"></h1>
+          <h1>Non hai i permessi per accedere a questa sezione.</h1>
+           <a mat-stroked-button [routerLink]="['/home']" target="_blank">Vai alla home.</a>
+        </mat-card>
+      </div>
     </div>
   </div>
+</body>
 
-<div class="row" >
-  <div class="col-8" style="text-align:center; margin: auto;" >
-    <canvas id="barChart"></canvas>
-
-  </div>
-</div>
-
-<!-- <br> -->
-<!-- <hr> -->
-<!-- <br> -->
-<div class="row">
-  <div class="col-12">
-    <div class="table-responsive">
-      <!-- <table class="table table-striped table-bordered">
-          <thead class="thead-dark">
-              <tr>
-                  <th scope="col">Azienda</th>
-                  <th scope="col">Numero <br>dipendenti</th>
-                  <th scope="col">Indeterminati</th>
-                  <th scope="col">Determinati</th>
-                  <th scope="col">Apprendistato</th>
-                  <th scope="col">Consulenza</th>
-                  <th scope="col">Stage</th>
-                  <th scope="col">Partita<br> Iva</th>
-                  <th scope="col">Potenziale<br> stage</th>
-                  <th scope="col">Slot<br> stage</th>
-                  <th scope="col">Potenziale<br> apprendistato</th>
-                  <th scope="col">Slot<br> apprendistato</th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr *ngFor="let element of lista">
-                  <td>{{ element?.azienda }}</td>
-                  <td>
-                      <div *ngIf="element.numeroDipendenti === 0;else elseBlock1">
-                          {{ element.numeroDipendenti }}
-                      </div>
-                      <ng-template #elseBlock1>
-                          <button (click)="filter('',element?.azienda)" class="btn btn-link">
-                              {{ element.numeroDipendenti }}
-                          </button>
-                      </ng-template>
-                  <td>
-                      <div *ngIf="element.indeterminati === 0;else elseBlock2">
-                          {{ element.indeterminati }}
-                      </div>
-                      <ng-template #elseBlock2>
-                          <button (click)="filter('Indeterminato',element?.azienda)" class="btn btn-link">
-                              {{ element.indeterminati }}
-                          </button>
-                      </ng-template>
-                  </td>
-                  <td>
-                      <div *ngIf="element.determinati === 0;else elseBlock3">
-                          {{ element.determinati}}
-                      </div>
-                      <ng-template #elseBlock3>
-                          <button (click)="filter('Determinato',element?.azienda)" class="btn btn-link">
-                              {{ element.determinati}}
-                          </button>
-                      </ng-template>
-                  </td>
-                  <td>
-                      <div *ngIf="element.apprendistato === 0;else elseBlock4">
-                          {{ element.apprendistato }}
-                      </div>
-                      <ng-template #elseBlock4>
-                          <button (click)="filter('Apprendistato',element?.azienda)" class="btn btn-link">
-                              {{ element.apprendistato }}
-                          </button>
-                      </ng-template>
-                  </td>
-                  <td>
-                      <div *ngIf="element.consulenza === 0;else elseBlock5">
-                          {{ element.consulenza }}
-                      </div>
-                      <ng-template #elseBlock5>
-                          <button (click)="filter('Consulenza',element?.azienda)" class="btn btn-link">
-                              {{ element.consulenza }}
-                          </button>
-                      </ng-template>
-                  </td>
-                  <td>
-                      <div *ngIf="element.stage === 0;else elseBlock6">
-                          {{ element.stage }}
-                      </div>
-                      <ng-template #elseBlock6>
-                          <button (click)="filter('Stage',element?.azienda)" class="btn btn-link">
-                              {{ element.stage }}
-                          </button>
-                      </ng-template>
-                  </td>
-                  <td>
-                      <div *ngIf="element.partitaIva === 0;else elseBlock7">
-                          {{ element.partitaIva }}
-                      </div>
-                      <ng-template #elseBlock7>
-                          <button (click)="filter('PartitaIva',element?.azienda)" class="btn btn-link">
-                              {{ element.partitaIva }}
-                          </button>
-                      </ng-template>
-                  </td>
-                  <td>{{ element.potenzialeStage }}</td>
-                  <td>{{ element.slotStage }}</td>
-                  <td>{{ element.potenzialeApprendistato}}</td>
-                  <td>{{ element.slotApprendistato }}</td>
-              </tr>
-          </tbody>
-      </table> -->
-  </div>
-  </div>
-</div>
-
-<button (click)="exportOrganicoToExcel()" >Esporta come file Excel</button>
-</div>
+</html>

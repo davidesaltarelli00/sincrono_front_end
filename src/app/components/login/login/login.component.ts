@@ -2,6 +2,8 @@ import { Component, DoCheck, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../login-service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -13,10 +15,12 @@ export class LoginComponent implements OnInit {
   passwordVisible = false;
   loginForm: FormGroup;
   recuperoPasswordInCorso: boolean = false;
+  tokenExpirationTime: any;
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -31,9 +35,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     if (localStorage.getItem('token') != null) {
       this.router.navigate(['/home']);
-    } else{
+    } else {
       this.router.navigate(['/login']);
-
     }
   }
 
@@ -58,30 +61,36 @@ export class LoginComponent implements OnInit {
 
     this.authService.authenticate(username, password).subscribe(
       (response) => {
-        // Login successful, handle the response
-        console.log('Login successful!');
-        console.log("Response: "+response);
-
-        // Formatta il token
-        const tokenParts = response.token.split('.');
-        const tokenHeader = JSON.parse(atob(tokenParts[0]));
-        const tokenPayload = JSON.parse(atob(tokenParts[1]));
-
-        // Puoi accedere alle parti del token come oggetti JSON
-        console.log('Token header:', tokenHeader);
-        console.log('Token payload:', tokenPayload);
-
-        // Memorizza il token nel localStorage e assegna alla variabile token
-        localStorage.setItem('token', response.token);
-        this.token = response.token;
-        console.log("Si é loggato l'utente "+ tokenPayload.sub);
-
-        // Redirect a una diversa pagina o esegui altre azioni
-        this.router.navigate(['/home']);
+        if ((response as any).esito.code !== 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image:'../../../../assets/images/danger.png',
+              title: 'Login non riuscito:',
+              message: (response as any).esito.target,
+            },
+          });
+        } else {
+          this.router.navigate(['/home']);
+          // Formatta il token
+          const tokenParts = response.token.split('.');
+          const tokenHeader = JSON.parse(atob(tokenParts[0]));
+          const tokenPayload = JSON.parse(atob(tokenParts[1]));
+          // Calcola il tempo rimanente del token
+          const currentTime = Date.now() / 1000;
+          this.tokenExpirationTime = tokenPayload.exp - currentTime;
+          // Puoi accedere alle parti del token come oggetti JSON
+          console.log('Token header:', tokenHeader);
+          console.log('Token payload:', tokenPayload);
+          console.log("DURATA TOKEN: "+ JSON.stringify(this.tokenExpirationTime));
+          // Memorizza il token nel localStorage e assegna alla variabile token
+          localStorage.setItem('token', response.token);
+          this.token = response.token;
+          console.log("Si é loggato l'utente " + tokenPayload.sub);
+          console.log('Token generato: ' + localStorage.getItem('token'));
+        }
       },
       (error) => {
-        // Login failed, handle the error
-        console.error('Login failed', error);
+        console.error('Login fallito:', JSON.stringify(error));
       }
     );
   }

@@ -1,4 +1,10 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -8,10 +14,25 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MapsService } from '../nuova-anagrafica-dto/maps.service';
 import { AnagraficaDtoService } from './../anagraficaDto-service';
 import { CommessaDuplicata } from './commessaDuplicata';
 import { Commessa } from '../nuova-anagrafica-dto/commessa';
 import { DatePipe } from '@angular/common';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
+import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
+import { ProfileBoxService } from '../../profile-box/profile-box.service';
+import { AuthService } from '../../login/login-service';
+import { ContrattoService } from '../../contratto/contratto-service';
+import { MenuService } from '../../menu.service';
+import { ImageService } from '../../image.service';
+import { StepperService } from 'src/app/stepper.service';
 
 @Component({
   selector: 'app-modifica-anagrafica-dto',
@@ -51,8 +72,48 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   inseritoContrattoIndeterminato: boolean = false;
   contrattoStageOApprendistato: any;
   percentualePartTimeValue: number | null = null;
-  dataOdierna = new Date();
-  selectedTipoContrattoId:any;
+  dataOdierna: any;
+  dataFormattata: any;
+  selectedTipoContrattoId: any;
+  numeroMensilitaCCNL: any;
+  numeroMensilitaDaDettaglio: any;
+  minimiRet23: any;
+  tipoDiContrattoControl: any;
+  tipoContratto: any;
+  descrizioneLivelloCCNL: any;
+  elencoLivelliCCNL: any[] = [];
+  mensileTOT: any;
+  mobile: any = false;
+  //dati per la navbar
+  userLoggedName: any;
+  userLoggedSurname: any;
+  shouldReloadPage: any;
+  idFunzione: any;
+  jsonData: any;
+  token = localStorage.getItem('token');
+  userRoleNav: any;
+  idNav: any;
+  tokenProvvisorio: any;
+  aziendeClienti: any[] = [];
+  //proprietá per immagini
+  immagine: any;
+  @ViewChild('fileInput') fileInput: ElementRef | undefined;
+  immagineConvertita: string | null = null;
+  immaginePredefinita: string | null = null;
+  idAnagraficaLoggata: any;
+  disabilitaImmagine: any;
+  salvaImmagine: boolean = false;
+  immagineCancellata: boolean = false;
+  codiceFiscaleDettaglio: any;
+  @ViewChild('stepper') stepper: any;
+  idUtente: any;
+  nazioni: string[] = [];
+  capitali: any[] = [];
+  province: any[] = [];
+  dati: any = [];
+  statoDiNascita: any;
+  provinciaDiNascita: string = '';
+
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -61,11 +122,45 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private renderer: Renderer2,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private imageService: ImageService,
+    public dialog: MatDialog,
+    public profileBoxService: ProfileBoxService,
+    private http: HttpClient,
+    private contrattoService: ContrattoService,
+    private authService: AuthService,
+    private menuService: MenuService,
+    private mapsService: MapsService,
+    private stepperService: StepperService
   ) {
-    console.log(
-      '+++++++++++++++++++++++++++ID ANAGRAFICA CORRENTE: ' + this.id
-    );
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
+
+    // console.log(
+    //   '+++++++++++++++++++++++++++ID ANAGRAFICA CORRENTE: ' + this.id
+    // );
+    this.dataOdierna = new Date();
+    if (this.dataOdierna) {
+      this.dataFormattata = this.datePipe.transform(
+        this.dataOdierna,
+        'yyyy-MM-dd'
+      );
+      if (this.dataFormattata) {
+        // console.log('DATA DI OGGI FORMATTATA: ' + this.dataFormattata);
+      }
+    }
+
     this.anagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
         id: [this.id],
@@ -109,23 +204,27 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         coniugato: [''],
         figliACarico: [''],
         attesaLavori: [''],
+
+        categoriaProtetta: [''],
+        statoDiNascita: [''],
+        cittadinanza: [''],
+        provinciaDiNascita: [''],
       }),
       commesse: this.formBuilder.array([]),
 
       contratto: this.formBuilder.group({
         id: [''],
-        // attivo: [''],
-        // aziendaDiFatturazioneInterna: [''],
         tipoAzienda: this.formBuilder.group({
           id: [''],
         }),
         tipoContratto: this.formBuilder.group({
           id: [''],
         }),
-        tipoLivelloContratto: this.formBuilder.group({
+
+        tipoCcnl: this.formBuilder.group({
           id: [''],
         }),
-        tipoCcnl: this.formBuilder.group({
+        tipoLivelloContratto: this.formBuilder.group({
           id: [''],
         }),
         qualifica: [''],
@@ -137,7 +236,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         mesiDurata: [''],
         livelloAttuale: [''],
         livelloFinale: [''],
-        // dimissioni: [''],
         partTime: [''],
         percentualePartTime: [''],
         retribuzioneMensileLorda: [
@@ -153,7 +251,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         diariaGiornaliera: ['', [Validators.pattern('[0-9]+(.[0-9][0-9]?)?')]],
         ticket: [''],
         valoreTicket: ['', Validators.maxLength(50)],
-        categoriaProtetta: [''],
         tutor: [''],
         pfi: [''],
         retribuzioneNettaGiornaliera: [''],
@@ -186,83 +283,277 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.token != null) {
+      this.getUserLogged();
+      this.getUserRole();
+      this.inizializzaStatoCampiDistacco();
+      this.caricaTipoContratto();
+      this.caricaTipoAzienda();
+      this.caricaContrattoNazionale();
+      this.changeElencoLivelliCCNL();
+      this.caricaDati();
+      this.caricaAziendeClienti();
+      this.calculateRalPartTime();
+      this.caricaRuoli();
+      this.creaFormCommessa();
+      this.caricaTipoCanaleReclutamento();
+      this.caricaTipoCausaFineRapporto();
+      this.caricaLivelloContratto();
+      this.caricaMappa();
 
-    this.caricaTipoContratto();
-    this.caricaLivelloContratto();
-    this.caricaTipoAzienda();
-    this.caricaContrattoNazionale();
-    this.caricaDati();
-    this.calculateRalPartTime();
-    this.caricaRuoli();
-    this.creaFormCommessa();
-    this.caricaTipoCanaleReclutamento();
-    this.caricaTipoCausaFineRapporto();
+      const tipoContratto = this.anagraficaDto.get(
+        'contratto.tipoContratto.id'
+      );
 
-    const retribuzioneMensileLorda=this.anagraficaDto.get('contratto.retribuzioneMensileLorda');
-    const superminimoMensileControl=this.anagraficaDto.get('contratto.superminimoMensile');
-    const scattiAnzianitaControl=this.anagraficaDto.get('contratto.scattiAnzianita');
-    if(retribuzioneMensileLorda && superminimoMensileControl && scattiAnzianitaControl){
-      // this.calcolaMensileTot();
-    } else{
-      console.warn("Non é possibile calcolare il mensile totale perché mancano dei dati.");
-    }
+      const retribuzioneMensileLorda = this.anagraficaDto.get(
+        'contratto.retribuzioneMensileLorda'
+      );
+      const superminimoMensileControl = this.anagraficaDto.get(
+        'contratto.superminimoMensile'
+      );
+      const scattiAnzianitaControl = this.anagraficaDto.get(
+        'contratto.scattiAnzianita'
+      );
+      if (
+        retribuzioneMensileLorda?.value != null &&
+        superminimoMensileControl?.value != null &&
+        scattiAnzianitaControl?.value != null
+      ) {
+        // this.calcolaMensileTot();
+        // console.log('Il mensile totale si puo calcolare.');
+      } else {
+        // console.warn(
+        //   'Non é possibile calcolare il mensile totale perché mancano dei dati.'
+        // );
+      }
 
+      //SE IL CONTRATTO É DIVERSO DA PARTITA IVA I CAMPI TARIFFA PARTITA IVA E RETRIBUZIONE NETTA GIORNALIERA SARANNO DISABILITATI
+      const tariffaPartitaIvaControl = this.anagraficaDto.get(
+        'contratto.tariffaPartitaIva'
+      );
 
-    const tariffaPartitaIvaControl=this.anagraficaDto.get('contratto.tariffaPartitaIva');
+      const retribuzioneNettaGiornalieraControl = this.anagraficaDto.get(
+        'contratto.retribuzioneNettaGiornaliera'
+      );
+      if (this.tipoDiContrattoControl != 'P.Iva') {
+        if (tariffaPartitaIvaControl && retribuzioneNettaGiornalieraControl) {
+          tariffaPartitaIvaControl.disable();
+          retribuzioneNettaGiornalieraControl.disable();
+        }
+      }
 
-    if(tariffaPartitaIvaControl){
-      tariffaPartitaIvaControl.disable();
-    }
+      const ralPartTimeControl = this.anagraficaDto.get(
+        'contratto.ralPartTime'
+      );
+      if (ralPartTimeControl) {
+        ralPartTimeControl.disable();
+      }
 
-    // const livelloAttualeControl = this.anagraficaDto.get(
-    //   'contratto.livelloAttuale'
-    // );
-    // const livelloFinaleControl = this.anagraficaDto.get(
-    //   'contratto.livelloFinale'
-    // );
+      this.anagraficaDto
+        .get('contratto.dataAssunzione')
+        ?.valueChanges.subscribe(() => {
+          this.calculateDataFineRapporto();
+        });
 
-    // if (livelloAttualeControl && livelloFinaleControl) {
-    //   livelloAttualeControl.disable();
-    //   livelloFinaleControl.disable();
-    // }
+      this.anagraficaDto
+        .get('contratto.mesiDurata')
+        ?.valueChanges.subscribe(() => {
+          this.calculateDataFineRapporto();
+        });
 
-    const tipoAziendaAnagrafica = this.anagraficaDto.get('anagrafica.tipoAzienda.id');
-    if (tipoAziendaAnagrafica) {
-      tipoAziendaAnagrafica.disable();
-    }
-    const ralPartTimeControl = this.anagraficaDto.get('contratto.ralPartTime');
-    if (ralPartTimeControl) {
-      ralPartTimeControl.disable();
-    }
-
-    this.anagraficaDto
-      .get('contratto.dataAssunzione')
-      ?.valueChanges.subscribe(() => {
-        this.calculateDataFineRapporto();
+      const tipoAziendaControlAnagrafica = this.anagraficaDto.get(
+        'anagrafica.tipoAzienda.id'
+      );
+      const tipoAziendaControlContratto = this.anagraficaDto.get(
+        'contratto.tipoAzienda.id'
+      );
+    } else {
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          image:'../../../../assets/images/danger.png',
+          title: 'Attenzione:',
+          message: 'Errore di autenticazione, effettua il login.',
+        },
       });
+      this.authService.logout().subscribe(
+        (response: any) => {
+          if (response.status === 200) {
+            // Logout effettuato con successo
+            localStorage.removeItem('token');
+            localStorage.removeItem('tokenProvvisorio');
+            sessionStorage.clear();
+            this.router.navigate(['/login']);
+            this.dialog.closeAll();
+          } else {
+            // Gestione di altri stati di risposta (es. 404, 500, ecc.)
+            // console.log(
+            //   'Errore durante il logout:',
+            //   response.status,
+            //   response.body
+            // );
+            this.handleLogoutError();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          if (error.status === 403) {
+            // Logout a causa di errore 403 (Forbidden)
+            // console.log('Errore 403: Accesso negato');
+            this.handleLogoutError();
+          } else {
+            // Gestione di altri errori di rete o server
+            // console.log('Errore durante il logout:', error.message);
+            this.handleLogoutError();
+          }
+        }
+      );
+    }
+  }
 
-    this.anagraficaDto
-      .get('contratto.mesiDurata')
-      ?.valueChanges.subscribe(() => {
-        this.calculateDataFineRapporto();
-      });
-
-    const tipoAziendaControlAnagrafica = this.anagraficaDto.get(
-      'anagrafica.tipoAzienda.id'
-    );
-    const tipoAziendaControlContratto = this.anagraficaDto.get(
-      'contratto.tipoAzienda.id'
-    );
-
-    // Aggiungi un listener valueChanges per il controllo tipoAzienda in anagrafica
-    tipoAziendaControlAnagrafica?.valueChanges.subscribe((value) => {
-      tipoAziendaControlContratto?.setValue(value, { emitEvent: false });
+  caricaMappa() {
+    this.mapsService.getData().subscribe((data: any) => {
+      this.dati = data;
+      this.nazioni = this.dati.map((item: any) => item.nazione);
     });
+  }
 
-    // Aggiungi un listener valueChanges per il controllo tipoAzienda in contratto
-    tipoAziendaControlContratto?.valueChanges.subscribe((value) => {
-      tipoAziendaControlAnagrafica?.setValue(value, { emitEvent: false });
+  onChangeNazione(event: any) {
+    this.statoDiNascita = event.target.value; // Imposta la nazione selezionata
+
+    // Inizializza le capitali con un array vuoto
+    this.capitali = [];
+
+    // Se "Italia" è selezionata, ottieni tutte le province italiane
+    if (this.statoDiNascita === 'Italia') {
+      this.province = this.dati
+        .find((item: any) => item.nazione === 'Italia')
+        ?.province.flatMap((regione: any) => regione.province) || [];
+
+      // Inoltre, imposta le capitali italiane
+      this.capitali = this.dati
+        .find((item: any) => item.nazione === 'Italia')
+        ?.province.map((regione: any) => regione.capitale) || [];
+    } else {
+      // Altrimenti, filtra le province in base alla nazione selezionata
+      this.province = this.dati
+        .find((item: any) => item.nazione === this.statoDiNascita)
+        ?.province || [];
+
+      // Recupera la capitale della nazione selezionata
+      const capitaleNazione = this.dati
+        .find((item: any) => item.nazione === this.statoDiNascita)?.capitale;
+
+      // Se la capitale è definita, aggiungila all'array delle capitali
+      if (capitaleNazione) {
+        this.capitali.push(capitaleNazione);
+      }
+    }
+
+    console.log("Nazione selezionata: " + this.statoDiNascita);
+    console.log("Province selezionate: " + JSON.stringify(this.province));
+    console.log("Capitali selezionate: " + JSON.stringify(this.capitali));
+  }
+
+
+
+  onChangeAziendaCliente(event: any) {
+    const selectedValue = parseInt(event.target.value, 10);
+
+    if (!isNaN(selectedValue)) {
+      const selectedObject = this.tipiAziende.find(
+        (azienda: any) => azienda.id === selectedValue
+      );
+
+      if (selectedObject) {
+        // console.log('Azienda cliente selezionata: ', selectedObject);
+      } else {
+        // console.log('Azienda non trovata nella lista');
+      }
+    } else {
+      // console.log('Valore non valido o azienda non selezionata');
+    }
+  }
+
+  inizializzaStatoCampiDistacco(): void {
+    const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+    commesseFormArray.controls.forEach((commessaControl, index) => {
+      const distaccoControl = commessaControl.get('distacco');
+      const distaccoAziendaControl = commessaControl.get('distaccoAzienda');
+      const distaccoDataControl = commessaControl.get('distaccoData');
+
+      if (distaccoControl && distaccoAziendaControl && distaccoDataControl) {
+        const isChecked = distaccoControl.value;
+        if (isChecked) {
+          distaccoAziendaControl.enable();
+          distaccoDataControl.enable();
+        } else {
+          distaccoAziendaControl.disable();
+          distaccoDataControl.disable();
+        }
+      }
     });
+  }
+
+  onChangeTipoAzienda(event: any) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const selectedValue = parseInt(target.value, 10); // Converte il valore selezionato in un numero
+      if (!isNaN(selectedValue)) {
+        const selectedLivello = this.tipiAziende.find(
+          (tipoAzienda: any) => tipoAzienda.id === selectedValue
+        );
+
+        if (selectedLivello) {
+          // console.log('tipo contratto selezionato: ', selectedLivello);
+        } else {
+          // console.log('tipo contratto non trovato nella lista');
+        }
+      } else {
+        // console.log('Valore non valido o tipo contratto non selezionato');
+      }
+    }
+  }
+
+  //conversione date
+  convertiDateCommesse(commesse: any[]): void {
+    for (let i = 0; i < commesse.length; i++) {
+      const commessa = commesse[i];
+      if (commessa.dataInizio) {
+        commessa.dataInizio = this.datePipe.transform(
+          commessa.dataInizio,
+          'yyyy-MM-dd'
+        );
+      }
+      if (commessa.dataFine) {
+        commessa.dataFine = this.datePipe.transform(
+          commessa.dataFine,
+          'yyyy-MM-dd'
+        );
+      }
+      if (commessa.distaccoData) {
+        commessa.distaccoData = this.datePipe.transform(
+          commessa.distaccoData,
+          'yyyy-MM-dd'
+        );
+      }
+      // console.log(
+      //   '************************************ \n DATA DISTACCO DELLE COMMESSE CONVERTITE: \n' +
+      //     '' +
+      //     commessa.distaccoData +
+      //     '\n'
+      // );
+      // console.log(
+      //   'DATE INIZIO DELLE COMMESSE CONVERTITE: \n' +
+      //     '' +
+      //     commessa.dataInizio +
+      //     '\n'
+      // );
+      // console.log(
+      //   'DATE FINE DELLE COMMESSE CONVERTITE: \n' +
+      //     '' +
+      //     commessa.dataFine +
+      //     '\n'
+      // );
+    }
   }
 
   caricaDati(): void {
@@ -274,9 +565,20 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe((resp: any) => {
         console.log(this.activatedRouter.snapshot.params['id']);
         this.data = (resp as any)['anagraficaDto'];
-        this.selectedTipoContrattoId= (resp as any)['anagraficaDto']['contratto']['tipoContratto']['id'];
-        console.log("<<<<<<<<<<<<<<<<<<<<<L'UTENTE CARICATO HA COME ID DEL CONTRATTO "+ this.selectedTipoContrattoId+">>>>>>>>>>>>>>>>>>>>>")
+        this.selectedTipoContrattoId = (resp as any)['anagraficaDto']['contratto']['tipoContratto']['id'];
+        this.descrizioneLivelloCCNL = (resp as any)['anagraficaDto']['contratto']['tipoLivelloContratto']['ccnl'];
         this.setForm();
+        this.anagraficaDtoService.changeCCNL(localStorage.getItem('token'), this.descrizioneLivelloCCNL).subscribe(
+          (response: any) => {
+            this.elencoLivelliCCNL = response.list;
+          },
+          (error: any) => {
+            console.error(
+              'Errore durante il caricamento dei livelli di contratto: ' +
+              error
+            );
+          }
+        );
 
         // Iteriamo attraverso le chiavi dell'oggetto
         for (const key in resp) {
@@ -288,7 +590,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
               // Trova l'elemento HTML corrispondente al campo
               const element = document.querySelector(`[name="${key}"]`);
               if (element) {
-                console.log(`Applicazione della classe CSS "campo-nullo" per "${key}"`);
+                console.log(
+                  `Applicazione della classe CSS "campo-nullo" per "${key}"`
+                );
                 this.renderer.addClass(element, 'campo-nullo');
               }
             }
@@ -338,44 +642,30 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             'yyyy-MM-dd'
           );
         }
-        console.log(
-          '***************************LE DATE SONO STATE CONVERTITE COSI: *************************** \n' +
-            'Data assunzione:' +
-            this.data.contratto.dataAssunzione +
-            '\n' +
-            'Data inizio prova: ' +
-            this.data.contratto.dataInizioProva +
-            '\n' +
-            'Data fine prova: ' +
-            this.data.contratto.dataFineProva +
-            '\n' +
-            'Data fine rapporto: ' +
-            this.data.contratto.dataFineRapporto +
-            '\n' +
-            'Data di nascita: ' +
-            this.data.anagrafica.dataDiNascita +
-            '\n' +
-            'data corso di sicurezza' +
-            this.data.contratto.dataCorsoSicurezza +
-            '\n' +
-            'data visita medica: ' +
-            this.data.contratto.dataVisitaMedica +
-            '\n'
-        );
-
-        console.log(
-          '++++++++++++++++++++++++++++++++++++++++++++++++++ELENCO DEI DATI CARICATI: +++++++++++++++++++++++++++++++++++++++++++++++++ ' +
-            JSON.stringify(resp)
-        );
 
         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
         this.contratto = (resp as any)['anagraficaDto']['contratto'];
         if (this.contratto == null) {
-          console.log('Niente contratto.');
+          // console.log('Niente contratto.');
           this.contrattoVuoto = true;
         } else {
           this.contrattoVuoto = false;
-          console.log('Dati del contratto: ' + JSON.stringify(this.contratto));
+          // console.log('Dati del contratto: ' + JSON.stringify(this.contratto));
+          this.numeroMensilitaDaDettaglio = (resp as any)['anagraficaDto'][
+            'contratto'
+          ]['tipoCcnl']['numeroMensilita'];
+          // console.log(
+          //   'NUMBER MENSILITA DA DETTAGLIO:' + this.numeroMensilitaDaDettaglio
+          // );
+
+          this.tipoDiContrattoControl =
+            this.contratto.tipoContratto.descrizione;
+          console.log('TIPO DI CONTRATTO: ' + this.tipoDiContrattoControl);
+          if (this.tipoDiContrattoControl === 'Stage') {
+            const retribuzioneNetta = this.anagraficaDto.get(
+              'contratto.retribuzioneMensileNetta'
+            );
+          }
         }
         if (this.elencoCommesse === null) {
           console.log('Niente commesse.');
@@ -385,12 +675,61 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           console.log(
             'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)
           );
+          this.convertiDateCommesse(this.elencoCommesse);
         }
         this.initializeCommesse();
         this.anagraficaDto.patchValue(this.data);
-
-
       });
+
+    const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+    commesseFormArray.controls.forEach((commessaControl: AbstractControl) => {
+      const distaccoControl = commessaControl.get('distacco');
+      if (distaccoControl) {
+        distaccoControl.valueChanges.subscribe((isChecked: any) => {
+          if (isChecked) {
+            this.enableDistaccoFieldsForCommessa(commessaControl);
+          } else {
+            this.disableDistaccoFieldsForCommessa(commessaControl);
+          }
+        });
+      }
+    });
+  }
+
+  disableDistaccoFieldsForAllCommesse(): void {
+    const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+    commesseFormArray.controls.forEach((commessaControl: AbstractControl) => {
+      const distaccoAziendaControl = commessaControl.get('distaccoAzienda');
+      const distaccoDataControl = commessaControl.get('distaccoData');
+      if (distaccoAziendaControl) {
+        distaccoAziendaControl.disable();
+      }
+      if (distaccoDataControl) {
+        distaccoDataControl.disable();
+      }
+    });
+  }
+
+  enableDistaccoFieldsForCommessa(commessaControl: AbstractControl): void {
+    const distaccoAziendaControl = commessaControl.get('distaccoAzienda');
+    const distaccoDataControl = commessaControl.get('distaccoData');
+    if (distaccoAziendaControl) {
+      distaccoAziendaControl.enable();
+    }
+    if (distaccoDataControl) {
+      distaccoDataControl.enable();
+    }
+  }
+
+  disableDistaccoFieldsForCommessa(commessaControl: AbstractControl): void {
+    const distaccoAziendaControl = commessaControl.get('distaccoAzienda');
+    const distaccoDataControl = commessaControl.get('distaccoData');
+    if (distaccoAziendaControl) {
+      distaccoAziendaControl.disable();
+    }
+    if (distaccoDataControl) {
+      distaccoDataControl.disable();
+    }
   }
 
   onPartTimeChange(event: any) {
@@ -429,9 +768,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       const isChecked = target.checked;
 
       if (isChecked) {
-        console.log('Checkbox selezionata, il valore è true');
+        // console.log('Checkbox selezionata, il valore è true');
       } else {
-        console.log('Checkbox deselezionata, il valore è false');
+        // console.log('Checkbox deselezionata, il valore è false');
       }
     }
   }
@@ -454,46 +793,22 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-  /* Questo metodo gestisce il valore della  */
+  /* Questo metodo gestisce il valore della  checkbox del distacco */
   onChangeDistaccoCommessa(event: Event, commessaIndex: number) {
     const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
     const commessaFormGroup = commesseFormArray.at(commessaIndex) as FormGroup;
     const distaccoControl = commessaFormGroup.get('distacco');
     const distaccoAziendaControl = commessaFormGroup.get('distaccoAzienda');
     const distaccoDataControl = commessaFormGroup.get('distaccoData');
-    const target = event.target as HTMLInputElement;
-    console.log('TARGET: ' + target);
-    if (target) {
-      let isChecked = target.checked;
-      if (isChecked) {
-        console.log('Checkbox selezionata, il valore è true');
-        if (distaccoControl && distaccoAziendaControl && distaccoDataControl) {
-          if (isChecked) {
-            distaccoAziendaControl.enable();
-            distaccoDataControl.enable();
-          } else {
-            distaccoAziendaControl.disable();
-            distaccoDataControl.disable();
-          }
-        }
-        if (distaccoControl === null) {
-          isChecked = false;
-        }
-      } else {
-        console.log('Checkbox deselezionata, il valore è false');
-        if (distaccoControl && distaccoAziendaControl && distaccoDataControl) {
-          if (isChecked) {
-            distaccoAziendaControl.enable();
-            distaccoDataControl.enable();
-          } else {
-            distaccoAziendaControl.disable();
-            distaccoDataControl.disable();
-          }
-        }
 
-        if (distaccoControl === null) {
-          isChecked = false;
-        }
+    if (distaccoControl && distaccoAziendaControl && distaccoDataControl) {
+      const isChecked = distaccoControl.value;
+      if (isChecked) {
+        distaccoAziendaControl.enable();
+        distaccoDataControl.enable();
+      } else {
+        distaccoAziendaControl.disable();
+        distaccoDataControl.disable();
       }
     }
   }
@@ -504,9 +819,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       const isChecked = target.checked;
 
       if (isChecked) {
-        console.log('Checkbox selezionata, il valore è true');
+        // console.log('Checkbox selezionata, il valore è true');
       } else {
-        console.log('Checkbox deselezionata, il valore è false');
+        // console.log('Checkbox deselezionata, il valore è false');
       }
 
       const ticketControl = this.anagraficaDto.get('contratto.ticket');
@@ -524,16 +839,132 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-  onChangeCCNL(event: Event) {
-    const selectedTipoCcnlId = parseInt(
-      (event.target as HTMLSelectElement).value,
-      10
+  onChangeLivelloContratto(event: any) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const selectedValue = parseInt(target.value, 10); // Converte il valore selezionato in un numero
+      if (!isNaN(selectedValue)) {
+        const selectedLivello = this.livelliContratti.find(
+          (livello: any) => livello.id === selectedValue
+        );
+
+        if (selectedLivello) {
+          console.log('Livello contratto selezionato: ', selectedLivello);
+          this.minimiRet23 = selectedLivello.minimiRet23;
+          console.log('Minimi retributivi 2023:' + this.minimiRet23);
+          const tipoContratto = this.anagraficaDto.get('contratto.tipoContratto.id');
+
+          const selectedOption = this.anagraficaDto.get('contratto.retribuzioneMensileLorda');
+
+          if (this.tipoDiContrattoControl.descrizione === 'Stage') {
+            console.log('é uno stage, NO retr lorda ma si retribuzione netta.');
+            let retribuzioneMensileLorda = this.anagraficaDto.get(
+              'contratto.retribuzioneMensileLorda'
+            );
+            let retribuzioneMensileNetta = this.anagraficaDto.get(
+              'contratto.retribuzioneNettaMensile'
+            );
+            //controlli da fare sulle retribuzioni in caso il contratto sia uno stage
+            if (retribuzioneMensileLorda && retribuzioneMensileNetta) {
+              retribuzioneMensileLorda.setValue('');
+              retribuzioneMensileLorda.disable();
+              retribuzioneMensileLorda.updateValueAndValidity();
+
+              retribuzioneMensileNetta.enable();
+              retribuzioneMensileNetta.setValue(600);
+              retribuzioneMensileNetta.updateValueAndValidity();
+            }
+          } else {
+            console.log('IL CONTRATTO NON É UNO STAGE.');
+            let retribuzioneMensileLorda = this.anagraficaDto.get(
+              'contratto.retribuzioneMensileLorda'
+            );
+            if (retribuzioneMensileLorda) {
+              retribuzioneMensileLorda.setValue(this.minimiRet23);
+              retribuzioneMensileLorda.updateValueAndValidity();
+            }
+          }
+        } else {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image:'../../../../assets/images/danger.png',
+              title: 'Attenzione:',
+              message: 'Livello contratto non trovato nella lista.',
+            },
+          });
+        }
+      } else {
+        const dialogRef = this.dialog.open(AlertDialogComponent, {
+          data: {
+            image:'../../../../assets/images/danger.png',
+            title: 'Attenzione:',
+            message: 'Valore non valido o livello contratto non selezionato.',
+          },
+        });
+      }
+    }
+  }
+
+  changeElencoLivelliCCNL() {
+    console.log(
+      'VALORE VALORIZZATO PER ENDPOINT ' + this.descrizioneLivelloCCNL
     );
-    console.log('SELEZIONATO CCNL CON ID :' + selectedTipoCcnlId);
-    const tipoCcnlControl = this.anagraficaDto.get('contratto.tipoCcnl.id');
-    const retribuzioneMensileLordaControl = this.anagraficaDto.get(
-      'contratto.retribuzioneMensileLorda'
+    this.anagraficaDtoService
+      .changeCCNL(localStorage.getItem('token'), this.descrizioneLivelloCCNL)
+      .subscribe(
+        (response: any) => {
+          this.elencoLivelliCCNL = response['list'];
+          console.log(
+            '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
+            JSON.stringify(this.elencoLivelliCCNL)
+          );
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il caricamento dei livelli di contratto: ' + error
+          );
+        }
+      );
+  }
+
+  onChangeCCNL(event: any) {
+    const selectedValue = parseInt(event.target.value, 10);
+
+    const livelloControl = this.anagraficaDto.get(
+      'contratto.tipoLivelloContratto.id'
     );
+
+    if (!isNaN(selectedValue)) {
+      const selectedOption = this.ccnl.find(
+        (ccnl: any) => ccnl.id === selectedValue
+      );
+
+      if (selectedOption) {
+        console.log('Opzione selezionata: ', selectedOption);
+        this.numeroMensilitaCCNL = selectedOption.numeroMensilita;
+        this.descrizioneLivelloCCNL = selectedOption.descrizione;
+        console.log('numero mensilitá:' + this.numeroMensilitaCCNL);
+        livelloControl?.enable();
+        // Qui andrà la chiamata per l'endpoint per la get del livello contratto
+        this.anagraficaDtoService.changeCCNL(localStorage.getItem('token'), this.descrizioneLivelloCCNL).subscribe(
+          (response: any) => {
+            this.elencoLivelliCCNL = response.list;
+          },
+          (error: any) => {
+            console.error(
+              'Errore durante il caricamento dei livelli di contratto: ' +
+              error
+            );
+          }
+        );
+      } else {
+        console.log('Opzione non trovata nei contratti nazionali');
+      }
+    } else {
+      console.log('Valore non valido o CCNL non selezionato');
+      livelloControl?.disable();
+      livelloControl?.setValue(null);
+    }
   }
 
   onChangePFI(event: Event) {
@@ -550,315 +981,483 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   onTipoContrattoChange(event: any) {
-    const selectedTipoContrattoId = parseInt(
-      (event.target as HTMLSelectElement).value,
-      10
-    );
-    console.log('SELEZIONATO TIPO CONTRATTO CON ID:' + selectedTipoContrattoId);
-    const dataFineRapportoControl = this.anagraficaDto.get(
-      'contratto.dataFineRapporto'
-    );
-    const mesiDurataControl = this.anagraficaDto.get('contratto.mesiDurata');
-    const tutorControl = this.anagraficaDto.get('contratto.tutor');
-    const PFIcontrol = this.anagraficaDto.get('contratto.pfi');
-    const superminimoMensileControl = this.anagraficaDto.get(
-      'contratto.superminimoMensile'
-    );
-    const ralAnnuaControl = this.anagraficaDto.get('contratto.ralAnnua');
-    const superminimoRalControl = this.anagraficaDto.get(
-      'contratto.superminimoRal'
-    );
-    const diariaMensileControl = this.anagraficaDto.get(
-      'contratto.diariaMensile'
-    );
-    const diariaGiornalieraControl = this.anagraficaDto.get(
-      'contratto.diariaGiornaliera'
-    );
-    const scattiAnzianitaControl = this.anagraficaDto.get(
-      'contratto.scattiAnzianita'
-    );
-    const retribuzioneMensileLordaControl = this.anagraficaDto.get(
-      'contratto.retribuzioneMensileLorda'
-    );
-    const tariffaPartitaIvaControl = this.anagraficaDto.get(
-      'contratto.tariffaPartitaIva'
-    );
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const selectedValue = parseInt(target.value, 10); // Converte il valore selezionato in un numero
+      if (!isNaN(selectedValue)) {
+        const selectedcontract = this.tipiContratti.find(
+          (tipoContratto: any) => tipoContratto.id === selectedValue
+        );
 
-    const livelloAttualeControl = this.anagraficaDto.get(
-      'contratto.livelloAttuale'
-    );
-    const livelloFinaleControl = this.anagraficaDto.get(
-      'contratto.livelloFinale'
-    );
+        if (selectedcontract) {
+          this.tipoContratto = selectedcontract;
 
-    switch (selectedTipoContrattoId) {
-      case 1: // Contratto STAGE
-        if (
-          mesiDurataControl &&
-          retribuzioneMensileLordaControl &&
-          PFIcontrol &&
-          tutorControl &&
-          superminimoMensileControl &&
-          ralAnnuaControl &&
-          superminimoRalControl &&
-          diariaMensileControl &&
-          diariaGiornalieraControl &&
-          scattiAnzianitaControl &&
-          tariffaPartitaIvaControl
-        ) {
+          console.log('Contratto selezionato: ', this.tipoContratto);
 
-          livelloAttualeControl?.disable();
-          livelloFinaleControl?.disable();
+          const dataFineRapportoControl = this.anagraficaDto.get(
+            'contratto.dataFineRapporto'
+          );
+          const mesiDurataControl = this.anagraficaDto.get(
+            'contratto.mesiDurata'
+          );
+          const tutorControl = this.anagraficaDto.get('contratto.tutor');
+          const PFIcontrol = this.anagraficaDto.get('contratto.pfi');
+          const superminimoMensileControl = this.anagraficaDto.get(
+            'contratto.superminimoMensile'
+          );
+          const ralAnnuaControl = this.anagraficaDto.get('contratto.ralAnnua');
+          const superminimoRalControl = this.anagraficaDto.get(
+            'contratto.superminimoRal'
+          );
+          const diariaMensileControl = this.anagraficaDto.get(
+            'contratto.diariaMensile'
+          );
+          const diariaGiornalieraControl = this.anagraficaDto.get(
+            'contratto.diariaGiornaliera'
+          );
+          const scattiAnzianitaControl = this.anagraficaDto.get(
+            'contratto.scattiAnzianita'
+          );
+          const retribuzioneMensileLordaControl = this.anagraficaDto.get(
+            'contratto.retribuzioneMensileLorda'
+          );
+          const retribuzioneNettaMensileControl = this.anagraficaDto.get(
+            'contratto.retribuzioneNettaMensile'
+          );
+          const tariffaPartitaIvaControl = this.anagraficaDto.get(
+            'contratto.tariffaPartitaIva'
+          );
+          const livelloAttualeControl = this.anagraficaDto.get(
+            'contratto.livelloAttuale'
+          );
+          const livelloFinaleControl = this.anagraficaDto.get(
+            'contratto.livelloFinale'
+          );
+          const retribuzioneNettaGiornalieraControl = this.anagraficaDto.get(
+            'contratto.retribuzioneNettaGiornaliera'
+          );
+          const dataFineProvaControl = this.anagraficaDto.get(
+            'contratto.dataFineProva'
+          );
+          const ticketControl = this.anagraficaDto.get('contratto.ticket');
+          const valoreTicketControl = this.anagraficaDto.get(
+            'contratto.valoreTicket'
+          );
+          switch (selectedValue) {
+            case 1: // Contratto STAGE
+              if (
+                dataFineRapportoControl &&
+                mesiDurataControl &&
+                retribuzioneMensileLordaControl &&
+                PFIcontrol &&
+                tutorControl &&
+                superminimoMensileControl &&
+                ralAnnuaControl &&
+                superminimoRalControl &&
+                diariaMensileControl &&
+                diariaGiornalieraControl &&
+                scattiAnzianitaControl &&
+                tariffaPartitaIvaControl &&
+                livelloAttualeControl &&
+                retribuzioneNettaMensileControl &&
+                livelloFinaleControl &&
+                retribuzioneNettaGiornalieraControl &&
+                dataFineProvaControl &&
+                ticketControl &&
+                valoreTicketControl
+              ) {
+                mesiDurataControl.enable();
+                mesiDurataControl.setValidators([Validators.required]);
+                mesiDurataControl.setValue(6);
+                mesiDurataControl.updateValueAndValidity();
 
-          retribuzioneMensileLordaControl.enable();
-          retribuzioneMensileLordaControl.setValue(600);
+                dataFineRapportoControl.enable();
+                dataFineRapportoControl.setValidators([Validators.required]);
+                dataFineRapportoControl.setValue(null);
+                dataFineRapportoControl.updateValueAndValidity();
 
-          PFIcontrol.enable();
-          tutorControl.enable();
+                tutorControl.enable();
+                tutorControl.setValidators([Validators.required]);
+                tutorControl.setValue('');
+                tutorControl.updateValueAndValidity();
 
-          superminimoMensileControl.disable();
-          superminimoMensileControl.setValue('');
+                PFIcontrol.enable();
+                PFIcontrol.setValidators([Validators.required]);
+                PFIcontrol.setValue('');
+                PFIcontrol.updateValueAndValidity();
 
-          ralAnnuaControl.disable();
-          ralAnnuaControl.setValue('');
+                retribuzioneNettaMensileControl.enable();
+                retribuzioneNettaMensileControl.setValue(800);
+                retribuzioneNettaMensileControl.setValidators(
+                  Validators.required
+                );
+                retribuzioneNettaMensileControl.updateValueAndValidity();
 
-          superminimoRalControl.disable();
-          superminimoRalControl.setValue('');
+                // Disabilita gli altri controlli
 
-          diariaMensileControl.disable();
-          diariaMensileControl.setValue('');
+                ticketControl.disable();
+                ticketControl.setValue(false);
+                ticketControl.updateValueAndValidity();
 
-          diariaGiornalieraControl.disable();
-          diariaGiornalieraControl.setValue('');
+                valoreTicketControl.disable();
+                valoreTicketControl.setValue('');
+                valoreTicketControl.updateValueAndValidity();
 
-          scattiAnzianitaControl.disable();
-          scattiAnzianitaControl.setValue('');
+                superminimoMensileControl.disable();
+                superminimoMensileControl.setValue('');
+                superminimoMensileControl.updateValueAndValidity();
 
-          tariffaPartitaIvaControl.disable();
-          tariffaPartitaIvaControl.setValue('');
+                dataFineProvaControl.disable();
+                dataFineProvaControl.setValue('');
+                dataFineProvaControl.updateValueAndValidity();
 
-          mesiDurataControl.setValue(6);
-          mesiDurataControl.enable();
+                ralAnnuaControl.disable();
+                ralAnnuaControl.setValue('');
+                ralAnnuaControl.updateValueAndValidity();
 
-          dataFineRapportoControl?.enable();
-          dataFineRapportoControl?.setValue(null);
+                superminimoRalControl.disable();
+                superminimoRalControl.setValue('');
+                superminimoRalControl.updateValueAndValidity();
+
+                diariaMensileControl.disable();
+                diariaMensileControl.setValue('');
+                diariaMensileControl.updateValueAndValidity();
+
+                diariaGiornalieraControl.disable();
+                diariaGiornalieraControl.setValue('');
+                diariaGiornalieraControl.updateValueAndValidity();
+
+                scattiAnzianitaControl.disable();
+                scattiAnzianitaControl.setValue('');
+                scattiAnzianitaControl.updateValueAndValidity();
+
+                tariffaPartitaIvaControl.disable();
+                tariffaPartitaIvaControl.setValue('');
+                tariffaPartitaIvaControl.updateValueAndValidity();
+
+                livelloAttualeControl.disable();
+                livelloAttualeControl.setValue('');
+                livelloAttualeControl.updateValueAndValidity();
+
+                livelloFinaleControl.disable();
+                livelloFinaleControl.setValue('');
+                livelloFinaleControl.updateValueAndValidity();
+
+                retribuzioneMensileLordaControl.disable();
+                retribuzioneMensileLordaControl.setValue('');
+                retribuzioneMensileLordaControl.updateValueAndValidity();
+
+                retribuzioneNettaGiornalieraControl.disable();
+                retribuzioneNettaGiornalieraControl.setValue('');
+                retribuzioneNettaGiornalieraControl.updateValueAndValidity();
+              }
+              break;
+
+            case 2: // Contratto PARTITA IVA
+              if (
+                tariffaPartitaIvaControl &&
+                PFIcontrol &&
+                tutorControl &&
+                superminimoMensileControl &&
+                ralAnnuaControl &&
+                retribuzioneMensileLordaControl &&
+                retribuzioneNettaMensileControl &&
+                retribuzioneNettaGiornalieraControl &&
+                dataFineRapportoControl &&
+                mesiDurataControl &&
+                livelloAttualeControl &&
+                livelloFinaleControl &&
+                superminimoRalControl &&
+                scattiAnzianitaControl &&
+                retribuzioneNettaGiornalieraControl &&
+                dataFineProvaControl
+              ) {
+                tariffaPartitaIvaControl.enable();
+                tariffaPartitaIvaControl.setValidators([Validators.required]);
+                tariffaPartitaIvaControl.setValue('');
+                tariffaPartitaIvaControl.updateValueAndValidity();
+
+                retribuzioneMensileLordaControl.enable();
+                retribuzioneMensileLordaControl.setValue(null);
+
+                retribuzioneNettaGiornalieraControl.enable();
+                retribuzioneNettaGiornalieraControl.setValidators([
+                  Validators.required,
+                ]);
+                retribuzioneNettaGiornalieraControl.setValue('');
+                retribuzioneNettaGiornalieraControl.updateValueAndValidity();
+
+                retribuzioneMensileLordaControl.setValue('');
+                retribuzioneMensileLordaControl.enable();
+
+                retribuzioneNettaMensileControl.setValue('');
+                retribuzioneNettaMensileControl.disable();
+                retribuzioneNettaMensileControl.clearValidators();
+                retribuzioneNettaMensileControl.updateValueAndValidity();
+
+                livelloAttualeControl.disable();
+                livelloAttualeControl.setValue(null);
+
+                livelloFinaleControl.disable();
+                livelloFinaleControl.setValue(null);
+
+                PFIcontrol.disable();
+                PFIcontrol.setValue('');
+
+                tutorControl.disable();
+                tutorControl.setValue('');
+
+                superminimoMensileControl.disable();
+                superminimoMensileControl.setValue('');
+
+                ralAnnuaControl.disable();
+                ralAnnuaControl.setValue('');
+
+                superminimoRalControl.disable();
+                superminimoRalControl.setValue('');
+
+                dataFineProvaControl.disable();
+                dataFineProvaControl.setValue('');
+                dataFineProvaControl.updateValueAndValidity();
+
+                dataFineRapportoControl.disable();
+                dataFineRapportoControl.setValue('');
+                dataFineRapportoControl.clearValidators();
+                dataFineRapportoControl.updateValueAndValidity();
+
+                mesiDurataControl.disable();
+                mesiDurataControl.setValue('');
+                mesiDurataControl.clearValidators();
+                mesiDurataControl.updateValueAndValidity();
+              }
+              break;
+
+            case 3: // Contratto a tempo determinato
+              if (
+                mesiDurataControl &&
+                superminimoMensileControl &&
+                ralAnnuaControl &&
+                superminimoRalControl &&
+                PFIcontrol &&
+                tutorControl &&
+                diariaMensileControl &&
+                diariaGiornalieraControl &&
+                scattiAnzianitaControl &&
+                tariffaPartitaIvaControl &&
+                retribuzioneMensileLordaControl &&
+                dataFineRapportoControl &&
+                livelloAttualeControl &&
+                livelloFinaleControl &&
+                retribuzioneNettaGiornalieraControl &&
+                retribuzioneNettaMensileControl &&
+                dataFineProvaControl
+              ) {
+                dataFineProvaControl.enable();
+                dataFineProvaControl.setValue('');
+                dataFineProvaControl.setValidators([Validators.required]);
+                dataFineProvaControl.updateValueAndValidity();
+
+                mesiDurataControl.enable();
+                mesiDurataControl.setValue('');
+                mesiDurataControl.setValidators([Validators.required]);
+                mesiDurataControl.updateValueAndValidity();
+
+                dataFineRapportoControl.enable();
+                dataFineRapportoControl.setValue('');
+                dataFineRapportoControl.setValidators([Validators.required]);
+                dataFineRapportoControl.updateValueAndValidity();
+
+                retribuzioneMensileLordaControl.enable();
+                retribuzioneMensileLordaControl.setValue('');
+
+                retribuzioneNettaMensileControl.disable();
+                retribuzioneNettaMensileControl.setValue('');
+                retribuzioneNettaMensileControl.clearValidators();
+                retribuzioneNettaMensileControl.updateValueAndValidity();
+
+                superminimoMensileControl.enable();
+                superminimoMensileControl.setValue('');
+
+                ralAnnuaControl.enable();
+                ralAnnuaControl.setValue('');
+
+                superminimoRalControl.enable();
+                superminimoRalControl.setValue('');
+
+                diariaMensileControl.enable();
+                diariaMensileControl.setValue('');
+
+                diariaGiornalieraControl.enable();
+                diariaGiornalieraControl.setValue('');
+
+                scattiAnzianitaControl.enable();
+                scattiAnzianitaControl.setValue('');
+
+                PFIcontrol.disable();
+                PFIcontrol.setValue('');
+                PFIcontrol.clearValidators();
+                PFIcontrol.updateValueAndValidity();
+
+                tutorControl.disable();
+                tutorControl.setValue('');
+                tutorControl.clearValidators();
+                tutorControl.updateValueAndValidity();
+
+                livelloAttualeControl.disable();
+                livelloAttualeControl.setValue('');
+
+                livelloFinaleControl.disable();
+                livelloFinaleControl.setValue('');
+
+                tariffaPartitaIvaControl.disable();
+                tariffaPartitaIvaControl.setValue('');
+
+                retribuzioneNettaGiornalieraControl.disable();
+                retribuzioneNettaGiornalieraControl.setValue('');
+
+                // this.AnagraficaDto.updateValueAndValidity();
+              }
+              break;
+            case 4: // Contratto a tempo indeterminato
+              if (
+                mesiDurataControl &&
+                dataFineRapportoControl &&
+                tariffaPartitaIvaControl &&
+                tutorControl &&
+                PFIcontrol &&
+                superminimoMensileControl &&
+                ralAnnuaControl &&
+                superminimoRalControl &&
+                diariaMensileControl &&
+                diariaGiornalieraControl &&
+                scattiAnzianitaControl &&
+                retribuzioneMensileLordaControl &&
+                retribuzioneNettaGiornalieraControl
+              ) {
+                mesiDurataControl.disable();
+                mesiDurataControl.setValue('');
+
+                retribuzioneNettaGiornalieraControl.disable();
+                retribuzioneNettaGiornalieraControl.setValue('');
+
+                dataFineRapportoControl.disable();
+                dataFineRapportoControl.setValue(null);
+
+                tariffaPartitaIvaControl.disable();
+                tariffaPartitaIvaControl.setValue('');
+
+                tutorControl.disable();
+                tutorControl.setValue('');
+
+                PFIcontrol.disable();
+                PFIcontrol.setValue('');
+
+                superminimoMensileControl.enable();
+                superminimoMensileControl.setValue('');
+
+                ralAnnuaControl.enable();
+                ralAnnuaControl.setValue('');
+
+                superminimoRalControl.enable();
+                superminimoRalControl.setValue('');
+
+                diariaMensileControl.enable();
+                diariaMensileControl.setValue('');
+
+                diariaGiornalieraControl.enable();
+                diariaGiornalieraControl.setValue('');
+
+                scattiAnzianitaControl.enable();
+                scattiAnzianitaControl.setValue('');
+
+                retribuzioneMensileLordaControl.enable();
+                retribuzioneMensileLordaControl.setValue(null);
+
+                livelloAttualeControl?.enable();
+                livelloAttualeControl?.setValue(null);
+
+                livelloFinaleControl?.enable();
+                livelloFinaleControl?.setValue(null);
+              }
+              break;
+
+            case 5: // Contratto di apprendistato
+              if (
+                mesiDurataControl &&
+                dataFineRapportoControl &&
+                tariffaPartitaIvaControl &&
+                tutorControl &&
+                PFIcontrol &&
+                superminimoMensileControl &&
+                ralAnnuaControl &&
+                superminimoRalControl &&
+                diariaMensileControl &&
+                diariaGiornalieraControl &&
+                scattiAnzianitaControl &&
+                retribuzioneMensileLordaControl &&
+                retribuzioneNettaMensileControl
+              ) {
+                mesiDurataControl.enable();
+                mesiDurataControl.setValue(36);
+                this.calculateDataFineRapporto();
+
+                dataFineRapportoControl.enable();
+                dataFineRapportoControl.setValue(null);
+
+                tariffaPartitaIvaControl.disable();
+                tariffaPartitaIvaControl.setValue('');
+
+                livelloAttualeControl?.enable();
+                livelloAttualeControl?.setValue(null);
+
+                retribuzioneNettaMensileControl.disable();
+                retribuzioneNettaMensileControl.setValue('');
+                retribuzioneNettaMensileControl.clearValidators();
+                retribuzioneNettaMensileControl.updateValueAndValidity();
+
+                livelloFinaleControl?.enable();
+                livelloFinaleControl?.setValue(null);
+
+                tutorControl.enable();
+                tutorControl.setValue('');
+
+                PFIcontrol.enable();
+                PFIcontrol.setValue('');
+
+                superminimoMensileControl.enable();
+                superminimoMensileControl.setValue('');
+
+                ralAnnuaControl.enable();
+                ralAnnuaControl.setValue('');
+
+                superminimoRalControl.enable();
+                superminimoRalControl.setValue('');
+
+                diariaMensileControl.enable();
+                diariaMensileControl.setValue('');
+
+                diariaGiornalieraControl.enable();
+                diariaGiornalieraControl.setValue('');
+
+                scattiAnzianitaControl.enable();
+                scattiAnzianitaControl.setValue('');
+
+                retribuzioneMensileLordaControl.enable();
+                retribuzioneMensileLordaControl.setValue(null);
+
+                this.anagraficaDto.updateValueAndValidity();
+              }
+              break;
+
+            default:
+              break;
+          }
+        } else {
+          console.log('Livello contratto non trovato nella lista');
         }
-        break;
-
-      case 2: // Contratto PARTITA IVA
-        if (
-          tariffaPartitaIvaControl &&
-          PFIcontrol &&
-          tutorControl &&
-          superminimoMensileControl &&
-          ralAnnuaControl &&
-          retribuzioneMensileLordaControl &&
-          dataFineRapportoControl &&
-          mesiDurataControl
-        ) {
-          tariffaPartitaIvaControl.enable();
-          tariffaPartitaIvaControl.setValue('');
-
-          retribuzioneMensileLordaControl.enable();
-          retribuzioneMensileLordaControl.setValue(null);
-
-          PFIcontrol.disable();
-          PFIcontrol.setValue('');
-
-          tutorControl.disable();
-          tutorControl.setValue('');
-
-          superminimoMensileControl.disable();
-          superminimoMensileControl.setValue('');
-
-          ralAnnuaControl.disable();
-          ralAnnuaControl.setValue('');
-
-          dataFineRapportoControl.disable();
-          dataFineRapportoControl.setValue('');
-
-          mesiDurataControl.disable();
-          mesiDurataControl.setValue('');
-
-          livelloAttualeControl?.disable();
-          livelloFinaleControl?.disable();
-
-        }
-        break;
-
-      case 3: // Contratto a tempo determinato
-        if (
-          mesiDurataControl &&
-          superminimoMensileControl &&
-          ralAnnuaControl &&
-          superminimoRalControl &&
-          PFIcontrol &&
-          tutorControl &&
-          diariaMensileControl &&
-          diariaGiornalieraControl &&
-          scattiAnzianitaControl &&
-          tariffaPartitaIvaControl &&
-          retribuzioneMensileLordaControl &&
-          dataFineRapportoControl
-        ) {
-          mesiDurataControl.enable();
-          mesiDurataControl.setValue('');
-
-          dataFineRapportoControl.enable();
-          dataFineRapportoControl.setValue(null);
-
-          PFIcontrol.disable();
-          PFIcontrol.setValue('');
-
-          tutorControl.disable();
-          tutorControl.setValue('');
-
-          retribuzioneMensileLordaControl.enable();
-          retribuzioneMensileLordaControl.setValue(null);
-
-          superminimoMensileControl.enable();
-          superminimoMensileControl.setValue('');
-
-          ralAnnuaControl.enable();
-          ralAnnuaControl.setValue('');
-
-          superminimoRalControl.enable();
-          superminimoRalControl.setValue('');
-
-          diariaMensileControl.enable();
-          diariaMensileControl.setValue('');
-
-          diariaGiornalieraControl.enable();
-          diariaGiornalieraControl.setValue('');
-
-          scattiAnzianitaControl.enable();
-          scattiAnzianitaControl.setValue('');
-
-          tariffaPartitaIvaControl.disable();
-          tariffaPartitaIvaControl.setValue('');
-
-          livelloAttualeControl?.disable();
-          livelloFinaleControl?.disable();
-
-        }
-        break;
-      case 4: // Contratto a tempo indeterminato
-        if (
-          mesiDurataControl &&
-          dataFineRapportoControl &&
-          tariffaPartitaIvaControl &&
-          tutorControl &&
-          PFIcontrol &&
-          superminimoMensileControl &&
-          ralAnnuaControl &&
-          superminimoRalControl &&
-          diariaMensileControl &&
-          diariaGiornalieraControl &&
-          scattiAnzianitaControl &&
-          retribuzioneMensileLordaControl
-        ) {
-          mesiDurataControl.disable();
-          mesiDurataControl.setValue('');
-
-          dataFineRapportoControl.disable();
-          dataFineRapportoControl.setValue(null);
-
-          tariffaPartitaIvaControl.disable();
-          tariffaPartitaIvaControl.setValue('');
-
-          tutorControl.disable();
-          tutorControl.setValue('');
-
-          PFIcontrol.disable();
-          PFIcontrol.setValue('');
-
-          superminimoMensileControl.enable();
-          superminimoMensileControl.setValue('');
-
-          ralAnnuaControl.enable();
-          ralAnnuaControl.setValue('');
-
-          superminimoRalControl.enable();
-          superminimoRalControl.setValue('');
-
-          diariaMensileControl.enable();
-          diariaMensileControl.setValue('');
-
-          diariaGiornalieraControl.enable();
-          diariaGiornalieraControl.setValue('');
-
-          scattiAnzianitaControl.enable();
-          scattiAnzianitaControl.setValue('');
-
-          retribuzioneMensileLordaControl.enable();
-          retribuzioneMensileLordaControl.setValue(null);
-
-          livelloAttualeControl?.disable();
-          livelloFinaleControl?.disable();
-        }
-        break;
-
-      case 5: // Contratto di apprendistato
-        if (
-          mesiDurataControl &&
-          dataFineRapportoControl &&
-          tariffaPartitaIvaControl &&
-          tutorControl &&
-          PFIcontrol &&
-          superminimoMensileControl &&
-          ralAnnuaControl &&
-          superminimoRalControl &&
-          diariaMensileControl &&
-          diariaGiornalieraControl &&
-          scattiAnzianitaControl &&
-          retribuzioneMensileLordaControl
-        ) {
-          mesiDurataControl.enable();
-          mesiDurataControl.setValue(36);
-          this.calculateDataFineRapporto();
-
-          dataFineRapportoControl.enable();
-          dataFineRapportoControl.setValue(null);
-
-          tariffaPartitaIvaControl.disable();
-          tariffaPartitaIvaControl.setValue('');
-
-          tutorControl.enable();
-          tutorControl.setValue('');
-
-          PFIcontrol.enable();
-          PFIcontrol.setValue('');
-
-          superminimoMensileControl.enable();
-          superminimoMensileControl.setValue('');
-
-          ralAnnuaControl.enable();
-          ralAnnuaControl.setValue('');
-
-          superminimoRalControl.enable();
-          superminimoRalControl.setValue('');
-
-          diariaMensileControl.enable();
-          diariaMensileControl.setValue('');
-
-          diariaGiornalieraControl.enable();
-          diariaGiornalieraControl.setValue('');
-
-          scattiAnzianitaControl.enable();
-          scattiAnzianitaControl.setValue('');
-
-          retribuzioneMensileLordaControl.enable();
-          retribuzioneMensileLordaControl.setValue(null);
-
-          livelloAttualeControl?.enable();
-          livelloFinaleControl?.enable();
-
-          this.anagraficaDto.updateValueAndValidity();
-        }
-        break;
-
-      default:
-        break;
+      } else {
+        console.log('Valore non valido o livello contratto non selezionato');
+      }
     }
   }
 
@@ -872,16 +1471,22 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   createCommessaFormGroup(commessa: any): FormGroup {
     return this.formBuilder.group({
       id: [commessa.id],
-      aziendaCliente: [commessa.aziendaCliente],
-      clienteFinale: [commessa.clienteFinale],
-      titoloPosizione: [commessa.titoloPosizione],
+      tipoAziendaCliente: this.formBuilder.group({
+        id: [''],
+        descrizione: [''],
+      }),
+      clienteFinale: [commessa.clienteFinale, Validators.required],
+      titoloPosizione: [commessa.titoloPosizione, Validators.required],
       distacco: [commessa.distacco],
       distaccoAzienda: [commessa.distaccoAzienda],
       distaccoData: [commessa.distaccoData],
-      dataInizio: [commessa.dataInizio],
+      dataInizio: [commessa.dataInizio, Validators.required],
       dataFine: [commessa.dataFine],
       tariffaGiornaliera: [commessa.tariffaGiornaliera],
-      aziendaDiFatturazioneInterna: [commessa.aziendaDiFatturazioneInterna],
+      aziendaDiFatturazioneInterna: [
+        commessa.aziendaDiFatturazioneInterna,
+        Validators.required,
+      ],
     });
   }
 
@@ -899,21 +1504,42 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
     if (value && dataFineRapportoControl) {
       this.valorePrecedenteDataFineRapporto = dataFineRapportoControl.value;
-      dataFineRapportoControl.setValue(this.dataOdierna);
-      dataFineRapportoControl.disable();
-      alert(
-        'La data di fine rapporto é stata impostata a oggi.' +
-          this.dataOdierna +
-          ' Per reimpostare la vecchia data, elimina la causa di fine rapporto.'
-      );
+      dataFineRapportoControl.enable();
+      dataFineRapportoControl.setValue(this.dataFormattata);
+      // alert(
+      //   'La data di fine rapporto é stata impostata a oggi.' +
+      //   this.dataFormattata +
+      //     ' \n Per reimpostare la vecchia data, elimina la causa di fine rapporto.'
+      // );
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          image:'../../../../assets/images/danger.png',
+          title: 'Attenzione:',
+          message:
+            'La data di fine rapporto é stata impostata a ' +
+            this.dataFormattata +
+            '.' +
+            '\n Per reimpostare la data precedente, se presente, rimuovi la causa di fine rapporto. ',
+        },
+      });
     } else {
       // Ripristina il valore precedente
       if (this.valorePrecedenteDataFineRapporto !== undefined) {
         dataFineRapportoControl?.setValue(
           this.valorePrecedenteDataFineRapporto
         );
+        const dialogRef = this.dialog.open(AlertDialogComponent, {
+          data: {
+            image:'../../../../assets/images/danger.png',
+            title: 'Attenzione:',
+            message:
+              'La data di fine rapporto é stata impostata a ' +
+              this.valorePrecedenteDataFineRapporto +
+              '. \n',
+          },
+        });
       } else {
-        dataFineRapportoControl?.setValue(null); // Se non esiste un valore precedente, impostalo su null o su quello che desideri
+        dataFineRapportoControl?.setValue(null);
       }
       dataFineRapportoControl?.enable();
     }
@@ -965,6 +1591,22 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     commesseFormArray.push(this.createCommessaFormGroup(nuovaCommessa));
   }
 
+  caricaAziendeClienti() {
+    this.contrattoService
+      .getAllAziendaCliente(localStorage.getItem('token'))
+      .subscribe(
+        (result: any) => {
+          console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+          this.aziendeClienti = (result as any)['list'];
+        },
+        (error: any) => {
+          console.error(
+            'errore durante il caricamento dei nomi azienda:' + error
+          );
+        }
+      );
+  }
+
   storicizza(index: number) {
     console.log('ID COMMESSA: ' + JSON.stringify(this.elencoCommesse[index]));
   }
@@ -973,6 +1615,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     const conferma =
       'Sei sicuro di voler eliminare la commessa con indice ' + index + '?';
     if (confirm(conferma)) {
+      const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
+
+      // Rimuovi la commessa dall'array del form
+      commesseFormArray.removeAt(index);
+
+      // Invia la richiesta di eliminazione al backend
       const body = JSON.stringify({
         commessa: this.elencoCommesse[index],
       });
@@ -980,23 +1628,34 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.anagraficaDtoService
         .deleteCommessa(body, localStorage.getItem('token'))
         .subscribe(
-          (res: any) => {
-            console.log(
-              'Commessa con indice ' +
-                index +
-                ' eliminata correttamente. Risposta:',
-              JSON.stringify(res)
-            );
-            this.elencoCommesse.splice(index, 1);
-            location.reload();
+          (response: any) => {
+            if ((response as any).esito.code !== 200) {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  image:'../../../../assets/images/danger.png',
+                  title: 'Eliminazione non riuscita:',
+                  message: (response as any).esito.target,
+                },
+              });
+            } else {
+              this.elencoCommesse.splice(index, 1);
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  image:'../../../../assets/images/logo.jpeg',
+                  title: 'Commessa eliminata correttamente.',
+                },
+              });
+              location.reload();
+            }
           },
           (error: any) => {
-            console.log(
-              "Errore durante l'eliminazione della commessa con indice " +
-                index +
-                ': ' +
-                error
-            );
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image:'../../../../assets/images/danger.png',
+                title: 'Qualcosa é andato storto:',
+                message: JSON.stringify(error),
+              },
+            });
           }
         );
     }
@@ -1013,7 +1672,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.log(
             'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
-              JSON.stringify(error)
+            JSON.stringify(error)
           );
         }
       );
@@ -1066,7 +1725,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
     console.log(
       'Valore di anagrafica: ' +
-        JSON.stringify(this.anagraficaDto.get('anagrafica')?.value)
+      JSON.stringify(this.anagraficaDto.get('anagrafica')?.value)
     );
     const payload = {
       anagraficaDto: this.anagraficaDto.value,
@@ -1080,13 +1739,23 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .update(payload, localStorage.getItem('token'))
       .subscribe(
         (response) => {
-          if ((response as any).esito.code != 200) {
-            alert('Modifica non riuscita:\n' + (response as any).esito.target);
-            this.errore = true;
-            this.messaggio = (response as any).esito.target;
+          if ((response as any).esito.code !== 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image:'../../../../assets/images/danger.png',
+                title: 'Modifica non riuscita:',
+                message: (response as any).esito.target,
+              },
+            });
           } else {
             console.log('Payload inviato con successo al server:', response);
-            this.router.navigate(['/dettaglio-anagrafica/' + this.id]);
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image:'../../../../assets/images/logo.jpeg',
+                title: 'Modifica effettuata correttamente.',
+              },
+            });
+            this.router.navigate(['/lista-anagrafica']);
           }
         },
         (error) => {
@@ -1192,7 +1861,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.tipiContratti = (result as any)['list'];
           console.log(
             '------------------------TIPI DI CONTRATTI CARICATI:------------------------ ' +
-              JSON.stringify(result)
+            JSON.stringify(result)
           );
         },
         (error: any) => {
@@ -1202,6 +1871,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         }
       );
   }
+
   caricaLivelloContratto() {
     this.anagraficaDtoService
       .getLivelloContratto(localStorage.getItem('token'))
@@ -1210,7 +1880,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.livelliContratti = (result as any)['list'];
           console.log(
             '------------------------LIVELLI CONTRATTO CARICATI:------------------------ ' +
-              JSON.stringify(result)
+            JSON.stringify(result)
           );
         },
         (error: any) => {
@@ -1220,6 +1890,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         }
       );
   }
+
   caricaTipoAzienda() {
     this.anagraficaDtoService
       .getTipoAzienda(localStorage.getItem('token'))
@@ -1228,7 +1899,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.tipiAziende = (result as any)['list'];
           console.log(
             '------------------------AZIENDE CARICATE:------------------------ ' +
-              JSON.stringify(result)
+            JSON.stringify(result)
           );
         },
         (error: any) => {
@@ -1238,6 +1909,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   caricaContrattoNazionale() {
+    //metodo che carica la lista della select del ccnl
     this.anagraficaDtoService
       .getContrattoNazionale(localStorage.getItem('token'))
       .subscribe(
@@ -1245,8 +1917,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.ccnl = (result as any)['list'];
           console.log(
             '------------------------CCNL CARICATI:------------------------ ' +
-              JSON.stringify(result)
+            JSON.stringify(result)
           );
+          this.changeElencoLivelliCCNL();
         },
         (error: any) => {
           console.log(
@@ -1262,7 +1935,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.ruoli = (result as any)['list'];
         console.log(
           '------------------------RUOLI CARICATI:------------------------ ' +
-            JSON.stringify(result)
+          JSON.stringify(result)
         );
       },
       (error: any) => {
@@ -1302,6 +1975,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           dataFineRapporto,
           'yyyy-MM-dd'
         );
+        const dataOdiernaFormatted = this.datePipe.transform(
+          this.dataOdierna,
+          'yyyy-MM-dd'
+        );
 
         // Imposta il valore formattato nel controllo 'dataFineRapporto'
         dataFineRapportoControl?.setValue(dataFineRapportoFormatted);
@@ -1318,11 +1995,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-
   //impostazione del form a caricamento pagina
-  setForm(){
-
-    console.log('SELEZIONATO TIPO CONTRATTO CON ID: ' +this.selectedTipoContrattoId );
+  setForm() {
+    console.log(
+      'SELEZIONATO TIPO CONTRATTO CON ID: ' + this.selectedTipoContrattoId
+    );
     const dataFineRapportoControl = this.anagraficaDto.get(
       'contratto.dataFineRapporto'
     );
@@ -1374,7 +2051,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           scattiAnzianitaControl &&
           tariffaPartitaIvaControl
         ) {
-
           livelloAttualeControl?.disable();
           livelloFinaleControl?.disable();
 
@@ -1450,7 +2126,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
           livelloAttualeControl?.disable();
           livelloFinaleControl?.disable();
-
         }
         break;
 
@@ -1507,7 +2182,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
           livelloAttualeControl?.disable();
           livelloFinaleControl?.disable();
-
         }
         break;
       case 4: // Contratto a tempo indeterminato
@@ -1633,17 +2307,203 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   calcolaMensileTot() {
-    const retribuzioneMensileLorda = parseFloat((<HTMLInputElement>document.getElementById('retribuzioneMensileLorda')).value) || 0;
-    const superminimoMensile = parseFloat((<HTMLInputElement>document.getElementById('superminimoMensile')).value) || 0;
-    const scattiAnzianita = parseFloat((<HTMLInputElement>document.getElementById('scattiAnzianita')).value) || 0;
+    const retribuzioneMensileLorda =
+      parseFloat(
+        (<HTMLInputElement>document.getElementById('retribuzioneMensileLorda'))
+          .value
+      ) || 0;
+    const superminimoMensile =
+      parseFloat(
+        (<HTMLInputElement>document.getElementById('superminimoMensile')).value
+      ) || 0;
+    const scattiAnzianita =
+      parseFloat(
+        (<HTMLInputElement>document.getElementById('scattiAnzianita')).value
+      ) || 0;
 
-    if (retribuzioneMensileLorda !== 0 && superminimoMensile !== 0 && scattiAnzianita !== 0) {
-      const mensileTot = retribuzioneMensileLorda + superminimoMensile + scattiAnzianita;
-      document.getElementById('mensileTOT')?.setAttribute('value', mensileTot.toFixed(2));
+    if (
+      retribuzioneMensileLorda !== 0 &&
+      superminimoMensile !== 0 &&
+      scattiAnzianita !== 0
+    ) {
+      const mensileTot =
+        retribuzioneMensileLorda + superminimoMensile + scattiAnzianita;
+      document
+        .getElementById('mensileTOT')
+        ?.setAttribute('value', mensileTot.toFixed(2));
+      this.mensileTOT = mensileTot;
+      console.log(
+        'MENSILE TOTALE CALCOLATO:' +
+        this.mensileTOT +
+        '\n Numero mensilitá: ' +
+        this.numeroMensilitaDaDettaglio
+      );
+      this.calcoloRAL();
     } else {
       // Se uno dei campi è vuoto, nascondi il risultato o reimpostalo a zero, a seconda delle tue esigenze
       document.getElementById('mensileTOT')?.setAttribute('value', '');
     }
   }
 
+  calcoloRAL() {
+    const RALControl = this.anagraficaDto.get('contratto.ralAnnua');
+
+    if (RALControl) {
+      if (
+        this.mensileTOT !== undefined &&
+        this.numeroMensilitaDaDettaglio !== undefined
+      ) {
+        const RALCalcolata = this.mensileTOT * this.numeroMensilitaDaDettaglio;
+
+        RALControl.setValue(RALCalcolata.toFixed(2));
+        console.log('RAL CALCOLATA:' + RALCalcolata.toFixed(2));
+      }
+    }
+  }
+
+  //metodi navbar
+  logout() {
+    this.dialog.open(AlertLogoutComponent);
+  }
+
+  getUserLogged() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        localStorage.getItem('token');
+        this.userLoggedName = response.anagraficaDto.anagrafica.nome;
+        this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.codiceFiscaleDettaglio =
+          response.anagraficaDto.anagrafica.codiceFiscale;
+        this.getImage();
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato il seguente errore durante il recupero dei dati : ' +
+          error
+        );
+      }
+    );
+  }
+
+  getUserRole() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        console.log('ID UTENTE PER NAV:' + this.idUtente);
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
+      },
+      (error: any) => {
+        console.error(
+          'Si è verificato il seguente errore durante il recupero del ruolo: ' +
+          error
+        );
+        this.shouldReloadPage = true;
+      }
+    );
+  }
+
+  generateMenuByUserRole() {
+    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
+      (data: any) => {
+        this.jsonData = data;
+        this.idFunzione = data.list[0].id;
+        console.log(
+          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+        );
+        this.shouldReloadPage = false;
+      },
+      (error: any) => {
+        console.error('Errore nella generazione del menu:', error);
+        this.shouldReloadPage = true;
+        this.jsonData = { list: [] };
+      }
+    );
+  }
+
+  getPermissions(functionId: number) {
+    this.menuService.getPermissions(this.token, functionId).subscribe(
+      (data: any) => {
+        console.log('Permessi ottenuti:', data);
+      },
+      (error: any) => {
+        console.error('Errore nella generazione dei permessi:', error);
+      }
+    );
+  }
+
+  //metodi immagine
+  getImage() {
+    let body = {
+      codiceFiscale: this.codiceFiscaleDettaglio,
+    };
+    console.log(JSON.stringify(body));
+    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    this.imageService.getImage(this.token, body).subscribe(
+      (result: any) => {
+        this.immagine = (result as any).base64;
+        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+
+        if (this.immagine) {
+          this.convertBase64ToImage(this.immagine);
+        } else {
+          // Assegna un'immagine predefinita se l'immagine non è disponibile
+          this.immaginePredefinita =
+            '../../../../assets/images/profilePicPlaceholder.png';
+        }
+      },
+      (error: any) => {
+        console.error(
+          "Errore durante il caricamento dell'immagine: " +
+          JSON.stringify(error)
+        );
+
+        // Assegna un'immagine predefinita in caso di errore
+        this.immaginePredefinita = '../../../../assets/images/danger.png';
+      }
+    );
+  }
+
+  convertBase64ToImage(base64String: string): void {
+    this.immagineConvertita = base64String;
+  }
+
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
+  }
+}
+
+interface MenuData {
+  esito: {
+    code: number;
+    target: any;
+    args: any;
+  };
+  list: {
+    id: number;
+    funzione: any;
+    menuItem: number;
+    nome: string;
+    percorso: string;
+    immagine: any;
+    ordinamento: number;
+    funzioni: any;
+    privilegio: any;
+  }[];
 }

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { profileBoxService } from '../profile-box/profile-box.service';
+import { ProfileBoxService } from '../profile-box/profile-box.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ export class CambioPasswordService {
 
   constructor(
     private http: HttpClient,
-    private profileBoxService: profileBoxService
+    private profileBoxService: ProfileBoxService
   ) {
     const token = localStorage.getItem('token');
     // console.log('profile box component token: ' + token);
@@ -35,13 +35,7 @@ export class CambioPasswordService {
     );
   }
 
-  cambioPassword() {
-    const token = localStorage.getItem('token');
-    const body = {
-      id: this.idUtente,
-      passwordVecchia: this.passwordVecchia,
-      passwordNuova: this.passwordNuova,
-    };
+  cambioPassword(token:any, body:any) {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',

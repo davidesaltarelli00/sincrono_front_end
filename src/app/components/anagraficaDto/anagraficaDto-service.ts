@@ -22,6 +22,18 @@ export class AnagraficaDtoService {
     });
   }
 
+  getAllAziendaCliente(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(
+      `http://localhost8080/services/tipo-azienda-cliente-map`,
+      { headers: headers }
+    );
+  }
+
   detailAnagraficaDto(id: any, token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -34,29 +46,40 @@ export class AnagraficaDtoService {
     );
   }
 
-
-  storicizzaCommessa(body: any, token:any): Observable<any>{
+  storicizzaCommessa(body: any, token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
+<<<<<<< HEAD
     return this.http.put<any>(
       `http://192.168.58.196:8080/services/commessa`,body,
       { headers: headers }
     );
+=======
+    return this.http.put<any>(`http://localhost:8080/services/commessa`, body, {
+      headers: headers,
+    });
+>>>>>>> develop
   }
 
-  riattivaUtente(body:any, token:any):Observable<any>{
+  riattivaUtente(body: any, token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
+<<<<<<< HEAD
     return this.http.put<any>(
       `http://http://192.168.58.196:8080/services/retain`,body,
       { headers: headers }
     );
+=======
+    return this.http.put<any>(`http://localhost:8080/services/retain`, body, {
+      headers: headers,
+    });
+>>>>>>> develop
   }
 
   delete(body: any, token: any) {
@@ -76,8 +99,13 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
+<<<<<<< HEAD
     console.log("BODY SERVICE:"+ JSON.stringify(body));
     return this.http.put<any>(`http://192.168.58.196:8080/services/modifica`, body, {
+=======
+    console.log('BODY SERVICE:' + JSON.stringify(body));
+    return this.http.put<any>(`http://localhost:8080/services/modifica`, body, {
+>>>>>>> develop
       headers: headers,
     });
   }
@@ -97,12 +125,13 @@ export class AnagraficaDtoService {
     );
   }
 
-  filterAnagrafica(token:any, body:any) :Observable<any> {
+  filterAnagrafica(token: any, body: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
+<<<<<<< HEAD
     return this.http.post<any>(
       `http://192.168.58.196:8080/services/filter`,
       body,
@@ -110,6 +139,11 @@ export class AnagraficaDtoService {
         headers: headers,
       }
     );
+=======
+    return this.http.post<any>(`http://localhost:8080/services/filter`, body, {
+      headers: headers,
+    });
+>>>>>>> develop
   }
 
   //GET UTENTI LIST
@@ -124,27 +158,44 @@ export class AnagraficaDtoService {
     });
   }
 
-  caricaTipoCausaFineRapporto(token:any): Observable<any>{
+  caricaTipoCausaFineRapporto(token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
+<<<<<<< HEAD
     return this.http.get<any>(`http://192.168.58.196:8080/services/tipo-causa-fine-rapporto-map`, {
       headers: headers,
     });
+=======
+    return this.http.get<any>(
+      `http://localhost:8080/services/tipo-causa-fine-rapporto-map`,
+      {
+        headers: headers,
+      }
+    );
+>>>>>>> develop
   }
 
-
-  caricaTipoCanaleReclutamento(token:any): Observable<any>{
+  caricaTipoCanaleReclutamento(token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
+<<<<<<< HEAD
     return this.http.get<any>(`http://192.168.58.196:8080/services/tipo-canale-reclutamento-map`, {
       headers: headers,
     });
+=======
+    return this.http.get<any>(
+      `http://localhost:8080/services/tipo-canale-reclutamento-map`,
+      {
+        headers: headers,
+      }
+    );
+>>>>>>> develop
   }
 
   //FILTER ANAGRAFICA
@@ -166,7 +217,12 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
+<<<<<<< HEAD
       `http://192.168.58.196:8080/services/tipo-contratto-map`,{ headers: headers }
+=======
+      `http://localhost:8080/services/tipo-contratto-map`,
+      { headers: headers }
+>>>>>>> develop
     );
   }
 
@@ -223,6 +279,20 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.put<any>('http://192.168.58.196:8080/services/commessa', body, {
+      headers: headers,
+    });
+  }
+
+  changeCCNL(token: any, ccnl: any): Observable<any> {
+    ///livelli-by-ccnl/{ccnl}
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    const url = `http://localhost:8080/services/livelli-by-ccnl/${ccnl}`;
+    console.log('URL CHANGE CCNL:' + url);
+    return this.http.get<any>(url, {
       headers: headers,
     });
   }

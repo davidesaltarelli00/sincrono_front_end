@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .container-fluid {
+    background-color: aliceblue;
+  }
+
+  body {
+    background-color: aliceblue;
+  }
+
+
+  #toolbar {
+    background-color: #007bff;
+    /* Colore blu aziendale */
+    color: #ffffff;
+    /* Testo bianco */
+    display: flex;
+    background-color: #333;
+    justify-content: space-between;
+    /* Allinea gli elementi a sinistra e a destra */
+    align-items: center;
+    /* Allinea verticalmente gli elementi al centro */
+  }
+
+  .logo-link {
+    margin-right: 10px;
+  }
+
+  .toolbar-menu {
+    display: flex;
+    gap: 10px;
+    background-color: #333;
+    margin-right: auto;
+  }
+
+  .toolbar-link {
+    text-decoration: none;
+    color: #ffffff;
+    /* padding: 10px; */
+  }
+
+  a {
+    color: white;
+  }
+
+  .toolbar-link:hover {
+    color: #d8d8d8;
+  }
+
+  .user-icon,
+  .logout-icon {
+    color: #ffffff;
+    cursor: pointer;
+  }
+</style>
+<body>
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+      </a>
+      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
+        <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+          {{ menuItem.nome }}
+        </a>
+      </div>
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
+          class="fa fa-user"></i>
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
+  <div id="inizioPagina"></div>
+<div class="container-fluid"  *ngIf="ruolo==='ADMIN'" >
+  <div class="row">
+    <div class="col-12">
+      <br>
+      <mat-card style="text-align: center;">
+        <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+        <h1>Verifica rapportino</h1>
+      </mat-card>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nominativo</th>
+            <th>Codice fiscale</th>
+            <th>Mese</th>
+            <th>Anno</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td> {{nome}} {{cognome}} </td>
+            <td>{{codiceFiscale}}</td>
+            <td>{{mese}}</td>
+            <td>{{anno}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"  >
+      <mat-card [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'lightblue' : 'aliceblue'}" >
+        <mat-card-title style="text-align: center;">
+          <p> <button mat-fab color color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}</p>
+        </mat-card-title>
+
+
+
+     <div *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
+      <mat-card-content>
+        <div class="row">
+          <div class="col-8">
+            <div class="form-group">
+              <label for="cliente-{{ i }}{{j}}">Cliente</label>
+              <input type="text" id="cliente-{{ i }}{{j}}" class="form-control" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" disabled>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <label for="ore-ordinarie-{{ i }}{{j}}">Ore</label>
+                <input disabled
+                type="number" class="form-control"
+                id="ore-ordinarie-{{ i }}{{j}}" name="ore-ordinarie-{{ i }}{{j}}"
+                [(ngModel)]="duplicazione.oreOrdinarie">
+            </div>
+          </div>
+        </div>
+        <div class="straordinari" id="straordinari">
+         <div class="row" > <!--*ngIf="checkstraordinari"-->
+          <!-- <label for="straordinari" style="text-align: center; font-weight: bold;">Straordinari</label> -->
+          <div class="col-4">
+           <div class="form-group">
+            <label for="fascia1-{{ i }}{{j}}">18-20</label>
+            <input disabled
+            type="number" class="form-control"
+            id="fascia1-{{ i }}{{j}}" name="fascia1-{{ i }}{{j}}"
+            [(ngModel)]="duplicazione.fascia1">
+           </div>
+          </div>
+          <div class="col-4">
+           <div class="form-group">
+            <label for="fascia2-{{ i }}{{j}}">20-22</label>
+            <input disabled
+            type="number" class="form-control"
+            id="fascia2-{{ i }}" name="fascia2-{{ i }}{{j}}"
+            [(ngModel)]="duplicazione.fascia2">
+           </div>
+          </div>
+          <div class="col-4" >
+            <div class="form-group">
+              <label for="fascia3-{{ i }}{{j}}">22-09</label>
+              <input disabled
+              type="number" class="form-control"
+              id="fascia3-{{ i }}{{j}}" name="fascia3-{{ i }}{{j}}"
+              [(ngModel)]="duplicazione.fascia3">
+            </div>
+          </div>
+         </div>
+        </div>
+      </mat-card-content>
+     </div>
+     <br>
+     <div class="row" style="margin: unset;">
+      <div class="col-4">
+       <div class="form-group">
+        <label for="permessi-{{ i }}">Permessi</label>
+        <input disabled
+        type="number" class="form-control"
+        id="permessi-{{ i }}" name="permessi-{{ i }}"
+        [(ngModel)]="giorno.permessi">
+       </div>
+      </div>
+      <div class="col-4">
+       <div class="form-group">
+        <label for="ferie-{{ i }}">Ferie</label> <br>
+        <input disabled class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
+       </div>
+      </div>
+      <div class="col-4">
+      <div class="form-group">
+        <label for="malattie-{{i}}">Malattia</label><br>
+        <input disabled class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
+      </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+      <div class="form-group">
+        <label for="note-{{ i }}">Note  </label> <!--<div *ngIf="!giorno.note" class="error-message">Campo obbligatorio</div>-->
+        <input disabled type="text" class="form-control" id="note-{{ i }}"  name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
+      </div>
+      </div>
+    </div>
+    </mat-card>
+     <br>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-6">
+      <div class="form-group">
+        <label for="note">Note:</label> <br>
+        <textarea name="note" class="form-control" placeholder="Inserisci eventuali note" [(ngModel)]="note" id="note" cols="15" rows="5"  ></textarea> <br>
+        <button class="btn btn-warning" (click)="aggiungiNote()" [disabled]="note==null">Rispedisci al dipendente<i class="fa fa-save" ></i> </button> &nbsp;
+        <button class="btn btn-info" (click)="resetNote()" >Cancella note<i class="fa fa-undo" ></i> </button> <br>
+      </div>
+    </div>
+    <div class="col-6">
+      <label for="calcoli"></label>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Tot giorni ferie</th>
+            <th>Tot ore permesso</th>
+            <th>Tot giorni malattia</th>
+            <th>Tot ore lavorate</th>
+            <th>Tot ore straordinari</th>
+            <th>Tot giorni lavorati</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{totaleFerie}}</td>
+            <td>{{totaleOrePermessi}}</td>
+            <td>{{totaleMalattia}}</td>
+          <td > {{totaleOreLavorate}}</td>
+          <td>{{totaleStraordinari}}</td>
+          <td >{{giorniLavorati}} / {{giorniUtili}} </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br><br>
+  <div class="row">
+    <div class="col-12" style="margin: auto; text-align:center;" >
+      <button style="margin: auto; text-align:center;" mat-flat-button color="primary" [routerLink]="['/lista-rapportini']" >Torna alla lista dei rapportini</button>
+    </div>
+  </div>
+  <br><br><br><br>
+  <div id="finePagina"></div>
+</div>
+<div class="container-fluid" *ngIf="ruolo==='DIPENDENTE'">
+  <div class="row">
+    <div class="col-12">
+      <br>
+      <mat-card style="text-align: center;">
+        <h1><img src="../../../../assets/images/danger.png" alt="Logo Sincrono"></h1>
+        <h1>Non hai i permessi per accedere a questa sezione.</h1>
+         <a mat-stroked-button [routerLink]="['/home']" target="_blank">Vai alla home.</a>
+      </mat-card>
+    </div>
+  </div>
+</div>
+</body>
+</html>

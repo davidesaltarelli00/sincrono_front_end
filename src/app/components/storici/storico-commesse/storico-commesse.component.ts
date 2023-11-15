@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoricoService } from '../storico-service';
+import { ProfileBoxService } from '../../profile-box/profile-box.service';
+import { MatDialog } from '@angular/material/dialog';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 
 declare var $: any;
 
@@ -11,26 +15,44 @@ declare var $: any;
 })
 export class StoricoCommesseComponent implements OnInit {
   lista: any;
-  token: any;
   errore = false;
   messaggio: any;
   // paginazione
   currentPage: number = 1;
-  itemsPerPage: number = 5; // Numero di elementi per pagina
+  itemsPerPage: number = 3; // Numero di elementi per pagina
   id = this.activatedRouter.snapshot.params['id'];
+  userLoggedName: any;
+  userLoggedSurname: any;
+  shouldReloadPage: any;
+  idFunzione: any;
+  jsonData: any;
+  token = localStorage.getItem('token');
+  userRoleNav: any;
+  idNav: any;
+  tokenProvvisorio: any;
+  idUtente: any;
+  pageData: any[] = [];
   constructor(
     private router: Router,
     private activatedRouter: ActivatedRoute,
-    private storicoService: StoricoService
-  ) {}
+    private storicoService: StoricoService,
+    private profileBoxService: ProfileBoxService,
+    private dialog: MatDialog,
+    private http: HttpClient,
+  ) { }
 
   ngOnInit(): void {
+    if (this.token != null) {
+      this.getUserLogged();
+      this.getUserRole();
+    }
     var idAnagrafica = this.activatedRouter.snapshot.params['id'];
     this.storicoService
       .getStoricoCommesse(idAnagrafica, localStorage.getItem('token'))
       .subscribe(
         (resp: any) => {
           this.lista = resp.list;
+          this.lista = this.getCurrentPageItems();
           console.log(JSON.stringify(resp.list));
         },
         (error: any) => {
@@ -51,7 +73,7 @@ export class StoricoCommesseComponent implements OnInit {
     });
   }
 
- riattivaCommessa(id: number, posizione: number) {
+  riattivaCommessa(id: number, posizione: number) {
     console.log('ID COMMESSA DA RIATTIVARE: ' + id);
     console.log("Posizione nell'array: " + posizione);
 
@@ -74,16 +96,16 @@ export class StoricoCommesseComponent implements OnInit {
             'Commessa riattivata correttamente: ' + JSON.stringify(res)
           );
           alert('Commessa riattivata correttamente.');
-          this.router.navigate(['/dettaglio-anagrafica/',this.id]);
+          this.router.navigate(['/dettaglio-anagrafica/', this.id]);
         },
         (error: any) => {
           alert(
             'Si è verificato un errore durante la storicizzazione della commessa selezionata: ' +
-              error
+            error
           );
         }
       );
- }
+  }
 
   //paginazione
   getCurrentPageItems(): any[] {
@@ -108,4 +130,116 @@ export class StoricoCommesseComponent implements OnInit {
   }
 
   //fine paginazione
+
+  //metodi nav
+  logout() {
+    this.dialog.open(AlertLogoutComponent);
+  }
+
+  getUserLogged() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        localStorage.getItem('token');
+        this.userLoggedName = response.anagraficaDto.anagrafica.nome;
+        this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato il seguente errore durante il recupero dei dati : ' +
+          error
+        );
+      }
+    );
+  }
+
+  getUserRole() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
+      },
+      (error: any) => {
+        console.error(
+          'Si è verificato il seguente errore durante il recupero del ruolo: ' +
+          error
+        );
+        this.shouldReloadPage = true;
+      }
+    );
+  }
+
+  generateMenuByUserRole() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${this.token}`,
+    });
+    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idUtente}`;
+    this.http.get<MenuData>(url, { headers: headers }).subscribe(
+      (data: any) => {
+        this.jsonData = data;
+        this.idFunzione = data.list[0].id;
+        console.log(
+          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+        );
+        this.shouldReloadPage = false;
+      },
+      (error: any) => {
+        console.error('Errore nella generazione del menu:', error);
+        this.shouldReloadPage = true;
+      }
+    );
+  }
+
+  getPermissions(functionId: number) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${this.token}`,
+    });
+    const url = `http://localhost:8080/services/operazioni/${functionId}`;
+    this.http.get(url, { headers: headers }).subscribe(
+      (data: any) => {
+        console.log('Permessi ottenuti:', data);
+      },
+      (error: any) => {
+        console.error('Errore nella generazione dei permessi:', error);
+      }
+    );
+  }
+}
+
+
+interface MenuData {
+  esito: {
+    code: number;
+    target: any;
+    args: any;
+  };
+  list: {
+    id: number;
+    funzione: any;
+    menuItem: number;
+    nome: string;
+    percorso: string;
+    immagine: any;
+    ordinamento: number;
+    funzioni: any;
+    privilegio: any;
+  }[];
 }

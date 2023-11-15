@@ -1,0 +1,33 @@
+{
+  "rapportinoDto": {
+    "mese": {
+        "giorni": [
+            {
+                "duplicazioniGiornoDto": [
+                    {
+                        "giorno": null,
+                        "cliente": null,
+                        "oreOrdinarie": null,
+                        "fascia1": null,
+                        "fascia2": null,
+                        "fascia3": null
+                    }
+                ],
+                "ferie": null,
+                "malattie": null,
+                "permessi": null,
+                "note": null
+            }
+        ]
+      },
+      "anagrafica":{
+        "codiceFiscale":null
+      },
+      "annoRequest":null,
+      "meseRequest":null,
+      "giorniUtili":null,
+      "giorniLavorati":null
+    }
+
+}
+

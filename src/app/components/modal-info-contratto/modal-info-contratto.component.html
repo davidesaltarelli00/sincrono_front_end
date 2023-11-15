@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <header>
+          <h1>
+            Info contratto di {{data.anagraficaDto.anagrafica.nome}} {{data.anagraficaDto.anagrafica.cognome}}
+
+            <button style="float: right;" mat-flat-button (click)="closeDialog()" > <i class="fa fa-close" ></i> </button>
+          </h1>
+        </header>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Cognome</th>
+              <th>Codice fiscale</th>
+              <th>Mail aziendale</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ data.anagraficaDto.anagrafica.nome }}</td>
+              <td>{{ data.anagraficaDto.anagrafica.cognome }}</td>
+              <td>{{ data.anagraficaDto.anagrafica.codiceFiscale | uppercase }}  <i  style="cursor: pointer;" matTooltip="Copia" class="fa-solid fa-copy" (click)="copy(data.anagraficaDto.anagrafica.codiceFiscale)"></i></td>
+              <td>{{data.anagraficaDto.anagrafica.mailAziendale}}  <i  style="cursor: pointer;" matTooltip="Copia" class="fa-solid fa-copy" (click)="copy(data.anagraficaDto.anagrafica.mailAziendale)"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <table class="table table-bordered">
+         <thead>
+          <tr>
+            <th>Azienda</th>
+            <th>Tipo contratto</th>
+            <th [hidden]="data.anagraficaDto.contratto.tipoContratto.descrizione==='Indeterminato' || data.anagraficaDto.contratto.tipoContratto.descrizione==='P.Iva'">Mesi durata</th>
+            <th>CCNL</th>
+            <th>Livello</th>
+            <th>Data assunzione</th>
+            <th>Data fine prova</th>
+            <th [hidden]="data.anagraficaDto.contratto.tipoContratto.descrizione==='Indeterminato' || data.anagraficaDto.contratto.tipoContratto.descrizione==='P.Iva'">Data fine rapporto</th>
+            <th>Qualifica</th>
+            <th>Dettaglio</th>
+            <th>Modifica</th>
+          </tr>
+         </thead>
+         <tbody>
+          <tr>
+            <td>{{data.anagraficaDto.contratto.tipoAzienda.descrizione}}</td>
+            <td>{{data.anagraficaDto.contratto.tipoContratto.descrizione}}</td>
+            <td [hidden]="data.anagraficaDto.contratto.tipoContratto.descrizione==='Indeterminato' || data.anagraficaDto.contratto.tipoContratto.descrizione==='P.Iva'" >{{data.anagraficaDto.contratto.mesiDurata}}</td>
+            <td>{{data.anagraficaDto.contratto.tipoCcnl.descrizione}}</td>
+            <td>{{data.anagraficaDto.contratto.tipoLivelloContratto.livello}}</td>
+            <td>{{data.anagraficaDto.contratto.dataAssunzione | date: 'dd/MM/yyyy'}}</td>
+            <td *ngIf="data.anagraficaDto.contratto.dataFineProva!=null" >{{data.anagraficaDto.contratto.dataFineProva | date: 'dd/MM/yyyy'}}</td>
+            <td *ngIf="data.anagraficaDto.contratto.dataFineProva==null" >Dato non inserito.</td>
+            <td [hidden]="data.anagraficaDto.contratto.tipoContratto.descrizione==='Indeterminato' || data.anagraficaDto.contratto.tipoContratto.descrizione==='P.Iva'" >{{data.anagraficaDto.contratto.dataFineRapporto | date: 'dd/MM/yyyy'}}</td>
+            <td>{{data.anagraficaDto.contratto.qualifica ? data.anagraficaDto.contratto.qualifica: 'Dato non inserito.'}}</td>
+            <td>
+              <button class="btn btn-info" (click)="dettaglio(data.anagraficaDto.anagrafica.id)" > <i class="fa fa-info" ></i> </button>
+               </td>
+               <td>
+                <button class="btn btn-warning" (click)="modifica(data.anagraficaDto.anagrafica.id)" > <i class="fa fa-pencil"></i> </button>
+               </td>
+          </tr>
+         </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+<!--
+  {
+    "esito": {
+        "code": 200,
+        "target": null,
+        "args": null
+    },
+    "anagraficaDto": {
+        "anagrafica": {
+            "id": 33,
+            "utente": {
+                "id": 36,
+                "username": null,
+                "password": null,
+                "tokenPassword": null,
+                "attivo": true,
+                "enabled": true,
+                "authorities": null,
+                "accountNonLocked": true,
+                "accountNonExpired": true,
+                "credentialsNonExpired": true
+            },
+            "tipoAzienda": {
+                "id": 4,
+                "descrizione": "Reymon"
+            },
+            "nome": "Paolo ",
+            "cognome": "Giardina",
+            "codiceFiscale": "GDNPLO75C30H501Q",
+            "comuneDiNascita": null,
+            "dataDiNascita": "1975-03-29T23:00:00.000+00:00",
+            "residenza": null,
+            "domicilio": null,
+            "cellularePrivato": null,
+            "cellulareAziendale": null,
+            "mailPrivata": null,
+            "mailAziendale": "p.giardina@sincrono.it",
+            "mailPec": null,
+            "titoliDiStudio": null,
+            "altriTitoli": null,
+            "coniugato": true,
+            "figliACarico": true,
+            "attivo": true,
+            "attesaLavori": true,
+            "cittadinanza": null,
+            "statoDiNascita": null,
+            "provinciaDiNascita": null,
+            "categoriaProtetta": null
+        },
+        "contratto": {
+            "id": 28,
+            "tipoCausaFineRapporto": null,
+            "tipoCanaleReclutamento": {
+                "id": 3,
+                "descrizione": "Altro"
+            },
+            "tipoContratto": {
+                "id": 4,
+                "descrizione": "Indeterminato"
+            },
+            "tipoLivelloContratto": {
+                "id": 15,
+                "ccnl": "TERZIARIO COMMERCIO",
+                "livello": "4",
+                "minimiRet23": 1648.75
+            },
+            "tipoAzienda": {
+                "id": 4,
+                "descrizione": "Reymon"
+            },
+            "tipoCcnl": {
+                "id": 3,
+                "descrizione": "TERZIARIO COMMERCIO",
+                "numeroMensilita": 14
+            },
+            "attivo": true,
+            "qualifica": null,
+            "sedeAssunzione": null,
+            "dataAssunzione": "2015-05-09T22:00:00.000+00:00",
+            "dataInizioProva": null,
+            "dataFineProva": "2015-08-09T22:00:00.000+00:00",
+            "dataFineRapporto": null,
+            "mesiDurata": null,
+            "livelloAttuale": "4",
+            "livelloFinale": null,
+            "partTime": true,
+            "percentualePartTime": 70.0,
+            "retribuzioneMensileLorda": 1648.75,
+            "superminimoMensile": null,
+            "ralAnnua": 23642.5,
+            "superminimoRal": null,
+            "diariaMensile": 200.0,
+            "diariaGiornaliera": 8.0,
+            "ticket": true,
+            "valoreTicket": 8.05,
+            "tutor": null,
+            "pfi": null,
+            "corsoSicurezza": null,
+            "dataCorsoSicurezza": null,
+            "pc": null,
+            "visitaMedica": null,
+            "dataVisitaMedica": null,
+            "scattiAnzianita": 40.0,
+            "tariffaPartitaIva": null,
+            "assicurazioneObbligatoria": null,
+            "retribuzioneNettaGiornaliera": null,
+            "retribuzioneNettaMensile": 1540.41,
+            "diariaAnnua": 1920.0,
+            "ralPartTime": 16549.75
+        },
+        "commesse": [
+            {
+                "id": 2,
+                "aziendaCliente": "Sincrono formazione",
+                "clienteFinale": "Sincrono formazione",
+                "titoloPosizione": "Docente java",
+                "distacco": false,
+                "distaccoAzienda": null,
+                "distaccoData": null,
+                "dataInizio": "2019-09-14T22:00:00.000+00:00",
+                "dataFine": "2019-11-24T23:00:00.000+00:00",
+                "tariffaGiornaliera": "90",
+                "aziendaDiFatturazioneInterna": "Sincrono consulenza",
+                "attivo": true
+            },
+            {
+                "id": 7,
+                "aziendaCliente": "Universitá Roma tre",
+                "clienteFinale": "Ministero dell'istruzione",
+                "titoloPosizione": "docente java",
+                "distacco": false,
+                "distaccoAzienda": null,
+                "distaccoData": null,
+                "dataInizio": "2019-09-09T22:00:00.000+00:00",
+                "dataFine": null,
+                "tariffaGiornaliera": "150",
+                "aziendaDiFatturazioneInterna": "Reymon",
+                "attivo": true
+            }
+        ],
+        "ruolo": {
+            "id": 1,
+            "ruolo": null,
+            "nome": "ADMIN",
+            "descrizione": "ADMIN",
+            "ruoli": null
+        }
+    }
+}
+-->

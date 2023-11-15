@@ -1,231 +1,585 @@
 <html>
-  <head>
-    <title>Home</title>
-  </head>
-  <style>
-    mat-toolbar {
-      background-color: #333;
-      color: white;
-    }
 
-    strong {
-      margin-left: 5px;
-    }
-  </style>
-  <body>
-    <!-- Include necessary Angular Material modules in your app.module.ts -->
-    <!-- For example, import MatButtonModule, MatCardModule, MatIconModule, MatDividerModule, etc. -->
+<head>
+  <title>Home</title>
+</head>
+<style>
+  #toolbar {
+    background-color: #007bff;
+    /* Colore blu aziendale */
+    color: #ffffff;
+    /* Testo bianco */
+    display: flex;
+    background-color: #333;
+    justify-content: space-between;
+    /* Allinea gli elementi a sinistra e a destra */
+    align-items: center;
+    /* Allinea verticalmente gli elementi al centro */
+  }
 
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
-          <div class="profile-box-container">
-            <br />
-            <div class="row">
-              <div class="col-6">
-                <mat-card class="profile-box">
-                  <h3>Dati anagrafici dell'utente</h3>
-                  <div>
-                    <strong>Nome:</strong>
-                    {{ anagrafica?.anagraficaDto.anagrafica?.nome }}
-                  </div>
-                  <div>
-                    <strong>Cognome:</strong>
-                    {{ anagrafica?.anagraficaDto.anagrafica?.cognome }}
-                  </div>
-                  <div
-                    *ngIf="
-                      anagrafica?.anagraficaDto.anagrafica?.dataDiNascita !=
-                      null
-                    "
-                  >
-                    <strong>Data e luogo di nascita:</strong>
-                    {{
-                      anagrafica?.anagraficaDto.anagrafica?.dataDiNascita
-                        | date : "dd/MM/yyyy"
-                    }},
-                    {{ anagrafica?.anagraficaDto.anagrafica?.comuneDiNascita }}
-                  </div>
-                  <div
-                    *ngIf="
-                      anagrafica?.anagraficaDto.anagrafica?.dataDiNascita ==
-                      null
-                    "
-                  >
-                    <strong>Data e luogo di nascita:</strong> Dato non inserito.
-                  </div>
-                  <div>
-                    <strong>Codice fiscale:</strong>
-                    {{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}
-                  </div>
-                </mat-card>
-              </div>
-              <div class="col-6">
-                <mat-card class="profile-box">
-                  <h3>Contatti</h3>
-                  <div>
-                    <strong>Cellulare aziendale:</strong>
-                    {{
-                      anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale
-                    }}
-                  </div>
-                  <div>
-                    <strong>Cellulare privato:</strong>
-                    {{ anagrafica?.anagraficaDto.anagrafica?.cellularePrivato }}
-                  </div>
-                  <div>
-                    <strong>Mail aziendale:</strong>
-                    {{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}
-                  </div>
-                  <div>
-                    <strong>Mail privata:</strong>
-                    {{ anagrafica?.anagraficaDto.anagrafica?.mailPrivata }}
-                  </div>
-                  <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.mailPec!=null">
-                    <strong>Mail PEC:</strong>
-                    {{ anagrafica?.anagraficaDto.anagrafica?.mailPec }}
-                  </div>
-                  <div *ngIf="anagrafica?.anagraficaDto.anagrafica?.mailPec==null">
-                    <strong>Mail PEC:</strong>
-                    Dato non inserito.
-                  </div>
-                </mat-card>
-              </div>
-            </div>
-          </div>
+  .logo-link {
+    margin-right: 10px;
+  }
+
+  .toolbar-menu {
+    display: flex;
+    gap: 10px;
+    background-color: #333;
+    margin-right: auto;
+  }
+
+  .toolbar-link {
+    text-decoration: none;
+    color: #ffffff;
+    /* padding: 10px; */
+  }
+
+  a {
+    color: white;
+  }
+
+  .toolbar-link:hover {
+    color: #d8d8d8;
+  }
+
+  .user-icon,
+  .logout-icon {
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+
+  #toolbar {
+    background-color: #007bff;
+    /* Colore blu aziendale */
+    color: #ffffff;
+    /* Testo bianco */
+    display: flex;
+    background-color: #333;
+    justify-content: space-between;
+    /* Allinea gli elementi a sinistra e a destra */
+    align-items: center;
+    /* Allinea verticalmente gli elementi al centro */
+  }
+
+  .logo-link {
+    margin-right: 10px;
+  }
+
+  .toolbar-menu {
+    display: flex;
+    gap: 10px;
+    background-color: #333;
+    margin-right: auto;
+  }
+
+  .toolbar-link {
+    text-decoration: none;
+    color: #ffffff;
+    /* padding: 10px; */
+  }
+
+  a {
+    color: white;
+  }
+
+  .toolbar-link:hover {
+    color: #d8d8d8;
+  }
+
+  .user-icon,
+  .logout-icon {
+    color: #ffffff;
+    cursor: pointer;
+  }
+</style>
+
+<body>
+  <div id="inizioPagina"></div>
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+      </a>
+      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
+        <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+          {{ menuItem.nome }}
+        </a>
+      </div>
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
+          class="fa fa-user"></i>
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
+
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && mobile">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+      </a>
+      <button style=" background-color:white;color:black;margin-right: 10px;" mat-button [matMenuTriggerFor]="menu">
+        Menu
+      </button>
+      <mat-menu #menu="matMenu">
+        <button style="background-color:white;color:black" mat-menu-item *ngFor="let menuItem of jsonData.list"
+          [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
+          {{ menuItem.nome }}
+        </button>
+      </mat-menu>
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+        <i class="fa fa-user"></i>
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
+
+  <div class="container-fluid" *ngIf="!mobile">
+    <div class="row">
+      <div class="col-12">
+        <br>
+        <mat-card style="text-align: center;">
+          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+          <h1>Profilo <button [hidden]="ruolo==='DIPENDENTE'" class=" btn btn-info " [routerLink]="['/modifica-anagrafica/',id]" > <i class="fa fa-pencil" ></i> </button> </h1>
+          <h3> <i class="fa fa-user" ></i>  {{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }} {{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }} </h3>
+        </mat-card>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-12">
+        <div class="profile-box-container">
           <br />
-          <div class="profile-box-container">
-            <div class="row">
-              <div class="col-6">
-                <mat-card class="profile-box">
-                  <h3>Residenza e domicilio</h3>
-                  <div>
-                    <strong>Comune di residenza</strong>
-                    {{ anagrafica?.anagraficaDto.anagrafica?.residenza }}
+          <div class="row"  >
+            <div class="col-4"  id="sezione-immagine">
+              <div class="image-container" >
+                <div class="image-container rounded">
+                  <label style="float: right;" for="fileInput" class="file-input-label" *ngIf="!immagineCancellata && immagineConvertita && !salvaImmagine">
+                    <i class="fa fa-pencil btn btn-info" style="cursor: pointer;" matTooltip=" Modifica immagine" ></i>
+                  </label>
+                  <input [hidden]="immagineConvertita" type="file" #fileInput accept="image/*" id="fileInput" (change)="onFileSelected($event)" />
+                  <div class="image-preview" *ngIf="immagineConvertita">
+                    <img [src]="immagineConvertita" (click)="vediImmagineProfilo()" style="cursor: pointer;" alt="Immagine" class="preview-image" />
                   </div>
-                  <div>
-                    <strong>Comune di domicilio</strong>
-                    {{ anagrafica?.anagraficaDto.anagrafica?.domicilio }}
+                  <div class="image-preview" *ngIf="!immagineConvertita">
+                    <img [src]="immaginePredefinita" alt="Immagine" class="preview-image" />
                   </div>
-                </mat-card>
+                </div>
               </div>
-              <div class="col-6">
-                <mat-card class="profile-box">
-                  <h3>Referenze</h3>
-                  <div>
-                    <strong>Titoli di studio</strong>
-                    {{ anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio }}
-                  </div>
-                  <div>
-                    <strong>Altri titoli</strong>
-                    {{ anagrafica?.anagraficaDto.anagrafica?.altriTitoli }}
-                  </div>
-                </mat-card>
+              <br>
+             <div class="buttons" *ngIf="salvaImmagine" >
+              <button (click)="addImage()" matTooltip="Salva immagine" class="btn btn-primary"> <i class="fa fa-save"></i></button> &nbsp;
+              <button (click)="cancelImage()" matTooltip="Annulla" class="btn btn-danger">&#x2715;</button>
+             </div>
+            </div>
+            <div class="col-6">
+              <div class="table-responsive">
+                <table class="table table-striped" style="text-align: center;" >
+                  <thead>
+                   <tr>
+                     <th>Ruolo</th>
+                     <th>Contratto</th>
+                     <th>Numero commesse</th>
+                     <th>Documenti</th>
+                   </tr>
+                  </thead>
+                  <tbody>
+                   <tr>
+                     <td>{{anagrafica?.anagraficaDto?.ruolo?.descrizione}} </td>
+                     <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione}} </td>
+                     <td>{{elencoCommesse.length}}</td>
+                     <td> Rapportino <button class="btn btn-success" (click)="goToRapportinoByCodiceFiscale()" matTooltip="Rapportino."> <i class="fa fa-file"></i> </button> </td>
+                   </tr>
+                  </tbody>
+                 </table>
               </div>
+
             </div>
           </div>
-          <br />
-          <div class="profile-box-container">
-            <div class="row">
-              <div class="col-6">
-                <mat-card class="profile-box">
-                  <h3>Accesso</h3>
-                  <div
-                    *ngIf="anagrafica?.anagraficaDto.anagrafica?.attivo == true"
-                  >
-                    <strong>Attivo: </strong>
-                    <mat-icon style="color: blue">check</mat-icon>
+          <div class="row">
+            <div class="col-6">
+              <mat-card class="profile-box">
+                <mat-card-title>
+                  <h3>Dati anagrafici <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                    matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                    <i class="fa fa-exclamation-triangle"></i> </button></h3>
+                </mat-card-title>
+                <mat-card-content>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th>Cognome</th>
+                          <!-- <th>Data e luogo di nascita</th> -->
+                          <th>Codice fiscale</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }}</td>
+                          <td>{{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }}</td>
+                          <!-- <td *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita != null">
+                            {{anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"}},
+                            {{ anagrafica?.anagraficaDto.anagrafica?.comuneDiNascita }}
+                          </td> -->
+                          <td *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita == null">Dato non inserito.</td>
+                          <td>{{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                  <div
-                    *ngIf="
-                      anagrafica?.anagraficaDto.anagrafica?.attivo == false
-                    "
-                  >
-                    <strong>Attivo: </strong>
-                    <mat-icon style="color: red">close</mat-icon>
+                  <br>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Cittadinanza</th>
+                          <th>Data di nascita</th>
+                          <th>Nazione di nascita</th>
+                          <th>Provincia di nascita</th>
+                          <th>Comune di nascita</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{anagrafica?.anagraficaDto.anagrafica?.cittadinanza ? anagrafica?.anagraficaDto.anagrafica?.cittadinanza : 'Dato non inserito' }}</td>
+                          <td>{{anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"  }}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita : 'Dato non inserito.'  }}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita : 'Dato non inserito.'  }}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita : 'Dato non inserito.'  }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                  <div>
-                    <strong>Nome utente:</strong>
-                    {{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}
-                  </div>
-                  <div>
-                    <a [routerLink]="['/cambia-password']">Cambia password</a>
-                  </div>
-                </mat-card>
-              </div>
-              <div class="col-6">
-                <mat-card class="profile-box">
-                  <h3>Altre informazioni</h3>
-                  <div
-                    *ngIf="
-                      anagrafica?.anagraficaDto.anagrafica?.coniugato != null
-                    "
-                  >
-                    <strong>Coniugato</strong> Si
-                  </div>
-                  <div
-                    *ngIf="
-                      anagrafica?.anagraficaDto.anagrafica?.coniugato == null
-                    "
-                  >
-                    <strong>Coniugato</strong> No
-                  </div>
-                  <div
-                    *ngIf="
-                      anagrafica?.anagraficaDto.anagrafica?.figliACarico != null
-                    "
-                  >
-                    <strong>Figli a carico</strong>
-                    {{ anagrafica?.anagraficaDto.anagrafica?.figliACarico }}
-                  </div>
-                  <div
-                    *ngIf="
-                      anagrafica?.anagraficaDto.anagrafica?.figliACarico == null
-                    "
-                  >
-                    <strong>Figli a carico</strong> No
-                  </div>
-                </mat-card>
-              </div>
+                </mat-card-content>
+
+              </mat-card>
+
+
+            </div>
+            <div class="col-6">
+              <mat-card class="profile-box">
+               <mat-card-title>
+                <h3>Contatti <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                  matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                  <i class="fa fa-exclamation-triangle"></i> </button></h3>
+               </mat-card-title>
+               <mat-card-content>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Cellulare aziendale</th>
+                        <th>Cellulare privato</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale ? anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale : 'Dato non inserito.' }}</td>
+                        <td>{{ anagrafica?.anagraficaDto.anagrafica?.cellularePrivato ? anagrafica?.anagraficaDto.anagrafica?.cellularePrivato : 'Dato non inserito.' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <br>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <th>Mail aziendale</th>
+                      <th>Mail privata</th>
+                      <th>Mail PEC</th>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale ?  anagrafica?.anagraficaDto.anagrafica?.mailAziendale : 'Dato non inserito.' }}</td>
+                        <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailPrivata ? anagrafica?.anagraficaDto.anagrafica?.mailPrivata : 'Dato non inserito.' }}</td>
+                        <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailPec ? anagrafica?.anagraficaDto.anagrafica?.mailPec : 'Dato non inserito.' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+               </mat-card-content>
+
+
+              </mat-card>
+
             </div>
           </div>
+          <br>
+          <div class="row">
+            <div class="col-6">
+              <mat-card class="profile-box">
+                <mat-card-title>
+                  <h3>Residenza e domicilio <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                    matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                    <i class="fa fa-exclamation-triangle"></i> </button></h3>
+                </mat-card-title>
+                <mat-card-content>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                       <tr>
+                         <th>Residenza</th>
+                         <th>Domicilio</th>
+                       </tr>
+                      </thead>
+                       <tbody>
+                         <tr>
+                           <td>{{ anagrafica?.anagraficaDto.anagrafica?.residenza ? anagrafica?.anagraficaDto.anagrafica?.residenza : 'Dato non inserito' }}</td>
+                           <td>{{ anagrafica?.anagraficaDto.anagrafica?.domicilio ? anagrafica?.anagraficaDto.anagrafica?.domicilio : 'Dato non inserito.' }}</td>
+                         </tr>
+                       </tbody>
+                     </table>
+                  </div>
+                </mat-card-content>
+
+              </mat-card>
+            </div>
+            <div class="col-6">
+              <mat-card class="profile-box">
+                <mat-card-title>
+                  <h3>Referenze <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                    matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                    <i class="fa fa-exclamation-triangle"></i> </button></h3>
+                </mat-card-title>
+                <mat-card-content>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Titoli di studio</th>
+                          <th>Altri titoli</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{ anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio ? anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio: 'Dato non inserito.' }}</td>
+                          <td>{{ anagrafica?.anagraficaDto.anagrafica?.altriTitoli ? anagrafica?.anagraficaDto.anagrafica?.altriTitoli : 'Dato non inserito.' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-12">
+              <mat-card class="profile-box">
+                <h3>Altre informazioni</h3>
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Coniugato</th>
+                      <th>Figli a carico</th>
+                      <th>Attesa lavori</th>
+                      <th>Categoria protetta</th>
+                      <th>Canale di reclutamento</th>
+                    </tr>
+                  </thead>
+                 <tbody>
+                  <tr>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.coniugato ? 'Si' : 'No' }}</td>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.figliACarico ? 'Si' : 'No' }}</td>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.attesaLavori ? 'Si' : 'No' }}</td>
+                    <td>{{ anagrafica?.anagraficaDto.anagrafica?.categoriaProtetta ? 'Si' : 'No' }}</td>
+                    <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoCanaleReclutamento?.descrizione ? anagrafica?.anagraficaDto?.contratto?.tipoCanaleReclutamento?.descrizione : 'Dato non inserito' }}</td>
+                  </tr>
+                 </tbody>
+                </table>
+              </mat-card>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-12">
+              <mat-card class="profile-box">
+                <h3>Contratto <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                  matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                  <i class="fa fa-exclamation-triangle"></i> </button></h3>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Tipo Contratto</th>
+                        <th>Mesi Durata</th>
+                        <th>Data assunzione</th>
+                        <th>Data Fine Prova</th>
+                        <th>Data Fine Rapporto</th>
+                        <th>Sede Assunzione</th>
+                        <th>Qualifica</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                      <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione ? anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione : 'Dato non inserito' }}</td>
+                      <td>{{ anagrafica?.anagraficaDto?.contratto?.mesiDurata ? anagrafica?.anagraficaDto?.contratto?.mesiDurata : 'Dato non inserito' }}</td>
+                      <td>{{ anagrafica?.anagraficaDto?.contratto?.dataAssunzione | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
+                      <td>{{ anagrafica?.anagraficaDto?.contratto?.dataFineProva | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
+                      <td>{{ anagrafica?.anagraficaDto?.contratto?.dataFineRapporto | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
+                      <td>{{ anagrafica?.anagraficaDto?.contratto?.sedeAssunzione ? anagrafica?.anagraficaDto?.contratto?.sedeAssunzione : 'Dato non inserito' }}</td>
+                      <td>{{ anagrafica?.anagraficaDto?.contratto?.qualifica ? anagrafica?.anagraficaDto?.contratto?.qualifica : 'Dato non inserito' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-striped" >
+                    <thead>
+                      <tr>
+                        <th>CCNL</th>
+                        <th>Livello</th>
+                        <th>Minimi retributivi</th>
+                        <th>Mensilitá</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          {{anagrafica?.anagraficaDto.contratto?.tipoLivelloContratto?.ccnl ? anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.ccnl :'Dato non inserito' }}
+                        </td>
+                        <td>
+                          {{anagrafica?.anagraficaDto.contratto?.tipoLivelloContratto?.livello ? anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.livello : 'Dato non inserito.'}}
+                        </td>
+                        <td>
+                          {{anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.minimiRet23 ? anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.minimiRet23 : 'Dato non inserito.'}}
+                        </td>
+                        <td>
+                          {{anagrafica?.anagraficaDto?.contratto?.tipoCcnl?.numeroMensilita ? anagrafica?.anagraficaDto?.contratto?.tipoCcnl?.numeroMensilita : 'Dato non inserito.'}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Retribuzione mensile lorda</th>
+                        <th>Superminimo mensile</th>
+                        <th>Scatti anzianitá</th>
+                        <th>Retribuzione netta mensile</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{anagrafica?.anagraficaDto.contratto?.retribuzioneMensileLorda ? anagrafica?.anagraficaDto.contratto?.retribuzioneMensileLorda : 'Dato non inserito' }}</td>
+                        <td>{{anagrafica?.anagraficaDto.contratto?.superminimoMensile ? anagrafica?.anagraficaDto.contratto?.superminimoMensile : 'Dato non inserito'}}</td>
+                        <td>{{anagrafica?.anagraficaDto.contratto?.scattiAnzianita ? anagrafica?.anagraficaDto.contratto?.scattiAnzianita : 'Dato non inserito'}}</td>
+                        <td>{{anagrafica?.anagraficaDto.contratto?.retribuzioneNettaMensile ? anagrafica?.anagraficaDto.contratto?.retribuzioneNettaMensile : 'Dato non inserito'}}</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </mat-card>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-12">
+              <mat-card class="profile-box">
+                <h3>Commesse <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                  matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                  <i class="fa fa-exclamation-triangle"></i> </button></h3>
+                <mat-card-content>
+                  <table id="commessaTable" class="table table-striped" style="font-size: 15px;">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Cliente Finale</th>
+                        <th scope="col">Titolo Posizione</th>
+                        <th scope="col">Distacco</th>
+                        <th scope="col">Data Inizio</th>
+                        <th scope="col">Data Fine</th>
+                        <th scope="col">Tariffa Giornaliera</th>
+                        <th scope="col">Azienda fatturazione interna</th>
+                        <th scope="col" [hidden]="ruolo==='DIPENDENTE'">Archivia</th>
+                        <th scope="col" [hidden]="ruolo==='DIPENDENTE'">Modifica</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let commessa of elencoCommesse; let i = index">
+                        <td>{{ commessa.tipoAziendaCliente.descrizione }}</td>
+                        <td>{{ commessa.clienteFinale }}</td>
+                        <td>{{ commessa.titoloPosizione }}</td>
+                        <td>{{ commessa.distacco === true ? 'Si' : (commessa.distacco === false ? 'No' : 'Dato non inserito') | titlecase }}</td>
+                        <!--<td>{{ data?.anagrafica?.dataDiNascita ? (data?.anagrafica?.dataDiNascita | date : "dd/MM/yyyy") : 'Dato non inserito' }}</td>-->
+                        <td>{{ commessa.dataInizio ? (commessa.dataInizio | date: 'dd/MM/yyyy') : 'Dato non inserito' }}</td>
+                        <td >{{ commessa.dataFine ? (commessa.dataFine | date: 'dd/MM/yyyy') : 'Dato non inserito' }}</td>
+                        <td>{{ commessa.tariffaGiornaliera ? commessa.tariffaGiornaliera: 'Dato non inserito' }} <i [hidden]="!commessa.tariffaGiornaliera" class="fa-solid fa-euro-sign"></i></td>
+                        <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
+                        <td>
+                          <button  [hidden]="ruolo==='DIPENDENTE'" class="btn btn-success" matTooltip="Archivia commessa"
+                            (click)="storicizzaCommessa(commessa.id, i)">
+                            <i class="fa fa-file"></i>
+                          </button>
+                        </td>
+                        <td>
+                          <button [hidden]="ruolo==='DIPENDENTE'" class="btn btn-warning" (click)="modificaCommessa()" matTooltip="Modifica commessa">
+                            <i class="fa fa-pencil"></i>
+                          </button>
+                        </td>
+                        <td>
+                          <!-- <button class="btn btn-danger" (click)="rimuoviCommessa(i)">
+                            <i class="fa fa-trash"></i>
+                          </button> -->
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-12">
+              <mat-card class="profile-box">
+                <h3>Accesso</h3>
+                <table class="table table-striped">
+                  <thead>
+                   <tr>
+                    <th>Attivo</th>
+                    <th>Nome utente</th>
+                    <th>Cambia password</th>
+                    <th>Sessione <i class="fa fa-info-circle" matTooltip="Al termine del timer dovrai rieffettuare il login." ></i> </th>
+                   </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{ anagrafica?.anagraficaDto.anagrafica?.attivo ? 'Si' : 'No' }}</td>
+                      <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}</td>
+                      <td style="cursor: pointer; color: blue; " [routerLink]="['/cambia-password']" >Cambia password</td>
+                      <td><p>Tempo rimanente:  {{ formatTime(tokenExpirationTime) }}</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </mat-card>
+
+
+            </div>
+          </div>
+          <br><br><br><br>
         </div>
       </div>
     </div>
-  </body>
+    <div id="finePagina"></div>
+  </div>
+</body>
+
 </html>
 
-<!-- {
-  "esito": {
-      "code": 0,
-      "target": null,
-      "args": null
-  },
-  "anagraficaDto": {
-      "anagrafica": {
-          "id": 24,
-          "utente": null,
-          "attivo": true,
-          "aziendaTipo": null,
-          "cognome": "Sbarigia",
-          "nome": "Luca ",
-          "codiceFiscale": "SRGLCA75B21H501L",
-          "comuneDiNascita": "Bucarest",
-          "dataDiNascita": "2002-04-06",
-          "residenza": "Roma",
-          "domicilio": "Roma",
-          "cellularePrivato": "3335555555",
-          "cellulareAziendale": "3478998001",
-          "mailPrivata": "luca@gmail.com",
-          "mailAziendale": "andreimusat2000@gmail.com",
-          "mailPec": "andreimusat2000@gmail.com",
-          "titoliDiStudio": "diploma in informatica e telecomunicazioni",
-          "altriTitoli": "Perito informatico",
-          "coniugato": null,
-          "figliACarico": null
-      },
-      "contratto": null,
-      "commessa": null,
-      "ruolo": null
-  }
-} -->

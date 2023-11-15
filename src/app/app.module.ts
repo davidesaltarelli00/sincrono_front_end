@@ -44,7 +44,20 @@ import { UtenteComponent } from './components/utente/utente.component';
 import { GiornoComponent } from './components/giorno/giorno.component';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirective';
-
+import { NotFoundComponent } from './not-found/not-found.component';
+import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
+import { ModalInfoCommesseComponent } from './components/modal-info-commesse/modal-info-commesse.component';
+import { ModalInfoContrattoComponent } from './components/modal-info-contratto/modal-info-contratto.component';
+import { MatSelectModule } from '@angular/material/select';
+import { RisultatiFilterOrganicoComponent } from './components/organico/risultati-filter-organico/risultati-filter-organico.component';
+import { ListaRapportiniComponent } from './components/lista-rapportini/lista-rapportini.component';
+import { ModaleDettaglioRapportinoComponent } from './components/modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
+import { HeaderComponent } from './header/header.component';
+import { MatIconModule } from '@angular/material/icon';
+import { ImmagineComponent } from './components/immagine/immagine.component';
+import { BottoniComponent } from './bottoni/bottoni.component';
+import { MailSollecitaComponent } from './components/mail-sollecita/mail-sollecita.component';
+import { RichiesteComponent } from './components/richieste/richieste.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,6 +69,7 @@ import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirec
     HighlightNullFieldDirective,
     ListaOrganicoComponent,
     HomeComponent,
+    ModalInfoCommesseComponent,
     ListaAnagraficaDtoComponent,
     DettaglioAnagraficaDtoComponent,
     ModificaAnagraficaDtoComponent,
@@ -69,9 +83,21 @@ import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirec
     FormRecuperoPasswordComponent,
     AlertLogoutComponent,
     UtenteComponent,
-    GiornoComponent
+    RichiesteComponent,
+    GiornoComponent,
+    NotFoundComponent,
+    AlertDialogComponent,
+    ModalInfoContrattoComponent,
+    RisultatiFilterOrganicoComponent,
+    ListaRapportiniComponent,
+    ModaleDettaglioRapportinoComponent,
+    HeaderComponent,
+    ImmagineComponent,
+    BottoniComponent,
+    MailSollecitaComponent
   ],
   imports: [
+    MatIconModule,
     MatNativeDateModule,
     MatDatepickerModule,
     MatFormFieldModule,
@@ -83,11 +109,11 @@ import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirec
     ReactiveFormsModule,
     FormsModule,
     MaterialModule,
-   
-
+    MatSelectModule,
 
   ],
-  providers: [DatePipe,CurrencyPipe],
+  providers: [DatePipe, CurrencyPipe],
+  //  { provide: LOCALE_ID, useValue: 'it-IT' }
   bootstrap: [AppComponent],
 })
 export class AppModule {

@@ -1,40 +1,527 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <div class="container-fluid">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-    <div class="calendar">
-      <table>
-        <!-- Intestazione con nome mese e pulsanti di navigazione -->
-        <thead>
-          <tr>
-            <th colspan="7">
-              <button (click)="prevMonth()" [disabled]="isPrevButtonDisabled()" >« Precedente</button>
-              {{ months[currentMonthIndex] }} {{ currentDate.getFullYear() }}
-              <button (click)="nextMonth()" [disabled]="isNextButtonDisabled()">Successivo »</button>
-            </th>
-          </tr>
-          <tr>
-            <th *ngFor="let day of weekDays">{{ day }}</th>
-          </tr>
-        </thead>
-        <!-- Corpo del calendario con giorni -->
-        <tbody>
-          <tr *ngFor="let week of calendar">
-            <td *ngFor="let day of week"  (click)="openDayComponent(day.date)"  [ngClass]="{ 'current-day': isCurrentDay(day) }">
-              {{ day.day }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <body [ngClass]="{'dark-mode': toggleMode}">
+    <div id="inizioPagina" ></div>
+
+    <div
+      class="container-toolbar"
+      [hidden]="tokenProvvisorio != null && tokenProvvisorio == null"
+    >
+      <mat-toolbar id="toolbar" *ngIf="jsonData && jsonData.list">
+        <a [routerLink]="['/home']" class="logo-link">
+          <img
+            class="logo-image"
+            width="40"
+            height="40"
+            src="../../../../assets/images/logo.jpeg"
+            alt="Logo"
+          />
+        </a>
+        <div class="toolbar-menu">
+          <a
+            (click)="getPermissions(menuItem.id)"
+            style="color: white"
+            class="toolbar-link" *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+            {{ menuItem.nome }}
+          </a>
+        </div>
+        <span>
+          <div class="form-check form-switch" matTooltip="{{toggleMode ? 'Light mode' : 'Dark Mode'}} ">
+            <input class="form-check-input"  [checked]="toggleMode" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault"  matTooltip="{{toggleMode ? 'Light mode' : 'Dark Mode'}} " > </label>
+          </div>
+        </span>
+        <span
+          style="cursor: pointer"
+          mat-icon-button
+          [routerLink]="['/profile-box']"
+          class="user-icon"
+        >
+          <small *ngIf="userRoleNav === false"
+            >{{ userLoggedName }} {{ userLoggedSurname }} (Admin) &nbsp;</small
+          >
+          <small *ngIf="userRoleNav === true"
+            >{{ userLoggedName }} {{ userLoggedSurname }} (Dipendente)
+            &nbsp;</small
+          >
+          <i class="fa fa-user"></i>
+        </span>
+        &nbsp;&nbsp;
+        <span
+          style="cursor: pointer"
+          mat-icon-button
+          (click)="logout()"
+          class="logout-icon"
+        >
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </span>
+      </mat-toolbar>
     </div>
+    <div class="container-fluid " *ngIf="!dettaglioSbagliato" [ngClass]="{'dark-mode': toggleMode}">
+      <!-- <div class="fixed-button-container" *ngIf="esitoCorretto" > -->
+        <!-- <button mat-flat-button color="primary" (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-up fa-beat"></i></button> -->
+        <!-- <button mat-flat-button color="primary" (click)="goDown()" matTooltip="Vai a fine pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-down fa-beat"></i></button> -->
+      <!-- </div> -->
 
+      <div class="row">
+        <div class="col-12">
+          <br>
+          <mat-card style="text-align: center;">
+            <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+            <h1 style="text-align: center">
+              Rapportino {{ user?.anagrafica?.nome |titlecase }}
+              {{ user?.anagrafica?.cognome |titlecase }}
+            </h1>
+          </mat-card>
+        </div>
+      </div>
+      <br>
+<!--
+      <br />
+      <div class="row">
+        <div class="col-12">
+          <mat-card>
+            <mat-card-content>
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <td style="background-color: #ffff99; color: black">
+                      <strong>Nome azienda:</strong>
+                    </td>
+                    <td style="background-color: #007bff; color: white">
+                      {{ aziendaUser }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="background-color: #ffff99; color: black">
+                      <strong>Numero commesse:</strong>
+                    </td>
+                    <td style="background-color: #007bff; color: white">
+                      {{ numeroCommessePresenti }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="background-color: #ffff99; color: black">
+                      <strong>Contratto</strong>
+                    </td>
+                    <td style="background-color: #007bff; color: white">
+                      {{contrattoUser}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <br /> -->
+     <div class="row">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-content>
+            <form>
+              <div class="row">
+                <div class="col-2">
+                  <div class="form-group">
+                    <legend for="meseSelect">Seleziona il mese</legend>
+                    <select
+                      (change)="onMeseSelectChange($event)"
+                      class="form-select"
+                      aria-label="Default select example"
+                      id="meseSelect"
+                      [(ngModel)]="selectedMese"
+                      name="mese"
+                    >
+                      <option selected>Nessuna selezione</option>
+                      <option
+                        *ngFor="let month of mesi; let i = index"
+                        [value]="i + 1"
+                      >
+                        {{ i + 1 }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div class="form-group">
+                    <legend for="annoSelect">Seleziona l'anno</legend>
+                    <select
+                      (change)="onAnnoSelectChange($event)"
+                      class="form-select"
+                      aria-label="Default select example"
+                      id="annoSelect"
+                      [(ngModel)]="selectedAnno"
+                      name="anno">
+                      <option selected>---Nessuna selezione---</option>
+                      <option *ngFor="let year of anni" [value]="year">
+                        {{ year }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <legend for="getRapportino">Azioni</legend><br />
+                  <button
+                    class="btn btn-primary"
+                    (click)="getRapportino()"
+                    [disabled]="selectedMese == null || selectedAnno == null"
+                  >
+                    Carica rapportino
+                    <i class="fa fa-print" aria-hidden="true"></i></button
+                  >
+                  <!--
+                    &nbsp;
+                  <button class="btn btn-danger" (click)="eliminaRapportino()">
+                    Nascondi rapportino <i class="fa fa-trash" aria-hidden="true"></i>
+                  </button>
+                  -->
+                </div>
+              </div>
+              <br />
+            </form>
+          </mat-card-content>
 
-  </div>
-</body>
+        </mat-card>
+      </div>
+     </div>
+      <br>
+
+       <div class="row" *ngIf="esitoCorretto">
+        <!-- <p style="text-align: center;" >
+          Rapportino relativo a {{nomeMeseDaNumero(selectedMese)}} - {{selectedAnno}} caricato correttamente.
+        </p> -->
+        <div class="rapportino-inviato" *ngIf="risultatoCheckFreeze">
+          <p style="text-align: center;"  >Il rapportino é giá stato inviato.</p>
+          <p style="text-align: center;" >Non puoi piú modificarlo a meno che l'admin non te lo rimandi indietro.</p>
+        </div>
+      <div class="row">
+        <div class="col-12" style="text-align: center;" >
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Nominativo</th>
+                <th>Azienda</th>
+                <th>Numero commesse</th>
+                <th>Contratto</th>
+                <th>Periodo di riferimento</th>
+                <th>Giorni utili di lavoro</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ userLoggedName |titlecase }} {{ userLoggedSurname |titlecase }}</td>
+                <td> {{ aziendaUser }}</td>
+                <td>{{numeroCommessePresenti}}</td>
+                <td> {{contrattoUser}}</td>
+                <td>{{ selectedMese }} - {{ selectedAnno }}</td>
+                <td>{{giorniUtili}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+     <div class="row">
+      <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="text-align: center;" >
+        <mat-card [ngClass]="getBackgroundClasses(giorno)">  <!--[ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' : (giorno.festivitaNazionale ? 'red' : 'rgb(214, 234, 251)')}"-->
+          <p style=" margin: 0;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }} <i  class="fa fa-calendar" matTooltip="Imposta {{giorno.nomeGiorno |titlecase }} {{giorno.numeroGiorno}} {{selectedMese}} come festivo. "></i></p>
+       <div class="container-card" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
+          <div class="row">
+            <div class="col-8">
+              <div class="form-group">
+                <label for="cliente-{{ i }}{{j}}">Cliente</label>
+                <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}"
+                class="form-select" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}"
+                [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)" matTooltip="{{duplicazione.cliente}}">
+                  <option selected [ngValue]="null">--Nessuna opzione---</option>
+                  <option>Attesa lavori</option>
+                  <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
+                </select>
+                <div *ngIf="!duplicazione.cliente && duplicazione.giorno" class="error-message">Campo obbligatorio</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="ore-ordinarie-{{ i }}{{j}}" matTooltipPosition="above"
+                 matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Ore</label>
+                <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+                type="text"  class="form-control form-control-sm"
+                step="0.5" min="0" max="8"
+                id="ore-ordinarie-{{ i }}{{j}}" name="ore-ordinarie-{{ i }}{{j}}"
+                [(ngModel)]="duplicazione.oreOrdinarie">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2"></div>
+            <div class="col-2">
+              <button style="width: 30px; height: 30px;"  mat-mini-fab color="primary" (click)=" mostraNascondiStraordinari(i,j)" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Extra time" > <i class="fa fa-clock" ></i> </button>
+            </div>
+            <div class="col-2">
+              <button style="width: 30px; height: 30px;" [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie || aziendeClienti.length<1 " mat-mini-fab id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga"><i  class="fa fa-clone"></i></button>
+            </div>
+            <div class="col-2">
+              <button style="width: 30px; height: 30px;" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" mat-mini-fab color="warn" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga" ><i  class="fa fa-trash"></i></button>
+            </div>
+            <div class="col-2"></div>
+          </div>
+
+          <!--straordinari-->
+           <div class="row" *ngIf="checkstraordinari || showStraordinari[i]?.[j]"  >
+            <div class="col-4" >
+             <div class="form-group">
+              <label for="fascia1-{{ i }}{{j}}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">18-20</label>
+              <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+              type="text" class="form-control form-control-sm"
+              step="0.5" min="0" max="2"
+              id="fascia1-{{ i }}{{j}}" name="fascia1-{{ i }}{{j}}"
+              [(ngModel)]="duplicazione.fascia1">
+             </div>
+            </div>
+            <div class="col-4" >
+             <div class="form-group">
+              <label for="fascia2-{{ i }}{{j}}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">20-22</label>
+              <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+              type="text" class="form-control form-control-sm"
+              step="0.5" min="0" max="2"
+              id="fascia2-{{ i }}" name="fascia2-{{ i }}{{j}}"
+              [(ngModel)]="duplicazione.fascia2">
+             </div>
+            </div>
+            <div class="col-4" >
+              <div class="form-group">
+                <label for="fascia3-{{ i }}{{j}}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">22-09</label>
+                <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+                type="text" class="form-control form-control-sm"
+                step="0.5" min="0" max="13"
+                id="fascia3-{{ i }}{{j}}" name="fascia3-{{ i }}{{j}}"
+                [(ngModel)]="duplicazione.fascia3">
+              </div>
+            </div>
+           </div>
+       </div>
+       <!--PERMESSI-->
+       <!-- <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] " >
+        <div class="col-12">
+          <div class="form-group">
+            <label for="assenze-{{i}}">Assenze</label>
+            <select name="assenze-{{i}}" id="assenze-{{i}}" class="form-select form-select-sm"
+            [(ngModel)]="opzionePermessoSelezionata" (change)="changeOptionAssenza($event, i)" >
+              <option selected [ngValue]="null"></option>
+              <option>Permessi</option>
+              <option>Permessi role</option>
+              <option>Permessi ex festivitá</option>
+            </select>
+          </div>
+        </div>
+       </div> -->
+
+        <div class="row">
+           <div class="col-4">
+            <div class="form-group">
+              <label for="onSite-{{i}}">On site</label><br>
+                <input (change)="onChangePresenza($event)" [(ngModel)]="giorno.checkOnSite"
+                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkSmartworking"
+                class="form-check-input" type="checkbox" id="onSite-{{i}}">
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <label for="smartworking-{{i}}">Smartworking</label><br>
+                <input (change)="onChangeSmartworking($event)" [(ngModel)]="giorno.checkSmartWorking"
+                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite"
+                class="form-check-input" type="checkbox" id="smartworking-{{i}}">
+            </div>
+          </div>
+           <div class="col-4">
+            <div class="form-group">
+              <label for="assenze">Assenza</label>
+            <button style="width: 30px; height: 30px;" (click)="mostraNascondiPermessi(i)" mat-mini-fab color="primary"
+            [disabled]="risultatoCheckFreeze" matTooltip="Assenze" > <i class="fa fa-ban" ></i> </button>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] " style="border-top: 1px solid #f1f1f1;">
+          <div class="col-4" >
+           <div class="form-group">
+            <label for="permessi-{{ i }}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Permessi</label>
+            <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+            type="text" class="form-control form-control-sm"
+            step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
+            id="permessi-{{ i }}" name="permessi-{{ i }}"
+            [(ngModel)]="giorno.permessi">
+           </div>
+          </div>
+          <div class="col-4" >
+           <div class="form-group">
+            <label for="permessiRole-{{ i }}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Role</label>
+            <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+            type="text" class="form-control form-control-sm"
+            step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
+            id="permessiRole-{{ i }}" name="permessiRole-{{ i }}"
+            [(ngModel)]="giorno.permessiRole">
+           </div>
+          </div>
+          <div class="col-4" >
+           <div class="form-group">
+            <label for="permessiExfestivita-{{ i }}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Festivitá</label>
+            <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+            type="text" class="form-control form-control-sm"
+            step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
+            id="permessiExfestivita-{{ i }}" name="permessiExfestivita-{{ i }}"
+            [(ngModel)]="giorno.permessiExfestivita">
+           </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+             <label for="ferie-{{ i }}">Ferie</label> <br>
+             <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.malattie || giorno.checkOnSite || giorno.checkSmartWorking "
+             type="checkbox" (change)="onChangeFerie($event,i)" class="form-check-input"
+             id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
+            </div>
+           </div>
+           <div class="col-4">
+           <div class="form-group">
+             <label for="malattie-{{i}}">Malattia</label><br>
+             <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.ferie || giorno.checkOnSite || giorno.checkSmartWorking "
+             type="checkbox" (change)="onChangeMalattia($event,i)" class="form-check-input"
+             id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
+           </div>
+           </div>
+        </div>
+        <div class="row">
+          <div class="col-5">
+          <div class="form-group">
+            <label for="note-{{ i }}">Note</label>
+            <input [disabled]="risultatoCheckFreeze  || giorno.ferie" [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control form-control-sm" matTooltip="{{giorno.note}}" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
+          </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label for="salvaRiga">Salva</label>
+          <button [disabled]="risultatoCheckFreeze" mat-mini-fab color="primary"  (click)="salvaRigaRapportino(giorno)" matTooltip="Salva riga" ><i class="fa fa-save"></i> </button>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label for="salvaRiga">Annulla</label>
+          <button [disabled]="risultatoCheckFreeze" mat-mini-fab color="warn"  (click)="annulla()" matTooltip="Annulla" ><i class="fa fa-undo"></i> </button>
+            </div>
+          </div>
+
+        </div>
+      </mat-card>
+       <br>
+      </div>
+     </div>
+
+     <!--NON CANC£LLARE QUESTO CODICE-->
+
+       <!-- <mat-card-footer>
+          <div class="row">
+            <div class="col-6">
+              <button style="float: right;" [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie || aziendeClienti.length<1 " class="btn btn-warning btn-sm" id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga" ><i  class="fa fa-clone"></i></button> <br>
+            </div>
+            <div class="col-6">
+              <button [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"  class="btn btn-danger btn-sm" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"  ><i  class="fa fa-trash"></i></button>
+            </div>
+          </div>
+        </mat-card-footer> -->
+
+          <!-- oninput="this.value = Math.abs(this.value)" [ngClass]="{'has-error': !isValidOreOrdinarie(duplicazione.oreOrdinarie)}" -->
+                  <!-- <div *ngIf="!duplicazione.oreOrdinarie" class="error-message">Campo obbligatorio</div> -->
+                  <!-- <div *ngIf="!isValidOreOrdinarie(duplicazione.oreOrdinarie)" class="error-message">Valore non valido.</div> -->
+          <!-- <div class="col-2">
+            <div class="form-group">
+              <label for="svuotaCella">Cancella</label>
+              <button mat-mini-fab color="warn" matTooltip="Svuota riga" (click)="cancellaRigaRapportino(giorno)" ><i class="fa fa-undo" ></i></button>
+            </div>
+          </div> -->
+
+              <!--NON CANC£LLARE QUESTO CODICE-->
+
+      <div class="row">
+        <div class="col-12">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Tot giorni ferie</th>
+                <th>Tot ore permesso</th>
+                <th>Tot giorni malattia</th>
+                <th>Tot ore lavorate</th>
+                <th>Tot ore straordinari</th>
+                <th>Tot giorni lavorati</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{totaleFerie}}</td>
+                <td>{{totaleOrePermessi}}</td>
+                <td>{{totaleMalattia}}</td>
+              <td > {{totaleOreLavorate}}</td>
+              <td>{{totaleStraordinari}}</td>
+              <td >{{giorniLavorati}} / {{giorniUtili}} </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+       </div>
+       <div class="row">
+        <div class="col-3">
+          <button [disabled]="risultatoCheckFreeze || !giorno" class="btn btn-primary" (click)="salvaRapportino(giorno)" > Salva rapportino <i class="fa fa-save"></i> </button>
+        </div>
+        <div class="col-3">
+          <button class="btn btn-warning" [disabled]="risultatoCheckFreeze" (click)="inviaRapportino()" >Invia rapportino <i class="fa fa-file" ></i></button>
+        </div>
+        <div class="col-3">
+          <button class="btn btn-info" [disabled]="risultatoCheckFreeze" (click)="aggiungiNoteDipendente()" >Invia nota all'admin <i class="fa fa-info"></i></button>
+        </div>
+       </div>
+       <br> <br>
+       <div class="row" *ngIf="inviaNoteAlDipendente" >
+        <div class="col-8">
+          <textarea [disabled]="risultatoCheckFreeze" name="noteDipendente" id="noteDipendente" class="form-control" cols="30" rows="10" [(ngModel)]="noteDipendente" placeholder="Inserisci una nota da inviare all'admin." ></textarea>
+        </div>
+        <div class="col-2">
+          <button mat-flat-button color="primary" (click)="salvaNoteDipendente()" >Invia nota <i class="fa fa-info"></i> </button>
+        </div>
+       </div>
+     </div>
+     <br>
+     <div id="finePagina"></div>
+      <br /><br /><br />
+    </div>
+    <div class="container-fluid" *ngIf="dettaglioSbagliato">
+      <div class="not-found-container">
+        <h2>404 - Pagina non trovata</h2>
+        <p>Siamo spiacenti, ma la pagina che stai cercando non esiste.</p>
+        <p>
+          Torna alla
+          <a
+            style="text-decoration: none; color: #007bff; font-weight: bold"
+            routerLink="/home"
+            >pagina principale</a
+          >.
+        </p>
+      </div>
+    </div>
+    <div class="container-fluid" *ngIf="userRoleNav === 'DIPENDENTE'">
+      <div class="row">
+        <div class="col-12">
+          <img src="../../../../assets/images/danger.png" alt="Logo Sincrono" />
+          <h1>Attenzione:</h1>
+          <br />
+          <h3>Non hai i permessi per accedere a questa pagina.</h3>
+          <br />
+          <a href="/home">Torna alla home.</a>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

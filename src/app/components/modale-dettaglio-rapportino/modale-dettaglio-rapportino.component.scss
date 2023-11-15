@@ -1,0 +1,347 @@
+img {
+  max-height: 50%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: aliceblue;
+}
+
+.container-fluid {
+  background-color: aliceblue;
+}
+
+label{
+  font-size: 15px;
+}
+
+.not-found-container {
+  text-align: center;
+  padding: 50px;
+}
+
+h2 {
+  font-size: 3rem;
+  color: #f00;
+}
+
+
+table.th,
+td {
+  text-align: center;
+  text-decoration: none;
+}
+
+p {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+}
+
+
+.table-excel {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-excel th {
+  background-color: #007bff;
+  color: #ffffff;
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: center;
+}
+
+
+.table-excel td {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+}
+
+.table-excel tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table-excel td[contenteditable="true"] {
+  background-color: #ffff99;
+  cursor: pointer;
+}
+
+.table-excel td[contenteditable="true"]:hover {
+  background-color: #ffffcc;
+}
+
+.table-excel td[contenteditable="false"] {
+  background-color: #ffff99;
+  cursor: pointer;
+}
+
+.table-excel td[contenteditable="false"]:hover {
+  background-color: #ffffcc;
+}
+
+
+#duplica-riga:hover {
+  background-color: #ffffcc;
+
+}
+
+form {
+  padding: 5%;
+}
+/* Applica uno sfondo grigio chiaro alle righe del form */
+.container-form {
+  background-color: aliceblue;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.container-form:hover {
+  background-color: lightblue;
+  transform: translateY(-4px);
+}
+.matrice {
+  display: flex; /* Utilizziamo flexbox per allineare gli elementi in una riga */
+}
+
+
+/* Stile per le etichette dei campi */
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Stile per gli input e le caselle di controllo */
+.form-control {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+/* Stile per il pulsante "Salva" */
+button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.has-error {
+  border: 1px solid red;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+}
+
+.form-group{
+  text-align: center;
+}
+
+/* Responsive */
+
+
+/* For mobile phones: */
+
+[class*="col-"] {
+  width: 100%;
+}
+
+@media only screen and (min-width: 600px) {
+
+  /* For tablets: */
+  .col-s-1 {
+    width: 8.33%;
+  }
+
+  .col-s-2 {
+    width: 16.66%;
+  }
+
+  .col-s-3 {
+    width: 25%;
+  }
+
+  .col-s-4 {
+    width: 33.33%;
+  }
+
+  .col-s-5 {
+    width: 41.66%;
+  }
+
+  .col-s-6 {
+    width: 50%;
+  }
+
+  .col-s-7 {
+    width: 58.33%;
+  }
+
+  .col-s-8 {
+    width: 66.66%;
+  }
+
+  .col-s-9 {
+    width: 75%;
+  }
+
+  .col-s-10 {
+    width: 83.33%;
+  }
+
+  .col-s-11 {
+    width: 91.66%;
+  }
+
+  .col-s-12 {
+    width: 100%;
+  }
+}
+
+
+
+@media only screen and (min-width: 768px) {
+
+  /* For desktop: */
+  .col-1 {
+    width: 8.33%;
+  }
+
+  .col-2 {
+    width: 16.66%;
+  }
+
+  .col-3 {
+    width: 25%;
+  }
+
+  .col-4 {
+    width: 33.33%;
+  }
+
+  .col-5 {
+    width: 41.66%;
+  }
+
+  .col-6 {
+    width: 50%;
+  }
+
+  .col-7 {
+    width: 58.33%;
+  }
+
+  .col-8 {
+    width: 66.66%;
+  }
+
+  .col-9 {
+    width: 75%;
+  }
+
+  .col-10 {
+    width: 83.33%;
+  }
+
+  .col-11 {
+    width: 91.66%;
+  }
+
+  .col-12 {
+    width: 100%;
+  }
+}
+
+//navbar
+
+
+
+#toolbar {
+  background-color: #007bff;
+  /* Colore blu aziendale */
+  color: #ffffff;
+  /* Testo bianco */
+  display: flex;
+  background-color: #333;
+  justify-content: space-between;
+  /* Allinea gli elementi a sinistra e a destra */
+  align-items: center;
+  /* Allinea verticalmente gli elementi al centro */
+}
+
+.logo-link {
+  margin-right: 10px;
+}
+
+.toolbar-menu {
+  display: flex;
+  gap: 10px;
+  background-color: #333;
+  margin-right: auto;
+}
+
+.toolbar-link {
+  text-decoration: none;
+  color: #ffffff;
+  /* padding: 10px; */
+}
+
+a {
+  color: white;
+  font-weight: 500;
+}
+
+.toolbar-link:hover {
+  color: #d8d8d8;
+}
+
+.user-icon,
+.logout-icon {
+  color: #ffffff;
+  cursor: pointer;
+}
+
+/* Stile per la lista dei suggerimenti */
+.suggestion-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+table,th,td{
+  text-align: center;
+}

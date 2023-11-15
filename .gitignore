@@ -45,3 +45,4 @@ src/app/components/anagrafica/nuova-anagrafica/nuova-anagrafica.component.ts
 tsconfig.json
 package.json
 package-lock.json
+src/app/components/dashboard/lista-dashboard/lista-dashboard.component.ts

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12" style="float: right;">
+       <button mat-flat-button style="float: right; cursor: pointer;" (click)="closeModal()"  >  <i  class="fa fa-close" ></i> </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <br>
+        <mat-card style="text-align: center;">
+          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+          <h5>Mail di sollecitazione invio rapportino</h5>
+        </mat-card>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-content>
+            <form (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="toRapportini" *ngIf="toRapportini.length===1" >Destinatario</label>
+                    <label for="toRapportini" *ngIf="toRapportini.length>1">Destinatari</label>
+                    <input disabled type="text" id="toRapportini" name="toRapportini" [(ngModel)]="toRapportini" class="form-control">
+                    <small class="form-text text-muted">Per inviare la mail ad altri utenti, selezionali dalla lista.</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="subject">Oggetto</label>
+                    <input type="text" id="subject" name="subject" [(ngModel)]="subject" class="form-control">
+                  </div>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="body">Testo</label>
+                    <textarea id="body" name="body" [(ngModel)]="body" class="form-control"></textarea>
+                  </div>
+                </div>
+              </div>
+              <br>
+             <div class="row">
+              <div class="col-12" style="text-align: center;">
+                <button type="submit" class="btn btn-primary">Invia</button> &nbsp;
+                <button type="submit" class="btn btn-warning" (click)="reset()" >Reset</button>
+              </div>
+             </div>
+            </form>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

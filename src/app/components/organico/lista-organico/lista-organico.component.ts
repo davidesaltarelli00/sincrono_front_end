@@ -4,27 +4,59 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../login/login-service';
 import { Chart } from 'chart.js/auto';
 import * as XLSX from 'xlsx';
-
+import { ProfileBoxService } from '../../profile-box/profile-box.service';
+import { MatDialog } from '@angular/material/dialog';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
+import { AnagraficaDtoService } from '../../anagraficaDto/anagraficaDto-service';
+import { ImageService } from './../../image.service';
+import { MenuService } from './../../menu.service';
 @Component({
   selector: 'app-lista-organico',
   templateUrl: './lista-organico.component.html',
   styleUrls: ['./lista-organico.component.scss'],
 })
 export class ListaOrganicoComponent implements OnInit {
+  ruolo: any;
   lista: any;
-  token: any;
   labelsX: string[] = [];
-
+  currentPage: number = 1;
+  itemsPerPage: number = 20;
+  pageData: any[] = [];
   submitted = false;
   errore = false;
   messaggio: any;
   userlogged: any;
   role: any;
+  mobile: any = false;
+  //nav
+  userLoggedName: any;
+  userLoggedSurname: any;
+  shouldReloadPage: any;
+  idFunzione: any;
+  jsonData: any;
+  token = localStorage.getItem('token');
+  userRoleNav: any;
+  idNav: any;
+  tokenProvvisorio: any;
+  filteredLista: any[] = [];
+  immagine: any;
+  immagineConvertita: string | null = null;
+  immaginePredefinita: string | null = null;
+  codiceFiscaleDettaglio: any;
+  originalLista: any;
+  idUtente: any;
 
   constructor(
     private organicoService: OrganicoService,
     private router: Router,
-    private authService: AuthService
+    private profileBoxService: ProfileBoxService,
+    private dialog: MatDialog,
+    private http: HttpClient,
+    private authService: AuthService,
+    private anagraficaDtoService: AnagraficaDtoService,
+    private imageService: ImageService,
+    private menuService: MenuService
   ) {
     this.userlogged = localStorage.getItem('userLogged');
 
@@ -32,10 +64,19 @@ export class ListaOrganicoComponent implements OnInit {
     if (userLogged) {
       this.userlogged = userLogged;
     }
-  }
-
-  logout() {
-    // this.authService.logout();
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
   }
 
   profile() {
@@ -43,59 +84,88 @@ export class ListaOrganicoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.organicoService.listaOrganico(localStorage.getItem('token')).subscribe((resp: any) => {
-      const jsonResp = JSON.stringify(resp);
-      console.log(jsonResp);
-      this.lista = resp.list;
-      this.createBarChart();
-
-    },
+    if (this.token != null) {
+      this.getUserLogged();
+      this.getUserRole();
+    }
+    this.organicoService.listaOrganico(localStorage.getItem('token')).subscribe(
+      (resp: any) => {
+        const jsonResp = JSON.stringify(resp);
+        console.log(jsonResp);
+        this.lista = resp.list;
+        this.createBarChart();
+      },
       (error: string) => {
-        console.log("errore durante il caricamento dei dati dell'organico:" + error)
+        console.log(
+          "errore durante il caricamento dei dati dell'organico:" + error
+        );
       }
     );
-
   }
 
-  filter(tipoContratto: any, tipoAzienda: any) {
-    this.router.navigate(['/lista-anagrafica', { tipoContratto, tipoAzienda }]);
+  filter(tipoContratto: any, azienda: any) {
+    this.router.navigate(['/risultati-filter-organico'], {
+      queryParams: { tipoContratto, azienda },
+    });
   }
 
   calculateSliceRotation(element: any): number {
-    const total = element.numeroDipendenti + element.indeterminati + element.determinati +
-      element.apprendistato + element.consulenza + element.stage +
-      element.partitaIva + element.potenzialeStage + element.slotStage +
-      element.potenzialeApprendistato + element.slotApprendistato;
+    const total =
+      element.numeroDipendenti +
+      element.indeterminati +
+      element.determinati +
+      element.apprendistato +
+      element.consulenza +
+      element.stage +
+      element.partitaIva +
+      element.potenzialeStage +
+      element.slotStage +
+      element.potenzialeApprendistato +
+      element.slotApprendistato;
 
     const percentage = (element.numeroDipendenti / total) * 360;
     return percentage;
   }
 
   calculatePercentage(element: any): number {
-    const total = element.numeroDipendenti + element.indeterminati + element.determinati +
-      element.apprendistato + element.consulenza + element.stage +
-      element.partitaIva + element.potenzialeStage + element.slotStage +
-      element.potenzialeApprendistato + element.slotApprendistato;
+    const total =
+      element.numeroDipendenti +
+      element.indeterminati +
+      element.determinati +
+      element.apprendistato +
+      element.consulenza +
+      element.stage +
+      element.partitaIva +
+      element.potenzialeStage +
+      element.slotStage +
+      element.potenzialeApprendistato +
+      element.slotApprendistato;
 
     const percentage = (element.numeroDipendenti / total) * 100;
     return Math.round(percentage);
   }
 
-
-
   createBarChart() {
     const labels = this.lista.map((item: any) => item.azienda);
-    const dataNumeroDipendenti = this.lista.map((item: any) => item.numeroDipendenti);
+    const dataNumeroDipendenti = this.lista.map(
+      (item: any) => item.numeroDipendenti
+    );
     const dataIndeterminati = this.lista.map((item: any) => item.indeterminati);
     const dataDeterminati = this.lista.map((item: any) => item.determinati);
     const dataApprendistato = this.lista.map((item: any) => item.apprendistato);
     const dataConsulenza = this.lista.map((item: any) => item.consulenza);
     const dataStage = this.lista.map((item: any) => item.stage);
     const dataPartitaIva = this.lista.map((item: any) => item.partitaIva);
-    const dataPotenzialeStage = this.lista.map((item: any) => item.potenzialeStage);
+    const dataPotenzialeStage = this.lista.map(
+      (item: any) => item.potenzialeStage
+    );
     const dataSlotStage = this.lista.map((item: any) => item.slotStage);
-    const dataPotenzialeApprendistato = this.lista.map((item: any) => item.potenzialeApprendistato);
-    const dataSlotApprendistato = this.lista.map((item: any) => item.slotApprendistato);
+    const dataPotenzialeApprendistato = this.lista.map(
+      (item: any) => item.potenzialeApprendistato
+    );
+    const dataSlotApprendistato = this.lista.map(
+      (item: any) => item.slotApprendistato
+    );
 
     const ctx = document.getElementById('barChart') as HTMLCanvasElement;
     const myChart = new Chart(ctx, {
@@ -180,7 +250,6 @@ export class ListaOrganicoComponent implements OnInit {
             backgroundColor: '#B1983E',
             borderColor: '#B1983E',
             borderWidth: 1,
-
           },
         ],
       },
@@ -198,41 +267,60 @@ export class ListaOrganicoComponent implements OnInit {
           },
         },
 
-
         onClick: (event, elements) => {
           if (elements.length > 0) {
             const clickedIndex = elements[0].index;
             const clickedLabel = labels[clickedIndex];
-            const tipoContratto = myChart.data.datasets[elements[0].datasetIndex].label;
+            const tipoContratto =
+              myChart.data.datasets[elements[0].datasetIndex].label;
 
             // Verifica se il tipo di contratto è uno di quelli desiderati
-            if (tipoContratto === 'Numero Dipendenti' || tipoContratto === 'Contratti Indeterminati' || tipoContratto === 'Contratti determinati') {
+            if (
+              tipoContratto === 'Numero Dipendenti' ||
+              tipoContratto === 'Contratti Indeterminati' ||
+              tipoContratto === 'Contratti determinati'
+            ) {
               // Modifica il tipo di contratto in "Determinato" se necessario
-              const tipoContrattoCorretto1 = tipoContratto === 'Contratti determinati' ? 'Determinato' : tipoContratto;
-              const tipoContrattoCorretto2 = tipoContratto === 'Contratti Indeterminati' ? 'Indeterminato' : tipoContratto;
+              const tipoContrattoCorretto1 =
+                tipoContratto === 'Contratti determinati'
+                  ? 'Determinato'
+                  : tipoContratto;
+              const tipoContrattoCorretto2 =
+                tipoContratto === 'Contratti Indeterminati'
+                  ? 'Indeterminato'
+                  : tipoContratto;
               if (tipoContrattoCorretto1) {
                 this.filter(tipoContrattoCorretto1, clickedLabel);
-              } if (tipoContrattoCorretto2) {
+              }
+              if (tipoContrattoCorretto2) {
                 this.filter(tipoContrattoCorretto2, clickedLabel);
               }
             }
           }
         },
-
-
       },
     });
-
-
   }
-
 
   exportOrganicoToExcel() {
     const workBook = XLSX.utils.book_new();
 
     const workSheetData = [
       // Intestazioni delle colonne
-      ["Azienda", "Numero dipendenti", "Indeterminati", "Determinati", "Apprendistato", "Consulenza", "Stage", "Partita iva", "Potenziale stage", "Slot stage", "Potenziale apprendistato", "Slot apprendistato"]
+      [
+        'Azienda',
+        'Numero dipendenti',
+        'Indeterminati',
+        'Determinati',
+        'Apprendistato',
+        'Consulenza',
+        'Stage',
+        'Partita iva',
+        'Potenziale stage',
+        'Slot stage',
+        'Potenziale apprendistato',
+        'Slot apprendistato',
+      ],
     ];
     this.lista.forEach((item: any) => {
       workSheetData.push([
@@ -246,7 +334,9 @@ export class ListaOrganicoComponent implements OnInit {
         item.partitaIva ? item.partitaIva.toString() : 'Non inserito',
         item.potenzialeStage ? item.potenzialeStage.toString() : '0',
         item.slotStage ? item.slotStage.toString() : '0',
-        item.potenzialeApprendistato ? item.potenzialeApprendistato.toString() : '0',
+        item.potenzialeApprendistato
+          ? item.potenzialeApprendistato.toString()
+          : '0',
         item.slotApprendistato ? item.slotApprendistato.toString() : '0',
       ]);
     });
@@ -264,12 +354,157 @@ export class ListaOrganicoComponent implements OnInit {
         'Si è verificato un errore durante il recupero della lista dell organico: ' +
         error
       );
+    };
+  }
+
+  //paginazione
+  getCurrentPageItems(): any[] {
+    if (!this.lista) {
+      return [];
+    }
+
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.lista.slice(startIndex, endIndex);
+  }
+
+  goToPage(pageNumber: number) {
+    if (pageNumber >= 1 && pageNumber <= this.getTotalPages()) {
+      this.currentPage = pageNumber;
+      this.pageData = this.getCurrentPageItems();
     }
   }
 
+  getTotalPages(): number {
+    return Math.ceil((this.lista?.length || 0) / this.itemsPerPage);
+  }
 
+  getPaginationArray(): number[] {
+    const totalPages = this.getTotalPages();
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  logout() {
+    this.dialog.open(AlertLogoutComponent);
+  }
+
+  getUserLogged() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        localStorage.getItem('token');
+        this.userLoggedName = response.anagraficaDto.anagrafica.nome;
+        this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.ruolo = response.anagraficaDto.ruolo.nome;
+        this.codiceFiscaleDettaglio =
+          response.anagraficaDto.anagrafica.codiceFiscale;
+        this.getImage();
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato il seguente errore durante il recupero dei dati : ' +
+          error
+        );
+      }
+    );
+  }
+
+  getUserRole() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        // console.log('ID UTENTE PER NAV:' + this.idUtente);
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
+      },
+      (error: any) => {
+        console.error(
+          'Si è verificato il seguente errore durante il recupero del ruolo: ' +
+          error
+        );
+        this.shouldReloadPage = true;
+      }
+    );
+  }
+
+
+
+  getPermissions(functionId: number) {
+    this.menuService.getPermissions(this.token, functionId).subscribe(
+      (data: any) => {
+        console.log('Permessi ottenuti:', data);
+      },
+      (error: any) => {
+        console.error('Errore nella generazione dei permessi:', error);
+      }
+    );
+  }
+
+  generateMenuByUserRole() {
+    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
+      (data: any) => {
+        this.jsonData = data;
+        this.idFunzione = data.list[0].id;
+        console.log(
+          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+        );
+        this.shouldReloadPage = false;
+      },
+      (error: any) => {
+        console.error('Errore nella generazione del menu:', error);
+        this.shouldReloadPage = true;
+        this.jsonData = { list: [] };
+      }
+    );
+  }
+  getImage() {
+    let body = {
+      codiceFiscale: this.codiceFiscaleDettaglio,
+    };
+    console.log(JSON.stringify(body));
+    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    this.imageService.getImage(this.token, body).subscribe(
+      (result: any) => {
+        this.immagine = (result as any).base64;
+        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+
+        if (this.immagine) {
+          this.convertBase64ToImage(this.immagine);
+        } else {
+          // Assegna un'immagine predefinita se l'immagine non è disponibile
+          this.immaginePredefinita =
+            '../../../../assets/images/profilePicPlaceholder.png';
+        }
+      },
+      (error: any) => {
+        console.error(
+          "Errore durante il caricamento dell'immagine: " +
+          JSON.stringify(error)
+        );
+
+        // Assegna un'immagine predefinita in caso di errore
+        this.immaginePredefinita = '../../../../assets/images/danger.png';
+      }
+    );
+  }
+
+  convertBase64ToImage(base64String: string): void {
+    this.immagineConvertita = base64String;
+  }
 }
-
 
 /*
    possibili tipi:
@@ -315,3 +550,22 @@ altri attrivuti di stile per le barre del grafico:
          maxBarThickness: 30, // Larghezza massima delle barre
 
    */
+
+interface MenuData {
+  esito: {
+    code: number;
+    target: any;
+    args: any;
+  };
+  list: {
+    id: number;
+    funzione: any;
+    menuItem: number;
+    nome: string;
+    percorso: string;
+    immagine: any;
+    ordinamento: number;
+    funzioni: any;
+    privilegio: any;
+  }[];
+}
