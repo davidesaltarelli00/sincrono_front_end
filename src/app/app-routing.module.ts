@@ -29,6 +29,7 @@ import { ListaRapportiniComponent } from './components/lista-rapportini/lista-ra
 import { ModaleDettaglioRapportinoComponent } from './components/modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
 import { ImmagineComponent } from './components/immagine/immagine.component';
 import { RichiesteComponent } from './components/richieste/richieste.component';
+import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -86,6 +87,11 @@ const routes: Routes = [
   {
     path: 'modifica-anagrafica/:id',
     component: ModificaAnagraficaDtoComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'documenti',
+    component: CaricamentoDocumentiComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
 

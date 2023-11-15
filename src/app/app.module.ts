@@ -58,6 +58,7 @@ import { ImmagineComponent } from './components/immagine/immagine.component';
 import { BottoniComponent } from './bottoni/bottoni.component';
 import { MailSollecitaComponent } from './components/mail-sollecita/mail-sollecita.component';
 import { RichiesteComponent } from './components/richieste/richieste.component';
+import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -94,7 +95,8 @@ import { RichiesteComponent } from './components/richieste/richieste.component';
     HeaderComponent,
     ImmagineComponent,
     BottoniComponent,
-    MailSollecitaComponent
+    MailSollecitaComponent,
+    CaricamentoDocumentiComponent
   ],
   imports: [
     MatIconModule,

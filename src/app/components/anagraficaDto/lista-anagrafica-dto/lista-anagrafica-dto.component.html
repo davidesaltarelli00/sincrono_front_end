@@ -437,7 +437,7 @@
     </mat-expansion-panel>
     <br>
     <div class="row">
-      <div class="col-6">
+      <div class="col-4">
         <mat-card style="height: 100%;">
           <div
             style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
@@ -450,13 +450,24 @@
         </mat-card>
       </div>
 
-      <div class="col-6">
+      <div class="col-4">
         <mat-card style="height: 100%;">
           <div
             style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
             <label>Inserisci nuova anagrafica</label>
             <button class="btn btn-success" [routerLink]="['/nuova-anagrafica']">
               <i matTooltip="Inserisci Nuova Anagrafica" class="fa fa-plus"></i>
+            </button>
+          </div>
+        </mat-card>
+      </div>
+      <div class="col-4">
+        <mat-card style="height: 100%;">
+          <div
+            style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+            <label>Documenti</label>
+            <button class="btn btn-success" [routerLink]="['/documenti']">
+              <i matTooltip="Carica documenti" class="fa fa-file"></i>
             </button>
           </div>
         </mat-card>
