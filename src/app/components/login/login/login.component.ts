@@ -64,6 +64,7 @@ export class LoginComponent implements OnInit {
         if ((response as any).esito.code !== 200) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
+              image:'../../../../assets/images/danger.png',
               title: 'Login non riuscito:',
               message: (response as any).esito.target,
             },

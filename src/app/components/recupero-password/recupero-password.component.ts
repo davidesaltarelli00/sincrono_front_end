@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RecuperoPasswordService } from './recupero-password.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-recupero-password',
@@ -16,7 +18,8 @@ export class RecuperoPasswordComponent implements OnInit {
   constructor(
     private router: Router,
     private recuperoPasswordService: RecuperoPasswordService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private dialog: MatDialog
   ) {
     this.recuperoPasswordForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -37,17 +40,36 @@ export class RecuperoPasswordComponent implements OnInit {
       console.log('Email recuperata:', email);
       this.recuperoPasswordService.recuperaPassword(this.email).subscribe(
         (response: any) => {
-          console.log(response);
-          this.mailInviata = true;
+          if ((response as any).esito.target != 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/danger.jpeg',
+                title:
+                  'Attenzione: qualcosa é andato storto.',
+                message: 'Riprova, se il problema persiste contatta l assistenza.',
+              },
+            });
+          } else{
+            console.log(response);
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/logo.jpeg',
+                title:
+                  'Ti é stata inviata una mail per il recupero della password.',
+                message: 'Controlla la tua casella di posta.',
+              },
+            });
+            this.mailInviata = true;
+          }
+
         },
         (error: any) => {
           console.log('Errore durante l invio dei dati: ' + error);
           this.mailInviata = false;
         }
       );
-    }else{
-      console.error("ERRORE_GENERICO");
+    } else {
+      console.error('ERRORE_GENERICO');
     }
-
   }
 }

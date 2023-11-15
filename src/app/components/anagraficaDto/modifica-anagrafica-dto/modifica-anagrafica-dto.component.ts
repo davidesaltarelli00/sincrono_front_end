@@ -113,7 +113,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   dati: any = [];
   statoDiNascita: any;
   provinciaDiNascita: string = '';
- 
+
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -370,6 +370,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     } else {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
+          image:'../../../../assets/images/danger.png',
           title: 'Attenzione:',
           message: 'Errore di autenticazione, effettua il login.',
         },
@@ -886,6 +887,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         } else {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
+              image:'../../../../assets/images/danger.png',
               title: 'Attenzione:',
               message: 'Livello contratto non trovato nella lista.',
             },
@@ -894,6 +896,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       } else {
         const dialogRef = this.dialog.open(AlertDialogComponent, {
           data: {
+            image:'../../../../assets/images/danger.png',
             title: 'Attenzione:',
             message: 'Valore non valido o livello contratto non selezionato.',
           },
@@ -1510,6 +1513,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       // );
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
+          image:'../../../../assets/images/danger.png',
           title: 'Attenzione:',
           message:
             'La data di fine rapporto é stata impostata a ' +
@@ -1526,6 +1530,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         );
         const dialogRef = this.dialog.open(AlertDialogComponent, {
           data: {
+            image:'../../../../assets/images/danger.png',
             title: 'Attenzione:',
             message:
               'La data di fine rapporto é stata impostata a ' +
@@ -1627,6 +1632,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             if ((response as any).esito.code !== 200) {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
+                  image:'../../../../assets/images/danger.png',
                   title: 'Eliminazione non riuscita:',
                   message: (response as any).esito.target,
                 },
@@ -1635,6 +1641,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
               this.elencoCommesse.splice(index, 1);
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
+                  image:'../../../../assets/images/logo.jpeg',
                   title: 'Commessa eliminata correttamente.',
                 },
               });
@@ -1644,8 +1651,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           (error: any) => {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
+                image:'../../../../assets/images/danger.png',
                 title: 'Qualcosa é andato storto:',
-                message: error,
+                message: JSON.stringify(error),
               },
             });
           }
@@ -1734,6 +1742,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           if ((response as any).esito.code !== 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
+                image:'../../../../assets/images/danger.png',
                 title: 'Modifica non riuscita:',
                 message: (response as any).esito.target,
               },
@@ -1742,6 +1751,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             console.log('Payload inviato con successo al server:', response);
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
+                image:'../../../../assets/images/logo.jpeg',
                 title: 'Modifica effettuata correttamente.',
               },
             });

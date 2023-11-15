@@ -124,6 +124,7 @@ export class ImmagineComponent implements OnInit {
             if ((response as any).esito.code != 200) {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
+                  image:'../../../../assets/images/danger.png',
                   title: 'Salvataggio non riuscito:',
                   message: (response as any).esito.target,
                 },
@@ -131,6 +132,7 @@ export class ImmagineComponent implements OnInit {
             } else {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
+                  image:'../../../../assets/images/logo.jpeg',
                   title: 'Immagine salvata correttamente:',
                   message: (response as any).esito.target,
                 },
@@ -150,6 +152,7 @@ export class ImmagineComponent implements OnInit {
     } else {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
+          image:'../../../../assets/images/danger.png',
           title: 'Attenzione:',
           message: 'Nessuna immagine selezionata.',
         },
@@ -188,6 +191,7 @@ export class ImmagineComponent implements OnInit {
   cancelImage() {
     const dialogRef = this.dialog.open(AlertDialogComponent, {
       data: {
+        image:'../../../../assets/images/logo.jpeg',
         title: '',
         message: 'Cambio immagine annullato.',
       },

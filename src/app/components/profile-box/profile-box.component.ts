@@ -222,6 +222,7 @@ export class ProfileBoxComponent {
             if ((response as any).esito.code != 200) {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
+                  image:'../../../../assets/images/danger.png',
                   title: 'Salvataggio non riuscito:',
                   message: (response as any).esito.target,
                 },
@@ -229,6 +230,7 @@ export class ProfileBoxComponent {
             } else {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
+                  image:'../../../../assets/images/logo.jpeg',
                   title: 'Immagine salvata correttamente:',
                   message: (response as any).esito.target,
                 },
@@ -248,6 +250,7 @@ export class ProfileBoxComponent {
     } else {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
+          image:'../../../../assets/images/danger.png',
           title: 'Attenzione:',
           message: 'Nessuna immagine selezionata.',
         },
@@ -286,6 +289,7 @@ export class ProfileBoxComponent {
   cancelImage() {
     const dialogRef = this.dialog.open(AlertDialogComponent, {
       data: {
+        image:'../../../../assets/images/danger.png',
         title: '',
         message: 'Cambio immagine annullato.',
       },
@@ -360,7 +364,13 @@ export class ProfileBoxComponent {
           console.log(
             'Commessa storicizzata correttamente: ' + JSON.stringify(res)
           );
-          alert('Commessa storicizzata correttamente.');
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image:'../../../../assets/images/logo.jpeg',
+              title: 'Immagine salvata correttamente.',
+              message: (res as any).esito.target,
+            },
+          });
           this.ngOnInit();
         },
         (error: any) => {

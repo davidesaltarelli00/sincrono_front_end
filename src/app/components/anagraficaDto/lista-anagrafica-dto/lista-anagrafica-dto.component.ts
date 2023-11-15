@@ -501,6 +501,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
                   if ((response as any).esito.code != 200) {
                     const dialogRef = this.dialog.open(AlertDialogComponent, {
                       data: {
+                        image:'../../../../assets/images/danger.png',
                         title: 'Disattivazione non riuscita:',
                         message: (response as any).esito.target,
                       },
@@ -508,6 +509,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
                   } else {
                     const dialogRef = this.dialog.open(AlertDialogComponent, {
                       data: {
+                        image:'../../../../assets/images/logo.jpeg',
                         title: 'Disattivazione riuscita correttamente:',
                         message: (response as any).esito.target,
                       },
@@ -518,6 +520,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
                 (errorDeleted: any) => {
                   const dialogRef = this.dialog.open(AlertDialogComponent, {
                     data: {
+                      image:'../../../../assets/images/danger.png',
                       title: 'Errore durante l eliminazione:',
                       message: JSON.stringify(errorDeleted),
                     },
@@ -528,6 +531,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           (error: any) => {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
+                image:'../../../../assets/images/danger.png',
                 title: 'Qualcosa é andato storto:',
                 message: JSON.stringify(error),
               },

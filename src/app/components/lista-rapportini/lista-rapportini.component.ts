@@ -744,7 +744,7 @@ export class ListaRapportiniComponent implements OnInit {
         ) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
-              Image: '../../../../assets/images/logo.jpeg',
+              image:'../../../../assets/images/danger.png',
               title: 'Salvataggio delle note non riuscito:',
               message: 'Errore di validazione.', //(result as any).esito.target,
             },
@@ -757,7 +757,7 @@ export class ListaRapportiniComponent implements OnInit {
       (error: any) => {
         const dialogRef = this.dialog.open(AlertDialogComponent, {
           data: {
-            Image: '../../../../assets/images/logo.jpeg',
+            image:'../../../../assets/images/danger.png',
             title: 'Salvataggio delle note non riuscito:',
             message: JSON.stringify(error),
           },
