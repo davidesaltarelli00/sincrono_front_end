@@ -6,7 +6,7 @@
     <title>Document</title>
   </head>
 
-  <body>
+  <body [ngClass]="{'dark-mode': toggleMode}">
     <div id="inizioPagina" ></div>
 
     <div
@@ -31,6 +31,12 @@
             {{ menuItem.nome }}
           </a>
         </div>
+        <span>
+          <div class="form-check form-switch" matTooltip="{{toggleMode ? 'Light mode' : 'Dark Mode'}} ">
+            <input class="form-check-input"  [checked]="toggleMode" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault"  matTooltip="{{toggleMode ? 'Light mode' : 'Dark Mode'}} " > </label>
+          </div>
+        </span>
         <span
           style="cursor: pointer"
           mat-icon-button
@@ -57,7 +63,7 @@
         </span>
       </mat-toolbar>
     </div>
-    <div class="container-fluid" *ngIf="!dettaglioSbagliato">
+    <div class="container-fluid " *ngIf="!dettaglioSbagliato" [ngClass]="{'dark-mode': toggleMode}">
       <!-- <div class="fixed-button-container" *ngIf="esitoCorretto" > -->
         <!-- <button mat-flat-button color="primary" (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-up fa-beat"></i></button> -->
         <!-- <button mat-flat-button color="primary" (click)="goDown()" matTooltip="Vai a fine pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-down fa-beat"></i></button> -->
@@ -223,7 +229,7 @@
 
      <div class="row">
       <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="text-align: center;" >
-        <mat-card [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' : 'rgb(214, 234, 251)'}" >
+        <mat-card [ngClass]="getBackgroundClasses(giorno)">  <!--[ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' : (giorno.festivitaNazionale ? 'red' : 'rgb(214, 234, 251)')}"-->
           <p style=" margin: 0;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }} <i class="fa fa-calendar" matTooltip="Segna come festivo."></i></p>
        <div class="container-card" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
           <div class="row">

@@ -38,6 +38,7 @@ export class HomeComponent implements OnInit {
   idUtente: any;
   mobile: any = false;
   isVoiceActionActivated = false;
+  toggleMode: boolean=false;
 
   constructor(
     private authService: AuthService,
@@ -254,4 +255,9 @@ export class HomeComponent implements OnInit {
       }
     );
   }
+
+  toggleDarkMode() {
+    this.toggleMode = !this.toggleMode;
+  }
+
 }

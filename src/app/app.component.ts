@@ -28,6 +28,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   token: string | null = null;
   userLoggedMail: any;
   userLoggedName: any;
+  toggleMode = false;
   userLoggedSurname: any;
   isRecuperoPassword: boolean = false;
   tokenProvvisorio: string | null = localStorage.getItem('tokenProvvisorio');
@@ -52,6 +53,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     private datePipe: DatePipe,
     private cdRef: ChangeDetectorRef
   ) {}
+
+
+  toggleDarkMode() {
+    this.toggleMode = !this.toggleMode;
+  }
 
   formatTime(seconds: number): string {
     const hours = Math.floor(seconds / 3600);

@@ -92,7 +92,7 @@ img{
 
 
 </style>
-<body>
+<body [ngClass]="{'dark-mode': toggleMode}">
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && !mobile">
       <a [routerLink]="['/home']" class="logo-link">
@@ -104,6 +104,12 @@ img{
           {{ menuItem.nome }}
         </a>
       </div>
+      <span>
+        <div class="form-check form-switch" matTooltip="{{toggleMode ? 'Light mode' : 'Dark Mode'}} ">
+          <input class="form-check-input"  [checked]="toggleMode" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault"  matTooltip="{{toggleMode ? 'Light mode' : 'Dark Mode'}} " > </label>
+        </div>
+      </span>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
         <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
@@ -140,7 +146,7 @@ img{
       </span>
     </mat-toolbar>
   </div>
-<div class="container-fluid">
+<div class="container-fluid" [ngClass]="{'dark-mode': toggleMode}">
   <div class="row">
     <div class="col-12">
       <mat-card style="text-align: center;">
@@ -150,7 +156,7 @@ img{
     </div>
   </div>
 <br>
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-12">
       <header>
         <div class="row">
@@ -163,7 +169,7 @@ img{
         </div>
       </header>
     </div>
-  </div>
+  </div> -->
   <br>
   <div class="row">
     <div class="col-6">
@@ -180,10 +186,10 @@ img{
       <mat-card style=" height: 100%;">
         <mat-card-content>
           <mat-list role="list" class="custom-list">
-            <mat-list-item role="listitem" [routerLink]="['/lista-anagrafica']" class="custom-list-item" (mouseover)="startVoiceActionListaAnagrafica()" (click)="openDetailsPageListaAnagrafica()">
+            <mat-list-item role="listitem" [routerLink]="['/lista-anagrafica']" class="custom-list-item"  (click)="openDetailsPageListaAnagrafica()"> <!--(mouseover)="startVoiceActionListaAnagrafica()"-->
               <a href="/lista-anagrafica">Lista anagrafica</a>
             </mat-list-item>
-            <mat-list-item role="listitem" [routerLink]="['/dashboard']" class="custom-list-item" (mouseover)="startVoiceActionDashboard()" (click)="openDetailsPageDashboard()">
+            <mat-list-item role="listitem" [routerLink]="['/dashboard']" class="custom-list-item"  (click)="openDetailsPageDashboard()"> <!--(mouseover)="startVoiceActionDashboard()"-->
               <a href="/dashboard">Dashboard</a>
             </mat-list-item>
             <mat-list-item role="listitem" [routerLink]="['/organico']" class="custom-list-item">

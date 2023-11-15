@@ -120,6 +120,7 @@ export class UtenteComponent implements OnInit {
   checkstraordinari = false;
   checkpermessi = false;
   showStraordinari: boolean[][] = [];
+  toggleMode = false;
   giorniSettimana: string[] = [
     'Lunedì',
     'Martedì',
@@ -211,7 +212,7 @@ export class UtenteComponent implements OnInit {
     } else {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
-          Image: '../../../../assets/images/logo.jpeg',
+          image: '../../../../assets/images/logo.jpeg',
           title: 'Non puoi eliminare la riga principale.',
         },
       });
@@ -229,7 +230,7 @@ export class UtenteComponent implements OnInit {
     ) {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
-          Image: '../../../../assets/images/logo.jpeg',
+          image: '../../../../assets/images/logo.jpeg',
           title:
             'Non puoi duplicare la riga perché hai solo ' +
             this.aziendeClienti.length +
@@ -321,7 +322,7 @@ export class UtenteComponent implements OnInit {
       if (this.error.status === 403) {
         const dialogRef = this.dialog.open(AlertDialogComponent, {
           data: {
-            Image: '../../../../assets/images/logo.jpeg',
+            image: '../../../../assets/images/logo.jpeg',
             title: 'Errore di autenticazione:',
             message: 'Effettua il login.',
           },
@@ -630,7 +631,7 @@ export class UtenteComponent implements OnInit {
         if ((result as any).esito.code !== 200) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
-              Image: '../../../../assets/images/logo.jpeg',
+              image: '../../../../assets/images/danger.png',
               title: 'Caricamento non riuscito:',
               message: (result as any).esito.target,
             },
@@ -660,7 +661,7 @@ export class UtenteComponent implements OnInit {
             console.log("Hai note: "+ JSON.stringify(this.note));
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                Image: '../../../../assets/images/logo.jpeg',
+                image: '../../../../assets/images/logo.jpeg',
                 title: 'Attenzione, hai delle note:',
                 message: this.note,
               },
@@ -696,7 +697,7 @@ export class UtenteComponent implements OnInit {
         note: giorno.note,
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
-        festivitàNazionale: giorno.festivitàNazionale,
+        festivitaNazionale: giorno.festivitaNazionale,
       };
     });
 
@@ -782,7 +783,7 @@ export class UtenteComponent implements OnInit {
         note: giorno.note,
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
-        festivitàNazionale: giorno.festivitàNazionale,
+        festivitaNazionale: giorno.festivitaNazionale,
       };
     });
 
@@ -901,7 +902,7 @@ export class UtenteComponent implements OnInit {
           if ((result as any).esito.code !== 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                Image: '../../../../assets/images/logo.jpeg',
+                image: '../../../../assets/images/logo.jpeg',
                 title: 'Invio non riuscito:',
                 message: (result as any).esito.target, //(result as any).esito.target,
               },
@@ -914,7 +915,7 @@ export class UtenteComponent implements OnInit {
           if ((result as any).esito.code === 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                Image: '../../../../assets/images/logo.jpeg',
+                image: '../../../../assets/images/logo.jpeg',
                 title: 'Invio riuscito',
                 message: 'Note inviate correttamente all admin',
               },
@@ -932,7 +933,7 @@ export class UtenteComponent implements OnInit {
     }else{
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
-          Image: '../../../../assets/images/logo.jpeg',
+          image: '../../../../assets/images/logo.jpeg',
           // title: 'Attenzione',
           message: "Invio delle note all'admin annullato.",
         },
@@ -1004,7 +1005,7 @@ export class UtenteComponent implements OnInit {
         ) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
-              Image: '../../../../assets/images/logo.jpeg',
+              image: '../../../../assets/images/logo.jpeg',
               title: 'Invio non riuscito:',
               message: 'Errore di validazione.', //(result as any).esito.target,
             },
@@ -1016,7 +1017,7 @@ export class UtenteComponent implements OnInit {
         if ((result as any).esito.code === 500) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
-              Image: '../../../../assets/images/logo.jpeg',
+              image: '../../../../assets/images/logo.jpeg',
               title: 'Invio non riuscito:',
               message: 'Errore del server:' + (result as any).esito.target, //(result as any).esito.target,
             },
@@ -1066,7 +1067,7 @@ export class UtenteComponent implements OnInit {
         note: giorno.note,
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
-        festivitàNazionale: giorno.festivitàNazionale,
+        festivitaNazionale: giorno.festivitaNazionale,
       };
     });
     for (const giorno of giorni) {
@@ -1117,7 +1118,7 @@ export class UtenteComponent implements OnInit {
           if ((result as any).esito.code !== 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                Image: '../../../../assets/images/logo.jpeg',
+                image: '../../../../assets/images/logo.jpeg',
                 title: 'Salvataggio non riuscito:',
                 message: (result as any).esito.target,
               },
@@ -1128,7 +1129,7 @@ export class UtenteComponent implements OnInit {
           if ((result as any).esito.target === 'ERRORE_GENERICO') {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                Image: '../../../../assets/images/logo.jpeg',
+                image: '../../../../assets/images/logo.jpeg',
                 title: 'Salvataggio non riuscito:',
                 message: 'Qualcosa é andato storto; riprova.',
               },
@@ -1190,7 +1191,7 @@ export class UtenteComponent implements OnInit {
         note: giorno.note,
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
-        festivitàNazionale: giorno.festivitàNazionale,
+        festivitaNazionale: giorno.festivitaNazionale,
       };
     });
     for (const giorno of giorni) {
@@ -1241,7 +1242,7 @@ export class UtenteComponent implements OnInit {
           if ((result as any).esito.code !== 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                Image: '../../../../assets/images/logo.jpeg',
+                image: '../../../../assets/images/danger.png',
                 title: 'Salvataggio non riuscito:',
                 message: (result as any).esito.target,
               },
@@ -1252,7 +1253,7 @@ export class UtenteComponent implements OnInit {
           if ((result as any).esito.target === 'HTTP error code: 400') {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                Image: '../../../../assets/images/logo.jpeg',
+                image: '../../../../assets/images/danger.png',
                 title: 'Hai inserito un valore non valido.',
                 message: 'Controlla e riprova.',
               },
@@ -1261,7 +1262,7 @@ export class UtenteComponent implements OnInit {
           if ((result as any).esito.target === 'ERRORE_GENERICO') {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                Image: '../../../../assets/images/logo.jpeg',
+                image: '../../../../assets/images/danger.png',
                 title: 'Attenzione:',
                 message: 'Qualcosa é andato storto, controlla e riprova.',
               },
@@ -1270,7 +1271,7 @@ export class UtenteComponent implements OnInit {
           if ((result as any).esito.code === 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                Image: '../../../../assets/images/logo.jpeg',
+                image: '../../../../assets/images/logo.jpeg',
                 title: 'Cella salvata correttamente.',
                 message: (result as any).esito.target,
               },
@@ -1418,7 +1419,7 @@ export class UtenteComponent implements OnInit {
         if (this.contrattoUser == 'Stage' || this.contrattoUser === 'P.Iva') {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
-              Image: '../../../../assets/images/logo.jpeg',
+              image: '../../../../assets/images/logo.jpeg',
               title: 'Attenzione:',
               message: 'Il tuo contratto non prevede ferie e malattie.',
             },
@@ -1530,7 +1531,7 @@ export class UtenteComponent implements OnInit {
   //     target.innerText = ''; // Oppure, puoi reimpostare il valore precedente
   //     const dialogRef = this.dialog.open(AlertDialogComponent, {
   //       data: {
-  //         Image: '../../../../assets/images/logo.jpeg',
+  //         image: '../../../../assets/images/logo.jpeg',
   //         title: 'Attenzione:',
   //         message:
   //           'Il valore deve essere un numero compreso tra 1 e ' +
@@ -1550,7 +1551,7 @@ export class UtenteComponent implements OnInit {
   //     target.innerText = ''; // Oppure, puoi reimpostare il valore precedente
   //     const dialogRef = this.dialog.open(AlertDialogComponent, {
   //       data: {
-  //         Image: '../../../../assets/images/logo.jpeg',
+  //         image: '../../../../assets/images/logo.jpeg',
   //         title: 'Attenzione:',
   //         message: 'Il campo cliente non deve contenere numeri.',
   //       },
@@ -1576,7 +1577,7 @@ export class UtenteComponent implements OnInit {
   //     target.innerText = '';
   //     const dialogRef = this.dialog.open(AlertDialogComponent, {
   //       data: {
-  //         Image: '../../../../assets/images/logo.jpeg',
+  //         image: '../../../../assets/images/logo.jpeg',
   //         title: 'Attenzione:',
   //         message:
   //           'Il campo deve essere un numero con incrementi di 0.5 compreso tra 0 e 24.',
@@ -1585,6 +1586,20 @@ export class UtenteComponent implements OnInit {
   //   } else {
   //   }
   // }
+
+
+
+  toggleDarkMode() {
+    this.toggleMode = !this.toggleMode;
+  }
+
+  getBackgroundClasses(giorno:any): any {
+    return {
+      'sabato-dom': giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica',
+      'festivita-red': giorno.festivitàNazionale,
+    };
+  }
+
 }
 
 interface MenuData {
