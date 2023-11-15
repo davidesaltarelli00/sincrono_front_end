@@ -230,7 +230,7 @@
      <div class="row">
       <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="text-align: center;" >
         <mat-card [ngClass]="getBackgroundClasses(giorno)">  <!--[ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' : (giorno.festivitaNazionale ? 'red' : 'rgb(214, 234, 251)')}"-->
-          <p style=" margin: 0;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }} <i class="fa fa-calendar" matTooltip="Segna come festivo."></i></p>
+          <p style=" margin: 0;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }} <i  class="fa fa-calendar" matTooltip="Imposta {{giorno.nomeGiorno |titlecase }} {{giorno.numeroGiorno}} {{selectedMese}} come festivo. "></i></p>
        <div class="container-card" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
           <div class="row">
             <div class="col-8">

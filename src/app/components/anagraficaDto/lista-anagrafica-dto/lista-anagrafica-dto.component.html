@@ -97,7 +97,7 @@
   </style>
 </head>
 
-<body>
+<body [ngClass]="{'dark-mode': toggleMode}">
   <div id="inizioPagina"></div>
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && !mobile">
@@ -110,6 +110,12 @@
           {{ menuItem.nome }}
         </a>
       </div>
+      <span>
+        <div class="form-check form-switch" matTooltip="{{toggleMode ? 'Light mode' : 'Dark Mode'}} ">
+          <input class="form-check-input"  [checked]="toggleMode" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault"  matTooltip="{{toggleMode ? 'Light mode' : 'Dark Mode'}} " > </label>
+        </div>
+      </span>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
         <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
@@ -145,7 +151,7 @@
       </span>
     </mat-toolbar>
   </div>
-  <div class="container-fluid" *ngIf="ruolo==='ADMIN'" >
+  <div class="container-fluid" *ngIf="ruolo==='ADMIN'" [ngClass]="{'dark-mode': toggleMode}">
     <!-- <div class="fixed-button-container">
       <button mat-flat-button color="primary" (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-up fa-beat"></i></button>
       <button mat-flat-button color="primary" (click)="goDown()" matTooltip="Vai a fine pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-down fa-beat"></i></button>
@@ -540,7 +546,7 @@
 
 
   </div>
-  <div class="container-fluid" *ngIf="ruolo==='DIPENDENTE'">
+  <div class="container-fluid" *ngIf="ruolo==='DIPENDENTE'" [ngClass]="{'dark-mode': toggleMode}">
     <div class="row">
       <div class="col-12">
         <br>

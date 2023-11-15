@@ -371,7 +371,7 @@
                     <td><strong>Tipo Contratto:</strong></td>
                     <td>{{ data?.contratto?.tipoContratto?.descrizione }}</td>
                   </tr>
-                  <tr><!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
+                  <tr [hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"><!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
                     <td><strong>Mesi durata:</strong></td>
                     <td>{{ data?.contratto?.mesiDurata }}</td>
                   </tr>

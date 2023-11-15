@@ -1475,7 +1475,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
             if ((result as any).esito.code !== 200) {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
-                  Image: '../../../../assets/images/logo.jpeg',
+                  image: '../../../../assets/images/danger.png',
                   title: 'Inserimento non riuscito:',
                   message: (result as any).esito.target,
                 },
@@ -1484,7 +1484,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
             if ((result as any).esito.target === "org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : it.sincrono.entities.Commessa.tipoAziendaCliente -> it.sincrono.entities.TipoAziendaCliente") {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
-                  Image: '../../../../assets/images/logo.jpeg',
+                  image: '../../../../assets/images/danger.png',
                   title: 'Inserimento non riuscito:',
                   message: "Non hai inserito l'azienda cliente in una o piú commesse.",
                 },
@@ -1494,7 +1494,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
             else {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
-                  title: 'Inserimento riuscito',
+                  image: '../../../../assets/images/logo.jpeg',
+                  title: 'Inserimento effettuato.',
                   message: (result as any).esito.target,
                 },
               });

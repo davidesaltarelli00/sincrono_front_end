@@ -1,3 +1,11 @@
+
+ .clienti {
+  border: 1px solid #ddd; /* Aggiungi un bordo al mat-card */
+  border-radius: 8px; /* Aggiungi un bordo arrotondato */
+  padding: 10px; /* Aggiungi spaziatura interna al mat-card */
+  margin-bottom: 10px; /* Aggiungi spaziatura tra i mat-card */
+}
+
  /* Stili specifici per schermi di grandi dimensioni (desktop) */
  @media (min-width: 768px) {
   body {

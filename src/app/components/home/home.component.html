@@ -208,6 +208,48 @@ img{
   <div class="row">
     <div class="col-6">
       <mat-card>
+        <mat-card-title class="text-center">
+          <legend> <img src="../../../../assets/images/logo.jpeg" width="50" height="50" alt="Logo Sincrono"> Consulenza  <img src="../../../../assets/images/logo.jpeg" width="50" height="50" alt="Logo Sincrono"></legend> <br>
+
+        </mat-card-title>
+        <mat-card-content>
+          <p>
+            Fornisce ai propri clienti, in base alle loro necessitá consulenti a vari livelli di preparazione e in diversi ambiti professionali, avendo a disposizione una vasta gamma di potenzialitá nel proprio organico.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-6">
+      <mat-card>
+        <mat-card-title class="text-center">
+          <legend> <img src="../../../../assets/images/sincrono_formazione.png" width="50" height="50" alt="Logo Sincrono"> Formazione  <img src="../../../../assets/images/sincrono_formazione.png" width="50" height="50" alt="Logo Sincrono"></legend> <br>
+
+        </mat-card-title>
+        <mat-card-content>
+          <p>
+            Un laboratorio di idee, tecnologie e metodologie tale da poter essere definito un "Centro di eccellenza per la formazione" per affiancare sia privati che aziende in un percorso di continua crescita professionale.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <br>
+  <div class="row" *ngIf="ruolo!='DIPENDENTE'">
+    <div class="col-12 text-center">
+      <legend><b>I nostri clienti</b></legend>
+    </div>
+    <div class="row">
+      <div class="col-2" *ngFor="let azienda of aziendeClienti; let i=index;" >
+        <mat-card class="clienti">
+          <p>{{azienda.descrizione}}</p>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-6">
+      <mat-card>
         <mat-card-content>
           <p> <strong>Indirizzo:</strong></p>
           <p>Via Vinicio Cortese 147/F - 00128</p>

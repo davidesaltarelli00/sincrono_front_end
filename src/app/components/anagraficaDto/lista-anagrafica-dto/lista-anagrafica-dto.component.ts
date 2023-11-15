@@ -42,6 +42,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   inserimentoParziale: any;
   contrattoScaduto: any;
   ruolo: any;
+  toggleMode: boolean=false;
 
 
   aziendeClienti: any[] = [];
@@ -1128,6 +1129,12 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   convertBase64ToImage(base64String: string): void {
     this.immagineConvertita = base64String;
   }
+
+  toggleDarkMode() {
+    this.toggleMode = !this.toggleMode;
+  }
+
+
 }
 
 interface MenuData {

@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ImageService } from '../image.service';
 import { MenuService } from '../menu.service';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { ContrattoService } from '../contratto/contratto-service';
 
 @Component({
   selector: 'app-home',
@@ -38,7 +39,8 @@ export class HomeComponent implements OnInit {
   idUtente: any;
   mobile: any = false;
   isVoiceActionActivated = false;
-  toggleMode: boolean=false;
+  toggleMode: boolean = false;
+  aziendeClienti: any[] = [];
 
   constructor(
     private authService: AuthService,
@@ -47,10 +49,9 @@ export class HomeComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     private imageService: ImageService,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private contrattoService: ContrattoService
   ) {
-
-
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -70,6 +71,7 @@ export class HomeComponent implements OnInit {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
+      this.caricaAziendeClienti();
     } else {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
@@ -78,6 +80,20 @@ export class HomeComponent implements OnInit {
         },
       });
     }
+  }
+
+  caricaAziendeClienti() {
+    this.contrattoService.getAllAziendaCliente(this.token).subscribe(
+      (result: any) => {
+        console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+        this.aziendeClienti = (result as any)['list'];
+      },
+      (error: any) => {
+        console.error(
+          'errore durante il caricamento dei nomi azienda:' + error
+        );
+      }
+    );
   }
 
   //metodi immagine
@@ -114,7 +130,7 @@ export class HomeComponent implements OnInit {
 
   startVoiceActionListaAnagrafica() {
     if (!this.isVoiceActionActivated) {
-      const message = "Apri lista anagrafiche";
+      const message = 'Apri lista anagrafiche';
       this.speakListaAnagrafica(message);
       this.isVoiceActionActivated = true;
     }
@@ -140,7 +156,7 @@ export class HomeComponent implements OnInit {
   }
   startVoiceActionDashboard() {
     if (!this.isVoiceActionActivated) {
-      const message = "Apri dashboard";
+      const message = 'Apri dashboard';
       this.speakListaAnagrafica(message);
       this.isVoiceActionActivated = true;
     }
@@ -228,21 +244,23 @@ export class HomeComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        console.log(
-          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        );
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-        this.jsonData = { list: [] };
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          console.log(
+            JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          );
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
 
   getPermissions(functionId: number) {
@@ -259,5 +277,4 @@ export class HomeComponent implements OnInit {
   toggleDarkMode() {
     this.toggleMode = !this.toggleMode;
   }
-
 }

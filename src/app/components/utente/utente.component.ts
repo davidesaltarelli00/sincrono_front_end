@@ -1291,6 +1291,8 @@ export class UtenteComponent implements OnInit {
     this.getRapportino();
   }
 
+
+
   isValidOreOrdinarie(value: number) {
     return value >= 0.5 && value <= 8;
   }
