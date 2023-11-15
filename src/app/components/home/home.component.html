@@ -172,17 +172,35 @@ img{
   </div> -->
   <br>
   <div class="row">
-    <div class="col-6">
+    <div class="col-12">
       <mat-card style=" height: 100%;">
         <mat-card-content>
           <main>
             <h2>Ciao {{userLoggedName}} {{userLoggedSurname}}.</h2>
-            <p>Sincrono CRM è un potente strumento per gestire le tue relazioni con i dipendenti in modo efficiente. Con Sincrono CRM, puoi facilmente monitorare le interazioni, gestire i contatti e aumentare la produttività del tuo team. </p>
+            <p *ngIf="ruolo==='ADMIN'" >
+              Benvenuti nell'area dedicata all'amministrazione di Sincrono CRM, il quale offre un controllo totale sulla gestione delle relazioni aziendali e delle risorse umane, fornendo un potente strumento per ottimizzare le dinamiche aziendali. Naviga tra le anagrafiche con facilità, modifica le informazioni con un semplice clic e disattiva le voci obsolete in modo intuitivo. La tua Dashboard ti accoglie con elenchi chiari di contratti e commesse, garantendo che nulla sfugga alla tua attenzione, sia che si tratti di scadenze imminenti o di opportunità da esplorare.
+
+              L'Organico offre una panoramica dettagliata delle aziende, con dati sul numero di dipendenti e le diverse tipologie di contratto. Grazie alla sezione Richieste, la comunicazione con i superiori diventa fluida e organizzata, garantendo che nessuna domanda o richiesta rimanga senza risposta.
+
+              Per semplificare la gestione del lavoro quotidiano, la sezione Lista Rapportini consente di compilare facilmente i resoconti mensili, mentre la sezione Rapportini Inviati fornisce una visione chiara di tutte le attività precedenti. Con Sincrono CRM, ottieni un controllo totale e un'efficienza ottimale nell'ottimizzazione delle risorse aziendali.
+            </p>
+            <p *ngIf="ruolo==='DIPENDENTE'" >
+              Benvenuti nell'area dedicata ai dipendenti di Sincrono CRM, il luogo dove la gestione delle richieste e l'interazione con il tuo ambiente lavorativo diventano semplici e intuitivi. Qui, potrai inviare comunicazioni dirette ai tuoi superiori attraverso la sezione Richieste, garantendo un canale di comunicazione aperto e trasparente.
+
+             Inoltre, puoi monitorare lo stato delle tue comunicazioni, dalla lettura alla presa in carico, fino all'accettazione o al rifiuto.
+
+            Il tuo profilo personale ti offre la possibilità di personalizzare la tua esperienza, caricando la tua immagine e consultando in qualsiasi momento i tuoi dati anagrafici, contrattuali e relativi alle commesse in corso. Sei sempre connesso alle tue informazioni, permettendoti di restare aggiornato sulla tua situazione lavorativa.
+
+              Sul tuo profilo, ai accesso alla sezione relativa alla compilazione dei rapportini mensili in modo rapido e diretto. Sincrono CRM semplifica la gestione del tuo lavoro quotidiano, concentrando le funzionalità su ciò che conta di più per te.
+            </p>
           </main>
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="col-6" *ngIf="ruolo!='DIPENDENTE'">
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-12" *ngIf="ruolo!='DIPENDENTE'">
       <mat-card style=" height: 100%;">
         <mat-card-content>
           <mat-list role="list" class="custom-list">

@@ -291,14 +291,7 @@
                 </div>
                 <br>
                 <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label for="ralAnnua">RAL Annua</label>
-                      <input (keyup)="filter(filterAnagraficaDto.value)" type="text" id="contratto.ralAnnua"
-                        class="form-control" name="ralAnnua" formControlName="ralAnnua"
-                        placeholder="Inserire RAL annua">
-                    </div>
-                  </div>
+
                   <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
                     <div class="form-group">
                       <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
@@ -347,6 +340,16 @@
                   </div> -->
                 </div>
                 <br>
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="ralAnnua">RAL Annua</label>
+                      <input (keyup)="filter(filterAnagraficaDto.value)" type="text" id="contratto.ralAnnua"
+                        class="form-control" name="ralAnnua" formControlName="ralAnnua"
+                        placeholder="Inserire RAL annua">
+                    </div>
+                  </div>
+                </div>
               </div>
               <br>
               <br>

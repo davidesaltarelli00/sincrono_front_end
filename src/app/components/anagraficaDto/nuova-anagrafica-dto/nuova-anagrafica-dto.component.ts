@@ -1496,11 +1496,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                 data: {
                   image: '../../../../assets/images/logo.jpeg',
                   title: 'Inserimento effettuato.',
-                  message: (result as any).esito.target,
+                  message: " E' stata inviata una mail all'utente con la password per accedere al sistema. " ,
                 },
               });
-              console.log(this.AnagraficaDto.value);
+              // console.log(this.AnagraficaDto.value);
               this.router.navigate(['/lista-anagrafica']);
+
             }
           },
           (error: any) => {

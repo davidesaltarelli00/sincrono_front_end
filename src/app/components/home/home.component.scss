@@ -50,6 +50,17 @@
   }
 }
 
+/* Aggiungi animazioni alle mat-card */
+mat-card {
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+/* Effetto di ombra al passaggio del mouse */
+mat-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: scale(1.02);
+}
+
 
 #toolbar {
   background-color: #007bff; /* Colore blu aziendale */

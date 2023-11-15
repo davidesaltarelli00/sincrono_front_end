@@ -148,7 +148,7 @@
         <br>
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Modifica anagrafica di {{data?.anagrafica?.nome}} {{data.anagrafica?.cognome}}</h1>
+          <h1>Modifica anagrafica di {{data?.anagrafica?.nome}} {{data?.anagrafica?.cognome}}</h1>
         </mat-card>
       </div>
     </div>
@@ -303,7 +303,7 @@
                           <div class="col-md-3">
                             <label>Provincia di Nascita</label>
                             <div class="form-group">
-                              <select class="form-select" formControlName="provinciaDiNascita"
+                              <select class="form-select" formControlName="provinciaDiNascita" value="{{data?.anagrafica?.provinciaDiNascita}}"
                                 name="provinciaDiNascita">
                                 <option value="" disabled selected>Seleziona una provincia</option>
                                 <option *ngFor="let provincia of province" [value]="provincia?.nome">{{provincia?.nome}}
