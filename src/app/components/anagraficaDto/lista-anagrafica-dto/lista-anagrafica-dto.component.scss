@@ -264,10 +264,20 @@ input[type="checkbox"]:disabled + .slider::before {
   color: #fff;
 }
 
+.dark-mode input::placeholder {
+  color: #ddd; /* Colore del placeholder nei temi scuri */
+}
+
 .dark-mode mat-card {
   background-color: #333;
   color: #fff;
   border: 1px solid #f1f1f1;
+}
+
+/* Stili specifici per dark mode */
+.dark-mode input {
+  background-color: #333; /* Colore di sfondo scuro per gli input */
+  color: #fff; /* Colore del testo chiaro per gli input */
 }
 
 /* Stili comuni per gli input */
@@ -283,15 +293,9 @@ input::placeholder {
   color: #888; /* Colore del placeholder nei temi chiari */
 }
 
-/* Stili specifici per dark mode */
-.dark-mode input {
-  background-color: #333; /* Colore di sfondo scuro per gli input */
-  color: #fff; /* Colore del testo chiaro per gli input */
-}
 
-.dark-mode input::placeholder {
-  color: #ddd; /* Colore del placeholder nei temi scuri */
-}
+
+
 
 .dark-mode table {
   border-color: #555;

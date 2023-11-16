@@ -97,7 +97,7 @@
   </style>
 </head>
 
-<body>
+<body [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && !mobile">
       <a [routerLink]="['/home']" class="logo-link">
@@ -108,6 +108,10 @@
           *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
           {{ menuItem.nome }}
         </a>
+      </div>
+      <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+        <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+        <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
       </div>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>

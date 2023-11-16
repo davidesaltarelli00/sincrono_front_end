@@ -21,6 +21,7 @@ import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component'
 import { MenuService } from '../../menu.service';
 import { MapsService } from './maps.service';
 import * as XLSX from 'xlsx';
+import { ThemeService } from 'src/app/theme.service';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -114,6 +115,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     public snackBar: MatSnackBar,
     private profileBoxService: ProfileBoxService,
     private http: HttpClient,
+    public themeService: ThemeService,
     private menuService: MenuService,
     private mapsService: MapsService
   ) {
@@ -2018,6 +2020,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         console.error(error);
       }
     );
+  }
+
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 
 }

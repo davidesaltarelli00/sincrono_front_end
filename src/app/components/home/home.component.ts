@@ -9,6 +9,7 @@ import { ImageService } from '../image.service';
 import { MenuService } from '../menu.service';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { ContrattoService } from '../contratto/contratto-service';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-home',
@@ -50,7 +51,8 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private imageService: ImageService,
     private menuService: MenuService,
-    private contrattoService: ContrattoService
+    private contrattoService: ContrattoService,
+    public themeService: ThemeService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -274,7 +276,7 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  toggleDarkMode() {
-    this.toggleMode = !this.toggleMode;
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 }

@@ -92,7 +92,7 @@ img{
 
 
 </style>
-<body [ngClass]="{'dark-mode': toggleMode}">
+<body [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div id="inizioPagina"></div>
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && !mobile">
@@ -106,10 +106,11 @@ img{
         </a>
       </div>
       <span>
-        <div class="form-check form-switch" matTooltip="{{toggleMode ? 'Light mode' : 'Dark Mode'}} ">
-          <input class="form-check-input"  [checked]="toggleMode" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
-          <label class="form-check-label" for="flexSwitchCheckDefault"  matTooltip="{{toggleMode ? 'Light mode' : 'Dark Mode'}} " > </label>
+        <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
         </div>
+
       </span>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>

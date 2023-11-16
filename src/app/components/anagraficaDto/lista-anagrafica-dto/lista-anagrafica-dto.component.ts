@@ -15,6 +15,7 @@ import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component'
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { MenuService } from '../../menu.service';
 import { ImageService } from '../../image.service';
+import { ThemeService } from 'src/app/theme.service';
 declare var $: any;
 
 @Component({
@@ -157,6 +158,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     private dialog: MatDialog,
     private menuService: MenuService,
     private http: HttpClient,
+    public themeService: ThemeService,
     private imageService: ImageService
   ) {
     if (window.innerWidth >= 900) {
@@ -1161,8 +1163,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.immagineConvertita = base64String;
   }
 
-  toggleDarkMode() {
-    this.toggleMode = !this.toggleMode;
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 }
 
