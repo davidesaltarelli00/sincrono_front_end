@@ -1,3 +1,11 @@
+*{
+  box-sizing: border-box;
+}
+
+body, .container-fluid{
+  background-color: aliceblue;
+}
+
 .mat-card {
   max-width: 600px;
   margin: 50px auto;
@@ -48,6 +56,24 @@
 mat-icon {
   vertical-align: middle;
   margin-right: 5px;
+}
+
+/* Placeholder per l'anteprima del documento */
+.preview-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px; /* Regola l'altezza a seconda delle tue preferenze */
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  color: #666;
+}
+
+.preview-placeholder mat-icon {
+  font-size: 48px;
+  margin-bottom: 10px;
 }
 
 

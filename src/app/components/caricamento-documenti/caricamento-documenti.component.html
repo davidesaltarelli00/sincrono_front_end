@@ -28,35 +28,59 @@
     </mat-toolbar>
   </div>
   <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <br>
+        <mat-card style="text-align: center;">
+          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+          <h1>Caricamento documenti</h1>
+        </mat-card>
+      </div>
+    </div>
+    <br>
       <div class="row">
-        <div class="col-12">
+        <div class="col-6" style="margin: auto; text-align: center;">
           <mat-card>
-            <mat-card-title class="text-center"><h1>Caricamento documenti</h1></mat-card-title>
-            <mat-card-subtitle class="text-center"><h3>Carica qui i tuoi documenti</h3></mat-card-subtitle>
+            <!-- <mat-card-title class="text-center">
+              <h1>Caricamento documenti</h1>
+            </mat-card-title>
+
+            <mat-card-subtitle class="text-center">
+              <h3>Carica qui i tuoi documenti</h3>
+            </mat-card-subtitle> -->
+
             <mat-card-content class="text-center">
+              <!-- Sezione di caricamento del file -->
               <div *ngIf="!previewData">
                 <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" accept=".xlsx, .xls">
                 <button class="text-center" mat-raised-button color="primary" (click)="fileInput.click()">
                   <mat-icon>cloud_upload</mat-icon> Carica file Excel
                 </button>
               </div>
-              <div *ngIf="previewData" class="preview-container">
-                <h4>{{ selectedFileName }}</h4>
-                <div [innerHTML]="previewData" class="excel-preview"></div>
-              </div>
+              <br>
+              <!-- Anteprima del documento -->
+            <div *ngIf="previewData" class="preview-container">
+            <h4>{{ selectedFileName }}</h4>
+            <div [innerHTML]="previewData" class="excel-preview"></div>
+            </div>
+
+<!-- Placeholder per l'anteprima del documento (mostrato prima del caricamento) -->
+<div *ngIf="!previewData" class="preview-placeholder">
+  <mat-icon>insert_drive_file</mat-icon>
+  <p>Carica un file per visualizzare l'anteprima.</p>
+</div>
+
             </mat-card-content>
+
+            <!-- Footer con barra di progresso e pulsante di salvataggio -->
             <mat-card-footer class="text-center" *ngIf="previewData">
-              <mat-progress-bar
-                mode="determinate"
-                [value]="uploadProgress"
-                [color]="uploadProgressColor"
-                *ngIf="uploadProgress !== undefined"
-              ></mat-progress-bar>
-              <button class="btn btn-success" mattooltip="Salva documento" (click)="salvaDocumento()"> <i class="fa fa-save"></i> </button>
+              <mat-progress-bar mode="determinate" [value]="uploadProgress" [color]="uploadProgressColor" *ngIf="uploadProgress !== undefined"></mat-progress-bar>
+              <button class="btn btn-success" mattooltip="Salva documento" (click)="salvaDocumento()">
+                <i class="fa fa-save"></i> Salva documento
+              </button>
             </mat-card-footer>
           </mat-card>
-
-
+          <br><br><br>
         </div>
       </div>
 
