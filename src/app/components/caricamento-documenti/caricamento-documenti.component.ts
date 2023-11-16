@@ -5,6 +5,8 @@ import { MenuService } from '../menu.service';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-caricamento-documenti',
@@ -35,6 +37,8 @@ export class CaricamentoDocumentiComponent implements OnInit {
   previewData: string | undefined;
   token = localStorage.getItem('token');
   mobile: boolean=false;
+  uploadProgress: number | undefined;
+  uploadProgressColor: string = 'primary';
 
 
   constructor(
@@ -116,17 +120,43 @@ export class CaricamentoDocumentiComponent implements OnInit {
     let body = {
       base64: this.base64Documento,
     };
+
     console.log('BODY PER SALVATAGGIO DOCUMENTI: ' + JSON.stringify(body));
-    this.anagraficaDtoService.salvaDocumento(body, this.token).subscribe(
-      (result: any) => {
-        console.log(
-          'RISULTATO SALVATAGGIO DOCUMENTI: ' + JSON.stringify(result)
-        );
+
+    this.anagraficaDtoService.salvaDocumento(body, this.token, {
+      reportProgress: true,
+      observe: 'events',
+    }).subscribe(
+      (event: any) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.uploadProgress = Math.round((100 * event.loaded) / event.total);
+        } else if (event.type === HttpEventType.Response) {
+          this.uploadProgress = 100; // Completamento
+          this.uploadProgressColor = 'accent'; // Cambia il colore a verde
+
+          if ((event as any).body && (event as any).body.esito && (event as any).body.esito.code !== 200) {
+            this.mostraAlert('danger', 'Salvataggio non riuscito', (event as any).body.esito.target);
+          } else {
+            this.mostraAlert('success', 'Caricamento completato', (event as any).body.esito.target);
+          }
+        }
       },
       (error: any) => {
+        this.uploadProgressColor = 'warn'; // Cambia il colore a rosso in caso di errore
         console.error(error);
+        this.mostraAlert('danger', 'Errore durante il caricamento', 'Si è verificato un errore durante il caricamento del documento.');
       }
     );
+  }
+
+  mostraAlert(tipo: string, titolo: string, messaggio: string): void {
+    const dialogRef = this.dialog.open(AlertDialogComponent, {
+      data: {
+        image: tipo === 'danger' ? '../../../../assets/images/danger.png' : '../../../../assets/images/logo.jpeg',
+        title: titolo,
+        message: messaggio,
+      },
+    });
   }
 
   //navbar

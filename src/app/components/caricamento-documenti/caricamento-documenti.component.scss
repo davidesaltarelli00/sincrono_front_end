@@ -1,15 +1,53 @@
-
-.preview-container {
-  margin-top: 20px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #f8f8f8;
+.mat-card {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  text-align: center;
 }
 
+.mat-card-title {
+  margin-bottom: 10px;
+}
+
+.mat-card-subtitle {
+  margin-bottom: 20px;
+}
+
+/* Stile per il contenitore di anteprima */
+.preview-container {
+  margin-top: 20px;
+  border: 1px solid #ddd; /* Usare toni più morbidi per i bordi */
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombra leggera per effetto di sollevamento */
+  padding: 20px;
+}
+
+.preview-container h4 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+/* Stile per l'anteprima Excel */
 .excel-preview {
-  overflow-x: auto; /* Per gestire l'overflow orizzontale in caso di tabelle lunghe */
-  max-height: 300px; /* Imposta un'altezza massima per evitare che l'anteprima diventi troppo grande */
+  overflow-x: auto;
+  max-height: 300px;
+}
+
+/* Stile per la barra di progresso */
+.mat-progress-bar {
+  margin-top: 20px;
+}
+
+/* Stile per il pulsante di salvataggio */
+.mat-card-footer button {
+  margin-top: 20px;
+}
+
+/* Stile per icone */
+mat-icon {
+  vertical-align: middle;
+  margin-right: 5px;
 }
 
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -252,15 +252,19 @@ export class AnagraficaDtoService {
     });
   }
 
-  salvaDocumento(body: any, token: any): Observable<any> {
+  salvaDocumento(body: any, token: any, options: any = {}): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(`http://localhost:8080/services/inserisci-excel`, body, {
+
+    return this.http.post(`http://localhost:8080/services/inserisci-excel`, body, {
       headers: headers,
+      reportProgress: true,
+      ...options,
     });
   }
+
 
 }
