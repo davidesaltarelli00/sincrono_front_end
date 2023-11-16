@@ -24,6 +24,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Giorno } from './giorno';
 import { AuthService } from '../login/login-service';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-utente',
@@ -158,6 +159,7 @@ export class UtenteComponent implements OnInit {
     private fb: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     private authSerice: AuthService,
+    public themeService: ThemeService,
     private scroller: ViewportScroller,
     private cdRef: ChangeDetectorRef
   ) {
@@ -1291,7 +1293,9 @@ export class UtenteComponent implements OnInit {
     this.getRapportino();
   }
 
-
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
+  }
 
 
   isValidOreOrdinarie(value: number) {
@@ -1589,12 +1593,6 @@ export class UtenteComponent implements OnInit {
   //   } else {
   //   }
   // }
-
-
-
-  toggleDarkMode() {
-    this.toggleMode = !this.toggleMode;
-  }
 
   getBackgroundClasses(giorno:any): any {
     return {

@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ImageService } from '../../image.service';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { MenuService } from '../../menu.service';
+import { ThemeService } from 'src/app/theme.service';
 @Component({
   selector: 'app-dettaglio-anagrafica-dto',
   templateUrl: './dettaglio-anagrafica-dto.component.html',
@@ -104,7 +105,9 @@ export class DettaglioAnagraficaDtoComponent {
     private profileBoxService: ProfileBoxService,
     private http: HttpClient,
     private imageService: ImageService,
-    private menuService:MenuService
+    private menuService:MenuService,
+    public themeService: ThemeService
+
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -827,6 +830,10 @@ export class DettaglioAnagraficaDtoComponent {
         console.error('Errore nella generazione dei permessi:', error);
       }
     );
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 }
 

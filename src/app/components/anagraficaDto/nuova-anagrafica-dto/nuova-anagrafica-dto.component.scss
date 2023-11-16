@@ -450,3 +450,13 @@ input[type="text"] {
   color: #fff;
   /* Altri stili specifici per il dark mode per il bottone di toggle */
 }
+.dark-mode #toolbar {
+  color: #ffffff;
+  /* Testo bianco */
+  display: flex;
+  background-color: #333;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #f3f3f3;
+
+}

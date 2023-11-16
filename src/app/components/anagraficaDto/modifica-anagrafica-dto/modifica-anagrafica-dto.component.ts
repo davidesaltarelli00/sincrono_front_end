@@ -33,6 +33,7 @@ import { ContrattoService } from '../../contratto/contratto-service';
 import { MenuService } from '../../menu.service';
 import { ImageService } from '../../image.service';
 import { StepperService } from 'src/app/stepper.service';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-modifica-anagrafica-dto',
@@ -127,6 +128,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     public dialog: MatDialog,
     public profileBoxService: ProfileBoxService,
     private http: HttpClient,
+    public themeService: ThemeService,
     private contrattoService: ContrattoService,
     private authService: AuthService,
     private menuService: MenuService,
@@ -2486,6 +2488,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     window.location.href = 'login';
     localStorage.removeItem('token');
     localStorage.removeItem('tokenProvvisorio');
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 }
 

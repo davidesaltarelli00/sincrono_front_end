@@ -167,3 +167,61 @@ mat-card{
   text-align: center;
   border-radius: 100%;
 }
+
+
+
+/* styles.css o nel tuo componente-specifico.css */
+.dark-mode *{
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode input::placeholder {
+  color: #ddd; /* Colore del placeholder nei temi scuri */
+}
+
+.dark-mode mat-card {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #f1f1f1;
+}
+
+/* Stili specifici per dark mode */
+.dark-mode input {
+  background-color: #333; /* Colore di sfondo scuro per gli input */
+  color: #fff; /* Colore del testo chiaro per gli input */
+}
+
+.dark-mode table {
+  border-color: #555;
+}
+
+.dark-mode th, .dark-mode td {
+  border-color: #777;
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode button, .dark-mode .btn {
+  background-color: #333;
+  color: #fff;
+}
+
+
+/* Stili specifici per dark mode */
+.dark-mode button.toggle-button {
+  background-color: #333;
+  color: #fff;
+  /* Altri stili specifici per il dark mode per il bottone di toggle */
+}
+
+.dark-mode #toolbar {
+  color: #ffffff;
+  /* Testo bianco */
+  display: flex;
+  background-color: #333;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #f3f3f3;
+
+}

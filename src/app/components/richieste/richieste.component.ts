@@ -9,6 +9,7 @@ import { MenuService } from '../menu.service';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-richieste',
@@ -55,6 +56,7 @@ export class RichiesteComponent implements OnInit {
     private dialog: MatDialog,
     private http: HttpClient,
     private router: Router,
+    public themeService: ThemeService,
     private formBuilder: FormBuilder,
     private imageService: ImageService,
     private menuService: MenuService
@@ -271,5 +273,10 @@ export class RichiesteComponent implements OnInit {
         console.error('Errore nella generazione dei permessi:', error);
       }
     );
+  }
+
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 }

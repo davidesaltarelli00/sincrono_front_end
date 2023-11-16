@@ -11,6 +11,7 @@ import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component'
 import { AnagraficaDtoService } from '../../anagraficaDto/anagraficaDto-service';
 import { ImageService } from './../../image.service';
 import { MenuService } from './../../menu.service';
+import { ThemeService } from 'src/app/theme.service';
 @Component({
   selector: 'app-lista-organico',
   templateUrl: './lista-organico.component.html',
@@ -52,6 +53,7 @@ export class ListaOrganicoComponent implements OnInit {
     private router: Router,
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
+    public themeService: ThemeService,
     private http: HttpClient,
     private authService: AuthService,
     private anagraficaDtoService: AnagraficaDtoService,
@@ -503,6 +505,10 @@ export class ListaOrganicoComponent implements OnInit {
 
   convertBase64ToImage(base64String: string): void {
     this.immagineConvertita = base64String;
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 }
 

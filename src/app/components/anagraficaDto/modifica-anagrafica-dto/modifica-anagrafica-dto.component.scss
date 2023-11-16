@@ -268,3 +268,80 @@ input[type="checkbox"]:disabled+.slider::before {
 * {
   box-sizing: border-box;
 }
+
+
+
+
+.dark-mode *{
+  background-color: #333;
+  color: #fff;
+}
+.dark-mode body{
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode input::placeholder {
+  color: #ddd;
+}
+
+.dark-mode mat-card {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #f1f1f1;
+}
+
+.dark-mode input {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode table {
+  border-color: #fff;
+}
+
+.dark-mode th, .dark-mode td {
+  border-color: #777;
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode button, .dark-mode .btn {
+  background-color: #333;
+  color: #fff;
+}
+
+
+.dark-mode button.toggle-button {
+  background-color: #333;
+  color: #fff;
+}
+
+::ng-deep .mat-step-label {
+  color: #fff;
+}
+
+::ng-deep .mat-step-label-active {
+  color: #ff4081;
+}
+
+::ng-deep .mat-step-label-visited {
+  color: #4caf50;
+}
+
+::ng-deep .mat-input-element:disabled {
+  color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.12);
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Stile per i campi di input disabilitati in dark mode */
+:root {
+  --disabled-input-text: rgba(255, 255, 255, 0.7);
+  --disabled-input-background: rgba(255, 255, 255, 0.12);
+}
+
+/* Applica lo stile ai campi di input disabilitati */
+.dark-mode input:disabled {
+ background-color: #555;
+}

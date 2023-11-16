@@ -1,98 +1,123 @@
-body{
+body {
   background-color: aliceblue;
 }
 
-.container-fluid{
+.container-fluid {
   background-color: aliceblue;
 }
 
-*{
+* {
   box-sizing: border-box;
 }
 
-thead,tbody{
+thead,
+tbody {
   border: 1px solid #333;
 }
 
 
 
 @media only screen and (min-width: 600px) {
+
   /* For tablets: */
   .col-s-1 {
-      width: 8.33%;
+    width: 8.33%;
   }
+
   .col-s-2 {
-      width: 16.66%;
+    width: 16.66%;
   }
+
   .col-s-3 {
-      width: 25%;
+    width: 25%;
   }
+
   .col-s-4 {
-      width: 33.33%;
+    width: 33.33%;
   }
+
   .col-s-5 {
-      width: 41.66%;
+    width: 41.66%;
   }
+
   .col-s-6 {
-      width: 50%;
+    width: 50%;
   }
+
   .col-s-7 {
-      width: 58.33%;
+    width: 58.33%;
   }
+
   .col-s-8 {
-      width: 66.66%;
+    width: 66.66%;
   }
+
   .col-s-9 {
-      width: 75%;
+    width: 75%;
   }
+
   .col-s-10 {
-      width: 83.33%;
+    width: 83.33%;
   }
+
   .col-s-11 {
-      width: 91.66%;
+    width: 91.66%;
   }
+
   .col-s-12 {
-      width: 100%;
+    width: 100%;
   }
 }
 
 @media only screen and (min-width: 768px) {
+
   /* For desktop: */
   .col-1 {
-      width: 8.33%;
+    width: 8.33%;
   }
+
   .col-2 {
-      width: 16.66%;
+    width: 16.66%;
   }
+
   .col-3 {
-      width: 25%;
+    width: 25%;
   }
+
   .col-4 {
-      width: 33.33%;
+    width: 33.33%;
   }
+
   .col-5 {
-      width: 41.66%;
+    width: 41.66%;
   }
+
   .col-6 {
-      width: 50%;
+    width: 50%;
   }
+
   .col-7 {
-      width: 58.33%;
+    width: 58.33%;
   }
+
   .col-8 {
-      width: 66.66%;
+    width: 66.66%;
   }
+
   .col-9 {
-      width: 75%;
+    width: 75%;
   }
+
   .col-10 {
-      width: 83.33%;
+    width: 83.33%;
   }
+
   .col-11 {
-      width: 91.66%;
+    width: 91.66%;
   }
+
   .col-12 {
-      width: 100%;
+    width: 100%;
   }
 }
 
@@ -108,7 +133,7 @@ table {
   overflow-x: auto;
 }
 
-.buttons{
+.buttons {
   text-align: center;
 }
 
@@ -125,6 +150,7 @@ table {
   overflow: hidden;
   // border: 2px solid #fff;
 }
+
 .profile-box {
   padding: 20px;
   border: 1px solid #ccc;
@@ -172,6 +198,15 @@ table {
   max-width: 100%;
 }
 
+.dark-mode .preview-image {
+  width: 100%;
+  height: auto;
+  border-radius: 100%;
+  border: 1px solid white;
+  max-width: 100%;
+}
+
+
 .cancel-icon {
   position: absolute;
   top: 5px;
@@ -190,6 +225,114 @@ table {
   background-position: center;
 }
 
-mat-card{
+mat-card {
   height: 100%;
+}
+
+
+
+
+/* styles.css o nel tuo componente-specifico.css */
+.dark-mode * {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode body {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode mat-card {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #f1f1f1;
+}
+
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background-color: #444;
+  color: #fff;
+}
+
+.dark-mode table {
+  border-color: #555;
+}
+
+.dark-mode th,
+.dark-mode td {
+  border-color: #777;
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode button,
+.dark-mode .btn {
+  background-color: #333;
+  color: #fff;
+}
+
+
+.dark-mode .pagination {
+  background-color: #333;
+}
+
+.dark-mode .pagination li {
+  border: 1px solid #555;
+}
+
+.dark-mode .pagination li.disabled {
+  background-color: #444;
+  color: #666;
+  border: 1px solid #555;
+}
+
+.dark-mode .pagination li.active {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #007bff;
+}
+
+.dark-mode .pagination li:hover {
+  background-color: #555;
+  color: #fff;
+  border: 1px solid #666;
+}
+
+.dark-mode #toolbar {
+  color: #ffffff;
+  /* Testo bianco */
+  display: flex;
+  background-color: #333;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #f3f3f3;
+
+}
+
+/* Stili comuni per i bottoni */
+button.toggle-button {
+  padding: 8px 16px;
+  margin: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Stili specifici per dark mode */
+.dark-mode button.toggle-button {
+  background-color: #333;
+  color: #fff;
+  /* Altri stili specifici per il dark mode per il bottone di toggle */
+}
+
+.link{
+  color: #007bff;
+  cursor: pointer;
+}
+
+.dark-mode .link{
+  color: aquamarine;
+  cursor: pointer;
 }

@@ -17,6 +17,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ContrattoService } from '../contratto/contratto-service';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import { MailSollecitaComponent } from '../mail-sollecita/mail-sollecita.component';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-lista-rapportini',
@@ -76,7 +77,6 @@ export class ListaRapportiniComponent implements OnInit {
   idCCNLselezionato: any;
   commesse!: FormArray;
   target: { [key: number]: boolean } = {};
-
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -139,8 +139,9 @@ export class ListaRapportiniComponent implements OnInit {
     private listaRapportiniService: ListaRapportiniService,
     private rapportinoDataService: RapportinoDataService,
     private menuService: MenuService,
+    public themeService: ThemeService,
     private contrattoService: ContrattoService,
-    private anagraficaDtoService: AnagraficaDtoService,
+    private anagraficaDtoService: AnagraficaDtoService
   ) {
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -154,6 +155,10 @@ export class ListaRapportiniComponent implements OnInit {
 
     this.selectedAnno = annoCorrente;
     this.selectedMese = meseCorrente;
+
+    this.currentYear=annoCorrente;
+    this.currentMonth=meseCorrente;
+
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -226,6 +231,60 @@ export class ListaRapportiniComponent implements OnInit {
 
       const commessaFormGroup = this.creaFormCommessa();
       this.commesse.push(commessaFormGroup);
+
+      let body = {
+        anno: this.currentYear,
+        mese: this.currentMonth,
+      };
+      // console.log('BODY RAPPORTINI DA CONTROLLARE: ' + JSON.stringify(body));
+      this.listaRapportiniService
+        .getAllRapportiniNonFreezati(this.token, body)
+        .subscribe(
+          (result: any) => {
+            this.getAllRapportiniNotFreezeCorretto = true;
+            this.elencoRapportiniNonFreezati = result['list'];
+            this.selectedMeseRapportinoNonFreezato = result['list']['mese'];
+            this.selectedAnnoRapportinoNonFreezato = result['list']['anno'];
+            this.currentPage = 1;
+            this.pageData = this.getCurrentPageItems();
+
+
+            let body = {
+              anno: this.currentYear,
+              mese: this.currentMonth,
+            };
+            // console.log('BODY RAPPORTINI CONTROLLATI: ' + JSON.stringify(body));
+
+            this.listaRapportiniService
+              .getAllRapportiniFreezati(this.token, body)
+              .subscribe(
+                (result: any) => {
+                  this.elencoRapportiniFreezati = result['list'];
+                  this.currentPage2 = 1;
+                  this.pageData2 = this.getCurrentPageItems2();
+                },
+                (error: any) => {
+                  console.error(
+                    'Si é verificato un errore durante il caricamento dei rapportini freezati: ' +
+                      JSON.stringify(error)
+                  );
+                }
+              );
+
+
+          },
+          (error: any) => {
+            console.error(
+              'Errore durante il caricamento dei rapportini not freeze: ' +
+                JSON.stringify(error)
+            );
+          }
+        );
+
+
+
+    } else {
+      console.error('Errore di autenticazione.');
     }
   }
 
@@ -688,11 +747,10 @@ export class ListaRapportiniComponent implements OnInit {
 
   onChangecheckFreeze(
     checkFreeze: boolean,
-    codiceFiscale:string,
+    codiceFiscale: string,
     index: number,
     anno: number,
-    mese: number,
-
+    mese: number
   ) {
     const body = {
       rapportino: {
@@ -744,7 +802,7 @@ export class ListaRapportiniComponent implements OnInit {
         ) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
-              image:'../../../../assets/images/danger.png',
+              image: '../../../../assets/images/danger.png',
               title: 'Salvataggio delle note non riuscito:',
               message: 'Errore di validazione.', //(result as any).esito.target,
             },
@@ -757,7 +815,7 @@ export class ListaRapportiniComponent implements OnInit {
       (error: any) => {
         const dialogRef = this.dialog.open(AlertDialogComponent, {
           data: {
-            image:'../../../../assets/images/danger.png',
+            image: '../../../../assets/images/danger.png',
             title: 'Salvataggio delle note non riuscito:',
             message: JSON.stringify(error),
           },
@@ -777,47 +835,46 @@ export class ListaRapportiniComponent implements OnInit {
   scarica() {
     // console.log(value.value);
     // if (value.valid) {
-      let body = {
-        anno: this.selectedAnno,
-        mese: this.selectedMese,
-      };
-      console.log('Body per file export' + JSON.stringify(body));
-      this.listaRapportiniService
-        .exportFileRapportino(this.token, body)
-        .subscribe(
-          (result: any) => {
-            // console.log('Response export rapportino: ', JSON.stringify(result));
-            const rapportinoBase64 = result.rapportinoB64;
-            console.log('BASE64: ' + rapportinoBase64);
-            // Decodifica il Base64 in un array di byte
-            const byteCharacters = atob(rapportinoBase64);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-              byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }
-            const byteArray = new Uint8Array(byteNumbers);
-
-            // Crea un oggetto Blob dal byte array
-            const blob = new Blob([byteArray], {
-              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            });
-
-            // Salva il file Excel utilizzando FileSaver
-            FileSaver.saveAs(blob, 'rapportino.xlsx');
-          },
-          (error: any) => {
-            console.error(
-              'Errore durante l export del rapportino:' + JSON.stringify(error)
-            );
+    let body = {
+      anno: this.selectedAnno,
+      mese: this.selectedMese,
+    };
+    console.log('Body per file export' + JSON.stringify(body));
+    this.listaRapportiniService
+      .exportFileRapportino(this.token, body)
+      .subscribe(
+        (result: any) => {
+          // console.log('Response export rapportino: ', JSON.stringify(result));
+          const rapportinoBase64 = result.rapportinoB64;
+          console.log('BASE64: ' + rapportinoBase64);
+          // Decodifica il Base64 in un array di byte
+          const byteCharacters = atob(rapportinoBase64);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
           }
-        );
+          const byteArray = new Uint8Array(byteNumbers);
+
+          // Crea un oggetto Blob dal byte array
+          const blob = new Blob([byteArray], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          });
+
+          // Salva il file Excel utilizzando FileSaver
+          FileSaver.saveAs(blob, 'rapportino.xlsx');
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante l export del rapportino:' + JSON.stringify(error)
+          );
+        }
+      );
     // }
   }
 
-
   sollecita(mailAziendale: string) {
     const dialogRef = this.dialog.open(MailSollecitaComponent, {
-      data: { elencoMail: this.elencoMail }
+      data: { elencoMail: this.elencoMail },
     });
   }
 
@@ -831,14 +888,11 @@ export class ListaRapportiniComponent implements OnInit {
         this.elencoMail.splice(index, 1);
       }
     }
-    console.log("L'elenco al momento contiene le seguenti mail: " + JSON.stringify(this.elencoMail));
+    console.log(
+      "L'elenco al momento contiene le seguenti mail: " +
+        JSON.stringify(this.elencoMail)
+    );
   }
-
-
-
-
-
-
 
   getRapportino(
     id: any,
@@ -1014,6 +1068,10 @@ export class ListaRapportiniComponent implements OnInit {
   }
 
   //fine paginazione tabella rapportini  freezati
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
+  }
 }
 interface MenuData {
   esito: {

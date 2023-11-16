@@ -22,6 +22,7 @@ import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { MenuService } from './../../menu.service';
+import { ThemeService } from 'src/app/theme.service';
 declare var $: any;
 
 @Component({
@@ -106,7 +107,7 @@ export class ListaDashboardComponent {
     annoFineContratto: new FormControl(null),
     meseFineContratto: new FormControl(null),
   });
-  
+
 
   constructor(
     private dashboardService: DashboardService,
@@ -120,6 +121,7 @@ export class ListaDashboardComponent {
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
     private http: HttpClient,
+    public themeService: ThemeService,
     private menuService: MenuService,
     private imageService: ImageService
   ) {
@@ -979,6 +981,10 @@ export class ListaDashboardComponent {
 
   convertBase64ToImage(base64String: string): void {
     this.immagineConvertita = base64String;
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 
 }

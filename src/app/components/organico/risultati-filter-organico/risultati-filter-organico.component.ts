@@ -9,6 +9,7 @@ import { ContrattoService } from '../../contratto/contratto-service';
 import { AuthService } from '../../login/login-service';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-risultati-filter-organico',
@@ -57,6 +58,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     public authService: AuthService,
     private router: Router,
+    public themeService: ThemeService,
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
     private http: HttpClient
@@ -219,21 +221,21 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
 
   dettaglioAnagrafica(idAnagrafica: number) {
 
-    this.anagraficaDtoService
-      .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
-      .subscribe((resp: any) => {
-        console.log(resp);
+    // this.anagraficaDtoService
+    //   .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
+    //   .subscribe((resp: any) => {
+    //     console.log(resp);
         this.router.navigate(['/dettaglio-anagrafica/' + idAnagrafica]);
-      });
+      // });
   }
 
   vaiAModificaAnagrafica(idAnagrafica: number) {
-    this.anagraficaDtoService
-      .update(idAnagrafica, localStorage.getItem('token'))
-      .subscribe((resp: any) => {
-        console.log(resp);
+    // this.anagraficaDtoService
+    //   .update(idAnagrafica, localStorage.getItem('token'))
+    //   .subscribe((resp: any) => {
+        // console.log(resp);
         this.router.navigate(['/modifica-anagrafica/' + idAnagrafica]);
-      });
+      // });
   }
 
   getUserLogged() {
@@ -326,6 +328,10 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
 
   logout() {
     this.dialog.open(AlertLogoutComponent);
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 }
 

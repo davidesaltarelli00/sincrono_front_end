@@ -106,9 +106,23 @@ a{
   box-sizing: border-box;
 }
 
+.dark-mode #toolbar {
+  color: #ffffff;
+  /* Testo bianco */
+  display: flex;
+  background-color: #333;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #f3f3f3;
+
+}
 
 /* styles.css o nel tuo componente-specifico.css */
 .dark-mode *{
+  background-color: #333;
+  color: #fff;
+}
+.dark-mode body{
   background-color: #333;
   color: #fff;
 }
@@ -137,6 +151,43 @@ a{
 .dark-mode button, .dark-mode .btn {
   background-color: #333;
   color: #fff;
+}
+
+
+.dark-mode .pagination {
+  background-color: #333;
+}
+
+.dark-mode .pagination li {
+  border: 1px solid #555;
+}
+
+.dark-mode .pagination li.disabled {
+  background-color: #444;
+  color: #666;
+  border: 1px solid #555;
+}
+
+.dark-mode .pagination li.active {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #007bff;
+}
+
+.dark-mode .pagination li:hover {
+  background-color: #555;
+  color: #fff;
+  border: 1px solid #666;
+}
+.dark-mode #toolbar {
+  color: #ffffff;
+  /* Testo bianco */
+  display: flex;
+  background-color: #333;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #f3f3f3;
+
 }
 
 /* Stili comuni per i bottoni */
