@@ -116,7 +116,7 @@
     </div>
   </div>
   <br>
-  <div class="row">
+  <div class="row" >
     <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"  >
       <mat-card [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'lightblue' : 'aliceblue'}" >
         <mat-card-title style="text-align: center;">
