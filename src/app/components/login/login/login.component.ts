@@ -4,6 +4,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../login-service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    public themeService:ThemeService,
     private dialog: MatDialog
   ) {
     this.loginForm = this.formBuilder.group({
@@ -94,4 +96,10 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
+  }
+
 }
