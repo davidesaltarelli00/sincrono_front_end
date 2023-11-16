@@ -301,6 +301,17 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
     this.totaleOrePermessi = totale;
   }
 
+
+  getCliente(duplicazioni: any[], duplicazione: any): string {
+    const duplicazioneCorrispondente = duplicazioni.find(d => d.cliente === duplicazione);
+    return duplicazioneCorrispondente ? duplicazioneCorrispondente.cliente : '';
+  }
+
+  getOreOrdinarie(duplicazioni: any[], duplicazione: any): number {
+    const duplicazioneCorrispondente = duplicazioni.find(d => d.cliente === duplicazione);
+    return duplicazioneCorrispondente ? duplicazioneCorrispondente.oreOrdinarie : 0;
+  }
+
   //metodi navbar
 
   logout() {
@@ -314,6 +325,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.idUtenteLoggato = response.anagraficaDto.anagrafica.id;
+        this.ruolo=response.anagraficaDto.ruolo.nome;
         console.log('ID USER LOGGATO: ' + JSON.stringify(this.idUtenteLoggato));
 
         if (this.idUtenteLoggato != this.id) {

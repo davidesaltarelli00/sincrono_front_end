@@ -115,7 +115,53 @@
       </table>
     </div>
   </div>
-  <br>
+  <div class="row">
+    <div class="col-12">
+      <!-- <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Giorno</th>
+            <ng-container *ngFor="let duplicazione of rapportinoDto[0]?.duplicazioniGiornoDto; let j = index; trackBy: trackByFn">
+              <th *ngIf="j === 0; else dynamicColumns" [attr.colspan]="2">Cliente e Ore Ordinarie</th>
+              <ng-template #dynamicColumns>
+                <th>Cliente {{ j + 1 }}</th>
+                <th>Ore Ordinarie {{ j + 1 }}</th>
+              </ng-template>
+            </ng-container>
+            <th>Fascia 18-20</th>
+            <th>Fascia 20-22</th>
+            <th>Fascia 22-09</th>
+            <th>Ferie</th>
+            <th>Permessi</th>
+            <th>Malattia</th>
+            <th>On site</th>
+            <th>Smartworking</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let giorno of rapportinoDto; let i = index; trackBy: trackByFn">
+            <tr [ngStyle]="{ 'background-color': giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica' ? 'aqua !important' : 'white !important' }">
+              <td>{{ giorno.nomeGiorno | titlecase }}</td>
+              <ng-container *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index; trackBy: trackByFn">
+                <td>{{ duplicazione.cliente }}</td>
+                <td>{{ duplicazione.oreOrdinarie }}</td>
+              </ng-container>
+              <td>{{ giorno.duplicazioniGiornoDto[0]?.fascia1 }}</td>
+              <td>{{ giorno.duplicazioniGiornoDto[0]?.fascia2 }}</td>
+              <td>{{ giorno.duplicazioniGiornoDto[0]?.fascia3 }}</td>
+              <td>{{ giorno.ferie ? 8 : null }}</td>
+              <td>{{ giorno.permessi }}</td>
+              <td>{{ giorno.malattie ? 8 : null }}</td>
+              <td>{{ giorno.checkOnSite ? 'Si' : null }}</td>
+              <td>{{ giorno.checkSmartWorking ? 'Si' : null }}</td>
+              <td>{{ giorno.note }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table> -->
+    </div>
+  </div>
   <div class="row" >
     <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"  >
       <mat-card [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'lightblue' : 'aliceblue'}" >
@@ -144,9 +190,9 @@
             </div>
           </div>
         </div>
-        <div class="straordinari" id="straordinari">
-         <div class="row" > <!--*ngIf="checkstraordinari"-->
-          <!-- <label for="straordinari" style="text-align: center; font-weight: bold;">Straordinari</label> -->
+        <div class="straordinari" id="straordinari"  >
+         <div class="row" >
+
           <div class="col-4">
            <div class="form-group">
             <label for="fascia1-{{ i }}{{j}}">18-20</label>
@@ -156,7 +202,7 @@
             [(ngModel)]="duplicazione.fascia1">
            </div>
           </div>
-          <div class="col-4">
+          <div class="col-4" >
            <div class="form-group">
             <label for="fascia2-{{ i }}{{j}}">20-22</label>
             <input disabled
@@ -165,7 +211,7 @@
             [(ngModel)]="duplicazione.fascia2">
            </div>
           </div>
-          <div class="col-4" >
+          <div class="col-4"  >
             <div class="form-group">
               <label for="fascia3-{{ i }}{{j}}">22-09</label>
               <input disabled
@@ -180,7 +226,7 @@
      </div>
      <br>
      <div class="row" style="margin: unset;">
-      <div class="col-4">
+      <div class="col-4" >
        <div class="form-group">
         <label for="permessi-{{ i }}">Permessi</label>
         <input disabled
@@ -189,23 +235,62 @@
         [(ngModel)]="giorno.permessi">
        </div>
       </div>
-      <div class="col-4">
-       <div class="form-group">
-        <label for="ferie-{{ i }}">Ferie</label> <br>
-        <input disabled class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
+      <div class="col-4" >
+        <div class="form-group">
+         <label for="permessiRole-{{ i }}">Role</label>
+         <input disabled
+         type="text" class="form-control form-control-sm"
+         step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
+         id="permessiRole-{{ i }}" name="permessiRole-{{ i }}"
+         [(ngModel)]="giorno.permessiRole">
+        </div>
        </div>
-      </div>
-      <div class="col-4">
-      <div class="form-group">
-        <label for="malattie-{{i}}">Malattia</label><br>
-        <input disabled class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
-      </div>
-      </div>
+       <div class="col-4"  >
+        <div class="form-group">
+         <label for="permessiExfestivita-{{ i }}">Festivitá</label>
+         <input disabled
+         type="text" class="form-control form-control-sm"
+         step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
+         id="permessiExfestivita-{{ i }}" name="permessiExfestivita-{{ i }}"
+         [(ngModel)]="giorno.permessiExfestivita">
+        </div>
+       </div>
+    </div>
+
+    <div class="row">
+      <div class="col-4" >
+        <div class="form-group">
+         <label for="ferie-{{ i }}">Ferie</label> <br>
+         <input disabled class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
+        </div>
+       </div>
+       <div class="col-4">
+       <div class="form-group">
+         <label for="malattie-{{i}}">Malattia</label><br>
+         <input disabled class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
+       </div>
+       </div>
     </div>
     <div class="row">
+      <div class="col-4">
+        <div class="form-group">
+          <label for="onSite-{{i}}">On site</label><br>
+            <input  [(ngModel)]="giorno.checkOnSite" disabled
+            class="form-check-input" type="checkbox" id="onSite-{{i}}">
+        </div>
+      </div>
+      <div class="col-4" >
+        <div class="form-group">
+          <label for="smartworking-{{i}}">Smartworking</label><br>
+            <input [(ngModel)]="giorno.checkSmartWorking" disabled
+            class="form-check-input" type="checkbox" id="smartworking-{{i}}">
+        </div>
+      </div>
+    </div>
+    <div class="row" >
       <div class="col-12">
       <div class="form-group">
-        <label for="note-{{ i }}">Note  </label> <!--<div *ngIf="!giorno.note" class="error-message">Campo obbligatorio</div>-->
+        <label for="note-{{ i }}">Note  </label>
         <input disabled type="text" class="form-control" id="note-{{ i }}"  name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
       </div>
       </div>
