@@ -196,7 +196,8 @@
                     <th>Categoria Protetta</th>
                     <th>Tutor</th>
                     <th>PFI</th>
-                    <th class="text-center" colspan="2">Azioni</th>
+                    <th>Anagrafica</th>
+                    <th>Modifica</th>
 
                   </tr>
                 </thead>
@@ -218,16 +219,14 @@
                     <td>{{ element.contratto.tutor }}</td>
                     <td>{{ element.contratto.pfi ? 'Si' : 'No'}}</td>
                     <td>
-                      <span style="margin:5px;">
-                        <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button
-                            matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
-                            class="btn btn-info"><i class="fa fa-info"></i></button></a>
-                      </span>
-                      <span style="margin:5px;">
-                        <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
-                          matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
-                            class="fa fa-pencil"></i></button>
-                      </span>
+                      <button [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"
+                        matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
+                        class="btn btn-info"><i class="fa fa-info"></i></button>
+                    </td>
+                    <td>
+                      <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
+                      matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
+                        class="fa fa-pencil"></i></button>
                     </td>
                   </tr>
                 </tbody>
@@ -267,7 +266,8 @@
                     <th>Data inizio</th>
                     <th>Data fine</th>
                     <th>Attesa lavori</th>
-                    <th class="text-center" colspan="2">Azioni</th>
+                    <th>Anagrafica</th>
+                    <th>Modifica</th>
 
                   </tr>
                 </thead>
@@ -287,16 +287,14 @@
                       <td>{{ commessa.dataFine | date:'dd/MM/yyyy' }}</td>
                       <td>{{ commessa.attesaLavori ? 'Sì' : 'No' }}</td>
                       <td>
-                        <span style="margin:5px;">
-                          <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button
+                        <button [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"
                               matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
-                              class="btn btn-info"><i class="fa fa-info"></i></button></a>
-                        </span>
-                        <span style="margin:5px;">
-                          <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
+                              class="btn btn-info"><i class="fa fa-info"></i></button>
+                      </td>
+                      <td>
+                        <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
                             matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
                               class="fa fa-pencil"></i></button>
-                        </span>
                       </td>
                     </tr>
                   </ng-container>
@@ -349,7 +347,8 @@
                     <th>Categoria Protetta</th>
                     <th>Tutor</th>
                     <th>PFI</th>
-                    <th class="text-center" colspan="2">Azioni</th>
+                    <th >Anagrafica</th>
+                    <th >Modifica</th>
 
                     <!-- <th>Corso Sicurezza</th> -->
                     <!-- <th>Data Corso Sicurezza</th>
@@ -384,16 +383,15 @@
                     <td>{{ element.contratto.tutor }}</td>
                     <td>{{ element.contratto.pfi }}</td>
                     <td>
-                      <span style="margin:5px;">
-                        <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button
+                      <button [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"
                             matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
-                            class="btn btn-info"><i class="fa fa-info"></i></button></a>
-                      </span>
-                      <span style="margin:5px;">
-                        <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
-                          matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
-                            class="fa fa-pencil"></i></button>
-                      </span>
+                            class="btn btn-info"><i class="fa fa-info"></i></button>
+
+                    </td>
+                    <td>
+                      <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
+                      matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
+                        class="fa fa-pencil"></i></button>
                     </td>
                     <!-- <td>{{ contratto.contratto.corsoSicurezza }}</td> -->
                     <!-- <td>{{ contratto.contratto.dataCorsoSicurezza | date:'dd/MM/yyyy' }}</td>
