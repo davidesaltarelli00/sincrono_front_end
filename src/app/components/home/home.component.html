@@ -93,6 +93,7 @@ img{
 
 </style>
 <body [ngClass]="{'dark-mode': toggleMode}">
+  <div id="inizioPagina"></div>
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && !mobile">
       <a [routerLink]="['/home']" class="logo-link">

@@ -144,14 +144,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           Validators.maxLength(16),
         ]),
         cellularePrivato: new FormControl('', [
-          Validators.pattern(/^[0-9]{10}$/),
-          Validators.minLength(10),
-          Validators.maxLength(10),
+          Validators.pattern(/^(\+\d{2}\s?)?(\d{3}[\s.-]?\d{3}[\s.-]?\d{4})$/),
         ]),
         cellulareAziendale: new FormControl('', [
-          Validators.pattern(/^[0-9]{10}$/),
-          Validators.minLength(10),
-          Validators.maxLength(10),
+          Validators.pattern(/^(\+\d{2}\s?)?(\d{3}[\s.-]?\d{3}[\s.-]?\d{4})$/),
         ]),
         mailPrivata: new FormControl(
           '',
