@@ -17,6 +17,8 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   recuperoPasswordInCorso: boolean = false;
   tokenExpirationTime: any;
+
+
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -97,6 +99,20 @@ export class LoginComponent implements OnInit {
     );
   }
 
+  onCopy(event: ClipboardEvent) {
+    event.preventDefault();
+    // Puoi aggiungere un messaggio o un'azione personalizzata qui se lo desideri
+  }
+
+  onCut(event: ClipboardEvent) {
+    event.preventDefault();
+    // Puoi aggiungere un messaggio o un'azione personalizzata qui se lo desideri
+  }
+
+  onPaste(event: ClipboardEvent) {
+    event.preventDefault();
+    // Puoi aggiungere un messaggio o un'azione personalizzata qui se lo desideri
+  }
 
   toggleDarkMode(): void {
     this.themeService.toggleDarkMode();

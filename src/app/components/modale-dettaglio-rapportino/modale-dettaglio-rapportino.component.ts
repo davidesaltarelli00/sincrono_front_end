@@ -14,6 +14,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-modale-dettaglio-rapportino',
@@ -67,6 +68,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
     private rapportinoService: RapportinoService,
     private dialog: MatDialog,
     private router: Router,
+    public themeService:ThemeService,
     private http: HttpClient,
     private profileBoxService: ProfileBoxService,
     private anagraficaDtoService: AnagraficaDtoService,
@@ -412,6 +414,11 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
       }
     );
   }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
+  }
+
 } //fine classe
 
 interface MenuData {

@@ -72,3 +72,105 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+
+
+.dark-mode #toolbar {
+  color: #ffffff;
+  /* Testo bianco */
+  display: flex;
+  background-color: #333;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #f3f3f3;
+
+}
+
+/* styles.css o nel tuo componente-specifico.css */
+.dark-mode *{
+  background-color: #333;
+  color: #fff;
+}
+.dark-mode body{
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode mat-card {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #f1f1f1;
+}
+
+.dark-mode input, .dark-mode textarea, .dark-mode select {
+  background-color: #444;
+  color: #fff;
+}
+
+.dark-mode table {
+  border-color: #555;
+}
+
+.dark-mode th, .dark-mode td {
+  border-color: #777;
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode button, .dark-mode .btn {
+  background-color: #333;
+  color: #fff;
+}
+
+
+.dark-mode .pagination {
+  background-color: #333;
+}
+
+.dark-mode .pagination li {
+  border: 1px solid #555;
+}
+
+.dark-mode .pagination li.disabled {
+  background-color: #444;
+  color: #666;
+  border: 1px solid #555;
+}
+
+.dark-mode .pagination li.active {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #007bff;
+}
+
+.dark-mode .pagination li:hover {
+  background-color: #555;
+  color: #fff;
+  border: 1px solid #666;
+}
+.dark-mode #toolbar {
+  color: #ffffff;
+  /* Testo bianco */
+  display: flex;
+  background-color: #333;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #f3f3f3;
+
+}
+
+/* Stili comuni per i bottoni */
+button.toggle-button {
+  padding: 8px 16px;
+  margin: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Stili specifici per dark mode */
+.dark-mode button.toggle-button {
+  background-color: #333;
+  color: #fff;
+  /* Altri stili specifici per il dark mode per il bottone di toggle */
+}

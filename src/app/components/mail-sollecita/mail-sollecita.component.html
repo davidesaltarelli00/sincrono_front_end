@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-<body>
+<body  [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div class="container-fluid">
     <div class="row">
       <div class="col-12" style="float: right;">
@@ -16,7 +16,7 @@
       <div class="col-12">
         <br>
         <mat-card style="text-align: center;">
-          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+          <!-- <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1> -->
           <h5>Mail di sollecitazione invio rapportino</h5>
         </mat-card>
       </div>
@@ -30,10 +30,11 @@
               <div class="row">
                 <div class="col-12">
                   <div class="form-group">
-                    <label for="toRapportini" *ngIf="toRapportini.length===1" >Destinatario</label>
-                    <label for="toRapportini" *ngIf="toRapportini.length>1">Destinatari</label>
+                    <!-- <label for="toRapportini" *ngIf="toRapportini.length===1" >Destinatario</label>
+                    <label for="toRapportini" *ngIf="toRapportini.length>1">Destinatari</label> -->
+                    <label for="destinatari">Destinatari</label>
                     <input disabled type="text" id="toRapportini" name="toRapportini" [(ngModel)]="toRapportini" class="form-control">
-                    <small class="form-text text-muted">Per inviare la mail ad altri utenti, selezionali dalla lista.</small>
+                    <small class="form-text text-muted">Seleziona i destinatari dalla lista.</small>
                   </div>
                 </div>
               </div>
