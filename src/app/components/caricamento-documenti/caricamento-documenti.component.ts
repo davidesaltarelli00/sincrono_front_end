@@ -7,6 +7,7 @@ import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { HttpEventType } from '@angular/common/http';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-caricamento-documenti',
@@ -44,6 +45,7 @@ export class CaricamentoDocumentiComponent implements OnInit {
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private menuService: MenuService,
+    public themeService:ThemeService,
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog
   ) {
@@ -157,6 +159,10 @@ export class CaricamentoDocumentiComponent implements OnInit {
         message: messaggio,
       },
     });
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 
   //navbar
