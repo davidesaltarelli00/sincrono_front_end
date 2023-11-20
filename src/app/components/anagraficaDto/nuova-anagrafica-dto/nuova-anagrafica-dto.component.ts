@@ -204,6 +204,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         dataInizioProva: new FormControl(''),
         dataFineProva: new FormControl(''),
         dataFineRapporto: new FormControl(''), //, Validators.required
+        dataFineContratto : new FormControl(''), //, Validators.required
         mesiDurata: new FormControl(''), //, Validators.required
         livelloAttuale: new FormControl(''), // +
         livelloFinale: new FormControl(''), //+
@@ -1094,8 +1095,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
   calculateDataFineRapporto() {
     const mesiDurataControl = this.AnagraficaDto.get('contratto.mesiDurata');
-    const dataFineRapportoControl = this.AnagraficaDto.get(
-      'contratto.dataFineRapporto'
+    const dataFineContrattoControl = this.AnagraficaDto.get(
+      'contratto.dataFineContratto'
     );
     const dataAssunzioneControl = this.AnagraficaDto.get(
       'contratto.dataAssunzione'
@@ -1115,17 +1116,17 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       // Verifica se i valori ottenuti sono validi
       if (mesiDurata && dataAssunzione) {
         // Calcola la data di fine rapporto aggiungendo i mesi di durata alla data di assunzione
-        const dataFineRapporto = new Date(dataAssunzione);
-        dataFineRapporto.setMonth(dataFineRapporto.getMonth() + mesiDurata);
+        const dataFineContratto = new Date(dataAssunzione);
+        dataFineContratto.setMonth(dataFineContratto.getMonth() + mesiDurata);
 
         // Formatta la data nel formato "yyyy-MM-dd"
-        const dataFineRapportoFormatted = this.datePipe.transform(
-          dataFineRapporto,
+        const dataFineContrattoFormatted = this.datePipe.transform(
+          dataFineContratto,
           'yyyy-MM-dd'
         );
 
         // Imposta il valore formattato nel controllo 'dataFineRapporto'
-        dataFineRapportoControl?.setValue(dataFineRapportoFormatted);
+        dataFineContrattoControl?.setValue(dataFineContrattoFormatted);
       } else {
         // Alcuni dei valori necessari sono mancanti, gestisci di conseguenza
         console.error(

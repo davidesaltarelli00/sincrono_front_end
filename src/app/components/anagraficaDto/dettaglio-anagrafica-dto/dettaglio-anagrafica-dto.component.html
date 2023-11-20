@@ -399,13 +399,13 @@
                     <td><strong>Data fine prova:</strong></td>
                     <td>{{ data?.contratto?.dataFineProva | date: 'dd/MM/yyyy' }}</td>
                   </tr>
-                  <tr [hidden]="data?.contratto?.tipoContratto?.descrizione!='Indeterminato'"> <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
+                  <tr> <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
+                    <td><strong>Data fine contratto:</strong></td>
+                    <td>{{ data?.contratto?.dataFineContratto | date: 'dd/MM/yyyy' }}</td>
+                  </tr>
+                  <tr> <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
                     <td><strong>Data fine rapporto:</strong></td>
                     <td>{{ data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy' }}</td>
-                  </tr>
-                  <tr [hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"> <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
-                    <td><strong>Data fine rapporto:</strong></td>
-                    <td>Dato non previsto per il tipo di contratto {{ data?.contratto?.tipoContratto?.descrizione }}</td>
                   </tr>
                   <tr>
                     <td><strong>Livello attuale:</strong></td>

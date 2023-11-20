@@ -252,6 +252,19 @@ export class AnagraficaDtoService {
     });
   }
 
+  changeTipoCausaFineContrattoMap(token: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    const url = `http://localhost:8080/services/tipo-causa-fine-contratto-map`;
+    console.log('URL changeTipoCausaFineContrattoMap:' + url);
+    return this.http.get<any>(url, {
+      headers: headers,
+    });
+  }
+
   salvaDocumento(body: any, token: any, options: any = {}): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
