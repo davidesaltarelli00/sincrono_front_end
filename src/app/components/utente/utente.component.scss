@@ -362,9 +362,14 @@ input:checked + .slider:before {
   color: #fff;
 }
 
+mat-card{
+  padding: 1%;
+}
+
 .dark-mode mat-card {
   background-color: #333;
   color: #fff;
+  padding: 1%;
   border: 1px solid #f1f1f1;
 }
 
@@ -440,3 +445,4 @@ button.toggle-button {
   color: #fff;
   /* Altri stili specifici per il dark mode per il bottone di toggle */
 }
+

@@ -399,9 +399,13 @@
                     <td><strong>Data fine prova:</strong></td>
                     <td>{{ data?.contratto?.dataFineProva | date: 'dd/MM/yyyy' }}</td>
                   </tr>
-                  <tr> <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
+                  <tr [hidden]="data?.contratto?.tipoContratto?.descrizione!='Indeterminato'"> <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
                     <td><strong>Data fine rapporto:</strong></td>
                     <td>{{ data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy' }}</td>
+                  </tr>
+                  <tr [hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"> <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
+                    <td><strong>Data fine rapporto:</strong></td>
+                    <td>Dato non previsto per il tipo di contratto {{ data?.contratto?.tipoContratto?.descrizione }}</td>
                   </tr>
                   <tr>
                     <td><strong>Livello attuale:</strong></td>
@@ -421,15 +425,27 @@
                     <td>{{ data?.contratto?.sedeAssunzione ? data?.contratto?.sedeAssunzione : 'Dato non inserito' }}
                     </td>
                   </tr>
-                  <tr  > <!--[hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' || data?.contratto?.tipoContratto?.descrizione!='Apprendistato' "-->
+                  <tr [hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' || data?.contratto?.tipoContratto?.descrizione!='Apprendistato' " > <!--[hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' || data?.contratto?.tipoContratto?.descrizione!='Apprendistato' "-->
                     <td><strong>Tutor:</strong></td>
                     <td>{{ data?.contratto?.tutor ? data?.contratto?.tutor : 'Dato non inserito' }}
                     </td>
                   </tr>
-                  <tr  > <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Stage' || data?.contratto?.tipoContratto?.descrizione==='Apprendistato' "-->
+                  <tr [hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' || data?.contratto?.tipoContratto?.descrizione!='Apprendistato' " > <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Stage' || data?.contratto?.tipoContratto?.descrizione==='Apprendistato' "-->
                     <td><strong>Piano formativo individuale:</strong></td>
                     <td>{{ data?.contratto?.pfi ?'Si' : 'No' }}
                     </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Corso di sicurezza:</strong></td>
+                    <td>{{data?.contratto?.corsoSicurezza ? 'Si': 'No'}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Data corso di sicurezza:</strong></td>
+                    <td>{{data?.contratto?.dataCorsoSicurezza | date: 'dd/MM/yyyy'  }}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Assicurazione obbligatoria:</strong></td>
+                    <td>{{data?.contratto?.assicurazioneObbligatoria ? 'Si':'No'}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -455,121 +471,116 @@
                   </table>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-12">
+                  <h1>Dati economici <button class="btn btn-danger"
+                      *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                      matTooltip="{{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                      <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"
+                      (click)="modificaCommessa()">
+                      <i class="fa fa-pencil"></i>
+                    </button></h1> <br>
+                  <h1>Retribuzione</h1>
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td><strong>Retribuzione mensile lorda:</strong></td>
+                        <td>{{data?.contratto?.retribuzioneMensileLorda ? data?.contratto?.retribuzioneMensileLorda :'Dato non inserito'}} </td>
+                      </tr>
+                      <tr>
+                        <td><strong>Superminimo mensile:</strong></td>
+                        <td>{{data?.contratto?.superminimoMensile ? data?.contratto?.superminimoMensile :'Dato non inserito'}} </td>
+                      </tr>
+                      <tr>
+                        <td><strong>Scatti anzianitá:</strong></td>
+                        <td>{{data?.contratto?.scattiAnzianita ? data?.contratto?.scattiAnzianita :'Dato non inserito'}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>Retribuzione netta mensile:</strong></td>
+                        <td>{{data?.contratto?.retribuzioneNettaMensile ? data?.contratto?.retribuzioneNettaMensile :'Dato non inserito'}} </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-12">
+                  <h1>RAL</h1>
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td><strong>RAL annua</strong></td>
+                        <td>{{data?.contratto?.ralAnnua ? data?.contratto?.ralAnnua: 'Dato non inserito'}}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Superminimo RAL</strong></td>
+                        <td>{{data?.contratto?.superminimoRal ? data?.contratto?.superminimoRal: 'Dato non inserito'}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <br>
 
+              <div class="row">
+                <div class="col-12">
+                  <h1>Diaria</h1>
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td><strong>Diaria mensile</strong></td>
+                        <td>{{data?.contratto?.diariaMensile ? data?.contratto?.diariaMensile :'Dato non inserito'}}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Diaria giornaliera</strong></td>
+                        <td>{{data?.contratto?.diariaGiornaliera ? data?.contratto?.diariaGiornaliera :'Dato non inserito'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <br>
+              <div class="row" [hidden]="data?.contratto?.tipoContratto.descrizione!='P.Iva'">
+                <div class="col-12">
+                  <h1>Dati economici partita IVA</h1>
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td><strong>Tariffa partita IVA</strong></td>
+                        <td>{{data?.contratto?.tariffaPartitaIva ? data?.contratto?.tariffaPartitaIva:'Dato non inserito'
+                          }}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Retribuzione netta giornaliera</strong></td>
+                        <td>{{data?.contratto?.retribuzioneNettaGiornaliera ? data?.contratto?.retribuzioneNettaGiornaliera:'Dato non inserito' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-12">
+                  <h1>Ticket e agevolazioni</h1>
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td> <strong>Ticket:</strong> </td>
+                        <td>{{ data?.contratto?.ticket ? 'Sì' : 'No' }}</td>
+                      </tr>
+                      <tr>
+                        <td> <strong>Valore Ticket:</strong> </td>
+                        <td>{{ data?.contratto?.valoreTicket ? data?.contratto?.valoreTicket: 'Dato non inserito' }} <i
+                            class="fa fa-euro-sign" *ngIf="data?.contratto?.valoreTicket!=null"></i></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
 
-            </div>
-          </mat-step>
-
-          <mat-step>
-            <ng-template matStepLabel><small>Dati economici</small></ng-template>
-            <div class="row">
-              <div class="col-12">
-                <h1>Dati economici <button class="btn btn-danger"
-                    *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                    matTooltip="{{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
-                    <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"
-                    (click)="modificaCommessa()">
-                    <i class="fa fa-pencil"></i>
-                  </button></h1>
-                <h1>Retribuzione</h1>
-                <table class="table table-bordered">
-                  <tbody>
-                    <tr>
-                      <td><strong>Retribuzione mensile lorda:</strong></td>
-                      <td>{{data?.contratto?.retribuzioneMensileLorda ? data?.contratto?.retribuzioneMensileLorda :'Dato non inserito'}} </td>
-                    </tr>
-                    <tr>
-                      <td><strong>Superminimo mensile:</strong></td>
-                      <td>{{data?.contratto?.superminimoMensile ? data?.contratto?.superminimoMensile :'Dato non inserito'}} </td>
-                    </tr>
-                    <tr>
-                      <td><strong>Scatti anzianitá:</strong></td>
-                      <td>{{data?.contratto?.scattiAnzianita ? data?.contratto?.scattiAnzianita :'Dato non inserito'}}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><strong>Retribuzione netta mensile:</strong></td>
-                      <td>{{data?.contratto?.retribuzioneNettaMensile ? data?.contratto?.retribuzioneNettaMensile :'Dato non inserito'}} </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <br>
-            <div class="row">
-              <div class="col-12">
-                <h1>RAL</h1>
-                <table class="table table-bordered">
-                  <tbody>
-                    <tr>
-                      <td><strong>RAL annua</strong></td>
-                      <td>{{data?.contratto?.ralAnnua ? data?.contratto?.ralAnnua: 'Dato non inserito'}}</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Superminimo RAL</strong></td>
-                      <td>{{data?.contratto?.superminimoRal ? data?.contratto?.superminimoRal: 'Dato non inserito'}}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <br>
-
-            <div class="row">
-              <div class="col-12">
-                <h1>Diaria</h1>
-                <table class="table table-bordered">
-                  <tbody>
-                    <tr>
-                      <td><strong>Diaria mensile</strong></td>
-                      <td>{{data?.contratto?.diariaMensile ? data?.contratto?.diariaMensile :'Dato non inserito'}}</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Diaria giornaliera</strong></td>
-                      <td>{{data?.contratto?.diariaGiornaliera ? data?.contratto?.diariaGiornaliera :'Dato non inserito'}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <br>
-            <div class="row" [hidden]="data?.contratto?.tipoContratto.descrizione!='P.Iva'">
-              <div class="col-12">
-                <h1>Dati economici partita IVA</h1>
-                <table class="table table-bordered">
-                  <tbody>
-                    <tr>
-                      <td><strong>Tariffa partita IVA</strong></td>
-                      <td>{{data?.contratto?.tariffaPartitaIva ? data?.contratto?.tariffaPartitaIva:'Dato non inserito'
-                        }}</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Retribuzione netta giornaliera</strong></td>
-                      <td>{{data?.contratto?.retribuzioneNettaGiornaliera ? data?.contratto?.retribuzioneNettaGiornaliera:'Dato non inserito' }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <br>
-            <div class="row">
-              <div class="col-12">
-                <h1>Ticket e agevolazioni</h1>
-                <table class="table table-bordered">
-                  <tbody>
-                    <tr>
-                      <td> <strong>Ticket:</strong> </td>
-                      <td>{{ data?.contratto?.ticket ? 'Sì' : 'No' }}</td>
-                    </tr>
-                    <tr>
-                      <td> <strong>Valore Ticket:</strong> </td>
-                      <td>{{ data?.contratto?.valoreTicket ? data?.contratto?.valoreTicket: 'Dato non inserito' }} <i
-                          class="fa fa-euro-sign" *ngIf="data?.contratto?.valoreTicket!=null"></i></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
             </div>
           </mat-step>
           <mat-step>

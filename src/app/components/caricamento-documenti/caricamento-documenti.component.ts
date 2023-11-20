@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import { MenuService } from '../menu.service';
@@ -40,6 +40,8 @@ export class CaricamentoDocumentiComponent implements OnInit {
   mobile: boolean=false;
   uploadProgress: number | undefined;
   uploadProgressColor: string = 'primary';
+  elencoAnagraficheNonInserite: any[]=[];
+  risposta:any;
 
 
   constructor(
@@ -47,7 +49,8 @@ export class CaricamentoDocumentiComponent implements OnInit {
     private menuService: MenuService,
     public themeService:ThemeService,
     private profileBoxService: ProfileBoxService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -123,7 +126,7 @@ export class CaricamentoDocumentiComponent implements OnInit {
       base64: this.base64Documento,
     };
 
-    console.log('BODY PER SALVATAGGIO DOCUMENTI: ' + JSON.stringify(body));
+    // console.log('BODY PER SALVATAGGIO DOCUMENTI: ' + JSON.stringify(body));
 
     this.anagraficaDtoService.salvaDocumento(body, this.token, {
       reportProgress: true,
@@ -134,13 +137,15 @@ export class CaricamentoDocumentiComponent implements OnInit {
           this.uploadProgress = Math.round((100 * event.loaded) / event.total);
         } else if (event.type === HttpEventType.Response) {
           this.uploadProgress = 100; // Completamento
-          this.uploadProgressColor = 'accent'; // Cambia il colore a verde
+          this.uploadProgressColor = 'primary'; // Cambia il colore a verde
 
-          if ((event as any).body && (event as any).body.esito && (event as any).body.esito.code !== 200) {
-            this.mostraAlert('danger', 'Salvataggio non riuscito', (event as any).body.esito.target);
-          } else {
-            this.mostraAlert('success', 'Caricamento completato', (event as any).body.esito.target);
-          }
+          this.mostraAlert('success', 'Caricamento completato', (event as any).body.esito.target);
+
+          this.risposta = event.body.list;
+          localStorage.setItem('Dati sbagliati', JSON.stringify(this.risposta));
+          this.elencoAnagraficheNonInserite = this.risposta;
+          this.cdr.detectChanges();
+          console.log("Elenco anagrafiche non inserite:", JSON.stringify(this.elencoAnagraficheNonInserite));
         }
       },
       (error: any) => {
@@ -150,6 +155,8 @@ export class CaricamentoDocumentiComponent implements OnInit {
       }
     );
   }
+
+
 
   mostraAlert(tipo: string, titolo: string, messaggio: string): void {
     const dialogRef = this.dialog.open(AlertDialogComponent, {

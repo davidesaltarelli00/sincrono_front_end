@@ -198,6 +198,27 @@ export class UtenteComponent implements OnInit {
     this.showError = false; // Resetta l'errore quando l'utente inizia a digitare
   }
 
+  toggleOnSite(giorno: any): void {
+    if (!this.risultatoCheckFreeze && !giorno.malattie && !giorno.ferie && !giorno.checkSmartworking) {
+      giorno.checkOnSite = !giorno.checkOnSite;
+    }
+  }
+  toggleSmartworking(giorno: any): void {
+    if (!this.risultatoCheckFreeze && !giorno.malattie && !giorno.ferie && !giorno.checkOnSite) {
+      giorno.checkSmartworking = !giorno.checkSmartworking;
+    }
+  }
+  toggleFerie(giorno: any): void {
+    if (!this.risultatoCheckFreeze && !giorno.malattie && !giorno.ferie && !giorno.checkOnSite) {
+      giorno.ferie = !giorno.ferie;
+    }
+  }
+  togglemalattia(giorno: any): void {
+    if (!this.risultatoCheckFreeze && !giorno.malattie && !giorno.ferie && !giorno.checkOnSite) {
+      giorno.malattie = !giorno.malattie;
+    }
+  }
+
   selectAzienda(azienda: string) {
     if (this.aziendeClienti.includes(azienda)) {
       this.giorno.cliente = azienda;
