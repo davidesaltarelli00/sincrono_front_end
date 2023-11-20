@@ -869,3 +869,48 @@ mat-list-item a {
 .dark-mode button{
   border: 1px solid #f2f2f2;
 }
+
+
+/* Stile per l'intero mat-stepper */
+.mat-horizontal-stepper, .mat-vertical-stepper {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Stile per i singoli passaggi del mat-stepper */
+.mat-step {
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Stile per la barra di avanzamento (Solo per stepper orizzontali) */
+.mat-horizontal-stepper-header-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Stile per il pulsante Avanti/Retrocedi (Solo per stepper orizzontali) */
+.mat-horizontal-stepper-navigation {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Stile per il numero del passaggio */
+.mat-step-label {
+  color: #333;
+  font-size: 16px;
+}
+
+/* Stile per l'indicatore del passaggio corrente */
+.mat-step-header-selected {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+/* Stile per il pulsante Conferma (Solo per stepper finale) */
+.mat-stepper-finalized .mat-horizontal-stepper-navigation {
+  justify-content: flex-end;
+}

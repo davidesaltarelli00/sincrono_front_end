@@ -510,6 +510,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     }
   }
 
+
+
   onChangeAssicurazioneObbligatoria(event: Event) {
     const target = event.target as HTMLInputElement;
     if (target) {

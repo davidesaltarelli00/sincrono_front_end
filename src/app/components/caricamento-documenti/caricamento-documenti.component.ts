@@ -8,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { HttpEventType } from '@angular/common/http';
 import { ThemeService } from 'src/app/theme.service';
+import { Observable, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-caricamento-documenti',
@@ -40,7 +42,7 @@ export class CaricamentoDocumentiComponent implements OnInit {
   mobile: boolean=false;
   uploadProgress: number | undefined;
   uploadProgressColor: string = 'primary';
-  elencoAnagraficheNonInserite: any[]=[];
+  elencoAnagraficheNonInserite$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   risposta:any;
 
 
@@ -71,8 +73,65 @@ export class CaricamentoDocumentiComponent implements OnInit {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
+      this.getAllAnagraficheNonInserite();
     }
   }
+
+
+
+  salvaDocumento() {
+    let body = {
+      base64: this.base64Documento,
+    };
+
+    // console.log('BODY PER SALVATAGGIO DOCUMENTI: ' + JSON.stringify(body));
+
+    this.anagraficaDtoService.salvaDocumento(body, this.token, {
+      reportProgress: true,
+      observe: 'events',
+    }).subscribe(
+      (event: any) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.uploadProgress = Math.round((100 * event.loaded) / event.total);
+        } else if (event.type === HttpEventType.Response) {
+          this.uploadProgress = 100; // Completamento
+          this.uploadProgressColor = 'primary'; // Cambia il colore a verde
+
+          this.mostraAlert('success', 'Caricamento completato', (event as any).body.esito.target);
+
+          this.risposta = event.body.list;
+          this.elencoAnagraficheNonInserite$.next(this.risposta);
+          localStorage.setItem('DatiSbagliati', JSON.stringify(this.risposta));
+          this.cdr.detectChanges();
+          console.log("Elenco anagrafiche non inserite:", JSON.stringify(this.elencoAnagraficheNonInserite$));
+
+        }
+      },
+      (error: any) => {
+        this.uploadProgressColor = 'warn'; // Cambia il colore a rosso in caso di errore
+        console.error(error);
+        this.mostraAlert('danger', 'Errore durante il caricamento', 'Si è verificato un errore durante il caricamento del documento.');
+      }
+    );
+  }
+
+  getAllAnagraficheNonInserite() {
+    const localStorageData = localStorage.getItem('DatiSbagliati');
+
+    if (localStorageData) {
+      try {
+        const parsedData = JSON.parse(localStorageData);
+        this.elencoAnagraficheNonInserite$.next(parsedData);
+        console.log("DATI RECUPERATI:"+ JSON.stringify(localStorageData));
+      } catch (error) {
+        console.error('Errore nel parsing dei dati localStorage:', error);
+        this.elencoAnagraficheNonInserite$.next([]);
+      }
+    } else {
+      this.elencoAnagraficheNonInserite$.next([]);
+    }
+  }
+
 
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
@@ -120,43 +179,6 @@ export class CaricamentoDocumentiComponent implements OnInit {
     // Display the preview
     this.previewData = htmlString;
   }
-
-  salvaDocumento() {
-    let body = {
-      base64: this.base64Documento,
-    };
-
-    // console.log('BODY PER SALVATAGGIO DOCUMENTI: ' + JSON.stringify(body));
-
-    this.anagraficaDtoService.salvaDocumento(body, this.token, {
-      reportProgress: true,
-      observe: 'events',
-    }).subscribe(
-      (event: any) => {
-        if (event.type === HttpEventType.UploadProgress) {
-          this.uploadProgress = Math.round((100 * event.loaded) / event.total);
-        } else if (event.type === HttpEventType.Response) {
-          this.uploadProgress = 100; // Completamento
-          this.uploadProgressColor = 'primary'; // Cambia il colore a verde
-
-          this.mostraAlert('success', 'Caricamento completato', (event as any).body.esito.target);
-
-          this.risposta = event.body.list;
-          localStorage.setItem('Dati sbagliati', JSON.stringify(this.risposta));
-          this.elencoAnagraficheNonInserite = this.risposta;
-          this.cdr.detectChanges();
-          console.log("Elenco anagrafiche non inserite:", JSON.stringify(this.elencoAnagraficheNonInserite));
-        }
-      },
-      (error: any) => {
-        this.uploadProgressColor = 'warn'; // Cambia il colore a rosso in caso di errore
-        console.error(error);
-        this.mostraAlert('danger', 'Errore durante il caricamento', 'Si è verificato un errore durante il caricamento del documento.');
-      }
-    );
-  }
-
-
 
   mostraAlert(tipo: string, titolo: string, messaggio: string): void {
     const dialogRef = this.dialog.open(AlertDialogComponent, {

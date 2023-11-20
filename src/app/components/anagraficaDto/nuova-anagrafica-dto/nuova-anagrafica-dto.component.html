@@ -98,6 +98,7 @@
 </head>
 
 <body [class.dark-mode]="themeService.isDarkModeEnabled()">
+  <div id="inizioPagina"></div>
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && !mobile">
       <a [routerLink]="['/home']" class="logo-link">
@@ -530,8 +531,9 @@
                             <label>Coniugato </label>
                             <label class="toggle-switch">
                               <div class="form-check">
-                                <input class="form-check-input" type="checkbox" style="border-color: black"
-                                  formControlName="coniugato" (change)="onChangeConiugato($event)" />
+                                <input class="form-check-input"
+                                 type="checkbox" style="border-color: black"
+                                 formControlName="coniugato" (change)="onChangeConiugato($event)" />
                                 <span class="slider"></span>
                               </div>
                             </label>
@@ -1537,6 +1539,7 @@
       </div>
     </div>
   </div>
+  <div id="finePagina"></div>
 </body>
 
 </html>

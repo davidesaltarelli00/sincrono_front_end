@@ -47,7 +47,7 @@
     </div>
     <br>
       <div class="row">
-        <div class="col-8" style="margin: auto; text-align: center;">
+        <div class="col-12" style="margin: auto; text-align: center;">
           <mat-card>
             <!-- <mat-card-title class="text-center">
               <h1>Caricamento documenti</h1>
@@ -95,38 +95,39 @@
               <mat-card>
                 <mat-card-title>Elenco anagrafiche non inserite</mat-card-title>
                 <mat-card-subtitle>
-          <h5> <i class="fa fa-exclamation-triangle" ></i> Attenzione: queste anagrafiche saranno disponibili finché l'autenticazione é valida, poi andranno perse. </h5>
+          <h5> <i class="fa fa-exclamation-triangle" ></i> Attenzione: queste anagrafiche saranno disponibili finché l'autenticazione é valida, dopodiché andranno perse. </h5>
                 </mat-card-subtitle>
                 <mat-card-content>
-                  <table id="table" class="table table-bordered">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th scope="col">Ruolo</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Cognome</th>
-                        <th scope="col">Codice Fiscale</th>
-                        <th scope="col">Nome azienda</th>
-                        <th scope="col">Mail aziendale</th>
-                        <th scope="col">Cell privato</th>
-                        <th scope="col">Contratto</th>
-                        <th scope="col">Attesa lavori</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let element of elencoAnagraficheNonInserite; let i=index">
+                  <ng-container *ngIf="elencoAnagraficheNonInserite$ | async as elencoAnagrafiche">
+                    <table id="table" class="table table-striped">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col">Nome</th>
+                          <th scope="col">Cognome</th>
+                          <th scope="col">Codice Fiscale</th>
+                          <th scope="col">Azienda</th>
+                          <th scope="col">Mail aziendale</th>
+                          <th scope="col">Cell privato</th>
+                          <th scope="col">Contratto</th>
+                          <!-- <th scope="col">Attesa lavori</th> -->
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let element of elencoAnagraficheNonInserite$ | async; let i=index">
 
-                        <td>{{element?.ruolo?.descrizione}}</td>
-                        <td>{{ element.anagrafica?.nome |titlecase }}</td>
-                        <td>{{ element.anagrafica?.cognome |titlecase }}</td>
-                        <td>{{ element.anagrafica?.codiceFiscale |uppercase }}</td>
-                        <td>{{ element.anagrafica?.tipoAzienda?.descrizione |titlecase }}</td>
-                        <td>{{ element.anagrafica?.mailAziendale }}</td>
-                        <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non inserito' }}</td>
-                        <td>{{element.contratto?.tipoContratto?.descrizione}}</td>
-                        <td>{{element.anagrafica.attesaLavori ? 'Si': 'No' }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                          <td>{{ element.anagrafica?.nome |titlecase }}</td>
+                          <td>{{ element.anagrafica?.cognome |titlecase }}</td>
+                          <td>{{ element.anagrafica?.codiceFiscale |uppercase }}</td>
+                          <td>{{ element.anagrafica?.tipoAzienda?.descrizione |titlecase }}</td>
+                          <td>{{ element.anagrafica?.mailAziendale }}</td>
+                          <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non inserito' }}</td>
+                          <td>{{element.contratto?.tipoContratto?.descrizione}}</td>
+                          <!-- <td>{{element.anagrafica.attesaLavori ? 'Si': 'No' }}</td> -->
+                        </tr>
+                      </tbody>
+                    </table>
+                  </ng-container>
+
                 </mat-card-content>
               </mat-card>
             </div>

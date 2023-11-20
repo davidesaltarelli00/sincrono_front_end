@@ -42,7 +42,7 @@ import { FormRecuperoPasswordComponent } from './components/form-recupero-passwo
 import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
 import { UtenteComponent } from './components/utente/utente.component';
 import { GiornoComponent } from './components/giorno/giorno.component';
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirective';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
@@ -111,6 +111,7 @@ import { CaricamentoDocumentiComponent } from './components/caricamento-document
     ReactiveFormsModule,
     FormsModule,
     MaterialModule,
+    CommonModule,
     MatSelectModule,
 
   ],
