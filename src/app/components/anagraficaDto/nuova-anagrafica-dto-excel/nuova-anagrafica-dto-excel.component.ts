@@ -1,46 +1,49 @@
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormArray,
-  Validators,
-} from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
-import { AnagraficaDtoService } from '../anagraficaDto-service';
-import { Router } from '@angular/router';
-import { ContrattoService } from '../../contratto/contratto-service';
-import { ThemePalette } from '@angular/material/core';
-import { DatePipe } from '@angular/common';
-import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { ProfileBoxService } from '../../profile-box/profile-box.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ThemeService } from 'src/app/theme.service';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { MenuService } from '../../menu.service';
-import { MapsService } from './maps.service';
-import * as XLSX from 'xlsx';
-import { ThemeService } from 'src/app/theme.service';
-
-export const MY_DATE_FORMATS = {
-  parse: {
-    dateInput: 'YYYY/MM/GG',
-  },
-  display: {
-    dateInput: 'YYYY/MM/GG',
-    monthYearLabel: 'MMMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+import { ProfileBoxService } from '../../profile-box/profile-box.service';
+import { AnagraficaDtoService } from '../anagraficaDto-service';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { ContrattoService } from '../../contratto/contratto-service';
+import { MapsService } from '../nuova-anagrafica-dto/maps.service';
 
 @Component({
-  selector: 'app-nuova-anagrafica-dto',
-  templateUrl: './nuova-anagrafica-dto.component.html',
-  styleUrls: ['./nuova-anagrafica-dto.component.scss'],
+  selector: 'app-nuova-anagrafica-dto-excel',
+  templateUrl: './nuova-anagrafica-dto-excel.component.html',
+  styleUrls: ['./nuova-anagrafica-dto-excel.component.scss'],
 })
-export class NuovaAnagraficaDtoComponent implements OnInit {
+export class NuovaAnagraficaDtoExcelComponent implements OnInit {
+  codiceFiscale: string | null = null;
+  anagraficaData: any | null = null;
+
+  //navbar
+  userLoggedName: any;
+  userLoggedSurname: any;
+  shouldReloadPage: any;
+  idFunzione: any;
+  jsonData: any;
+  userRoleNav: any;
+  idNav: any;
+  tokenProvvisorio: any;
+  idUtente: any;
+  nazioni: string[] = [];
+  capitali: any[] = [];
+  province: any[] = [];
+  dati: any = [];
+  statoDiNascita: any;
+  provinciaDiNascita: string = '';
+  ruolo: any;
+  token = localStorage.getItem('token');
+  mobile: boolean = false;
+
+
   data: any = [];
   utenti: any = [];
   currentStep = 1;
@@ -66,8 +69,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   ccnLSelezionato = false;
   elencoLivelliCCNL: any[] = [];
   risultatoMensileTOT: any;
-  //org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : it.sincrono.entities.Commessa.tipoAziendaCliente -> it.sincrono.entities.TipoAziendaCliente"
-  //dati per i controlli nei form
   inseritoContrattoIndeterminato = true;
   idLivelloContratto: any;
   retribuzioneMensileLorda: any;
@@ -78,31 +79,16 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   minimiRet23: any;
   ralAnnua: any;
   tipoContratto: any;
-  mobile: boolean;
   aziendeClienti: any[] = [];
   selectedFileName: string = '';
   previewData: string | undefined;
-  //navbar
-  userLoggedName: any;
-  userLoggedSurname: any;
-  shouldReloadPage: any;
-  idFunzione: any;
-  jsonData: any;
-  token = localStorage.getItem('token');
-  userRoleNav: any;
-  idNav: any;
-  tokenProvvisorio: any;
-  idUtente: any;
-  nazioni: string[] = [];
-  capitali: any[] = [];
-  province: any[] = [];
-  dati: any = [];
-  statoDiNascita: any;
-  provinciaDiNascita: string = '';
-  ruolo: any;
-  base64Documento:any;
+  dataOdierna: any;
+  dataFormattata:any;
+
 
   constructor(
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
     private router: Router,
@@ -115,6 +101,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     public themeService: ThemeService,
     private menuService: MenuService,
     private mapsService: MapsService
+
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -128,6 +115,17 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       ) == true
     ) {
       this.mobile = true;
+    }
+
+    this.dataOdierna = new Date();
+    if (this.dataOdierna) {
+      this.dataFormattata = this.datePipe.transform(
+        this.dataOdierna,
+        'yyyy-MM-dd'
+      );
+      if (this.dataFormattata) {
+        console.log('DATA DI OGGI FORMATTATA: ' + this.dataFormattata);
+      }
     }
 
     this.AnagraficaDto = this.formBuilder.group({
@@ -246,30 +244,28 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     });
 
     this.commesse = this.AnagraficaDto.get('commesse') as FormArray;
-
-    // this.caricaListaUtenti();
-
-    console.log(
-      'TIPO AZIENDA VALIDITY: ' +
-        this.AnagraficaDto.get('tipoAzienda.id')?.hasError('required')
-    );
-
-    this.caricaTipoContratto();
-    // this.caricaLivelloContratto();
-    this.caricaTipoAzienda();
-    this.caricaAziendeClienti();
-    this.caricaContrattoNazionale();
-    // this.caricaTipoCausaFineRapporto();
-    this.caricaRuoli();
-    this.caricaTipoCanaleReclutamento();
   }
 
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
-      this.caricaMappa();
-    }
+      this.caricaTipoContratto();
+    this.caricaTipoAzienda();
+    this.caricaAziendeClienti();
+    this.caricaContrattoNazionale();
+    this.caricaRuoli();
+    this.caricaTipoCanaleReclutamento();
+    this.caricaMappa();
+      this.codiceFiscale = this.route.snapshot.paramMap.get('codiceFiscale');
+      if (this.codiceFiscale) {
+        const localStorageData = JSON.parse(
+          localStorage.getItem('DatiSbagliati') || 'null'
+        );
+        this.anagraficaData = localStorageData.find(
+          (item: any) => item?.anagrafica?.codiceFiscale === this.codiceFiscale
+        );
+      }
 
     //INIZIO porzione di codice necessaria alla disabilitazione dei campi "distaccoAzienda" e "DistaccoData" nelle commesseç
     const commesseFormArray = this.AnagraficaDto.get('commesse') as FormArray;
@@ -408,7 +404,9 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       this.calcoloRAL();
     });
     this.calcoloRAL();
+    }
   }
+
 
   caricaMappa() {
     this.mapsService.getData().subscribe((data: any) => {
@@ -1806,6 +1804,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     }
   }
 
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
+  }
+
   //navbar
   logout() {
     this.dialog.open(AlertLogoutComponent);
@@ -1884,68 +1886,4 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       }
     );
   }
-  onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-
-    if (file) {
-      this.selectedFileName = file.name;
-
-      const reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        const data: ArrayBuffer = e.target.result;
-        const base64String: string = this.arrayBufferToBase64(data);
-        this.previewExcel(base64String);
-        this.base64Documento=base64String;
-      };
-
-      reader.readAsArrayBuffer(file);
-    }
-  }
-
-  arrayBufferToBase64(buffer: ArrayBuffer): string {
-    let binary = '';
-    const bytes = new Uint8Array(buffer);
-
-    for (let i = 0; i < bytes.byteLength; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-
-    return btoa(binary);
-  }
-
-  previewExcel(base64String: string): void {
-    const workbook: XLSX.WorkBook = XLSX.read(base64String, { type: 'base64' });
-
-    // Assuming the first sheet is the one you want to preview
-    const firstSheetName = workbook.SheetNames[0];
-    const worksheet: XLSX.WorkSheet = workbook.Sheets[firstSheetName];
-
-    // Convert the worksheet to HTML
-    const htmlString: string = XLSX.write(workbook, { bookType: 'html', type: 'string' });
-
-    // Display the preview
-    this.previewData = htmlString;
-  }
-
-  salvaDocumento(){
-    let body={
-      base64: this.base64Documento
-    };
-    console.log("BODY PER SALVATAGGIO DOCUMENTI: "+JSON.stringify(body));
-    this.anagraficaDtoService.salvaDocumento(body, this.token).subscribe(
-      (result:any)=>{
-        console.log("RISULTATO SALVATAGGIO DOCUMENTI: " + JSON.stringify(result) )
-      },
-      (error:any)=>{
-        console.error(error);
-      }
-    );
-  }
-
-
-  toggleDarkMode(): void {
-    this.themeService.toggleDarkMode();
-  }
-
 }

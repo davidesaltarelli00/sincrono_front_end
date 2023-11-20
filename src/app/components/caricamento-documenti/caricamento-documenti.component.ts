@@ -10,6 +10,7 @@ import { HttpEventType } from '@angular/common/http';
 import { ThemeService } from 'src/app/theme.service';
 import { Observable, of } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-caricamento-documenti',
@@ -52,7 +53,8 @@ export class CaricamentoDocumentiComponent implements OnInit {
     public themeService:ThemeService,
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router:Router
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -132,6 +134,9 @@ export class CaricamentoDocumentiComponent implements OnInit {
     }
   }
 
+  inserisci(codiceFiscale:any){
+    this.router.navigate(['/nuova-anagrafica-dto-excel/', codiceFiscale]);
+  }
 
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];

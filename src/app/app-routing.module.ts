@@ -30,6 +30,7 @@ import { ModaleDettaglioRapportinoComponent } from './components/modale-dettagli
 import { ImmagineComponent } from './components/immagine/immagine.component';
 import { RichiesteComponent } from './components/richieste/richieste.component';
 import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
+import { NuovaAnagraficaDtoExcelComponent } from './components/anagraficaDto/nuova-anagrafica-dto-excel/nuova-anagrafica-dto-excel.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -92,6 +93,11 @@ const routes: Routes = [
   {
     path: 'documenti',
     component: CaricamentoDocumentiComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'nuova-anagrafica-dto-excel/:codiceFiscale',
+    component: NuovaAnagraficaDtoExcelComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
 

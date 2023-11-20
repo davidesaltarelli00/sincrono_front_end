@@ -109,7 +109,7 @@
                           <th scope="col">Mail aziendale</th>
                           <th scope="col">Cell privato</th>
                           <th scope="col">Contratto</th>
-                          <!-- <th scope="col">Attesa lavori</th> -->
+                          <th scope="col">Azioni</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -122,7 +122,7 @@
                           <td>{{ element.anagrafica?.mailAziendale }}</td>
                           <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non inserito' }}</td>
                           <td>{{element.contratto?.tipoContratto?.descrizione}}</td>
-                          <!-- <td>{{element.anagrafica.attesaLavori ? 'Si': 'No' }}</td> -->
+                          <td> <button mat-stroked-button color="primary" (click)="inserisci(element.anagrafica.codiceFiscale)" >  <i class="fa fa-plus" ></i> </button> </td>
                         </tr>
                       </tbody>
                     </table>
