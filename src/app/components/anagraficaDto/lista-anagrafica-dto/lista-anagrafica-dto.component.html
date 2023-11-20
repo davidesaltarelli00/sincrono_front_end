@@ -161,7 +161,7 @@
         <br>
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Lista anagrafiche</h1>
+          <h1>Lista anagrafiche <i class="fa fa-list"></i></h1>
         </mat-card>
       </div>
     </div>
@@ -534,12 +534,14 @@
                 <td>{{ element.anagrafica?.mailAziendale }}</td>
                 <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non inserito' }}
                 </td>
-                <td style="cursor: pointer;" [ngStyle]="{'color': element?.contratto!=null ? 'black' : 'red'}"
-                  [matTooltip]="element?.contratto!=null ? 'Vedi Il contratto di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi contratto a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome"
-                  (click)="handleClickContratto(element)">
+                <td >
+                 <p style="cursor: pointer;" [ngStyle]="{'color': element?.contratto!=null ? 'black' : 'red'}"
+                 [matTooltip]="element?.contratto!=null ? 'Vedi Il contratto di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi contratto a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome"
+                 (click)="handleClickContratto(element)">
                   {{ element?.contratto!=null ? element.contratto.tipoContratto.descrizione : 'Non inserito' }}
                   <i *ngIf="element?.contratto!=null" class="fa fa-info-circle" style="cursor:pointer;"></i>
                   <i *ngIf="element?.contratto==null" class="fa fa-plus-circle" style="cursor:pointer;"></i>
+                 </p>
                 </td>
 
                 <td *ngIf="element.contratto?.tipoContratto?.descrizione==='#'">

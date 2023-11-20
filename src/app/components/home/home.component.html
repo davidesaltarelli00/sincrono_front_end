@@ -153,7 +153,7 @@ img{
     <div class="col-12">
       <mat-card style="text-align: center;">
         <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-        <h1>Sincrono CRM</h1>
+        <h1>Home <i class="fa fa-house" ></i> </h1>
       </mat-card>
     </div>
   </div>
@@ -259,7 +259,7 @@ img{
       <legend><b>I nostri clienti</b></legend>
     </div>
     <div class="row">
-      <div class="col-2" *ngFor="let azienda of aziendeClienti; let i=index;" >
+      <div class="col-2" *ngFor="let azienda of aziendeClienti; let i=index;" [hidden]="azienda.descrizione==='interno'" >
         <mat-card class="clienti">
           <p>{{azienda.descrizione}}</p>
         </mat-card>
