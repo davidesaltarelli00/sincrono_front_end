@@ -871,7 +871,7 @@
 
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label for="dataFineRapporto">Data Fine contratto</label>
+                              <label for="dataFineContratto">Data Fine contratto</label>
                               <input type="date" class="form-control" name="dataInput"
                                 formControlName="dataFineContratto" [ngStyle]="{
                                     border: AnagraficaDto.get(
@@ -887,9 +887,9 @@
                                   " class="text-danger">
                                 Il campo Data Fine contratto è obbligatorio.
                               </div>
-                              <!--[disabled]="AnagraficaDto.get('contratto.tipoContratto.id')?.value === '4'"-->
                             </div>
                           </div>
+
                           <div class="col-md-3">
                             <div class="form-group">
                               <label for="dataFineRapporto">Data Fine Rapporto</label>
@@ -908,7 +908,6 @@
                                   " class="text-danger">
                                 Il campo Data Fine rapporto è obbligatorio.
                               </div>
-                              <!--[disabled]="AnagraficaDto.get('contratto.tipoContratto.id')?.value === '4'"-->
                             </div>
                           </div>
                         </div>

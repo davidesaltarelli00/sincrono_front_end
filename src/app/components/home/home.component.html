@@ -178,7 +178,7 @@ img{
       <mat-card style=" height: 100%;">
         <mat-card-content>
           <main>
-            <h2>Ciao {{userLoggedName}} {{userLoggedSurname}}.</h2>
+            <p>Ciao {{userLoggedName}} {{userLoggedSurname}}.</p>
             <p *ngIf="ruolo==='ADMIN'" >
               Benvenuti nell'area dedicata all'amministrazione di Sincrono CRM, il quale offre un controllo totale sulla gestione delle relazioni aziendali e delle risorse umane, fornendo un potente strumento per ottimizzare le dinamiche aziendali. Naviga tra le anagrafiche con facilità, modifica le informazioni con un semplice clic e disattiva le voci obsolete in modo intuitivo. La tua Dashboard ti accoglie con elenchi chiari di contratti e commesse, garantendo che nulla sfugga alla tua attenzione, sia che si tratti di scadenze imminenti o di opportunità da esplorare.
 
@@ -256,7 +256,7 @@ img{
   <br>
   <div class="row" *ngIf="ruolo!='DIPENDENTE'">
     <div class="col-12 text-center">
-      <legend><b>I nostri clienti</b></legend>
+      <h2><strong>I nostri clienti</strong></h2>
     </div>
     <div class="row">
       <div class="col-2" *ngFor="let azienda of aziendeClienti; let i=index;" [hidden]="azienda.descrizione==='interno'" >

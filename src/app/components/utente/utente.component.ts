@@ -1412,10 +1412,124 @@ export class UtenteComponent implements OnInit {
 
   onMeseSelectChange(event: any) {
     console.log('Mese selezionato:', event.target.value);
+    let body = {
+      rapportinoDto: {
+        anagrafica: {
+          codiceFiscale: this.codiceFiscale,
+        },
+        annoRequest: this.selectedAnno,
+        meseRequest: event.target.value,
+      },
+    };
+    console.log(JSON.stringify(body));
+    this.rapportinoService.getRapportino(this.token, body).subscribe(
+      (result: any) => {
+        if ((result as any).esito.code !== 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Caricamento non riuscito:',
+              message: (result as any).esito.target,
+            },
+          });
+        } else {
+          this.esitoCorretto = true;
+          this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
+          this.duplicazioniGiornoDto =
+            result['rapportinoDto']['mese']['giorni']['duplicazioniGiornoDto'];
+          this.giorniUtili = result['rapportinoDto']['giorniUtili'];
+          this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
+          this.note = result['rapportinoDto']['note'];
+          this.noteDipendente = result['rapportinoDto']['noteDipendente'];
+          this.gestisciStraordinari(this.rapportinoDto);
+          this.gestisciPermessi(this.rapportinoDto);
+          this.checkRapportinoInviato();
+          this.calcolaTotaleOreLavorate();
+          this.calcolaTotaleStraordinari();
+          this.calcolaTotaleFerie();
+          this.calcolaTotaleMalattia();
+          this.calcolaTotaleOrePermessi();
+          this.cdRef.detectChanges();
+
+          if (this.note === null || this.note==='' || this.note==="") {
+            console.log("non hai note.");
+          } else{
+            console.log("Hai note: "+ JSON.stringify(this.note));
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/logo.jpeg',
+                title: 'Attenzione, hai delle note:',
+                message: this.note,
+              },
+            });
+          }
+        }
+      },
+      (error: string) => {
+        console.error('ERRORE:' + JSON.stringify(error));
+      }
+    );
   }
 
   onAnnoSelectChange(event: any) {
     console.log('Anno selezionato:', event.target.value);
+    let body = {
+      rapportinoDto: {
+        anagrafica: {
+          codiceFiscale: this.codiceFiscale,
+        },
+        annoRequest: event.target.value,
+        meseRequest: this.selectedMese,
+      },
+    };
+    console.log(JSON.stringify(body));
+    this.rapportinoService.getRapportino(this.token, body).subscribe(
+      (result: any) => {
+        if ((result as any).esito.code !== 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Caricamento non riuscito:',
+              message: (result as any).esito.target,
+            },
+          });
+        } else {
+          this.esitoCorretto = true;
+          this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
+          this.duplicazioniGiornoDto =
+            result['rapportinoDto']['mese']['giorni']['duplicazioniGiornoDto'];
+          this.giorniUtili = result['rapportinoDto']['giorniUtili'];
+          this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
+          this.note = result['rapportinoDto']['note'];
+          this.noteDipendente = result['rapportinoDto']['noteDipendente'];
+          this.gestisciStraordinari(this.rapportinoDto);
+          this.gestisciPermessi(this.rapportinoDto);
+          this.checkRapportinoInviato();
+          this.calcolaTotaleOreLavorate();
+          this.calcolaTotaleStraordinari();
+          this.calcolaTotaleFerie();
+          this.calcolaTotaleMalattia();
+          this.calcolaTotaleOrePermessi();
+          this.cdRef.detectChanges();
+
+          if (this.note === null || this.note==='' || this.note==="") {
+            console.log("non hai note.");
+          } else{
+            console.log("Hai note: "+ JSON.stringify(this.note));
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/logo.jpeg',
+                title: 'Attenzione, hai delle note:',
+                message: this.note,
+              },
+            });
+          }
+        }
+      },
+      (error: string) => {
+        console.error('ERRORE:' + JSON.stringify(error));
+      }
+    );
   }
 
   logout() {

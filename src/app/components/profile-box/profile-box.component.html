@@ -420,12 +420,12 @@
                   <table class="table table-striped">
                     <thead>
                       <tr>
-                        <th>Tipo Contratto</th>
-                        <th>Mesi Durata</th>
+                        <th>Tipo contratto</th>
+                        <th>Mesi durata</th>
                         <th>Data assunzione</th>
-                        <th>Data Fine Prova</th>
-                        <th>Data Fine Rapporto</th>
-                        <th>Sede Assunzione</th>
+                        <th>Data fine Prova</th>
+                        <th>Data fine contratto</th>
+                        <th>Sede assunzione</th>
                         <th>Qualifica</th>
                       </tr>
                     </thead>
@@ -435,7 +435,7 @@
                       <td>{{ anagrafica?.anagraficaDto?.contratto?.mesiDurata ? anagrafica?.anagraficaDto?.contratto?.mesiDurata : 'Dato non inserito' }}</td>
                       <td>{{ anagrafica?.anagraficaDto?.contratto?.dataAssunzione | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
                       <td>{{ anagrafica?.anagraficaDto?.contratto?.dataFineProva | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
-                      <td>{{ anagrafica?.anagraficaDto?.contratto?.dataFineRapporto | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
+                      <td>{{ anagrafica?.anagraficaDto?.contratto?.dataFineContratto | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
                       <td>{{ anagrafica?.anagraficaDto?.contratto?.sedeAssunzione ? anagrafica?.anagraficaDto?.contratto?.sedeAssunzione : 'Dato non inserito' }}</td>
                       <td>{{ anagrafica?.anagraficaDto?.contratto?.qualifica ? anagrafica?.anagraficaDto?.contratto?.qualifica : 'Dato non inserito' }}</td>
                       </tr>
@@ -501,7 +501,7 @@
                 <h3>Commesse <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
                   matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                   <i class="fa fa-exclamation-triangle"></i> </button></h3>
-                <mat-card-content>
+                <mat-card-content *ngIf="elencoCommesse.length>0">
                   <table id="commessaTable" class="table table-striped" style="font-size: 15px;">
                     <thead class="thead-dark">
                       <tr>
@@ -547,6 +547,9 @@
                       </tr>
                     </tbody>
                   </table>
+                </mat-card-content>
+                <mat-card-content *ngIf="elencoCommesse.length<1">
+                  <h3 class="text-primary" >Non hai commesse al momento.</h3>
                 </mat-card-content>
               </mat-card>
             </div>

@@ -61,7 +61,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   commesse!: FormArray;
   showErrorAlert: boolean = false;
   missingFields: string[] = [];
-  isDataFineRapportoDisabled: any;
   percentualePartTimeValue: number | null = null;
   ccnLSelezionato = false;
   elencoLivelliCCNL: any[] = [];
@@ -388,13 +387,13 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
     this.AnagraficaDto.get('contratto.dataAssunzione')?.valueChanges.subscribe(
       () => {
-        this.calculateDataFineRapporto();
+        this.calculateDataFineContratto();
       }
     );
 
     this.AnagraficaDto.get('contratto.mesiDurata')?.valueChanges.subscribe(
       () => {
-        this.calculateDataFineRapporto();
+        this.calculateDataFineContratto();
       }
     );
 
@@ -596,8 +595,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
           console.log('Contratto selezionato: ', this.tipoContratto);
 
-          const dataFineRapportoControl = this.AnagraficaDto.get(
-            'contratto.dataFineRapporto'
+          const dataFineContrattoControl = this.AnagraficaDto.get(
+            'contratto.dataFineContratto'
           );
           const mesiDurataControl = this.AnagraficaDto.get(
             'contratto.mesiDurata'
@@ -648,7 +647,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           switch (selectedValue) {
             case 1: // Contratto STAGE
               if (
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 mesiDurataControl &&
                 retribuzioneMensileLordaControl &&
                 PFIcontrol &&
@@ -673,10 +672,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                 mesiDurataControl.setValue(6);
                 mesiDurataControl.updateValueAndValidity();
 
-                dataFineRapportoControl.enable();
-                dataFineRapportoControl.setValidators([Validators.required]);
-                dataFineRapportoControl.setValue(null);
-                dataFineRapportoControl.updateValueAndValidity();
+                dataFineContrattoControl.enable();
+                dataFineContrattoControl.setValidators([Validators.required]);
+                dataFineContrattoControl.setValue(null);
+                dataFineContrattoControl.updateValueAndValidity();
 
                 tutorControl.enable();
                 tutorControl.setValidators([Validators.required]);
@@ -765,7 +764,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                 retribuzioneMensileLordaControl &&
                 retribuzioneNettaMensileControl &&
                 retribuzioneNettaGiornalieraControl &&
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 mesiDurataControl &&
                 livelloAttualeControl &&
                 livelloFinaleControl &&
@@ -822,10 +821,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                 dataFineProvaControl.setValue('');
                 dataFineProvaControl.updateValueAndValidity();
 
-                dataFineRapportoControl.disable();
-                dataFineRapportoControl.setValue('');
-                dataFineRapportoControl.clearValidators();
-                dataFineRapportoControl.updateValueAndValidity();
+                dataFineContrattoControl.disable();
+                dataFineContrattoControl.setValue('');
+                dataFineContrattoControl.clearValidators();
+                dataFineContrattoControl.updateValueAndValidity();
 
                 mesiDurataControl.disable();
                 mesiDurataControl.setValue('');
@@ -847,7 +846,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                 scattiAnzianitaControl &&
                 tariffaPartitaIvaControl &&
                 retribuzioneMensileLordaControl &&
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 livelloAttualeControl &&
                 livelloFinaleControl &&
                 retribuzioneNettaGiornalieraControl &&
@@ -864,10 +863,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                 mesiDurataControl.setValidators([Validators.required]);
                 mesiDurataControl.updateValueAndValidity();
 
-                dataFineRapportoControl.enable();
-                dataFineRapportoControl.setValue('');
-                dataFineRapportoControl.setValidators([Validators.required]);
-                dataFineRapportoControl.updateValueAndValidity();
+                dataFineContrattoControl.enable();
+                dataFineContrattoControl.setValue('');
+                dataFineContrattoControl.setValidators([Validators.required]);
+                dataFineContrattoControl.updateValueAndValidity();
 
                 retribuzioneMensileLordaControl.enable();
                 retribuzioneMensileLordaControl.setValue('');
@@ -923,7 +922,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
             case 4: // Contratto a tempo indeterminato
               if (
                 mesiDurataControl &&
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 tariffaPartitaIvaControl &&
                 tutorControl &&
                 PFIcontrol &&
@@ -942,8 +941,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                 retribuzioneNettaGiornalieraControl.disable();
                 retribuzioneNettaGiornalieraControl.setValue('');
 
-                dataFineRapportoControl.disable();
-                dataFineRapportoControl.setValue(null);
+                dataFineContrattoControl.disable();
+                dataFineContrattoControl.setValue(null);
 
                 tariffaPartitaIvaControl.disable();
                 tariffaPartitaIvaControl.setValue('');
@@ -986,7 +985,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
             case 5: // Contratto di apprendistato
               if (
                 mesiDurataControl &&
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 tariffaPartitaIvaControl &&
                 tutorControl &&
                 PFIcontrol &&
@@ -1001,10 +1000,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
               ) {
                 mesiDurataControl.enable();
                 mesiDurataControl.setValue(36);
-                this.calculateDataFineRapporto();
+                this.calculateDataFineContratto();
 
-                dataFineRapportoControl.enable();
-                dataFineRapportoControl.setValue(null);
+                dataFineContrattoControl.enable();
+                dataFineContrattoControl.setValue(null);
 
                 tariffaPartitaIvaControl.disable();
                 tariffaPartitaIvaControl.setValue('');
@@ -1093,7 +1092,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-  calculateDataFineRapporto() {
+  calculateDataFineContratto() {
     const mesiDurataControl = this.AnagraficaDto.get('contratto.mesiDurata');
     const dataFineContrattoControl = this.AnagraficaDto.get(
       'contratto.dataFineContratto'
@@ -1125,7 +1124,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           'yyyy-MM-dd'
         );
 
-        // Imposta il valore formattato nel controllo 'dataFineRapporto'
+        // Imposta il valore formattato nel controllo 'dataFineContratto'
         dataFineContrattoControl?.setValue(dataFineContrattoFormatted);
       } else {
         // Alcuni dei valori necessari sono mancanti, gestisci di conseguenza
