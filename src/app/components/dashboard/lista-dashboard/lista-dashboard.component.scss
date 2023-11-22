@@ -14,18 +14,8 @@
   margin-right: 10px;
 }
 
-
-button {
-  background-color: rgb(24, 122, 0);
-  color: white;
-  padding: 2px 4px;
-  margin-left: 10px;
-}
-
-
-button:hover {
-  background-color: rgb(24, 122, 0);
-  color: white;
+.dark-mode table{
+  border: 1px solid #ffffff;
 }
 
 mat-expansion-panel {
@@ -53,8 +43,7 @@ footer {
 /* Reduce padding for table cells */
 .table th,
 .table td {
-  padding: 4px 8px;
-  /* Adjust as needed */
+  font-size: 13px;
 }
 
 /* Reduce line height for table cells */
@@ -158,12 +147,7 @@ table {
   }
 }
 
-th {
-  position: sticky;
-  top: 0;
-  background-color: #fff;
-  z-index: 2;
-}
+
 
 @media (max-width: 768px) {
 
@@ -250,10 +234,18 @@ th {
   color: #ddd; /* Colore del placeholder nei temi scuri */
 }
 
+mat-card-title, mat-card-subtitle, mat-card-footer{
+  text-align: center;
+}
+
 .dark-mode mat-card {
   background-color: #333;
   color: #fff;
   border: 1px solid #f1f1f1;
+}
+
+.dark-mode button{
+  border: 1px solid white;
 }
 
 /* Stili specifici per dark mode */

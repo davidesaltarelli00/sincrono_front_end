@@ -16,6 +16,7 @@ import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.componen
 import { MenuService } from '../../menu.service';
 import { ImageService } from '../../image.service';
 import { ThemeService } from 'src/app/theme.service';
+import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.component';
 declare var $: any;
 
 @Component({
@@ -475,113 +476,118 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-  elimina(idAnagrafica: number) {
-    const confirmation = confirm(
-      'Sei sicuro di voler disattivare questo utente?'
-    );
-    if (confirmation) {
-      console.log(idAnagrafica);
-      //mi prendo il dettaglio dell anagrafica della riga selezionata
+  elimina(idAnagrafica: number, nome:any, cognome:any) {
+    const dialogRef = this.dialog.open(AlertConfermaComponent, {
+      data: {
+        image: '../../../../assets/images/danger.png',
+        title: 'Attenzione:',
+        message:  "Confermi di voler disattivare l'utenza di "+nome+" "+cognome+"?",
+      },
+    });
+
+    dialogRef.componentInstance.conferma.subscribe(() => {
       this.anagraficaDtoService
-        .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
-        .subscribe(
-          (resp: any) => {
-            console.log(
-              'Dettaglio prima dell eliminazione: ' + JSON.stringify(resp)
-            );
-            let body = {
-              anagraficaDto: resp.anagraficaDto,
-            };
-            console.log(
-              "PAYLOAD BACKEND PER L'ELIMINAZIONE: " + JSON.stringify(body)
-            );
-            //se é ok parte l elimina
-            this.anagraficaDtoService
-              .delete(body, localStorage.getItem('token'))
-              .subscribe(
-                (response: any) => {
-                  if ((response as any).esito.code != 200) {
-                    const dialogRef = this.dialog.open(AlertDialogComponent, {
-                      data: {
-                        image:'../../../../assets/images/danger.png',
-                        title: 'Disattivazione non riuscita:',
-                        message: (response as any).esito.target,
-                      },
-                    });
-                  } else {
-                    const dialogRef = this.dialog.open(AlertDialogComponent, {
-                      data: {
-                        image:'../../../../assets/images/logo.jpeg',
-                        title: 'Disattivazione riuscita correttamente:',
-                        message: (response as any).esito.target,
-                      },
-                    });
-                    this.ngOnInit();
-                  }
-                },
-                (errorDeleted: any) => {
+      .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
+      .subscribe(
+        (resp: any) => {
+          console.log(
+            'Dettaglio prima dell eliminazione: ' + JSON.stringify(resp)
+          );
+          let body = {
+            anagraficaDto: resp.anagraficaDto,
+          };
+          console.log(
+            "PAYLOAD BACKEND PER L'ELIMINAZIONE: " + JSON.stringify(body)
+          );
+          //se é ok parte l elimina
+          this.anagraficaDtoService
+            .delete(body, localStorage.getItem('token'))
+            .subscribe(
+              (response: any) => {
+                if ((response as any).esito.code != 200) {
                   const dialogRef = this.dialog.open(AlertDialogComponent, {
                     data: {
                       image:'../../../../assets/images/danger.png',
-                      title: 'Errore durante l eliminazione:',
-                      message: JSON.stringify(errorDeleted),
+                      title: 'Disattivazione non riuscita:',
+                      message: (response as any).esito.target,
                     },
                   });
+                } else {
+                  const dialogRef = this.dialog.open(AlertDialogComponent, {
+                    data: {
+                      image:'../../../../assets/images/logo.jpeg',
+                      title: 'Disattivazione riuscita correttamente',
+                      message: (response as any).esito.target,
+                    },
+                  });
+                  this.ngOnInit();
                 }
-              );
-          },
-          (error: any) => {
-            const dialogRef = this.dialog.open(AlertDialogComponent, {
-              data: {
-                image:'../../../../assets/images/danger.png',
-                title: 'Qualcosa é andato storto:',
-                message: JSON.stringify(error),
               },
-            });
-          }
-        );
-    } else {
-      return;
-    }
+              (errorDeleted: any) => {
+                const dialogRef = this.dialog.open(AlertDialogComponent, {
+                  data: {
+                    image:'../../../../assets/images/danger.png',
+                    title: 'Errore durante l eliminazione:',
+                    message: JSON.stringify(errorDeleted),
+                  },
+                });
+              }
+            );
+        },
+        (error: any) => {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image:'../../../../assets/images/danger.png',
+              title: 'Qualcosa é andato storto:',
+              message: JSON.stringify(error),
+            },
+          });
+        }
+      );
+    });
   }
 
-  riattivaAnagrafica(id: any) {
-    const confirmation = confirm(
-      'Sei sicuro di voler riattivare questo utente?'
-    );
-    if (confirmation) {
+  riattivaAnagrafica(id: any, nome:any, cognome:any) {
+    const dialogRef = this.dialog.open(AlertConfermaComponent, {
+      data: {
+        image: '../../../../assets/images/danger.png',
+        title: 'Attenzione:',
+        message: "Confermi di voler riattivare l'utenza di "+nome+" "+cognome+"?",
+      },
+    });
+    dialogRef.componentInstance.conferma.subscribe(() => {
       this.anagraficaDtoService
-        .detailAnagraficaDto(id, localStorage.getItem('token'))
-        .subscribe(
-          (resp: any) => {
-            console.log('UTENTE DA RIATTIVARE: ' + JSON.stringify(resp));
-            //se é ok parte la riattivazione
-            this.anagraficaDtoService
-              .riattivaUtente(resp, localStorage.getItem('token'))
-              .subscribe(
-                (response: any) => {
-                  if ((response as any).esito.code != 200) {
-                    alert(
-                      'Riattivazione non riuscita:\n' +
-                        (response as any).esito.target
-                    );
-                  } else {
-                    alert('Utente riattivato correttamente.');
-                    this.ngOnInit();
-                  }
-                },
-                (errorDeleted: any) => {
-                  console.log(
-                    'Errore durante la riattivazione: ' + errorDeleted
+      .detailAnagraficaDto(id, localStorage.getItem('token'))
+      .subscribe(
+        (resp: any) => {
+          console.log('UTENTE DA RIATTIVARE: ' + JSON.stringify(resp));
+          //se é ok parte la riattivazione
+          this.anagraficaDtoService
+            .riattivaUtente(resp, localStorage.getItem('token'))
+            .subscribe(
+              (response: any) => {
+                if ((response as any).esito.code != 200) {
+                  alert(
+                    'Riattivazione non riuscita:\n' +
+                      (response as any).esito.target
                   );
+                } else {
+                  alert('Utente riattivato correttamente.');
+                  this.ngOnInit();
                 }
-              );
-          },
-          (error: any) => {
-            console.log(error);
-          }
-        );
-    }
+              },
+              (errorDeleted: any) => {
+                console.log(
+                  'Errore durante la riattivazione: ' + errorDeleted
+                );
+              }
+            );
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+    });
   }
 
   //paginazione

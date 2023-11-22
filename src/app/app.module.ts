@@ -61,6 +61,7 @@ import { RichiesteComponent } from './components/richieste/richieste.component';
 import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
 import { NuovaAnagraficaDtoExcelComponent } from './components/anagraficaDto/nuova-anagrafica-dto-excel/nuova-anagrafica-dto-excel.component';
 import { ModificaCommessaComponent } from './components/modifica-commessa/modifica-commessa.component';
+import { AlertConfermaComponent } from './alert-conferma/alert-conferma.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -100,6 +101,7 @@ import { ModificaCommessaComponent } from './components/modifica-commessa/modifi
     ImmagineComponent,
     BottoniComponent,
     MailSollecitaComponent,
+    AlertConfermaComponent,
     CaricamentoDocumentiComponent
   ],
   imports: [
