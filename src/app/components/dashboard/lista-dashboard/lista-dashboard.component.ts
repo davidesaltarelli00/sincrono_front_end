@@ -263,6 +263,70 @@ export class ListaDashboardComponent {
     }
   }
 
+  calculateDaysRemaining(dataFineRapporto: Date): number {
+    const oggi = new Date(); // Data odierna
+    const fineRapporto = new Date(dataFineRapporto);
+
+    // Calcolare la differenza in millisecondi tra le due date
+    const differenzaInMillisecondi = fineRapporto.getTime() - oggi.getTime();
+
+    // Convertire la differenza in millisecondi in giorni
+    const giorniRimanenti = Math.ceil(differenzaInMillisecondi / (1000 * 60 * 60 * 24));
+
+    return giorniRimanenti;
+  }
+
+  getDaysRemainingColor(dataFineRapporto: Date): string {
+    const giorniRimanenti = this.calculateDaysRemaining(dataFineRapporto);
+
+    if (giorniRimanenti > 30) {
+      return 'green';
+    } else if (giorniRimanenti >= 15 && giorniRimanenti <= 29) {
+      return 'orange';
+    } else {
+      return 'red';
+    }
+  }
+
+  calculateDaysRemainingCommessa(datafineCommessa: Date): number {
+    const oggi = new Date(); // Data odierna
+    const fineCommessa = new Date(datafineCommessa);
+
+    // Calcolare la differenza in millisecondi tra le due date
+    const differenzaInMillisecondi = fineCommessa.getTime() - oggi.getTime();
+
+    // Convertire la differenza in millisecondi in giorni
+    const giorniRimanenti = Math.ceil(differenzaInMillisecondi / (1000 * 60 * 60 * 24));
+
+    return giorniRimanenti;
+  }
+
+  getDaysRemainingColorCommessa(datafineCommessa: any): string {
+    const giorniRimanenti = this.calculateDaysRemaining(datafineCommessa);
+
+    if (giorniRimanenti > 30) {
+      return 'green';
+    } else if (giorniRimanenti >= 15 && giorniRimanenti <= 29) {
+      return 'orange';
+    } else {
+      return 'red';
+    }
+  }
+
+
+  calculateDaysElapsed(dataFineCommessa: Date): number {
+    const oggi = new Date(); // Data odierna
+    const fineCommessa = new Date(dataFineCommessa);
+
+    // Calcolare la differenza in millisecondi tra le due date
+    const differenzaInMillisecondi = oggi.getTime() - fineCommessa.getTime();
+
+    // Convertire la differenza in millisecondi in giorni
+    const giorniTrascorsi = Math.floor(differenzaInMillisecondi / (1000 * 60 * 60 * 24));
+
+    return giorniTrascorsi;
+  }
+
 
   filter(value: any) {
     console.log('Valore del form: ' + JSON.stringify(value));

@@ -259,6 +259,7 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
+                    <th>Nominativo</th>
                     <th>Azienda Cliente</th>
                     <th>Cliente finale</th>
                     <th>Titolo posizione</th>
@@ -269,7 +270,7 @@
                     <th>Azienda di fatturazione interna</th>
                     <th>Data inizio</th>
                     <th>Data fine</th>
-                    <th>Attesa lavori</th>
+                    <th>Tempo rimanente</th>
                     <th>Anagrafica</th>
                     <th>Modifica</th>
 
@@ -279,6 +280,7 @@
                 <tbody>
                   <ng-container *ngFor="let element of listaCommesseInScadenza">
                     <tr *ngFor="let commessa of element.commesse">
+                      <td>{{element.anagrafica.nome}} {{element.anagrafica.cognome}}</td>
                       <td>{{ commessa.tipoAziendaCliente.descrizione }}</td>
                       <td>{{ commessa.clienteFinale }}</td>
                       <td>{{ commessa.titoloPosizione }}</td>
@@ -289,14 +291,14 @@
                       <td>{{ commessa.aziendaDiFatturazioneInterna || '' }}</td>
                       <td>{{ commessa.dataInizio | date:'dd/MM/yyyy' }}</td>
                       <td>{{ commessa.dataFine | date:'dd/MM/yyyy' }}</td>
-                      <td>{{ commessa.attesaLavori ? 'Sì' : 'No' }}</td>
+                      <td [ngStyle]="{'color': getDaysRemainingColorCommessa(commessa.dataFine)}">{{ calculateDaysRemainingCommessa(commessa.dataFine) }} gg</td>
                       <td>
                         <button [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"
                               matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
                               class="btn btn-info"><i class="fa fa-info"></i></button>
                       </td>
                       <td>
-                        <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
+                        <button class="btn btn-warning" [routerLink]="['/modifica-commessa', element.anagrafica.id]"
                             matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
                               class="fa fa-pencil"></i></button>
                       </td>
@@ -337,20 +339,22 @@
                     <th>Tipo Livello Contratto</th>
                     <th>Sede Assunzione</th>
                     <th>Data Assunzione</th>
+                    <th>Data fine contratto</th>
                     <th>Mesi Durata</th>
+                    <th>Tempo rimanente</th>
                     <th>Livello Attuale</th>
                     <th>Livello Finale</th>
-                    <th>Retribuzione Mensile Lorda</th>
+                    <!-- <th>Retribuzione Mensile Lorda</th> -->
                     <!-- <th>Superminimo Mensile</th>
                       <th>RAL Annuale</th>
                       <th>Superminimo RAL</th>
                       <th>Diaria Mensile</th>
                       <th>Diaria Giornaliera</th> -->
-                    <th>Ticket</th>
+                    <!-- <th>Ticket</th> -->
                     <!-- <th>Valore Ticket</th> -->
                     <th>Categoria Protetta</th>
-                    <th>Tutor</th>
-                    <th>PFI</th>
+                    <!-- <th>Tutor</th> -->
+                    <!-- <th>PFI</th> -->
                     <th >Anagrafica</th>
                     <th >Modifica</th>
 
@@ -375,17 +379,19 @@
                     <td>{{ element.contratto.tipoContratto.descrizione }}</td>
                     <td>{{ element.contratto.tipoLivelloContratto.ccnl }} - Livello {{
                       element.contratto.tipoLivelloContratto.livello }}</td>
-                    <td>{{ element.contratto.sedeAssunzione }}</td>
+                    <td>{{ element.contratto.sedeAssunzione ?  element.contratto.sedeAssunzione : 'Dato non inserito.' }}</td>
                     <td>{{ element.contratto.dataAssunzione | date:'dd/MM/yyyy' }}</td>
-                    <td>{{ element.contratto.mesiDurata }}</td>
-                    <td>{{ element.contratto.tipoLivelloContratto.livello }}</td>
-                    <td>{{ element.contratto.livelloFinale }}</td>
-                    <td>{{ element.contratto.retribuzioneMensileLorda }}</td>
-                    <td>{{ element.contratto.ticket ? 'Sì' : 'No' }}</td>
+                    <td>{{ element.contratto.dataFineRapporto | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ element.contratto.mesiDurata ? element.contratto.mesiDurata: 'Dato non inserito' }}</td>
+                    <td [ngStyle]="{'color': getDaysRemainingColor(element.contratto.dataFineRapporto)}">{{ calculateDaysRemaining(element.contratto.dataFineRapporto) }} gg</td>
+                    <td>{{ element.contratto.tipoLivelloContratto.livello ?  element.contratto.tipoLivelloContratto.livello: 'Dato non inserito' }}</td>
+                    <td>{{ element.contratto.livelloFinale ?  element.contratto.livelloFinale: 'Dato non inserito' }}</td>
+                    <!-- <td>{{ element.contratto.retribuzioneMensileLorda }}</td> -->
+                    <!-- <td>{{ element.contratto.ticket ? 'Sì' : 'No' }}</td> -->
                     <!-- <td>{{ contratto.contratto.valoreTicket }}</td> -->
-                    <td>{{ element.contratto.categoriaProtetta }}</td>
-                    <td>{{ element.contratto.tutor }}</td>
-                    <td>{{ element.contratto.pfi }}</td>
+                    <td>{{ element.contratto.categoriaProtetta ? 'Sì' : 'No' }}</td>
+                    <!-- <td>{{ element.contratto.tutor ? element.contratto.tutor :'Dato non inserito.' }}</td> -->
+                    <!-- <td>{{ element.contratto.pfi ? 'Si': 'No' }}</td> -->
                     <td>
                       <button [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"
                             matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
@@ -393,7 +399,7 @@
 
                     </td>
                     <td>
-                      <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
+                      <button class="btn btn-warning" [routerLink]="['/modifica-contratto', element.anagrafica.id]"
                       matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
                         class="fa fa-pencil"></i></button>
                     </td>
@@ -649,7 +655,7 @@
                 <th>Azienda<br> Fatturazione<br> Interna</th>
                 <th>Data <br> Inizio</th>
                 <th>Data <br> Fine</th>
-                <th>Attesa <br> lavori</th>
+                <th>Scaduta da</th>
                 <th>Anagrafica</th>
                 <th>Modifica</th>
               </tr>
@@ -663,12 +669,13 @@
                 <td>{{ commessa[5]}}</td>
                 <td>{{ commessa[6] ? 'Sì' : 'No' }}</td>
                 <td>{{ commessa[7] ? 'Sì' : 'No' }}</td>
-                <td>{{ commessa[8] | date:'dd/MM/yyyy' }}</td>
+                <td>{{ commessa[8] ? (commessa[8] | date:'dd/MM/yyyy') : 'Dato non inserito' }}</td>
                 <td>{{ commessa[9] || '' }}</td>
                 <td>{{ commessa[10] || '' }}</td>
                 <td>{{ commessa[11] | date:'dd/MM/yyyy' }}</td>
                 <td>{{ commessa[12] | date:'dd/MM/yyyy' }}</td>
-                <td>{{ commessa[14] ? 'Sì' : 'No' }}</td>
+                <td>{{ calculateDaysElapsed(commessa[12]) }} gg</td>
+
                 <td>
                     <a [routerLink]="['/dettaglio-anagrafica', commessa[15]]"><button
                         matTooltip="Dettaglio {{commessa[0]}} {{commessa[1]}} " class="btn btn-info"><i
