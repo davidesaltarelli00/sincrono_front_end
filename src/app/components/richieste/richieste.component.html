@@ -307,13 +307,13 @@ img{
           <div class="header">
             <button mat-flat-button color="primary" (click)="onPrevMonth()">Mese precedente</button>
             <h2>{{ getMonthName(currentMonth) }} {{ currentYear }}
-              <button (click)="selectAllDays()">
+              <button mat-flat-button color="primary" (click)="selectAllDays()">
                 {{ areAllDaysSelected() ? 'Deseleziona tutti' : 'Seleziona tutti' }}
               </button>
 
 
             </h2>
-            <button class="button" (click)="onNextMonth()">Mese successivo</button>
+            <button mat-flat-button color="primary" (click)="onNextMonth()">Mese successivo</button>
           </div>
 
           <div class="days">
