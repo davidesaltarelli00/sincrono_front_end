@@ -54,6 +54,7 @@ export class RichiesteComponent implements OnInit {
   currentMonthDays: { number: number, dayOfWeek: number, selected: boolean }[] = [];
   dayNames: string[] = ['Domenica', 'Lunedí', 'Martedí', 'Mercoledí', 'Giovedí', 'Venerdí', 'Sabato'];
   giorniSelezionati: any[] = [];
+  showSelectedDays = false;
 
 
   constructor(
@@ -153,12 +154,21 @@ export class RichiesteComponent implements OnInit {
 
   onDaySelected(dayNumber: number) {
     const day = this.currentMonthDays.find(d => d.number === dayNumber);
+
     if (day) {
       day.selected = !day.selected;
 
       if (day.selected) {
-        this.giorniSelezionati.push(dayNumber);
-        console.log("Giorni selezionati:"+ JSON.stringify(this.giorniSelezionati));
+        // Inserisci il giorno in modo ordinato
+        const index = this.giorniSelezionati.findIndex(giorno => giorno > dayNumber);
+        if (index !== -1) {
+          this.giorniSelezionati.splice(index, 0, dayNumber);
+        } else {
+          this.giorniSelezionati.push(dayNumber);
+          this.openSelectedDays();
+        }
+
+        console.log("Giorni selezionati:" + JSON.stringify(this.giorniSelezionati));
       } else {
         const index = this.giorniSelezionati.indexOf(dayNumber);
         if (index !== -1) {
@@ -167,6 +177,11 @@ export class RichiesteComponent implements OnInit {
       }
     }
   }
+
+  isWeekend(dayOfWeek: number): boolean {
+    return dayOfWeek === 6 || dayOfWeek === 0; // Sabato = 6, Domenica = 0
+  }
+
 
   isDaySelected(dayNumber: number): boolean {
     const day = this.currentMonthDays.find(d => d.number === dayNumber);
@@ -187,6 +202,25 @@ export class RichiesteComponent implements OnInit {
       this.currentYear--;
     }
     this.generateCalendar(this.currentMonth, this.currentYear);
+  }
+
+  selectAllDays() {
+    const areAllSelected = this.currentMonthDays.every(day => day.selected || this.isWeekend(day.dayOfWeek));
+
+    this.currentMonthDays.forEach(day => {
+      if (!this.isWeekend(day.dayOfWeek)) {
+        this.onDaySelected(day.number);
+      }
+    });
+  }
+
+
+  areAllDaysSelected(): boolean {
+    return this.currentMonthDays.every(day => day.selected || this.isWeekend(day.dayOfWeek));
+  }
+
+  openSelectedDays() {
+    this.showSelectedDays = true;
   }
 
   //------------------------------------------------------------------------------------------------------------------------------------

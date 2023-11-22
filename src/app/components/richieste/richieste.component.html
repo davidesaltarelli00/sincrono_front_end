@@ -290,37 +290,63 @@ img{
           <mat-card-content>
             <main>
               <h2>Ciao {{userLoggedName}} {{userLoggedSurname}}.</h2>
-              <p>Questa sezione é dedicata alle richieste. Seleziona i giorni interessati e compila il form per inviare la richiesta. </p>
+              <p>Questa sezione é dedicata alle richieste. Seleziona i giorni interessati e compila il form per inviare la richiesta.
+                 <!-- <button [disabled]="giorniSelezionati.length === 0" mat-fab color="primary" matTooltip="Clicca qui per aprire il form di richiesta" (click)="openSelectedDays()">
+                <i class="fa fa-envelope" ></i>
+               </button> -->
+             </p>
             </main>
           </mat-card-content>
         </mat-card>
       </div>
     </div>
     <br>
-    <div class="calendar">
-      <div class="header">
-        <button class="button" (click)="onPrevMonth()">Mese precedente</button>
-        <h2>{{ getMonthName(currentMonth) }} {{ currentYear }}</h2>
-        <button class="button" (click)="onNextMonth()">Mese successivo</button>
-      </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="calendar">
+          <div class="header">
+            <button mat-flat-button color="primary" (click)="onPrevMonth()">Mese precedente</button>
+            <h2>{{ getMonthName(currentMonth) }} {{ currentYear }}
+              <button (click)="selectAllDays()">
+                {{ areAllDaysSelected() ? 'Deseleziona tutti' : 'Seleziona tutti' }}
+              </button>
 
-      <div class="days">
-        <div *ngFor="let day of currentMonthDays" class="day">
-          <div class="day-content">
-            <div class="checkbox-container">
-              <input type="checkbox" (change)="onDaySelected(day.number)" />
+
+            </h2>
+            <button class="button" (click)="onNextMonth()">Mese successivo</button>
+          </div>
+
+          <div class="days">
+            <div *ngFor="let day of currentMonthDays" class="day">
+              <div class="day-content">
+                <div class="checkbox-container">
+                  <input type="checkbox" [disabled]="isWeekend(day.dayOfWeek)" (change)="onDaySelected(day.number)" />
+                </div>
+                <div class="day-number" [class.selected]="isDaySelected(day.number)">
+                  {{ day.number }}
+                </div>
+                <div class="day-name">{{ getDayName(day.dayOfWeek) }}</div>
+              </div>
             </div>
-            <div class="day-number" [class.selected]="isDaySelected(day.number)">
-              {{ day.number }}
-            </div>
-            <div class="day-name">{{ getDayName(day.dayOfWeek) }}</div>
+          </div>
+
+          <br>
+          <div class="header">
+            <button class="button" (click)="onPrevMonth()">Mese precedente</button>
+            <h2>{{ getMonthName(currentMonth) }} {{ currentYear }}</h2>
+            <button class="button" (click)="onNextMonth()">Mese successivo</button>
           </div>
         </div>
       </div>
+      <div class="col-6">
+        <app-selected-days *ngIf="showSelectedDays" [selectedDays]="giorniSelezionati" [currentMonth]="currentMonth" [currentYear]="currentYear"></app-selected-days>
+      </div>
     </div>
-    <br><br><br><br>
+    <br><br>
+
 
 
   </div>
+  <br><br>
 </body>
 </html>

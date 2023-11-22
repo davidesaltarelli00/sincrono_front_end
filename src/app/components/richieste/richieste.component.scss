@@ -1,46 +1,3 @@
- /* Stili specifici per schermi di grandi dimensioni (desktop) */
- @media (min-width: 768px) {
-  body {
-    font-size: 18px;
-  }
-  /* Altri stili specifici per schermi di grandi dimensioni */
-  .container-fluid {
-    padding: 20px;
-  }
-  .col-6 {
-    width: 50%;
-    float: left;
-  }
-}
-
-/* Stili specifici per schermi di medie dimensioni (tablet) */
-@media (max-width: 768px) {
-  body {
-    font-size: 16px;
-  }
-  /* Altri stili specifici per schermi di medie dimensioni */
-  .col-6 {
-    width: 100%;
-    float: none;
-  }
-  .banner img {
-    max-width: 100%;
-  }
-}
-
-/* Stili specifici per schermi di piccole dimensioni (dispositivi mobili) */
-@media (max-width: 480px) {
-  body {
-    font-size: 14px;
-  }
-  /* Altri stili specifici per schermi di piccole dimensioni */
-  .container-fluid {
-    padding: 10px;
-  }
-  .custom-list-item {
-    padding: 10px;
-  }
-}
 
 
 #toolbar {
@@ -183,7 +140,6 @@ button.toggle-button {
   font-family: Arial, sans-serif;
   text-align: center;
   max-width: 600px;
-  margin: auto;
 }
 
 .header {

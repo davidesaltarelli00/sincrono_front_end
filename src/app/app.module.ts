@@ -62,6 +62,7 @@ import { CaricamentoDocumentiComponent } from './components/caricamento-document
 import { NuovaAnagraficaDtoExcelComponent } from './components/anagraficaDto/nuova-anagrafica-dto-excel/nuova-anagrafica-dto-excel.component';
 import { ModificaCommessaComponent } from './components/modifica-commessa/modifica-commessa.component';
 import { AlertConfermaComponent } from './alert-conferma/alert-conferma.component';
+import { SelectedDaysComponent } from './components/richieste/selected-days/selected-days.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -99,6 +100,7 @@ import { AlertConfermaComponent } from './alert-conferma/alert-conferma.componen
     HeaderComponent,
     NuovaAnagraficaDtoExcelComponent,
     ImmagineComponent,
+    SelectedDaysComponent,
     BottoniComponent,
     MailSollecitaComponent,
     AlertConfermaComponent,

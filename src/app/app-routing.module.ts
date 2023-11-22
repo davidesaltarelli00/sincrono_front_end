@@ -32,6 +32,7 @@ import { RichiesteComponent } from './components/richieste/richieste.component';
 import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
 import { NuovaAnagraficaDtoExcelComponent } from './components/anagraficaDto/nuova-anagrafica-dto-excel/nuova-anagrafica-dto-excel.component';
 import { ModificaCommessaComponent } from './components/modifica-commessa/modifica-commessa.component';
+import { SelectedDaysComponent } from './components/richieste/selected-days/selected-days.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -91,6 +92,7 @@ const routes: Routes = [
     component: ModificaAnagraficaDtoComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
+  { path: 'selected-days', component: SelectedDaysComponent, canActivate: [AuthGuard, RoleGuard], },
   {
     path: 'modifica-commessa/:id',
     component: ModificaCommessaComponent,
