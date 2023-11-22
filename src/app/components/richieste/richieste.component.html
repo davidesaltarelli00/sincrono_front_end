@@ -290,102 +290,37 @@ img{
           <mat-card-content>
             <main>
               <h2>Ciao {{userLoggedName}} {{userLoggedSurname}}.</h2>
-              <p>Questa sezione é dedicata alla richiesta di ferie, permessi, malattie e cambio di turni. </p>
+              <p>Questa sezione é dedicata alle richieste. Seleziona i giorni interessati e compila il form per inviare la richiesta. </p>
             </main>
           </mat-card-content>
         </mat-card>
       </div>
     </div>
     <br>
-    <div class="row">
-        <div class="col-12">
-          <mat-card>
-            <mat-card-content>
-              <form [formGroup]="requestForm" (ngSubmit)="inviaRichiesta()">
-                <div class="row">
-                  <legend>Compila il form per inviare la tua richiesta.</legend>
-                  <br>
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label for="giorno" class="form-label">Giorno:</label>
-                      <input type="text" placeholder="Inserire il giorno" id="giorno" formControlName="giorno" class="form-control">
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label for="mese" class="form-label">Mese:</label>
-                      <input type="text" placeholder="inserire mese" id="mese" formControlName="mese" class="form-control">
-                    </div>
-                  </div>
-                  <div class="col-4">
-                   <div class="form-group">
-                    <label for="anno" class="form-label">Anno:</label>
-                    <input type="text" id="anno" placeholder="Inserire anno" formControlName="anno" class="form-control">
-                   </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-4"></div>
-                  <div class="col-4">
-                   <div class="form-group">
-                    <label for="oggettoRichiesta" class="form-label">Oggetto Richiesta:</label>
-                    <input type="text" id="oggettoRichiesta" placeholder="Inserire oggetto richiesta" formControlName="oggettoRichiesta" class="form-control">
-                   </div>
-                  </div>
-                  <div class="col-4"></div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-4"></div>
-                  <div class="col-4">
-                    <label for="testoRichiesta" class="form-label">Testo Richiesta:</label>
-                    <textarea id="testoRichiesta" formControlName="testoRichiesta" placeholder="Inserire testo richiesta" rows="5" cols="5" class="form-control"></textarea>
-                  </div>
-                  <div class="col-4"></div>
-                </div>
-                <br>
-               <div class="row">
-                <div class="col-4"></div>
-                <div class="col-4">
-                  <button type="submit" class="btn btn-primary">Invia</button> &nbsp;
-                  <button type="button" (click)="resetForm()" class="btn btn-secondary">Resetta</button>
-                </div>
-                <div class="col-4"></div>
-               </div>
-              </form>
-            </mat-card-content>
-          </mat-card>
-          <br>
+    <div class="calendar">
+      <div class="header">
+        <button class="button" (click)="onPrevMonth()">Mese precedente</button>
+        <h2>{{ getMonthName(currentMonth) }} {{ currentYear }}</h2>
+        <button class="button" (click)="onNextMonth()">Mese successivo</button>
+      </div>
+
+      <div class="days">
+        <div *ngFor="let day of currentMonthDays" class="day">
+          <div class="day-content">
+            <div class="checkbox-container">
+              <input type="checkbox" (change)="onDaySelected(day.number)" />
+            </div>
+            <div class="day-number" [class.selected]="isDaySelected(day.number)">
+              {{ day.number }}
+            </div>
+            <div class="day-name">{{ getDayName(day.dayOfWeek) }}</div>
+          </div>
         </div>
       </div>
-      <br>
-      <div class="row">
-        <div class="col-12">
-          <legend>Lista richieste inviate</legend>
-          <table class="table table-striped" >
-            <thead>
-              <tr>
-                <th>Oggetto richiesta</th>
-                <th>Richiesta</th>
-                <th>Periodo richiesta</th>
-                <th>Data invio</th>
-                <th>Stato richiesta</th> <!--Inviata, ricevuta, in elaborazione, accolta, rifiutata-->
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <br><br><br>
+    </div>
+    <br><br><br><br>
+
+
   </div>
 </body>
 </html>

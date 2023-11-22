@@ -49,6 +49,12 @@ export class RichiesteComponent implements OnInit {
   elencoRichieste: any[]=[];
   requestForm: FormGroup;
 
+  currentMonth: any;
+  currentYear: any;
+  currentMonthDays: { number: number, dayOfWeek: number, selected: boolean }[] = [];
+  dayNames: string[] = ['Domenica', 'Lunedí', 'Martedí', 'Mercoledí', 'Giovedí', 'Venerdí', 'Sabato'];
+  giorniSelezionati: any[] = [];
+
 
   constructor(
     private authService: AuthService,
@@ -110,6 +116,10 @@ export class RichiesteComponent implements OnInit {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
+      const currentDate = new Date();
+      this.currentMonth = currentDate.getMonth() + 1;
+      this.currentYear = currentDate.getFullYear();
+      this.generateCalendar(this.currentMonth, this.currentYear);
     } else {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
@@ -119,6 +129,67 @@ export class RichiesteComponent implements OnInit {
       });
     }
   }
+  generateCalendar(month: number, year: number) {
+    this.currentMonthDays = [];
+    const daysInMonth = new Date(year, month, 0).getDate();
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(year, month - 1, day);
+      this.currentMonthDays.push({ number: day, dayOfWeek: date.getDay(), selected: false });
+    }
+  }
+
+  getMonthName(month: number): string {
+    const monthNames = [
+      'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+      'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
+    ];
+    return monthNames[month - 1];
+  }
+
+  getDayName(dayOfWeek: number): string {
+    return this.dayNames[dayOfWeek];
+  }
+
+  onDaySelected(dayNumber: number) {
+    const day = this.currentMonthDays.find(d => d.number === dayNumber);
+    if (day) {
+      day.selected = !day.selected;
+
+      if (day.selected) {
+        this.giorniSelezionati.push(dayNumber);
+        console.log("Giorni selezionati:"+ JSON.stringify(this.giorniSelezionati));
+      } else {
+        const index = this.giorniSelezionati.indexOf(dayNumber);
+        if (index !== -1) {
+          this.giorniSelezionati.splice(index, 1);
+        }
+      }
+    }
+  }
+
+  isDaySelected(dayNumber: number): boolean {
+    const day = this.currentMonthDays.find(d => d.number === dayNumber);
+    return day ? day.selected : false;
+  }
+
+  onNextMonth() {
+    this.currentMonth = (this.currentMonth % 12) + 1;
+    if (this.currentMonth === 1) {
+      this.currentYear++;
+    }
+    this.generateCalendar(this.currentMonth, this.currentYear);
+  }
+
+  onPrevMonth() {
+    this.currentMonth = this.currentMonth === 1 ? 12 : this.currentMonth - 1;
+    if (this.currentMonth === 12) {
+      this.currentYear--;
+    }
+    this.generateCalendar(this.currentMonth, this.currentYear);
+  }
+
+  //------------------------------------------------------------------------------------------------------------------------------------
 
   getAllRichieste() {
     console.log("Hai selezionato il seguente periodo:"+ JSON.stringify(this.selectedGiorno)+'-'+ JSON.stringify(this.selectedMese)+'-'+ JSON.stringify(this.selectedAnno));
