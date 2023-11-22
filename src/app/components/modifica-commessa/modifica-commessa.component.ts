@@ -1,28 +1,28 @@
-import { ContrattoService } from './../contratto-service';
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AnagraficaDtoService } from '../../anagraficaDto/anagraficaDto-service';
-import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { DatePipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { StepperService } from 'src/app/stepper.service';
 import { ThemeService } from 'src/app/theme.service';
-import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
-import { CommessaDuplicata } from '../../anagraficaDto/modifica-anagrafica-dto/commessaDuplicata';
-import { MapsService } from '../../anagraficaDto/nuova-anagrafica-dto/maps.service';
-import { ImageService } from '../../image.service';
-import { AuthService } from '../../login/login-service';
-import { MenuService } from '../../menu.service';
-import { ProfileBoxService } from '../../profile-box/profile-box.service';
+import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
+import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
+import { CommessaDuplicata } from '../anagraficaDto/modifica-anagrafica-dto/commessaDuplicata';
+import { MapsService } from '../anagraficaDto/nuova-anagrafica-dto/maps.service';
+import { ContrattoService } from '../contratto/contratto-service';
+import { ImageService } from '../image.service';
+import { AuthService } from '../login/login-service';
+import { MenuService } from '../menu.service';
+import { ProfileBoxService } from '../profile-box/profile-box.service';
 
 @Component({
-  selector: 'app-modifica-contratto',
-  templateUrl: './modifica-contratto.component.html',
-  styleUrls: ['./modifica-contratto.component.scss'],
+  selector: 'app-modifica-commessa',
+  templateUrl: './modifica-commessa.component.html',
+  styleUrls: ['./modifica-commessa.component.scss']
 })
-export class ModificaContrattoComponent implements OnInit{
+export class ModificaCommessaComponent {
   utenti: any = [];
   maxCommessaId: any;
   data: any;
@@ -2554,3 +2554,4 @@ interface MenuData {
     privilegio: any;
   }[];
 }
+

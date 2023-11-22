@@ -143,10 +143,13 @@
             [routerLink]="['/dettaglio-anagrafica/'+idAnagrafica]"></i> </h3>
       </div>
     </div>
-    <div class="row">
+    <div class="row"  [hidden]="pageData.length===0">
       <div class="col-12">
-
-        <div class="table-responsive" [hidden]="pageData.length===0">
+        <h3>
+          Qui sono consultabili tutte le modifiche effettuate nel tempo al contratto di {{anagrafica?.anagrafica?.nome |titlecase }} {{anagrafica?.anagrafica?.cognome
+            |titlecase}}
+        </h3>
+        <div class="table-responsive">
           <table class="table table-striped">
             <thead>
               <tr>

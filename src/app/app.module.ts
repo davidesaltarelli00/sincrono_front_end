@@ -60,6 +60,7 @@ import { MailSollecitaComponent } from './components/mail-sollecita/mail-solleci
 import { RichiesteComponent } from './components/richieste/richieste.component';
 import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
 import { NuovaAnagraficaDtoExcelComponent } from './components/anagraficaDto/nuova-anagrafica-dto-excel/nuova-anagrafica-dto-excel.component';
+import { ModificaCommessaComponent } from './components/modifica-commessa/modifica-commessa.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -92,6 +93,7 @@ import { NuovaAnagraficaDtoExcelComponent } from './components/anagraficaDto/nuo
     ModalInfoContrattoComponent,
     RisultatiFilterOrganicoComponent,
     ListaRapportiniComponent,
+    ModificaCommessaComponent,
     ModaleDettaglioRapportinoComponent,
     HeaderComponent,
     NuovaAnagraficaDtoExcelComponent,

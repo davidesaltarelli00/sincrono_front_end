@@ -328,7 +328,7 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
   modificaCommessa() {
-    this.router.navigate(['/modifica-anagrafica/' + this.id]);
+    this.router.navigate(['/modifica-commessa/' + this.id]);
   }
 
   modificaAnagrafica() {
@@ -336,7 +336,7 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
   modificaContratto() {
-    this.router.navigate(['/modifica-anagrafica/' + this.id]);
+    this.router.navigate(['/modifica-contratto/' + this.id]);
   }
 
   profile() {

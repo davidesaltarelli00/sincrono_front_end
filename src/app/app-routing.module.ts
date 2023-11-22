@@ -31,6 +31,7 @@ import { ImmagineComponent } from './components/immagine/immagine.component';
 import { RichiesteComponent } from './components/richieste/richieste.component';
 import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
 import { NuovaAnagraficaDtoExcelComponent } from './components/anagraficaDto/nuova-anagrafica-dto-excel/nuova-anagrafica-dto-excel.component';
+import { ModificaCommessaComponent } from './components/modifica-commessa/modifica-commessa.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -88,6 +89,11 @@ const routes: Routes = [
   {
     path: 'modifica-anagrafica/:id',
     component: ModificaAnagraficaDtoComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'modifica-commessa/:id',
+    component: ModificaCommessaComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
   {
