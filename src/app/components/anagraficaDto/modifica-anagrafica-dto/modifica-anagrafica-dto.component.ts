@@ -360,13 +360,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.anagraficaDto
         .get('contratto.dataAssunzione')
         ?.valueChanges.subscribe(() => {
-          this.calculateDataFineRapporto();
+          this.calculateDataFineContratto();
         });
 
       this.anagraficaDto
         .get('contratto.mesiDurata')
         ?.valueChanges.subscribe(() => {
-          this.calculateDataFineRapporto();
+          this.calculateDataFineContratto();
         });
 
       const tipoAziendaControlAnagrafica = this.anagraficaDto.get(
@@ -639,6 +639,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         if (this.data.contratto && this.data.contratto.dataFineRapporto) {
           this.data.contratto.dataFineRapporto = this.datePipe.transform(
             this.data.contratto.dataFineRapporto,
+            'yyyy-MM-dd'
+          );
+        }
+        if (this.data.contratto && this.data.contratto.dataFineContratto) {
+          this.data.contratto.dataFineContratto = this.datePipe.transform(
+            this.data.contratto.dataFineContratto,
             'yyyy-MM-dd'
           );
         }
@@ -1021,8 +1027,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
           console.log('Contratto selezionato: ', this.tipoContratto);
 
-          const dataFineRapportoControl = this.anagraficaDto.get(
-            'contratto.dataFineRapporto'
+          const dataFineContrattoControl = this.anagraficaDto.get(
+            'contratto.dataFineContratto'
           );
           const mesiDurataControl = this.anagraficaDto.get(
             'contratto.mesiDurata'
@@ -1073,7 +1079,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           switch (selectedValue) {
             case 1: // Contratto STAGE
               if (
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 mesiDurataControl &&
                 retribuzioneMensileLordaControl &&
                 PFIcontrol &&
@@ -1098,10 +1104,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 mesiDurataControl.setValue(6);
                 mesiDurataControl.updateValueAndValidity();
 
-                dataFineRapportoControl.enable();
-                dataFineRapportoControl.setValidators([Validators.required]);
-                dataFineRapportoControl.setValue(null);
-                dataFineRapportoControl.updateValueAndValidity();
+                dataFineContrattoControl.enable();
+                dataFineContrattoControl.setValidators([Validators.required]);
+                dataFineContrattoControl.setValue(null);
+                dataFineContrattoControl.updateValueAndValidity();
 
                 tutorControl.enable();
                 tutorControl.setValidators([Validators.required]);
@@ -1190,7 +1196,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 retribuzioneMensileLordaControl &&
                 retribuzioneNettaMensileControl &&
                 retribuzioneNettaGiornalieraControl &&
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 mesiDurataControl &&
                 livelloAttualeControl &&
                 livelloFinaleControl &&
@@ -1247,10 +1253,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 dataFineProvaControl.setValue('');
                 dataFineProvaControl.updateValueAndValidity();
 
-                dataFineRapportoControl.disable();
-                dataFineRapportoControl.setValue('');
-                dataFineRapportoControl.clearValidators();
-                dataFineRapportoControl.updateValueAndValidity();
+                dataFineContrattoControl.disable();
+                dataFineContrattoControl.setValue('');
+                dataFineContrattoControl.clearValidators();
+                dataFineContrattoControl.updateValueAndValidity();
 
                 mesiDurataControl.disable();
                 mesiDurataControl.setValue('');
@@ -1272,7 +1278,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 scattiAnzianitaControl &&
                 tariffaPartitaIvaControl &&
                 retribuzioneMensileLordaControl &&
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 livelloAttualeControl &&
                 livelloFinaleControl &&
                 retribuzioneNettaGiornalieraControl &&
@@ -1289,10 +1295,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 mesiDurataControl.setValidators([Validators.required]);
                 mesiDurataControl.updateValueAndValidity();
 
-                dataFineRapportoControl.enable();
-                dataFineRapportoControl.setValue('');
-                dataFineRapportoControl.setValidators([Validators.required]);
-                dataFineRapportoControl.updateValueAndValidity();
+                dataFineContrattoControl.enable();
+                dataFineContrattoControl.setValue('');
+                dataFineContrattoControl.setValidators([Validators.required]);
+                dataFineContrattoControl.updateValueAndValidity();
 
                 retribuzioneMensileLordaControl.enable();
                 retribuzioneMensileLordaControl.setValue('');
@@ -1348,7 +1354,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             case 4: // Contratto a tempo indeterminato
               if (
                 mesiDurataControl &&
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 tariffaPartitaIvaControl &&
                 tutorControl &&
                 PFIcontrol &&
@@ -1367,8 +1373,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 retribuzioneNettaGiornalieraControl.disable();
                 retribuzioneNettaGiornalieraControl.setValue('');
 
-                dataFineRapportoControl.disable();
-                dataFineRapportoControl.setValue(null);
+                dataFineContrattoControl.disable();
+                dataFineContrattoControl.setValue(null);
 
                 tariffaPartitaIvaControl.disable();
                 tariffaPartitaIvaControl.setValue('');
@@ -1411,7 +1417,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             case 5: // Contratto di apprendistato
               if (
                 mesiDurataControl &&
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 tariffaPartitaIvaControl &&
                 tutorControl &&
                 PFIcontrol &&
@@ -1426,10 +1432,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
               ) {
                 mesiDurataControl.enable();
                 mesiDurataControl.setValue(36);
-                this.calculateDataFineRapporto();
+                this.calculateDataFineContratto();
 
-                dataFineRapportoControl.enable();
-                dataFineRapportoControl.setValue(null);
+
+                dataFineContrattoControl.enable();
+                dataFineContrattoControl.setValue(null);
 
                 tariffaPartitaIvaControl.disable();
                 tariffaPartitaIvaControl.setValue('');
@@ -1539,11 +1546,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.valorePrecedenteDataFineRapporto = dataFineRapportoControl.value;
       dataFineRapportoControl.enable();
       dataFineRapportoControl.setValue(this.dataFormattata);
-      // alert(
-      //   'La data di fine rapporto é stata impostata a oggi.' +
-      //   this.dataFormattata +
-      //     ' \n Per reimpostare la vecchia data, elimina la causa di fine rapporto.'
-      // );
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
           image: '../../../../assets/images/danger.png',
@@ -1739,6 +1741,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           Object.keys(obj.tipoLivelloContratto).length === 0
         ) {
           delete obj.tipoLivelloContratto;
+        }
+        if (
+          obj.dataFineRapporto &&
+          Object.keys(obj.dataFineRapporto).length === 0
+        ) {
+          delete obj.dataFineRapporto;
         }
         if (
           obj.tipoCausaFineRapporto &&
@@ -2000,7 +2008,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     );
   }
 
-  calculateDataFineRapporto() {
+  calculateDataFineContratto() {
     const mesiDurataControl = this.anagraficaDto.get('contratto.mesiDurata');
     const dataFineContrattoControl = this.anagraficaDto.get(
       'contratto.dataFineContratto'
@@ -2051,8 +2059,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     console.log(
       'SELEZIONATO TIPO CONTRATTO CON ID: ' + this.selectedTipoContrattoId
     );
-    const dataFineRapportoControl = this.anagraficaDto.get(
-      'contratto.dataFineRapporto'
+    const dataFineContrattoControl = this.anagraficaDto.get(
+      'contratto.dataFineContratto'
     );
     const mesiDurataControl = this.anagraficaDto.get('contratto.mesiDurata');
     const tutorControl = this.anagraficaDto.get('contratto.tutor');
@@ -2135,8 +2143,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           mesiDurataControl.setValue(6);
           mesiDurataControl.enable();
 
-          dataFineRapportoControl?.enable();
-          dataFineRapportoControl?.setValue(null);
+          dataFineContrattoControl?.enable();
+          dataFineContrattoControl?.setValue(null);
         }
         break;
 
@@ -2148,7 +2156,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           superminimoMensileControl &&
           ralAnnuaControl &&
           retribuzioneMensileLordaControl &&
-          dataFineRapportoControl &&
+          dataFineContrattoControl &&
           mesiDurataControl
         ) {
           tariffaPartitaIvaControl.enable();
@@ -2169,8 +2177,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           ralAnnuaControl.disable();
           ralAnnuaControl.setValue('');
 
-          dataFineRapportoControl.disable();
-          dataFineRapportoControl.setValue('');
+          dataFineContrattoControl.disable();
+          dataFineContrattoControl.setValue('');
 
           mesiDurataControl.disable();
           mesiDurataControl.setValue('');
@@ -2193,13 +2201,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           scattiAnzianitaControl &&
           tariffaPartitaIvaControl &&
           retribuzioneMensileLordaControl &&
-          dataFineRapportoControl
+          dataFineContrattoControl
         ) {
           mesiDurataControl.enable();
           mesiDurataControl.setValue('');
 
-          dataFineRapportoControl.enable();
-          dataFineRapportoControl.setValue(null);
+          dataFineContrattoControl.enable();
+          dataFineContrattoControl.setValue(null);
 
           PFIcontrol.disable();
           PFIcontrol.setValue('');
@@ -2238,7 +2246,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       case 4: // Contratto a tempo indeterminato
         if (
           mesiDurataControl &&
-          dataFineRapportoControl &&
+          dataFineContrattoControl &&
           tariffaPartitaIvaControl &&
           tutorControl &&
           PFIcontrol &&
@@ -2253,8 +2261,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           mesiDurataControl.disable();
           mesiDurataControl.setValue('');
 
-          dataFineRapportoControl.disable();
-          dataFineRapportoControl.setValue(null);
+          dataFineContrattoControl.disable();
+          dataFineContrattoControl.setValue(null);
 
           tariffaPartitaIvaControl.disable();
           tariffaPartitaIvaControl.setValue('');
@@ -2294,7 +2302,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       case 5: // Contratto di apprendistato
         if (
           mesiDurataControl &&
-          dataFineRapportoControl &&
+          dataFineContrattoControl &&
           tariffaPartitaIvaControl &&
           tutorControl &&
           PFIcontrol &&
@@ -2310,10 +2318,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         ) {
           mesiDurataControl.enable();
           mesiDurataControl.setValue(36);
-          this.calculateDataFineRapporto();
+          this.calculateDataFineContratto();
 
-          dataFineRapportoControl.enable();
-          dataFineRapportoControl.setValue(null);
+          dataFineContrattoControl.enable();
+          dataFineContrattoControl.setValue(null);
 
           tariffaPartitaIvaControl.disable();
           tariffaPartitaIvaControl.setValue('');

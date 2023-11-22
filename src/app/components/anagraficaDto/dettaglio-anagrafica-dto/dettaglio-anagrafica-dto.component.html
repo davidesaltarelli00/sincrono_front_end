@@ -191,7 +191,7 @@
                 data?.anagrafica?.cognome ? data.anagrafica.cognome : 'Dato non inserito' | titlecase }} ({{
                 data?.ruolo?.nome ? data.ruolo.nome : 'Dato non inserito' | titlecase }})</h5>
               <button class="btn btn-danger" *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                matTooltip="{{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                matTooltip="Dal {{data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy'}}, {{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                 <i class="fa fa-exclamation-triangle"></i> </button>
             </div>
           </div>
@@ -250,7 +250,7 @@
               <div class="col-12">
                 <h1>Anagrafica <button class="btn btn-danger"
                     *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                    matTooltip="{{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                    matTooltip="Dal {{data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy'}}, {{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                     <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"> <i
                       class="fa fa-pencil " (click)="modificaAnagrafica()"></i></button></h1>
 
@@ -354,7 +354,7 @@
             <ng-template matStepLabel><small>Contratto</small></ng-template>
             <h1>Contratto <button class="btn btn-danger"
                 *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                matTooltip="{{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                matTooltip="Dal {{data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy'}}, {{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                 <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"> <i
                   class="fa fa-pencil " (click)="modificaContratto()"></i></button></h1>
             <div class="container-contratto-non-presente" *ngIf="data?.contratto===null">
@@ -403,10 +403,10 @@
                     <td><strong>Data fine contratto:</strong></td>
                     <td>{{ data?.contratto?.dataFineContratto | date: 'dd/MM/yyyy' }}</td>
                   </tr>
-                  <tr> <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
+                  <!-- <tr>
                     <td><strong>Data fine rapporto:</strong></td>
                     <td>{{ data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy' }}</td>
-                  </tr>
+                  </tr> -->
                   <tr>
                     <td><strong>Livello attuale:</strong></td>
                     <td>{{ data?.contratto?.livelloAttuale ? data?.contratto?.livelloAttuale : 'Dato non inserito' }}
@@ -475,7 +475,7 @@
                 <div class="col-12">
                   <h1>Dati economici <button class="btn btn-danger"
                       *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                      matTooltip="{{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                      matTooltip="Dal {{data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy'}}, {{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                       <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"
                       (click)="modificaCommessa()">
                       <i class="fa fa-pencil"></i>
@@ -587,7 +587,7 @@
             <ng-template matStepLabel><small>Commesse</small></ng-template>
             <h1>Commesse <button class="btn btn-danger"
                 *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                matTooltip="{{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                matTooltip="Dal {{data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy'}}, {{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                 <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"
                 (click)="modificaCommessa()">
                 <i class="fa fa-pencil"></i>
@@ -664,7 +664,7 @@
           <mat-step>
             <ng-template matStepLabel><small>Storici</small></ng-template>
             <h1>Storici <button class="btn btn-danger" *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                matTooltip="{{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                matTooltip="Dal {{data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy'}}, {{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                 <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"
                 (click)="modificaCommessa()">
                 <i class="fa fa-pencil"></i>

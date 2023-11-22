@@ -144,6 +144,26 @@ export class DettaglioAnagraficaDtoComponent {
         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
         console.log(this.elencoCommesse);
         this.getImage();
+
+        if((resp as any)['anagraficaDto']['contratto']['tipoCausaFineRapporto']['id']!=null){
+          //conversione date
+        if ((resp as any)['anagraficaDto']['contratto']['dataFineRapporto'] ) {
+          (resp as any)['anagraficaDto']['contratto']['dataFineRapporto'] = this.datePipe.transform((resp as any)['anagraficaDto']['contratto']['dataFineRapporto'] ,'dd-MM-yyyy');
+        }
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: "Attenzione:",
+              message: "Dal " + (resp as any)['anagraficaDto']['contratto']['dataFineRapporto'] +
+                       " " + (resp as any)['anagraficaDto']['anagrafica']['nome'] +
+                       " " + (resp as any)['anagraficaDto']['anagrafica']['cognome'] +
+                       " non lavora più qui." +
+                       " Causa: " + (resp as any)['anagraficaDto']['contratto']['tipoCausaFineRapporto']['descrizione'] +
+                       " Motivazione: " + (resp as any)['anagraficaDto']['contratto']['tipoCausaFineContratto']['descrizione']
+            },
+          });
+
+        }
       });
     const userLogged = localStorage.getItem('userLogged');
     if (userLogged) {

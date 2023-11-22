@@ -559,15 +559,6 @@
                                 formControlName="dataFineContratto" />
                             </div>
                           </div>
-                          <div class="col-md-3">
-                            <label>Data Fine Rapporto: </label>
-                            <div class="form-group">
-                              <input type="date" class="form-control"
-                                [value]="transformDate(data?.contratto?.dataFineRapporto)"
-                                formControlName="dataFineRapporto" />
-                            </div>
-                          </div>
-
                         </div>
                         <br>
                         <div class="row">
@@ -817,6 +808,36 @@
 
                         </div>
                         <br>
+
+
+                        <div class="row">
+                          <legend>Dati economici partita iva</legend>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Tariffa Partita IVA: </label>
+                              <input type="number" class="form-control" value="{{ data?.contratto?.tariffaPartitaIva }}"
+                                formControlName="tariffaPartitaIva" />
+                            </div>
+                          </div>
+
+                          <div class="col-md-3">
+                            <label>Retribuzione netta giornaliera:</label>
+                            <div class="form-group">
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text custom-prefix">€</span>
+                                </div>
+                                <input type="number" class="form-control"
+                                  value="{{ data?.contratto?.retribuzioneNettaGiornaliera }}"
+                                  formControlName="retribuzioneNettaGiornaliera" step="0.01" min="0"
+                                  placeholder="Inserire retribuzione netta giornaliera" />
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <br>
+
                         <div class="row">
                           <legend>Ticket e agevolazioni</legend>
                           <div class="col-3">
@@ -920,33 +941,6 @@
                         <br>
 
                         <div class="row">
-                          <legend>Dati economici partita iva</legend>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Tariffa Partita IVA: </label>
-                              <input type="number" class="form-control" value="{{ data?.contratto?.tariffaPartitaIva }}"
-                                formControlName="tariffaPartitaIva" />
-                            </div>
-                          </div>
-
-                          <div class="col-md-3">
-                            <label>Retribuzione netta giornaliera:</label>
-                            <div class="form-group">
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text custom-prefix">€</span>
-                                </div>
-                                <input type="number" class="form-control"
-                                  value="{{ data?.contratto?.retribuzioneNettaGiornaliera }}"
-                                  formControlName="retribuzioneNettaGiornaliera" step="0.01" min="0"
-                                  placeholder="Inserire retribuzione netta giornaliera" />
-                              </div>
-                            </div>
-                          </div>
-
-                        </div>
-                        <br>
-                        <div class="row">
                           <div class="col-12">
                             <legend>Dati medici</legend>
                           </div>
@@ -987,7 +981,7 @@
 
                           <legend>Dimissioni</legend>
 
-                          <div class="col-6">
+                          <div class="col-3">
                             <div class="form-group" formGroupName="tipoCausaFineRapporto">
                               <label>Motivazione Fine Rapporto: </label>
                               <select (change)="onChangeCausaFineRapporto($event)" class="form-select"
@@ -1001,7 +995,7 @@
                               </select>
                             </div>
                           </div>
-                          <div class="col-6">
+                          <div class="col-3">
                             <div class="form-group" formGroupName="tipoCausaFineContratto">
                               <label>Causa Fine Contratto: </label>
                               <select (change)="onChangeTipoCausaFineContratto($event)" class="form-select"
@@ -1013,6 +1007,14 @@
                                   {{ tipoCausaFineContratto.descrizione }}
                                 </option>
                               </select>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Data Fine Rapporto: </label>
+                            <div class="form-group">
+                              <input type="date" class="form-control"
+                                [value]="transformDate(data?.contratto?.dataFineRapporto)"
+                                formControlName="dataFineRapporto" />
                             </div>
                           </div>
                         </div>
