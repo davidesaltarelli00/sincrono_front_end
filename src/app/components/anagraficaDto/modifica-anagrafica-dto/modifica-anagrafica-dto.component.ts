@@ -34,6 +34,7 @@ import { MenuService } from '../../menu.service';
 import { ImageService } from '../../image.service';
 import { StepperService } from 'src/app/stepper.service';
 import { ThemeService } from 'src/app/theme.service';
+import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.component';
 
 @Component({
   selector: 'app-modifica-anagrafica-dto',
@@ -1647,9 +1648,16 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   rimuoviCommessa(index: number): void {
-    const conferma =
-      'Sei sicuro di voler eliminare la commessa con indice ' + index + '?';
-    if (confirm(conferma)) {
+
+    const dialogRef = this.dialog.open(AlertConfermaComponent, {
+      data: {
+        image: '../../../../assets/images/danger.png',
+        title: 'Attenzione:',
+        message: 'Confermi di voler eliminare la commessa selezionata?',
+      },
+    });
+
+    dialogRef.componentInstance.conferma.subscribe(() => {
       const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
 
       // Rimuovi la commessa dall'array del form
@@ -1693,7 +1701,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             });
           }
         );
-    }
+    });
+
   }
 
   caricaTipoCanaleReclutamento() {
