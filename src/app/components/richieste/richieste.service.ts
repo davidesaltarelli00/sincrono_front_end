@@ -22,15 +22,26 @@ export class RichiesteService {
     });
   }
 
-getAllRichiesteDipendente(token:any, body:any):Observable<any>{
-  const headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    Authorization: `Bearer ${token}`,
-  });
-  return this.http.post<any>(this.testUrl + `list-richieste`, body, {
-    headers: headers,
-  });
-}
+  getAllRichiesteDipendente(token: any, body: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<any>(this.testUrl + `list-richieste`, body, {
+      headers: headers,
+    });
+  }
 
+  getRichiesta(token: any, idRichiesta: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    const url = `http://localhost:8085/get-richiesta/${idRichiesta}`;
+    return this.http.get<any>(url, {
+      headers: headers,
+    });
+  }
 }
