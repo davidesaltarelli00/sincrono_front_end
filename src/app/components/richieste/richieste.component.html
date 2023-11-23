@@ -360,8 +360,141 @@ img{
       </div>
     </div>
     </div>
-
     <br><br>
+    <div class="row">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-title>
+            <h1>Elenco richieste</h1>
+          </mat-card-title>
+          <mat-card-subtitle>
+            <div class="row">
+              <!-- <div class="col-4">
+                <div class="form-group">
+                  <label for="codiceFiscale">Codice fiscale</label>
+                  <input type="text" readonly class="form-control" [(ngModel)]="codiceFiscaleDettaglio">
+                </div>
+              </div> -->
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="mese">Seleziona il mese</label>
+                  <select name="mese" id="mese" [(ngModel)]="selectedMeseForLista" class="form-select" (change)="onChangeMeseForLista($event)" >
+                  <option value="1">Gennaio</option>
+                  <option value="2">Febbraio</option>
+                  <option value="3">Marzo</option>
+                  <option value="4">Aprile</option>
+                  <option value="5">Maggio</option>
+                  <option value="6">Giugno</option>
+                  <option value="7">Luglio</option>
+                  <option value="8">Agosto</option>
+                  <option value="9">Settembre</option>
+                  <option value="10">Ottobre</option>
+                  <option value="11">Novembre</option>
+                  <option value="12">Dicembre</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="anno">Seleziona l'anno</label>
+                  <input type="number" class="form-control" [(ngModel)]="selectedAnnoForLista">
+                </div>
+              </div>
+              <div class="col-4" >
+                <div class="form-group">
+                  <label for="cerca">Cerca</label> <br>
+                  <button mat-mini-fab color="primary" [disabled]="selectedAnnoForLista==null || selectedMeseForLista==null " (click)="getAllRichiesteDipendente()" > <i class="fa fa-search" ></i> </button>
+                </div>
+              </div>
+            </div>
+          </mat-card-subtitle>
+          <mat-card-content>
+            <br>
+           <!-- Tabella per le ferie -->
+           <div class="row" *ngIf="elencoRichiesteDipendente && elencoRichiesteDipendente.length > 0">
+            <div class="col-12">
+              <p>Elenco richieste delle ferie</p>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <!-- <th>ID</th> -->
+                    <th>Tipo Richiesta</th>
+                    <th>Giorno</th>
+                    <th>Stato</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let richiesta of elencoRichiesteDipendente">
+                    <ng-container *ngIf="richiesta.list && richiesta.list.length > 0 && richiesta.list[0].ferie">
+                      <!-- <td>{{ richiesta.id }}</td> -->
+                      <td>Ferie</td>
+                      <td>
+                        <ng-container *ngFor="let item of richiesta.list; let i = index">
+                          {{ item.nGiorno }}
+                          <ng-container *ngIf="i !== richiesta.list.length - 1">, </ng-container>
+                        </ng-container>
+                      </td>
+                      <td> {{richiesta.stato ? richiesta.stato :'Da elaborare' }} </td>
+                    </ng-container>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+           </div>
+           <br>
+           <div class="row" *ngIf="elencoRichiesteDipendente && elencoRichiesteDipendente.length > 0" >
+            <div class="col-12">
+              <!-- Tabella per i permessi -->
+              <p>Elenco richieste dei permessi</p>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <!-- <th>ID</th> -->
+                    <!-- <th>Tipo Richiesta</th> -->
+                    <th>Giorno</th>
+                    <th>Dalle ore</th>
+                    <th>Alle ore</th>
+                    <th>Stato richiesta</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let richiesta of elencoRichiesteDipendente">
+                    <ng-container *ngIf="richiesta.list && richiesta.list.length > 0 && richiesta.list[0].permessi">
+                      <!-- <td>{{ richiesta.id }}</td> -->
+                      <!-- <td>Permessi</td> -->
+                      <td>
+                        <ng-container *ngFor="let item of richiesta.list; let i = index">
+                          {{ item.nGiorno }}
+                          <ng-container *ngIf="i !== richiesta.list.length - 1">, </ng-container>
+                        </ng-container>
+                      </td>
+                      <td>
+                        <ng-container *ngFor="let item of richiesta.list; let i = index">
+                          {{ item.daOra }}
+                          <ng-container *ngIf="i !== richiesta.list.length - 1">, </ng-container>
+                        </ng-container>
+                      </td>
+                      <td>
+                        <ng-container *ngFor="let item of richiesta.list; let i = index">
+                         {{ item.aOra }}
+                          <ng-container *ngIf="i !== richiesta.list.length - 1">, </ng-container>
+                        </ng-container>
+                      </td>
+                      <td> {{richiesta.stato ? richiesta.stato :'Da elaborare' }} </td>
+                    </ng-container>
+
+                  </tr>
+                </tbody>
+              </table>
+
+
+            </div>
+           </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
   </div>
   <br><br>
 </body>

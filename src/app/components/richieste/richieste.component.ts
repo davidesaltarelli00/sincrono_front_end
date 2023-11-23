@@ -10,6 +10,7 @@ import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ThemeService } from 'src/app/theme.service';
+import { RichiesteService } from './richieste.service';
 
 @Component({
   selector: 'app-richieste',
@@ -69,6 +70,10 @@ export class RichiesteComponent implements OnInit {
   permessoMese: any;
   permessoAnno: any;
 
+  selectedMeseForLista: any;
+  selectedAnnoForLista: any;
+  elencoRichiesteDipendente: any[] = [];
+
   constructor(
     private authService: AuthService,
     private profileBoxService: ProfileBoxService,
@@ -78,7 +83,8 @@ export class RichiesteComponent implements OnInit {
     public themeService: ThemeService,
     private formBuilder: FormBuilder,
     private imageService: ImageService,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private richiesteService: RichiesteService
   ) {
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -154,6 +160,11 @@ export class RichiesteComponent implements OnInit {
         selected: false,
       });
     }
+  }
+
+  onChangeMeseForLista(event: any) {
+    const target = event.target.value;
+    this.selectedMeseForLista = target;
   }
 
   getMonthName(month: number): string {
@@ -262,8 +273,33 @@ export class RichiesteComponent implements OnInit {
     this.showSelectedDays = true;
   }
 
-
-
+  getAllRichiesteDipendente() {
+    let body = {
+      richiestaDto: {
+        anno: this.selectedAnnoForLista,
+        mese: this.selectedMeseForLista,
+        codiceFiscale: this.codiceFiscaleDettaglio,
+      },
+    };
+    console.log('BODY PER LISTA RICHIESTE DIPENDENTE: ' + JSON.stringify(body));
+    this.richiesteService
+      .getAllRichiesteDipendente(this.token, body)
+      .subscribe((result: any) => {
+        if ((result as any).esito.code != 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Attenzione:',
+              message:
+                'Si é verificato un problema durante il caricamento della lista: '+ (result as any).esito.target ,
+            },
+          });
+        } else {
+          this.elencoRichiesteDipendente = result['list'];
+          console.log("la ricerca ha prodotto i seguenti risultati: " + JSON.stringify(this.elencoRichiesteDipendente))
+        }
+      });
+  }
 
   //------------------------------------------------------------------------------------------------------------------------------------
 

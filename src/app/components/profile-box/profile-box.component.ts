@@ -21,6 +21,7 @@ import { MenuService } from '../menu.service';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import { ImmagineComponent } from '../immagine/immagine.component';
 import { ThemeService } from 'src/app/theme.service';
+import { RichiesteService } from '../richieste/richieste.service';
 @Component({
   selector: 'app-profile-box',
   templateUrl: './profile-box.component.html',
@@ -76,7 +77,8 @@ export class ProfileBoxComponent {
     private imageService: ImageService,
     private menuService: MenuService,
     private anagraficaDtoService: AnagraficaDtoService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private richiesteService:RichiesteService
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
