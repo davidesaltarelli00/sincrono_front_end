@@ -64,6 +64,7 @@ import { ModificaCommessaComponent } from './components/modifica-commessa/modifi
 import { AlertConfermaComponent } from './alert-conferma/alert-conferma.component';
 import { SelectedDaysComponent } from './components/richieste/selected-days/selected-days.component';
 import { InsertPermessoComponent } from './components/richieste/insert-permesso/insert-permesso.component';
+import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-richiesta/dettaglio-richiesta.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -106,7 +107,8 @@ import { InsertPermessoComponent } from './components/richieste/insert-permesso/
     BottoniComponent,
     MailSollecitaComponent,
     AlertConfermaComponent,
-    CaricamentoDocumentiComponent
+    CaricamentoDocumentiComponent,
+    DettaglioRichiestaComponent
   ],
   imports: [
     MatIconModule,

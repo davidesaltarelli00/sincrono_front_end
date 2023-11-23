@@ -34,6 +34,7 @@ import { NuovaAnagraficaDtoExcelComponent } from './components/anagraficaDto/nuo
 import { ModificaCommessaComponent } from './components/modifica-commessa/modifica-commessa.component';
 import { SelectedDaysComponent } from './components/richieste/selected-days/selected-days.component';
 import { InsertPermessoComponent } from './components/richieste/insert-permesso/insert-permesso.component';
+import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-richiesta/dettaglio-richiesta.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -208,9 +209,14 @@ const routes: Routes = [
     component: StoricoCommesseComponent,
     canActivate: [AuthGuard],
   },
-  {
+ {
     path: 'richieste',
     component: RichiesteComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'richieste/:id',
+    component: DettaglioRichiestaComponent,
     canActivate: [AuthGuard],
   },
 
