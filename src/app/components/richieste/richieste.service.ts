@@ -33,6 +33,18 @@ export class RichiesteService {
     });
   }
 
+  cambiaStato(token:any, body:any): Observable<any>{
+    //cambia-stato
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.put<any>(this.testUrl + `cambia-stato`, body, {
+      headers: headers,
+    });
+  }
+
   getRichiesta(token: any, idRichiesta: number): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

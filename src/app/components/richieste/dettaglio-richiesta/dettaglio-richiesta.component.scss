@@ -89,7 +89,6 @@ a {
 
 
 .container-fluid {
-  max-width: 600px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f4f4f4;
@@ -98,20 +97,42 @@ a {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.card {
-  margin-bottom: 15px;
-  padding: 15px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.card p {
-  margin: 0;
-  padding: 5px 0;
-}
 
 .no-data {
   font-style: italic;
   color: #888;
+}
+
+
+.container {
+  width: 80%;
+  margin: auto;
+}
+
+.card {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.buttons-container {
+  margin-top: 20px;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  color: #212529;
+  border-color: #ffc107;
+}
+
+.btn-warning:hover {
+  background-color: #ffca2b;
+  color: #212529;
+  border-color: #ffca2b;
 }

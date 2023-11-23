@@ -17,6 +17,7 @@ import { AuthService } from '../../login/login-service';
 import { MenuService } from '../../menu.service';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { RichiesteService } from '../richieste.service';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-dettaglio-richiesta',
@@ -42,6 +43,9 @@ export class DettaglioRichiestaComponent implements OnInit {
   elencoCommesse: any[] = [];
   idUtente: any;
   ruolo: any;
+  tipoRichiesta: any;
+  note: any;
+  compilaNote = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -71,13 +75,129 @@ export class DettaglioRichiestaComponent implements OnInit {
   getRichiesta() {
     this.richiesteService.getRichiesta(this.token, this.idRichiesta).subscribe(
       (result: any) => {
-        this.data = result['richiestaDto']['list'];
+        this.data = result['richiestaDto'];
+        this.note = result['richiestaDto']['note'];
         console.log(
           'Dati restituiti dalla richiesta: ' + JSON.stringify(this.data)
         );
       },
       (error: any) => {
         console.error('Errore durante il get: ' + JSON.stringify(error));
+      }
+    );
+  }
+
+  getTitle(): string {
+    if (this.data.list.some((item: any) => item.ferie)) {
+      this.tipoRichiesta = 'ferie';
+      return 'Ferie per i seguenti giorni:';
+    } else if (this.data.list.some((item: any) => item.permessi)) {
+      this.tipoRichiesta = 'permessi';
+      return 'Permessi per il giorno ';
+    } else {
+      this.tipoRichiesta = '';
+      return 'Nessuna tipologia specificata';
+    }
+  }
+
+  /*
+  {
+ "richiestaDto":{
+     "id": 8,
+     "anno":"2023",
+     "mese":"12",
+     "codiceFiscale":"pnnmra94E004y25",
+    "stato":"true"
+ }
+
+}
+
+  */
+
+  accetta(): void {
+    let body = {
+      richiestaDto: {
+        id: this.data.id,
+        anno: this.data.anno,
+        mese: this.data.mese,
+        codiceFiscale: this.data.codiceFiscale,
+        note: this.note,
+        stato: true,
+      },
+    };
+    console.log('DATI PER ACCETTAZIONE FERIE: ' + JSON.stringify(body));
+    this.richiesteService.cambiaStato(this.token, body).subscribe(
+      (result: any) => {
+        if ((result as any).esito.code != 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Attenzione, qualcosa é andato storto:',
+              message: (result as any).esito.target,
+            },
+          });
+        } else {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/logo.jpeg',
+              title: 'Richiesta accettata.',
+              message: (result as any).esito.target,
+            },
+          });
+          this.router.navigate(['/home']);
+        }
+      },
+      (error: any) => {
+        console.error(
+          'Errore durante il cambio dello stato della richiesta:' +
+            JSON.stringify(error)
+        );
+      }
+    );
+  }
+
+  rifiutaECompilaNote(): void {
+    this.compilaNote = !this.compilaNote;
+  }
+
+  inviaNoteEConfermaRifiuto() {
+    let body = {
+      richiestaDto: {
+        id: this.data.id,
+        anno: this.data.anno,
+        mese: this.data.mese,
+        codiceFiscale: this.data.codiceFiscale,
+        note: this.note,
+        stato: false,
+      },
+    };
+    console.log('DATI PER ACCETTAZIONE FERIE: ' + JSON.stringify(body));
+    this.richiesteService.cambiaStato(this.token, body).subscribe(
+      (result: any) => {
+        if ((result as any).esito.code != 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Attenzione, qualcosa é andato storto:',
+              message: (result as any).esito.target,
+            },
+          });
+        } else {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/logo.jpeg',
+              title: 'Richiesta rifiutata.',
+              message: (result as any).esito.target,
+            },
+          });
+          this.router.navigate(['/home']);
+        }
+      },
+      (error: any) => {
+        console.error(
+          'Errore durante il cambio dello stato della richiesta:' +
+            JSON.stringify(error)
+        );
       }
     );
   }

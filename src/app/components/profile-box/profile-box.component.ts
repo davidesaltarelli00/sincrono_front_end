@@ -129,7 +129,7 @@ export class ProfileBoxComponent {
 
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
-              Image: '../../../../assets/images/logo.jpeg',
+              image: '../../../../assets/images/danger.png',
               title: 'Attenzione:',
               message: 'Sessione terminata; esegui il login.',
             },

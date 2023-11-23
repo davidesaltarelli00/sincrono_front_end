@@ -72,27 +72,62 @@
   <br>
   <div class="container-fluid" *ngIf="ruolo==='ADMIN'">
 
-<div *ngIf="data && data.length > 0">
-  <div *ngFor="let item of data">
-    <ng-container *ngIf="item.ferie; else permessiTemplate">
-      <!-- Mostra i dettagli per richiesta di ferie -->
-      <p>Richiesta di Ferie:</p>
-      <p>Numero Giorni: {{ item.nGiorno }}</p>
-    </ng-container>
+    <!-- richiesta-component.html -->
+<!-- richiesta-component.html -->
 
-    <ng-template #permessiTemplate>
-      <!-- Mostra i dettagli per richiesta di permessi -->
-      <p>Richiesta di Permessi:</p>
-      <p>Giorni richiesti: {{ item.nGiorno }}</p>
-      <p>Ora Inizio: {{ item.daOra }}</p>
-      <p>Ora Fine: {{ item.aOra }}</p>
-    </ng-template>
+<div class="row">
+  <div class="col-12">
+<!-- richiesta-component.html -->
+
+<div *ngIf="data">
+  <div class="container">
+    <div class="card">
+      <p><strong>Anno:</strong> {{ data.anno }}</p>
+      <p><strong>Mese:</strong> {{ data.mese }}</p>
+      <p><strong>Codice Fiscale:</strong> {{ data.codiceFiscale }}</p>
+
+      <div *ngIf="data.list && data.list.length > 0">
+        <p><strong>Tipologia richiesta:</strong>{{ getTitle() }}</p>
+        <div *ngFor="let item of data.list">
+          <ng-container *ngIf="item.ferie; else permessiTemplate">
+            <!-- Dettagli per richiesta di ferie -->
+            <p>{{ item.nGiorno }} </p>
+          </ng-container>
+
+          <ng-template #permessiTemplate>
+            <!-- Dettagli per richiesta di permessi -->
+            <p>{{ item.nGiorno }} </p>
+            <p>Ora Inizio: {{ item.daOra || 'Non specificato' }}</p>
+            <p>Ora Fine: {{ item.aOra || 'Non specificato' }}</p>
+          </ng-template>
+        </div>
+
+        <!-- Pulsanti fuori dal ciclo ngFor -->
+        <div class="buttons-container">
+          <button mat-flat-button color="primary" (click)="accetta()">Accetta</button> &nbsp;
+          <button mat-flat-button color="warn" (click)="rifiutaECompilaNote()">Rifiuta</button>
+        </div>
+        <br>
+        <div class="col-6" *ngIf="compilaNote" >
+         <div class="form-group">
+          <label for="noteRifiuto">Specifica la motivazione del rifiuto (facoltativo)</label>
+          <textarea name="noteRifiuto" id="noteRifiuto" cols="10" rows="10" class="form-control" [(ngModel)]="note" ></textarea> <br>
+          <button class="btn btn-warning" (click)="inviaNoteEConfermaRifiuto()" >Conferma rifiuto</button>
+         </div>
+        </div>
+
+
+      </div>
+
+      <p *ngIf="!data.list || data.list.length === 0">Nessun dettaglio disponibile.</p>
+    </div>
   </div>
 </div>
 
-<div *ngIf="!data || data.length === 0">
-  <p>Nessun dato disponibile.</p>
+
+  </div>
 </div>
+
   </div>
 
   <div class="container-fluid" *ngIf="userRoleNav === 'DIPENDENTE'">
@@ -108,5 +143,6 @@
     </div>
   </div>
   <div id="finePagina"></div>
+  <br><br><br><br><br>
 </body>
 </html>
