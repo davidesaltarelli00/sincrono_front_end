@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-title>
+            <h3>Periodo di permesso</h3>
+          </mat-card-title>
+          <mat-card-content>
+            <div class="row">
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="codiceFiscale">Codice fiscale:</label>
+                  <input type="text" readonly id="codiceFiscale" name="codiceFiscale" [(ngModel)]="codiceFiscale" class="form-control" />
+                </div>
+              </div>
+
+              <div class="col-2">
+                <div class="form-group">
+                  <label for="permessoGiorno">Giorno:</label>
+                  <input type="number" min="1" max="31" id="permessoGiorno" name="permessoGiorno" [(ngModel)]="permessoGiorno" class="form-control" />
+                </div>
+              </div>
+              <div class="col-4">
+                  <div class="form-group">
+                    <label for="permessoMese">Mese:</label>
+                    <select id="permessoMese" name="permessoMese" [(ngModel)]="permessoMese" class="form-select" (change)="onChangeMese($event)">
+                      <option [value]="null" selected>--Nessuna opzione--</option>
+                      <option *ngFor="let month of mesi; let i = index" [value]="i + 1">{{ getMonthName(i + 1) }}</option>
+                    </select>
+                  </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group">
+                  <label for="permessoAnno">Anno:</label>
+                  <input type="number" id="permessoAnno" name="permessoAnno" [(ngModel)]="permessoAnno" class="form-control" />
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-title>Fascia oraria</mat-card-title>
+          <mat-card-content>
+            <div class="row">
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="daOra">Da Ora:</label>
+                  <input type="number" id="daOra" name="daOra" [(ngModel)]="daOra" class="form-control" />
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="aOra">A Ora:</label>
+                  <input type="number" id="aOra" name="aOra" [(ngModel)]="aOra" class="form-control" />
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <button mat-flat-button color="primary" (click)="insertPermesso()" >Invia richiesta</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

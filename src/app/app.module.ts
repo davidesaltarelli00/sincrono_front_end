@@ -63,6 +63,7 @@ import { NuovaAnagraficaDtoExcelComponent } from './components/anagraficaDto/nuo
 import { ModificaCommessaComponent } from './components/modifica-commessa/modifica-commessa.component';
 import { AlertConfermaComponent } from './alert-conferma/alert-conferma.component';
 import { SelectedDaysComponent } from './components/richieste/selected-days/selected-days.component';
+import { InsertPermessoComponent } from './components/richieste/insert-permesso/insert-permesso.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -101,6 +102,7 @@ import { SelectedDaysComponent } from './components/richieste/selected-days/sele
     NuovaAnagraficaDtoExcelComponent,
     ImmagineComponent,
     SelectedDaysComponent,
+    InsertPermessoComponent,
     BottoniComponent,
     MailSollecitaComponent,
     AlertConfermaComponent,

@@ -45,17 +45,29 @@ export class RichiesteComponent implements OnInit {
   selectedMese: any;
   giorni: any[] = [];
   selectedGiorno: number;
-  esitoCorretto=false;
-  elencoRichieste: any[]=[];
+  esitoCorretto = false;
+  elencoRichieste: any[] = [];
   requestForm: FormGroup;
 
   currentMonth: any;
   currentYear: any;
-  currentMonthDays: { number: number, dayOfWeek: number, selected: boolean }[] = [];
-  dayNames: string[] = ['Domenica', 'Lunedí', 'Martedí', 'Mercoledí', 'Giovedí', 'Venerdí', 'Sabato'];
+  currentMonthDays: { number: number; dayOfWeek: number; selected: boolean }[] =
+    [];
+  dayNames: string[] = [
+    'Domenica',
+    'Lunedí',
+    'Martedí',
+    'Mercoledí',
+    'Giovedí',
+    'Venerdí',
+    'Sabato',
+  ];
   giorniSelezionati: any[] = [];
   showSelectedDays = false;
-
+  tipoRichiesta: string = '';
+  permessoGiorno: any;
+  permessoMese: any;
+  permessoAnno: any;
 
   constructor(
     private authService: AuthService,
@@ -136,14 +148,28 @@ export class RichiesteComponent implements OnInit {
 
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(year, month - 1, day);
-      this.currentMonthDays.push({ number: day, dayOfWeek: date.getDay(), selected: false });
+      this.currentMonthDays.push({
+        number: day,
+        dayOfWeek: date.getDay(),
+        selected: false,
+      });
     }
   }
 
   getMonthName(month: number): string {
     const monthNames = [
-      'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
-      'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
+      'Gennaio',
+      'Febbraio',
+      'Marzo',
+      'Aprile',
+      'Maggio',
+      'Giugno',
+      'Luglio',
+      'Agosto',
+      'Settembre',
+      'Ottobre',
+      'Novembre',
+      'Dicembre',
     ];
     return monthNames[month - 1];
   }
@@ -153,14 +179,16 @@ export class RichiesteComponent implements OnInit {
   }
 
   onDaySelected(dayNumber: number) {
-    const day = this.currentMonthDays.find(d => d.number === dayNumber);
+    const day = this.currentMonthDays.find((d) => d.number === dayNumber);
 
     if (day) {
       day.selected = !day.selected;
 
       if (day.selected) {
         // Inserisci il giorno in modo ordinato
-        const index = this.giorniSelezionati.findIndex(giorno => giorno > dayNumber);
+        const index = this.giorniSelezionati.findIndex(
+          (giorno) => giorno > dayNumber
+        );
         if (index !== -1) {
           this.giorniSelezionati.splice(index, 0, dayNumber);
         } else {
@@ -168,7 +196,10 @@ export class RichiesteComponent implements OnInit {
           this.openSelectedDays();
         }
 
-        console.log("Giorni selezionati:" + JSON.stringify(this.giorniSelezionati));
+        console.log(
+          'Giorni selezionati singolarmente:' +
+            JSON.stringify(this.giorniSelezionati)
+        );
       } else {
         const index = this.giorniSelezionati.indexOf(dayNumber);
         if (index !== -1) {
@@ -178,13 +209,17 @@ export class RichiesteComponent implements OnInit {
     }
   }
 
+  onTipoRichiestaSelected(event: any) {
+    this.tipoRichiesta = event.target.value;
+    console.log('Richiesta selezionata: ' + this.tipoRichiesta);
+  }
+
   isWeekend(dayOfWeek: number): boolean {
     return dayOfWeek === 6 || dayOfWeek === 0; // Sabato = 6, Domenica = 0
   }
 
-
   isDaySelected(dayNumber: number): boolean {
-    const day = this.currentMonthDays.find(d => d.number === dayNumber);
+    const day = this.currentMonthDays.find((d) => d.number === dayNumber);
     return day ? day.selected : false;
   }
 
@@ -205,18 +240,22 @@ export class RichiesteComponent implements OnInit {
   }
 
   selectAllDays() {
-    const areAllSelected = this.currentMonthDays.every(day => day.selected || this.isWeekend(day.dayOfWeek));
+    const areAllSelected = this.currentMonthDays.every(
+      (day) => day.selected || this.isWeekend(day.dayOfWeek)
+    );
 
-    this.currentMonthDays.forEach(day => {
+    this.currentMonthDays.forEach((day) => {
       if (!this.isWeekend(day.dayOfWeek)) {
         this.onDaySelected(day.number);
+        console.log('Giorni selezionati: ' + JSON.stringify(day.number));
       }
     });
   }
 
-
   areAllDaysSelected(): boolean {
-    return this.currentMonthDays.every(day => day.selected || this.isWeekend(day.dayOfWeek));
+    return this.currentMonthDays.every(
+      (day) => day.selected || this.isWeekend(day.dayOfWeek)
+    );
   }
 
   openSelectedDays() {
@@ -226,9 +265,16 @@ export class RichiesteComponent implements OnInit {
   //------------------------------------------------------------------------------------------------------------------------------------
 
   getAllRichieste() {
-    console.log("Hai selezionato il seguente periodo:"+ JSON.stringify(this.selectedGiorno)+'-'+ JSON.stringify(this.selectedMese)+'-'+ JSON.stringify(this.selectedAnno));
-    this.esitoCorretto=true;
-    this.elencoRichieste=[]
+    console.log(
+      'Hai selezionato il seguente periodo:' +
+        JSON.stringify(this.selectedGiorno) +
+        '-' +
+        JSON.stringify(this.selectedMese) +
+        '-' +
+        JSON.stringify(this.selectedAnno)
+    );
+    this.esitoCorretto = true;
+    this.elencoRichieste = [];
   }
 
   inviaRichiesta() {
@@ -243,9 +289,8 @@ export class RichiesteComponent implements OnInit {
 
   onGiornoSelectChange(event: any) {
     this.selectedGiorno = event.target.value;
-    console.log('Giorno selezionato:',  this.selectedGiorno);
+    console.log('Giorno selezionato:', this.selectedGiorno);
   }
-
 
   onMeseSelectChange(event: any) {
     console.log('Mese selezionato:', event.target.value);
@@ -379,7 +424,6 @@ export class RichiesteComponent implements OnInit {
       }
     );
   }
-
 
   toggleDarkMode(): void {
     this.themeService.toggleDarkMode();

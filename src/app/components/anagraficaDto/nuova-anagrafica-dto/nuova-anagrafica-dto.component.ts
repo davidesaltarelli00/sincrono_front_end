@@ -202,7 +202,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         dataAssunzione: new FormControl('', Validators.required), //, Validators.required
         dataInizioProva: new FormControl(''),
         dataFineProva: new FormControl(''),
-        // dataFineRapporto: new FormControl(''), //, Validators.required
+        dataFineRapporto: new FormControl(''), //, Validators.required
         dataFineContratto : new FormControl(''), //, Validators.required
         mesiDurata: new FormControl(''), //, Validators.required
         livelloAttuale: new FormControl(''), // +
