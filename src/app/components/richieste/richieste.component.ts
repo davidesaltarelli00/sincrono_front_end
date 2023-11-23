@@ -262,6 +262,9 @@ export class RichiesteComponent implements OnInit {
     this.showSelectedDays = true;
   }
 
+
+
+
   //------------------------------------------------------------------------------------------------------------------------------------
 
   getAllRichieste() {
