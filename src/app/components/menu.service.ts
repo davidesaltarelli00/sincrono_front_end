@@ -1,12 +1,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MenuService {
-  url = `http://localhost:8080/services/`;
+  token = localStorage.getItem('token');
+  url =environment.URL_locale_Sincrono;
+  testUrl = environment.URL_login_service;
+  urlProd=environment.URL_PROD;
 
   constructor(private http: HttpClient) {}
 

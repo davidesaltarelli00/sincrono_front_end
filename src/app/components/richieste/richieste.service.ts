@@ -9,6 +9,7 @@ import { environment } from './../../../environments/environment';
 export class RichiesteService {
   url =environment.URL_locale_Sincrono;
   testUrl = environment.URL_login_service;
+  urlProd=environment.URL_PROD;
 
   constructor(private http: HttpClient) {}
 

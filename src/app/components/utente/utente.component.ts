@@ -1333,7 +1333,7 @@ export class UtenteComponent implements OnInit {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 image: '../../../../assets/images/logo.jpeg',
-                title: 'Cella salvata correttamente.',
+                title: 'Dati salvati correttamente.',
                 message: (result as any).esito.target,
               },
             });
