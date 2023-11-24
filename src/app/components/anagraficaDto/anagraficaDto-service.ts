@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AnagraficaDtoService {
   token: any;
+  url =environment.URL_locale_Sincrono;
+  testUrl = environment.URL_login_service;
 
   constructor(private http: HttpClient) {}
 
@@ -17,7 +20,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/list`, {
+    return this.http.get<any>(this.url + `list`, {
       headers: headers,
     });
   }
@@ -29,7 +32,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost8080/services/tipo-azienda-cliente-map`,
+      this.url+`tipo-azienda-cliente-map`,
       { headers: headers }
     );
   }
@@ -41,7 +44,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/dettaglio/${id}`,
+      this.url+`dettaglio/${id}`,
       { headers: headers }
     );
   }
@@ -52,7 +55,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(`http://localhost:8080/services/commessa`, body, {
+    return this.http.put<any>(this.url+`commessa`, body, {
       headers: headers,
     });
   }
@@ -63,7 +66,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(`http://localhost:8080/services/retain`, body, {
+    return this.http.put<any>(this.url+`retain`, body, {
       headers: headers,
     });
   }
@@ -74,7 +77,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(`http://localhost:8080/services/delete`, body, {
+    return this.http.put<any>(this.url+`delete`, body, {
       headers: headers,
     });
   }
@@ -85,8 +88,8 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    console.log('BODY SERVICE:' + JSON.stringify(body));
-    return this.http.put<any>(`http://localhost:8080/services/modifica`, body, {
+    // console.log('BODY SERVICE:' + JSON.stringify(body));
+    return this.http.put<any>(this.url+`modifica`, body, {
       headers: headers,
     });
   }
@@ -98,7 +101,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.post<any>(
-      `http://localhost:8080/services/inserisci`,
+      this.url+`inserisci`,
       body,
       {
         headers: headers,
@@ -112,7 +115,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(`http://localhost:8080/services/filter`, body, {
+    return this.http.post<any>(this.url+`filter`, body, {
       headers: headers,
     });
   }
@@ -124,7 +127,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/utenti-list`, {
+    return this.http.get<any>(this.url+`utenti-list`, {
       headers: headers,
     });
   }
@@ -246,7 +249,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     const url = `http://localhost:8080/services/livelli-by-ccnl/${ccnl}`;
-    console.log('URL CHANGE CCNL:' + url);
+    // console.log('URL CHANGE CCNL:' + url);
     return this.http.get<any>(url, {
       headers: headers,
     });
@@ -259,7 +262,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     const url = `http://localhost:8080/services/tipo-causa-fine-contratto-map`;
-    console.log('URL changeTipoCausaFineContrattoMap:' + url);
+    // console.log('URL changeTipoCausaFineContrattoMap:' + url);
     return this.http.get<any>(url, {
       headers: headers,
     });

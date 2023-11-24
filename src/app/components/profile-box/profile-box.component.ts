@@ -387,7 +387,7 @@ export class ProfileBoxComponent {
   }
 
   modificaCommessa() {
-    this.router.navigate(['/modifica-anagrafica/' + this.id]);
+    this.router.navigate(['/modifica-commessa/' + this.id]);
   }
 
   logout() {
