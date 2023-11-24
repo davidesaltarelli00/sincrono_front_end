@@ -49,7 +49,8 @@ export class RichiesteComponent implements OnInit {
   esitoCorretto = false;
   elencoRichieste: any[] = [];
   requestForm: FormGroup;
-
+  currentPage: number = 1;
+  itemsPerPage: number = 20; // Numero di elementi per pagina
   currentMonth: any;
   currentYear: any;
   currentMonthDays: { number: number; dayOfWeek: number; selected: boolean }[] =
@@ -300,6 +301,35 @@ export class RichiesteComponent implements OnInit {
         }
       });
   }
+
+
+  //paginazione
+  getCurrentPageItemsFerie(): any[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.elencoRichiesteDipendente.slice(startIndex, endIndex);
+  }
+  getCurrentPageItemsPermessi(): any[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.elencoRichiesteDipendente.slice(startIndex, endIndex);
+  }
+
+  getTotalPages(): number {
+    return Math.ceil(this.elencoRichiesteDipendente.length / this.itemsPerPage);
+  }
+
+  getPaginationArray(): number[] {
+    const totalPages = this.getTotalPages();
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  goToPage(pageNumber: number) {
+    if (pageNumber >= 1 && pageNumber <= this.getTotalPages()) {
+      this.currentPage = pageNumber;
+    }
+  }
+
 
   //------------------------------------------------------------------------------------------------------------------------------------
 
