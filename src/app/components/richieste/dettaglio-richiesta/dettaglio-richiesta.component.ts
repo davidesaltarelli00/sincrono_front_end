@@ -93,7 +93,7 @@ export class DettaglioRichiestaComponent implements OnInit {
       return 'Ferie per i seguenti giorni:';
     } else if (this.data.list.some((item: any) => item.permessi)) {
       this.tipoRichiesta = 'permessi';
-      return 'Permessi per il giorno ';
+      return 'Ore di permesso ';
     } else {
       this.tipoRichiesta = '';
       return 'Nessuna tipologia specificata';

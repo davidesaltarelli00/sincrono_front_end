@@ -1052,6 +1052,7 @@ export class UtenteComponent implements OnInit {
         if ((result as any).esito.code === 200) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
+              image: '../../../../assets/images/logo.jpeg',
               title: 'Invio riuscito.',
               message: (result as any).esito.target,
             },

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from './../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RichiesteService {
-  url = `http://localhost:8080/services/`;
-  testUrl = `http://localhost:8085/`;
+  url =environment.URL_locale_Sincrono;
+  testUrl = environment.URL_login_service;
 
   constructor(private http: HttpClient) {}
 

@@ -96,9 +96,9 @@
 
           <ng-template #permessiTemplate>
             <!-- Dettagli per richiesta di permessi -->
-            <p>{{ item.nGiorno }} </p>
-            <p>Ora Inizio: {{ item.daOra || 'Non specificato' }}</p>
-            <p>Ora Fine: {{ item.aOra || 'Non specificato' }}</p>
+            <p> <strong>Giorno richiesto:</strong> {{ item.nGiorno }}</p>
+            <p> <strong>Ora Inizio: </strong>{{ item.daOra || 'Non specificato' }}</p>
+            <p> <strong>Ora Fine:</strong> {{ item.aOra || 'Non specificato' }}</p>
           </ng-template>
         </div>
 
