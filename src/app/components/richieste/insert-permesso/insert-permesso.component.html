@@ -63,29 +63,32 @@
                   </div>
 
 
-                <div class="col-2">
-                  <div class="form-group">
-                    <label for="daOra">Dalle Ore:</label>
-                    <select name="daOra" id="daOra" [(ngModel)]="daOra" class="form-select" required>
-                      <option value="" selected>--Nessuna selezione--</option>
-                      <option *ngFor="let ora of arrayDaOra" [value]="ora">{{ ora }}</option>
-                    </select>
+                  <div class="col-2">
+                    <div class="form-group">
+                      <label for="daOra">Dalle Ore:</label>
+                      <select [ngStyle]="{'border': daOra == null ? '1px solid red' : '1px solid lightgreen'}" name="daOra" id="daOra" [(ngModel)]="daOra" class="form-select" required (ngModelChange)="updateAOraOptions()">
+                        <option value="" selected>--Nessuna selezione--</option>
+                        <option *ngFor="let ora of arrayDaOra" [value]="ora">{{ ora }}</option>
+                      </select>
+                      <div class="text-danger" *ngIf="daOra == null">Campo obbligatorio.</div>
+                    </div>
                   </div>
-                </div>
 
-                <div class="col-2">
-                  <div class="form-group">
-                    <label for="aOra">Alle Ore:</label>
-                    <select name="aOra" id="aOra" [(ngModel)]="aOra" class="form-select" required>
-                      <option value="" selected>--Nessuna selezione--</option>
-                      <option *ngFor="let ora of arrayAOra" [value]="ora">{{ ora }}</option>
-                    </select>
+                  <div class="col-2">
+                    <div class="form-group">
+                      <label for="aOra">Alle Ore:</label>
+                      <select [ngStyle]="{'border': aOra == null ? '1px solid red' : '1px solid lightgreen'}" name="aOra" id="aOra" [(ngModel)]="aOra" class="form-select" required (change)="changeAora($event)">
+                        <option value="" selected>--Nessuna selezione--</option>
+                        <option *ngFor="let ora of arrayAOra" [value]="ora">{{ ora }}</option>
+                      </select>
+                      <div class="text-danger" *ngIf="aOra == null">Campo obbligatorio.</div>
+                    </div>
                   </div>
-                </div>
+
 
                 <div class="col-2">
                   <label for="invio">Azioni</label> <br>
-            <button mat-flat-button color="primary" [disabled]="insertPermeission.invalid" >Invia richiesta</button>
+            <button mat-flat-button color="primary" [disabled]="permessoGiorno==null || permessoMese==null || permessoAnno==null || daOra==null || aOra==null"  >Invia richiesta</button>
                 </div>
               </div>
             </form>

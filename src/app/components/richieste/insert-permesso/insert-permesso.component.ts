@@ -48,8 +48,8 @@ export class InsertPermessoComponent implements OnInit {
     'Novembre',
     'Dicembre',
   ];
-  daOra: string = '';
-  aOra: string = '';
+  daOra: any;
+  aOra: any;
 
   arrayDaOra = [
     '09:00',
@@ -94,6 +94,8 @@ export class InsertPermessoComponent implements OnInit {
     '18:00',
   ];
   elencoAnni: number[] = [];
+  selectedDaOra: string | null = null;
+
 
   constructor(
     private profileBoxService: ProfileBoxService,
@@ -190,6 +192,32 @@ export class InsertPermessoComponent implements OnInit {
     }
   }
 
+
+
+  updateAOraOptions() {
+    console.log('Chiamato updateAOraOptions()');
+
+    if (this.daOra !== this.selectedDaOra) {
+      console.log('daOra è cambiato. Nuovo valore:', this.daOra);
+
+      this.selectedDaOra = this.daOra;
+      this.arrayAOra = this.arrayAOra.filter(ora => ora > this.daOra);
+
+      console.log('Array aggiornato:', this.arrayAOra);
+
+      if (this.aOra && this.aOra < this.daOra) {
+        this.aOra = null;
+        console.log('aOra resettato a null');
+      }
+    }
+  }
+
+  changeAora(event:any){
+    const target=event.target.value;
+    console.log(target);
+  }
+
+
   initializeYears() {
     const currentYear = new Date().getFullYear();
     const startYear = 2010;
@@ -199,55 +227,58 @@ export class InsertPermessoComponent implements OnInit {
   }
 
   insertPermesso(insertPermeission: any) {
-    // console.log("Valore form:", JSON.stringify(insertPermeission));
-    // if(insertPermeission.valid){
-    let body = {
-      richiestaDto: {
-        anno: this.permessoAnno,
-        mese: this.permessoMese,
-        codiceFiscale: this.codiceFiscale,
-        list: [
-          {
-            permessi: true,
-            ferie: null,
-            daOra: this.daOra,
-            aOra: this.aOra,
-            nGiorno: this.permessoGiorno,
-          },
-        ],
-      },
-    };
-    console.log('PAYLOAD INVIO PERMESSO: ' + JSON.stringify(body));
-    this.richiesteService
-      .inviaRichiesta(this.token, body)
-      .subscribe((result: any) => {
-        if ((result as any).esito.code != 200) {
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-              image: '../../../../assets/images/logo.jpeg',
-              title: 'Invio non riuscito:',
-              message: (result as any).esito.target,
-            },
-          });
-        } else {
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-              image: '../../../../assets/images/logo.jpeg',
-              title: 'Richiesta inviata',
-              // message: "Troverai l'elenco delle tue richieste nel tuo profilo.",
-            },
-          });
-        }
+
+      if(this.permessoGiorno==null || this.permessoMese==null || this.permessoAnno==null || this.daOra==null || this.aOra==null){
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          image: '../../../../assets/images/danger.png',
+          title: 'Attenzione',
+          message: "Qualcosa é andato storto.",
+        },
       });
-    // } else{
-    //   const dialogRef = this.dialog.open(AlertDialogComponent, {
-    //     data: {
-    //       image: '../../../../assets/images/danger.png',
-    //       title: 'Attenzione',
-    //       message: "Qualcosa é andato storto.",
-    //     },
-    //   });
-    // }
+      }
+      else{
+        let body = {
+          richiestaDto: {
+            anno: this.permessoAnno,
+            mese: this.permessoMese,
+            codiceFiscale: this.codiceFiscale,
+            list: [
+              {
+                permessi: true,
+                ferie: null,
+                daOra: this.daOra,
+                aOra: this.aOra,
+                nGiorno: this.permessoGiorno,
+              },
+            ],
+          },
+        };
+        console.log('PAYLOAD INVIO PERMESSO: ' + JSON.stringify(body));
+        this.richiesteService
+          .inviaRichiesta(this.token, body)
+          .subscribe((result: any) => {
+            if ((result as any).esito.code != 200) {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  image: '../../../../assets/images/logo.jpeg',
+                  title: 'Invio non riuscito:',
+                  message: (result as any).esito.target,
+                },
+              });
+            } else {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  image: '../../../../assets/images/logo.jpeg',
+                  title: 'Richiesta inviata',
+                  // message: "Troverai l'elenco delle tue richieste nel tuo profilo.",
+                },
+              });
+            }
+          });
+      }
+
+
   }
 
   logout() {
