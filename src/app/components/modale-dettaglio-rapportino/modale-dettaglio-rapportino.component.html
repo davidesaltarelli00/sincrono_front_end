@@ -113,7 +113,7 @@
         </thead>
         <tbody>
           <tr>
-            <td> {{nome}} {{cognome}} </td>
+            <td> {{nome}} {{cognome}} <i class="fa fa-info-circle" [routerLink]="['/dettaglio-anagrafica/',id]" ></i> </td>
             <td>{{codiceFiscale}}</td>
             <td>{{mese}}</td>
             <td>{{anno}}</td>
@@ -132,28 +132,26 @@
             <!-- <th>ID</th> -->
             <th>Anno</th>
             <th>Mese</th>
-            <th>Codice Fiscale</th>
+            <!-- <th>Codice Fiscale</th> -->
             <th>Note</th>
-            <th>Ferie</th>
-            <th>Permessi</th>
+            <th>Tipo Richiesta</th>
             <th>Dalle ore</th>
             <th>Alle ore</th>
             <th>GG</th>
-            <th>Stato</th>
+            <!-- <th>Stato</th> -->
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let richiesta of elencoRichiesteAccettate">
             <!-- <td>{{ richiesta.id }}</td> -->
             <td>{{ richiesta.anno }}</td>
-            <td>{{ richiesta.mese }}</td>
-            <td>{{ richiesta.codiceFiscale }}</td>
+            <td>{{ getMonthName(richiesta.mese) }}</td>
+            <!-- <td>{{ richiesta.codiceFiscale }}</td> -->
             <td>{{ richiesta.note }}</td>
             <td>
-              <span *ngFor="let item of richiesta.list">{{ item.ferie ? 'Si':'No' }} </span>
-            </td>
-            <td>
-              <span *ngFor="let item of richiesta.list">{{ item.permessi ? 'Si':'No' }} </span>
+              <span *ngIf="richiesta.list[0].ferie">Ferie</span>
+              <span *ngIf="richiesta.list[0].permessi">Permessi</span>
+              <span *ngIf="!richiesta.list[0].ferie && !richiesta.list[0].permessi">N/A</span>
             </td>
             <td>
               <span *ngFor="let item of richiesta.list">{{ item.daOra }} </span>
@@ -164,7 +162,7 @@
             <td>
               <span *ngFor="let item of richiesta.list">{{ item.nGiorno }} </span>
             </td>
-            <td>{{ richiesta.stato ? 'Richiesta accettata':'Richiesta rifiutata' }}</td>
+            <!-- <td>{{ richiesta.stato ? 'Richiesta accettata':'Richiesta rifiutata' }}</td> -->
           </tr>
         </tbody>
       </table>

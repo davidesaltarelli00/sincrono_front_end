@@ -413,11 +413,11 @@ img{
            <!-- Tabella per le ferie -->
            <div class="row" *ngIf="elencoRichiesteDipendente && elencoRichiesteDipendente.length > 0">
             <div class="col-12">
-              <p>Elenco richieste delle ferie</p>
+              <h1>Elenco richieste delle ferie</h1>
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>ID</th>
+                    <!-- <th>ID</th> -->
                     <th>Tipo Richiesta</th>
                     <th>Giorno</th>
                     <th>Stato</th>
@@ -426,7 +426,7 @@ img{
                 <tbody>
                   <tr *ngFor="let richiesta of elencoRichiesteDipendente">
                     <ng-container *ngIf="richiesta.list && richiesta.list.length > 0 && richiesta.list[0].ferie">
-                      <td>{{ richiesta.id }}</td>
+                      <!-- <td>{{ richiesta.id }}</td> -->
                       <td>Ferie</td>
                       <td>
                         <ng-container *ngFor="let item of richiesta.list; let i = index">
@@ -448,11 +448,11 @@ img{
            <div class="row" *ngIf="elencoRichiesteDipendente && elencoRichiesteDipendente.length > 0" >
             <div class="col-12">
               <!-- Tabella per i permessi -->
-              <p>Elenco richieste dei permessi</p>
+              <h1>Elenco richieste dei permessi</h1>
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>ID</th>
+                    <!-- <th>ID</th> -->
                     <!-- <th>Tipo Richiesta</th> -->
                     <th>Giorno</th>
                     <th>Dalle ore</th>
@@ -463,7 +463,7 @@ img{
                 <tbody>
                   <tr *ngFor="let richiesta of elencoRichiesteDipendente">
                     <ng-container *ngIf="richiesta.list && richiesta.list.length > 0 && richiesta.list[0].permessi">
-                      <td>{{ richiesta.id }}</td>
+                      <!-- <td>{{ richiesta.id }}</td> -->
                       <!-- <td>Permessi</td> -->
                       <td>
                         <ng-container *ngFor="let item of richiesta.list; let i = index">

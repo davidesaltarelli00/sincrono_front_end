@@ -349,6 +349,25 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
       : 0;
   }
 
+
+  getMonthName(month: number): string {
+    const monthNames = [
+      'Gennaio',
+      'Febbraio',
+      'Marzo',
+      'Aprile',
+      'Maggio',
+      'Giugno',
+      'Luglio',
+      'Agosto',
+      'Settembre',
+      'Ottobre',
+      'Novembre',
+      'Dicembre',
+    ];
+    return monthNames[month - 1];
+  }
+
   //metodi navbar
 
   logout() {

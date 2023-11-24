@@ -113,8 +113,8 @@ export class SelectedDaysComponent implements OnInit {
         const dialogRef = this.dialog.open(AlertDialogComponent, {
           data: {
             image: '../../../../assets/images/logo.jpeg',
-            title: 'Invio effettuato:',
-            message: "Troverai l'elenco delle tue richieste nel tuo profilo.",
+            title: 'Invio effettuato',
+            // message: "Troverai l'elenco delle tue richieste nel tuo profilo.",
           },
         });
       }

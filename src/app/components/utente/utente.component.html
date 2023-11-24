@@ -197,31 +197,51 @@
         <!-- <p style="text-align: center;" >
           Rapportino relativo a {{nomeMeseDaNumero(selectedMese)}} - {{selectedAnno}} caricato correttamente.
         </p> -->
-        <div class="rapportino-inviato" *ngIf="risultatoCheckFreeze">
-          <p style="text-align: center;"  >Il rapportino é giá stato inviato.</p>
-          <p style="text-align: center;" >Non puoi piú modificarlo a meno che l'admin non te lo rimandi indietro.</p>
+        <div class="col-12" *ngIf="risultatoCheckFreeze">
+          <mat-card  style="border: 1px solid #333; text-align: center;">
+            <mat-card-title>
+              Nota <i class="fa fa-info-circle" ></i>
+            </mat-card-title>
+            <mat-card-content>
+              <p style="text-align: center;"  >Il rapportino é stato inviato.</p>
+              <p style="text-align: center;" >Non puoi piú modificarlo a meno che l'admin non te lo rimandi indietro.</p>
+            </mat-card-content>
+          </mat-card>
+          <br>
+
+        </div>
+        <div class="col-12" *ngIf="!risultatoCheckFreeze">
+          <mat-card style="border: 1px solid #333; text-align: center;">
+            <mat-card-title>Nota  <i class="fa fa-info-circle" [routerLink]="['/richieste']" ></i> </mat-card-title>
+            <mat-card-content>
+              <p>Prima di compilare il rapportino controlla lo stato delle richieste <i class="fa fa-envelope" [routerLink]="['/richieste']" ></i> che hai inviato e assicurati di compilarlo correttamente.</p>
+            </mat-card-content>
+          </mat-card>
+          <br>
         </div>
       <div class="row">
         <div class="col-12" style="text-align: center;" >
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>Nominativo</th>
+                <!-- <th>Nominativo</th> -->
                 <th>Azienda</th>
                 <th>Numero commesse</th>
                 <th>Contratto</th>
                 <th>Periodo di riferimento</th>
                 <th>Giorni utili di lavoro</th>
+                <th>Richieste</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>{{ userLoggedName |titlecase }} {{ userLoggedSurname |titlecase }}</td>
+                <!-- <td>{{ userLoggedName |titlecase }} {{ userLoggedSurname |titlecase }}</td> -->
                 <td> {{ aziendaUser }}</td>
                 <td>{{numeroCommessePresenti}}</td>
                 <td> {{contrattoUser}}</td>
                 <td>{{nomeMeseDaNumero(selectedMese)}} - {{ selectedAnno }}</td>
                 <td>{{giorniUtili}}</td>
+                <td> <button mat-mini-fab color="primary" [routerLink]="['/richieste']" > <i class="fa fa-envelope" ></i> </button> </td>
               </tr>
             </tbody>
           </table>
