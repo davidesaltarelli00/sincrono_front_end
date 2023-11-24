@@ -139,7 +139,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/tipo-causa-fine-rapporto-map`,
+      this.url+`tipo-causa-fine-rapporto-map`,
       {
         headers: headers,
       }
@@ -153,7 +153,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/tipo-canale-reclutamento-map`,
+      this.url+`tipo-canale-reclutamento-map`,
       {
         headers: headers,
       }
@@ -167,7 +167,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(`http://localhost:8080/services/list`, body, {
+    return this.http.post<any>(this.url+`list`, body, {
       headers: headers,
     });
   }
@@ -179,7 +179,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/tipo-contratto-map`,
+      this.url+`tipo-contratto-map`,
       { headers: headers }
     );
   }
@@ -191,7 +191,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/tipo-livelli-contrattuali-map`,
+      this.url+`tipo-livelli-contrattuali-map`,
       { headers: headers }
     );
   }
@@ -203,7 +203,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      `http://localhost:8080/services/tipo-azienda-map`,
+      this.url+`tipo-azienda-map`,
       { headers: headers }
     );
   }
@@ -214,7 +214,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/tipo-ccnl-map`, {
+    return this.http.get<any>(this.url+`tipo-ccnl-map`, {
       headers: headers,
     }); //tipo-ccnl
   }
@@ -225,7 +225,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://localhost:8080/services/ruoli-map`, {
+    return this.http.get<any>(this.url+`ruoli-map`, {
       headers: headers,
     });
   }
@@ -236,7 +236,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>('http://localhost:8080/services/commessa', body, {
+    return this.http.put<any>(this.url+'commessa', body, {
       headers: headers,
     });
   }
@@ -248,7 +248,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    const url = `http://localhost:8080/services/livelli-by-ccnl/${ccnl}`;
+    const url = this.url+`livelli-by-ccnl/${ccnl}`;
     // console.log('URL CHANGE CCNL:' + url);
     return this.http.get<any>(url, {
       headers: headers,
@@ -261,7 +261,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    const url = `http://localhost:8080/services/tipo-causa-fine-contratto-map`;
+    const url = this.url+`tipo-causa-fine-contratto-map`;
     // console.log('URL changeTipoCausaFineContrattoMap:' + url);
     return this.http.get<any>(url, {
       headers: headers,
@@ -275,7 +275,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.post(`http://localhost:8080/services/inserisci-excel`, body, {
+    return this.http.post(this.url+`inserisci-excel`, body, {
       headers: headers,
       reportProgress: true,
       ...options,

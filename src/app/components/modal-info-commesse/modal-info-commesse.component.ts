@@ -57,7 +57,7 @@ export class ModalInfoCommesseComponent implements OnInit {
   modificaCommessa(id: any) {
     console.log(id);
     this.stepperService.setCurrentStep(2);
-    this.router.navigate(['/modifica-anagrafica/' + id]);
+    this.router.navigate(['/modifica-commessa/' + id]);
     this.dialog.closeAll();
   }
 

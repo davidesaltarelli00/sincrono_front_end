@@ -567,13 +567,22 @@ export class ListaAnagraficaDtoComponent implements OnInit {
             .subscribe(
               (response: any) => {
                 if ((response as any).esito.code != 200) {
-                  alert(
-                    'Riattivazione non riuscita:\n' +
-                      (response as any).esito.target
-                  );
+                  const dialogRef = this.dialog.open(AlertDialogComponent, {
+                    data: {
+                      image:'../../../../assets/images/danger.png',
+                      title: 'Riattivazione non riuscita:.',
+                      message: (response as any).esito.target,
+                    },
+                  });
                 } else {
-                  alert('Utente riattivato correttamente.');
-                  this.ngOnInit();
+                  const dialogRef = this.dialog.open(AlertDialogComponent, {
+                    data: {
+                      image:'../../../../assets/images/logo.jpeg',
+                      title: 'Utente riattivato correttamente.',
+                      message: (response as any).esito.target,
+                    },
+                  });
+                  location.reload();
                 }
               },
               (errorDeleted: any) => {
@@ -1041,7 +1050,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     if (element?.commesse?.length > 0) {
       this.mostraInfo(element.anagrafica?.id);
     } else {
-      this.router.navigate(['/modifica-anagrafica', element.anagrafica.id]);
+      this.router.navigate(['/modifica-commessa', element.anagrafica.id]);
     }
   }
 
