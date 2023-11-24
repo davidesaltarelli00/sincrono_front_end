@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,9 @@ export class CambioPasswordService {
   idUtente: any;
   passwordVecchia: string = '';
   passwordNuova: string = '';
+  url =environment.URL_locale_Sincrono;
+  testUrl = environment.URL_login_service;
+  urlProd=environment.URL_PROD;
 
   constructor(
     private http: HttpClient,
@@ -42,7 +46,7 @@ export class CambioPasswordService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.put(this.urlLocale + `modifica-utente`, body, {
+    return this.http.put(this.url + `modifica-utente`, body, {
       headers,
     });
   }

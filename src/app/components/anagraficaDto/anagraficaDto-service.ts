@@ -10,6 +10,7 @@ export class AnagraficaDtoService {
   token: any;
   url =environment.URL_locale_Sincrono;
   testUrl = environment.URL_login_service;
+  urlProd=environment.URL_PROD;
 
   constructor(private http: HttpClient) {}
 

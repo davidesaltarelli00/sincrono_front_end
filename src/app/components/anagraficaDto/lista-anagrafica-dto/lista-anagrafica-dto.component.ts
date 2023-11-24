@@ -271,11 +271,11 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
     if (dataFineRapportoControl) {
       if (selectedTipoContratto === 'Indeterminato') {
-        console.log('Selezionato contratto: ' + selectedTipoContratto);
+        // console.log('Selezionato contratto: ' + selectedTipoContratto);
         this.inseritoContrattoIndeterminato = false;
         dataFineRapportoControl.disable();
       } else {
-        console.log('Selezionato contratto: ' + selectedTipoContratto);
+        // console.log('Selezionato contratto: ' + selectedTipoContratto);
         dataFineRapportoControl.enable();
         this.inseritoContrattoIndeterminato = true;
       }
@@ -285,7 +285,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   caricaAziendeClienti() {
     this.contrattoService.getAllAziendaCliente(this.token).subscribe(
       (result: any) => {
-        console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+        // console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
         this.aziendeClienti = (result as any)['list'];
       },
       (error: any) => {
@@ -301,9 +301,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     if (target) {
       const isChecked = target.checked;
       if (isChecked) {
-        console.log('Checkbox selezionata, il valore è true');
+        // console.log('Checkbox selezionata, il valore è true');
       } else {
-        console.log('Checkbox deselezionata, il valore è false');
+        // console.log('Checkbox deselezionata, il valore è false');
       }
     }
   }
@@ -327,11 +327,11 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         this.anagraficaLoggata = response.anagraficaDto.anagrafica.id;
-        console.log(
-          'ID UTENTE LOGGATO: ' + JSON.stringify(this.anagraficaLoggata)
-        );
+        // console.log(
+        //   'ID UTENTE LOGGATO: ' + JSON.stringify(this.anagraficaLoggata)
+        // );
         this.ruolo = response.anagraficaDto.ruolo.descrizione;
-        console.log('RUOLO UTENTE LOGGATO:' + this.ruolo);
+        // console.log('RUOLO UTENTE LOGGATO:' + this.ruolo);
         this.isGreenBackground(this.anagraficaLoggata);
       },
       (error: any) => {
@@ -354,7 +354,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         (resp: any) => {
           this.originalLista = resp.list;
           this.lista = this.originalLista;
-          console.log('Elenco record: ' + JSON.stringify(this.lista));
+          // console.log('Elenco record: ' + JSON.stringify(this.lista));
 
           // Inizializza la pagina corrente e i dati della pagina
           this.currentPage = 1;
@@ -363,7 +363,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           this.verificaCampiVuoti();
         },
         (error: any) => {
-          console.log(
+          console.error(
             'Si é verificato un errore durante il caricamento dei dati: ' +
               error
           );
@@ -393,10 +393,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           const value = record[key];
           if (value === null || value === undefined || value === '') {
             // Hai un campo vuoto in questo record
-            console.log(
-              `Campo vuoto trovato in record con ID ${record.anagrafica.id}` +
-                `: ${value}`
-            );
+            // console.log(
+            //   `Campo vuoto trovato in record con ID ${record.anagrafica.id}` +
+            //     `: ${value}`
+            // );
           }
         }
       }
@@ -418,10 +418,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.motivazioniFineRapporto = (res as any)['list'];
-          console.log('Elenco motivazioni fine rapporto:', JSON.stringify(res));
+          // console.log('Elenco motivazioni fine rapporto:', JSON.stringify(res));
         },
         (error: any) => {
-          console.log(
+          console.error(
             'Errore durante il caricamento della tipologica Motivazione fine rapporto:',
             JSON.stringify(error)
           );
@@ -435,13 +435,13 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.tipologicaCanaliReclutamento = (res as any)['list'];
-          console.log('ElencoCanali reclutamento:' + JSON.stringify(res));
+          // console.log('ElencoCanali reclutamento:' + JSON.stringify(res));
         },
         (error: any) => {
-          console.log(
-            'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
-              JSON.stringify(error)
-          );
+          // console.log(
+          //   'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
+          //     JSON.stringify(error)
+          // );
         }
       );
   }
@@ -467,12 +467,12 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       );
 
       if (selectedObject) {
-        console.log('Azienda cliente selezionata: ', selectedObject);
+        // console.log('Azienda cliente selezionata: ', selectedObject);
       } else {
-        console.log('Azienda non trovata nella lista');
+        // console.log('Azienda non trovata nella lista');
       }
     } else {
-      console.log('Valore non valido o azienda non selezionata');
+      // console.log('Valore non valido o azienda non selezionata');
     }
   }
 
@@ -490,15 +490,15 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
       .subscribe(
         (resp: any) => {
-          console.log(
-            'Dettaglio prima dell eliminazione: ' + JSON.stringify(resp)
-          );
+          // console.log(
+          //   'Dettaglio prima dell eliminazione: ' + JSON.stringify(resp)
+          // );
           let body = {
             anagraficaDto: resp.anagraficaDto,
           };
-          console.log(
-            "PAYLOAD BACKEND PER L'ELIMINAZIONE: " + JSON.stringify(body)
-          );
+          // console.log(
+          //   "PAYLOAD BACKEND PER L'ELIMINAZIONE: " + JSON.stringify(body)
+          // );
           //se é ok parte l elimina
           this.anagraficaDtoService
             .delete(body, localStorage.getItem('token'))
@@ -560,7 +560,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       .detailAnagraficaDto(id, localStorage.getItem('token'))
       .subscribe(
         (resp: any) => {
-          console.log('UTENTE DA RIATTIVARE: ' + JSON.stringify(resp));
+          // console.log('UTENTE DA RIATTIVARE: ' + JSON.stringify(resp));
           //se é ok parte la riattivazione
           this.anagraficaDtoService
             .riattivaUtente(resp, localStorage.getItem('token'))
@@ -586,14 +586,14 @@ export class ListaAnagraficaDtoComponent implements OnInit {
                 }
               },
               (errorDeleted: any) => {
-                console.log(
-                  'Errore durante la riattivazione: ' + errorDeleted
-                );
+                // console.log(
+                //   'Errore durante la riattivazione: ' + errorDeleted
+                // );
               }
             );
         },
         (error: any) => {
-          console.log(error);
+          // console.log(error);
         }
       );
     });
@@ -666,7 +666,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       },
     };
 
-    console.log('PAYLOAD BACKEND FILTER ORGANICO: ' + JSON.stringify(payload));
+    // console.log('PAYLOAD BACKEND FILTER ORGANICO: ' + JSON.stringify(payload));
     this.anagraficaDtoService
       .filterAnagrafica(localStorage.getItem('token'), payload)
       .subscribe(
@@ -683,16 +683,16 @@ export class ListaAnagraficaDtoComponent implements OnInit {
               this.messaggio =
                 'Nessun risultato trovato per i filtri inseriti, riprova.';
             }
-            console.log(
-              'Trovati i seguenti risultati: ' + JSON.stringify(result)
-            );
+            // console.log(
+            //   'Trovati i seguenti risultati: ' + JSON.stringify(result)
+            // );
           }
         },
         (error: any) => {
-          console.log(
-            'Si é verificato un errore durante il passaggio dei dati da organico: ' +
-              error
-          );
+          // console.log(
+          //   'Si é verificato un errore durante il passaggio dei dati da organico: ' +
+          //     error
+          // );
         }
       );
   }
@@ -728,7 +728,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   vaiAModifica(idAnagrafica: number, idContratto: number, idCommessa: number) {
-    console.log(idAnagrafica);
+    // console.log(idAnagrafica);
     this.router.navigate(['/modifica-anagrafica/' + idAnagrafica]);
   }
 
@@ -788,7 +788,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   filter(value: any) {
-    console.log('Valore del form: ' + JSON.stringify(value));
+    // console.log('Valore del form: ' + JSON.stringify(value));
     const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
         if (obj[key] && typeof obj[key] === 'object') {
@@ -843,7 +843,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     const body = {
       anagraficaDto: this.filterAnagraficaDto.value,
     };
-    console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
+    // console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
 
     this.anagraficaDtoService
       .filterAnagrafica(localStorage.getItem('token'), body)
@@ -861,13 +861,13 @@ export class ListaAnagraficaDtoComponent implements OnInit {
               this.messaggio =
                 'Nessun risultato trovato per i filtri inseriti, riprova.';
             }
-            console.log(
-              'Trovati i seguenti risultati: ' + JSON.stringify(result)
-            );
+            // console.log(
+            //   'Trovati i seguenti risultati: ' + JSON.stringify(result)
+            // );
           }
         },
         (error: any) => {
-          console.log('Si é verificato un errore: ' + error);
+          // console.log('Si é verificato un errore: ' + error);
         }
       );
   }
@@ -878,11 +878,11 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       .detailAnagraficaDto(id, localStorage.getItem('token'))
       .subscribe(
         (resp: any) => {
-          console.log(resp);
+          // console.log(resp);
           this.data = (resp as any)['anagraficaDto'];
-          console.log(this.data);
+          // console.log(this.data);
           this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
-          console.log(this.elencoCommesse);
+          // console.log(this.elencoCommesse);
 
           // Apro il dialog e passo i dati al componente
           const dialogRef = this.dialog.open(ModalInfoCommesseComponent, {
@@ -894,10 +894,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           });
         },
         (error: any) => {
-          console.error(
-            'ERRORE DURANTE IL CARICAMENTO DELLE COMMESSE:' +
-              JSON.stringify(error)
-          );
+          // console.error(
+          //   'ERRORE DURANTE IL CARICAMENTO DELLE COMMESSE:' +
+          //     JSON.stringify(error)
+          // );
         }
       );
   }
@@ -948,7 +948,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     });
     const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
 
-    console.log('Dati nel foglio di lavoro:', workSheet);
+    // console.log('Dati nel foglio di lavoro:', workSheet);
 
     XLSX.utils.book_append_sheet(workBook, workSheet, 'ListaAnagrafiche');
     // Esporta il libro Excel in un file
@@ -976,7 +976,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       );
 
       if (selectedOption) {
-        console.log('Opzione selezionata: ', selectedOption);
+        // console.log('Opzione selezionata: ', selectedOption);
         this.idCCNLselezionato = selectedOption.descrizione;
         livelliCCNL?.enable();
 
@@ -984,41 +984,41 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           .changeCCNL(localStorage.getItem('token'), this.idCCNLselezionato)
           .subscribe(
             (response: any) => {
-              console.log(
-                'RESPONSE NUOVA LISTA LIVELLI CCNL:' + JSON.stringify(response)
-              );
+              // console.log(
+              //   'RESPONSE NUOVA LISTA LIVELLI CCNL:' + JSON.stringify(response)
+              // );
               this.elencoLivelliCCNL = response.list;
-              console.log(
-                '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
-                  JSON.stringify(this.elencoLivelliCCNL)
-              );
+              // console.log(
+              //   '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
+              //     JSON.stringify(this.elencoLivelliCCNL)
+              // );
             },
             (error: any) => {
-              console.error(
-                'Errore durante il caricamento dei livelli di contratto: ' +
-                  error
-              );
+              // console.error(
+              //   'Errore durante il caricamento dei livelli di contratto: ' +
+              //     error
+              // );
             }
           );
       } else {
-        console.log('Opzione non trovata ');
+        // console.log('Opzione non trovata ');
       }
     } else {
-      console.log('Valore non valido ');
+      // console.log('Valore non valido ');
     }
   }
 
   mostraInfoContratto(id: any) {
-    console.log(id);
+    // console.log(id);
     this.anagraficaDtoService
       .detailAnagraficaDto(id, localStorage.getItem('token'))
       .subscribe(
         (resp: any) => {
-          console.log(resp);
+          // console.log(resp);
           this.data = (resp as any)['anagraficaDto'];
-          console.log(this.data);
+          // console.log(this.data);
           this.contratto = (resp as any)['anagraficaDto']['contratto'];
-          console.log(this.contratto);
+          // console.log(this.contratto);
 
           // Apro il dialog e passo i dati al componente
           const dialogRef = this.dialog.open(ModalInfoContrattoComponent, {
@@ -1030,10 +1030,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           });
         },
         (error: any) => {
-          console.error(
-            'ERRORE DURANTE IL CARICAMENTO DELLE INFO SUL CONTRATTO:' +
-              JSON.stringify(error)
-          );
+          // console.error(
+          //   'ERRORE DURANTE IL CARICAMENTO DELLE INFO SUL CONTRATTO:' +
+          //     JSON.stringify(error)
+          // );
         }
       );
   }
@@ -1071,10 +1071,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         this.getImage();
       },
       (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
-        );
+        // console.error(
+        //   'Si é verificato il seguente errore durante il recupero dei dati : ' +
+        //     error
+        // );
         this.authService.logout();
       }
     );
@@ -1083,9 +1083,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   getUserRole() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
-        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+        // console.log('DATI GET USER ROLE:' + JSON.stringify(response));
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
-        console.log('ID UTENTE PER NAV:' + this.idUtente);
+        // console.log('ID UTENTE PER NAV:' + this.idUtente);
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
@@ -1102,10 +1102,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         }
       },
       (error: any) => {
-        console.error(
-          'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
-        );
+        // console.error(
+        //   'Si è verificato il seguente errore durante il recupero del ruolo: ' +
+        //     error
+        // );
         this.shouldReloadPage = true;
       }
     );
@@ -1118,13 +1118,13 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         (data: any) => {
           this.jsonData = data;
           this.idFunzione = data.list[0].id;
-          console.log(
-            JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-          );
+          // console.log(
+          //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          // );
           this.shouldReloadPage = false;
         },
         (error: any) => {
-          console.error('Errore nella generazione del menu:', error);
+          // console.error('Errore nella generazione del menu:', error);
           this.shouldReloadPage = true;
           this.jsonData = { list: [] };
         }
@@ -1134,10 +1134,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   getPermissions(functionId: number) {
     this.menuService.getPermissions(this.token, functionId).subscribe(
       (data: any) => {
-        console.log('Permessi ottenuti:', data);
+        // console.log('Permessi ottenuti:', data);
       },
       (error: any) => {
-        console.error('Errore nella generazione dei permessi:', error);
+        // console.error('Errore nella generazione dei permessi:', error);
       }
     );
   }
@@ -1147,12 +1147,12 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     let body = {
       codiceFiscale: this.codiceFiscaleDettaglio,
     };
-    console.log(JSON.stringify(body));
-    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    // console.log(JSON.stringify(body));
+    // console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
     this.imageService.getImage(this.token, body).subscribe(
       (result: any) => {
         this.immagine = (result as any).base64;
-        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+        // console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
 
         if (this.immagine) {
           this.convertBase64ToImage(this.immagine);
@@ -1163,10 +1163,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         }
       },
       (error: any) => {
-        console.error(
-          "Errore durante il caricamento dell'immagine: " +
-            JSON.stringify(error)
-        );
+        // console.error(
+        //   "Errore durante il caricamento dell'immagine: " +
+        //     JSON.stringify(error)
+        // );
 
         // Assegna un'immagine predefinita in caso di errore
         this.immaginePredefinita = '../../../../assets/images/danger.png';

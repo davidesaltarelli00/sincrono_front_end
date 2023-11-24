@@ -460,9 +460,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       }
     }
 
-    console.log('Nazione selezionata: ' + this.statoDiNascita);
-    console.log('Province selezionate: ' + JSON.stringify(this.province));
-    console.log('Capitali selezionate: ' + JSON.stringify(this.capitali));
+    // console.log('Nazione selezionata: ' + this.statoDiNascita);
+    // console.log('Province selezionate: ' + JSON.stringify(this.province));
+    // console.log('Capitali selezionate: ' + JSON.stringify(this.capitali));
   }
 
   onChangeAziendaCliente(event: any) {
@@ -573,7 +573,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         localStorage.getItem('token')
       )
       .subscribe((resp: any) => {
-        console.log(this.activatedRouter.snapshot.params['id']);
+        // console.log(this.activatedRouter.snapshot.params['id']);
         this.data = (resp as any)['anagraficaDto'];
         this.selectedTipoContrattoId = (resp as any)['anagraficaDto'][
           'contratto'
@@ -592,10 +592,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
               this.elencoLivelliCCNL = response.list;
             },
             (error: any) => {
-              console.error(
-                'Errore durante il caricamento dei livelli di contratto: ' +
-                  error
-              );
+              // console.error(
+              //   'Errore durante il caricamento dei livelli di contratto: ' +
+              //     error
+              // );
             }
           );
 
@@ -605,13 +605,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             // Verifichiamo se il valore associato alla chiave è null
             if (resp[key] === null) {
               // Applichiamo una classe CSS per evidenziare il campo con bordo rosso
-              console.log(`Campo "${key}" è null.`);
+              // console.log(`Campo "${key}" è null.`);
               // Trova l'elemento HTML corrispondente al campo
               const element = document.querySelector(`[name="${key}"]`);
               if (element) {
-                console.log(
-                  `Applicazione della classe CSS "campo-nullo" per "${key}"`
-                );
+                // console.log(
+                //   `Applicazione della classe CSS "campo-nullo" per "${key}"`
+                // );
                 this.renderer.addClass(element, 'campo-nullo');
               }
             }
@@ -685,7 +685,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
           this.tipoDiContrattoControl =
             this.contratto.tipoContratto.descrizione;
-          console.log('TIPO DI CONTRATTO: ' + this.tipoDiContrattoControl);
+          // console.log('TIPO DI CONTRATTO: ' + this.tipoDiContrattoControl);
           if (this.tipoDiContrattoControl === 'Stage') {
             const retribuzioneNetta = this.anagraficaDto.get(
               'contratto.retribuzioneMensileNetta'
@@ -693,13 +693,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           }
         }
         if (this.elencoCommesse === null) {
-          console.log('Niente commesse.');
+          // console.log('Niente commesse.');
           this.commesseVuote = true;
         } else {
           this.commesseVuote = false;
-          console.log(
-            'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)
-          );
+          // console.log(
+          //   'Elenco commesse presenti: ' + JSON.stringify(this.elencoCommesse)
+          // );
           this.convertiDateCommesse(this.elencoCommesse);
         }
         this.initializeCommesse();
@@ -874,9 +874,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         );
 
         if (selectedLivello) {
-          console.log('Livello contratto selezionato: ', selectedLivello);
+          // console.log('Livello contratto selezionato: ', selectedLivello);
           this.minimiRet23 = selectedLivello.minimiRet23;
-          console.log('Minimi retributivi 2023:' + this.minimiRet23);
+          // console.log('Minimi retributivi 2023:' + this.minimiRet23);
           const tipoContratto = this.anagraficaDto.get(
             'contratto.tipoContratto.id'
           );
@@ -886,7 +886,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           );
 
           if (this.tipoDiContrattoControl.descrizione === 'Stage') {
-            console.log('é uno stage, NO retr lorda ma si retribuzione netta.');
+            // console.log('é uno stage, NO retr lorda ma si retribuzione netta.');
             let retribuzioneMensileLorda = this.anagraficaDto.get(
               'contratto.retribuzioneMensileLorda'
             );
@@ -904,7 +904,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
               retribuzioneMensileNetta.updateValueAndValidity();
             }
           } else {
-            console.log('IL CONTRATTO NON É UNO STAGE.');
+            // console.log('IL CONTRATTO NON É UNO STAGE.');
             let retribuzioneMensileLorda = this.anagraficaDto.get(
               'contratto.retribuzioneMensileLorda'
             );
@@ -935,23 +935,23 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   changeElencoLivelliCCNL() {
-    console.log(
-      'VALORE VALORIZZATO PER ENDPOINT ' + this.descrizioneLivelloCCNL
-    );
+    // console.log(
+    //   'VALORE VALORIZZATO PER ENDPOINT ' + this.descrizioneLivelloCCNL
+    // );
     this.anagraficaDtoService
       .changeCCNL(localStorage.getItem('token'), this.descrizioneLivelloCCNL)
       .subscribe(
         (response: any) => {
           this.elencoLivelliCCNL = response['list'];
-          console.log(
-            '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
-              JSON.stringify(this.elencoLivelliCCNL)
-          );
+          // console.log(
+          //   '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
+          //     JSON.stringify(this.elencoLivelliCCNL)
+          // );
         },
         (error: any) => {
-          console.error(
-            'Errore durante il caricamento dei livelli di contratto: ' + error
-          );
+          // console.error(
+          //   'Errore durante il caricamento dei livelli di contratto: ' + error
+          // );
         }
       );
   }
@@ -969,10 +969,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       );
 
       if (selectedOption) {
-        console.log('Opzione selezionata: ', selectedOption);
+        // console.log('Opzione selezionata: ', selectedOption);
         this.numeroMensilitaCCNL = selectedOption.numeroMensilita;
         this.descrizioneLivelloCCNL = selectedOption.descrizione;
-        console.log('numero mensilitá:' + this.numeroMensilitaCCNL);
+        // console.log('numero mensilitá:' + this.numeroMensilitaCCNL);
         livelloControl?.enable();
         // Qui andrà la chiamata per l'endpoint per la get del livello contratto
         this.anagraficaDtoService
@@ -985,17 +985,17 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
               this.elencoLivelliCCNL = response.list;
             },
             (error: any) => {
-              console.error(
-                'Errore durante il caricamento dei livelli di contratto: ' +
-                  error
-              );
+              // console.error(
+              //   'Errore durante il caricamento dei livelli di contratto: ' +
+              //     error
+              // );
             }
           );
       } else {
-        console.log('Opzione non trovata nei contratti nazionali');
+        // console.log('Opzione non trovata nei contratti nazionali');
       }
     } else {
-      console.log('Valore non valido o CCNL non selezionato');
+      // console.log('Valore non valido o CCNL non selezionato');
       livelloControl?.disable();
       livelloControl?.setValue(null);
     }
@@ -1007,9 +1007,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       const isChecked = target.checked;
 
       if (isChecked) {
-        console.log('Checkbox selezionata, il valore è true');
+        // console.log('Checkbox selezionata, il valore è true');
       } else {
-        console.log('Checkbox deselezionata, il valore è false');
+        // console.log('Checkbox deselezionata, il valore è false');
       }
     }
   }
@@ -1026,7 +1026,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         if (selectedcontract) {
           this.tipoContratto = selectedcontract;
 
-          console.log('Contratto selezionato: ', this.tipoContratto);
+          // console.log('Contratto selezionato: ', this.tipoContratto);
 
           const dataFineContrattoControl = this.anagraficaDto.get(
             'contratto.dataFineContratto'
@@ -1488,10 +1488,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
               break;
           }
         } else {
-          console.log('Livello contratto non trovato nella lista');
+          // console.log('Livello contratto non trovato nella lista');
         }
       } else {
-        console.log('Valore non valido o livello contratto non selezionato');
+        // console.log('Valore non valido o livello contratto non selezionato');
       }
     }
   }
@@ -1531,13 +1531,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   onChangeTipoCausaFineContratto(event:any){
     const target = event.target as HTMLInputElement;
     const value = target.value;
-    console.log(value);
+    // console.log(value);
   }
 
   onChangeCausaFineRapporto(event: any) {
     const target = event.target as HTMLInputElement;
     const value = target.value;
-    console.log(value);
+    // console.log(value);
 
     const dataFineRapportoControl = this.anagraficaDto.get(
       'contratto.dataFineRapporto'
@@ -1587,13 +1587,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.motivazioniFineRapporto = (res as any)['list'];
-          console.log('Elenco motivazioni fine rapporto:', JSON.stringify(res));
+          // console.log('Elenco motivazioni fine rapporto:', JSON.stringify(res));
         },
         (error: any) => {
-          console.log(
-            'Errore durante il caricamento della tipologica Motivazione fine rapporto:',
-            JSON.stringify(error)
-          );
+          // console.log(
+          //   'Errore durante il caricamento della tipologica Motivazione fine rapporto:',
+          //   JSON.stringify(error)
+          // );
         }
       );
   }
@@ -1632,19 +1632,19 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .getAllAziendaCliente(localStorage.getItem('token'))
       .subscribe(
         (result: any) => {
-          console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+          // console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
           this.aziendeClienti = (result as any)['list'];
         },
         (error: any) => {
-          console.error(
-            'errore durante il caricamento dei nomi azienda:' + error
-          );
+          // console.error(
+          //   'errore durante il caricamento dei nomi azienda:' + error
+          // );
         }
       );
   }
 
   storicizza(index: number) {
-    console.log('ID COMMESSA: ' + JSON.stringify(this.elencoCommesse[index]));
+    // console.log('ID COMMESSA: ' + JSON.stringify(this.elencoCommesse[index]));
   }
 
   rimuoviCommessa(index: number): void {
@@ -1667,7 +1667,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       const body = JSON.stringify({
         commessa: this.elencoCommesse[index],
       });
-      console.log(body);
+      // console.log(body);
       this.anagraficaDtoService
         .deleteCommessa(body, localStorage.getItem('token'))
         .subscribe(
@@ -1711,13 +1711,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.tipologicaCanaliReclutamento = (res as any)['list'];
-          console.log('ElencoCanali reclutamento:' + JSON.stringify(res));
+          // console.log('ElencoCanali reclutamento:' + JSON.stringify(res));
         },
         (error: any) => {
-          console.log(
-            'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
-              JSON.stringify(error)
-          );
+          // console.log(
+          //   'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
+          //     JSON.stringify(error)
+          // );
         }
       );
   }
@@ -1779,10 +1779,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     };
     removeEmpty(this.anagraficaDto.value);
 
-    console.log(
-      'Valore di anagrafica: ' +
-        JSON.stringify(this.anagraficaDto.get('anagrafica')?.value)
-    );
+    // console.log(
+    //   'Valore di anagrafica: ' +
+    //     JSON.stringify(this.anagraficaDto.get('anagrafica')?.value)
+    // );
     const payload = {
       anagraficaDto: this.anagraficaDto.value,
       // anagrafica: this.anagraficaDto.get('anagrafica')?.value,
@@ -1790,7 +1790,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       // commesse: this.anagraficaDto.get('commesse')?.value,
       // ruolo: this.anagraficaDto.get('ruolo')?.value,
     };
-    console.log('Payload backend:', payload);
+    // console.log('Payload backend:', payload);
     this.anagraficaDtoService
       .update(payload, localStorage.getItem('token'))
       .subscribe(
@@ -1804,7 +1804,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
               },
             });
           } else {
-            console.log('Payload inviato con successo al server:', response);
+            // console.log('Payload inviato con successo al server:', response);
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 image: '../../../../assets/images/logo.jpeg',
@@ -1815,7 +1815,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           }
         },
         (error) => {
-          console.error("Errore nell'invio del payload al server:", error);
+          // console.error("Errore nell'invio del payload al server:", error);
         }
       );
   }
@@ -1915,13 +1915,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe(
         (result: any) => {
           this.tipiCausaFineContratto = (result as any)['list'];
-          console.log("Cause di fine contratto caricate: "+ JSON.stringify(this.tipiCausaFineContratto));
+          // console.log("Cause di fine contratto caricate: "+ JSON.stringify(this.tipiCausaFineContratto));
         },
         (error: any) => {
-          console.error(
-            'Errore durante il caricamento delle cause di fine contratto: ' +
-              JSON.stringify(error)
-          );
+          // console.error(
+          //   'Errore durante il caricamento delle cause di fine contratto: ' +
+          //     JSON.stringify(error)
+          // );
         }
       );
   }
@@ -1932,15 +1932,15 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe(
         (result: any) => {
           this.tipiContratti = (result as any)['list'];
-          console.log(
-            '------------------------TIPI DI CONTRATTI CARICATI:------------------------ ' +
-              JSON.stringify(result)
-          );
+          // console.log(
+          //   '------------------------TIPI DI CONTRATTI CARICATI:------------------------ ' +
+          //     JSON.stringify(result)
+          // );
         },
         (error: any) => {
-          console.log(
-            'Errore durante il caricamento dei tipi di contratto : ' + error
-          );
+          // console.log(
+          //   'Errore durante il caricamento dei tipi di contratto : ' + error
+          // );
         }
       );
   }
@@ -1951,15 +1951,15 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe(
         (result: any) => {
           this.livelliContratti = (result as any)['list'];
-          console.log(
-            '------------------------LIVELLI CONTRATTO CARICATI:------------------------ ' +
-              JSON.stringify(result)
-          );
+          // console.log(
+          //   '------------------------LIVELLI CONTRATTO CARICATI:------------------------ ' +
+          //     JSON.stringify(result)
+          // );
         },
         (error: any) => {
-          console.log(
-            'Errore durante il caricamento dei livelli contrattuali: ' + error
-          );
+          // console.log(
+          //   'Errore durante il caricamento dei livelli contrattuali: ' + error
+          // );
         }
       );
   }
@@ -1970,13 +1970,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe(
         (result: any) => {
           this.tipiAziende = (result as any)['list'];
-          console.log(
-            '------------------------AZIENDE CARICATE:------------------------ ' +
-              JSON.stringify(result)
-          );
+          // console.log(
+          //   '------------------------AZIENDE CARICATE:------------------------ ' +
+          //     JSON.stringify(result)
+          // );
         },
         (error: any) => {
-          console.log('Errore durante il caricamento delle aziende: ' + error);
+          // console.log('Errore durante il caricamento delle aziende: ' + error);
         }
       );
   }
@@ -1988,16 +1988,16 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe(
         (result: any) => {
           this.ccnl = (result as any)['list'];
-          console.log(
-            '------------------------CCNL CARICATI:------------------------ ' +
-              JSON.stringify(result)
-          );
+          // console.log(
+          //   '------------------------CCNL CARICATI:------------------------ ' +
+          //     JSON.stringify(result)
+          // );
           this.changeElencoLivelliCCNL();
         },
         (error: any) => {
-          console.log(
-            'Errore durante il caricamento dei contratti nazionali: ' + error
-          );
+          // console.log(
+          //   'Errore durante il caricamento dei contratti nazionali: ' + error
+          // );
         }
       );
   }
@@ -2006,13 +2006,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.anagraficaDtoService.getRuoli(localStorage.getItem('token')).subscribe(
       (result: any) => {
         this.ruoli = (result as any)['list'];
-        console.log(
-          '------------------------RUOLI CARICATI:------------------------ ' +
-            JSON.stringify(result)
-        );
+        // console.log(
+        //   '------------------------RUOLI CARICATI:------------------------ ' +
+        //     JSON.stringify(result)
+        // );
       },
       (error: any) => {
-        console.log('Errore durante il caricamento dei ruoli : ' + error);
+        // console.log('Errore durante il caricamento dei ruoli : ' + error);
       }
     );
   }
@@ -2053,21 +2053,21 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         dataFineContrattoControl?.setValue(dataFineContrattoFormatted);
       } else {
         // Alcuni dei valori necessari sono mancanti, gestisci di conseguenza
-        console.error(
-          'Impossibile calcolare la data di fine rapporto. Mancano dati.'
-        );
+        // console.error(
+        //   'Impossibile calcolare la data di fine rapporto. Mancano dati.'
+        // );
       }
     } else {
-      console.error(
-        'I controlli necessari non esistono o alcuni valori sono nulli.'
-      );
+      // console.error(
+      //   'I controlli necessari non esistono o alcuni valori sono nulli.'
+      // );
     }
   }
   //impostazione del form a caricamento pagina
   setForm() {
-    console.log(
-      'SELEZIONATO TIPO CONTRATTO CON ID: ' + this.selectedTipoContrattoId
-    );
+    // console.log(
+    //   'SELEZIONATO TIPO CONTRATTO CON ID: ' + this.selectedTipoContrattoId
+    // );
     const dataFineContrattoControl = this.anagraficaDto.get(
       'contratto.dataFineContratto'
     );
@@ -2400,12 +2400,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         .getElementById('mensileTOT')
         ?.setAttribute('value', mensileTot.toFixed(2));
       this.mensileTOT = mensileTot;
-      console.log(
-        'MENSILE TOTALE CALCOLATO:' +
-          this.mensileTOT +
-          '\n Numero mensilitá: ' +
-          this.numeroMensilitaDaDettaglio
-      );
+      // console.log(
+      //   'MENSILE TOTALE CALCOLATO:' +
+      //     this.mensileTOT +
+      //     '\n Numero mensilitá: ' +
+      //     this.numeroMensilitaDaDettaglio
+      // );
       this.calcoloRAL();
     } else {
       // Se uno dei campi è vuoto, nascondi il risultato o reimpostalo a zero, a seconda delle tue esigenze
@@ -2424,7 +2424,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         const RALCalcolata = this.mensileTOT * this.numeroMensilitaDaDettaglio;
 
         RALControl.setValue(RALCalcolata.toFixed(2));
-        console.log('RAL CALCOLATA:' + RALCalcolata.toFixed(2));
+        // console.log('RAL CALCOLATA:' + RALCalcolata.toFixed(2));
       }
     }
   }
@@ -2445,10 +2445,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.getImage();
       },
       (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
-        );
+        // console.error(
+        //   'Si é verificato il seguente errore durante il recupero dei dati : ' +
+        //     error
+        // );
       }
     );
   }
@@ -2456,9 +2456,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   getUserRole() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
-        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+        // console.log('DATI GET USER ROLE:' + JSON.stringify(response));
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
-        console.log('ID UTENTE PER NAV:' + this.idUtente);
+        // console.log('ID UTENTE PER NAV:' + this.idUtente);
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
@@ -2475,10 +2475,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         }
       },
       (error: any) => {
-        console.error(
-          'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
-        );
+        // console.error(
+        //   'Si è verificato il seguente errore durante il recupero del ruolo: ' +
+        //     error
+        // );
         this.shouldReloadPage = true;
       }
     );
@@ -2491,13 +2491,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         (data: any) => {
           this.jsonData = data;
           this.idFunzione = data.list[0].id;
-          console.log(
-            JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-          );
+          // console.log(
+          //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          // );
           this.shouldReloadPage = false;
         },
         (error: any) => {
-          console.error('Errore nella generazione del menu:', error);
+          // console.error('Errore nella generazione del menu:', error);
           this.shouldReloadPage = true;
           this.jsonData = { list: [] };
         }
@@ -2507,10 +2507,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   getPermissions(functionId: number) {
     this.menuService.getPermissions(this.token, functionId).subscribe(
       (data: any) => {
-        console.log('Permessi ottenuti:', data);
+        // console.log('Permessi ottenuti:', data);
       },
       (error: any) => {
-        console.error('Errore nella generazione dei permessi:', error);
+        // console.error('Errore nella generazione dei permessi:', error);
       }
     );
   }
@@ -2520,12 +2520,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     let body = {
       codiceFiscale: this.codiceFiscaleDettaglio,
     };
-    console.log(JSON.stringify(body));
-    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    // console.log(JSON.stringify(body));
+    // console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
     this.imageService.getImage(this.token, body).subscribe(
       (result: any) => {
         this.immagine = (result as any).base64;
-        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+        // console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
 
         if (this.immagine) {
           this.convertBase64ToImage(this.immagine);
@@ -2536,10 +2536,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         }
       },
       (error: any) => {
-        console.error(
-          "Errore durante il caricamento dell'immagine: " +
-            JSON.stringify(error)
-        );
+        // console.error(
+        //   "Errore durante il caricamento dell'immagine: " +
+        //     JSON.stringify(error)
+        // );
 
         // Assegna un'immagine predefinita in caso di errore
         this.immaginePredefinita = '../../../../assets/images/danger.png';
