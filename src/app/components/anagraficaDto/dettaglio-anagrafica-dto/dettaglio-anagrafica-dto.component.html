@@ -99,7 +99,7 @@
   </style>
 </head>
 
-<body>
+<body [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div id="inizioPagina"></div>
 
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
@@ -113,6 +113,13 @@
           {{ menuItem.nome }}
         </a>
       </div>
+      <span>
+        <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
+        </div>
+
+      </span>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
         <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
@@ -154,7 +161,7 @@
         <br>
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Dettaglio anagrafica</h1>
+          <h1>Dettaglio anagrafica  <i class="fa fa-user"></i>  <i class="fa fa-info"></i> </h1>
         </mat-card>
       </div>
     </div>
@@ -184,7 +191,7 @@
                 data?.anagrafica?.cognome ? data.anagrafica.cognome : 'Dato non inserito' | titlecase }} ({{
                 data?.ruolo?.nome ? data.ruolo.nome : 'Dato non inserito' | titlecase }})</h5>
               <button class="btn btn-danger" *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                matTooltip="{{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                matTooltip="Dal {{data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy'}}, {{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                 <i class="fa fa-exclamation-triangle"></i> </button>
             </div>
           </div>
@@ -195,6 +202,10 @@
 
               <table class="table table-striped">
                 <tbody>
+                  <tr>
+                    <td><strong>Codice Fiscale:</strong></td>
+                    <td>{{ data?.anagrafica?.codiceFiscale ? (data.anagrafica.codiceFiscale | uppercase) : 'Dato non inserito' }}</td>
+                  </tr>
                   <tr>
                     <td>
                       <strong>Mail Privata:</strong>
@@ -243,16 +254,13 @@
               <div class="col-12">
                 <h1>Anagrafica <button class="btn btn-danger"
                     *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                    matTooltip="{{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                    matTooltip="Dal {{data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy'}}, {{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                     <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"> <i
                       class="fa fa-pencil " (click)="modificaAnagrafica()"></i></button></h1>
 
                 <table class="table table-bordered ">
                   <tbody>
-                    <tr>
-                      <td><strong>Codice Fiscale:</strong></td>
-                      <td>{{ data?.anagrafica?.codiceFiscale ? (data.anagrafica.codiceFiscale | uppercase) : 'Dato non inserito' }}</td>
-                    </tr>
+
 
                     <tr>
                       <td><strong>Coniugato:</strong></td>
@@ -347,7 +355,7 @@
             <ng-template matStepLabel><small>Contratto</small></ng-template>
             <h1>Contratto <button class="btn btn-danger"
                 *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                matTooltip="{{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                matTooltip="Dal {{data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy'}}, {{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                 <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"> <i
                   class="fa fa-pencil " (click)="modificaContratto()"></i></button></h1>
             <div class="container-contratto-non-presente" *ngIf="data?.contratto===null">
@@ -393,9 +401,13 @@
                     <td>{{ data?.contratto?.dataFineProva | date: 'dd/MM/yyyy' }}</td>
                   </tr>
                   <tr> <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
+                    <td><strong>Data fine contratto:</strong></td>
+                    <td>{{ data?.contratto?.dataFineContratto | date: 'dd/MM/yyyy' }}</td>
+                  </tr>
+                  <!-- <tr>
                     <td><strong>Data fine rapporto:</strong></td>
                     <td>{{ data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy' }}</td>
-                  </tr>
+                  </tr> -->
                   <tr>
                     <td><strong>Livello attuale:</strong></td>
                     <td>{{ data?.contratto?.livelloAttuale ? data?.contratto?.livelloAttuale : 'Dato non inserito' }}
@@ -414,15 +426,27 @@
                     <td>{{ data?.contratto?.sedeAssunzione ? data?.contratto?.sedeAssunzione : 'Dato non inserito' }}
                     </td>
                   </tr>
-                  <tr  > <!--[hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' || data?.contratto?.tipoContratto?.descrizione!='Apprendistato' "-->
+                  <tr [hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' || data?.contratto?.tipoContratto?.descrizione!='Apprendistato' " > <!--[hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' || data?.contratto?.tipoContratto?.descrizione!='Apprendistato' "-->
                     <td><strong>Tutor:</strong></td>
                     <td>{{ data?.contratto?.tutor ? data?.contratto?.tutor : 'Dato non inserito' }}
                     </td>
                   </tr>
-                  <tr  > <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Stage' || data?.contratto?.tipoContratto?.descrizione==='Apprendistato' "-->
+                  <tr [hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' || data?.contratto?.tipoContratto?.descrizione!='Apprendistato' " > <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Stage' || data?.contratto?.tipoContratto?.descrizione==='Apprendistato' "-->
                     <td><strong>Piano formativo individuale:</strong></td>
                     <td>{{ data?.contratto?.pfi ?'Si' : 'No' }}
                     </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Corso di sicurezza:</strong></td>
+                    <td>{{data?.contratto?.corsoSicurezza ? 'Si': 'No'}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Data corso di sicurezza:</strong></td>
+                    <td>{{data?.contratto?.dataCorsoSicurezza | date: 'dd/MM/yyyy'  }}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Assicurazione obbligatoria:</strong></td>
+                    <td>{{data?.contratto?.assicurazioneObbligatoria ? 'Si':'No'}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -448,128 +472,123 @@
                   </table>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-12">
+                  <h1>Dati economici <button class="btn btn-danger"
+                      *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                      matTooltip="Dal {{data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy'}}, {{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                      <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"
+                      (click)="modificaCommessa()">
+                      <i class="fa fa-pencil"></i>
+                    </button></h1> <br>
+                  <h1>Retribuzione</h1>
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td><strong>Retribuzione mensile lorda:</strong></td>
+                        <td>{{data?.contratto?.retribuzioneMensileLorda ? data?.contratto?.retribuzioneMensileLorda :'Dato non inserito'}} </td>
+                      </tr>
+                      <tr>
+                        <td><strong>Superminimo mensile:</strong></td>
+                        <td>{{data?.contratto?.superminimoMensile ? data?.contratto?.superminimoMensile :'Dato non inserito'}} </td>
+                      </tr>
+                      <tr>
+                        <td><strong>Scatti anzianitá:</strong></td>
+                        <td>{{data?.contratto?.scattiAnzianita ? data?.contratto?.scattiAnzianita :'Dato non inserito'}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>Retribuzione netta mensile:</strong></td>
+                        <td>{{data?.contratto?.retribuzioneNettaMensile ? data?.contratto?.retribuzioneNettaMensile :'Dato non inserito'}} </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-12">
+                  <h1>RAL</h1>
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td><strong>RAL annua</strong></td>
+                        <td>{{data?.contratto?.ralAnnua ? data?.contratto?.ralAnnua: 'Dato non inserito'}}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Superminimo RAL</strong></td>
+                        <td>{{data?.contratto?.superminimoRal ? data?.contratto?.superminimoRal: 'Dato non inserito'}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <br>
 
+              <div class="row">
+                <div class="col-12">
+                  <h1>Diaria</h1>
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td><strong>Diaria mensile</strong></td>
+                        <td>{{data?.contratto?.diariaMensile ? data?.contratto?.diariaMensile :'Dato non inserito'}}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Diaria giornaliera</strong></td>
+                        <td>{{data?.contratto?.diariaGiornaliera ? data?.contratto?.diariaGiornaliera :'Dato non inserito'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <br>
+              <div class="row" [hidden]="data?.contratto?.tipoContratto.descrizione!='P.Iva'">
+                <div class="col-12">
+                  <h1>Dati economici partita IVA</h1>
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td><strong>Tariffa partita IVA</strong></td>
+                        <td>{{data?.contratto?.tariffaPartitaIva ? data?.contratto?.tariffaPartitaIva:'Dato non inserito'
+                          }}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Retribuzione netta giornaliera</strong></td>
+                        <td>{{data?.contratto?.retribuzioneNettaGiornaliera ? data?.contratto?.retribuzioneNettaGiornaliera:'Dato non inserito' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-12">
+                  <h1>Ticket e agevolazioni</h1>
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td> <strong>Ticket:</strong> </td>
+                        <td>{{ data?.contratto?.ticket ? 'Sì' : 'No' }}</td>
+                      </tr>
+                      <tr>
+                        <td> <strong>Valore Ticket:</strong> </td>
+                        <td>{{ data?.contratto?.valoreTicket ? data?.contratto?.valoreTicket: 'Dato non inserito' }} <i
+                            class="fa fa-euro-sign" *ngIf="data?.contratto?.valoreTicket!=null"></i></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
 
-            </div>
-          </mat-step>
-
-          <mat-step>
-            <ng-template matStepLabel><small>Dati economici</small></ng-template>
-            <div class="row">
-              <div class="col-12">
-                <h1>Dati economici <button class="btn btn-danger"
-                    *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                    matTooltip="{{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
-                    <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"
-                    (click)="modificaCommessa()">
-                    <i class="fa fa-pencil"></i>
-                  </button></h1>
-                <h1>Retribuzione</h1>
-                <table class="table table-bordered">
-                  <tbody>
-                    <tr>
-                      <td><strong>Retribuzione mensile lorda:</strong></td>
-                      <td>{{data?.contratto?.retribuzioneMensileLorda ? data?.contratto?.retribuzioneMensileLorda :'Dato non inserito'}} </td>
-                    </tr>
-                    <tr>
-                      <td><strong>Superminimo mensile:</strong></td>
-                      <td>{{data?.contratto?.superminimoMensile ? data?.contratto?.superminimoMensile :'Dato non inserito'}} </td>
-                    </tr>
-                    <tr>
-                      <td><strong>Scatti anzianitá:</strong></td>
-                      <td>{{data?.contratto?.scattiAnzianita ? data?.contratto?.scattiAnzianita :'Dato non inserito'}}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><strong>Retribuzione netta mensile:</strong></td>
-                      <td>{{data?.contratto?.retribuzioneNettaMensile ? data?.contratto?.retribuzioneNettaMensile :'Dato non inserito'}} </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <br>
-            <div class="row">
-              <div class="col-12">
-                <h1>RAL</h1>
-                <table class="table table-bordered">
-                  <tbody>
-                    <tr>
-                      <td><strong>RAL annua</strong></td>
-                      <td>{{data?.contratto?.ralAnnua ? data?.contratto?.ralAnnua: 'Dato non inserito'}}</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Superminimo RAL</strong></td>
-                      <td>{{data?.contratto?.superminimoRal ? data?.contratto?.superminimoRal: 'Dato non inserito'}}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <br>
-
-            <div class="row">
-              <div class="col-12">
-                <h1>Diaria</h1>
-                <table class="table table-bordered">
-                  <tbody>
-                    <tr>
-                      <td><strong>Diaria mensile</strong></td>
-                      <td>{{data?.contratto?.diariaMensile ? data?.contratto?.diariaMensile :'Dato non inserito'}}</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Diaria giornaliera</strong></td>
-                      <td>{{data?.contratto?.diariaGiornaliera ? data?.contratto?.diariaGiornaliera :'Dato non inserito'}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <br>
-            <div class="row" [hidden]="data?.contratto?.tipoContratto.descrizione!='P.Iva'">
-              <div class="col-12">
-                <h1>Dati economici partita IVA</h1>
-                <table class="table table-bordered">
-                  <tbody>
-                    <tr>
-                      <td><strong>Tariffa partita IVA</strong></td>
-                      <td>{{data?.contratto?.tariffaPartitaIva ? data?.contratto?.tariffaPartitaIva:'Dato non inserito'
-                        }}</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Retribuzione netta giornaliera</strong></td>
-                      <td>{{data?.contratto?.retribuzioneNettaGiornaliera ? data?.contratto?.retribuzioneNettaGiornaliera:'Dato non inserito' }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <br>
-            <div class="row">
-              <div class="col-12">
-                <h1>Ticket e agevolazioni</h1>
-                <table class="table table-bordered">
-                  <tbody>
-                    <tr>
-                      <td> <strong>Ticket:</strong> </td>
-                      <td>{{ data?.contratto?.ticket ? 'Sì' : 'No' }}</td>
-                    </tr>
-                    <tr>
-                      <td> <strong>Valore Ticket:</strong> </td>
-                      <td>{{ data?.contratto?.valoreTicket ? data?.contratto?.valoreTicket: 'Dato non inserito' }} <i
-                          class="fa fa-euro-sign" *ngIf="data?.contratto?.valoreTicket!=null"></i></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
             </div>
           </mat-step>
           <mat-step>
             <ng-template matStepLabel><small>Commesse</small></ng-template>
             <h1>Commesse <button class="btn btn-danger"
                 *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                matTooltip="{{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                matTooltip="Dal {{data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy'}}, {{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                 <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"
                 (click)="modificaCommessa()">
                 <i class="fa fa-pencil"></i>
@@ -592,7 +611,7 @@
                       <th scope="col">Data Fine</th>
                       <th scope="col">Tariffa Giornaliera</th>
                       <th scope="col">Azienda fatturazione interna</th>
-                      <th scope="col">Archivia</th>
+                      <!-- <th scope="col">Archivia</th> -->
                     </tr>
                   </thead>
                   <tbody>
@@ -605,12 +624,12 @@
                       <td [ngStyle]="{'color': commessa.dataFine <= dataOdierna ? 'red' : 'green'}">{{ commessa.dataFine | date: 'dd/MM/yyyy' }}</td>
                       <td>{{ commessa.tariffaGiornaliera }} <i class="fa-solid fa-euro-sign"></i></td>
                       <td>{{ commessa.aziendaDiFatturazioneInterna }}</td>
-                      <td>
+                      <!-- <td>
                         <button class="btn btn-success" matTooltip="Archivia commessa"
                           (click)="storicizzaCommessa(commessa.id, i)">
                           <i class="fa fa-file"></i>
                         </button>
-                      </td>
+                      </td> -->
                       <!-- <td>
                         <button class="btn btn-warning" (click)="modificaCommessa()">
                           <i class="fa fa-pencil"></i>
@@ -646,7 +665,7 @@
           <mat-step>
             <ng-template matStepLabel><small>Storici</small></ng-template>
             <h1>Storici <button class="btn btn-danger" *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                matTooltip="{{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                matTooltip="Dal {{data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy'}}, {{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                 <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"
                 (click)="modificaCommessa()">
                 <i class="fa fa-pencil"></i>

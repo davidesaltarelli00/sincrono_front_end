@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body [class.dark-mode]="themeService.isDarkModeEnabled()">
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+      </a>
+      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
+        <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+          {{ menuItem.nome }}
+        </a>
+      </div>
+      <span>
+        <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
+        </div>
+
+      </span>
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
+          class="fa fa-user"></i>
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <br>
+        <mat-card style="text-align: center;">
+          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+          <h1>Inserimento anagrafica da excel <i class="fa fa-user" ></i> <i class="fa fa-file-excel"></i> </h1>
+          <h4>Carica un file excel con delle anagrafiche, se corrette, verranno salvate nel sistema, altrimenti verranno salvate nella lista sottostante.</h4>
+        </mat-card>
+      </div>
+    </div>
+    <br>
+      <div class="row">
+        <div class="col-12" style="margin: auto; text-align: center;">
+          <mat-card>
+            <!-- <mat-card-title class="text-center">
+              <h1>Caricamento documenti</h1>
+            </mat-card-title>
+
+            <mat-card-subtitle class="text-center">
+              <h3>Carica qui i tuoi documenti</h3>
+            </mat-card-subtitle> -->
+
+            <mat-card-content class="text-center">
+              <!-- Sezione di caricamento del file -->
+              <div *ngIf="!previewData">
+                <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" accept=".xlsx, .xls">
+                <button class="text-center" mat-raised-button color="primary" (click)="fileInput.click()">
+                  <mat-icon>cloud_upload</mat-icon> Carica file Excel
+                </button>
+              </div>
+              <br>
+              <!-- Anteprima del documento -->
+            <div *ngIf="previewData" class="preview-container">
+            <h4>{{ selectedFileName }}</h4>
+            <div [innerHTML]="previewData" class="excel-preview"></div>
+            </div>
+
+<!-- Placeholder per l'anteprima del documento (mostrato prima del caricamento) -->
+<div *ngIf="!previewData" class="preview-placeholder">
+  <mat-icon>insert_drive_file</mat-icon>
+  <p>Carica un file per visualizzare l'anteprima.</p>
+</div>
+
+            </mat-card-content>
+            <br>
+            <!-- Footer con barra di progresso e pulsante di salvataggio -->
+            <mat-card-footer class="text-center" *ngIf="previewData">
+              <mat-progress-bar mode="determinate" [value]="uploadProgress" [color]="uploadProgressColor" *ngIf="uploadProgress !== undefined"></mat-progress-bar>
+              <button class="btn btn-success" mattooltip="Salva documento" (click)="salvaDocumento()">
+                <i class="fa fa-save"></i> Salva documento
+              </button>
+            </mat-card-footer>
+          </mat-card>
+          <br><br>
+
+          <div class="row">
+            <div class="col-12">
+              <mat-card>
+                <mat-card-title>Elenco anagrafiche non inserite</mat-card-title>
+                <mat-card-subtitle>
+          <h5> <i class="fa fa-exclamation-triangle" ></i> Attenzione: queste anagrafiche saranno disponibili finché l'autenticazione é valida, dopodiché andranno perse. </h5>
+                </mat-card-subtitle>
+                <mat-card-content>
+                  <ng-container *ngIf="elencoAnagraficheNonInserite$ | async as elencoAnagrafiche">
+                    <table id="table" class="table table-striped">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col">Nome</th>
+                          <th scope="col">Cognome</th>
+                          <th scope="col">Codice Fiscale</th>
+                          <th scope="col">Azienda</th>
+                          <th scope="col">Mail aziendale</th>
+                          <th scope="col">Cell privato</th>
+                          <th scope="col">Contratto</th>
+                          <th scope="col">Azioni</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let element of elencoAnagraficheNonInserite$ | async; let i=index">
+
+                          <td>{{ element.anagrafica?.nome |titlecase }}</td>
+                          <td>{{ element.anagrafica?.cognome |titlecase }}</td>
+                          <td>{{ element.anagrafica?.codiceFiscale |uppercase }}</td>
+                          <td>{{ element.anagrafica?.tipoAzienda?.descrizione |titlecase }}</td>
+                          <td>{{ element.anagrafica?.mailAziendale }}</td>
+                          <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non inserito' }}</td>
+                          <td>{{element.contratto?.tipoContratto?.descrizione}}</td>
+                          <td> <button mat-stroked-button color="primary" (click)="inserisci(element.anagrafica.codiceFiscale)" >  <i class="fa fa-plus" ></i> </button> </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </ng-container>
+
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          <br>  <br>  <br>  <br>
+        </div>
+      </div>
+
+  </div>
+</body>
+</html>

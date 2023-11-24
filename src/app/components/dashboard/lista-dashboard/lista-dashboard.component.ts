@@ -14,7 +14,7 @@ import {
   FormArray,
   Validators,
 } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../login/login-service';
 import { startWith } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -22,6 +22,10 @@ import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { MenuService } from './../../menu.service';
+import { ThemeService } from 'src/app/theme.service';
+import { Chart } from 'chart.js';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.component';
 declare var $: any;
 
 @Component({
@@ -29,7 +33,7 @@ declare var $: any;
   templateUrl: './lista-dashboard.component.html',
   styleUrls: ['./lista-dashboard.component.scss'],
 })
-export class ListaDashboardComponent {
+export class ListaDashboardComponent implements OnInit,AfterViewInit  {
   codiceFiscaleDettaglio: any;
   immagine: any;
   immagineConvertita: string | null = null;
@@ -106,7 +110,8 @@ export class ListaDashboardComponent {
     annoFineContratto: new FormControl(null),
     meseFineContratto: new FormControl(null),
   });
-  
+
+  @ViewChild('tortaCanvas') tortaCanvas!: ElementRef;
 
   constructor(
     private dashboardService: DashboardService,
@@ -120,6 +125,7 @@ export class ListaDashboardComponent {
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
     private http: HttpClient,
+    public themeService: ThemeService,
     private menuService: MenuService,
     private imageService: ImageService
   ) {
@@ -167,6 +173,7 @@ export class ListaDashboardComponent {
 
 
   }
+
   isTableVisible: boolean = false;
   isTable2Visible: boolean = false;
   isTableVisible1: boolean = false;
@@ -259,6 +266,131 @@ export class ListaDashboardComponent {
       this.getUserLogged();
       this.getUserRole();
     }
+  }
+
+  ngAfterViewInit(): void {
+    if (this.tortaCanvas) {
+      this.visualizzaGraficoTorta();
+    }
+  }
+
+  visualizzaGraficoTorta() {
+    if (!this.tortaCanvas) {
+      return;
+    }
+
+    const ctx = this.tortaCanvas.nativeElement.getContext('2d');
+
+    // Estrai i dati relativi alle commesse
+    const commesse = this.listaCommesseInScadenza.flatMap(anagrafica => anagrafica.commesse);
+
+    // Raggruppa le commesse per tipo di azienda cliente
+    const commesseRaggruppate = commesse.reduce((acc, commessa) => {
+      const tipoAziendaCliente = commessa.tipoAziendaCliente.descrizione;
+
+      if (!acc[tipoAziendaCliente]) {
+        acc[tipoAziendaCliente] = 0;
+      }
+
+      acc[tipoAziendaCliente]++;
+      return acc;
+    }, {});
+
+    const dati = Object.values(commesseRaggruppate);
+    const labels = Object.keys(commesseRaggruppate);
+
+    const colori = ['red', 'blue', 'green', 'yellow', 'orange']; // Puoi personalizzare i colori
+
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: dati,
+          backgroundColor: colori,
+        }],
+      },
+    });
+  }
+
+  calculateDaysRemaining(dataFineRapporto: Date): number {
+    const oggi = new Date(); // Data odierna
+    const fineRapporto = new Date(dataFineRapporto);
+
+    // Calcolare la differenza in millisecondi tra le due date
+    const differenzaInMillisecondi = fineRapporto.getTime() - oggi.getTime();
+
+    // Convertire la differenza in millisecondi in giorni
+    const giorniRimanenti = Math.ceil(differenzaInMillisecondi / (1000 * 60 * 60 * 24));
+
+    return giorniRimanenti;
+  }
+
+  getDaysRemainingColor(dataFineRapporto: Date): string {
+    const giorniRimanenti = this.calculateDaysRemaining(dataFineRapporto);
+
+    if (giorniRimanenti > 30) {
+      return 'green';
+    } else if (giorniRimanenti >= 15 && giorniRimanenti <= 29) {
+      return 'orange';
+    } else {
+      return 'red';
+    }
+  }
+
+  calculateDaysRemainingCommessa(datafineCommessa: Date): number {
+    const oggi = new Date(); // Data odierna
+    const fineCommessa = new Date(datafineCommessa);
+
+    // Calcolare la differenza in millisecondi tra le due date
+    const differenzaInMillisecondi = fineCommessa.getTime() - oggi.getTime();
+
+    // Convertire la differenza in millisecondi in giorni
+    const giorniRimanenti = Math.ceil(differenzaInMillisecondi / (1000 * 60 * 60 * 24));
+
+    // Calcolare la data di ieri
+    const ieri = new Date();
+    ieri.setDate(oggi.getDate() - 1);
+
+    // Verificare se la data di fine commessa è uguale a ieri
+    if (fineCommessa.getTime() === ieri.getTime()) {
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          image: '../../../../assets/images/danger.png',
+          title: 'Attenzione:',
+          message: 'Hai delle commesse che scadono domani.',
+        },
+      });
+    }
+
+    return giorniRimanenti;
+  }
+
+
+  getDaysRemainingColorCommessa(datafineCommessa: any): string {
+    const giorniRimanenti = this.calculateDaysRemaining(datafineCommessa);
+
+    if (giorniRimanenti > 30) {
+      return 'green';
+    } else if (giorniRimanenti >= 15 && giorniRimanenti <= 29) {
+      return 'orange';
+    } else {
+      return 'red';
+    }
+  }
+
+
+  calculateDaysElapsed(dataFineCommessa: Date): number {
+    const oggi = new Date(); // Data odierna
+    const fineCommessa = new Date(dataFineCommessa);
+
+    // Calcolare la differenza in millisecondi tra le due date
+    const differenzaInMillisecondi = oggi.getTime() - fineCommessa.getTime();
+
+    // Convertire la differenza in millisecondi in giorni
+    const giorniTrascorsi = Math.floor(differenzaInMillisecondi / (1000 * 60 * 60 * 24));
+
+    return giorniTrascorsi;
   }
 
 
@@ -355,35 +487,45 @@ export class ListaDashboardComponent {
 
     console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
     this.dashboardService
-      .commesseListFilter(localStorage.getItem('token'), body)
-      .subscribe(
-        (result) => {
-          if ((result as any).esito.code !== 200) {
-            alert(
-              'Qualcosa è andato storto: \n' + (result as any).esito.target
-            );
-          } else {
-            if (Array.isArray(result.list)) {
-              this.pageData = [];
-              this.listaCommesseScadute = this.createAnagraficaDtoList(result.list);
-              this.currentPage = 1;
-              this.pageData = this.getCurrentPageItems();
-              console.log("result is " + JSON.stringify(result.list))
-              console.log("daje" + this.listaCommesseScadute);
-            } else {
-              this.pageData = [];
-              this.messaggio =
-                'Nessun risultato trovato per i filtri inseriti, riprova.';
-            }
-            console.log(
-              'Trovati i seguenti risultati: ' + JSON.stringify(result.list)
-            );
+  .commesseListFilter(localStorage.getItem('token'), body)
+  .subscribe(
+    (result) => {
+      if ((result as any).esito.code !== 200) {
+        alert(
+          'Qualcosa è andato storto: \n' + (result as any).esito.target
+        );
+      } else {
+        if (Array.isArray(result.list)) {
+          this.pageData = [];
+          this.listaCommesseScadute = this.createAnagraficaDtoList(result.list);
+          this.currentPage = 1;
+          this.pageData = this.getCurrentPageItems();
+          console.log("result is " + JSON.stringify(result.list));
+
+          if (this.pageData.length === 0) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/danger.png',
+                title: 'Attenzione:',
+                message: "La ricerca non ha prodotto nessun risultato.",
+              },
+            });
           }
-        },
-        (error: any) => {
-          console.log('Si è verificato un errore: ' + error);
+        } else {
+          this.pageData = [];
+          this.messaggio =
+            'Nessun risultato trovato per i filtri inseriti, riprova.';
         }
-      );
+        console.log(
+          'Trovati i seguenti risultati: ' + JSON.stringify(result.list)
+        );
+      }
+    },
+    (error: any) => {
+      console.log('Si è verificato un errore: ' + error);
+    }
+  );
+
   }
 
   annullaFiltri() {
@@ -449,23 +591,34 @@ export class ListaDashboardComponent {
     }
   }
   resetTabella() {
-    this.dashboardService
-      .deleteScattiContratto(localStorage.getItem('token'))
-      .subscribe((resp: any) => {
-        if ((resp as any).esito.code != 200) {
-          alert(
-            'cancellazione non riuscita\n' +
-            'target: ' +
-            (resp as any).esito.target
-          );
+    const dialogRef = this.dialog.open(AlertConfermaComponent, {
+      data: {
+        image: '../../../../assets/images/danger.png',
+        title: 'Attenzione:',
+        message: 'Confermi di voler svuotare la tabella ?',
+      },
+    });
 
-        } else {
-          this.data = [];
-          alert('cancellazione riuscita');
-          location.reload();
-        }
-      });
+    dialogRef.componentInstance.conferma.subscribe(() => {
+      // Questo codice verrà eseguito solo se l'utente ha confermato
+      this.dashboardService
+        .deleteScattiContratto(localStorage.getItem('token'))
+        .subscribe((resp: any) => {
+          if ((resp as any).esito.code != 200) {
+            alert(
+              'cancellazione non riuscita\n' +
+              'target: ' +
+              (resp as any).esito.target
+            );
+          } else {
+            this.data = [];
+            alert('cancellazione riuscita');
+            location.reload();
+          }
+        });
+    });
   }
+
   populateYears() {
 
     for (let year = 1999; year <= 2099; year++) {
@@ -979,6 +1132,10 @@ export class ListaDashboardComponent {
 
   convertBase64ToImage(base64String: string): void {
     this.immagineConvertita = base64String;
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 
 }

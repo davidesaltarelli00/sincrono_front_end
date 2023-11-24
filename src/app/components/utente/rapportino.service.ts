@@ -1,15 +1,15 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RapportinoService {
-  url = `http://localhost:8080/services/`;
-  codiceFiscale: any;
-  anno: any;
-  mese: any;
+  url = environment.URL_locale_Sincrono;
+  testUrl = environment.URL_login_service;
+
 
   constructor(private http: HttpClient) {}
 
@@ -94,54 +94,15 @@ export class RapportinoService {
     });
   }
 
-  /*
-    /get-check-rapportino-inviato
-CheckRapportinoInviatoResponse
-/get-check-rapportino-inviato,post
-{
-    "anno":2023,
-    "mese":10,
-    "codiceFiscale":"SLTDVDE31WS"
-}
-  */
-}
 
-/*
-DeleteRapportinoInviato (sara sulla lista della get) (delete)
-/delete-rapportino-inviato/{id}
-no payload
-
-
- detailAnagraficaDto(id: any, token: any): Observable<any> {
+  getAllRichiesteAccettate(token:any, body:any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(
-      `http://localhost:8080/services/dettaglio/${id}`,
-      { headers: headers }
-    );
+    return this.http.post(this.testUrl + `list-richieste-accettate`, body, {
+      headers: headers,
+    });
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-*/
+}

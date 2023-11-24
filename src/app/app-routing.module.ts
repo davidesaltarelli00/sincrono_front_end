@@ -29,6 +29,12 @@ import { ListaRapportiniComponent } from './components/lista-rapportini/lista-ra
 import { ModaleDettaglioRapportinoComponent } from './components/modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
 import { ImmagineComponent } from './components/immagine/immagine.component';
 import { RichiesteComponent } from './components/richieste/richieste.component';
+import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
+import { NuovaAnagraficaDtoExcelComponent } from './components/anagraficaDto/nuova-anagrafica-dto-excel/nuova-anagrafica-dto-excel.component';
+import { ModificaCommessaComponent } from './components/modifica-commessa/modifica-commessa.component';
+import { SelectedDaysComponent } from './components/richieste/selected-days/selected-days.component';
+import { InsertPermessoComponent } from './components/richieste/insert-permesso/insert-permesso.component';
+import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-richiesta/dettaglio-richiesta.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -86,6 +92,31 @@ const routes: Routes = [
   {
     path: 'modifica-anagrafica/:id',
     component: ModificaAnagraficaDtoComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'selected-days',
+    component: SelectedDaysComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'insert-permesso',
+    component: InsertPermessoComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'modifica-commessa/:id',
+    component: ModificaCommessaComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'documenti',
+    component: CaricamentoDocumentiComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'nuova-anagrafica-dto-excel/:codiceFiscale',
+    component: NuovaAnagraficaDtoExcelComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
 
@@ -178,9 +209,14 @@ const routes: Routes = [
     component: StoricoCommesseComponent,
     canActivate: [AuthGuard],
   },
-  {
+ {
     path: 'richieste',
     component: RichiesteComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'richieste/:id',
+    component: DettaglioRichiestaComponent,
     canActivate: [AuthGuard],
   },
 

@@ -36,6 +36,8 @@ export class AlertLogoutComponent {
           if (response.status === 200) {
             // Logout effettuato con successo
             localStorage.removeItem('token');
+            localStorage.removeItem('isDarkMode');
+            localStorage.removeItem('DatiSbagliati');
             localStorage.removeItem('tokenProvvisorio');
             sessionStorage.clear();
             this.router.navigate(['/login']);
@@ -69,6 +71,8 @@ export class AlertLogoutComponent {
     window.location.href = 'login';
     localStorage.removeItem('token');
     localStorage.removeItem('tokenProvvisorio');
+    localStorage.removeItem('isDarkMode');
+    localStorage.removeItem('DatiSbagliati');
   }
 }
 

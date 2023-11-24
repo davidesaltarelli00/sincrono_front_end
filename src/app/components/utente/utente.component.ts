@@ -24,6 +24,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Giorno } from './giorno';
 import { AuthService } from '../login/login-service';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-utente',
@@ -158,6 +159,7 @@ export class UtenteComponent implements OnInit {
     private fb: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     private authSerice: AuthService,
+    public themeService: ThemeService,
     private scroller: ViewportScroller,
     private cdRef: ChangeDetectorRef
   ) {
@@ -194,6 +196,47 @@ export class UtenteComponent implements OnInit {
       azienda.toLowerCase().includes(this.giorno.cliente.toLowerCase())
     );
     this.showError = false; // Resetta l'errore quando l'utente inizia a digitare
+  }
+
+  toggleOnSite(giorno: any): void {
+    if (
+      !this.risultatoCheckFreeze &&
+      !giorno.malattie &&
+      !giorno.ferie &&
+      !giorno.checkSmartworking
+    ) {
+      giorno.checkOnSite = !giorno.checkOnSite;
+    }
+  }
+  toggleSmartworking(giorno: any): void {
+    if (
+      !this.risultatoCheckFreeze &&
+      !giorno.malattie &&
+      !giorno.ferie &&
+      !giorno.checkOnSite
+    ) {
+      giorno.checkSmartworking = !giorno.checkSmartworking;
+    }
+  }
+  toggleFerie(giorno: any): void {
+    if (
+      !this.risultatoCheckFreeze &&
+      !giorno.malattie &&
+      !giorno.ferie &&
+      !giorno.checkOnSite
+    ) {
+      giorno.ferie = !giorno.ferie;
+    }
+  }
+  togglemalattia(giorno: any): void {
+    if (
+      !this.risultatoCheckFreeze &&
+      !giorno.malattie &&
+      !giorno.ferie &&
+      !giorno.checkOnSite
+    ) {
+      giorno.malattie = !giorno.malattie;
+    }
   }
 
   selectAzienda(azienda: string) {
@@ -580,6 +623,26 @@ export class UtenteComponent implements OnInit {
           console.log(this.risultatoCheckFreeze);
           this.rapportinoInviato = false;
         }
+
+        // if (this.risultatoCheckFreeze) {
+        //   const dialogRef = this.dialog.open(AlertDialogComponent, {
+        //     data: {
+        //       image: '../../../../assets/images/info.png',
+        //       title: 'Il rapportino é stato inviato:',
+        //       message:
+        //         'Non potrai effettuare modifiche finché un admin non te lo rimandi indietro.',
+        //     },
+        //   });
+        // } else {
+        //   const dialogRef = this.dialog.open(AlertDialogComponent, {
+        //     data: {
+        //       image: '../../../../assets/images/info.png',
+        //       title: 'Nota:',
+        //       message:
+        //         'Prima di compilare il rapportino, controlla lo stato delle richieste che hai inviato e assicurati di compilarlo correttamente.',
+        //     },
+        //   });
+        // }
       });
   }
 
@@ -612,8 +675,6 @@ export class UtenteComponent implements OnInit {
 
     return nomeGiorno;
   }
-
-
 
   getRapportino() {
     let body = {
@@ -655,10 +716,10 @@ export class UtenteComponent implements OnInit {
           this.calcolaTotaleOrePermessi();
           this.cdRef.detectChanges();
 
-          if (this.note === null || this.note==='' || this.note==="") {
-            console.log("non hai note.");
-          } else{
-            console.log("Hai note: "+ JSON.stringify(this.note));
+          if (this.note === null || this.note === '' || this.note === '') {
+            console.log('non hai note.');
+          } else {
+            console.log('Hai note: ' + JSON.stringify(this.note));
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 image: '../../../../assets/images/logo.jpeg',
@@ -739,9 +800,6 @@ export class UtenteComponent implements OnInit {
     }
   }
 
-
-
-
   mostraNascondiStraordinari(index: number, j: number) {
     // Inizializza l'array per la cella corrente se non esiste già
     if (!this.showStraordinari[index]) {
@@ -751,8 +809,6 @@ export class UtenteComponent implements OnInit {
     // Cambia lo stato di visualizzazione per la cella corrente
     this.showStraordinari[index][j] = !this.showStraordinari[index][j];
   }
-
-
 
   mostraNascondiPermessi(index: number) {
     if (!this.showPermessi[index]) {
@@ -791,7 +847,13 @@ export class UtenteComponent implements OnInit {
       const giorno = giorni[i];
       let almenoUnCampoPermessiValorizzato = false;
 
-      if (giorno.permessi || giorno.permessiRole || giorno.permessiExfestivita || giorno.ferie || giorno.malattie ) {
+      if (
+        giorno.permessi ||
+        giorno.permessiRole ||
+        giorno.permessiExfestivita ||
+        giorno.ferie ||
+        giorno.malattie
+      ) {
         almenoUnCampoPermessiValorizzato = true;
       }
 
@@ -801,13 +863,14 @@ export class UtenteComponent implements OnInit {
           duplicazione.permessi === null &&
           duplicazione.permessiRole === null &&
           duplicazione.permessiExfestivita === null &&
-          duplicazione.ferie === null && duplicazione.malattie === null
+          duplicazione.ferie === null &&
+          duplicazione.malattie === null
       );
 
       // Imposta la visibilità in base alla condizione
-      this.showPermessi[i] = almenoUnCampoPermessiValorizzato && !tuttiCampiPermessiNull;
+      this.showPermessi[i] =
+        almenoUnCampoPermessiValorizzato && !tuttiCampiPermessiNull;
     }
-
 
     // for (let i = 0; i < giorni.length; i++) {
     //   const giorno = giorni[i];
@@ -864,14 +927,12 @@ export class UtenteComponent implements OnInit {
         this.showPermessiExfestivita[index] = true;
         break;
       default:
-        this.checkpermessi=false;
+        this.checkpermessi = false;
         this.showPermessi[index] = false;
         this.showPermessiRole[index] = false;
         this.showPermessiExfestivita[index] = false;
     }
   }
-
-
 
   aggiungiNoteDipendente() {
     this.inviaNoteAlDipendente = !this.inviaNoteAlDipendente;
@@ -886,8 +947,8 @@ export class UtenteComponent implements OnInit {
         rapportinoDto: {
           noteDipendente: this.noteDipendente,
           anagrafica: {
-            nome:this.userLoggedName,
-            cognome:this.userLoggedSurname,
+            nome: this.userLoggedName,
+            cognome: this.userLoggedSurname,
             codiceFiscale: this.codiceFiscale,
           },
           annoRequest: this.selectedAnno,
@@ -930,7 +991,7 @@ export class UtenteComponent implements OnInit {
           );
         }
       );
-    }else{
+    } else {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
           image: '../../../../assets/images/logo.jpeg',
@@ -939,7 +1000,6 @@ export class UtenteComponent implements OnInit {
         },
       });
     }
-
   }
 
   goDown() {
@@ -1029,6 +1089,7 @@ export class UtenteComponent implements OnInit {
         if ((result as any).esito.code === 200) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
+              image: '../../../../assets/images/logo.jpeg',
               title: 'Invio riuscito.',
               message: (result as any).esito.target,
             },
@@ -1291,7 +1352,9 @@ export class UtenteComponent implements OnInit {
     this.getRapportino();
   }
 
-
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
+  }
 
   isValidOreOrdinarie(value: number) {
     return value >= 0.5 && value <= 8;
@@ -1386,10 +1449,124 @@ export class UtenteComponent implements OnInit {
 
   onMeseSelectChange(event: any) {
     console.log('Mese selezionato:', event.target.value);
+    let body = {
+      rapportinoDto: {
+        anagrafica: {
+          codiceFiscale: this.codiceFiscale,
+        },
+        annoRequest: this.selectedAnno,
+        meseRequest: event.target.value,
+      },
+    };
+    console.log(JSON.stringify(body));
+    this.rapportinoService.getRapportino(this.token, body).subscribe(
+      (result: any) => {
+        if ((result as any).esito.code !== 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Caricamento non riuscito:',
+              message: (result as any).esito.target,
+            },
+          });
+        } else {
+          this.esitoCorretto = true;
+          this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
+          this.duplicazioniGiornoDto =
+            result['rapportinoDto']['mese']['giorni']['duplicazioniGiornoDto'];
+          this.giorniUtili = result['rapportinoDto']['giorniUtili'];
+          this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
+          this.note = result['rapportinoDto']['note'];
+          this.noteDipendente = result['rapportinoDto']['noteDipendente'];
+          this.gestisciStraordinari(this.rapportinoDto);
+          this.gestisciPermessi(this.rapportinoDto);
+          this.checkRapportinoInviato();
+          this.calcolaTotaleOreLavorate();
+          this.calcolaTotaleStraordinari();
+          this.calcolaTotaleFerie();
+          this.calcolaTotaleMalattia();
+          this.calcolaTotaleOrePermessi();
+          this.cdRef.detectChanges();
+
+          if (this.note === null || this.note === '' || this.note === '') {
+            console.log('non hai note.');
+          } else {
+            console.log('Hai note: ' + JSON.stringify(this.note));
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/logo.jpeg',
+                title: 'Attenzione, hai delle note:',
+                message: this.note,
+              },
+            });
+          }
+        }
+      },
+      (error: string) => {
+        console.error('ERRORE:' + JSON.stringify(error));
+      }
+    );
   }
 
   onAnnoSelectChange(event: any) {
     console.log('Anno selezionato:', event.target.value);
+    let body = {
+      rapportinoDto: {
+        anagrafica: {
+          codiceFiscale: this.codiceFiscale,
+        },
+        annoRequest: event.target.value,
+        meseRequest: this.selectedMese,
+      },
+    };
+    console.log(JSON.stringify(body));
+    this.rapportinoService.getRapportino(this.token, body).subscribe(
+      (result: any) => {
+        if ((result as any).esito.code !== 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Caricamento non riuscito:',
+              message: (result as any).esito.target,
+            },
+          });
+        } else {
+          this.esitoCorretto = true;
+          this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
+          this.duplicazioniGiornoDto =
+            result['rapportinoDto']['mese']['giorni']['duplicazioniGiornoDto'];
+          this.giorniUtili = result['rapportinoDto']['giorniUtili'];
+          this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
+          this.note = result['rapportinoDto']['note'];
+          this.noteDipendente = result['rapportinoDto']['noteDipendente'];
+          this.gestisciStraordinari(this.rapportinoDto);
+          this.gestisciPermessi(this.rapportinoDto);
+          this.checkRapportinoInviato();
+          this.calcolaTotaleOreLavorate();
+          this.calcolaTotaleStraordinari();
+          this.calcolaTotaleFerie();
+          this.calcolaTotaleMalattia();
+          this.calcolaTotaleOrePermessi();
+          this.cdRef.detectChanges();
+
+          if (this.note === null || this.note === '' || this.note === '') {
+            console.log('non hai note.');
+          } else {
+            console.log('Hai note: ' + JSON.stringify(this.note));
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/logo.jpeg',
+                title: 'Attenzione, hai delle note:',
+                message: this.note,
+              },
+            });
+          }
+        }
+      },
+      (error: string) => {
+        console.error('ERRORE:' + JSON.stringify(error));
+      }
+    );
   }
 
   logout() {
@@ -1589,19 +1766,13 @@ export class UtenteComponent implements OnInit {
   //   }
   // }
 
-
-
-  toggleDarkMode() {
-    this.toggleMode = !this.toggleMode;
-  }
-
-  getBackgroundClasses(giorno:any): any {
+  getBackgroundClasses(giorno: any): any {
     return {
-      'sabato-dom': giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica',
+      'sabato-dom':
+        giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica',
       'festivita-red': giorno.festivitàNazionale,
     };
   }
-
 }
 
 interface MenuData {
@@ -1623,58 +1794,58 @@ interface MenuData {
   }[];
 }
 
-  // verificaStraordinariCompilati(rapportinoDto: any): boolean {
-  //   let hasStraordinariCompilati = false;
+// verificaStraordinariCompilati(rapportinoDto: any): boolean {
+//   let hasStraordinariCompilati = false;
 
-  //   for (let i = 0; i < rapportinoDto.length; i++) {
-  //     for (let j = 0; j < rapportinoDto[i].duplicazioniGiornoDto.length; j++) {
-  //       const duplicazione = rapportinoDto[i].duplicazioniGiornoDto[j];
+//   for (let i = 0; i < rapportinoDto.length; i++) {
+//     for (let j = 0; j < rapportinoDto[i].duplicazioniGiornoDto.length; j++) {
+//       const duplicazione = rapportinoDto[i].duplicazioniGiornoDto[j];
 
-  //       if (
-  //         duplicazione &&
-  //         (duplicazione.fascia1 || duplicazione.fascia2 || duplicazione.fascia3)
-  //       ) {
-  //         // Se almeno una cella ha straordinari compilati, impostare checkStraordinari a true
-  //         hasStraordinariCompilati = true;
-  //       }
+//       if (
+//         duplicazione &&
+//         (duplicazione.fascia1 || duplicazione.fascia2 || duplicazione.fascia3)
+//       ) {
+//         // Se almeno una cella ha straordinari compilati, impostare checkStraordinari a true
+//         hasStraordinariCompilati = true;
+//       }
 
-  //       // Aggiungi la logica per inizializzare showStraordinari
-  //       if (!this.showStraordinari[i]) {
-  //         this.showStraordinari[i] = [];
-  //       }
+//       // Aggiungi la logica per inizializzare showStraordinari
+//       if (!this.showStraordinari[i]) {
+//         this.showStraordinari[i] = [];
+//       }
 
-  //       // Aggiorna showStraordinari solo se la cella corrente ha almeno un campo compilato
-  //       this.showStraordinari[i][j] =
-  //         duplicazione &&
-  //         (duplicazione.fascia1 ||
-  //           duplicazione.fascia2 ||
-  //           duplicazione.fascia3);
-  //     }
-  //   }
+//       // Aggiorna showStraordinari solo se la cella corrente ha almeno un campo compilato
+//       this.showStraordinari[i][j] =
+//         duplicazione &&
+//         (duplicazione.fascia1 ||
+//           duplicazione.fascia2 ||
+//           duplicazione.fascia3);
+//     }
+//   }
 
-  //   return hasStraordinariCompilati;
-  // }
+//   return hasStraordinariCompilati;
+// }
 // getAnagraficaRapportino() {
-  //   this.anagraficaDtoService
-  //     .detailAnagraficaDto(this.id, localStorage.getItem('token'))
-  //     .subscribe(
-  //       (resp: any) => {
-  //         this.user = (resp as any)['anagraficaDto'];
-  //         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
-  //         this.salvaAziendeClienti();
-  //         this.contratto = (resp as any)['anagraficaDto']['contratto'];
-  //         // this.codiceFiscale = (resp as any)['anagraficaDto']['anagrafica'][
-  //         //   'codiceFiscale'
-  //         // ];
-  //         this.dettaglioSbagliato = false;
-  //         this.numeroCommessePresenti = this.elencoCommesse.length;
-  //         // console.log('Dati restituiti: ' + JSON.stringify(resp));
-  //       },
-  //       (error: any) => {
-  //         console.error(
-  //           'ERRORE DURANTE IL CARICAMENTO DELL ANAGRAFICA :' +
-  //             JSON.stringify(error)
-  //         );
-  //       }
-  //     );
-  // }
+//   this.anagraficaDtoService
+//     .detailAnagraficaDto(this.id, localStorage.getItem('token'))
+//     .subscribe(
+//       (resp: any) => {
+//         this.user = (resp as any)['anagraficaDto'];
+//         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
+//         this.salvaAziendeClienti();
+//         this.contratto = (resp as any)['anagraficaDto']['contratto'];
+//         // this.codiceFiscale = (resp as any)['anagraficaDto']['anagrafica'][
+//         //   'codiceFiscale'
+//         // ];
+//         this.dettaglioSbagliato = false;
+//         this.numeroCommessePresenti = this.elencoCommesse.length;
+//         // console.log('Dati restituiti: ' + JSON.stringify(resp));
+//       },
+//       (error: any) => {
+//         console.error(
+//           'ERRORE DURANTE IL CARICAMENTO DELL ANAGRAFICA :' +
+//             JSON.stringify(error)
+//         );
+//       }
+//     );
+// }

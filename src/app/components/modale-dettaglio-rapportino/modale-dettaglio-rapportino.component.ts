@@ -14,6 +14,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
+import { ThemeService } from 'src/app/theme.service';
+import { MenuService } from '../menu.service';
 
 @Component({
   selector: 'app-modale-dettaglio-rapportino',
@@ -28,7 +30,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
   mese: any = this.activatedRoute.snapshot.params['mese'];
   anno: any = this.activatedRoute.snapshot.params['anno'];
   token = localStorage.getItem('token');
-  rapportinoDto: any[]=[];
+  rapportinoDto: any[] = [];
   note: any;
   giorniUtili: any;
   giorniLavorati: any;
@@ -61,16 +63,19 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
   totaleMalattia: any;
   totaleStraordinari: any;
   totaleOrePermessi: any;
+  elencoRichiesteAccettate: any[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private rapportinoService: RapportinoService,
     private dialog: MatDialog,
     private router: Router,
+    public themeService: ThemeService,
     private http: HttpClient,
     private profileBoxService: ProfileBoxService,
     private anagraficaDtoService: AnagraficaDtoService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private menuService: MenuService
   ) {
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -142,9 +147,9 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
             this.giorniUtili = result['rapportinoDto']['giorniUtili'];
             this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
             this.note = result['rapportinoDto']['note'];
-            console.log(
-              'Dati get rapportino:' + JSON.stringify(this.rapportinoDto)
-            );
+            // console.log(
+            //   'Dati get rapportino:' + JSON.stringify(this.rapportinoDto)
+            // );
             if (this.note != null) {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
@@ -160,6 +165,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
           console.error('ERRORE:' + JSON.stringify(error));
         }
       );
+      this.getAllRichiesteAccettate();
       this.calcolaTotaleFerie();
       this.calcolaTotaleMalattia();
       this.calcolaTotaleOreLavorate();
@@ -225,6 +231,32 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
             message: JSON.stringify(error),
           },
         });
+      }
+    );
+  }
+
+  getAllRichiesteAccettate() {
+    let body = {
+      richiestaDto: {
+        anno: this.anno,
+        mese: this.mese,
+        codiceFiscale: this.codiceFiscale,
+      },
+    };
+    console.log('Payload elenco Richieste accettate: ' + JSON.stringify(body));
+    this.rapportinoService.getAllRichiesteAccettate(this.token, body).subscribe(
+      (result: any) => {
+        this.elencoRichiesteAccettate = result.list;
+        console.log(
+          'Elenco Richieste accettate:' +
+            JSON.stringify(this.elencoRichiesteAccettate)
+        );
+      },
+      (error: any) => {
+        console.error(
+          'Errore durante il caricamento delle richieste: ' +
+            JSON.stringify(error)
+        );
       }
     );
   }
@@ -301,6 +333,41 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
     this.totaleOrePermessi = totale;
   }
 
+  getCliente(duplicazioni: any[], duplicazione: any): string {
+    const duplicazioneCorrispondente = duplicazioni.find(
+      (d) => d.cliente === duplicazione
+    );
+    return duplicazioneCorrispondente ? duplicazioneCorrispondente.cliente : '';
+  }
+
+  getOreOrdinarie(duplicazioni: any[], duplicazione: any): number {
+    const duplicazioneCorrispondente = duplicazioni.find(
+      (d) => d.cliente === duplicazione
+    );
+    return duplicazioneCorrispondente
+      ? duplicazioneCorrispondente.oreOrdinarie
+      : 0;
+  }
+
+
+  getMonthName(month: number): string {
+    const monthNames = [
+      'Gennaio',
+      'Febbraio',
+      'Marzo',
+      'Aprile',
+      'Maggio',
+      'Giugno',
+      'Luglio',
+      'Agosto',
+      'Settembre',
+      'Ottobre',
+      'Novembre',
+      'Dicembre',
+    ];
+    return monthNames[month - 1];
+  }
+
   //metodi navbar
 
   logout() {
@@ -314,6 +381,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.idUtenteLoggato = response.anagraficaDto.anagrafica.id;
+        this.ruolo = response.anagraficaDto.ruolo.nome;
         console.log('ID USER LOGGATO: ' + JSON.stringify(this.idUtenteLoggato));
 
         if (this.idUtenteLoggato != this.id) {
@@ -362,43 +430,33 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idUtente}`;
-    this.http.get<MenuData>(url, { headers: headers }).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        console.log(
-          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        );
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
 
   getPermissions(functionId: number) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/operazioni/${functionId}`;
-    this.http.get(url, { headers: headers }).subscribe(
-      (data: any) => {
-        console.log('Permessi ottenuti:', data);
-      },
+    this.menuService.getPermissions(this.token, functionId).subscribe(
+      (data: any) => {},
       (error: any) => {
         console.error('Errore nella generazione dei permessi:', error);
       }
     );
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 } //fine classe
 

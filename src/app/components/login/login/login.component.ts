@@ -4,6 +4,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../login-service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-login',
@@ -16,10 +17,13 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   recuperoPasswordInCorso: boolean = false;
   tokenExpirationTime: any;
+
+
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    public themeService:ThemeService,
     private dialog: MatDialog
   ) {
     this.loginForm = this.formBuilder.group({
@@ -94,4 +98,24 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+
+  onCopy(event: ClipboardEvent) {
+    event.preventDefault();
+    // Puoi aggiungere un messaggio o un'azione personalizzata qui se lo desideri
+  }
+
+  onCut(event: ClipboardEvent) {
+    event.preventDefault();
+    // Puoi aggiungere un messaggio o un'azione personalizzata qui se lo desideri
+  }
+
+  onPaste(event: ClipboardEvent) {
+    event.preventDefault();
+    // Puoi aggiungere un messaggio o un'azione personalizzata qui se lo desideri
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
+  }
+
 }

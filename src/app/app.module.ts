@@ -42,7 +42,7 @@ import { FormRecuperoPasswordComponent } from './components/form-recupero-passwo
 import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
 import { UtenteComponent } from './components/utente/utente.component';
 import { GiornoComponent } from './components/giorno/giorno.component';
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirective';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
@@ -58,6 +58,13 @@ import { ImmagineComponent } from './components/immagine/immagine.component';
 import { BottoniComponent } from './bottoni/bottoni.component';
 import { MailSollecitaComponent } from './components/mail-sollecita/mail-sollecita.component';
 import { RichiesteComponent } from './components/richieste/richieste.component';
+import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
+import { NuovaAnagraficaDtoExcelComponent } from './components/anagraficaDto/nuova-anagrafica-dto-excel/nuova-anagrafica-dto-excel.component';
+import { ModificaCommessaComponent } from './components/modifica-commessa/modifica-commessa.component';
+import { AlertConfermaComponent } from './alert-conferma/alert-conferma.component';
+import { SelectedDaysComponent } from './components/richieste/selected-days/selected-days.component';
+import { InsertPermessoComponent } from './components/richieste/insert-permesso/insert-permesso.component';
+import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-richiesta/dettaglio-richiesta.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -90,11 +97,18 @@ import { RichiesteComponent } from './components/richieste/richieste.component';
     ModalInfoContrattoComponent,
     RisultatiFilterOrganicoComponent,
     ListaRapportiniComponent,
+    ModificaCommessaComponent,
     ModaleDettaglioRapportinoComponent,
     HeaderComponent,
+    NuovaAnagraficaDtoExcelComponent,
     ImmagineComponent,
+    SelectedDaysComponent,
+    InsertPermessoComponent,
     BottoniComponent,
-    MailSollecitaComponent
+    MailSollecitaComponent,
+    AlertConfermaComponent,
+    CaricamentoDocumentiComponent,
+    DettaglioRichiestaComponent
   ],
   imports: [
     MatIconModule,
@@ -109,6 +123,7 @@ import { RichiesteComponent } from './components/richieste/richieste.component';
     ReactiveFormsModule,
     FormsModule,
     MaterialModule,
+    CommonModule,
     MatSelectModule,
 
   ],

@@ -5,6 +5,7 @@ import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
+import { ThemeService } from 'src/app/theme.service';
 
 declare var $: any;
 
@@ -39,6 +40,7 @@ export class StoricoCommesseComponent implements OnInit {
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
     private http: HttpClient,
+    public themeService:ThemeService
   ) { }
 
   ngOnInit(): void {
@@ -221,6 +223,10 @@ export class StoricoCommesseComponent implements OnInit {
         console.error('Errore nella generazione dei permessi:', error);
       }
     );
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 }
 

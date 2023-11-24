@@ -17,18 +17,8 @@ button {  background-color: rgb(24, 122, 0);  color: white;}button:hover {  back
   margin-right: 10px;
 }
 
-
-button {
-  background-color: rgb(24, 122, 0);
-  color: white;
-  padding: 2px 4px;
-  margin-left: 10px;
-}
-
-
-button:hover {
-  background-color: rgb(24, 122, 0);
-  color: white;
+.dark-mode table{
+  border: 1px solid #ffffff;
 }
 
 mat-expansion-panel {
@@ -56,8 +46,7 @@ footer {
 /* Reduce padding for table cells */
 .table th,
 .table td {
-  padding: 4px 8px;
-  /* Adjust as needed */
+  font-size: 13px;
 }
 
 /* Reduce line height for table cells */
@@ -161,12 +150,7 @@ table {
   }
 }
 
-th {
-  position: sticky;
-  top: 0;
-  background-color: #fff;
-  z-index: 2;
-}
+
 
 @media (max-width: 768px) {
 
@@ -228,5 +212,100 @@ th {
   .user-icon i, .logout-icon i {
     font-size: 24px; /* Adjust icon size for mobile */
   }
+}
+<<<<<<< HEAD
+>>>>>>> develop
+=======
+
+
+.dark-mode #toolbar {
+  color: #ffffff;
+  /* Testo bianco */
+  display: flex;
+  background-color: #333;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #f3f3f3;
+
+}
+
+
+/* styles.css o nel tuo componente-specifico.css */
+.dark-mode *{
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode input::placeholder {
+  color: #ddd; /* Colore del placeholder nei temi scuri */
+}
+
+mat-card-title, mat-card-subtitle, mat-card-footer{
+  text-align: center;
+}
+
+.dark-mode mat-card {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #f1f1f1;
+}
+
+.dark-mode button{
+  border: 1px solid white;
+}
+
+/* Stili specifici per dark mode */
+.dark-mode input {
+  background-color: #333; /* Colore di sfondo scuro per gli input */
+  color: #fff; /* Colore del testo chiaro per gli input */
+}
+
+.dark-mode table {
+  border-color: #fff;
+}
+
+.dark-mode th, .dark-mode td {
+  border-color: #777;
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode button, .dark-mode .btn {
+  background-color: #333;
+  color: #fff;
+}
+
+
+/* Stili specifici per dark mode */
+.dark-mode button.toggle-button {
+  background-color: #333;
+  color: #fff;
+  /* Altri stili specifici per il dark mode per il bottone di toggle */
+}
+
+.dark-mode .pagination {
+  background-color: #333;
+}
+
+.dark-mode .pagination li {
+  border: 1px solid #555;
+}
+
+.dark-mode .pagination li.disabled {
+  background-color: #444;
+  color: #666;
+  border: 1px solid #555;
+}
+
+.dark-mode .pagination li.active {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #007bff;
+}
+
+.dark-mode .pagination li:hover {
+  background-color: #555;
+  color: #fff;
+  border: 1px solid #666;
 }
 >>>>>>> develop

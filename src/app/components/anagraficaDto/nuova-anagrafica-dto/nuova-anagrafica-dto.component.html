@@ -97,7 +97,8 @@
   </style>
 </head>
 
-<body>
+<body [class.dark-mode]="themeService.isDarkModeEnabled()">
+  <div id="inizioPagina"></div>
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && !mobile">
       <a [routerLink]="['/home']" class="logo-link">
@@ -108,6 +109,10 @@
           *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
           {{ menuItem.nome }}
         </a>
+      </div>
+      <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+        <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+        <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
       </div>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
@@ -150,7 +155,7 @@
         <br>
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Nuova anagrafica</h1>
+          <h1>Nuova anagrafica  <i class="fa fa-user"></i> <i class="fa fa-plus"></i> </h1>
         </mat-card>
       </div>
     </div>
@@ -358,46 +363,50 @@
                       <legend>Recapiti</legend>
                       <div class="row">
                         <div class="col-md-3">
-                          <label>Cellulare Privato </label>
+                          <label>Cellulare Privato</label>
                           <div class="form-group">
                             <input type="text" class="form-control" formControlName="cellularePrivato"
-                              placeholder="Inserire cellulare privato." />
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.cellularePrivato'
-                                  )?.hasError('pattern')
-                                " class="text-danger">
-                              Il formato cellulare privato non é valido: 10
-                              caratteri consentiti.
-                            </div>
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.cellularePrivato'
-                                  )?.hasError('minLength')
-                                " class="text-danger">
-                              10 caratteri massimi consentiti.
-                            </div>
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.cellularePrivato'
-                                  )?.hasError('maxLength')
-                                " class="text-danger">
-                              10 caratteri minimi consentiti.
+                            [ngStyle]="{
+                              border: AnagraficaDto.get(
+                                'anagrafica.cellularePrivato'
+                              )?.hasError('pattern')
+                                ? '1px solid red'
+                                : '1px solid #ccc'
+                            }"
+                            placeholder="Inserire cellulare privato." />
+
+                            <div *ngIf="AnagraficaDto.get('anagrafica.cellularePrivato')?.invalid && (AnagraficaDto.get('anagrafica.cellularePrivato')?.dirty || AnagraficaDto.get('anagrafica.cellularePrivato')?.touched)">
+                              <div *ngIf="AnagraficaDto.get('anagrafica.cellularePrivato')?.hasError('pattern')" class="text-danger">
+                                Il formato non è valido. Inserire un numero valido.
+                              </div>
+                              <!-- <div *ngIf="AnagraficaDto.get('anagrafica.cellularePrivato')?.hasError('minlength')" class="text-danger">
+                                Inserire almeno 10 caratteri.
+                              </div>
+                              <div *ngIf="AnagraficaDto.get('anagrafica.cellularePrivato')?.hasError('maxlength')" class="text-danger">
+                                Inserire massimo 10 caratteri.
+                              </div> -->
                             </div>
                           </div>
                         </div>
+
                         <div class="col-md-3">
                           <label>Cellulare Aziendale </label>
                           <div class="form-group">
                             <input type="text" class="form-control" formControlName="cellulareAziendale"
+                            [ngStyle]="{
+                              border: AnagraficaDto.get(
+                                'anagrafica.cellulareAziendale'
+                              )?.hasError('pattern')
+                                ? '1px solid red'
+                                : '1px solid #ccc'
+                            }"
                               placeholder="Inserire cellulare aziendale." />
                             <div *ngIf="
                                   AnagraficaDto.get(
                                     'anagrafica.cellulareAziendale'
                                   )?.hasError('pattern')
                                 " class="text-danger">
-                              Il formato cellulare aziendale non é valido:10
-                              caratteri consentiti.
+                              Il formato cellulare aziendale non é valido.
                             </div>
                           </div>
                         </div>
@@ -856,8 +865,9 @@
                             <label>Coniugato </label>
                             <label class="toggle-switch">
                               <div class="form-check">
-                                <input class="form-check-input" type="checkbox" style="border-color: black"
-                                  formControlName="coniugato" (change)="onChangeConiugato($event)" />
+                                <input class="form-check-input"
+                                 type="checkbox" style="border-color: black"
+                                 formControlName="coniugato" (change)="onChangeConiugato($event)" />
                                 <span class="slider"></span>
                               </div>
                             </label>
@@ -1464,7 +1474,7 @@
                                     )?.hasError('required')
                                       ? '1px solid red'
                                       : '1px solid #f1f1f1'
-                                  }" formControlName="dataAssunzione" placeholder="Inserire data assunzione" />
+                                  }" formControlName="dataAssunzione"  placeholder="Inserire data assunzione" />
                               <div *ngIf="
                                     AnagraficaDto.get(
                                       'contratto.dataAssunzione'
@@ -1502,6 +1512,27 @@
 
                           <div class="col-md-3">
                             <div class="form-group">
+                              <label for="dataFineContratto">Data Fine contratto</label>
+                              <input type="date" class="form-control" name="dataInput"
+                                formControlName="dataFineContratto" [ngStyle]="{
+                                    border: AnagraficaDto.get(
+                                      'contratto.dataFineContratto'
+                                    )?.hasError('required')
+                                      ? '1px solid red'
+                                      : '1px solid #f1f1f1'
+                                  }" />
+                              <div *ngIf="
+                                    AnagraficaDto.get(
+                                      'contratto.dataFineContratto'
+                                    )?.hasError('required')
+                                  " class="text-danger">
+                                Il campo Data Fine contratto è obbligatorio.
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-3">
+                            <div class="form-group">
                               <label for="dataFineRapporto">Data Fine Rapporto</label>
                               <input type="date" class="form-control" name="dataInput"
                                 formControlName="dataFineRapporto" [ngStyle]="{
@@ -1518,7 +1549,6 @@
                                   " class="text-danger">
                                 Il campo Data Fine rapporto è obbligatorio.
                               </div>
-                              <!--[disabled]="AnagraficaDto.get('contratto.tipoContratto.id')?.value === '4'"-->
                             </div>
                           </div>
                         </div>
@@ -2101,12 +2131,45 @@
                         <br />
                         <div class="text-center">
                           <button mat-button matStepperPrevious>«Indietro</button> &nbsp;
+                          <button mat-button matStepperNext>Avanti»</button>
+
                         </div>
                       </mat-card-content>
                     </mat-card>
                   </div>
                 </div>
               </mat-step>
+              <!-- <mat-step>
+                <ng-template matStepLabel>Documenti</ng-template>
+                <div class="row">
+                  <div class="col-12">
+                    <mat-card>
+                      <mat-card-title class="text-center" ><h1>Caricamento documenti</h1></mat-card-title>
+                      <mat-card-subtitle class="text-center"><h3>Carica qui i tuoi documenti</h3></mat-card-subtitle>
+                      <mat-card-content class="text-center" >
+
+                        <div *ngIf="!previewData" >
+                          <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" accept=".xlsx, .xls">
+                          <button class="text-center" mat-raised-button color="primary" (click)="fileInput.click()">
+                            <mat-icon>cloud_upload</mat-icon> Carica file Excel
+                          </button>
+                        </div>
+                      <div *ngIf="previewData" class="preview-container">
+                   <h4>{{ selectedFileName }}</h4>
+                     <div [innerHTML]="previewData" class="excel-preview"></div>
+                      </div>
+                      </mat-card-content>
+                      <mat-card-footer class="text-center" *ngIf="previewData">
+                        <button class="btn btn-success" mattooltip="Salva documento" (click)="salvaDocumento()"  > <i class="fa fa-save" ></i> </button>
+                      </mat-card-footer>
+                    </mat-card>
+
+                  </div>
+                </div>
+                <div class="text-center">
+                  <button mat-button matStepperPrevious>«Indietro</button> &nbsp;
+                </div>
+                </mat-step> -->
             </mat-stepper>
             <div class="row">
               <div class="col-6" style="text-align: end">
@@ -2137,6 +2200,7 @@
       </div>
     </div>
   </div>
+  <div id="finePagina"></div>
 </body>
 
 </html>

@@ -61,6 +61,17 @@
       /* Allinea verticalmente gli elementi al centro */
     }
 
+   .dark-mode #toolbar {
+      color: #ffffff;
+      /* Testo bianco */
+      display: flex;
+      background-color: #333;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #f3f3f3;
+
+    }
+
     .logo-link {
       margin-right: 10px;
     }
@@ -94,7 +105,7 @@
   </style>
 </head>
 
-<body>
+<body [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div id="inizioPagina"></div>
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && !mobile">
@@ -107,6 +118,13 @@
           {{ menuItem.nome }}
         </a>
       </div>
+      <span>
+        <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
+        </div>
+
+      </span>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
         <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
@@ -148,7 +166,7 @@
         <br>
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Modifica anagrafica di {{data?.anagrafica?.nome}} {{data?.anagrafica?.cognome}}</h1>
+          <h1>Modifica anagrafica di {{data?.anagrafica?.nome}} {{data?.anagrafica?.cognome}} <i class="fa fa-user" ></i>  <i class="fa fa-pencil" ></i> </h1>
         </mat-card>
       </div>
     </div>
@@ -531,15 +549,16 @@
                             </div>
                           </div>
 
+
+
                           <div class="col-md-3">
-                            <label>Data Fine Rapporto: </label>
+                            <label>Data Fine Contratto: </label>
                             <div class="form-group">
                               <input type="date" class="form-control"
-                                [value]="transformDate(data?.contratto?.dataFineRapporto)"
-                                formControlName="dataFineRapporto" />
+                                [value]="transformDate(data?.contratto?.dataFineContratto)"
+                                formControlName="dataFineContratto" />
                             </div>
                           </div>
-
                         </div>
                         <br>
                         <div class="row">
@@ -789,6 +808,36 @@
 
                         </div>
                         <br>
+
+
+                        <div class="row">
+                          <legend>Dati economici partita iva</legend>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Tariffa Partita IVA: </label>
+                              <input type="number" class="form-control" value="{{ data?.contratto?.tariffaPartitaIva }}"
+                                formControlName="tariffaPartitaIva" />
+                            </div>
+                          </div>
+
+                          <div class="col-md-3">
+                            <label>Retribuzione netta giornaliera:</label>
+                            <div class="form-group">
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text custom-prefix">€</span>
+                                </div>
+                                <input type="number" class="form-control"
+                                  value="{{ data?.contratto?.retribuzioneNettaGiornaliera }}"
+                                  formControlName="retribuzioneNettaGiornaliera" step="0.01" min="0"
+                                  placeholder="Inserire retribuzione netta giornaliera" />
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <br>
+
                         <div class="row">
                           <legend>Ticket e agevolazioni</legend>
                           <div class="col-3">
@@ -892,33 +941,6 @@
                         <br>
 
                         <div class="row">
-                          <legend>Dati economici partita iva</legend>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label>Tariffa Partita IVA: </label>
-                              <input type="number" class="form-control" value="{{ data?.contratto?.tariffaPartitaIva }}"
-                                formControlName="tariffaPartitaIva" />
-                            </div>
-                          </div>
-
-                          <div class="col-md-3">
-                            <label>Retribuzione netta giornaliera:</label>
-                            <div class="form-group">
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text custom-prefix">€</span>
-                                </div>
-                                <input type="number" class="form-control"
-                                  value="{{ data?.contratto?.retribuzioneNettaGiornaliera }}"
-                                  formControlName="retribuzioneNettaGiornaliera" step="0.01" min="0"
-                                  placeholder="Inserire retribuzione netta giornaliera" />
-                              </div>
-                            </div>
-                          </div>
-
-                        </div>
-                        <br>
-                        <div class="row">
                           <div class="col-12">
                             <legend>Dati medici</legend>
                           </div>
@@ -959,7 +981,7 @@
 
                           <legend>Dimissioni</legend>
 
-                          <div class="col-md-5">
+                          <div class="col-3">
                             <div class="form-group" formGroupName="tipoCausaFineRapporto">
                               <label>Motivazione Fine Rapporto: </label>
                               <select (change)="onChangeCausaFineRapporto($event)" class="form-select"
@@ -971,6 +993,28 @@
                                   {{ tipoCausaFineRapporto.descrizione }}
                                 </option>
                               </select>
+                            </div>
+                          </div>
+                          <div class="col-3">
+                            <div class="form-group" formGroupName="tipoCausaFineContratto">
+                              <label>Causa Fine Contratto: </label>
+                              <select (change)="onChangeTipoCausaFineContratto($event)" class="form-select"
+                                aria-label="Default select example" id="contratto.tipoCausaFineContratto.id"
+                                formControlName="id">
+                                <option value="">--nessuna selezione--</option>
+                                <option *ngFor="let tipoCausaFineContratto of tipiCausaFineContratto"
+                                  [value]="tipoCausaFineContratto.id">
+                                  {{ tipoCausaFineContratto.descrizione }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label>Data Fine Rapporto: </label>
+                            <div class="form-group">
+                              <input type="date" class="form-control"
+                                [value]="transformDate(data?.contratto?.dataFineRapporto)"
+                                formControlName="dataFineRapporto" />
                             </div>
                           </div>
                         </div>

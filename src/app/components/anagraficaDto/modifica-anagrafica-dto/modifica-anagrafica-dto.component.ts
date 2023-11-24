@@ -33,6 +33,8 @@ import { ContrattoService } from '../../contratto/contratto-service';
 import { MenuService } from '../../menu.service';
 import { ImageService } from '../../image.service';
 import { StepperService } from 'src/app/stepper.service';
+import { ThemeService } from 'src/app/theme.service';
+import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.component';
 
 @Component({
   selector: 'app-modifica-anagrafica-dto',
@@ -54,6 +56,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   currentCommessa: any;
   //TIPOLOGICHE
   tipiContratti: any = [];
+  tipiCausaFineContratto: any = [];
   livelliContratti: any = [];
   tipiAziende: any = [];
   ccnl: any = [];
@@ -114,7 +117,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   statoDiNascita: any;
   provinciaDiNascita: string = '';
 
-
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private activatedRouter: ActivatedRoute,
@@ -127,6 +129,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     public dialog: MatDialog,
     public profileBoxService: ProfileBoxService,
     private http: HttpClient,
+    public themeService: ThemeService,
     private contrattoService: ContrattoService,
     private authService: AuthService,
     private menuService: MenuService,
@@ -233,6 +236,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         dataInizioProva: [''],
         dataFineProva: [''],
         dataFineRapporto: [''],
+        dataFineContratto: [''],
         mesiDurata: [''],
         livelloAttuale: [''],
         livelloFinale: [''],
@@ -260,6 +264,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         tipoCausaFineRapporto: this.formBuilder.group({
           id: [''],
           // descrizione: [''],
+        }),
+        tipoCausaFineContratto: this.formBuilder.group({
+          id: [''],
+          descrizione: [''],
         }),
         scattiAnzianita: [''],
         assicurazioneObbligatoria: [''],
@@ -300,6 +308,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.caricaTipoCausaFineRapporto();
       this.caricaLivelloContratto();
       this.caricaMappa();
+      this.caricaTipoCausaFineContratto();
 
       const tipoContratto = this.anagraficaDto.get(
         'contratto.tipoContratto.id'
@@ -352,13 +361,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.anagraficaDto
         .get('contratto.dataAssunzione')
         ?.valueChanges.subscribe(() => {
-          this.calculateDataFineRapporto();
+          this.calculateDataFineContratto();
         });
 
       this.anagraficaDto
         .get('contratto.mesiDurata')
         ?.valueChanges.subscribe(() => {
-          this.calculateDataFineRapporto();
+          this.calculateDataFineContratto();
         });
 
       const tipoAziendaControlAnagrafica = this.anagraficaDto.get(
@@ -370,7 +379,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     } else {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
-          image:'../../../../assets/images/danger.png',
+          image: '../../../../assets/images/danger.png',
           title: 'Attenzione:',
           message: 'Errore di autenticazione, effettua il login.',
         },
@@ -424,23 +433,26 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
     // Se "Italia" è selezionata, ottieni tutte le province italiane
     if (this.statoDiNascita === 'Italia') {
-      this.province = this.dati
-        .find((item: any) => item.nazione === 'Italia')
-        ?.province.flatMap((regione: any) => regione.province) || [];
+      this.province =
+        this.dati
+          .find((item: any) => item.nazione === 'Italia')
+          ?.province.flatMap((regione: any) => regione.province) || [];
 
       // Inoltre, imposta le capitali italiane
-      this.capitali = this.dati
-        .find((item: any) => item.nazione === 'Italia')
-        ?.province.map((regione: any) => regione.capitale) || [];
+      this.capitali =
+        this.dati
+          .find((item: any) => item.nazione === 'Italia')
+          ?.province.map((regione: any) => regione.capitale) || [];
     } else {
       // Altrimenti, filtra le province in base alla nazione selezionata
-      this.province = this.dati
-        .find((item: any) => item.nazione === this.statoDiNascita)
-        ?.province || [];
+      this.province =
+        this.dati.find((item: any) => item.nazione === this.statoDiNascita)
+          ?.province || [];
 
       // Recupera la capitale della nazione selezionata
-      const capitaleNazione = this.dati
-        .find((item: any) => item.nazione === this.statoDiNascita)?.capitale;
+      const capitaleNazione = this.dati.find(
+        (item: any) => item.nazione === this.statoDiNascita
+      )?.capitale;
 
       // Se la capitale è definita, aggiungila all'array delle capitali
       if (capitaleNazione) {
@@ -448,12 +460,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       }
     }
 
-    console.log("Nazione selezionata: " + this.statoDiNascita);
-    console.log("Province selezionate: " + JSON.stringify(this.province));
-    console.log("Capitali selezionate: " + JSON.stringify(this.capitali));
+    console.log('Nazione selezionata: ' + this.statoDiNascita);
+    console.log('Province selezionate: ' + JSON.stringify(this.province));
+    console.log('Capitali selezionate: ' + JSON.stringify(this.capitali));
   }
-
-
 
   onChangeAziendaCliente(event: any) {
     const selectedValue = parseInt(event.target.value, 10);
@@ -565,20 +575,29 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe((resp: any) => {
         console.log(this.activatedRouter.snapshot.params['id']);
         this.data = (resp as any)['anagraficaDto'];
-        this.selectedTipoContrattoId = (resp as any)['anagraficaDto']['contratto']['tipoContratto']['id'];
-        this.descrizioneLivelloCCNL = (resp as any)['anagraficaDto']['contratto']['tipoLivelloContratto']['ccnl'];
+        this.selectedTipoContrattoId = (resp as any)['anagraficaDto'][
+          'contratto'
+        ]['tipoContratto']['id'];
+        this.descrizioneLivelloCCNL = (resp as any)['anagraficaDto'][
+          'contratto'
+        ]['tipoLivelloContratto']['ccnl'];
         this.setForm();
-        this.anagraficaDtoService.changeCCNL(localStorage.getItem('token'), this.descrizioneLivelloCCNL).subscribe(
-          (response: any) => {
-            this.elencoLivelliCCNL = response.list;
-          },
-          (error: any) => {
-            console.error(
-              'Errore durante il caricamento dei livelli di contratto: ' +
-              error
-            );
-          }
-        );
+        this.anagraficaDtoService
+          .changeCCNL(
+            localStorage.getItem('token'),
+            this.descrizioneLivelloCCNL
+          )
+          .subscribe(
+            (response: any) => {
+              this.elencoLivelliCCNL = response.list;
+            },
+            (error: any) => {
+              console.error(
+                'Errore durante il caricamento dei livelli di contratto: ' +
+                  error
+              );
+            }
+          );
 
         // Iteriamo attraverso le chiavi dell'oggetto
         for (const key in resp) {
@@ -621,6 +640,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         if (this.data.contratto && this.data.contratto.dataFineRapporto) {
           this.data.contratto.dataFineRapporto = this.datePipe.transform(
             this.data.contratto.dataFineRapporto,
+            'yyyy-MM-dd'
+          );
+        }
+        if (this.data.contratto && this.data.contratto.dataFineContratto) {
+          this.data.contratto.dataFineContratto = this.datePipe.transform(
+            this.data.contratto.dataFineContratto,
             'yyyy-MM-dd'
           );
         }
@@ -852,9 +877,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           console.log('Livello contratto selezionato: ', selectedLivello);
           this.minimiRet23 = selectedLivello.minimiRet23;
           console.log('Minimi retributivi 2023:' + this.minimiRet23);
-          const tipoContratto = this.anagraficaDto.get('contratto.tipoContratto.id');
+          const tipoContratto = this.anagraficaDto.get(
+            'contratto.tipoContratto.id'
+          );
 
-          const selectedOption = this.anagraficaDto.get('contratto.retribuzioneMensileLorda');
+          const selectedOption = this.anagraficaDto.get(
+            'contratto.retribuzioneMensileLorda'
+          );
 
           if (this.tipoDiContrattoControl.descrizione === 'Stage') {
             console.log('é uno stage, NO retr lorda ma si retribuzione netta.');
@@ -887,7 +916,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         } else {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
-              image:'../../../../assets/images/danger.png',
+              image: '../../../../assets/images/danger.png',
               title: 'Attenzione:',
               message: 'Livello contratto non trovato nella lista.',
             },
@@ -896,7 +925,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       } else {
         const dialogRef = this.dialog.open(AlertDialogComponent, {
           data: {
-            image:'../../../../assets/images/danger.png',
+            image: '../../../../assets/images/danger.png',
             title: 'Attenzione:',
             message: 'Valore non valido o livello contratto non selezionato.',
           },
@@ -916,7 +945,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.elencoLivelliCCNL = response['list'];
           console.log(
             '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
-            JSON.stringify(this.elencoLivelliCCNL)
+              JSON.stringify(this.elencoLivelliCCNL)
           );
         },
         (error: any) => {
@@ -946,17 +975,22 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         console.log('numero mensilitá:' + this.numeroMensilitaCCNL);
         livelloControl?.enable();
         // Qui andrà la chiamata per l'endpoint per la get del livello contratto
-        this.anagraficaDtoService.changeCCNL(localStorage.getItem('token'), this.descrizioneLivelloCCNL).subscribe(
-          (response: any) => {
-            this.elencoLivelliCCNL = response.list;
-          },
-          (error: any) => {
-            console.error(
-              'Errore durante il caricamento dei livelli di contratto: ' +
-              error
-            );
-          }
-        );
+        this.anagraficaDtoService
+          .changeCCNL(
+            localStorage.getItem('token'),
+            this.descrizioneLivelloCCNL
+          )
+          .subscribe(
+            (response: any) => {
+              this.elencoLivelliCCNL = response.list;
+            },
+            (error: any) => {
+              console.error(
+                'Errore durante il caricamento dei livelli di contratto: ' +
+                  error
+              );
+            }
+          );
       } else {
         console.log('Opzione non trovata nei contratti nazionali');
       }
@@ -994,8 +1028,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
           console.log('Contratto selezionato: ', this.tipoContratto);
 
-          const dataFineRapportoControl = this.anagraficaDto.get(
-            'contratto.dataFineRapporto'
+          const dataFineContrattoControl = this.anagraficaDto.get(
+            'contratto.dataFineContratto'
           );
           const mesiDurataControl = this.anagraficaDto.get(
             'contratto.mesiDurata'
@@ -1046,7 +1080,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           switch (selectedValue) {
             case 1: // Contratto STAGE
               if (
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 mesiDurataControl &&
                 retribuzioneMensileLordaControl &&
                 PFIcontrol &&
@@ -1071,10 +1105,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 mesiDurataControl.setValue(6);
                 mesiDurataControl.updateValueAndValidity();
 
-                dataFineRapportoControl.enable();
-                dataFineRapportoControl.setValidators([Validators.required]);
-                dataFineRapportoControl.setValue(null);
-                dataFineRapportoControl.updateValueAndValidity();
+                dataFineContrattoControl.enable();
+                dataFineContrattoControl.setValidators([Validators.required]);
+                dataFineContrattoControl.setValue(null);
+                dataFineContrattoControl.updateValueAndValidity();
 
                 tutorControl.enable();
                 tutorControl.setValidators([Validators.required]);
@@ -1163,7 +1197,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 retribuzioneMensileLordaControl &&
                 retribuzioneNettaMensileControl &&
                 retribuzioneNettaGiornalieraControl &&
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 mesiDurataControl &&
                 livelloAttualeControl &&
                 livelloFinaleControl &&
@@ -1220,10 +1254,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 dataFineProvaControl.setValue('');
                 dataFineProvaControl.updateValueAndValidity();
 
-                dataFineRapportoControl.disable();
-                dataFineRapportoControl.setValue('');
-                dataFineRapportoControl.clearValidators();
-                dataFineRapportoControl.updateValueAndValidity();
+                dataFineContrattoControl.disable();
+                dataFineContrattoControl.setValue('');
+                dataFineContrattoControl.clearValidators();
+                dataFineContrattoControl.updateValueAndValidity();
 
                 mesiDurataControl.disable();
                 mesiDurataControl.setValue('');
@@ -1245,7 +1279,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 scattiAnzianitaControl &&
                 tariffaPartitaIvaControl &&
                 retribuzioneMensileLordaControl &&
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 livelloAttualeControl &&
                 livelloFinaleControl &&
                 retribuzioneNettaGiornalieraControl &&
@@ -1262,10 +1296,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 mesiDurataControl.setValidators([Validators.required]);
                 mesiDurataControl.updateValueAndValidity();
 
-                dataFineRapportoControl.enable();
-                dataFineRapportoControl.setValue('');
-                dataFineRapportoControl.setValidators([Validators.required]);
-                dataFineRapportoControl.updateValueAndValidity();
+                dataFineContrattoControl.enable();
+                dataFineContrattoControl.setValue('');
+                dataFineContrattoControl.setValidators([Validators.required]);
+                dataFineContrattoControl.updateValueAndValidity();
 
                 retribuzioneMensileLordaControl.enable();
                 retribuzioneMensileLordaControl.setValue('');
@@ -1321,7 +1355,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             case 4: // Contratto a tempo indeterminato
               if (
                 mesiDurataControl &&
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 tariffaPartitaIvaControl &&
                 tutorControl &&
                 PFIcontrol &&
@@ -1340,8 +1374,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 retribuzioneNettaGiornalieraControl.disable();
                 retribuzioneNettaGiornalieraControl.setValue('');
 
-                dataFineRapportoControl.disable();
-                dataFineRapportoControl.setValue(null);
+                dataFineContrattoControl.disable();
+                dataFineContrattoControl.setValue(null);
 
                 tariffaPartitaIvaControl.disable();
                 tariffaPartitaIvaControl.setValue('');
@@ -1384,7 +1418,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             case 5: // Contratto di apprendistato
               if (
                 mesiDurataControl &&
-                dataFineRapportoControl &&
+                dataFineContrattoControl &&
                 tariffaPartitaIvaControl &&
                 tutorControl &&
                 PFIcontrol &&
@@ -1399,10 +1433,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
               ) {
                 mesiDurataControl.enable();
                 mesiDurataControl.setValue(36);
-                this.calculateDataFineRapporto();
+                this.calculateDataFineContratto();
 
-                dataFineRapportoControl.enable();
-                dataFineRapportoControl.setValue(null);
+
+                dataFineContrattoControl.enable();
+                dataFineContrattoControl.setValue(null);
 
                 tariffaPartitaIvaControl.disable();
                 tariffaPartitaIvaControl.setValue('');
@@ -1493,6 +1528,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   // Dichiarazione di una variabile per il valore precedente
   valorePrecedenteDataFineRapporto: any;
 
+  onChangeTipoCausaFineContratto(event:any){
+    const target = event.target as HTMLInputElement;
+    const value = target.value;
+    console.log(value);
+  }
+
   onChangeCausaFineRapporto(event: any) {
     const target = event.target as HTMLInputElement;
     const value = target.value;
@@ -1506,14 +1547,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.valorePrecedenteDataFineRapporto = dataFineRapportoControl.value;
       dataFineRapportoControl.enable();
       dataFineRapportoControl.setValue(this.dataFormattata);
-      // alert(
-      //   'La data di fine rapporto é stata impostata a oggi.' +
-      //   this.dataFormattata +
-      //     ' \n Per reimpostare la vecchia data, elimina la causa di fine rapporto.'
-      // );
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
-          image:'../../../../assets/images/danger.png',
+          image: '../../../../assets/images/danger.png',
           title: 'Attenzione:',
           message:
             'La data di fine rapporto é stata impostata a ' +
@@ -1530,7 +1566,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         );
         const dialogRef = this.dialog.open(AlertDialogComponent, {
           data: {
-            image:'../../../../assets/images/danger.png',
+            image: '../../../../assets/images/danger.png',
             title: 'Attenzione:',
             message:
               'La data di fine rapporto é stata impostata a ' +
@@ -1612,9 +1648,16 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   rimuoviCommessa(index: number): void {
-    const conferma =
-      'Sei sicuro di voler eliminare la commessa con indice ' + index + '?';
-    if (confirm(conferma)) {
+
+    const dialogRef = this.dialog.open(AlertConfermaComponent, {
+      data: {
+        image: '../../../../assets/images/danger.png',
+        title: 'Attenzione:',
+        message: 'Confermi di voler eliminare la commessa selezionata?',
+      },
+    });
+
+    dialogRef.componentInstance.conferma.subscribe(() => {
       const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
 
       // Rimuovi la commessa dall'array del form
@@ -1632,7 +1675,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             if ((response as any).esito.code !== 200) {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
-                  image:'../../../../assets/images/danger.png',
+                  image: '../../../../assets/images/danger.png',
                   title: 'Eliminazione non riuscita:',
                   message: (response as any).esito.target,
                 },
@@ -1641,7 +1684,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
               this.elencoCommesse.splice(index, 1);
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
-                  image:'../../../../assets/images/logo.jpeg',
+                  image: '../../../../assets/images/logo.jpeg',
                   title: 'Commessa eliminata correttamente.',
                 },
               });
@@ -1651,14 +1694,15 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           (error: any) => {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                image:'../../../../assets/images/danger.png',
+                image: '../../../../assets/images/danger.png',
                 title: 'Qualcosa é andato storto:',
                 message: JSON.stringify(error),
               },
             });
           }
         );
-    }
+    });
+
   }
 
   caricaTipoCanaleReclutamento() {
@@ -1672,7 +1716,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.log(
             'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
-            JSON.stringify(error)
+              JSON.stringify(error)
           );
         }
       );
@@ -1708,10 +1752,22 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           delete obj.tipoLivelloContratto;
         }
         if (
+          obj.dataFineRapporto &&
+          Object.keys(obj.dataFineRapporto).length === 0
+        ) {
+          delete obj.dataFineRapporto;
+        }
+        if (
           obj.tipoCausaFineRapporto &&
           Object.keys(obj.tipoCausaFineRapporto).length === 0
         ) {
           delete obj.tipoCausaFineRapporto;
+        }
+        if (
+          obj.tipoCausaFineContratto &&
+          Object.keys(obj.tipoCausaFineContratto).length === 0
+        ) {
+          delete obj.tipoCausaFineContratto;
         }
         if (
           obj.tipoCanaleReclutamento &&
@@ -1725,7 +1781,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
     console.log(
       'Valore di anagrafica: ' +
-      JSON.stringify(this.anagraficaDto.get('anagrafica')?.value)
+        JSON.stringify(this.anagraficaDto.get('anagrafica')?.value)
     );
     const payload = {
       anagraficaDto: this.anagraficaDto.value,
@@ -1742,7 +1798,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           if ((response as any).esito.code !== 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                image:'../../../../assets/images/danger.png',
+                image: '../../../../assets/images/danger.png',
                 title: 'Modifica non riuscita:',
                 message: (response as any).esito.target,
               },
@@ -1751,7 +1807,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
             console.log('Payload inviato con successo al server:', response);
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                image:'../../../../assets/images/logo.jpeg',
+                image: '../../../../assets/images/logo.jpeg',
                 title: 'Modifica effettuata correttamente.',
               },
             });
@@ -1853,6 +1909,23 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.router.navigate(['/lista-anagrafica']);
   }
 
+  caricaTipoCausaFineContratto() {
+    this.anagraficaDtoService
+      .changeTipoCausaFineContrattoMap(localStorage.getItem('token'))
+      .subscribe(
+        (result: any) => {
+          this.tipiCausaFineContratto = (result as any)['list'];
+          console.log("Cause di fine contratto caricate: "+ JSON.stringify(this.tipiCausaFineContratto));
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il caricamento delle cause di fine contratto: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
+
   caricaTipoContratto() {
     this.anagraficaDtoService
       .getTipoContratto(localStorage.getItem('token'))
@@ -1861,7 +1934,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.tipiContratti = (result as any)['list'];
           console.log(
             '------------------------TIPI DI CONTRATTI CARICATI:------------------------ ' +
-            JSON.stringify(result)
+              JSON.stringify(result)
           );
         },
         (error: any) => {
@@ -1880,7 +1953,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.livelliContratti = (result as any)['list'];
           console.log(
             '------------------------LIVELLI CONTRATTO CARICATI:------------------------ ' +
-            JSON.stringify(result)
+              JSON.stringify(result)
           );
         },
         (error: any) => {
@@ -1899,7 +1972,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.tipiAziende = (result as any)['list'];
           console.log(
             '------------------------AZIENDE CARICATE:------------------------ ' +
-            JSON.stringify(result)
+              JSON.stringify(result)
           );
         },
         (error: any) => {
@@ -1917,7 +1990,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.ccnl = (result as any)['list'];
           console.log(
             '------------------------CCNL CARICATI:------------------------ ' +
-            JSON.stringify(result)
+              JSON.stringify(result)
           );
           this.changeElencoLivelliCCNL();
         },
@@ -1935,7 +2008,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         this.ruoli = (result as any)['list'];
         console.log(
           '------------------------RUOLI CARICATI:------------------------ ' +
-          JSON.stringify(result)
+            JSON.stringify(result)
         );
       },
       (error: any) => {
@@ -1944,10 +2017,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     );
   }
 
-  calculateDataFineRapporto() {
+  calculateDataFineContratto() {
     const mesiDurataControl = this.anagraficaDto.get('contratto.mesiDurata');
-    const dataFineRapportoControl = this.anagraficaDto.get(
-      'contratto.dataFineRapporto'
+    const dataFineContrattoControl = this.anagraficaDto.get(
+      'contratto.dataFineContratto'
     );
     const dataAssunzioneControl = this.anagraficaDto.get(
       'contratto.dataAssunzione'
@@ -1967,21 +2040,17 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       // Verifica se i valori ottenuti sono validi
       if (mesiDurata && dataAssunzione) {
         // Calcola la data di fine rapporto aggiungendo i mesi di durata alla data di assunzione
-        const dataFineRapporto = new Date(dataAssunzione);
-        dataFineRapporto.setMonth(dataFineRapporto.getMonth() + mesiDurata);
+        const dataFineContratto = new Date(dataAssunzione);
+        dataFineContratto.setMonth(dataFineContratto.getMonth() + mesiDurata);
 
         // Formatta la data nel formato "yyyy-MM-dd"
-        const dataFineRapportoFormatted = this.datePipe.transform(
-          dataFineRapporto,
-          'yyyy-MM-dd'
-        );
-        const dataOdiernaFormatted = this.datePipe.transform(
-          this.dataOdierna,
+        const dataFineContrattoFormatted = this.datePipe.transform(
+          dataFineContratto,
           'yyyy-MM-dd'
         );
 
         // Imposta il valore formattato nel controllo 'dataFineRapporto'
-        dataFineRapportoControl?.setValue(dataFineRapportoFormatted);
+        dataFineContrattoControl?.setValue(dataFineContrattoFormatted);
       } else {
         // Alcuni dei valori necessari sono mancanti, gestisci di conseguenza
         console.error(
@@ -1994,14 +2063,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       );
     }
   }
-
   //impostazione del form a caricamento pagina
   setForm() {
     console.log(
       'SELEZIONATO TIPO CONTRATTO CON ID: ' + this.selectedTipoContrattoId
     );
-    const dataFineRapportoControl = this.anagraficaDto.get(
-      'contratto.dataFineRapporto'
+    const dataFineContrattoControl = this.anagraficaDto.get(
+      'contratto.dataFineContratto'
     );
     const mesiDurataControl = this.anagraficaDto.get('contratto.mesiDurata');
     const tutorControl = this.anagraficaDto.get('contratto.tutor');
@@ -2084,8 +2152,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           mesiDurataControl.setValue(6);
           mesiDurataControl.enable();
 
-          dataFineRapportoControl?.enable();
-          dataFineRapportoControl?.setValue(null);
+          dataFineContrattoControl?.enable();
+          dataFineContrattoControl?.setValue(null);
         }
         break;
 
@@ -2097,7 +2165,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           superminimoMensileControl &&
           ralAnnuaControl &&
           retribuzioneMensileLordaControl &&
-          dataFineRapportoControl &&
+          dataFineContrattoControl &&
           mesiDurataControl
         ) {
           tariffaPartitaIvaControl.enable();
@@ -2118,8 +2186,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           ralAnnuaControl.disable();
           ralAnnuaControl.setValue('');
 
-          dataFineRapportoControl.disable();
-          dataFineRapportoControl.setValue('');
+          dataFineContrattoControl.disable();
+          dataFineContrattoControl.setValue('');
 
           mesiDurataControl.disable();
           mesiDurataControl.setValue('');
@@ -2142,13 +2210,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           scattiAnzianitaControl &&
           tariffaPartitaIvaControl &&
           retribuzioneMensileLordaControl &&
-          dataFineRapportoControl
+          dataFineContrattoControl
         ) {
           mesiDurataControl.enable();
           mesiDurataControl.setValue('');
 
-          dataFineRapportoControl.enable();
-          dataFineRapportoControl.setValue(null);
+          dataFineContrattoControl.enable();
+          dataFineContrattoControl.setValue(null);
 
           PFIcontrol.disable();
           PFIcontrol.setValue('');
@@ -2187,7 +2255,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       case 4: // Contratto a tempo indeterminato
         if (
           mesiDurataControl &&
-          dataFineRapportoControl &&
+          dataFineContrattoControl &&
           tariffaPartitaIvaControl &&
           tutorControl &&
           PFIcontrol &&
@@ -2202,8 +2270,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           mesiDurataControl.disable();
           mesiDurataControl.setValue('');
 
-          dataFineRapportoControl.disable();
-          dataFineRapportoControl.setValue(null);
+          dataFineContrattoControl.disable();
+          dataFineContrattoControl.setValue(null);
 
           tariffaPartitaIvaControl.disable();
           tariffaPartitaIvaControl.setValue('');
@@ -2243,7 +2311,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       case 5: // Contratto di apprendistato
         if (
           mesiDurataControl &&
-          dataFineRapportoControl &&
+          dataFineContrattoControl &&
           tariffaPartitaIvaControl &&
           tutorControl &&
           PFIcontrol &&
@@ -2259,10 +2327,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         ) {
           mesiDurataControl.enable();
           mesiDurataControl.setValue(36);
-          this.calculateDataFineRapporto();
+          this.calculateDataFineContratto();
 
-          dataFineRapportoControl.enable();
-          dataFineRapportoControl.setValue(null);
+          dataFineContrattoControl.enable();
+          dataFineContrattoControl.setValue(null);
 
           tariffaPartitaIvaControl.disable();
           tariffaPartitaIvaControl.setValue('');
@@ -2334,9 +2402,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.mensileTOT = mensileTot;
       console.log(
         'MENSILE TOTALE CALCOLATO:' +
-        this.mensileTOT +
-        '\n Numero mensilitá: ' +
-        this.numeroMensilitaDaDettaglio
+          this.mensileTOT +
+          '\n Numero mensilitá: ' +
+          this.numeroMensilitaDaDettaglio
       );
       this.calcoloRAL();
     } else {
@@ -2379,7 +2447,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
@@ -2409,7 +2477,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-          error
+            error
         );
         this.shouldReloadPage = true;
       }
@@ -2417,21 +2485,23 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        console.log(
-          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        );
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-        this.jsonData = { list: [] };
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          console.log(
+            JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          );
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
 
   getPermissions(functionId: number) {
@@ -2468,7 +2538,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       (error: any) => {
         console.error(
           "Errore durante il caricamento dell'immagine: " +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
 
         // Assegna un'immagine predefinita in caso di errore
@@ -2486,6 +2556,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     window.location.href = 'login';
     localStorage.removeItem('token');
     localStorage.removeItem('tokenProvvisorio');
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 }
 

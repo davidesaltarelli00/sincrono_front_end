@@ -97,7 +97,7 @@
   </style>
 </head>
 
-<body>
+<body [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div id="inizioPagina"></div>
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && !mobile">
@@ -109,6 +109,10 @@
           *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
           {{ menuItem.nome }}
         </a>
+      </div>
+      <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+        <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+        <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
       </div>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
@@ -147,13 +151,13 @@
   </div>
 
 
-  <div class="container-fluid" *ngIf="ruolo==='ADMIN'">
+  <div class="container-fluid" *ngIf="ruolo==='ADMIN'" >
     <div class="row">
       <div class="col-12">
         <br>
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Organico</h1>
+          <h1>Organico <i class="fa fa-sitemap"></i></h1>
         </mat-card>
       </div>
     </div>
@@ -262,8 +266,9 @@
       </div>
     </div>
 <div id="finePagina"></div>
+<br><br><br><br><br>
   </div>
-  <div class="container-fluid" *ngIf="ruolo==='DIPENDENTE'">
+  <div class="container-fluid" *ngIf="ruolo==='DIPENDENTE'" >
     <div class="row">
       <div class="col-12">
         <br>

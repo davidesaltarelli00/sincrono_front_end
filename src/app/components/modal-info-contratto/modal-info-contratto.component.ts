@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-modal-info-contratto',
@@ -24,6 +25,7 @@ export class ModalInfoContrattoComponent {
     private anagraficaDtoService: AnagraficaDtoService,
     private clipboard: Clipboard,
     private snackBar: MatSnackBar,
+    public themeService:ThemeService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     if (window.innerWidth >= 900) {
@@ -61,5 +63,9 @@ export class ModalInfoContrattoComponent {
 
   closeDialog(): void {
     this.dialog.closeAll();
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 import { ListaRapportiniService } from '../lista-rapportini/lista-rapportini.service';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-mail-sollecita',
@@ -18,7 +19,9 @@ export class MailSollecitaComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { elencoMail: string[] },
     public dialog: MatDialog,
-    private listaRapportiniService: ListaRapportiniService
+    private listaRapportiniService: ListaRapportiniService,
+    public themeService:ThemeService,
+
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -37,6 +40,10 @@ export class MailSollecitaComponent {
     console.log(
       'Contenuto arrivato alla modale: ' + JSON.stringify(this.toRapportini)
     );
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 
   onSubmit() {

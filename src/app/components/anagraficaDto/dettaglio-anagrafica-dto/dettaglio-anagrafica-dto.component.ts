@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ImageService } from '../../image.service';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { MenuService } from '../../menu.service';
+import { ThemeService } from 'src/app/theme.service';
 @Component({
   selector: 'app-dettaglio-anagrafica-dto',
   templateUrl: './dettaglio-anagrafica-dto.component.html',
@@ -104,7 +105,9 @@ export class DettaglioAnagraficaDtoComponent {
     private profileBoxService: ProfileBoxService,
     private http: HttpClient,
     private imageService: ImageService,
-    private menuService:MenuService
+    private menuService:MenuService,
+    public themeService: ThemeService
+
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -141,6 +144,26 @@ export class DettaglioAnagraficaDtoComponent {
         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
         console.log(this.elencoCommesse);
         this.getImage();
+
+        if((resp as any)['anagraficaDto']['contratto']['tipoCausaFineRapporto']['id']!=null){
+          //conversione date
+        if ((resp as any)['anagraficaDto']['contratto']['dataFineRapporto'] ) {
+          (resp as any)['anagraficaDto']['contratto']['dataFineRapporto'] = this.datePipe.transform((resp as any)['anagraficaDto']['contratto']['dataFineRapporto'] ,'dd-MM-yyyy');
+        }
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: "Attenzione:",
+              message: "Dal " + (resp as any)['anagraficaDto']['contratto']['dataFineRapporto'] +
+                       " " + (resp as any)['anagraficaDto']['anagrafica']['nome'] +
+                       " " + (resp as any)['anagraficaDto']['anagrafica']['cognome'] +
+                       " non lavora più qui." +
+                       " Causa: " + (resp as any)['anagraficaDto']['contratto']['tipoCausaFineRapporto']['descrizione'] +
+                       " Motivazione: " + (resp as any)['anagraficaDto']['contratto']['tipoCausaFineContratto']['descrizione']
+            },
+          });
+
+        }
       });
     const userLogged = localStorage.getItem('userLogged');
     if (userLogged) {
@@ -305,7 +328,7 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
   modificaCommessa() {
-    this.router.navigate(['/modifica-anagrafica/' + this.id]);
+    this.router.navigate(['/modifica-commessa/' + this.id]);
   }
 
   modificaAnagrafica() {
@@ -313,7 +336,7 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
   modificaContratto() {
-    this.router.navigate(['/modifica-anagrafica/' + this.id]);
+    this.router.navigate(['/modifica-contratto/' + this.id]);
   }
 
   profile() {
@@ -827,6 +850,10 @@ export class DettaglioAnagraficaDtoComponent {
         console.error('Errore nella generazione dei permessi:', error);
       }
     );
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 }
 

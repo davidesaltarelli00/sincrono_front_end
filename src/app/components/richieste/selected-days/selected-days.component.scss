@@ -1,0 +1,64 @@
+.container-fluid {
+  margin-top: 20px;
+}
+
+.row {
+  margin-bottom: 10px;
+}
+
+.col-12 {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border: 1px solid #d1d3e2;
+  border-radius: 4px;
+}
+
+.col-1 {
+  text-align: center;
+}
+
+.form-control {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Aggiungi stile per i paragrafi */
+p {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Aggiungi stile per il messaggio Nessun giorno selezionato */
+div[no-days] {
+  font-style: italic;
+  color: #868e96;
+}
+
+/* Aggiungi stile per la griglia di giorni selezionati */
+.row.selected-days {
+  margin-top: 15px;
+}
+
+/* Aggiungi stile per i giorni selezionati */
+.col-1.selected-day {
+  background-color: #007bff;
+  color: #fff;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+/* Aggiungi stile per il testo readonly nei giorni selezionati */
+.col-1.selected-day input[readonly] {
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  color: #007bff;
+  cursor: pointer;
+}
+
+/* Aggiungi stile hover per i giorni selezionati */
+.col-1.selected-day:hover {
+  background-color: #0056b3;
+  color: #fff;
+}

@@ -91,7 +91,7 @@ img{
 }
 
 </style>
-<body>
+<body [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && !mobile">
       <a [routerLink]="['/home']" class="logo-link">
@@ -103,6 +103,13 @@ img{
           {{ menuItem.nome }}
         </a>
       </div>
+      <span>
+        <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
+        </div>
+
+      </span>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
         <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
@@ -144,7 +151,7 @@ img{
       <div class="col-12">
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Richieste</h1>
+          <h1>Richieste <i class="fa fa-code-pull-request"></i></h1>
         </mat-card>
       </div>
     </div>
@@ -281,104 +288,218 @@ img{
       <div class="col-12">
         <mat-card style=" height: 100%;">
           <mat-card-content>
-            <main>
+          <div class="row">
+            <div class="col-8">
+                <main>
               <h2>Ciao {{userLoggedName}} {{userLoggedSurname}}.</h2>
-              <p>Questa sezione é dedicata alla richiesta di ferie, permessi, malattie e cambio di turni. </p>
+              <p>Questa sezione é dedicata alle richieste. Seleziona la tipologia di richiesta che vuoi inviare.
+             </p>
             </main>
+            </div>
+            <div class="col-4">
+             <div class="form-group">
+              <label for="tipologicaRichieste">Richiesta di</label>
+               <select name="tipoRichiesta" (change)="onTipoRichiestaSelected($event)" id="tipoRichiesta" class="form-select">
+                <option value="" selected>--Seleziona tipologia richiesta--</option>
+                <option value="ferie" >Ferie</option>
+                <option value="permessi" >Permessi</option>
+              </select>
+             </div>
+            </div>
+          </div>
           </mat-card-content>
         </mat-card>
       </div>
     </div>
     <br>
+
+
+    <div class="row" *ngIf="tipoRichiesta === 'ferie'">
+        <div class="col-6">
+          <div class="calendar">
+            <div class="header">
+              <button mat-mini-fab color="primary" (click)="onPrevMonth()">«</button>
+              <h2>{{ getMonthName(currentMonth) }} {{ currentYear }}
+                <button mat-flat-button color="primary" (click)="selectAllDays()">
+                  {{ areAllDaysSelected() ? 'Deseleziona tutti' : 'Seleziona tutti' }}
+                </button>
+              </h2>
+              <button mat-mini-fab color="primary" (click)="onNextMonth()">»</button>
+            </div>
+
+            <div class="days">
+              <div *ngFor="let day of currentMonthDays" class="day" (click)="onDaySelected(day.number)"
+                   [style.pointer-events]="isWeekend(day.dayOfWeek) ? 'none' : 'auto'">
+                <div class="day-content">
+                  <div class="day-number" [class.selected]="isDaySelected(day.number)">
+                    {{ day.number }}
+                  </div>
+                  <div class="day-name">{{ getDayName(day.dayOfWeek) }}</div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="header">
+              <button mat-mini-fab color="primary" (click)="onPrevMonth()">«</button>
+              <h2>{{ getMonthName(currentMonth) }} {{ currentYear }}</h2>
+              <button mat-mini-fab color="primary" (click)="onNextMonth()">»</button>
+            </div>
+          </div>
+
+      </div>
+      <div class="col-6">
+        <div class="calendar" *ngIf="tipoRichiesta === 'ferie'">
+          <app-selected-days *ngIf="showSelectedDays" [selectedDays]="giorniSelezionati" [currentMonth]="currentMonth" [currentYear]="currentYear"></app-selected-days>
+        </div>
+       </div>
+    </div>
     <div class="row">
-        <div class="col-12">
-          <mat-card>
-            <mat-card-content>
-              <form [formGroup]="requestForm" (ngSubmit)="inviaRichiesta()">
-                <div class="row">
-                  <legend>Compila il form per inviare la tua richiesta.</legend>
-                  <br>
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label for="giorno" class="form-label">Giorno:</label>
-                      <input type="text" placeholder="Inserire il giorno" id="giorno" formControlName="giorno" class="form-control">
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label for="mese" class="form-label">Mese:</label>
-                      <input type="text" placeholder="inserire mese" id="mese" formControlName="mese" class="form-control">
-                    </div>
-                  </div>
-                  <div class="col-4">
-                   <div class="form-group">
-                    <label for="anno" class="form-label">Anno:</label>
-                    <input type="text" id="anno" placeholder="Inserire anno" formControlName="anno" class="form-control">
-                   </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-4"></div>
-                  <div class="col-4">
-                   <div class="form-group">
-                    <label for="oggettoRichiesta" class="form-label">Oggetto Richiesta:</label>
-                    <input type="text" id="oggettoRichiesta" placeholder="Inserire oggetto richiesta" formControlName="oggettoRichiesta" class="form-control">
-                   </div>
-                  </div>
-                  <div class="col-4"></div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-4"></div>
-                  <div class="col-4">
-                    <label for="testoRichiesta" class="form-label">Testo Richiesta:</label>
-                    <textarea id="testoRichiesta" formControlName="testoRichiesta" placeholder="Inserire testo richiesta" rows="5" cols="5" class="form-control"></textarea>
-                  </div>
-                  <div class="col-4"></div>
-                </div>
-                <br>
-               <div class="row">
-                <div class="col-4"></div>
-                <div class="col-4">
-                  <button type="submit" class="btn btn-primary">Invia</button> &nbsp;
-                  <button type="button" (click)="resetForm()" class="btn btn-secondary">Resetta</button>
-                </div>
-                <div class="col-4"></div>
-               </div>
-              </form>
-            </mat-card-content>
-          </mat-card>
-          <br>
-        </div>
+     <div class="col-12">
+      <div *ngIf="tipoRichiesta === 'permessi'">
+        <app-insert-permesso></app-insert-permesso>
       </div>
-      <br>
-      <div class="row">
-        <div class="col-12">
-          <legend>Lista richieste inviate</legend>
-          <table class="table table-striped" >
-            <thead>
-              <tr>
-                <th>Oggetto richiesta</th>
-                <th>Richiesta</th>
-                <th>Periodo richiesta</th>
-                <th>Data invio</th>
-                <th>Stato richiesta</th> <!--Inviata, ricevuta, in elaborazione, accolta, rifiutata-->
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+    </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-title>
+            <h1>Elenco richieste</h1>
+          </mat-card-title>
+          <mat-card-subtitle>
+            <div class="row">
+              <!-- <div class="col-4">
+                <div class="form-group">
+                  <label for="codiceFiscale">Codice fiscale</label>
+                  <input type="text" readonly class="form-control" [(ngModel)]="codiceFiscaleDettaglio">
+                </div>
+              </div> -->
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="mese">Seleziona il mese</label>
+                  <select name="mese" id="mese" [(ngModel)]="selectedMeseForLista" class="form-select" (change)="onChangeMeseForLista($event)" >
+                  <option value="1">Gennaio</option>
+                  <option value="2">Febbraio</option>
+                  <option value="3">Marzo</option>
+                  <option value="4">Aprile</option>
+                  <option value="5">Maggio</option>
+                  <option value="6">Giugno</option>
+                  <option value="7">Luglio</option>
+                  <option value="8">Agosto</option>
+                  <option value="9">Settembre</option>
+                  <option value="10">Ottobre</option>
+                  <option value="11">Novembre</option>
+                  <option value="12">Dicembre</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label for="anno">Seleziona l'anno</label>
+                  <input type="number" class="form-control" [(ngModel)]="selectedAnnoForLista">
+                </div>
+              </div>
+              <div class="col-4" >
+                <div class="form-group">
+                  <label for="cerca">Cerca</label> <br>
+                  <button mat-mini-fab color="primary" [disabled]="selectedAnnoForLista==null || selectedMeseForLista==null " (click)="getAllRichiesteDipendente()" > <i class="fa fa-search" ></i> </button>
+                </div>
+              </div>
+            </div>
+          </mat-card-subtitle>
+          <mat-card-content>
+            <br>
+           <!-- Tabella per le ferie -->
+           <div class="row" *ngIf="elencoRichiesteDipendente && elencoRichiesteDipendente.length > 0">
+            <div class="col-12">
+              <h1>Elenco richieste delle ferie</h1>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <!-- <th>ID</th> -->
+                    <th>Tipo Richiesta</th>
+                    <th>Giorno</th>
+                    <th>Stato</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let richiesta of elencoRichiesteDipendente">
+                    <ng-container *ngIf="richiesta.list && richiesta.list.length > 0 && richiesta.list[0].ferie">
+                      <!-- <td>{{ richiesta.id }}</td> -->
+                      <td>Ferie</td>
+                      <td>
+                        <ng-container *ngFor="let item of richiesta.list; let i = index">
+                          {{ item.nGiorno }}
+                          <ng-container *ngIf="i !== richiesta.list.length - 1">, </ng-container>
+                        </ng-container>
+                      </td>
+                      <td *ngIf="richiesta.stato==true" > <button mat-flat-button style="background-color: green; color: white;" >Accettata</button> </td>
+                      <td *ngIf="richiesta.stato==false" > <button mat-flat-button color="warn" >Rifiutata</button> </td>
+                      <td *ngIf="richiesta.stato==null" > <button mat-flat-button >Da elaborare</button> </td>
+                    </ng-container>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+           </div>
+           <br>
+           <div class="row" *ngIf="elencoRichiesteDipendente && elencoRichiesteDipendente.length > 0" >
+            <div class="col-12">
+              <!-- Tabella per i permessi -->
+              <h1>Elenco richieste dei permessi</h1>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <!-- <th>ID</th> -->
+                    <!-- <th>Tipo Richiesta</th> -->
+                    <th>Giorno</th>
+                    <th>Dalle ore</th>
+                    <th>Alle ore</th>
+                    <th>Stato richiesta</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let richiesta of elencoRichiesteDipendente">
+                    <ng-container *ngIf="richiesta.list && richiesta.list.length > 0 && richiesta.list[0].permessi">
+                      <!-- <td>{{ richiesta.id }}</td> -->
+                      <!-- <td>Permessi</td> -->
+                      <td>
+                        <ng-container *ngFor="let item of richiesta.list; let i = index">
+                          {{ item.nGiorno }}
+                          <ng-container *ngIf="i !== richiesta.list.length - 1">, </ng-container>
+                        </ng-container>
+                      </td>
+                      <td>
+                        <ng-container *ngFor="let item of richiesta.list; let i = index">
+                          {{ item.daOra }}
+                          <ng-container *ngIf="i !== richiesta.list.length - 1">, </ng-container>
+                        </ng-container>
+                      </td>
+                      <td>
+                        <ng-container *ngFor="let item of richiesta.list; let i = index">
+                         {{ item.aOra }}
+                          <ng-container *ngIf="i !== richiesta.list.length - 1">, </ng-container>
+                        </ng-container>
+                      </td>
+                      <td *ngIf="richiesta.stato==true" > <button mat-flat-button style="background-color: green; color: white;" >Accettata</button> </td>
+                      <td *ngIf="richiesta.stato==false" > <button mat-flat-button color="warn" >Rifiutata</button> </td>
+                      <td *ngIf="richiesta.stato==null" > <button mat-flat-button >Da elaborare</button> </td>
+                    </ng-container>
+
+                  </tr>
+                </tbody>
+              </table>
+
+
+            </div>
+           </div>
+          </mat-card-content>
+        </mat-card>
       </div>
-      <br><br><br>
+    </div>
   </div>
+  <br><br>
 </body>
 </html>

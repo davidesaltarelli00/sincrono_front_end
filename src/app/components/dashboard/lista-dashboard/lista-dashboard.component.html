@@ -99,7 +99,7 @@
   </style>
 </head>
 
-<body>
+<body [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div id="inizioPagina"></div>
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && !mobile">
@@ -111,6 +111,10 @@
           *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
           {{ menuItem.nome }}
         </a>
+      </div>
+      <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+        <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+        <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
       </div>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
@@ -155,549 +159,550 @@
         <br>
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Dashboard</h1>
+          <h1>Dashboard <i class="fa fa-table-columns"></i></h1>
         </mat-card>
       </div>
     </div>
     <br>
-    <mat-accordion>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <span> Contratti con Scatto livello </span>
-            <button class="btn btn-success" (click)="exportContrattiFromBatchToExcel()" class="btn btn-success"
-              title="Esporta come file Excel"><i class="fa-solid fa-file-export"></i></button>
-          </mat-panel-title>
+    <div class="row">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-title>
+            <h1>Contratti con scatto livello  <button class="btn btn-success" (click)="exportContrattiFromBatchToExcel()" matTooltip="Esporta in excel i dati presenti nella tabella Contratti scatto livello"
+              title="Esporta come file Excel"><i class="fa-solid fa-file-export"></i></button> &nbsp;   <button class="btn btn-danger" (click)="resetTabella()" matTooltip="Svuota la tabella dei contratti con scatto livello." > <i class="fa fa-trash" ></i> </button> </h1>
+          </mat-card-title>
+          <mat-card-subtitle>
+            <h3>Elenco dei contratti con scatto livello</h3>
+          </mat-card-subtitle>
+          <mat-card-content>
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Nominativo</th>
+                  <th>Tipo Contratto</th>
+                  <th>Tipo Livello Contratto</th>
+                  <th>Sede Assunzione</th>
+                  <th>Data Assunzione</th>
+                  <th>Data Fine Rapporto</th>
+                  <th>Mesi Durata</th>
+                  <th>Livello Attuale</th>
+                  <th>Livello Finale</th>
+                  <!-- <th>Retribuzione Mensile Lorda</th> -->
+                  <!-- <th>Ticket</th> -->
+                  <th>Categoria Protetta</th>
+                  <!-- <th>Tutor</th> -->
+                  <!-- <th>PFI</th> -->
+                  <th>Anagrafica</th>
+                  <th>Modifica</th>
 
-          <mat-panel-description>
-            <p>Contiene tutti i contratti con almeno uno scatto livello effettuato
-            </p>
-          </mat-panel-description>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let element of listaContrattiFromBatch">
+                  <td>{{element.anagrafica.nome |titlecase }} {{element.anagrafica.cognome |titlecase}}</td>
+                  <td>{{ element.contratto.tipoContratto.descrizione |titlecase }}</td>
+                  <td>{{ element.contratto.tipoLivelloContratto.ccnl}} - Livello {{
+                    element.contratto.tipoLivelloContratto.livello}}</td>
+                  <td>{{ element.contratto.sedeAssunzione ? element.contratto.sedeAssunzione: 'Dato non inserito' }}</td>
+                  <td>{{ element.contratto.dataAssunzione | date:'dd/MM/yyyy'}}</td>
+                  <td>{{ element.contratto.dataFineRapporto | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ element.contratto.mesiDurata ? element.contratto.mesiDurata : 'Dato non inserito' }}</td>
+                  <td>{{ element.contratto.tipoLivelloContratto.livello ? element.contratto.tipoLivelloContratto.livello : 'Dato non inserito' }}</td>
+                  <td>{{ element.contratto.livelloFinale ? element.contratto.livelloFinale: 'Dato non inserito' }}</td>
+                  <!-- <td>{{ element.contratto.retribuzioneMensileLorda }}</td> -->
+                  <!-- <td>{{ element.contratto.ticket ? 'Sì' : 'No' }}</td> -->
+                  <td>{{ element.contratto.categoriaProtetta ? 'Si': 'No' }}</td>
+                  <!-- <td>{{ element.contratto.tutor }}</td> -->
+                  <!-- <td>{{ element.contratto.pfi ? 'Si' : 'No'}}</td> -->
+                  <td>
+                    <button [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"
+                      matTooltip="Dettaglio di {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
+                      mat-mini-fab color="primary"><i class="fa fa-info"></i></button>
+                  </td>
+                  <td>
+                    <button  mat-mini-fab color="accent" [routerLink]="['/modifica-contratto', element.anagrafica.id]"
+                    matTooltip="Modifica il contratto di {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
+                      class="fa fa-pencil"></i></button>
+                  </td>
+                </tr>
+              </tbody>
 
-        </mat-expansion-panel-header>
-
-        <div class="row">
-          <div class="col-12">
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Nominativo</th>
-                    <th>Tipo Contratto</th>
-                    <th>Tipo Livello Contratto</th>
-                    <th>Sede Assunzione</th>
-                    <th>Data Assunzione</th>
-                    <th>Data Fine Rapporto</th>
-                    <th>Mesi Durata</th>
-                    <th>Livello Attuale</th>
-                    <th>Livello Finale</th>
-                    <th>Retribuzione Mensile Lorda</th>
-                    <th>Ticket</th>
-                    <th>Categoria Protetta</th>
-                    <th>Tutor</th>
-                    <th>PFI</th>
-                    <th class="text-center" colspan="2">Azioni</th>
-
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let element of listaContrattiFromBatch">
-                    <td>{{element.anagrafica.nome }} {{element.anagrafica.cognome}}</td>
-                    <td>{{ element.contratto.tipoContratto.descrizione }}</td>
-                    <td>{{ element.contratto.tipoLivelloContratto.ccnl}} - Livello {{
-                      element.contratto.tipoLivelloContratto.livello}}</td>
-                    <td>{{ element.contratto.sedeAssunzione }}</td>
-                    <td>{{ element.contratto.dataAssunzione | date:'dd/MM/yyyy'}}</td>
-                    <td>{{ element.contratto.dataFineRapporto | date:'dd/MM/yyyy' }}</td>
-                    <td>{{ element.contratto.mesiDurata }}</td>
-                    <td>{{ element.contratto.tipoLivelloContratto.livello }}</td>
-                    <td>{{ element.contratto.livelloFinale }}</td>
-                    <td>{{ element.contratto.retribuzioneMensileLorda }}</td>
-                    <td>{{ element.contratto.ticket ? 'Sì' : 'No' }}</td>
-                    <td>{{ element.contratto.categoriaProtetta }}</td>
-                    <td>{{ element.contratto.tutor }}</td>
-                    <td>{{ element.contratto.pfi ? 'Si' : 'No'}}</td>
-                    <td>
-                      <span style="margin:5px;">
-                        <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button
-                            matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
-                            class="btn btn-info"><i class="fa fa-info"></i></button></a>
-                      </span>
-                      <span style="margin:5px;">
-                        <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
-                          matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
-                            class="fa fa-pencil"></i></button>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-                <button class="btn btn-success" (click)="resetTabella()">Svuota</button>
-              </table>
-            </div>
-          </div>
-        </div>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <mat-accordion>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Commesse in scadenza (40 giorni)
-            <button class="btn btn-success" (click)="exportCommesseInScadenzaToExcel()" class="btn btn-success"
-              title="Esporta come file Excel"><i class="fa-solid fa-file-export"></i></button>
-          </mat-panel-title>
-          <mat-panel-description>
-            <p>Contiene le commesse in scadenza</p>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <div class="row">
-          <div class="col-12">
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Azienda Cliente</th>
-                    <th>Cliente finale</th>
-                    <th>Titolo posizione</th>
-                    <th>Distacco</th>
-                    <th>Distacco azienda</th>
-                    <th>Distacco data</th>
-                    <th>Tariffa giornaliera</th>
-                    <th>Azienda di fatturazione interna</th>
-                    <th>Data inizio</th>
-                    <th>Data fine</th>
-                    <th>Attesa lavori</th>
-                    <th class="text-center" colspan="2">Azioni</th>
-
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <ng-container *ngFor="let element of listaCommesseInScadenza">
-                    <tr *ngFor="let commessa of element.commesse">
-                      <td>{{ commessa.tipoAziendaCliente.descrizione }}</td>
-                      <td>{{ commessa.clienteFinale }}</td>
-                      <td>{{ commessa.titoloPosizione }}</td>
-                      <td>{{ commessa.distacco ? 'Sì' : 'No' }}</td>
-                      <td>{{ commessa.distaccoAzienda ? 'Sì' : 'No' }}</td>
-                      <td>{{ commessa.distaccoData | date:'dd/MM/yyyy' }}</td>
-                      <td>{{ commessa.tariffaGiornaliera || '' }}</td>
-                      <td>{{ commessa.aziendaDiFatturazioneInterna || '' }}</td>
-                      <td>{{ commessa.dataInizio | date:'dd/MM/yyyy' }}</td>
-                      <td>{{ commessa.dataFine | date:'dd/MM/yyyy' }}</td>
-                      <td>{{ commessa.attesaLavori ? 'Sì' : 'No' }}</td>
-                      <td>
-                        <span style="margin:5px;">
-                          <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button
-                              matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
-                              class="btn btn-info"><i class="fa fa-info"></i></button></a>
-                        </span>
-                        <span style="margin:5px;">
-                          <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
-                            matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
-                              class="fa fa-pencil"></i></button>
-                        </span>
-                      </td>
-                    </tr>
-                  </ng-container>
-                </tbody>
-
-              </table>
-
-
-            </div>
-          </div>
-        </div>
-      </mat-expansion-panel>
-    </mat-accordion>
-
-    <mat-accordion>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Contratti in scadenza (40 giorni)
-            <button class="btn btn-success" (click)="exportContrattiInScadenzaToExcel()" class="btn btn-success"
-              title="Esporta come file Excel"><i class="fa-solid fa-file-export"></i></button>
-          </mat-panel-title>
-          <mat-panel-description>
-            Contiene i contratti in scadenza
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <div class="row">
-          <div class="col-12">
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Nominativo</th>
-                    <th>Codice Fiscale</th>
-                    <th>Tipo Contratto</th>
-                    <th>Tipo Livello Contratto</th>
-                    <th>Sede Assunzione</th>
-                    <th>Data Assunzione</th>
-                    <th>Mesi Durata</th>
-                    <th>Livello Attuale</th>
-                    <th>Livello Finale</th>
-                    <th>Retribuzione Mensile Lorda</th>
-                    <!-- <th>Superminimo Mensile</th>
-                      <th>RAL Annuale</th>
-                      <th>Superminimo RAL</th>
-                      <th>Diaria Mensile</th>
-                      <th>Diaria Giornaliera</th> -->
-                    <th>Ticket</th>
-                    <!-- <th>Valore Ticket</th> -->
-                    <th>Categoria Protetta</th>
-                    <th>Tutor</th>
-                    <th>PFI</th>
-                    <th class="text-center" colspan="2">Azioni</th>
-
-                    <!-- <th>Corso Sicurezza</th> -->
-                    <!-- <th>Data Corso Sicurezza</th>
-                      <th>PC</th>
-                      <th>Visita Medica</th>
-                      <th>Data Visita Medica</th>
-                      <th>Scatti Anzianità</th>
-                      <th>Tariffa Partita IVA</th>
-                      <th>Assicurazione Obbligatoria</th>
-                      <th>Retribuzione Netta Giornaliera</th>
-                      <th>Retribuzione Netta Mensile</th>
-                      <th>Diaria Annua</th>
-                      <th>RAL Part-Time</th> -->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let element of listaContrattiInScadenza">
-                    <td>{{element.anagrafica.nome}} {{element.anagrafica.cognome}}</td>
-                    <td>{{element.anagrafica.codiceFiscale |uppercase}}</td>
-                    <td>{{ element.contratto.tipoContratto.descrizione }}</td>
-                    <td>{{ element.contratto.tipoLivelloContratto.ccnl }} - Livello {{
-                      element.contratto.tipoLivelloContratto.livello }}</td>
-                    <td>{{ element.contratto.sedeAssunzione }}</td>
-                    <td>{{ element.contratto.dataAssunzione | date:'dd/MM/yyyy' }}</td>
-                    <td>{{ element.contratto.mesiDurata }}</td>
-                    <td>{{ element.contratto.tipoLivelloContratto.livello }}</td>
-                    <td>{{ element.contratto.livelloFinale }}</td>
-                    <td>{{ element.contratto.retribuzioneMensileLorda }}</td>
-                    <td>{{ element.contratto.ticket ? 'Sì' : 'No' }}</td>
-                    <!-- <td>{{ contratto.contratto.valoreTicket }}</td> -->
-                    <td>{{ element.contratto.categoriaProtetta }}</td>
-                    <td>{{ element.contratto.tutor }}</td>
-                    <td>{{ element.contratto.pfi }}</td>
-                    <td>
-                      <span style="margin:5px;">
-                        <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button
-                            matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
-                            class="btn btn-info"><i class="fa fa-info"></i></button></a>
-                      </span>
-                      <span style="margin:5px;">
-                        <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
-                          matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
-                            class="fa fa-pencil"></i></button>
-                      </span>
-                    </td>
-                    <!-- <td>{{ contratto.contratto.corsoSicurezza }}</td> -->
-                    <!-- <td>{{ contratto.contratto.dataCorsoSicurezza | date:'dd/MM/yyyy' }}</td>
-                      <td>{{ contratto.contratto.pc }}</td>
-                      <td>{{ contratto.contratto.visitaMedica }}</td>
-                      <td>{{ contratto.contratto.dataVisitaMedica | date:'dd/MM/yyyy' }}</td>
-                      <td>{{ contratto.contratto.scattiAnzianita }}</td>
-                      <td>{{ contratto.contratto.tariffaPartitaIva }}</td>
-                      <td>{{ contratto.contratto.assicurazioneObbligatoria }}</td>
-                      <td>{{ contratto.contratto.retribuzioneNettaGiornaliera }}</td>
-                      <td>{{ contratto.contratto.retribuzioneNettaMensile }}</td>
-                      <td>{{ contratto.contratto.diariaAnnua }}</td>
-                      <td>{{ contratto.contratto.ralPartTime }}</td> -->
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </mat-expansion-panel>
-    </mat-accordion>
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
     <hr>
     <div class="row">
       <div class="col-12">
-        <h4>Lista commesse scadute <button class="btn btn-success" (click)="exportCommesseScaduteToExcel()"
-            class="btn btn-success" title="Esporta come file Excel"><i class="fa-solid fa-file-export"></i></button>
-        </h4>
+        <mat-card>
+          <mat-card-title>
+            <h1>Commesse in scadenza <button class="btn btn-success" (click)="exportCommesseInScadenzaToExcel()" class="btn btn-success"
+              title="Esporta come file Excel"><i class="fa-solid fa-file-export"></i></button></h1>
+          </mat-card-title>
+          <mat-card-subtitle>
+            <h3>Contiene l'elenco delle commesse in scadenza entro 40 giorni</h3>
+          </mat-card-subtitle>
+          <mat-card-content>
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Nominativo</th>
+                  <th>Azienda Cliente</th>
+                  <th>Cliente finale</th>
+                  <th>Titolo posizione</th>
+                  <th>Distacco</th>
+                  <th>Distacco azienda</th>
+                  <th>Distacco data</th>
+                  <th>Tariffa giornaliera</th>
+                  <th>Azienda di fatturazione interna</th>
+                  <th>Data inizio</th>
+                  <th>Data fine</th>
+                  <th>Tempo rimanente</th>
+                  <th>Anagrafica</th>
+                  <th>Modifica</th>
 
+                </tr>
+              </thead>
+
+              <tbody>
+                <ng-container *ngFor="let element of listaCommesseInScadenza">
+                  <tr *ngFor="let commessa of element.commesse">
+                    <td>{{element.anagrafica.nome}} {{element.anagrafica.cognome}}</td>
+                    <td>{{ commessa.tipoAziendaCliente.descrizione }}</td>
+                    <td>{{ commessa.clienteFinale }}</td>
+                    <td>{{ commessa.titoloPosizione }}</td>
+                    <td>{{ commessa.distacco ? 'Sì' : 'No' }}</td>
+                    <td>{{ commessa.distaccoAzienda ? 'Sì' : 'No' }}</td>
+                    <td>{{ commessa.distaccoData | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ commessa.tariffaGiornaliera || '' }}</td>
+                    <td>{{ commessa.aziendaDiFatturazioneInterna || '' }}</td>
+                    <td>{{ commessa.dataInizio | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ commessa.dataFine | date:'dd/MM/yyyy' }}</td>
+                    <td [ngStyle]="{'color': getDaysRemainingColorCommessa(commessa.dataFine)}">{{ calculateDaysRemainingCommessa(commessa.dataFine) }} gg</td>
+                    <td>
+                      <button [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"
+                            matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
+                            mat-mini-fab color="primary"><i class="fa fa-info"></i></button>
+                    </td>
+                    <td>
+                      <button  mat-mini-fab color="accent" [routerLink]="['/modifica-commessa', element.anagrafica.id]"
+                          matTooltip="Modifica la commessa di {{element.anagrafica.nome}} {{element.anagrafica.cognome}}; cliente: {{commessa.tipoAziendaCliente.descrizione}} "><i
+                            class="fa fa-pencil"></i></button>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+
+            </table>
+          </mat-card-content>
+        </mat-card>
       </div>
     </div>
+    <hr>
     <div class="row">
       <div class="col-12">
-        <mat-expansion-panel>
-          <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri">
-            {{ mostraFiltri ? 'Nascondi filtri' : 'Mostra filtri' }}
-          </mat-expansion-panel-header>
+      <mat-card>
+        <mat-card-title>
+          <h1>
+            Contratti in scadenza <button class="btn btn-success" (click)="exportContrattiInScadenzaToExcel()" class="btn btn-success"
+            title="Esporta come file Excel"><i class="fa-solid fa-file-export"></i></button>
+          </h1>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <h3>Contiene l'elenco dei contratti in scadenza entro 40 giorni</h3>
+        </mat-card-subtitle>
+        <mat-card-content>
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Nominativo</th>
+                <th>Codice Fiscale</th>
+                <th>Tipo Contratto</th>
+                <th>Tipo Livello Contratto</th>
+                <th>Sede Assunzione</th>
+                <th>Data Assunzione</th>
+                <th>Data fine contratto</th>
+                <th>Mesi Durata</th>
+                <th>Tempo rimanente</th>
+                <th>Livello Attuale</th>
+                <th>Livello Finale</th>
+                <!-- <th>Retribuzione Mensile Lorda</th> -->
+                <!-- <th>Superminimo Mensile</th>
+                  <th>RAL Annuale</th>
+                  <th>Superminimo RAL</th>
+                  <th>Diaria Mensile</th>
+                  <th>Diaria Giornaliera</th> -->
+                <!-- <th>Ticket</th> -->
+                <!-- <th>Valore Ticket</th> -->
+                <th>Categoria Protetta</th>
+                <!-- <th>Tutor</th> -->
+                <!-- <th>PFI</th> -->
+                <th >Anagrafica</th>
+                <th >Modifica</th>
 
-          <ng-template matExpansionPanelContent style="border-top: 1px solid #f1f1f1;">
-            <div *ngIf="mostraFiltri">
-              <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter(filterAnagraficaDto.value)">
-                <!-- Remove the container div to eliminate extra spacing -->
-                <div formGroupName="anagrafica">
-                        <b>Filtri per anagrafica</b>
-                        <br>
-                        <br>
-                        <div class="row">
-                          <div class="col-3">
-                            <div class="form-group">
-                              <label for="nome">Nome:</label>
-                            <input type="text" id="anagrafica.nome" class="form-control" placeholder="Inserire nome "
-                             formControlName="nome">
-                            </div>
-                          </div>
-                          <div class="col-3">
-                            <div class="form-group">
-                        <label for="cognome">Cognome:</label>
-                        <input type="text" id="anagrafica.cognome" class="form-control" formControlName="cognome"
-                          placeholder="Inserire cognome">
-                            </div>
-                          </div>
-                          <div class="col-3">
-                            <label for="filter-Tipo Azienda">Nome azienda</label>
-                            <div class="form-group" formGroupName="tipoAzienda">
-                              <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
-                                <option value="">--nessuna selezione--</option>
-                                <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">{{
-                                  tipoAzienda.descrizione }}</option>
-                              </select>
-                            </div>
-                          </div>
+                <!-- <th>Corso Sicurezza</th> -->
+                <!-- <th>Data Corso Sicurezza</th>
+                  <th>PC</th>
+                  <th>Visita Medica</th>
+                  <th>Data Visita Medica</th>
+                  <th>Scatti Anzianità</th>
+                  <th>Tariffa Partita IVA</th>
+                  <th>Assicurazione Obbligatoria</th>
+                  <th>Retribuzione Netta Giornaliera</th>
+                  <th>Retribuzione Netta Mensile</th>
+                  <th>Diaria Annua</th>
+                  <th>RAL Part-Time</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let element of listaContrattiInScadenza">
+                <td>{{element.anagrafica.nome}} {{element.anagrafica.cognome}}</td>
+                <td>{{element.anagrafica.codiceFiscale |uppercase}}</td>
+                <td>{{ element.contratto.tipoContratto.descrizione }}</td>
+                <td>{{ element.contratto.tipoLivelloContratto.ccnl }} - Livello {{
+                  element.contratto.tipoLivelloContratto.livello }}</td>
+                <td>{{ element.contratto.sedeAssunzione ?  element.contratto.sedeAssunzione : 'Dato non inserito.' }}</td>
+                <td>{{ element.contratto.dataAssunzione | date:'dd/MM/yyyy' }}</td>
+                <td>{{ element.contratto.dataFineRapporto | date:'dd/MM/yyyy' }}</td>
+                <td>{{ element.contratto.mesiDurata ? element.contratto.mesiDurata: 'Dato non inserito' }}</td>
+                <td [ngStyle]="{'color': getDaysRemainingColor(element.contratto.dataFineRapporto)}">{{ calculateDaysRemaining(element.contratto.dataFineRapporto) }} gg</td>
+                <td>{{ element.contratto.tipoLivelloContratto.livello ?  element.contratto.tipoLivelloContratto.livello: 'Dato non inserito' }}</td>
+                <td>{{ element.contratto.livelloFinale ?  element.contratto.livelloFinale: 'Dato non inserito' }}</td>
+                <!-- <td>{{ element.contratto.retribuzioneMensileLorda }}</td> -->
+                <!-- <td>{{ element.contratto.ticket ? 'Sì' : 'No' }}</td> -->
+                <!-- <td>{{ contratto.contratto.valoreTicket }}</td> -->
+                <td>{{ element.contratto.categoriaProtetta ? 'Sì' : 'No' }}</td>
+                <!-- <td>{{ element.contratto.tutor ? element.contratto.tutor :'Dato non inserito.' }}</td> -->
+                <!-- <td>{{ element.contratto.pfi ? 'Si': 'No' }}</td> -->
+                <td>
+                  <button [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"
+                        matTooltip="Dettaglio di {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
+                        mat-mini-fab color="primary"><i class="fa fa-info"></i></button>
+
+                </td>
+                <td>
+                  <button  mat-mini-fab color="accent" [routerLink]="['/modifica-contratto', element.anagrafica.id]"
+                  matTooltip="Modifica il contratto di {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
+                    class="fa fa-pencil"></i></button>
+                </td>
+                <!-- <td>{{ contratto.contratto.corsoSicurezza }}</td> -->
+                <!-- <td>{{ contratto.contratto.dataCorsoSicurezza | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ contratto.contratto.pc }}</td>
+                  <td>{{ contratto.contratto.visitaMedica }}</td>
+                  <td>{{ contratto.contratto.dataVisitaMedica | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ contratto.contratto.scattiAnzianita }}</td>
+                  <td>{{ contratto.contratto.tariffaPartitaIva }}</td>
+                  <td>{{ contratto.contratto.assicurazioneObbligatoria }}</td>
+                  <td>{{ contratto.contratto.retribuzioneNettaGiornaliera }}</td>
+                  <td>{{ contratto.contratto.retribuzioneNettaMensile }}</td>
+                  <td>{{ contratto.contratto.diariaAnnua }}</td>
+                  <td>{{ contratto.contratto.ralPartTime }}</td> -->
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-title>
+            <h1>Lista commesse scadute <button class="btn btn-success" (click)="exportCommesseScaduteToExcel()"
+              class="btn btn-success" title="Esporta come file Excel"><i class="fa-solid fa-file-export"></i></button>
+          </h1>
+          </mat-card-title>
+          <mat-card-subtitle>
+            <h3>Contiene l'elenco delle commesse scadute.</h3>
+          </mat-card-subtitle>
+          <mat-card-content>
+ <!--Filtri commesse scadute-->
+ <div class="row">
+  <div class="col-12">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri">
+        {{ mostraFiltri ? 'Nascondi filtri' : 'Mostra filtri' }}
+      </mat-expansion-panel-header>
+
+      <ng-template matExpansionPanelContent style="border-top: 1px solid #f1f1f1;">
+        <div *ngIf="mostraFiltri">
+          <form [formGroup]="filterAnagraficaDto" (ngSubmit)="filter(filterAnagraficaDto.value)">
+            <!-- Remove the container div to eliminate extra spacing -->
+            <div formGroupName="anagrafica">
+                    <b>Filtri per anagrafica</b>
+                    <br>
+                    <br>
+                    <div class="row">
+                      <div class="col-3">
+                        <div class="form-group">
+                          <label for="nome">Nome:</label>
+                        <input type="text" id="anagrafica.nome" class="form-control" placeholder="Inserire nome "
+                         formControlName="nome">
                         </div>
-
-
-
-
-                    <!-- <div class="col-md-1">
-                              <div class="form-group">
-                                <label for="attivo">Attivo</label> <br>
-                                <input type="checkbox" class="form-check-input" style="border: 1px solid black;" id="anagrafica.attivo" name="attivo" (change)="onChangeAttivo($event)"  formControlName="attivo" checked>
-                              </div>
-                            </div> -->
-
-                </div>
-                <br><br>
-                <div class="row">
-                  <b>Filtri per commesse</b>
-
-                  <!-- Azienda Cliente -->
-                  <div class="col-3">
-                    <div formArrayName="commesse">
-                      <div *ngFor="let commessa of commesse.controls; let i = index">
-                        <div [formGroupName]="i">
-                          <!-- <div class="form-group">
-                            <label for="aziendaCliente">Azienda cliente</label>
-                            <input (keyup)="filter(filterAnagraficaDto.value)" type="text"
-                              formControlName="aziendaCliente" class="form-control" id="commesse.aziendaCliente"
-                              name="aziendaCliente">
-                          </div> -->
-                          <div class="form-group" formGroupName="tipoAziendaCliente">
-                            <label for="aziendaCliente">Azienda cliente</label>
-                            <select (change)="onChangeAziendaCliente($event)" class="form-select"
-                              aria-label="Default select example" id="commesse.tipoAziendaCliente.id"
-                              formControlName="id">
-                              <option value="">--nessuna selezione--</option>
-                              <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
-                                {{ aziendaCliente.descrizione }}
-                              </option>
-                            </select>
-
-                          </div>
+                      </div>
+                      <div class="col-3">
+                        <div class="form-group">
+                    <label for="cognome">Cognome:</label>
+                    <input type="text" id="anagrafica.cognome" class="form-control" formControlName="cognome"
+                      placeholder="Inserire cognome">
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <label for="filter-Tipo Azienda">Nome azienda</label>
+                        <div class="form-group" formGroupName="tipoAzienda">
+                          <select class="form-control" id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
+                            <option value="">--nessuna selezione--</option>
+                            <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">{{
+                              tipoAzienda.descrizione }}</option>
+                          </select>
                         </div>
                       </div>
                     </div>
 
-                  </div>
 
-                  <!-- Anno di inizio commessa -->
-                  <div class="col-md-3 custom-picker">
-                    <label for="annoDataInizio">Anno di inizio commessa:</label>
-                    <select class="form-select" id="annoDataInizio" formControlName="annoDataInizio">
-                      <option value="">Seleziona anno di inizio commessa</option>
-                      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-                    </select>
-                  </div>
 
-                  <div class="col-md-3 custom-picker" *ngIf="filterAnagraficaDto.get('annoDataInizio')?.value !== null">
-                    <!-- Mese di inizio commessa -->
-                    <label for="meseDataInizio">Mese di inizio commessa:</label>
-                    <select class="form-select" id="meseDataInizio" formControlName="meseDataInizio">
-                      <option value="1">Gennaio</option>
-                      <option value="2">Febbraio</option>
-                      <option value="3">Marzo</option>
-                      <option value="4">Aprile</option>
-                      <option value="5">Maggio</option>
-                      <option value="6">Giugno</option>
-                      <option value="7">Luglio</option>
-                      <option value="8">Agosto</option>
-                      <option value="9">Settembre</option>
-                      <option value="10">Ottobre</option>
-                      <option value="11">Novembre</option>
-                      <option value="12">Dicembre</option>
-                    </select>
-                  </div>
 
-                  <!-- Anno di fine commessa -->
-                  <div class="col-md-3 custom-picker">
-                    <label for="annoDataFine">Anno di fine commessa:</label>
-                    <select class="form-select" id="annoDataFine" formControlName="annoDataFine">
-                      <option value="">Seleziona anno di fine commessa</option>
-                      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-                    </select>
-                  </div>
+                <!-- <div class="col-md-1">
+                          <div class="form-group">
+                            <label for="attivo">Attivo</label> <br>
+                            <input type="checkbox" class="form-check-input" style="border: 1px solid black;" id="anagrafica.attivo" name="attivo" (change)="onChangeAttivo($event)"  formControlName="attivo" checked>
+                          </div>
+                        </div> -->
 
-                  <div class="col-md-3 custom-picker" *ngIf="filterAnagraficaDto.get('annoDataFine')?.value !== null">
-                    <!-- Mese di fine commessa -->
-                    <label for="meseDataFine">Mese di fine commessa:</label>
-                    <select class="form-select" id="meseDataFine" formControlName="meseDataFine">
-                      <option value="1">Gennaio</option>
-                      <option value="2">Febbraio</option>
-                      <option value="3">Marzo</option>
-                      <option value="4">Aprile</option>
-                      <option value="5">Maggio</option>
-                      <option value="6">Giugno</option>
-                      <option value="7">Luglio</option>
-                      <option value="8">Agosto</option>
-                      <option value="9">Settembre</option>
-                      <option value="10">Ottobre</option>
-                      <option value="11">Novembre</option>
-                      <option value="12">Dicembre</option>
-                    </select>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <b>Filtri per data fine rapporto contratto</b>
-
-                  <!-- Anno di fine rapporto contratto -->
-                  <div class="col-md-3 custom-picker">
-                    <label for="annoFineContratto">Anno di fine rapporto:</label>
-                    <select class="form-select" id="annoFineContratto" formControlName="annoFineContratto">
-                      <option value="">Seleziona anno di fine rapporto</option>
-                      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-                    </select>
-                  </div>
-
-                  <div class="col-md-3 custom-picker"
-                    *ngIf="filterAnagraficaDto.get('annoFineContratto')?.value !== null">
-                    <!-- Mese di fine rapporto contratto -->
-                    <label for="meseFineContratto">Mese di fine rapporto:</label>
-                    <select class="form-select" id="meseFineContratto" formControlName="meseFineContratto">
-                      <option value="1">Gennaio</option>
-                      <option value="2">Febbraio</option>
-                      <option value="3">Marzo</option>
-                      <option value="4">Aprile</option>
-                      <option value="5">Maggio</option>
-                      <option value="6">Giugno</option>
-                      <option value="7">Luglio</option>
-                      <option value="8">Agosto</option>
-                      <option value="9">Settembre</option>
-                      <option value="10">Ottobre</option>
-                      <option value="11">Novembre</option>
-                      <option value="12">Dicembre</option>
-                    </select>
-                  </div>
-                </div>
-
-                <br>
-                <div class="row">
-                  <br>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <br>
-                      <button (click)="filter(filterAnagraficaDto.value)" id="filter-Button" class="btn btn-success"
-                        style="float: right;" [disabled]="filterAnagraficaDto.invalid">Filtra</button>
-                    </div>
-                    <div class="col-6">
-                      <br>
-                      <button (click)="annullaFiltri()" id="filter-Button" class="btn btn-info">Annulla filtri</button>
-                    </div>
-                  </div>
-                </div>
-              </form>
             </div>
-          </ng-template>
-        </mat-expansion-panel>
-      </div>
-    </div>
+            <br><br>
+            <div class="row">
+              <b>Filtri per commesse</b>
 
-    <div class="row" [hidden]="pageData.length>0">
-      <div class="col-12">
-        <p>Nessun risultato</p>
-        <br><br><br><br><br><br>
-      </div>
-    </div>
-    <br><br>
-    <div class="row" [hidden]="pageData.length===0" style="margin: auto;">
-      <div class="col-12">
-        <div class="table-responsive">
-          <table class="table table-striped" style="font-size: 13px;">
-            <thead>
-              <tr>
-                <th>Nominativo</th>
-                <th>Codice <br> Fiscale</th>
-                <th>Azienda <br> Cliente</th>
-                <th>Cliente <br> Finale</th>
-                <th>Titolo <br> Posizione</th>
-                <th>Distacco</th>
-                <th>Distacco<br> Azienda</th>
-                <th>Distacco<br> Data</th>
-                <th>Tariffa<br> Giornaliera</th>
-                <th>Azienda<br> Fatturazione<br> Interna</th>
-                <th>Data <br> Inizio</th>
-                <th>Data <br> Fine</th>
-                <th>Attesa <br> lavori</th>
-                <th>Anagrafica</th>
-                <th>Modifica</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let commessa of listaCommesseScadute">
-                <td>{{commessa[0]}} {{commessa[1]}}</td>
-                <td>{{commessa[2] |uppercase}}</td>
-                <td>{{ commessa[3] }}</td>
-                <td>{{ commessa[4] }}</td>
-                <td>{{ commessa[5]}}</td>
-                <td>{{ commessa[6] ? 'Sì' : 'No' }}</td>
-                <td>{{ commessa[7] ? 'Sì' : 'No' }}</td>
-                <td>{{ commessa[8] | date:'dd/MM/yyyy' }}</td>
-                <td>{{ commessa[9] || '' }}</td>
-                <td>{{ commessa[10] || '' }}</td>
-                <td>{{ commessa[11] | date:'dd/MM/yyyy' }}</td>
-                <td>{{ commessa[12] | date:'dd/MM/yyyy' }}</td>
-                <td>{{ commessa[14] ? 'Sì' : 'No' }}</td>
-                <td>
-                    <a [routerLink]="['/dettaglio-anagrafica', commessa[15]]"><button
-                        matTooltip="Dettaglio {{commessa[0]}} {{commessa[1]}} " class="btn btn-info"><i
-                          class="fa fa-info"></i></button></a>
-                </td>
-                <td>
-                  <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica',commessa[15]]"
-                  matTooltip="Modifica {{commessa[0]}} {{commessa[1]}} "><i class="fa fa-pencil"></i></button>
-                </td>
+              <!-- Azienda Cliente -->
+              <div class="col-3">
+                <div formArrayName="commesse">
+                  <div *ngFor="let commessa of commesse.controls; let i = index">
+                    <div [formGroupName]="i">
+                      <!-- <div class="form-group">
+                        <label for="aziendaCliente">Azienda cliente</label>
+                        <input (keyup)="filter(filterAnagraficaDto.value)" type="text"
+                          formControlName="aziendaCliente" class="form-control" id="commesse.aziendaCliente"
+                          name="aziendaCliente">
+                      </div> -->
+                      <div class="form-group" formGroupName="tipoAziendaCliente">
+                        <label for="aziendaCliente">Azienda cliente</label>
+                        <select (change)="onChangeAziendaCliente($event)" class="form-select"
+                          aria-label="Default select example" id="commesse.tipoAziendaCliente.id"
+                          formControlName="id">
+                          <option value="">--nessuna selezione--</option>
+                          <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
+                            {{ aziendaCliente.descrizione }}
+                          </option>
+                        </select>
 
-              </tr>
-            </tbody>
-          </table>
-          <div class="pagination">
-            <ul>
-              <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-                <span> <i class="fa fa-arrow-left"></i> </span>
-              </li>
-              <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
-                (click)="goToPage(page)">
-                <span>{{ page }}</span>
-              </li>
-              <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
-                <span> <i class="fa fa-arrow-right"></i> </span>
-              </li>
-            </ul>
-          </div>
-          <br><br><br>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Anno di inizio commessa -->
+              <div class="col-md-3 custom-picker">
+                <label for="annoDataInizio">Anno di inizio commessa:</label>
+                <select class="form-select" id="annoDataInizio" formControlName="annoDataInizio">
+                  <option value="">Seleziona anno di inizio commessa</option>
+                  <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                </select>
+              </div>
+
+              <div class="col-md-3 custom-picker" *ngIf="filterAnagraficaDto.get('annoDataInizio')?.value !== null">
+                <!-- Mese di inizio commessa -->
+                <label for="meseDataInizio">Mese di inizio commessa:</label>
+                <select class="form-select" id="meseDataInizio" formControlName="meseDataInizio">
+                  <option value="1">Gennaio</option>
+                  <option value="2">Febbraio</option>
+                  <option value="3">Marzo</option>
+                  <option value="4">Aprile</option>
+                  <option value="5">Maggio</option>
+                  <option value="6">Giugno</option>
+                  <option value="7">Luglio</option>
+                  <option value="8">Agosto</option>
+                  <option value="9">Settembre</option>
+                  <option value="10">Ottobre</option>
+                  <option value="11">Novembre</option>
+                  <option value="12">Dicembre</option>
+                </select>
+              </div>
+
+              <!-- Anno di fine commessa -->
+              <div class="col-md-3 custom-picker">
+                <label for="annoDataFine">Anno di fine commessa:</label>
+                <select class="form-select" id="annoDataFine" formControlName="annoDataFine">
+                  <option value="">Seleziona anno di fine commessa</option>
+                  <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                </select>
+              </div>
+
+              <div class="col-md-3 custom-picker" *ngIf="filterAnagraficaDto.get('annoDataFine')?.value !== null">
+                <!-- Mese di fine commessa -->
+                <label for="meseDataFine">Mese di fine commessa:</label>
+                <select class="form-select" id="meseDataFine" formControlName="meseDataFine">
+                  <option value="1">Gennaio</option>
+                  <option value="2">Febbraio</option>
+                  <option value="3">Marzo</option>
+                  <option value="4">Aprile</option>
+                  <option value="5">Maggio</option>
+                  <option value="6">Giugno</option>
+                  <option value="7">Luglio</option>
+                  <option value="8">Agosto</option>
+                  <option value="9">Settembre</option>
+                  <option value="10">Ottobre</option>
+                  <option value="11">Novembre</option>
+                  <option value="12">Dicembre</option>
+                </select>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <b>Filtri per data fine rapporto contratto</b>
+
+              <!-- Anno di fine rapporto contratto -->
+              <div class="col-md-3 custom-picker">
+                <label for="annoFineContratto">Anno di fine rapporto:</label>
+                <select class="form-select" id="annoFineContratto" formControlName="annoFineContratto">
+                  <option value="">Seleziona anno di fine rapporto</option>
+                  <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                </select>
+              </div>
+
+              <div class="col-md-3 custom-picker"
+                *ngIf="filterAnagraficaDto.get('annoFineContratto')?.value !== null">
+                <!-- Mese di fine rapporto contratto -->
+                <label for="meseFineContratto">Mese di fine rapporto:</label>
+                <select class="form-select" id="meseFineContratto" formControlName="meseFineContratto">
+                  <option value="1">Gennaio</option>
+                  <option value="2">Febbraio</option>
+                  <option value="3">Marzo</option>
+                  <option value="4">Aprile</option>
+                  <option value="5">Maggio</option>
+                  <option value="6">Giugno</option>
+                  <option value="7">Luglio</option>
+                  <option value="8">Agosto</option>
+                  <option value="9">Settembre</option>
+                  <option value="10">Ottobre</option>
+                  <option value="11">Novembre</option>
+                  <option value="12">Dicembre</option>
+                </select>
+              </div>
+            </div>
+
+            <br>
+            <div class="row">
+              <br>
+              <div class="row">
+                <div class="col-md-6">
+                  <br>
+                  <button (click)="filter(filterAnagraficaDto.value)" id="filter-Button" class="btn btn-success"
+                    style="float: right;" [disabled]="filterAnagraficaDto.invalid">Filtra</button>
+                </div>
+                <div class="col-6">
+                  <br>
+                  <button (click)="annullaFiltri()" id="filter-Button" class="btn btn-info">Annulla filtri</button>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
+      </ng-template>
+    </mat-expansion-panel>
+  </div>
+</div>
+<br>
+<!-- <div class="row" [hidden]="pageData.length>0">
+  <div class="col-12">
+    <p>Nessun risultato</p>
+    <br><br><br><br><br><br>
+  </div>
+</div>
+<br> -->
+<div class="row" >
+  <div class="col-12">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered" >
+        <thead>
+          <tr>
+            <th>Nominativo</th>
+            <th>Codice <br> Fiscale</th>
+            <th>Azienda <br> Cliente</th>
+            <th>Cliente <br> Finale</th>
+            <th>Titolo <br> Posizione</th>
+            <th>Distacco</th>
+            <th>Distacco<br> Azienda</th>
+            <th>Distacco<br> Data</th>
+            <th>Tariffa<br> Giornaliera</th>
+            <th>Azienda<br> Fatturazione<br> Interna</th>
+            <th>Data <br> Inizio</th>
+            <th>Data <br> Fine</th>
+            <th>Scaduta da</th>
+            <th>Anagrafica</th>
+            <th>Modifica</th>
+          </tr>
+        </thead>
+        <tbody [hidden]="pageData.length===0">
+          <tr *ngFor="let commessa of listaCommesseScadute">
+            <td>{{commessa[0]}} {{commessa[1]}}</td>
+            <td>{{commessa[2] |uppercase}}</td>
+            <td>{{ commessa[3] }}</td>
+            <td>{{ commessa[4] }}</td>
+            <td>{{ commessa[5]}}</td>
+            <td>{{ commessa[6] ? 'Sì' : 'No' }}</td>
+            <td>{{ commessa[7] ? 'Sì' : 'No' }}</td>
+            <td>{{ commessa[8] ? (commessa[8] | date:'dd/MM/yyyy') : 'Dato non inserito' }}</td>
+            <td>{{ commessa[9] || '' }}</td>
+            <td>{{ commessa[10] || '' }}</td>
+            <td>{{ commessa[11] | date:'dd/MM/yyyy' }}</td>
+            <td>{{ commessa[12] | date:'dd/MM/yyyy' }}</td>
+            <td>{{ calculateDaysElapsed(commessa[12]) }} gg</td>
+
+            <td>
+                <a [routerLink]="['/dettaglio-anagrafica', commessa[15]]"><button
+                    matTooltip="Dettaglio {{commessa[0]}} {{commessa[1]}} "  mat-mini-fab color="primary"><i
+                   class="fa fa-info"></i></button></a>
+            </td>
+            <td>
+              <button  mat-mini-fab color="accent" [routerLink]="['/modifica-anagrafica',commessa[15]]"
+              matTooltip="Modifica {{commessa[0]}} {{commessa[1]}} "><i class="fa fa-pencil"></i></button>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <ul>
+          <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+            <span> <i class="fa fa-arrow-left"></i> </span>
+          </li>
+          <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
+            (click)="goToPage(page)">
+            <span>{{ page }}</span>
+          </li>
+          <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
+            <span> <i class="fa fa-arrow-right"></i> </span>
+          </li>
+        </ul>
+      </div>
+      <br><br><br>
+    </div>
+  </div>
+</div>
+          </mat-card-content>
+        </mat-card>
+
+
       </div>
     </div>
+
+
+
     <div id="finePagina"></div>
   </div>
   <div class="container-fluid" *ngIf="ruolo==='DIPENDENTE'">

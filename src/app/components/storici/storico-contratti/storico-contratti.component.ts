@@ -9,6 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { AnagraficaDtoService } from '../../anagraficaDto/anagraficaDto-service';
+import { ThemeService } from 'src/app/theme.service';
 
 declare var $: any;
 
@@ -46,9 +47,14 @@ export class StoricoContrattiComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
+    public themeService:ThemeService,
     private http: HttpClient,
     private anagraficaDtoService: AnagraficaDtoService
   ) { }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
+  }
 
   ngOnInit(): void {
     if (this.token != null) {

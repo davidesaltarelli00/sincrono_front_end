@@ -6,6 +6,7 @@ import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { StepperService } from 'src/app/stepper.service';
+import { ThemeService } from 'src/app/theme.service';
 
 @Component({
   selector: 'app-modal-info-commesse',
@@ -24,6 +25,7 @@ export class ModalInfoCommesseComponent implements OnInit {
     private datePipe: DatePipe,
     private anagraficaDtoService: AnagraficaDtoService,
     private clipboard: Clipboard,
+    public themeService:ThemeService,
     private snackBar: MatSnackBar,
     private stepperService: StepperService,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -62,4 +64,9 @@ export class ModalInfoCommesseComponent implements OnInit {
   closeDialog(): void {
     this.dialog.closeAll();
   }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
+  }
+
 }

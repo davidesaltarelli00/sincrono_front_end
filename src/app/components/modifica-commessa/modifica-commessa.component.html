@@ -1,0 +1,389 @@
+<html>
+
+<head>
+  <title>Modifica anagrafica</title>
+  <style>
+    #toolbar {
+      background-color: #007bff;
+      /* Colore blu aziendale */
+      color: #ffffff;
+      /* Testo bianco */
+      display: flex;
+      background-color: #333;
+      justify-content: space-between;
+      /* Allinea gli elementi a sinistra e a destra */
+      align-items: center;
+      /* Allinea verticalmente gli elementi al centro */
+    }
+
+    .logo-link {
+      margin-right: 10px;
+    }
+
+    .toolbar-menu {
+      display: flex;
+      gap: 10px;
+      background-color: #333;
+      margin-right: auto;
+    }
+
+    .toolbar-link {
+      text-decoration: none;
+      color: #ffffff;
+      /* padding: 10px; */
+    }
+
+    a {
+      color: white;
+    }
+
+    .toolbar-link:hover {
+      color: #d8d8d8;
+    }
+
+    .user-icon,
+    .logout-icon {
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+
+    #toolbar {
+      background-color: #007bff;
+      /* Colore blu aziendale */
+      color: #ffffff;
+      /* Testo bianco */
+      display: flex;
+      background-color: #333;
+      justify-content: space-between;
+      /* Allinea gli elementi a sinistra e a destra */
+      align-items: center;
+      /* Allinea verticalmente gli elementi al centro */
+    }
+
+   .dark-mode #toolbar {
+      color: #ffffff;
+      /* Testo bianco */
+      display: flex;
+      background-color: #333;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #f3f3f3;
+
+    }
+
+    .logo-link {
+      margin-right: 10px;
+    }
+
+    .toolbar-menu {
+      display: flex;
+      gap: 10px;
+      background-color: #333;
+      margin-right: auto;
+    }
+
+    .toolbar-link {
+      text-decoration: none;
+      color: #ffffff;
+      /* padding: 10px; */
+    }
+
+    a {
+      color: white;
+    }
+
+    .toolbar-link:hover {
+      color: #d8d8d8;
+    }
+
+    .user-icon,
+    .logout-icon {
+      color: #ffffff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body [class.dark-mode]="themeService.isDarkModeEnabled()">
+  <div id="inizioPagina"></div>
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+      </a>
+      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
+        <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+          {{ menuItem.nome }}
+        </a>
+      </div>
+      <span>
+        <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
+        </div>
+
+      </span>
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+        <i class="fa fa-user"></i>
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
+
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && mobile">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+      </a>
+      <button style=" background-color:white;color:black;margin-right: 10px;" mat-button [matMenuTriggerFor]="menu">
+        Menu
+      </button>
+      <mat-menu #menu="matMenu">
+        <button style="background-color:white;color:black" mat-menu-item *ngFor="let menuItem of jsonData.list"
+          [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
+          {{ menuItem.nome }}
+        </button>
+      </mat-menu>
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+        <i class="fa fa-user"></i>
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <br>
+        <mat-card style="text-align: center;">
+          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+          <h1>Modifica commesse di {{data?.anagrafica?.nome}} {{data?.anagrafica?.cognome}} <i class="fa fa-user" ></i>  <i class="fa fa-pencil" ></i> </h1>
+        </mat-card>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-12">
+        <form [formGroup]="anagraficaDto">
+
+          <mat-horizontal-stepper #stepper>
+
+            <mat-step label="Commesse">
+              <div *ngIf="commesseControls.length > 0">
+                <mat-card>
+                  <mat-card-title>
+                    <h1>Commesse</h1>
+                  </mat-card-title>
+                  <mat-card-content>
+                    <div formArrayName="commesse" class="commesse-container">
+                      <ng-container *ngFor="let commessa of commesseControls; let i = index">
+                        <mat-card-content>
+                          <div class="commessa" [formGroupName]="i">
+                            <div class="row">
+                              <div class="col-12">
+                                <legend>Commessa {{i+1}}</legend>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-3">
+                                <label>Azienda cliente: </label>
+                                <div class="form-group" formGroupName="tipoAziendaCliente">
+                                  <select (change)="onChangeAziendaCliente($event)" class="form-select"
+                                    aria-label="Default select example" id="commesse.tipoAziendaCliente.id"
+                                    formControlName="id">
+                                    <option value="">--nessuna selezione--</option>
+                                    <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
+                                      {{ aziendaCliente.descrizione }}
+                                    </option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-3">
+                                <label>Cliente Finale</label><br>
+                                <input class="form-control" placeholder="Inserire l' azienda cliente finale"
+                                  [ngStyle]="{ 'border': commessa.get('clienteFinale')?.value=='' ? '1px solid red' : ''}"
+                                  formControlName="clienteFinale" type="text" />
+                                <div *ngIf="commessa.get('clienteFinale')?.hasError('required')" class="text-danger">
+                                  Il campo Cliente finale è obbligatorio.
+                                </div>
+                              </div>
+
+
+                              <div class="col-3">
+                                <label>Azienda di Fatturazione Interna</label><br>
+                                <input
+                                  [ngStyle]="{ 'border': commessa.get('aziendaDiFatturazioneInterna')?.value=='' ? '1px solid red' : ''}"
+                                  class="form-control" formControlName="aziendaDiFatturazioneInterna"
+                                  placeholder="Inserire azienda di fatturazione interna" type="text" />
+                                <div *ngIf="commessa.get('aziendaDiFatturazioneInterna')?.hasError('required')"
+                                  class="text-danger">
+                                  Il campo Azienda di fatturazione interna è obbligatorio.
+                                </div>
+                              </div>
+
+                              <div class="col-3">
+                                <label>Titolo posizione</label><br>
+                                <input class="form-control" formControlName="titoloPosizione"
+                                  [ngStyle]="{ 'border': commessa.get('titoloPosizione')?.value=='' ? '1px solid red' : ''}"
+                                  placeholder="Aggiungere la posizione da ricoprire." type="text" />
+                                <div *ngIf="commessa.get('titoloPosizione')?.hasError('required')" class="text-danger">
+                                  Il campo Titolo posizione è obbligatorio.
+                                </div>
+                              </div>
+
+                            </div>
+                            <br>
+                            <div class="row">
+                              <legend>Dati distacco</legend>
+                              <div class="col-2" style="margin: auto; ">
+                                <label>Distacco</label><br>
+                                <label class="switch">
+                                  <input (change)="onChangeDistaccoCommessa($event, i)" class="form-check-input"
+                                    type="checkbox" formControlName="distacco" />
+                                  <span class="slider"></span>
+                                </label>
+
+                              </div>
+                              <div class="col-3" style="margin: auto; ">
+                                <div class="form-group">
+                                  <label for="distaccoAzienda">Distacco azienda</label>
+                                  <input type="text" class="form-control" placeholder="Inserire distacco azienda"
+                                    formControlName="distaccoAzienda" [disabled]="!commessa.get('distacco')?.value" />
+                                </div>
+                              </div>
+                              <div class="col-3" style="margin: auto; ">
+                                <div class="form-group">
+                                  <label for="distaccoData">Data distacco</label>
+                                  <input type="date" class="form-control" formControlName="distaccoData"
+                                    [disabled]="!commessa.get('distacco')?.value" />
+                                </div>
+                              </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                              <legend>Date commessa</legend>
+
+                              <div class="col-4">
+                                <label>Data di Inizio</label><br>
+                                <input class="form-control"
+                                  [ngStyle]="{ 'border': commessa.get('dataInizio')?.value=='' ? '1px solid red' : ''}"
+                                  formControlName="dataInizio" type="date" />
+                                <div *ngIf="commessa.get('dataInizio')?.hasError('required')" class="text-danger">
+                                  Il campo Data inizio è obbligatorio.
+                                </div>
+                              </div>
+                              <div class="col-4">
+                                <label>Data di Fine <i class="fa fa-question-circle"
+                                    matTooltip="Inserire la data di fine commessa se la commessa é terminata o si sa una data di fine."
+                                    aria-hidden="true"></i> </label> <br>
+                                <!--*ngIf="commessa.get('dataFine')?.value==''"-->
+                                <input class="form-control" formControlName="dataFine" type="date" />
+                              </div>
+
+
+                            </div>
+                            <br>
+                            <div class="row">
+                              <legend>Tariffa </legend>
+
+                              <div class="col-md-3">
+                                <label>Tariffa Giornaliera</label>
+                                <div class="input-group mb-2">
+                                  <div class="input-group-prepend">
+                                    <div class="input-group-text prefix" style="background-color: black; color: white;">
+                                      €</div>
+                                  </div>
+                                  <input matInput formControlName="tariffaGiornaliera" step="0.01" class="form-control"
+                                    min="0" placeholder="Inserire la tariffa giornaliera" type="number" />
+                                </div>
+                              </div>
+
+                              <!-- <div class="col-3" >
+                                    <label>Tariffa Giornaliera</label><br>
+                                    <input class="form-control" formControlName="tariffaGiornaliera" step="0.01"
+                                    min="0" placeholder="Inserire la tariffa giornaliera" type="number" />
+                                  </div> -->
+                            </div>
+                            <br>
+                            <div class="row">
+                              <div class="col-12">
+                                <button class="btn btn-danger" (click)="rimuoviCommessa(i)"
+                                  matTooltip="Rimuovi Commessa {{i+1}}">Rimuovi Commessa <i class="fa fa-trash"></i>
+                                </button>
+                                &nbsp;
+                                    <button class="btn btn-success" matTooltip="Storicizza Commessa {{i+1}}" (click)="storicizza(i)">
+                                      Storicizza Commessa <i class="fa fa-file"></i>
+                                    </button>
+                              </div>
+                            </div>
+                            <br>
+                          </div>
+                        </mat-card-content>
+                      </ng-container>
+                    </div>
+                  </mat-card-content>
+                  <br>
+                  <div class="row" *ngIf="commesseControls.length > 0">
+                    <div class="col-12" style="margin: auto; text-align: center;">
+                      <button mat-flat-button color="primary" style="margin: auto; text-align: center;"
+                        (click)="aggiungiCommessa()">Aggiungi Commessa <i class="fa fa-plus"></i> </button>
+                    </div>
+                  </div>
+                  <br>
+                </mat-card>
+
+              </div>
+              <br>
+              <div class="row" *ngIf="commesseControls.length=== 0">
+                <div class="col-12" style="margin: auto; text-align: center;">
+                  <mat-card>
+                    <mat-card-title>
+                      <h1>Commesse</h1>
+                    </mat-card-title>
+                    <mat-card-subtitle>
+                      <p>L'utente {{data?.anagrafica.nome}} {{data?.anagrafica.cognome}} non ha commesse al momento.
+                      </p>
+                    </mat-card-subtitle>
+                    <mat-card-content>
+                      <button mat-flat-button color="primary" style="margin: auto; text-align: center;"
+                        (click)="aggiungiCommessa()">Aggiungi Commessa <i class="fa fa-plus"></i> </button>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+              </div>
+
+              <div class="text-center">
+                <!-- <button mat-flat-button matStepperPrevious>«Indietro</button> &nbsp; -->
+                <!-- <button mat--flat-button matStepperNext>Avanti»</button> -->
+              </div>
+            </mat-step>
+          </mat-horizontal-stepper>
+          <br>
+          <!-- Pulsante per inviare il form -->
+          <div class="row">
+            <div class="col-12" style="text-align: center; margin: auto;">
+              <button class="btn btn-success" (click)="aggiorna()">Salva modifiche <i class="fa fa-save"></i> </button>
+              &nbsp;
+              <button class="btn btn-info" (click)="reset()">Annulla <i class="fa fa-undo"></i> </button>
+            </div>
+          </div>
+          <br>
+          <br>
+          <br>
+        </form>
+      </div>
+    </div>
+    <div id="finePagina"></div>
+  </div>
+</body>
+
+</html>

@@ -94,7 +94,7 @@
   }
 </style>
 
-<body>
+<body [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div id="inizioPagina"></div>
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && !mobile">
@@ -107,6 +107,13 @@
           {{ menuItem.nome }}
         </a>
       </div>
+      <span>
+        <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
+        </div>
+
+      </span>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
         <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
@@ -232,7 +239,7 @@
                             {{anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"}},
                             {{ anagrafica?.anagraficaDto.anagrafica?.comuneDiNascita }}
                           </td> -->
-                          <td *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita == null">Dato non inserito.</td>
+                          <!-- <td *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita == null">Dato non inserito.</td> -->
                           <td>{{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}</td>
                         </tr>
                       </tbody>
@@ -413,12 +420,12 @@
                   <table class="table table-striped">
                     <thead>
                       <tr>
-                        <th>Tipo Contratto</th>
-                        <th>Mesi Durata</th>
+                        <th>Tipo contratto</th>
+                        <th>Mesi durata</th>
                         <th>Data assunzione</th>
-                        <th>Data Fine Prova</th>
-                        <th>Data Fine Rapporto</th>
-                        <th>Sede Assunzione</th>
+                        <th>Data fine Prova</th>
+                        <th>Data fine contratto</th>
+                        <th>Sede assunzione</th>
                         <th>Qualifica</th>
                       </tr>
                     </thead>
@@ -428,7 +435,7 @@
                       <td>{{ anagrafica?.anagraficaDto?.contratto?.mesiDurata ? anagrafica?.anagraficaDto?.contratto?.mesiDurata : 'Dato non inserito' }}</td>
                       <td>{{ anagrafica?.anagraficaDto?.contratto?.dataAssunzione | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
                       <td>{{ anagrafica?.anagraficaDto?.contratto?.dataFineProva | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
-                      <td>{{ anagrafica?.anagraficaDto?.contratto?.dataFineRapporto | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
+                      <td>{{ anagrafica?.anagraficaDto?.contratto?.dataFineContratto | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
                       <td>{{ anagrafica?.anagraficaDto?.contratto?.sedeAssunzione ? anagrafica?.anagraficaDto?.contratto?.sedeAssunzione : 'Dato non inserito' }}</td>
                       <td>{{ anagrafica?.anagraficaDto?.contratto?.qualifica ? anagrafica?.anagraficaDto?.contratto?.qualifica : 'Dato non inserito' }}</td>
                       </tr>
@@ -494,7 +501,7 @@
                 <h3>Commesse <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
                   matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                   <i class="fa fa-exclamation-triangle"></i> </button></h3>
-                <mat-card-content>
+                <mat-card-content *ngIf="elencoCommesse.length>0">
                   <table id="commessaTable" class="table table-striped" style="font-size: 15px;">
                     <thead class="thead-dark">
                       <tr>
@@ -541,6 +548,9 @@
                     </tbody>
                   </table>
                 </mat-card-content>
+                <mat-card-content *ngIf="elencoCommesse.length<1">
+                  <h3 class="text-primary" >Non hai commesse al momento.</h3>
+                </mat-card-content>
               </mat-card>
             </div>
           </div>
@@ -562,7 +572,7 @@
                     <tr>
                       <td>{{ anagrafica?.anagraficaDto.anagrafica?.attivo ? 'Si' : 'No' }}</td>
                       <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}</td>
-                      <td style="cursor: pointer; color: blue; " [routerLink]="['/cambia-password']" >Cambia password</td>
+                      <td class="link" [routerLink]="['/cambia-password']" >Cambia password</td>
                       <td><p>Tempo rimanente:  {{ formatTime(tokenExpirationTime) }}</p>
                       </td>
                     </tr>
