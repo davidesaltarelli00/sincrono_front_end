@@ -10,7 +10,7 @@ export class StoricoService {
   token: any;
   url = environment.URL_locale_Sincrono;
   testUrl = environment.URL_login_service;
-  urlProd = environment.URL_PROD;
+  urlProd = environment.URL_PRODUZIONE;
   constructor(private http: HttpClient) {}
 
   getStoricoContratti(id: any, token: any): Observable<any> {
@@ -20,7 +20,7 @@ export class StoricoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      this.url+`storico-contratti/${id}`,
+      this.urlProd+`storico-contratti/${id}`,
       { headers: headers }
     );
   }
@@ -32,7 +32,7 @@ export class StoricoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      this.url+`storico-commesse/${id}`,
+      this.urlProd+`storico-commesse/${id}`,
       { headers: headers }
     );
   }
@@ -44,7 +44,7 @@ export class StoricoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.put<any>(
-      this.url+`retain-commessa`,
+      this.urlProd+`retain-commessa`,
       body,
       { headers: headers }
     );
