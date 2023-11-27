@@ -19,10 +19,9 @@ export class StoricoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(
-      this.url+`storico-contratti/${id}`,
-      { headers: headers }
-    );
+    return this.http.get<any>(this.url + `storico-contratti/${id}`, {
+      headers: headers,
+    });
   }
 
   getStoricoCommesse(id: any, token: any): Observable<any> {
@@ -31,10 +30,9 @@ export class StoricoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(
-      this.url+`storico-commesse/${id}`,
-      { headers: headers }
-    );
+    return this.http.get<any>(this.url + `storico-commesse/${id}`, {
+      headers: headers,
+    });
   }
 
   riattivaCommessa(body: any, token: any): Observable<any> {
@@ -43,10 +41,8 @@ export class StoricoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(
-      this.url+`retain-commessa`,
-      body,
-      { headers: headers }
-    );
+    return this.http.put<any>(this.url + `retain-commessa`, body, {
+      headers: headers,
+    });
   }
 }
