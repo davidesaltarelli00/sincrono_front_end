@@ -145,6 +145,7 @@ export class UtenteComponent implements OnInit {
   showPermessi: boolean[] = [];
   showPermessiRole: boolean[] = [];
   showPermessiExfestivita: boolean[] = [];
+  ruolo: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -1065,7 +1066,7 @@ export class UtenteComponent implements OnInit {
         ) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
-              image: '../../../../assets/images/logo.jpeg',
+              image: '../../../../assets/images/danger.png',
               title: 'Invio non riuscito:',
               message: 'Errore di validazione.', //(result as any).esito.target,
             },
@@ -1190,7 +1191,7 @@ export class UtenteComponent implements OnInit {
           if ((result as any).esito.target === 'ERRORE_GENERICO') {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                image: '../../../../assets/images/logo.jpeg',
+                image: '../../../../assets/images/danger.png',
                 title: 'Salvataggio non riuscito:',
                 message: 'Qualcosa é andato storto; riprova.',
               },
@@ -1204,6 +1205,7 @@ export class UtenteComponent implements OnInit {
           ) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
+                image: '../../../../assets/images/logo.jpeg',
                 title: 'Salvataggio riuscito.',
                 message: (result as any).esito.target,
               },
@@ -1580,12 +1582,11 @@ export class UtenteComponent implements OnInit {
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.idUtenteLoggato = response.anagraficaDto.anagrafica.id;
-        this.contrattoUser =
-          response.anagraficaDto.contratto.tipoContratto.descrizione;
-        this.aziendaUser =
-          response.anagraficaDto.contratto.tipoAzienda.descrizione;
+        this.contrattoUser =response.anagraficaDto.contratto.tipoContratto.descrizione;
+        this.aziendaUser = response.anagraficaDto.contratto.tipoAzienda.descrizione;
         this.elencoCommesse = response.anagraficaDto.commesse;
         this.numeroCommessePresenti = this.elencoCommesse.length;
+        this.ruolo=response.anagraficaDto.ruolo.descrizione;
         this.elencoCommesse.forEach((commessa: any) => {
           if (commessa.tipoAziendaCliente.descrizione) {
             this.aziendeClienti.push(commessa.tipoAziendaCliente.descrizione);
@@ -1622,14 +1623,15 @@ export class UtenteComponent implements OnInit {
     );
   }
 
+
+
   getUserRole() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
-        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        // console.log('DATI GET USER ROLE:' + JSON.stringify(response));
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
-        this.userLoggedName = response.anagraficaDto.anagrafica.nome;
-        this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        console.log('ID UTENTE PER NAV:' + this.idUtente);
+        // console.log('ID UTENTE PER NAV:' + this.idUtente);
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
         ) {
@@ -1655,35 +1657,28 @@ export class UtenteComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idUtente}`;
-    this.http.get<MenuData>(url, { headers: headers }).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
-
+        // console.log(
+        //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+        // );
         this.shouldReloadPage = false;
       },
       (error: any) => {
         console.error('Errore nella generazione del menu:', error);
         this.shouldReloadPage = true;
+        this.jsonData = { list: [] };
       }
     );
   }
 
   getPermissions(functionId: number) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/operazioni/${functionId}`;
-    this.http.get(url, { headers: headers }).subscribe(
-      (data: any) => {},
+    this.menuService.getPermissions(this.token, functionId).subscribe(
+      (data: any) => {
+        // console.log('Permessi ottenuti:', data);
+      },
       (error: any) => {
         console.error('Errore nella generazione dei permessi:', error);
       }

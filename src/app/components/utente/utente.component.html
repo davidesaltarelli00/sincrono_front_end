@@ -210,7 +210,7 @@
           <br>
 
         </div>
-        <div class="col-12" *ngIf="!risultatoCheckFreeze">
+        <div class="col-12" *ngIf="!risultatoCheckFreeze && ruolo==='DIPENDENTE'">
           <mat-card style="border: 1px solid #333; text-align: center;">
             <mat-card-title>Nota  <i class="fa fa-info-circle" [routerLink]="['/richieste']" ></i> </mat-card-title>
             <mat-card-content>
