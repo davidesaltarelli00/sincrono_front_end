@@ -19,7 +19,7 @@ export class ListaRapportiniService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.url + `list-not-freeze`, body, {
+    return this.http.post<any>(this.urlProd + `list-not-freeze`, body, {
       headers: headers,
     });
   }
@@ -30,7 +30,7 @@ export class ListaRapportiniService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.url + `list-freeze`, body, {
+    return this.http.post<any>(this.urlProd + `list-freeze`, body, {
       headers: headers,
     });
   }
@@ -41,7 +41,7 @@ export class ListaRapportiniService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.url + `update-check-freeze`, body, {
+    return this.http.post<any>(this.urlProd + `update-check-freeze`, body, {
       headers: headers,
     });
   }
@@ -53,7 +53,7 @@ export class ListaRapportiniService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.post<any>(this.url + 'aggiungi-note', body, {
+    return this.http.post<any>(this.urlProd + 'aggiungi-note', body, {
       headers: headers,
     });
   }
@@ -67,7 +67,7 @@ export class ListaRapportiniService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.url + `list-not-freeze-filter`, body, {
+    return this.http.post<any>(this.urlProd + `list-not-freeze-filter`, body, {
       headers: headers,
     });
   }
@@ -79,7 +79,7 @@ export class ListaRapportiniService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.url + `list-freeze-filter`, body, {
+    return this.http.post<any>(this.urlProd + `list-freeze-filter`, body, {
       headers: headers,
     });
   }
@@ -90,7 +90,7 @@ export class ListaRapportiniService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.url + `mail/send-rapportini`, body, {
+    return this.http.post<any>(this.urlProd + `mail/send-rapportini`, body, {
       headers: headers,
     });
   }
@@ -103,7 +103,7 @@ export class ListaRapportiniService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.url + 'export-rapportino', body, {
+    return this.http.post<any>(this.urlProd + 'export-rapportino', body, {
       headers: headers,
     });
   }
