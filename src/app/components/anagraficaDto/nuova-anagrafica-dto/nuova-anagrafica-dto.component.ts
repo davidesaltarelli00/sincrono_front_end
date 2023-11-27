@@ -1441,7 +1441,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       this.anagraficaDtoService
         .insert(body, localStorage.getItem('token'))
         .subscribe(
-          (result) => {
+          (result:any) => {
             if ((result as any).esito.code !== 200) {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {

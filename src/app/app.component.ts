@@ -177,21 +177,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       block: 'start',
       inline: 'nearest',
     });
-<<<<<<< HEAD
-    const url = `http://192.168.58.196:8080/services/funzioni-ruolo-tree/${this.id}`;
-    this.http.get<MenuData>(url, {headers: headers}).subscribe(
-      (data) => {
-        this.jsonData = data;
-        // console.log(this.jsonData);
-        this.idFunzione = data.list[0].id;
-        // console.log(this.idFunzione);
-      },
-      (error) => {
-        console.error('Errore nella generazione del menu:', error);
-      }
-    );
-=======
->>>>>>> develop
   }
   goTop() {
     document.getElementById('inizioPagina')?.scrollIntoView({
@@ -199,22 +184,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       block: 'start',
       inline: 'nearest',
     });
-<<<<<<< HEAD
-    const url = `http://192.168.58.196:8080/services/operazioni/${functionId}`;
-    this.http.get(url,{headers: headers}).subscribe(
-      (data: any) => {
-        // Qui puoi fare qualcosa con i permessi ottenuti dalla chiamata API
-        console.log('Permessi ottenuti:', data);
-
-        // Ad esempio, puoi mostrarli in una finestra di dialogo o in un altro componente
-        this.showPermissionsDialog(data);
-      },
-      (error) => {
-        console.error('Errore nella generazione dei permessi:', error);
-      }
-    );
-=======
->>>>>>> develop
   }
 
   // getUserLogged() {
