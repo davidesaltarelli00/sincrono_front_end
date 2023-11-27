@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <footer *ngIf="token" class="footer">
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+          <!-- Riga 1 -->
+          <div class="col-6">
+            <p><b>INDIRIZZO:</b> Via Vinicio Cortese 147F 00128 Roma RM</p>
+          </div>
+          <div class="col-4">
+            <p class="copyright">© TUTTI I DIRITTI RISERVATI</p>
+          </div>
+          <div class="col-2">
+            <button mat-flat-button (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left">
+              <i class="fa-solid fa-arrow-up fa-beat circle"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!-- Riga 2 -->
+      <div class="col-12">
+        <p><b>P.IVA:</b> 14651701006</p>
+      </div>
+    </div>
+    <div class="row">
+      <!-- Riga 3 -->
+      <div class="col-6">
+        <p><b>Tel/Fax:</b> 06 7101227 - 06 89716493 <b>Sede Legale:</b> Via isole del Capoverde, 310 - 00121</p>
+      </div>
+      <div class="col-2">
+        <i class="fa-brands fa-facebook-f"></i>
+      </div>
+      <div class="col-2">
+        <i class="fa-brands fa-instagram"></i>
+      </div>
+      <div class="col-2">
+        <i class="fa-brands fa-linkedin"></i>
+      </div>
+    </div>
+  </footer>
+
+
+</body>
+</html>
+<!--
+   <div class="col-2">
+            <i class="fa-brands fa-facebook-f"></i>
+          </div>
+          <div class="col-2">
+            <i class="fa-brands fa-instagram"></i>
+          </div>
+          <div class="col-2">
+            <i class="fa-brands fa-linkedin"></i>
+          </div>
+-->

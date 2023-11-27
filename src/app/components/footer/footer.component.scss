@@ -1,0 +1,25 @@
+
+
+footer {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+}
+
+footer button {
+  background-color: #555;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+footer p {
+  margin: 10px 0;
+}
+
+footer p b {
+  color: #ff9900; /* Colore diverso per il testo in grassetto */
+}
