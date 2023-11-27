@@ -529,6 +529,16 @@ button.toggle-button {
   cursor: pointer;
 }
 
+
+#button{
+  background-color: green;
+}
+
+.dark-mode button{
+  background-color: #333;
+}
+
+
 /* Stili specifici per dark mode */
 .dark-mode button.toggle-button {
   background-color: #333;

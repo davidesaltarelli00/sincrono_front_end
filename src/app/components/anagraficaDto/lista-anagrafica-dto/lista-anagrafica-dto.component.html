@@ -443,7 +443,7 @@
             style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
             <label>Esporta in excel</label>
             <button (click)="exportListaAnagraficaToExcel()" style="margin: 5px;" matTooltip="Esporta in excel"
-              class="btn btn-success">
+            mat-mini-fab id="button">
               <i class="fa-solid fa-file-export"></i>
             </button>
           </div>
@@ -455,7 +455,7 @@
           <div
             style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
             <label>Inserisci nuova anagrafica</label>
-            <button class="btn btn-success" [routerLink]="['/nuova-anagrafica']">
+            <button mat-mini-fab id="button" [routerLink]="['/nuova-anagrafica']">
               <i matTooltip="Inserisci Nuova Anagrafica" class="fa fa-plus"></i>
             </button>
           </div>
@@ -566,27 +566,27 @@
                   <span style="margin:5px;" *ngIf="anagraficaLoggata===element.anagrafica.id">
                     <a [routerLink]="['/utente/', element?.anagrafica.id]"><button
                         matTooltip="Rapportino {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
-                        [hidden]="anagraficaLoggata!=element.anagrafica.id" class="btn btn-success"><i
+                        [hidden]="anagraficaLoggata!=element.anagrafica.id" mat-mini-fab id="button"><i
                           class="fa fa-file"></i></button></a>
                   </span>
                   <span style="margin:5px;">
                     <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button
                         matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
-                        class="btn btn-info"><i class="fa fa-info"></i></button></a>
+                        mat-mini-fab color="primary"><i class="fa fa-info"></i></button></a>
                   </span>
                   <span style="margin:5px;">
-                    <button class="btn btn-warning" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
+                    <button mat-mini-fab color="accent" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
                       matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
                         class="fa fa-pencil"></i></button>
                   </span>
                   <span style="margin:5px;"
                     *ngIf="element.anagrafica.attivo==true && anagraficaLoggata!=element.anagrafica.id">
-                    <button class="btn btn-danger"
+                    <button mat-mini-fab color="warn"
                       matTooltip="Disattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
                       (click)="elimina(element.anagrafica.id, element.anagrafica.nome, element.anagrafica.cognome)"><i class="fa fa-minus"></i></button>
                   </span>
                   <span style="margin:5px;" *ngIf="element.anagrafica.attivo==false">
-                    <button class="btn btn-success" (click)="riattivaAnagrafica(element.anagrafica.id, element.anagrafica.nome, element.anagrafica.cognome)"
+                    <button mat-mini-fab  id="button" (click)="riattivaAnagrafica(element.anagrafica.id, element.anagrafica.nome, element.anagrafica.cognome)"
                       matTooltip="Riattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "> <i
                         class="fa fa-plus"></i> </button>
                   </span>

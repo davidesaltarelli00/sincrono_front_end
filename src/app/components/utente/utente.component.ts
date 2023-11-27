@@ -25,6 +25,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Giorno } from './giorno';
 import { AuthService } from '../login/login-service';
 import { ThemeService } from 'src/app/theme.service';
+import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.component';
 
 @Component({
   selector: 'app-utente',
@@ -1046,61 +1047,76 @@ export class UtenteComponent implements OnInit {
   }
 
   inviaRapportino() {
-    let body = {
-      rapportino: {
-        nome: this.userLoggedName,
-        cognome: this.userLoggedSurname,
-        codiceFiscale: this.codiceFiscale,
-        anno: this.selectedAnno,
-        mese: this.selectedMese,
-        checkFreeze: this.checkFreeze,
+
+    const dialogRef = this.dialog.open(AlertConfermaComponent, {
+      data: {
+        image: '../../../../assets/images/danger.png',
+        title: 'Attenzione:',
+        message:  "Confermi di voler inviare il rapportino? Una volta inviato, non potrai piú effettuare modifiche.",
       },
-    };
-    console.log('PAYLOAD PER INSERT RAPPORTINO:' + JSON.stringify(body));
-    this.rapportinoService
-      .insertRapportino(this.token, body)
-      .subscribe((result: any) => {
-        if (
-          (result as any).esito.code !== 200 &&
-          (result as any).esito.target === 'HTTP error code: 400'
-        ) {
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-              image: '../../../../assets/images/danger.png',
-              title: 'Invio non riuscito:',
-              message: 'Errore di validazione.', //(result as any).esito.target,
-            },
-          });
-          this.rapportinoInviato = false;
-          console.error(result);
-          this.tabellaEditabile = 'true';
-        }
-        if ((result as any).esito.code === 500) {
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-              image: '../../../../assets/images/logo.jpeg',
-              title: 'Invio non riuscito:',
-              message: 'Errore del server:' + (result as any).esito.target, //(result as any).esito.target,
-            },
-          });
-          this.rapportinoInviato = false;
-          this.tabellaEditabile = 'true';
-          console.error(result);
-        }
-        if ((result as any).esito.code === 200) {
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-              image: '../../../../assets/images/logo.jpeg',
-              title: 'Invio riuscito.',
-              message: (result as any).esito.target,
-            },
-          });
-          console.log('RESPONSE INSERT RAPPORTINO:' + JSON.stringify(result));
-          this.rapportinoInviato = true;
-          this.tabellaEditabile = 'false';
-          this.checkRapportinoInviato();
-        }
-      });
+    });
+
+    dialogRef.componentInstance.conferma.subscribe(() => {
+      let body = {
+        rapportino: {
+          nome: this.userLoggedName,
+          cognome: this.userLoggedSurname,
+          codiceFiscale: this.codiceFiscale,
+          anno: this.selectedAnno,
+          mese: this.selectedMese,
+          checkFreeze: this.checkFreeze,
+        },
+      };
+      console.log('PAYLOAD PER INSERT RAPPORTINO:' + JSON.stringify(body));
+      this.rapportinoService
+        .insertRapportino(this.token, body)
+        .subscribe((result: any) => {
+          if (
+            (result as any).esito.code !== 200 &&
+            (result as any).esito.target === 'HTTP error code: 400'
+          ) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/danger.png',
+                title: 'Invio non riuscito:',
+                message: 'Errore di validazione.', //(result as any).esito.target,
+              },
+            });
+            this.rapportinoInviato = false;
+            console.error(result);
+            this.tabellaEditabile = 'true';
+          }
+          if ((result as any).esito.code === 500) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/logo.jpeg',
+                title: 'Invio non riuscito:',
+                message: 'Errore del server:' + (result as any).esito.target, //(result as any).esito.target,
+              },
+            });
+            this.rapportinoInviato = false;
+            this.tabellaEditabile = 'true';
+            console.error(result);
+          }
+          if ((result as any).esito.code === 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/logo.jpeg',
+                title: 'Invio riuscito.',
+                message: (result as any).esito.target,
+              },
+            });
+            console.log('RESPONSE INSERT RAPPORTINO:' + JSON.stringify(result));
+            this.rapportinoInviato = true;
+            this.tabellaEditabile = 'false';
+            this.checkRapportinoInviato();
+          }
+        });
+    });
+
+
+
+
   }
 
   salvaRapportino(formValue: any) {
