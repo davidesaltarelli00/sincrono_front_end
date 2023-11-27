@@ -14,7 +14,7 @@ export class CambioPasswordService {
   passwordNuova: string = '';
   url =environment.URL_locale_Sincrono;
   testUrl = environment.URL_login_service;
-  urlProd=environment.URL_PROD;
+  urlProd=environment.URL_PRODUZIONE;
 
   constructor(
     private http: HttpClient,
