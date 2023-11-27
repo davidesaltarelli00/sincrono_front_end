@@ -2,12 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { AuthenticationResponse } from './login/AuthenticationResponse';
+import { environment } from 'src/environments/environment';
 // import { AuthenticationResponse } from 'path-to-authentication-response.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  url = environment.URL_locale_Sincrono;
+  testUrl = environment.URL_login_service;
+  urlProd = environment.URL_PROD;
+  urlLogin = environment.URL_locale_login;
   constructor(private http: HttpClient) {}
 
   authenticate(
@@ -26,11 +31,7 @@ export class AuthService {
     });
 
     return this.http
-      .post<AuthenticationResponse>(
-        'http://localhost:8080/login-service/login',
-        body,
-        { headers }
-      )
+      .post<AuthenticationResponse>(this.urlLogin + 'login', body, { headers })
       .pipe(
         tap((response) => {
           if (!response.token) {
@@ -87,7 +88,7 @@ export class AuthService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.put('http://localhost:8080/services/logout', body, {
+    return this.http.put(this.url + 'logout', body, {
       headers,
     });
   }

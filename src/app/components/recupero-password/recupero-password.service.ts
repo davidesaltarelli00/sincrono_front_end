@@ -1,11 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecuperoPasswordService {
-  private url = `http://localhost:8080/login-service/`;
+  url =environment.URL_locale_Sincrono;
+  testUrl = environment.URL_login_service;
+  urlProd=environment.URL_PROD;
+  urlLogin=environment.URL_locale_login;
 
   constructor(private http: HttpClient) {}
 
@@ -13,6 +17,6 @@ export class RecuperoPasswordService {
     const body = {
       username: email,
     };
-    return this.http.post<any>(this.url + `recupero-password`, body);
+    return this.http.post<any>(this.urlLogin + `recupero-password`, body);
   }
 }
