@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class ImageService {
   url =environment.URL_locale_Sincrono;
   testUrl = environment.URL_login_service;
-  urlProd=environment.URL_PROD;
+  urlProd=environment.URL_PRODUZIONE;
 
   constructor(private http: HttpClient) {}
 
@@ -19,7 +19,7 @@ export class ImageService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.url + `get-document-image`, body, {
+    return this.http.post<any>(this.urlProd + `get-document-image`, body, {
       headers: headers,
     });
   }
@@ -30,7 +30,7 @@ export class ImageService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.url + `add-document-image`, body, {
+    return this.http.post<any>(this.urlProd + `add-document-image`, body, {
       headers: headers,
     });
   }

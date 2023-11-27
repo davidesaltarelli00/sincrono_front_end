@@ -1,14 +1,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileBoxService {
   token = localStorage.getItem('token');
+  URL_PROD = environment.URL_PRODUZIONE;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getToken(): string | null {
     console.log('TOKEN SERVICE:' + this.token);
@@ -23,10 +25,9 @@ export class ProfileBoxService {
         'Access-Control-Allow-Origin': '*',
         Authorization: `Bearer ${token}`,
       });
-      return this.http.get<any>(
-        `http://192.168.58.196:8080/services/dettaglio-token/${token}`,
-        { headers: headers }
-      );
+      return this.http.get<any>(this.URL_PROD + `dettaglio-token/${token}`, {
+        headers: headers,
+      });
     } else {
       console.error('Token non presente.');
       return null;
@@ -39,10 +40,9 @@ export class ProfileBoxService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    const url = `http://localhost:8080/services/get-rapportino/${codiceFiscale}`;
+    const url = this.URL_PROD + `get-rapportino/${codiceFiscale}`;
     return this.http.get<any>(url, {
       headers: headers,
     });
   }
-
 }

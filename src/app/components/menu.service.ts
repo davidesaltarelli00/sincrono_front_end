@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class MenuService {
   id: any;
   url = environment.URL_locale_Sincrono;
-  URL_PROD=environment.URL_PROD;
+  URL_PROD=environment.URL_PRODUZIONE;
 
   constructor(private http: HttpClient) {}
 
@@ -19,7 +19,7 @@ export class MenuService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<MenuData>(this.url + `funzioni-ruolo-tree/${idNav}`, {
+    return this.http.get<MenuData>(this.URL_PROD+ `funzioni-ruolo-tree/${idNav}`, {
       headers: headers,
     });
   }
@@ -30,7 +30,7 @@ export class MenuService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<MenuData>(this.url + `operazioni/${functionId}`, {
+    return this.http.get<MenuData>(this.URL_PROD + `operazioni/${functionId}`, {
       headers: headers,
     });
   }

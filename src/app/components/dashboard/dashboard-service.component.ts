@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class DashboardService {
   token: any;
   url = environment.URL_locale_Sincrono;
-  URL_PROD=environment.URL_PROD;
+  URL_PROD = environment.URL_PRODUZIONE;
 
   constructor(private http: HttpClient) {}
 
@@ -19,7 +19,7 @@ export class DashboardService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://192.168.58.196:8080/services/dashboard`, {
+    return this.http.get<any>(this.URL_PROD + `dashboard`, {
       headers: headers,
     });
   }
@@ -30,12 +30,9 @@ export class DashboardService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(
-      `http://192.168.58.196:8080/services/anagrafica-list-contratti`,
-      {
-        headers: headers,
-      }
-    );
+    return this.http.get<any>(this.URL_PROD + `anagrafica-list-contratti`, {
+      headers: headers,
+    });
   }
 
   deleteScattiContratto(token: any): Observable<any> {
@@ -45,7 +42,7 @@ export class DashboardService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.delete<any>(
-      `http://192.168.58.196:8080/services/anagrafica-Delete-ScattoContratti`,
+      this.URL_PROD + `anagrafica-Delete-ScattoContratti`,
       {
         headers: headers,
       }
@@ -60,7 +57,7 @@ export class DashboardService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>('http://localhost:8080/services/list-commesse', {
+    return this.http.get<any>(this.URL_PROD + 'list-commesse', {
       headers: headers,
     });
   }
@@ -72,7 +69,7 @@ export class DashboardService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>('http://localhost:8080/services/list-contratti', {
+    return this.http.get<any>(this.URL_PROD + 'list-contratti', {
       headers: headers,
     });
   }
@@ -83,12 +80,9 @@ export class DashboardService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(
-      'http://localhost:8080/services/list-all-commesse',
-      {
-        headers: headers,
-      }
-    );
+    return this.http.get<any>(this.URL_PROD + 'list-all-commesse', {
+      headers: headers,
+    });
   }
 
   commesseListFilter(token: any, body: any): Observable<any> {
@@ -98,13 +92,9 @@ export class DashboardService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.post<any>(
-      'http://localhost:8080/services/list-filter',
-      body,
-      {
-        headers: headers,
-      }
-    );
+    return this.http.post<any>(this.URL_PROD + 'list-filter', body, {
+      headers: headers,
+    });
   }
 
   getAziendaCliente(token: any): Observable<any> {
@@ -113,11 +103,8 @@ export class DashboardService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(
-      'http://localhost:8080/services/tipo-azienda-cliente-map',
-      {
-        headers: headers,
-      }
-    );
+    return this.http.get<any>(this.URL_PROD + 'tipo-azienda-cliente-map', {
+      headers: headers,
+    });
   }
 }
