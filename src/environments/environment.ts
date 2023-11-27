@@ -4,4 +4,5 @@ export const environment = {
   URL_login_service:`http://localhost:8085/`,
   URL_locale_Sincrono: 'http://localhost:8080/services/',
   URL_PROD:'http://192.168.58.196:8083/'
+
 };
