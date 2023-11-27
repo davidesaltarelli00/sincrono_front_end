@@ -9,7 +9,6 @@ pipeline {
                   }
             steps {
                 sh 'node --version'
-                sh 'npm install --legacy-peer-deps'
                 sh 'npm i -D @angular-devkit/build-angular'
                 sh 'npm install -S file-saver-es'
                 sh 'ng build'
