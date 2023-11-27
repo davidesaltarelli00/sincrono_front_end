@@ -169,13 +169,11 @@
                 <div class="col-3">
                   <legend for="getRapportino">Azioni</legend><br />
                   <button
-                    class="btn btn-primary"
+                   mat-mini-fab color="primary"
                     (click)="getRapportino()"
-                    [disabled]="selectedMese == null || selectedAnno == null"
-                  >
-                    Carica rapportino
-                    <i class="fa fa-print" aria-hidden="true"></i></button
-                  >
+                    matTooltip="Carica rapportino"
+                    [disabled]="selectedMese == null || selectedAnno == null">
+                     <i class="fa fa-print" aria-hidden="true"></i></button>
                   <!--
                     &nbsp;
                   <button class="btn btn-danger" (click)="eliminaRapportino()">
@@ -493,19 +491,21 @@
           </table>
         </div>
        </div>
+       <br>
        <div class="row">
         <div class="col-3">
-          <button [disabled]="risultatoCheckFreeze || !giorno" class="btn btn-primary" (click)="salvaRapportino(giorno)" > Salva rapportino <i class="fa fa-save"></i> </button>
+          <button [disabled]="risultatoCheckFreeze || !giorno" mat-mini-fab color="primary" matTooltip="Salva tutto il rapportino" (click)="salvaRapportino(giorno)" > <i class="fa fa-save"></i> </button>
         </div>
         <div class="col-3">
-          <button class="btn btn-warning" [disabled]="risultatoCheckFreeze" (click)="inviaRapportino()" >Invia rapportino <i class="fa fa-file" ></i></button>
+          <button mat-mini-fab color="accent" [disabled]="risultatoCheckFreeze" (click)="inviaRapportino()" matTooltip="Invia rapportino" > <i class="fa fa-file" ></i></button>
         </div>
         <div class="col-3">
-          <button class="btn btn-info" [disabled]="risultatoCheckFreeze" (click)="aggiungiNoteDipendente()" >Invia nota all'admin <i class="fa fa-info"></i></button>
+          <button mat-mini-fab color="warn" [disabled]="risultatoCheckFreeze" (click)="aggiungiNoteDipendente()" matTooltip="Invia nota all'admin " ><i class="fa fa-info"></i></button>
         </div>
        </div>
-       <br> <br>
+
        <div class="row" *ngIf="inviaNoteAlDipendente" >
+        <br> <br>
         <div class="col-8">
           <textarea [disabled]="risultatoCheckFreeze" name="noteDipendente" id="noteDipendente" class="form-control" cols="30" rows="10" [(ngModel)]="noteDipendente" placeholder="Inserisci una nota da inviare all'admin." ></textarea>
         </div>

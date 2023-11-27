@@ -18,6 +18,7 @@ import { ContrattoService } from '../contratto/contratto-service';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import { MailSollecitaComponent } from '../mail-sollecita/mail-sollecita.component';
 import { ThemeService } from 'src/app/theme.service';
+import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.component';
 
 @Component({
   selector: 'app-lista-rapportini',
@@ -752,29 +753,41 @@ export class ListaRapportiniComponent implements OnInit {
     anno: number,
     mese: number
   ) {
-    const body = {
-      rapportino: {
-        id: index,
-        codiceFiscale: codiceFiscale,
-        anno: anno,
-        mese: mese,
-        checkFreeze: checkFreeze,
+
+    const dialogRef = this.dialog.open(AlertConfermaComponent, {
+      data: {
+        image: '../../../../assets/images/danger.png',
+        title: 'Attenzione:',
+        message:  "Confermi di voler cambiare lo stato del rapportino?",
       },
-    };
-    // console.log('PAYLOAD CHECKFREEZE TRUE:' + JSON.stringify(body));
-    this.listaRapportiniService.UpdateCheckFreeze(this.token, body).subscribe(
-      (result: any) => {
-        console.log('RAPPORTINO CONGELATO:' + JSON.stringify(result));
-        this.getAllRapportiniFreezati();
-        this.getAllRapportiniNonFreezati();
-      },
-      (error: any) => {
-        console.error(
-          'Errore durante il congelamento del rapportino: ' +
-            JSON.stringify(error)
-        );
-      }
-    );
+    });
+
+    dialogRef.componentInstance.conferma.subscribe(() => {
+      const body = {
+        rapportino: {
+          id: index,
+          codiceFiscale: codiceFiscale,
+          anno: anno,
+          mese: mese,
+          checkFreeze: checkFreeze,
+        },
+      };
+      // console.log('PAYLOAD CHECKFREEZE TRUE:' + JSON.stringify(body));
+      this.listaRapportiniService.UpdateCheckFreeze(this.token, body).subscribe(
+        (result: any) => {
+          console.log('RAPPORTINO CONGELATO:' + JSON.stringify(result));
+          this.getAllRapportiniFreezati();
+          this.getAllRapportiniNonFreezati();
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il congelamento del rapportino: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
+    });
+
   }
 
   resetNote() {

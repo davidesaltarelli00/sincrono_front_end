@@ -429,14 +429,14 @@
                 <td>{{rapportinoNonFreezato.anagrafica.mailAziendale}}</td>
                 <td *ngIf="rapportinoNonFreezato.anagrafica.checkInviato">
                   Inviato, da controllare
-                  <button mat-flat-button (click)="onChangecheckFreeze(true, rapportinoNonFreezato.anagrafica.codiceFiscale, rapportinoNonFreezato.anagrafica.id, selectedAnno, selectedMese)">Congela <i class="fa fa-lock"></i></button>
+                  <button mat-mini-fab color="accent" (click)="onChangecheckFreeze(true, rapportinoNonFreezato.anagrafica.codiceFiscale, rapportinoNonFreezato.anagrafica.id, selectedAnno, selectedMese)" matTooltip="Imposta come 'CONTROLLATO'"> <i class="fa fa-lock"></i></button>
                 </td>
                 <td *ngIf="!rapportinoNonFreezato.anagrafica.checkInviato">
                   Non inviato
-                  <button mat-flat-button color="warn"
+                  <button mat-mini-fab color="warn"
                    (click)="sollecita(rapportinoNonFreezato.anagrafica.mailAziendale)"
-                   matTooltip="Premendo questo pulsante invierai una mail di sollecitazione a {{rapportinoNonFreezato.anagrafica.nome}}  {{rapportinoNonFreezato.anagrafica.cognome}}"
-                  >Sollecita <i class="fa fa-envelope" aria-hidden="true"></i></button> <!--[disabled]="!rapportinoNonFreezato.rowSelected"-->
+                   matTooltip="Sollecita {{rapportinoNonFreezato.anagrafica.nome}}  {{rapportinoNonFreezato.anagrafica.cognome}}"
+                  > <i class="fa fa-envelope" aria-hidden="true"></i></button> <!--[disabled]="!rapportinoNonFreezato.rowSelected"-->
                 </td>
                 <td>
                   <button [disabled]="!rapportinoNonFreezato.anagrafica.checkInviato"
@@ -705,7 +705,7 @@
                 <td>{{rapportinoFreezato.anagrafica.mailAziendale}}</td>
                 <td >Controllato  </td>
                 <td>
-                  <button (click)="onChangecheckFreeze( false, rapportinoFreezato.anagrafica.codiceFiscale, rapportinoFreezato.anagrafica.id,selectedAnno, selectedMese)" mat-flat-button color="warn">Rimuovi</button>
+                  <button (click)="onChangecheckFreeze( false, rapportinoFreezato.anagrafica.codiceFiscale, rapportinoFreezato.anagrafica.id,selectedAnno, selectedMese)" mat-mini-fab color="warn" matTooltip="Rimuovi dalla lista dei rapportini controllati"> <i class="fa fa-minus" ></i> </button>
                 </td>
               </tr>
             </tbody>
