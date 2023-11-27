@@ -7,8 +7,9 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class RapportinoService {
-  url = environment.URL_locale_Sincrono;
+  url =environment.URL_locale_Sincrono;
   testUrl = environment.URL_login_service;
+  urlProd=environment.URL_PROD;
 
 
   constructor(private http: HttpClient) {}

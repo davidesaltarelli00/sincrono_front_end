@@ -114,7 +114,6 @@ img{
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
         <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
           class="fa fa-user"></i>
-        <!--<img *ngIf="immaginePredefinita" style="border-radius:100%" [src]="immaginePredefinita" alt="Immagine" width="40px"  />-->
       </span> &nbsp;&nbsp;
       <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
         <i class="fa fa-sign-out" aria-hidden="true"></i>
@@ -156,7 +155,11 @@ img{
       </div>
     </div>
     <br>
-    <div class="row">
+
+
+
+
+    <!-- <div class="row">
       <div class="col-12">
         <mat-card style=" height: 100%;">
           <mat-card-content style="text-align: center;">
@@ -245,11 +248,11 @@ img{
           </mat-card-content>
         </mat-card>
       </div>
-    </div>
-    <br>
-    <div class="row" *ngIf="esitoCorretto">
+    </div> -->
+    <!-- <br> -->
+    <!-- <div class="row" *ngIf="esitoCorretto">
       <div class="col-12">
-        <table class="table table-striped"  > <!--*ngIf="elencoRichieste.length!=0"-->
+        <table class="table table-striped"  >
           <thead>
             <tr>
               <th>Periodo</th>
@@ -271,10 +274,24 @@ img{
         </table>
       </div>
       <p *ngIf="elencoRichieste.length==0" class="text-success" >Non hai richieste per il periodo selezionato.</p>
+    </div> -->
+  </div>
+  <div class="row" *ngIf="ruolo==='DIPENDENTE'">
+    <div class="col-12">
+      <mat-card style="margin: auto; text-align: center;">
+        <mat-card-title>
+          <img src="../../../../assets/images/danger.png" alt="Danger">
+        </mat-card-title>
+        <mat-card-content>
+          <h2>La sezione Richieste é in manutenzione.</h2>
+        </mat-card-content>
+        <mat-card-footer>
+          <a mat-flat-button style="border: 1px solid black;" [routerLink]="['/home']">Torna alla home</a>
+        </mat-card-footer>
+      </mat-card>
     </div>
   </div>
-  <!--DIPENDENTE-->
-  <div class="container-fluid" *ngIf="ruolo==='DIPENDENTE'">
+  <!-- <div class="container-fluid" *ngIf="ruolo==='DIPENDENTE'">
     <div class="row">
       <div class="col-12">
         <mat-card style="text-align: center;">
@@ -302,7 +319,7 @@ img{
                <select name="tipoRichiesta" (change)="onTipoRichiestaSelected($event)" id="tipoRichiesta" class="form-select">
                 <option value="" selected>--Seleziona tipologia richiesta--</option>
                 <option value="ferie" >Ferie</option>
-                <option value="permessi" >Permessi</option>
+                <option value="permessi" >Permesso</option>
               </select>
              </div>
             </div>
@@ -369,12 +386,6 @@ img{
           </mat-card-title>
           <mat-card-subtitle>
             <div class="row">
-              <!-- <div class="col-4">
-                <div class="form-group">
-                  <label for="codiceFiscale">Codice fiscale</label>
-                  <input type="text" readonly class="form-control" [(ngModel)]="codiceFiscaleDettaglio">
-                </div>
-              </div> -->
               <div class="col-4">
                 <div class="form-group">
                   <label for="mese">Seleziona il mese</label>
@@ -410,23 +421,20 @@ img{
           </mat-card-subtitle>
           <mat-card-content>
             <br>
-           <!-- Tabella per le ferie -->
            <div class="row" *ngIf="elencoRichiesteDipendente && elencoRichiesteDipendente.length > 0">
             <div class="col-12">
               <h1>Elenco richieste delle ferie</h1>
-              <table class="table table-striped">
+              <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <!-- <th>ID</th> -->
-                    <th>Tipo Richiesta</th>
+                    <th>Tipo richiesta</th>
                     <th>Giorno</th>
-                    <th>Stato</th>
+                    <th>Stato della richiesta</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let richiesta of elencoRichiesteDipendente">
+                  <tr *ngFor="let richiesta of getCurrentPageItemsFerie()">
                     <ng-container *ngIf="richiesta.list && richiesta.list.length > 0 && richiesta.list[0].ferie">
-                      <!-- <td>{{ richiesta.id }}</td> -->
                       <td>Ferie</td>
                       <td>
                         <ng-container *ngFor="let item of richiesta.list; let i = index">
@@ -436,35 +444,44 @@ img{
                       </td>
                       <td *ngIf="richiesta.stato==true" > <button mat-flat-button style="background-color: green; color: white;" >Accettata</button> </td>
                       <td *ngIf="richiesta.stato==false" > <button mat-flat-button color="warn" >Rifiutata</button> </td>
-                      <td *ngIf="richiesta.stato==null" > <button mat-flat-button >Da elaborare</button> </td>
+                      <td *ngIf="richiesta.stato==null" > <button mat-flat-button style="background-color: rgb(255, 255, 187); color: #333;" >Da elaborare</button> </td>
                     </ng-container>
                   </tr>
                 </tbody>
               </table>
+              <div class="pagination">
+                <ul>
+                  <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+                    <span> <i class="fa fa-arrow-left"></i> </span>
+                  </li>
+                  <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
+                    (click)="goToPage(page)">
+                    <span>{{ page }}</span>
+                  </li>
+                  <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
+                    <span> <i class="fa fa-arrow-right"></i> </span>
+                  </li>
+                </ul>
+              </div>
 
             </div>
            </div>
            <br>
            <div class="row" *ngIf="elencoRichiesteDipendente && elencoRichiesteDipendente.length > 0" >
             <div class="col-12">
-              <!-- Tabella per i permessi -->
               <h1>Elenco richieste dei permessi</h1>
-              <table class="table table-striped">
+              <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <!-- <th>ID</th> -->
-                    <!-- <th>Tipo Richiesta</th> -->
                     <th>Giorno</th>
                     <th>Dalle ore</th>
                     <th>Alle ore</th>
-                    <th>Stato richiesta</th>
+                    <th>Stato della richiesta</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let richiesta of elencoRichiesteDipendente">
+                  <tr *ngFor="let richiesta of getCurrentPageItemsPermessi()">
                     <ng-container *ngIf="richiesta.list && richiesta.list.length > 0 && richiesta.list[0].permessi">
-                      <!-- <td>{{ richiesta.id }}</td> -->
-                      <!-- <td>Permessi</td> -->
                       <td>
                         <ng-container *ngFor="let item of richiesta.list; let i = index">
                           {{ item.nGiorno }}
@@ -485,13 +502,26 @@ img{
                       </td>
                       <td *ngIf="richiesta.stato==true" > <button mat-flat-button style="background-color: green; color: white;" >Accettata</button> </td>
                       <td *ngIf="richiesta.stato==false" > <button mat-flat-button color="warn" >Rifiutata</button> </td>
-                      <td *ngIf="richiesta.stato==null" > <button mat-flat-button >Da elaborare</button> </td>
+                      <td *ngIf="richiesta.stato==null" > <button mat-flat-button style="background-color: rgb(255, 255, 187); color: #333;">Da elaborare</button> </td>
                     </ng-container>
 
                   </tr>
                 </tbody>
               </table>
-
+              <div class="pagination">
+                <ul>
+                  <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+                    <span> <i class="fa fa-arrow-left"></i> </span>
+                  </li>
+                  <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
+                    (click)="goToPage(page)">
+                    <span>{{ page }}</span>
+                  </li>
+                  <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
+                    <span> <i class="fa fa-arrow-right"></i> </span>
+                  </li>
+                </ul>
+              </div>
 
             </div>
            </div>
@@ -499,7 +529,7 @@ img{
         </mat-card>
       </div>
     </div>
-  </div>
+  </div> -->
   <br><br>
 </body>
 </html>

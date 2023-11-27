@@ -52,7 +52,7 @@ export class ModalInfoContrattoComponent {
 
   modifica(id: any) {
     console.log(id);
-    this.router.navigate(['/modifica-anagrafica/' + id]);
+    this.router.navigate(['/modifica-contratto/' + id]);
     this.dialog.closeAll();
   }
   dettaglio(id: any) {

@@ -354,7 +354,7 @@
           </div>
           <div class="col-4">
             <div class="form-group">
-              <label for="smartworking-{{i}}">Smartworking</label><br>
+              <label for="smartworking-{{i}}">Smart</label><br>
                 <input (change)="onChangeSmartworking($event)" (keyup.enter)="toggleSmartworking(giorno)" [(ngModel)]="giorno.checkSmartWorking"
                 [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite"
                 class="form-check-input" type="checkbox" id="smartworking-{{i}}">

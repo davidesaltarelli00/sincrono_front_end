@@ -48,8 +48,54 @@ export class InsertPermessoComponent implements OnInit {
     'Novembre',
     'Dicembre',
   ];
-  daOra: string = '';
-  aOra: string = '';
+  daOra: any;
+  aOra: any;
+
+  arrayDaOra = [
+    '09:00',
+    '09:30',
+    '10:00',
+    '10:30',
+    '11:00',
+    '11:30',
+    '12:00',
+    '12:30',
+    '13:00',
+    '13:30',
+    '14:00',
+    '14:30',
+    '15:00',
+    '15:30',
+    '16:00',
+    '16:30',
+    '17:00',
+    '17:30',
+    '18:00',
+  ];
+  arrayAOra = [
+    '09:00',
+    '09:30',
+    '10:00',
+    '10:30',
+    '11:00',
+    '11:30',
+    '12:00',
+    '12:30',
+    '13:00',
+    '13:30',
+    '14:00',
+    '14:30',
+    '15:00',
+    '15:30',
+    '16:00',
+    '16:30',
+    '17:00',
+    '17:30',
+    '18:00',
+  ];
+  elencoAnni: number[] = [];
+  selectedDaOra: string | null = null;
+
 
   constructor(
     private profileBoxService: ProfileBoxService,
@@ -73,6 +119,7 @@ export class InsertPermessoComponent implements OnInit {
     ) {
       this.mobile = true;
     }
+    this.initializeYears();
   }
 
   ngOnInit(): void {
@@ -108,50 +155,130 @@ export class InsertPermessoComponent implements OnInit {
 
   onChangeMese(event: any) {
     const target = event.target.value;
-    this.permessoMese = target;
-    console.log('Hai selezionato ' + this.permessoMese);
+
+    if (target === "--Nessuna opzione--") {
+      this.permessoMese = null; // Nessuna opzione selezionata
+      console.log('Nessuna opzione selezionata');
+    } else {
+      this.permessoMese = Number(target);
+      console.log('Hai selezionato ' + this.permessoMese);
+
+      // Controllo giorni validi
+      this.checkValidDate();
+    }
   }
 
-  insertPermesso() {
-    let body = {
-      richiestaDto: {
-        anno: this.permessoAnno,
-        mese: this.permessoMese,
-        codiceFiscale: this.codiceFiscale,
-        list: [
-          {
-            permessi: true,
-            ferie: null,
-            daOra: this.daOra,
-            aOra: this.aOra,
-            nGiorno: this.permessoGiorno,
-          },
-        ],
-      },
-    };
-    console.log('PAYLOAD INVIO PERMESSO: ' + JSON.stringify(body));
-    this.richiesteService
-      .inviaRichiesta(this.token, body)
-      .subscribe((result: any) => {
-        if ((result as any).esito.code != 200) {
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-              image: '../../../../assets/images/logo.jpeg',
-              title: 'Invio non riuscito:',
-              message: (result as any).esito.target,
-            },
-          });
-        }
-        else{
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-              image: '../../../../assets/images/logo.jpeg',
-              title: 'IRichiesta inviata',
-              // message: "Troverai l'elenco delle tue richieste nel tuo profilo.",
-            },
-          });
-        }
+  onChangeAnno() {
+    // Controllo giorni validi
+    this.checkValidDate();
+  }
+
+  checkValidDate() {
+    // Imposta il giorno massimo in base al mese selezionato
+    const maxDay = new Date(Number(this.permessoAnno), Number(this.permessoMese), 0).getDate();
+
+    // Se il giorno selezionato è maggiore del massimo consentito, imposta a null
+    if (this.permessoGiorno !== null && (this.permessoGiorno > maxDay || this.permessoGiorno < 1)) {
+      this.permessoGiorno = null;
+      this.permessoMese=null;
+      this.permessoAnno=null;
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          image: '../../../../assets/images/danger.png',
+          title: 'Attenzione:',
+          message: "Hai inserito una data non valida.",
+        },
       });
+    }
+  }
+
+
+
+  updateAOraOptions() {
+    console.log('Chiamato updateAOraOptions()');
+
+    if (this.daOra !== this.selectedDaOra) {
+      console.log('daOra è cambiato. Nuovo valore:', this.daOra);
+
+      this.selectedDaOra = this.daOra;
+      this.arrayAOra = this.arrayAOra.filter(ora => ora > this.daOra);
+
+      console.log('Array aggiornato:', this.arrayAOra);
+
+      if (this.aOra && this.aOra < this.daOra) {
+        this.aOra = null;
+        console.log('aOra resettato a null');
+      }
+    }
+  }
+
+  changeAora(event:any){
+    const target=event.target.value;
+    console.log(target);
+  }
+
+
+  initializeYears() {
+    const currentYear = new Date().getFullYear();
+    const startYear = 2010;
+    for (let year = startYear; year <= currentYear; year++) {
+      this.elencoAnni.push(year);
+    }
+  }
+
+  insertPermesso(insertPermeission: any) {
+
+      if(this.permessoGiorno==null || this.permessoMese==null || this.permessoAnno==null || this.daOra==null || this.aOra==null){
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          image: '../../../../assets/images/danger.png',
+          title: 'Attenzione',
+          message: "Qualcosa é andato storto.",
+        },
+      });
+      }
+      else{
+        let body = {
+          richiestaDto: {
+            anno: this.permessoAnno,
+            mese: this.permessoMese,
+            codiceFiscale: this.codiceFiscale,
+            list: [
+              {
+                permessi: true,
+                ferie: null,
+                daOra: this.daOra,
+                aOra: this.aOra,
+                nGiorno: this.permessoGiorno,
+              },
+            ],
+          },
+        };
+        console.log('PAYLOAD INVIO PERMESSO: ' + JSON.stringify(body));
+        this.richiesteService
+          .inviaRichiesta(this.token, body)
+          .subscribe((result: any) => {
+            if ((result as any).esito.code != 200) {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  image: '../../../../assets/images/logo.jpeg',
+                  title: 'Invio non riuscito:',
+                  message: (result as any).esito.target,
+                },
+              });
+            } else {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  image: '../../../../assets/images/logo.jpeg',
+                  title: 'Richiesta inviata',
+                  // message: "Troverai l'elenco delle tue richieste nel tuo profilo.",
+                },
+              });
+            }
+          });
+      }
+
+
   }
 
   logout() {

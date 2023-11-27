@@ -123,7 +123,7 @@ export class DettaglioAnagraficaDtoComponent {
       this.mobile = true;
     }
 
-    console.log('DATA DI OGGI: ' + this.dataOdierna);
+    // console.log('DATA DI OGGI: ' + this.dataOdierna);
   }
 
   ngOnInit(): void {
@@ -131,18 +131,18 @@ export class DettaglioAnagraficaDtoComponent {
       this.getUserLogged();
       this.getUserRole();
     }
-    console.log(this.id);
+    // console.log(this.id);
     this.anagraficaDtoService
       .detailAnagraficaDto(this.id, localStorage.getItem('token'))
       .subscribe((resp: any) => {
-        console.log(resp);
+        // console.log(resp);
         this.data = (resp as any)['anagraficaDto'];
         this.codiceFiscaleDettaglio = (resp as any)['anagraficaDto'][
           'anagrafica'
         ]['codiceFiscale'];
-        console.log(this.codiceFiscaleDettaglio);
+        // console.log(this.codiceFiscaleDettaglio);
         this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
-        console.log(this.elencoCommesse);
+        // console.log(this.elencoCommesse);
         this.getImage();
 
         if((resp as any)['anagraficaDto']['contratto']['tipoCausaFineRapporto']['id']!=null){
@@ -182,7 +182,7 @@ export class DettaglioAnagraficaDtoComponent {
           codiceFiscale: this.codiceFiscaleDettaglio,
           base64: base64String,
         };
-        console.log('BODY PER ADD: ' + JSON.stringify(body));
+        // console.log('BODY PER ADD: ' + JSON.stringify(body));
         this.imageService.addImage(this.token, body).subscribe(
           (response: any) => {
             if ((response as any).esito.code != 200) {
@@ -254,7 +254,7 @@ export class DettaglioAnagraficaDtoComponent {
       this.convertImageToBase64(selectedFile).then((base64String) => {
         this.immagineConvertita = base64String;
         this.salvaImmagine = true;
-        console.log('CAMPO FILE: ' + selectedFile);
+        // console.log('CAMPO FILE: ' + selectedFile);
       });
     } else {
       this.salvaImmagine = false;
@@ -291,8 +291,8 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
   storicizzaCommessa(id: number, posizione: number) {
-    console.log('ID COMMESSA DA STORICIZZARE: ' + id);
-    console.log("Posizione nell'array: " + posizione);
+    // console.log('ID COMMESSA DA STORICIZZARE: ' + id);
+    // console.log("Posizione nell'array: " + posizione);
 
     // const payload = {
     //   anagraficaDto: {
@@ -306,23 +306,23 @@ export class DettaglioAnagraficaDtoComponent {
       commessa: this.elencoCommesse[posizione],
     };
 
-    console.log(JSON.stringify(payload));
+    // console.log(JSON.stringify(payload));
 
     this.anagraficaDtoService
       .storicizzaCommessa(payload, localStorage.getItem('token'))
       .subscribe(
         (res: any) => {
-          console.log(
-            'Commessa storicizzata correttamente: ' + JSON.stringify(res)
-          );
-          alert('Commessa storicizzata correttamente.');
+          // console.log(
+          //   'Commessa storicizzata correttamente: ' + JSON.stringify(res)
+          // );
+          // alert('Commessa storicizzata correttamente.');
           this.ngOnInit();
         },
         (error: any) => {
-          alert(
-            'Si è verificato un errore durante la storicizzazione della commessa selezionata: ' +
-              error
-          );
+          // alert(
+          //   'Si è verificato un errore durante la storicizzazione della commessa selezionata: ' +
+          //     error
+          // );
         }
       );
   }
@@ -429,28 +429,28 @@ export class DettaglioAnagraficaDtoComponent {
       const body = JSON.stringify({
         commessa: this.elencoCommesse[index],
       });
-      console.log(body);
+      // console.log(body);
       this.anagraficaDtoService
         .deleteCommessa(body, localStorage.getItem('token'))
         .subscribe(
           (res: any) => {
-            console.log(
-              'Commessa con indice ' +
-                index +
-                ' eliminata correttamente. Risposta:',
-              res
-            );
+            // console.log(
+            //   'Commessa con indice ' +
+            //     index +
+            //     ' eliminata correttamente. Risposta:',
+            //   res
+            // );
             // Rimuovi l'elemento dall'array locale
             this.elencoCommesse.splice(index, 1);
             // this.caricaDati();
           },
           (error: any) => {
-            console.log(
-              "Errore durante l'eliminazione della commessa con indice " +
-                index +
-                ': ' +
-                error
-            );
+            // console.log(
+            //   "Errore durante l'eliminazione della commessa con indice " +
+            //     index +
+            //     ': ' +
+            //     error
+            // );
           }
         );
     }
@@ -776,7 +776,7 @@ export class DettaglioAnagraficaDtoComponent {
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
         this.ruolo=response.anagraficaDto.ruolo.nome;
-        console.log('ID ANAGRAFICA LOGGATA:' + this.idAnagraficaLoggata);
+        // console.log('ID ANAGRAFICA LOGGATA:' + this.idAnagraficaLoggata);
         if (this.id === this.idAnagraficaLoggata) {
           this.disabilitaImmagine = true;
         } else {
@@ -795,9 +795,9 @@ export class DettaglioAnagraficaDtoComponent {
   getUserRole() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
-        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+        // console.log('DATI GET USER ROLE:' + JSON.stringify(response));
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
-        console.log('ID UTENTE PER NAV:' + this.idUtente);
+        // console.log('ID UTENTE PER NAV:' + this.idUtente);
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
@@ -828,9 +828,9 @@ export class DettaglioAnagraficaDtoComponent {
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
-        console.log(
-          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        );
+        // console.log(
+        //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+        // );
         this.shouldReloadPage = false;
       },
       (error: any) => {
@@ -844,7 +844,7 @@ export class DettaglioAnagraficaDtoComponent {
   getPermissions(functionId: number) {
     this.menuService.getPermissions(this.token, functionId).subscribe(
       (data: any) => {
-        console.log('Permessi ottenuti:', data);
+        // console.log('Permessi ottenuti:', data);
       },
       (error: any) => {
         console.error('Errore nella generazione dei permessi:', error);

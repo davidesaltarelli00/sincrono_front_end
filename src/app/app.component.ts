@@ -118,22 +118,22 @@ export class AppComponent implements OnInit, AfterViewInit {
                 this.dialog.closeAll();
               } else {
                 // Gestione di altri stati di risposta (es. 404, 500, ecc.)
-                console.log(
-                  'Errore durante il logout:',
-                  response.status,
-                  response.body
-                );
+                // console.log(
+                //   'Errore durante il logout:',
+                //   response.status,
+                //   response.body
+                // );
                 this.handleLogoutError();
               }
             },
             (error: HttpErrorResponse) => {
               if (error.status === 403) {
                 // Logout a causa di errore 403 (Forbidden)
-                console.log('Errore 403: Accesso negato');
+                // console.log('Errore 403: Accesso negato');
                 this.handleLogoutError();
               } else {
                 // Gestione di altri errori di rete o server
-                console.log('Errore durante il logout:', error.message);
+                // console.log('Errore durante il logout:', error.message);
                 this.handleLogoutError();
               }
             }

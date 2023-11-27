@@ -761,7 +761,7 @@ export class ListaRapportiniComponent implements OnInit {
         checkFreeze: checkFreeze,
       },
     };
-    console.log('PAYLOAD CHECKFREEZE TRUE:' + JSON.stringify(body));
+    // console.log('PAYLOAD CHECKFREEZE TRUE:' + JSON.stringify(body));
     this.listaRapportiniService.UpdateCheckFreeze(this.token, body).subscribe(
       (result: any) => {
         console.log('RAPPORTINO CONGELATO:' + JSON.stringify(result));

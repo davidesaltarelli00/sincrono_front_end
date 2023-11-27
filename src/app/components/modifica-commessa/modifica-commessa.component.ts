@@ -1625,8 +1625,35 @@ export class ModificaCommessaComponent {
       );
   }
 
-  storicizza(index: number) {
-    console.log('ID COMMESSA: ' + JSON.stringify(this.elencoCommesse[index]));
+  storicizza( posizione: number) {
+    const payload = {
+      commessa: this.elencoCommesse[posizione],
+    };
+
+    console.log(JSON.stringify(payload));
+
+    this.anagraficaDtoService
+      .storicizzaCommessa(payload, localStorage.getItem('token'))
+      .subscribe(
+        (res: any) => {
+          console.log(
+            'Commessa storicizzata correttamente: ' + JSON.stringify(res)
+          );
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/logo.jpeg',
+              title: 'Commessa storicizzata correttamente.',
+            },
+          });
+         location.reload();
+        },
+        (error: any) => {
+          console.error(
+            'Si è verificato un errore durante la storicizzazione della commessa selezionata: ' +
+              error
+          );
+        }
+      );
   }
 
   rimuoviCommessa(index: number): void {

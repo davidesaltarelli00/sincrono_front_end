@@ -190,7 +190,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     this.dashboardService.listaScattiContratto(localStorage.getItem('token')).subscribe(
       (resp: any) => {
         this.listaContrattiFromBatch = (resp as any)['list'];
-        console.log('Lista contratti in arrivo dal batch: ' + JSON.stringify(resp));
+        // console.log('Lista contratti in arrivo dal batch: ' + JSON.stringify(resp));
       },
       (error: any) => {
         console.error(
@@ -211,11 +211,11 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
               return;
             }
           });
-          console.log(
-            'UTENTE CON LA COMMESSA IN SCADENZA:' +
-            this.idutenteCommessaInScadenza
-          );
-          console.log('Lista commesse in scadenza: ' + JSON.stringify(resp));
+          // console.log(
+          //   'UTENTE CON LA COMMESSA IN SCADENZA:' +
+          //   this.idutenteCommessaInScadenza
+          // );
+          // console.log('Lista commesse in scadenza: ' + JSON.stringify(resp));
         },
         (error: any) => {
           console.error(
@@ -229,7 +229,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
       .subscribe(
         (resp: any) => {
           this.listaContrattiInScadenza = (resp as any)['list'];
-          console.log('Lista contratti in scadenza: ' + JSON.stringify(resp));
+          // console.log('Lista contratti in scadenza: ' + JSON.stringify(resp));
         },
         (error: any) => {
           console.error(
@@ -244,10 +244,10 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
       .subscribe(
         (resp: any) => {
           this.listaCommesseScadute = this.createAnagraficaDtoList(resp.list);
-          console.log(
-            'Lista commesse scadute: ' +
-            JSON.stringify(this.listaCommesseScadute)
-          );
+          // console.log(
+          //   'Lista commesse scadute: ' +
+          //   JSON.stringify(this.listaCommesseScadute)
+          // );
 
           this.currentPage = 1;
           this.pageData = this.getCurrentPageItems();
@@ -395,7 +395,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
 
 
   filter(value: any) {
-    console.log('Valore del form: ' + JSON.stringify(value));
+    // console.log('Valore del form: ' + JSON.stringify(value));
     const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
         if (obj[key] && typeof obj[key] === 'object') {
@@ -485,22 +485,26 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
         this.filterAnagraficaDto.get('meseFineContratto')?.value,
     };
 
-    console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
+    // console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
     this.dashboardService
   .commesseListFilter(localStorage.getItem('token'), body)
   .subscribe(
     (result) => {
       if ((result as any).esito.code !== 200) {
-        alert(
-          'Qualcosa è andato storto: \n' + (result as any).esito.target
-        );
+        const dialogRef = this.dialog.open(AlertDialogComponent, {
+          data: {
+            image: '../../../../assets/images/danger.png',
+            title: 'Attenzione:',
+            message: "Qualcosa é andato storto, riprova.",
+          },
+        });
       } else {
         if (Array.isArray(result.list)) {
           this.pageData = [];
           this.listaCommesseScadute = this.createAnagraficaDtoList(result.list);
           this.currentPage = 1;
           this.pageData = this.getCurrentPageItems();
-          console.log("result is " + JSON.stringify(result.list));
+          // console.log("result is " + JSON.stringify(result.list));
 
           if (this.pageData.length === 0) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
@@ -516,9 +520,9 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
           this.messaggio =
             'Nessun risultato trovato per i filtri inseriti, riprova.';
         }
-        console.log(
-          'Trovati i seguenti risultati: ' + JSON.stringify(result.list)
-        );
+        // console.log(
+        //   'Trovati i seguenti risultati: ' + JSON.stringify(result.list)
+        // );
       }
     },
     (error: any) => {
@@ -538,7 +542,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     this.anagraficaDtoService
       .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
       .subscribe((resp: any) => {
-        console.log(resp);
+        // console.log(resp);
         this.router.navigate(['/dettaglio-anagrafica/' + idAnagrafica]);
       });
   }
@@ -549,7 +553,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     this.anagraficaDtoService
       .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
       .subscribe((resp: any) => {
-        console.log(resp);
+        // console.log(resp);
         this.router.navigate(['/dettaglio-anagrafica/' + idAnagrafica]);
       });
   }
@@ -584,9 +588,9 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     if (target) {
       const isChecked = target.checked;
       if (isChecked) {
-        console.log('Checkbox selezionata, il valore è true');
+        // console.log('Checkbox selezionata, il valore è true');
       } else {
-        console.log('Checkbox deselezionata, il valore è false');
+        // console.log('Checkbox deselezionata, il valore è false');
       }
     }
   }
@@ -605,14 +609,22 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
         .deleteScattiContratto(localStorage.getItem('token'))
         .subscribe((resp: any) => {
           if ((resp as any).esito.code != 200) {
-            alert(
-              'cancellazione non riuscita\n' +
-              'target: ' +
-              (resp as any).esito.target
-            );
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/danger.png',
+                title: 'Attenzione: cancellazione non riuscita:',
+                message:  (resp as any).esito.target,
+              },
+            });
           } else {
             this.data = [];
-            alert('cancellazione riuscita');
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/logo.jpeg',
+                title: 'Cancellazione riuscita.',
+                message:  (resp as any).esito.target,
+              },
+            });
             location.reload();
           }
         });
@@ -667,7 +679,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
 
   exportContrattiInScadenzaToExcel() {
     // Verifica che ci siano dati validi prima di esportare
-    console.log('Dati da esportare:', this.listaContrattiInScadenza);
+    // console.log('Dati da esportare:', this.listaContrattiInScadenza);
 
 
 
@@ -705,24 +717,24 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
 
     const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
 
-    console.log('Dati nel foglio di lavoro:', workSheet);
+    // console.log('Dati nel foglio di lavoro:', workSheet);
 
     XLSX.utils.book_append_sheet(workBook, workSheet, 'ContrattiInScadenza');
     // Esporta il libro Excel in un file
     XLSX.writeFile(workBook, 'contratti_in_scadenza.xlsx');
 
     (error: any) => {
-      console.error(
-        'Si è verificato un errore durante il recupero della lista dei contratti in scadenza: ' +
-        error
-      );
+      // console.error(
+      //   'Si è verificato un errore durante il recupero della lista dei contratti in scadenza: ' +
+      //   error
+      // );
     }
 
   }
 
   exportCommesseInScadenzaToExcel() {
     // Verifica che ci siano dati validi prima di esportare
-    console.log('Dati da esportare:', this.listaCommesseInScadenza);
+    // console.log('Dati da esportare:', this.listaCommesseInScadenza);
 
     // Crea un nuovo libro Excel
     const workBook = XLSX.utils.book_new();
@@ -760,7 +772,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
 
     const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
 
-    console.log('Dati nel foglio di lavoro:', workSheet);
+    // console.log('Dati nel foglio di lavoro:', workSheet);
 
     XLSX.utils.book_append_sheet(workBook, workSheet, 'CommesseInScadenza');
 
@@ -768,13 +780,13 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     try {
       XLSX.writeFile(workBook, 'Commesse_in_scadenza.xlsx');
     } catch (error) {
-      console.error('Errore durante l\'esportazione del file Excel:', error);
+      // console.error('Errore durante l\'esportazione del file Excel:', error);
     }
   }
 
   exportCommesseScaduteToExcel() {
     // Verifica che ci siano dati validi prima di esportare
-    console.log('Dati da esportare:', this.listaCommesseScadute);
+    // console.log('Dati da esportare:', this.listaCommesseScadute);
 
     // Crea un nuovo libro Excel
     const workBook = XLSX.utils.book_new();
@@ -808,7 +820,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
 
     const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
 
-    console.log('Dati nel foglio di lavoro:', workSheet);
+    // console.log('Dati nel foglio di lavoro:', workSheet);
 
     XLSX.utils.book_append_sheet(workBook, workSheet, 'CommesseScadute');
 
@@ -816,13 +828,13 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     try {
       XLSX.writeFile(workBook, 'Commesse_scadute.xlsx');
     } catch (error) {
-      console.error('Errore durante l\'esportazione del file Excel:', error);
+      // console.error('Errore durante l\'esportazione del file Excel:', error);
     }
 
   }
   exportContrattiFromBatchToExcel() {
     // Verifica che ci siano dati validi prima di esportare
-    console.log('Dati da esportare:', this.listaContrattiFromBatch);
+    // console.log('Dati da esportare:', this.listaContrattiFromBatch);
 
 
     // Crea un nuovo libro Excel
@@ -859,7 +871,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
 
     const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
 
-    console.log('Dati nel foglio di lavoro:', workSheet);
+    // console.log('Dati nel foglio di lavoro:', workSheet);
 
     XLSX.utils.book_append_sheet(workBook, workSheet, 'ContrattiScattoLivello');
     // Esporta il libro Excel in un file
@@ -941,9 +953,9 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     if (commessa.anagrafica && commessa.anagrafica.id) {
       // Puoi fare qualcosa con commessa.anagrafica.id, come recuperare ulteriori informazioni
       // o navigare a una nuova pagina con questo ID.
-      console.log('ID dell\'anagrafica:', commessa.anagrafica.id);
+      // console.log('ID dell\'anagrafica:', commessa.anagrafica.id);
     } else {
-      console.log('ID dell\'anagrafica non definito');
+      // console.log('ID dell\'anagrafica non definito');
     }
   }
 

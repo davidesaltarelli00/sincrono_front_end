@@ -10,6 +10,7 @@ import { AuthService } from '../../login/login-service';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { ThemeService } from 'src/app/theme.service';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-risultati-filter-organico',
@@ -136,9 +137,13 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
         .subscribe(
           (result) => {
             if ((result as any).esito.code != 200) {
-              alert(
-                'Qualcosa é andato storto\n' + ': ' + (result as any).esito.target
-              );
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  image:'../../../../assets/images/danger.png',
+                  title: 'Attenzione:',
+                  message: "Qualcosa é andato storto, riprova."
+                },
+              });
             } else {
               if (Array.isArray(result.list)) {
                 this.pageData = result.list;
@@ -147,9 +152,9 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
                 this.messaggio =
                   'Nessun risultato trovato per i filtri inseriti, riprova.';
               }
-              console.log(
-                'Trovati i seguenti risultati per il filter: ' + JSON.stringify(result)
-              );
+              // console.log(
+              //   'Trovati i seguenti risultati per il filter: ' + JSON.stringify(result)
+              // );
             }
           },
           (error: any) => {
@@ -177,7 +182,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
   }
 
   filterValidate(value: any) {
-    console.log('Valore del form: ' + JSON.stringify(value));
+    // console.log('Valore del form: ' + JSON.stringify(value));
     const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
         if (obj[key] && typeof obj[key] === 'object') {
@@ -212,7 +217,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
       anagraficaDto: this.filterAnagraficaDto.value
 
     };
-    console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
+    // console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
 
 
 
