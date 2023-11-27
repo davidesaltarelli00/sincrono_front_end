@@ -1,16 +1,15 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MenuService {
-<<<<<<< HEAD
-id:any;
-url=`http://192.168.58.196:8085/funzioni-ruolo/tree/1`
-=======
-  url = `http://localhost:8080/services/`;
+  id: any;
+  url = environment.URL_locale_Sincrono;
+  URL_PROD=environment.URL_PROD;
 
   constructor(private http: HttpClient) {}
 
@@ -54,5 +53,4 @@ interface MenuData {
     funzioni: any;
     privilegio: any;
   }[];
->>>>>>> develop
 }

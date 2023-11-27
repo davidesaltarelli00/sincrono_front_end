@@ -593,67 +593,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         if (selectedcontract) {
           this.tipoContratto = selectedcontract;
 
-<<<<<<< HEAD
-    switch (selectedTipoContrattoId) {
-      case 1: // Contratto STAGE
-      if (
-        dataFineRapportoControl &&
-        mesiDurataControl &&
-        retribuzioneMensileLordaControl &&
-        PFIcontrol &&
-        tutorControl &&
-        superminimoMensileControl &&
-        ralAnnuaControl &&
-        superminimoRalControl &&
-        diariaMensileControl &&
-        diariaGiornalieraControl &&
-        scattiAnzianitaControl &&
-        tariffaPartitaIvaControl &&
-        livelloAttualeControl &&
-        retribuzioneNettaMensileControl &&
-        livelloFinaleControl &&
-        retribuzioneNettaGiornalieraControl
-      ) {
-        PFIcontrol.enable();
-        tutorControl.enable();
-        retribuzioneNettaMensileControl.enable();
-        mesiDurataControl.enable();
-        mesiDurataControl.setValidators([Validators.required]);
-        mesiDurataControl.setValue(6);
-
-        tutorControl.setValidators([Validators.required]);
-        PFIcontrol.setValidators([Validators.required]);
-
-        this.calculateDataFineRapporto();
-        dataFineRapportoControl.enable();
-        dataFineRapportoControl.setValue(null);
-        retribuzioneMensileLordaControl.disable();
-        livelloAttualeControl.disable();
-        livelloFinaleControl.disable();
-        superminimoMensileControl.disable();
-        ralAnnuaControl.disable();
-        superminimoRalControl.disable();
-        diariaMensileControl.disable();
-        diariaGiornalieraControl.disable();
-        scattiAnzianitaControl.disable();
-        tariffaPartitaIvaControl.disable();
-        retribuzioneNettaGiornalieraControl.disable();
-
-        // Azzera i valori degli altri campi
-        retribuzioneMensileLordaControl.setValue('');
-        livelloAttualeControl.setValue('');
-        livelloFinaleControl.setValue('');
-        superminimoMensileControl.setValue('');
-        ralAnnuaControl.setValue('');
-        superminimoRalControl.setValue('');
-        diariaMensileControl.setValue('');
-        diariaGiornalieraControl.setValue('');
-        scattiAnzianitaControl.setValue('');
-        tariffaPartitaIvaControl.setValue('');
-        retribuzioneNettaGiornalieraControl.setValue('');
-      }
-      break;
-=======
           console.log('Contratto selezionato: ', this.tipoContratto);
 
           const dataFineContrattoControl = this.AnagraficaDto.get(
@@ -1122,7 +1061,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       }
     }
   }
->>>>>>> develop
 
   calculateDataFineProva() {
     const dataAssunzioneControl = this.AnagraficaDto.get(

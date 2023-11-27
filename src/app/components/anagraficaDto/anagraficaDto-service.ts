@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {
+  HttpClient,
+  HttpEvent,
+  HttpHeaders,
+  HttpResponse,
+} from '@angular/common/http';
+import { Observable, filter } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -52,16 +57,11 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-<<<<<<< HEAD
     return this.http.put<any>(
-      `http://192.168.58.196:8080/services/commessa`,body,
+      `http://192.168.58.196:8080/services/commessa`,
+      body,
       { headers: headers }
     );
-=======
-    return this.http.put<any>(`http://localhost:8080/services/commessa`, body, {
-      headers: headers,
-    });
->>>>>>> develop
   }
 
   riattivaUtente(body: any, token: any): Observable<any> {
@@ -70,16 +70,11 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-<<<<<<< HEAD
     return this.http.put<any>(
-      `http://http://192.168.58.196:8080/services/retain`,body,
+      `http://http://192.168.58.196:8080/services/retain`,
+      body,
       { headers: headers }
     );
-=======
-    return this.http.put<any>(`http://localhost:8080/services/retain`, body, {
-      headers: headers,
-    });
->>>>>>> develop
   }
 
   delete(body: any, token: any) {
@@ -88,9 +83,13 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(`http://192.168.58.196:8080/services/delete`, body, {
-      headers: headers,
-    });
+    return this.http.put<any>(
+      `http://192.168.58.196:8080/services/delete`,
+      body,
+      {
+        headers: headers,
+      }
+    );
   }
 
   update(body: any, token: any): Observable<any> {
@@ -99,25 +98,9 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-<<<<<<< HEAD
-    console.log("BODY SERVICE:"+ JSON.stringify(body));
-    return this.http.put<any>(`http://192.168.58.196:8080/services/modifica`, body, {
-=======
     console.log('BODY SERVICE:' + JSON.stringify(body));
-    return this.http.put<any>(`http://localhost:8080/services/modifica`, body, {
->>>>>>> develop
-      headers: headers,
-    });
-  }
-
-  insert(body: any, token: any): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${token}`,
-    });
-    return this.http.post<any>(
-      `http://192.168.58.196:8080/services/inserisci`,
+    return this.http.put<any>(
+      `http://192.168.58.196:8080/services/modifica`,
       body,
       {
         headers: headers,
@@ -131,7 +114,6 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-<<<<<<< HEAD
     return this.http.post<any>(
       `http://192.168.58.196:8080/services/filter`,
       body,
@@ -139,43 +121,6 @@ export class AnagraficaDtoService {
         headers: headers,
       }
     );
-=======
-    return this.http.post<any>(`http://localhost:8080/services/filter`, body, {
-      headers: headers,
-    });
->>>>>>> develop
-  }
-
-  //GET UTENTI LIST
-  getListaUtenti(token: any): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${token}`,
-    });
-    return this.http.get<any>(`http://192.168.58.196:8080/services/utenti-list`, {
-      headers: headers,
-    });
-  }
-
-  caricaTipoCausaFineRapporto(token: any): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${token}`,
-    });
-<<<<<<< HEAD
-    return this.http.get<any>(`http://192.168.58.196:8080/services/tipo-causa-fine-rapporto-map`, {
-      headers: headers,
-    });
-=======
-    return this.http.get<any>(
-      `http://localhost:8080/services/tipo-causa-fine-rapporto-map`,
-      {
-        headers: headers,
-      }
-    );
->>>>>>> develop
   }
 
   caricaTipoCanaleReclutamento(token: any): Observable<any> {
@@ -184,32 +129,29 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-<<<<<<< HEAD
-    return this.http.get<any>(`http://192.168.58.196:8080/services/tipo-canale-reclutamento-map`, {
-      headers: headers,
-    });
-=======
     return this.http.get<any>(
-      `http://localhost:8080/services/tipo-canale-reclutamento-map`,
+      `http://192.168.58.196:8080/services/tipo-canale-reclutamento-map`,
       {
         headers: headers,
       }
     );
->>>>>>> develop
   }
 
-  //FILTER ANAGRAFICA
   filter(body: any, token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(`http://192.168.58.196:8080/services/list`, body, {
-      headers: headers,
-    });
+    return this.http.post<any>(
+      `http://192.168.58.196:8080/services/list`,
+      body,
+      {
+        headers: headers,
+      }
+    );
   }
-  //GET TIPOLOGICHE
+
   getTipoContratto(token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -217,12 +159,8 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-<<<<<<< HEAD
-      `http://192.168.58.196:8080/services/tipo-contratto-map`,{ headers: headers }
-=======
-      `http://localhost:8080/services/tipo-contratto-map`,
+      `http://192.168.58.196:8080/services/tipo-contratto-map`,
       { headers: headers }
->>>>>>> develop
     );
   }
 
@@ -323,6 +261,4 @@ export class AnagraficaDtoService {
       ...options,
     });
   }
-
-
 }
