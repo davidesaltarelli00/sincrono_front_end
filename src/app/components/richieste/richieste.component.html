@@ -146,15 +146,30 @@ img{
     </mat-toolbar>
   </div>
   <div class="container-fluid" *ngIf="ruolo==='ADMIN'">
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-12">
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
           <h1>Richieste <i class="fa fa-code-pull-request"></i></h1>
         </mat-card>
       </div>
-    </div>
+    </div> -->
     <br>
+    <div class="row" *ngIf="ruolo==='ADMIN'">
+      <div class="col-12">
+        <mat-card style="margin: auto; text-align: center;">
+          <mat-card-title>
+            <img src="../../../../assets/images/danger.png" alt="Danger">
+          </mat-card-title>
+          <mat-card-content>
+            <h2>La sezione Richieste é in manutenzione.</h2>
+          </mat-card-content>
+          <mat-card-footer>
+            <a mat-flat-button style="border: 1px solid black;" [routerLink]="['/home']">Torna alla home</a>
+          </mat-card-footer>
+        </mat-card>
+      </div>
+    </div>
 
 
 
