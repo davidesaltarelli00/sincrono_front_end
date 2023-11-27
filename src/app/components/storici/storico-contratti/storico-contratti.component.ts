@@ -10,6 +10,7 @@ import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { AnagraficaDtoService } from '../../anagraficaDto/anagraficaDto-service';
 import { ThemeService } from 'src/app/theme.service';
+import { MenuService } from '../../menu.service';
 
 declare var $: any;
 
@@ -49,6 +50,7 @@ export class StoricoContrattiComponent implements OnInit {
     private dialog: MatDialog,
     public themeService:ThemeService,
     private http: HttpClient,
+    private menuService:MenuService,
     private anagraficaDtoService: AnagraficaDtoService
   ) { }
 
@@ -183,38 +185,27 @@ export class StoricoContrattiComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.idUtente}`;
-    this.http.get<MenuData>(url, { headers: headers }).subscribe(
+    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
-        console.log(
-          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        );
+        // console.log(
+        //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+        // );
         this.shouldReloadPage = false;
       },
       (error: any) => {
         console.error('Errore nella generazione del menu:', error);
         this.shouldReloadPage = true;
+        this.jsonData = { list: [] };
       }
     );
   }
 
   getPermissions(functionId: number) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${this.token}`,
-    });
-    const url = `http://localhost:8080/services/operazioni/${functionId}`;
-    this.http.get(url, { headers: headers }).subscribe(
+    this.menuService.getPermissions(this.token, functionId).subscribe(
       (data: any) => {
-        console.log('Permessi ottenuti:', data);
+        // console.log('Permessi ottenuti:', data);
       },
       (error: any) => {
         console.error('Errore nella generazione dei permessi:', error);
