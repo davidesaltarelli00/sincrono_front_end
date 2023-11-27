@@ -9,9 +9,7 @@ pipeline {
                   }
             steps {
                 sh 'node --version'
-                sh 'remove node_modules'
-                sh 'remove package-lock.json'
-                sh 'npm install' 
+                sh 'npm list -g | head -1'
                 sh 'npm i -D @angular-devkit/build-angular'
                 sh 'npm install -S file-saver-es'
                 sh 'ng build'
