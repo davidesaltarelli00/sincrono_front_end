@@ -14,6 +14,22 @@ body {
   background-color: aliceblue;
 }
 
+.legend {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.color-box {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  border: 1px solid #000;
+}
+
+.label {
+  font-size: 14px;
+}
 
 
 .not-found-container {
