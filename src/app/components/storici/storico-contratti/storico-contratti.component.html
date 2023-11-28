@@ -130,8 +130,7 @@
         <br>
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Storico contratti di {{anagrafica?.anagrafica?.nome |titlecase }} {{anagrafica?.anagrafica?.cognome
-            |titlecase}}</h1>
+          <h1>Storico contratti di  <a style="color: blue; !important" [routerLink]="['/dettaglio-anagrafica/'+idAnagrafica]" > {{anagrafica?.anagrafica?.nome |titlecase }} {{anagrafica?.anagrafica?.cognome|titlecase}}</a> </h1>
         </mat-card>
       </div>
     </div>

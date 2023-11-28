@@ -181,6 +181,21 @@
                   </button>
                   -->
                 </div>
+                <div class="col-5">
+                  <div class="legend">
+                    <div class="color-box" style="background-color: rgb(214, 234, 251);"></div>
+                    <span class="label">Giorno Lavorativo</span>
+                  </div>
+                  <div class="legend">
+                    <div class="color-box" style="background-color: aliceblue;"></div>
+                    <span class="label">Weekend</span>
+                  </div>
+                  <div class="legend">
+                    <div class="color-box" style="background-color: rgb(238, 64, 64);"></div>
+                    <span class="label">Giorno festivo</span>
+                  </div>
+                </div>
+
               </div>
               <br />
             </form>
@@ -248,14 +263,14 @@
 
      <div class="row">
       <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="text-align: center;" >
-        <mat-card [ngClass]="getBackgroundClasses(giorno)">  <!--[ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' : (giorno.festivitaNazionale ? 'red' : 'rgb(214, 234, 251)')}"-->
+        <mat-card [ngClass]="getBackgroundClasses(giorno)" [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' : (giorno.festivitaNazionale ? 'rgb(238, 64, 64)' : 'rgb(214, 234, 251)')}">
           <p style=" margin: 0;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }} <i  class="fa fa-calendar" matTooltip="Imposta {{giorno.nomeGiorno |titlecase }} {{giorno.numeroGiorno}} {{selectedMese}} come festivo. "></i></p>
        <div class="container-card" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
           <div class="row">
             <div class="col-8">
               <div class="form-group">
                 <label for="cliente-{{ i }}{{j}}">Cliente</label>
-                <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}"
+                <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.festivitaNazionale" [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}"
                 class="form-select" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}"
                 [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)" matTooltip="{{duplicazione.cliente}}">
                   <option selected [ngValue]="null">--Nessuna opzione---</option>
@@ -269,7 +284,7 @@
               <div class="form-group">
                 <label for="ore-ordinarie-{{ i }}{{j}}" matTooltipPosition="above"
                  matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Ore</label>
-                <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+                <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.festivitaNazionale"
                 type="text"  class="form-control form-control-sm"
                 step="0.5" min="0" max="8"
                 id="ore-ordinarie-{{ i }}{{j}}" name="ore-ordinarie-{{ i }}{{j}}"
@@ -280,13 +295,13 @@
           <div class="row">
             <div class="col-2"></div>
             <div class="col-2">
-              <button style="width: 30px; height: 30px;"  mat-mini-fab color="primary" (click)=" mostraNascondiStraordinari(i,j)" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Extra time" > <i class="fa fa-clock" ></i> </button>
+              <button style="width: 30px; height: 30px;"  mat-mini-fab color="primary" (click)=" mostraNascondiStraordinari(i,j)" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.festivitaNazionale" matTooltip="Extra time" > <i class="fa fa-clock" ></i> </button>
             </div>
             <div class="col-2">
-              <button style="width: 30px; height: 30px;" [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie || aziendeClienti.length<1 " mat-mini-fab id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga"><i  class="fa fa-clone"></i></button>
+              <button style="width: 30px; height: 30px;" [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie || giorno.festivitaNazionale || aziendeClienti.length<1 " mat-mini-fab id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga"><i  class="fa fa-clone"></i></button>
             </div>
             <div class="col-2">
-              <button style="width: 30px; height: 30px;" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" mat-mini-fab color="warn" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga" ><i  class="fa fa-trash"></i></button>
+              <button style="width: 30px; height: 30px;" [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.festivitaNazionale" mat-mini-fab color="warn" (click)="eliminaRiga(i,j)" matTooltip="Elimina riga" ><i  class="fa fa-trash"></i></button>
             </div>
             <div class="col-2"></div>
           </div>
@@ -296,7 +311,7 @@
             <div class="col-4" >
              <div class="form-group">
               <label for="fascia1-{{ i }}{{j}}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">18-20</label>
-              <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+              <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.festivitaNazionale"
               type="text" class="form-control form-control-sm"
               step="0.5" min="0" max="2"
               id="fascia1-{{ i }}{{j}}" name="fascia1-{{ i }}{{j}}"
@@ -306,7 +321,7 @@
             <div class="col-4" >
              <div class="form-group">
               <label for="fascia2-{{ i }}{{j}}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">20-22</label>
-              <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+              <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.festivitaNazionale"
               type="text" class="form-control form-control-sm"
               step="0.5" min="0" max="2"
               id="fascia2-{{ i }}" name="fascia2-{{ i }}{{j}}"
@@ -316,7 +331,7 @@
             <div class="col-4" >
               <div class="form-group">
                 <label for="fascia3-{{ i }}{{j}}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">22-09</label>
-                <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+                <input [disabled]=" risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.festivitaNazionale"
                 type="text" class="form-control form-control-sm"
                 step="0.5" min="0" max="13"
                 id="fascia3-{{ i }}{{j}}" name="fascia3-{{ i }}{{j}}"
@@ -346,7 +361,7 @@
             <div class="form-group">
               <label for="onSite-{{i}}">On site</label><br>
                 <input (change)="onChangePresenza($event)" (keyup.enter)="toggleOnSite(giorno)"  [(ngModel)]="giorno.checkOnSite"
-                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkSmartworking"
+                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkSmartworking || giorno.festivitaNazionale"
                 class="form-check-input" type="checkbox" id="onSite-{{i}}">
             </div>
           </div>
@@ -354,7 +369,7 @@
             <div class="form-group">
               <label for="smartworking-{{i}}">Smart</label><br>
                 <input (change)="onChangeSmartworking($event)" (keyup.enter)="toggleSmartworking(giorno)" [(ngModel)]="giorno.checkSmartWorking"
-                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite"
+                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite || giorno.festivitaNazionale"
                 class="form-check-input" type="checkbox" id="smartworking-{{i}}">
             </div>
           </div>
@@ -370,7 +385,7 @@
           <div class="col-4" >
            <div class="form-group">
             <label for="permessi-{{ i }}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Permessi</label>
-            <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+            <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.festivitaNazionale"
             type="text" class="form-control form-control-sm"
             step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
             id="permessi-{{ i }}" name="permessi-{{ i }}"
@@ -380,7 +395,7 @@
           <div class="col-4" >
            <div class="form-group">
             <label for="permessiRole-{{ i }}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Role</label>
-            <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+            <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.festivitaNazionale"
             type="text" class="form-control form-control-sm"
             step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
             id="permessiRole-{{ i }}" name="permessiRole-{{ i }}"
@@ -390,7 +405,7 @@
           <div class="col-4" >
            <div class="form-group">
             <label for="permessiExfestivita-{{ i }}" matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Festivitá</label>
-            <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
+            <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.festivitaNazionale"
             type="text" class="form-control form-control-sm"
             step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
             id="permessiExfestivita-{{ i }}" name="permessiExfestivita-{{ i }}"
@@ -400,7 +415,7 @@
           <div class="col-4">
             <div class="form-group">
              <label for="ferie-{{ i }}">Ferie</label> <br>
-             <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.malattie || giorno.checkOnSite || giorno.checkSmartWorking "
+             <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.festivitaNazionale || giorno.malattie || giorno.checkOnSite || giorno.checkSmartWorking "
              type="checkbox" (change)="onChangeFerie($event,i)" (keyup.enter)="toggleFerie(giorno)" class="form-check-input"
              id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
             </div>
@@ -408,7 +423,7 @@
            <div class="col-4">
            <div class="form-group">
              <label for="malattie-{{i}}">Malattia</label><br>
-             <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva' || giorno.ferie || giorno.checkOnSite || giorno.checkSmartWorking "
+             <input [disabled]="risultatoCheckFreeze || contrattoUser==='Stage' || contrattoUser==='P.Iva'  || giorno.festivitaNazionale || giorno.ferie || giorno.checkOnSite || giorno.checkSmartWorking "
              type="checkbox" (change)="onChangeMalattia($event,i)" (keyup.enter)="togglemalattia(giorno)" class="form-check-input"
              id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
            </div>
@@ -418,19 +433,19 @@
           <div class="col-5">
           <div class="form-group">
             <label for="note-{{ i }}">Note</label>
-            <input [disabled]="risultatoCheckFreeze  || giorno.ferie" [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control form-control-sm" matTooltip="{{giorno.note}}" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
+            <input [disabled]="risultatoCheckFreeze  || giorno.festivitaNazionale || giorno.ferie" [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text" class="form-control form-control-sm" matTooltip="{{giorno.note}}" id="note-{{ i }}" name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
           </div>
           </div>
           <div class="col-3">
             <div class="form-group">
               <label for="salvaRiga">Salva</label>
-          <button [disabled]="risultatoCheckFreeze" mat-mini-fab color="primary"  (click)="salvaRigaRapportino(giorno)" matTooltip="Salva riga" ><i class="fa fa-save"></i> </button>
+          <button [disabled]="risultatoCheckFreeze || giorno.festivitaNazionale" mat-mini-fab color="primary"  (click)="salvaRigaRapportino(giorno)" matTooltip="Salva riga" ><i class="fa fa-save"></i> </button>
             </div>
           </div>
           <div class="col-3">
             <div class="form-group">
               <label for="salvaRiga">Annulla</label>
-          <button [disabled]="risultatoCheckFreeze" mat-mini-fab color="warn"  (click)="annulla()" matTooltip="Annulla" ><i class="fa fa-undo"></i> </button>
+          <button [disabled]="risultatoCheckFreeze || giorno.festivitaNazionale" mat-mini-fab color="warn"  (click)="annulla()" matTooltip="Annulla" ><i class="fa fa-undo"></i> </button>
             </div>
           </div>
 
@@ -492,26 +507,29 @@
         </div>
        </div>
        <br>
-       <div class="row">
-        <div class="col-3">
+       <div class="row text-center">
+        <div class="col-4">
           <button [disabled]="risultatoCheckFreeze || !giorno" mat-mini-fab color="primary" matTooltip="Salva tutto il rapportino" (click)="salvaRapportino(giorno)" > <i class="fa fa-save"></i> </button>
         </div>
-        <div class="col-3">
+        <div class="col-4">
           <button mat-mini-fab color="accent" [disabled]="risultatoCheckFreeze" (click)="inviaRapportino()" matTooltip="Invia rapportino" > <i class="fa fa-file" ></i></button>
         </div>
-        <div class="col-3">
+        <div class="col-4">
           <button mat-mini-fab color="warn" [disabled]="risultatoCheckFreeze" (click)="aggiungiNoteDipendente()" matTooltip="Invia nota all'admin " ><i class="fa fa-info"></i></button>
         </div>
        </div>
 
        <div class="row" *ngIf="inviaNoteAlDipendente" >
         <br> <br>
-        <div class="col-8">
+        <div class="col-12">
           <textarea [disabled]="risultatoCheckFreeze" name="noteDipendente" id="noteDipendente" class="form-control" cols="30" rows="10" [(ngModel)]="noteDipendente" placeholder="Inserisci una nota da inviare all'admin." ></textarea>
         </div>
-        <div class="col-2">
-          <button mat-flat-button color="primary" (click)="salvaNoteDipendente()" >Invia nota <i class="fa fa-info"></i> </button>
+        <div class="col-12 text-center">
+          <button mat-mini-fab color="primary" [disabled]="noteDipendente==null" (click)="salvaNoteDipendente()" matTooltip="Invia nota" > <i class="fa fa-info"></i> </button> &nbsp;
+          <button mat-mini-fab color="accent" (click)="resetNote()" matTooltip="Annulla" > <i class="fa fa-undo"></i> </button>
+
         </div>
+
        </div>
      </div>
      <br>

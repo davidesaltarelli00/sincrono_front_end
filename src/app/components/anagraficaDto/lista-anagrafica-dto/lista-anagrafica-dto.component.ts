@@ -1201,3 +1201,17 @@ interface MenuData {
     privilegio: any;
   }[];
 }
+
+/*
+ const dialogRef = this.dialog.open(AlertConfermaComponent, {
+      data: {
+        image: '../../../../assets/images/danger.png',
+        title: 'Attenzione:',
+        message:  "Confermi di voler disattivare l'utenza di "+nome+" "+cognome+"?",
+      },
+    });
+
+    dialogRef.componentInstance.conferma.subscribe(() => {
+
+    });
+*/

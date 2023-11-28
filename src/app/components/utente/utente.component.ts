@@ -940,11 +940,21 @@ export class UtenteComponent implements OnInit {
     this.inviaNoteAlDipendente = !this.inviaNoteAlDipendente;
   }
 
+  resetNote(){
+    this.noteDipendente=null;
+  }
+
   salvaNoteDipendente() {
-    const confirmation = confirm(
-      "Se confermi l'invio, il rapportino verrá disabilitato finché l'admin non ti risponderá."
-    );
-    if (confirmation) {
+    const dialogRef = this.dialog.open(AlertConfermaComponent, {
+      data: {
+        image: '../../../../assets/images/danger.png',
+        title: 'Attenzione:',
+        message:
+          "Se confermi l'invio, il rapportino verrá disabilitato finché l'admin non ti risponderá.",
+      },
+    });
+
+    dialogRef.componentInstance.conferma.subscribe(() => {
       let body = {
         rapportinoDto: {
           noteDipendente: this.noteDipendente,
@@ -957,9 +967,9 @@ export class UtenteComponent implements OnInit {
           meseRequest: this.selectedMese,
         },
       };
-      console.log(
-        'invia al dipendente le seguenti note: ' + JSON.stringify(body)
-      );
+      // console.log(
+      //   'invia al dipendente le seguenti note: ' + JSON.stringify(body)
+      // );
       this.rapportinoService.aggiungiNoteDipendente(this.token, body).subscribe(
         (result: any) => {
           if ((result as any).esito.code !== 200) {
@@ -993,15 +1003,17 @@ export class UtenteComponent implements OnInit {
           );
         }
       );
-    } else {
-      const dialogRef = this.dialog.open(AlertDialogComponent, {
-        data: {
-          image: '../../../../assets/images/logo.jpeg',
-          // title: 'Attenzione',
-          message: "Invio delle note all'admin annullato.",
-        },
-      });
-    }
+    });
+
+    // else {
+    //   const dialogRef = this.dialog.open(AlertDialogComponent, {
+    //     data: {
+    //       image: '../../../../assets/images/logo.jpeg',
+    //       // title: 'Attenzione',
+    //       message: "Invio delle note all'admin annullato.",
+    //     },
+    //   });
+    // }
   }
 
   goDown() {
@@ -1047,12 +1059,12 @@ export class UtenteComponent implements OnInit {
   }
 
   inviaRapportino() {
-
     const dialogRef = this.dialog.open(AlertConfermaComponent, {
       data: {
         image: '../../../../assets/images/danger.png',
         title: 'Attenzione:',
-        message:  "Confermi di voler inviare il rapportino? Una volta inviato, non potrai piú effettuare modifiche.",
+        message:
+          'Confermi di voler inviare il rapportino? Una volta inviato, non potrai piú effettuare modifiche.',
       },
     });
 
@@ -1113,10 +1125,6 @@ export class UtenteComponent implements OnInit {
           }
         });
     });
-
-
-
-
   }
 
   salvaRapportino(formValue: any) {
@@ -1598,11 +1606,13 @@ export class UtenteComponent implements OnInit {
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.idUtenteLoggato = response.anagraficaDto.anagrafica.id;
-        this.contrattoUser =response.anagraficaDto.contratto.tipoContratto.descrizione;
-        this.aziendaUser = response.anagraficaDto.contratto.tipoAzienda.descrizione;
+        this.contrattoUser =
+          response.anagraficaDto.contratto.tipoContratto.descrizione;
+        this.aziendaUser =
+          response.anagraficaDto.contratto.tipoAzienda.descrizione;
         this.elencoCommesse = response.anagraficaDto.commesse;
         this.numeroCommessePresenti = this.elencoCommesse.length;
-        this.ruolo=response.anagraficaDto.ruolo.descrizione;
+        this.ruolo = response.anagraficaDto.ruolo.descrizione;
         this.elencoCommesse.forEach((commessa: any) => {
           if (commessa.tipoAziendaCliente.descrizione) {
             this.aziendeClienti.push(commessa.tipoAziendaCliente.descrizione);
@@ -1639,8 +1649,6 @@ export class UtenteComponent implements OnInit {
     );
   }
 
-
-
   getUserRole() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
@@ -1673,21 +1681,23 @@ export class UtenteComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        // console.log(
-        //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        // );
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-        this.jsonData = { list: [] };
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          // console.log(
+          //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          // );
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
 
   getPermissions(functionId: number) {

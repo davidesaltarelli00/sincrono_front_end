@@ -1,199 +1,14 @@
-.container-fluid {  margin-right: auto;  margin-left: auto;  padding-right: 15px;  padding-left: 15px;}.row {  display: flex;  flex-wrap: wrap;  margin-right: -15px;  margin-left: -15px;}.legend {  font-size: 1.2rem;  font-weight: bold;  margin-top: 20px;  margin-bottom: 10px;}@media (max-width: 767px) {  .col-md-3 {    flex: 0 0 100%;    max-width: 100%;  }}.ruolo {  margin-bottom: 30px;}.mat-stepper-horizontal {  margin-top: 8px;}*{  box-sizing: border-box;}body {  overflow-y: auto; /* Nasconde l'overflow verticale */}body::after {  content: "";  position: relative;  top: 0;  bottom: 0;  left: 0;  right: 0;  overflow-y: auto;  padding-right: 17px;}body::-webkit-scrollbar {  width: 0.5em;  background-color: #F5F5F5;}body::-webkit-scrollbar-thumb {  background-color: transparent;}.custom-prefix {  background-color: black;  color: white;}select{width: 50%;}.commessa-list {padding: 0;}.commessa-item {align-items: center;margin-bottom: 8px;}.commessa-cell {flex: 1;padding: 4px;border: 1px solid #ccc;}ng-container{border: 1px solid #f1f1f1;}select{width: 100%;}.campo-nullo {border-color: red;}mat-card-title{text-align: center;}.toggle-switch {display: inline-block;position: relative;width: 60px;height: 34px;}.toggle-switch input {opacity: 0;width: 0;height: 0;}.slider {position: absolute;cursor: pointer;top: 0;left: 0;right: 0;bottom: 0;background-color: #ccc; /* Colore di sfondo quando disattivato */transition: 0.4s; /* Effetto di transizione */border-radius: 34px;}.toggle-switch input:checked + .slider {background-color: #2196F3;}.slider:before {position: absolute;content: "";height: 26px;width: 26px;left: 4px;bottom: 4px;background-color: white;transition: 0.4s;border-radius: 50%;}.toggle-switch input:checked + .slider:before {transform: translateX(26px);}.toggle-switch label {display: flex;align-items: center;user-select: none;cursor: pointer;}.custom-prefix {background-color: black;color: white;}.card {border: 1px solid #ccc;border-radius: 5px;padding: 20px;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);background-color: #fff;}.card-title {font-size: 1.25rem;font-weight: bold;margin-bottom: 10px;}.card-content {font-size: 1rem;line-height: 1.4;}.card-button {display: inline-block;padding: 10px 20px;background-color: #007bff;color: #fff;border: none;border-radius: 3px;cursor: pointer;transition: background-color 0.3s ease;}.card-button:hover {background-color: #0056b3;}.label-align-vertical {  display: inline-block;  vertical-align: middle;}input[disabled] {  background-color: #f2f2f2;  color: #999;  cursor: not-allowed;  border: 1px solid #ccc;}
-.invalid-field {
-  border-color: red;
+body {
+  background-color: aliceblue;
 
 }
 
 .container-fluid {
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
-}
-
-.col-md-3 {
-  flex: 0 0 25%;
-  max-width: 25%;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-.form-control {
-  display: block;
-  width: 100%;
-  height: calc(1.5em + 0.75rem + 2px);
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.legend {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-
-@media (max-width: 767px) {
-  .col-md-3 {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-}
-
-.ruolo {
-  margin-bottom: 30px;
-}
-
-
-#avanti {
-  margin: auto;
-  text-align: center;
-  margin-top: 10px;
-}
-
-#indietro {
-  float: right;
-  text-align: center;
-  margin-top: 10px;
-}
-
-#nominativo {
-  margin-bottom: 10px;
-}
-
-.mat-stepper-horizontal {
-  margin-top: 8px;
-}
-
-.mat-mdc-form-field {
-  margin-top: 16px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-.custom-snackbar {
-  background-color: red;
-  color: white;
-}
-
-button:hover {
-  background-color: transparent;
-}
-
-button {
-  border: 1px solid #333;
-}
-
-*{
-  box-sizing: border-box;
-}
-
-// overflow
-body {
-  overflow-y: auto;
-  /* Nasconde l'overflow verticale */
   background-color: aliceblue;
-
 }
-
 
 mat-stepper {
   background-color: aliceblue;
-
-}
-
-body::after {
-  content: "";
-  position: relative;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  overflow-y: auto;
-  /* Consente lo scrolling */
-  padding-right: 17px;
-  /* Aggiunge un margine destro per compensare la larghezza della barra di scorrimento */
-}
-
-/* Nasconde la barra di scorrimento orizzontale */
-body::-webkit-scrollbar {
-  width: 0.5em;
-  background-color: #F5F5F5;
-}
-
-body::-webkit-scrollbar-thumb {
-  background-color: transparent;
-}
-
-
-
-footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  text-align: center;
-}
-
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.form-control {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  transition: border-color 0.2s ease-in-out;
-}
-
-.form-control.invalid {
-  border-color: red;
-}
-
-.error-message {
-  color: red;
-  font-size: 12px;
-  margin-top: 5px;
-}
-
-.submit-button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-.custom-prefix {
-  background-color: black;
-  color: white;
 }
 
 .invalid-field {
@@ -203,6 +18,10 @@ footer {
 
 select {
   width: 50%;
+}
+
+mat-card {
+  margin: 20px;
 }
 
 /* Stili CSS per simulare una tabella */
@@ -239,6 +58,7 @@ select {
 mat-card-title {
   text-align: center;
 }
+
 
 /* Stile generale del toggle switch */
 .toggle-switch {
@@ -340,303 +160,15 @@ mat-card-title {
   background-color: #0056b3;
 }
 
-.label-align-vertical {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-/* Stile per campi di input disabilitati */
-input[disabled] {
-  background-color: #f2f2f2;
-  color: #999;
-  cursor: not-allowed;
-  border: 1px solid #ccc;
-}
-
-/* Stile di base per il form */
-.form-container {
-  max-width: 600px; /* Larghezza massima del form */
-  margin: 0 auto; /* Centra il form orizzontalmente */
-  padding: 20px;
-}
-
-/* Stile per il campo di input */
-.form-group {
-  margin-bottom: 20px;
-}
-
-/* Stile per le etichette */
-label {
-  display: block; /* Mostra le etichette su una nuova riga */
-  font-weight: bold;
-}
-
-/* Stile per gli input di testo */
-input[type="text"] {
+mat-card-contnt {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
 }
 
-/* Media query per dispositivi con larghezza massima di 768px */
-@media screen and (max-width: 768px) {
-  .form-container {
-    max-width: 100%; /* Larghezza massima del form per schermi più piccoli */
-    padding: 10px; /* Riduci il padding del form */
-  }
-
-  /* Riduci il margine tra i campi di input */
-  .form-group {
-    margin-bottom: 10px;
-  }
-}
-.preview-container {
-  margin-top: 20px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #f8f8f8;
-}
-
-.excel-preview {
-  overflow-x: auto; /* Per gestire l'overflow orizzontale in caso di tabelle lunghe */
-  max-height: 300px; /* Imposta un'altezza massima per evitare che l'anteprima diventi troppo grande */
+.campo-nullo {
+  border: 1px solid red;
 }
 
 
-
-/* styles.css o nel tuo componente-specifico.css */
-.dark-mode *{
-  background-color: #333;
-  color: #fff;
-}
-
-.dark-mode input::placeholder {
-  color: #ddd; /* Colore del placeholder nei temi scuri */
-}
-
-.dark-mode mat-card {
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #f1f1f1;
-}
-
-/* Stili specifici per dark mode */
-.dark-mode input {
-  background-color: #333; /* Colore di sfondo scuro per gli input */
-  color: #fff; /* Colore del testo chiaro per gli input */
-}
-
-.dark-mode table {
-  border-color: #555;
-}
-
-.dark-mode th, .dark-mode td {
-  border-color: #777;
-  background-color: #333;
-  color: #fff;
-}
-
-.dark-mode button, .dark-mode .btn {
-  background-color: #333;
-  color: #fff;
-}
-
-
-/* Stili specifici per dark mode */
-.dark-mode button.toggle-button {
-  background-color: #333;
-  color: #fff;
-  /* Altri stili specifici per il dark mode per il bottone di toggle */
-}
-.dark-mode #toolbar {
-  color: #ffffff;
-  /* Testo bianco */
-  display: flex;
-  background-color: #333;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #f3f3f3;
-
-}
-
-.alert {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 10px;
-  border: 1px solid #f5c6cb;
-}
-
-input:invalid {
-  border-color: red;
-}
-
-body {
-  background-color: aliceblue;
-}
-
-.container-fluid {
-  background-color: aliceblue;
-}
-
-
-table,
-th,
-td {
-  text-align: center;
-  font-size: 12px;
-}
-
-footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  text-align: center;
-}
-
-// paginazione light mode
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.pagination ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  align-items: center;
-}
-
-.pagination li {
-  margin: 0 5px;
-  cursor: pointer;
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.pagination li.disabled {
-  pointer-events: none;
-  background-color: #f5f5f5;
-  color: #ccc;
-  border: 1px solid #ccc;
-}
-
-.pagination li.active {
-  background-color: #007bff;
-  color: #fff;
-  border: 1px solid #007bff;
-}
-
-.pagination li:hover {
-  background-color: #ccc;
-  color: #333;
-  border: 1px solid #333;
-}
-
-//paginazione dark mode
-
-.pagination .dark-mode {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.pagination ul .dark-mode {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  align-items: center;
-}
-
-.pagination li .dark-mode{
-  margin: 0 5px;
-  cursor: pointer;
-  padding: 5px 10px;
-  border: 1px solid #555; /* Cambia il colore del bordo */
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.pagination li.disabled .dark-mode{
-  pointer-events: none;
-  background-color: #444; /* Cambia il colore di sfondo */
-  color: #555; /* Cambia il colore del testo */
-  border: 1px solid #555;
-}
-
-.pagination li.active .dark-mode{
-  background-color: #007bff;
-  color: #fff;
-  border: 1px solid #007bff;
-}
-
-.pagination li:hover .dark-mode {
-  background-color: #555;
-  color: #fff;
-  border: 1px solid #fff; /* Cambia il colore del bordo durante il passaggio del mouse */
-}
-
-/* Stili per il check giallo */
-.yellow-check {
-  background-color: yellow;
-  width: 20px;
-  /* Larghezza personalizzabile */
-  height: 20px;
-  /* Altezza personalizzabile */
-  border-radius: 50%;
-  text-align: center;
-  line-height: 20px;
-}
-
-.dark-mode #toolbar {
-  color: #ffffff;
-  /* Testo bianco */
-  display: flex;
-  background-color: #333;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #f3f3f3;
-
-}
-
-
-.dark-mode .pagination {
-  background-color: #333;
-}
-
-.dark-mode .pagination li {
-  border: 1px solid #555;
-}
-
-.dark-mode .pagination li.disabled {
-  background-color: #444;
-  color: #666;
-  border: 1px solid #555;
-}
-
-.dark-mode .pagination li.active {
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #007bff;
-}
-
-.dark-mode .pagination li:hover {
-  background-color: #555;
-  color: #fff;
-  border: 1px solid #666;
-}
 
 /* Stili per il check verde */
 .green-check {
@@ -660,25 +192,8 @@ footer {
   background-color: red;
 }
 
-.fixed-button-container {
-  position: fixed;
-  bottom: 40px;
-  right: 15px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
 
-.fixed-button-container button {
-  margin: 5px;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-  border-radius: 100%;
-}
-/* Light mode */
+
 .switch {
   position: relative;
   display: inline-block;
@@ -700,7 +215,8 @@ footer {
   right: 0;
   bottom: 0;
   background-color: red;
-  transition: background-color 0.4s;
+  -webkit-transition: .4s;
+  transition: .4s;
 }
 
 .slider:before {
@@ -711,27 +227,19 @@ footer {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  transition: background-color 0.4s;
+  -webkit-transition: .4s;
+  transition: .4s;
 }
 
-/* Dark mode */
-body.dark-mode .switch .slider {
-  background-color: #555;
-}
-
-body.dark-mode .switch .slider:before {
-  background-color: #fff;
-}
-
-input:checked + .slider {
+input:checked+.slider {
   background-color: green;
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -753,20 +261,28 @@ input[type="checkbox"]:disabled {
 }
 
 /* Icona della checkbox disabilitata */
-input[type="checkbox"]:disabled + .slider::before {
+input[type="checkbox"]:disabled+.slider::before {
   background-color: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 
 
-/* styles.css o nel tuo componente-specifico.css */
+
 .dark-mode *{
+  background-color: #333;
+  color: #fff;
+}
+.dark-mode body{
   background-color: #333;
   color: #fff;
 }
 
 .dark-mode input::placeholder {
-  color: #ddd; /* Colore del placeholder nei temi scuri */
+  color: #ddd;
 }
 
 .dark-mode mat-card {
@@ -775,31 +291,13 @@ input[type="checkbox"]:disabled + .slider::before {
   border: 1px solid #f1f1f1;
 }
 
-/* Stili specifici per dark mode */
 .dark-mode input {
-  background-color: #333; /* Colore di sfondo scuro per gli input */
-  color: #fff; /* Colore del testo chiaro per gli input */
+  background-color: #333;
+  color: #fff;
 }
-
-/* Stili comuni per gli input */
-input {
-  padding: 8px;
-  margin: 8px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-/* Stili comuni per i placeholder */
-input::placeholder {
-  color: #888; /* Colore del placeholder nei temi chiari */
-}
-
-
-
-
 
 .dark-mode table {
-  border-color: #555;
+  border-color: #fff;
 }
 
 .dark-mode th, .dark-mode td {
@@ -813,104 +311,37 @@ input::placeholder {
   color: #fff;
 }
 
-/* Stili comuni per i bottoni */
-button.toggle-button {
-  padding: 8px 16px;
-  margin: 8px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
 
-/* Stili specifici per dark mode */
 .dark-mode button.toggle-button {
   background-color: #333;
   color: #fff;
-  /* Altri stili specifici per il dark mode per il bottone di toggle */
 }
 
-/* Stili comuni per mat-list */
-mat-list {
-  width: 100%;
-}
-
-/* Stili comuni per mat-list-item */
-mat-list-item {
-  padding: 16px;
-  border-bottom: 1px solid #ddd; /* Aggiungi una sottolineatura tra gli elementi della lista */
-}
-
-/* Stili comuni per gli anchor (link) all'interno di mat-list-item */
-mat-list-item a {
-  color: inherit; /* Eredità del colore del testo dallo stile del padre */
-  text-decoration: none; /* Rimuovi la sottolineatura dei link */
-}
-
-/* Stili specifici per dark mode per mat-list e mat-list-item */
-.dark-mode mat-list {
-  background-color: #333; /* Colore di sfondo scuro per la lista */
-  color: #fff; /* Colore del testo chiaro per la lista */
-}
-
-.dark-mode mat-list-item {
-  border-color: #555; /* Colore del bordo scuro per gli elementi della lista */
-  background-color: #444; /* Colore di sfondo scuro per gli elementi della lista */
-  color: #fff; /* Colore del testo chiaro per gli elementi della lista */
-}
-
-.dark-mode mat-list-item a {
-  color: #fff; /* Colore del testo chiaro per i link in dark mode */
-}
-
-.dark-mode mat-expansion-panel{
-  border: 1px solid #f1f1f1;
-}
-
-.dark-mode button{
-  border: 1px solid #f2f2f2;
-}
-
-
-/* Stile per l'intero mat-stepper */
-.mat-horizontal-stepper, .mat-vertical-stepper {
-  background-color: #f4f4f4;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Stile per i singoli passaggi del mat-stepper */
-.mat-step {
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-/* Stile per la barra di avanzamento (Solo per stepper orizzontali) */
-.mat-horizontal-stepper-header-container {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Stile per il pulsante Avanti/Retrocedi (Solo per stepper orizzontali) */
-.mat-horizontal-stepper-navigation {
-  display: flex;
-  justify-content: space-between;
-}
-
-/* Stile per il numero del passaggio */
-.mat-step-label {
-  color: #333;
-  font-size: 16px;
-}
-
-/* Stile per l'indicatore del passaggio corrente */
-.mat-step-header-selected {
-  background-color: #4caf50;
+::ng-deep .mat-step-label {
   color: #fff;
 }
 
-/* Stile per il pulsante Conferma (Solo per stepper finale) */
-.mat-stepper-finalized .mat-horizontal-stepper-navigation {
-  justify-content: flex-end;
+::ng-deep .mat-step-label-active {
+  color: #ff4081;
+}
+
+::ng-deep .mat-step-label-visited {
+  color: #4caf50;
+}
+
+::ng-deep .mat-input-element:disabled {
+  color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.12);
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Stile per i campi di input disabilitati in dark mode */
+:root {
+  --disabled-input-text: rgba(255, 255, 255, 0.7);
+  --disabled-input-background: rgba(255, 255, 255, 0.12);
+}
+
+/* Applica lo stile ai campi di input disabilitati */
+.dark-mode input:disabled {
+ background-color: #555;
 }
