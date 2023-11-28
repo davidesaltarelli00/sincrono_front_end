@@ -1723,6 +1723,18 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   aggiorna() {
+
+    const dialogRef = this.dialog.open(AlertConfermaComponent, {
+      data: {
+        image: '../../../../assets/images/danger.png',
+        title: 'Attenzione:',
+        message:  "Confermi di voler salvare le modifiche?",
+      },
+    });
+
+    dialogRef.componentInstance.conferma.subscribe(() => {
+
+
     const removeEmpty = (obj: any) => {
       Object.keys(obj).forEach((key) => {
         if (obj[key] && typeof obj[key] === 'object') {
@@ -1778,11 +1790,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       });
     };
     removeEmpty(this.anagraficaDto.value);
-
-    // console.log(
-    //   'Valore di anagrafica: ' +
-    //     JSON.stringify(this.anagraficaDto.get('anagrafica')?.value)
-    // );
     const payload = {
       anagraficaDto: this.anagraficaDto.value,
       // anagrafica: this.anagraficaDto.get('anagrafica')?.value,
@@ -1818,6 +1825,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           // console.error("Errore nell'invio del payload al server:", error);
         }
       );
+    });
+
   }
 
   insertContratto() {
