@@ -160,14 +160,8 @@
       </div>
     </div>
     <br>
-    <!-- <div class="alert alert-danger" *ngIf="showErrorAlert">
-      Alcuni campi obbligatori non sono stati compilati correttamente:
-      <ul>
-        <li *ngFor="let field of missingFields">{{ field }}</li>
-      </ul>
-    </div> -->
+
     <form [formGroup]="AnagraficaDto">
-      <!-- Step 1: Anagrafica -->
       <div *ngIf="currentStep === 1">
         <div class="row">
           <div class="col-12">
@@ -235,9 +229,6 @@
                             </div>
                           </div>
                         </div>
-                        <!--
-                            && !AnagraficaDto.get('anagrafica.cognome')?.invalid && AnagraficaDto.get('anagrafica.cognome')?.touched"
-                            [class.is-invalid]="AnagraficaDto.get('anagrafica.cognome')?.invalid && AnagraficaDto.get('anagrafica.cognome')?.touched"-->
                         <div class="col-md-3">
                           <label>Cognome* </label>
                           <div class="form-group">
@@ -350,12 +341,6 @@
                               <div *ngIf="AnagraficaDto.get('anagrafica.cellularePrivato')?.hasError('pattern')" class="text-danger">
                                 Il formato non è valido. Inserire un numero valido.
                               </div>
-                              <!-- <div *ngIf="AnagraficaDto.get('anagrafica.cellularePrivato')?.hasError('minlength')" class="text-danger">
-                                Inserire almeno 10 caratteri.
-                              </div>
-                              <div *ngIf="AnagraficaDto.get('anagrafica.cellularePrivato')?.hasError('maxlength')" class="text-danger">
-                                Inserire massimo 10 caratteri.
-                              </div> -->
                             </div>
                           </div>
                         </div>
@@ -459,7 +444,7 @@
                           </div>
                         </div>
                       </div>
-
+                      <br>
                       <legend>Info Extra</legend>
                       <div class="row">
                         <div class="col-md-3">
@@ -506,7 +491,6 @@
                           <div class="form-group">
                             <input type="text" class="form-control" formControlName="cittadinanza"
                               placeholder="Inserire cittadinanza." />
-                            <!--formControlName="cittadinanza"-->
                           </div>
                         </div>
                         <div class="col-md-3">
@@ -528,7 +512,7 @@
                       <div class="row">
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Coniugato </label>
+                            <label>Coniugato </label> <br>
                             <label class="toggle-switch">
                               <div class="form-check">
                                 <input class="form-check-input"
@@ -541,7 +525,7 @@
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Figli a Carico</label>
+                            <label>Figli a Carico</label><br>
                             <label class="toggle-switch">
                               <div class="form-check">
                                 <input class="form-check-input" type="checkbox" style="border-color: black"
@@ -553,7 +537,7 @@
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Attesa lavori</label>
+                            <label>Attesa lavori</label><br>
                             <label class="toggle-switch">
                               <div class="form-check">
                                 <input class="form-check-input" type="checkbox" style="border-color: black"
@@ -566,7 +550,7 @@
 
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Categoria protetta</label>
+                            <label>Categoria protetta</label><br>
                             <label class="toggle-switch">
                               <div class="form-check">
                                 <input class="form-check-input" type="checkbox" style="border-color: black"
@@ -577,12 +561,12 @@
                           </div>
                         </div>
                       </div>
-                      <br />
+                      <br>
                       <div class="text-center">
-                        <button mat-button matStepperPrevious>«Indietro</button> &nbsp;
-                        <button mat-button matStepperNext>Avanti»</button>
+                        <button mat-mini-fab color="primary" disabled matStepperPrevious>«</button> &nbsp;
+                        <button mat-mini-fab color="primary" matStepperNext>»</button>
                       </div>
-                      <br />
+                      <br>
                     </div>
                   </mat-card-content>
                 </mat-card>
@@ -623,10 +607,6 @@
                               Il campo nome azienda è obbligatorio.
                             </div>
                           </div>
-
-                          <!-- <div *ngIf="AnagraficaDto.get('contratto.tipoAzienda.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoAzienda.id')?.touched" class="text-danger">
-                            Il campo Tipo azienda è obbligatorio.
-                          </div> -->
                           <div class="col-md-3">
                             <div formGroupName="tipoContratto">
                               <label for="filter-TipoContratto">Tipo Contratto*</label>
@@ -744,25 +724,12 @@
                         <br />
                         <div class="row">
 
-                          <div class="col-md-3">
-                            <label for="assicurazioneObbligatoria">Assicurazione obbligatoria:</label>
-                            <label class="toggle-switch">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" (change)="
-                                      onChangeAssicurazioneObbligatoria($event)
-                                    " style="border-color: black" [checked]="
-                                      data?.contratto
-                                        ?.assicurazioneObbligatoria === true
-                                    " formControlName="assicurazioneObbligatoria" />
-                                <span class="slider"></span>
-                              </div>
-                            </label>
-                          </div>
+
                         </div>
                         <br />
                         <legend>Dettagli e date</legend>
                         <div class="row">
-                          <div class="col-md-3">
+                          <div class="col-md-2">
                             <label>Qualifica: </label>
                             <div class="form-group">
                               <input type="text" class="form-control" placeholder="Inserire qualifica"
@@ -770,7 +737,7 @@
                             </div>
                           </div>
 
-                          <div class="col-md-3">
+                          <div class="col-md-2">
                             <label>Sede Assunzione: </label>
                             <div class="form-group">
                               <input type="text" class="form-control" placeholder="Inserire la sede di assunzione"
@@ -808,7 +775,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-md-3">
+                          <div class="col-md-2">
                             <label>Computer aziendale: </label>
                             <div class="form-group">
                               <label class="toggle-switch">
@@ -821,6 +788,24 @@
                               </label>
                             </div>
                           </div>
+
+
+                          <div class="col-md-3">
+                            <label for="assicurazioneObbligatoria">Assicurazione obbligatoria:</label> <br>
+                            <label class="toggle-switch">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" (change)="
+                                      onChangeAssicurazioneObbligatoria($event)
+                                    " style="border-color: black" [checked]="
+                                      data?.contratto
+                                        ?.assicurazioneObbligatoria === true
+                                    " formControlName="assicurazioneObbligatoria" />
+                                <span class="slider"></span>
+                              </div>
+                            </label>
+                          </div>
+
+
                         </div>
                         <br />
                         <div class="row">
@@ -841,10 +826,6 @@
                                   " class="text-danger">
                                 Il campo Data assunzione è obbligatorio.
                               </div>
-                              <!-- <div
-                            *ngIf="AnagraficaDto.get('contratto.dataAssunzione')?.invalid" class="text-danger">
-                            Formato non valido.
-                          </div> -->
                             </div>
                           </div>
 
@@ -934,51 +915,12 @@
                             </div>
                           </div>
                         </div>
-
-                        <!-- <div class="row"> -->
-                        <!-- <div class="col-md-3">
-                          <label class="form-check-label">Dimissioni: </label>
-                          <div class="form-check">
-                            <input style="border-color: black" class="form-check-input" type="checkbox"
-                              formControlName="dimissioni" />
-                          </div>
-                        </div> -->
-                        <!-- <div class="col-md-3">
-                          <label class="form-check-label">Part Time: </label>
-                          <div class="form-check">
-                            <input style="border-color: black" class="form-check-input" type="checkbox"
-                              formControlName="partTime" />
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <label class="form-check-label">% Part time : </label>
-                          <div class="form-check">
-                            <input class="form-control" type="number" placeholder="Inserire % part time" formControlName="percentualePartTime" />
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <label class="form-check-label">RAL Part time : </label>
-                          <div class="form-check">
-                            <input class="form-control" type="number" placeholder="Inserire % part time" formControlName="ralPartTime" />
-                          </div>
-                        </div> -->
-                        <!-- </div> -->
-
+                        <br>
                         <div class="container-dati-economici">
-                          <div class="row">
-                            <div class="col-12">
-                              <legend>
-                                Dati economici <i class="fa fa-euro-sign"></i>
-                              </legend>
-                            </div>
-                          </div>
-
                           <legend>Retribuzione</legend>
-
                           <div class="row">
                             <div class="col-md-3">
                               <label>Retribuzione Mensile Lorda: </label>
-                              <!--&nbsp; <button class="btn btn-warning" matTooltip="Calcola" (click)="calcolaRetribuzioneMensileLorda()"><i class="fa fa-calculator"></i></button> -->
                               <div class="form-group">
                                 <input type="number" class="form-control" placeholder="Inserire retribuzione lorda"
                                   min="0" step="0.01" formControlName="retribuzioneMensileLorda"
@@ -1038,14 +980,14 @@
                           <br />
                           <div class="row">
                             <legend>RAL</legend>
-                            <div class="col-6">
+                            <div class="col-3">
                               <label>RAL Annua: </label>
                               <div class="form-group">
                                 <input type="number" class="form-control" placeholder="Inserire RAL annua" min="0"
                                   step="0.01" id="ralAnnua" formControlName="ralAnnua" (input)="calcoloRal()" />
                               </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-3">
                               <label>Superminimo RAL: </label>
                               <div class="form-group">
                                 <input type="number" class="form-control" placeholder="Inserire superminimo RAL" min="0"
@@ -1153,9 +1095,9 @@
                         <legend>Ticket e Agevolazioni</legend>
                         <br />
                         <div class="row">
-                          <div class="col-md-3">
+                          <div class="col-md-6">
                             <div class="form-group">
-                              <label>Ticket</label>
+                              <label>Ticket</label> <br>
                               <label class="toggle-switch">
                                 <div class="form-check">
                                   <input class="form-check-input" type="checkbox" style="border-color: black"
@@ -1177,8 +1119,7 @@
                         <legend>Tutor e PFI</legend>
                         <div class="row">
                           <div class="col-md-6">
-                            <label>Piano Formativo Individuale: </label>
-                            <br />
+                            <label>Piano Formativo Individuale: </label><br>
                             <label class="toggle-switch">
                               <div class="form-check">
                                 <input class="form-check-input" type="checkbox" style="border-color: black"
@@ -1215,7 +1156,7 @@
                           <div class="col-md-6">
                             <div class="form-group">
                               <div class="form-group">
-                                <label>Corso di Sicurezza: </label>
+                                <label>Corso di Sicurezza: </label><br>
                                 <label class="toggle-switch">
                                   <div class="form-check">
                                     <input class="form-check-input" type="checkbox" style="border-color: black"
@@ -1247,7 +1188,7 @@
                         </div>
                         <div class="row">
                           <div class="col-md-6">
-                            <label>Visita medica: </label>
+                            <label>Visita medica: </label><br>
                             <div class="form-group">
                               <label class="toggle-switch">
                                 <div class="form-check">
@@ -1266,21 +1207,15 @@
                           </div>
                         </div>
                       </div>
+                      <br>
                       <div class="text-center">
-                        <button mat-button matStepperPrevious>«Indietro</button> &nbsp;
-                        <button mat-button matStepperNext>Avanti»</button>
+                        <button mat-mini-fab color="primary" matStepperPrevious>«</button> &nbsp;
+                        <button mat-mini-fab color="primary" matStepperNext>»</button>
                       </div>
+                      <br>
                     </mat-card-content>
                   </mat-card>
                   <br />
-                  <!-- <div class="row">
-                    <div class="col-6" style="text-align: end; ">
-                      <button mat-button matStepperPrevious>«</button>
-                    </div>
-                    <div class="col-6" style="text-align: start;">
-                      <button matTooltip="Avanti" mat-button matStepperNext> »</button>
-                    </div>
-                  </div> -->
                 </div>
               </mat-step>
 
@@ -1290,14 +1225,13 @@
                   <div class="col-12">
                     <mat-card>
                       <mat-card-content>
-                        <!-- Utilizzo del formArrayName per le commesse -->
                         <div formArrayName="commesse">
                           <div class="row" style="margin: auto; text-align: center">
                             <div class="col-12">
                               <h1>Commesse</h1>
                               <button mat-flat-button color="primary" (click)="aggiungiCommessa()" id="button-duplica"
                                 *ngIf="commesse.length === 0">
-                                Aggiungi Commessa
+                                Aggiungi Commessa  <i class="fa fa-plus" ></i>
                               </button>
                               &nbsp;
                             </div>
@@ -1326,13 +1260,6 @@
 
                                 </div>
                               </div>
-                               <!-- <input
-                                    [ngStyle]="{ 'border': commessa.get('aziendaCliente')?.value=='' ? '1px solid red' : ''}"
-                                    type="text" class="form-control" placeholder="Inserire azienda cliente"
-                                    formControlName="aziendaCliente" />
-                                  <div *ngIf="commessa.get('aziendaCliente')?.hasError('required')" class="text-danger">
-                                    Il campo Azienda Cliente è obbligatorio.
-                                  </div> -->
                               <div class="col-md-3">
                                 <label>Cliente Finale: </label>
                                 <div class="form-group">
@@ -1437,98 +1364,32 @@
                                 </div>
                               </div>
                             </div>
-
-
-                            <!-- <div class="col-md-3">
-                              <label>Nominativo: </label>
-                              <div class="form-group">
-                                <input type="text" class="form-control" formControlName="nominativo" />
-                              </div>
-                            </div> -->
-
-                            <!-- <div class="col-md-3">
-                              <label>Stato</label>
-                              <div class="form-group">
-                                <div class="form-check">
-                                  <input style="border-color: black" class="form-check-input" type="checkbox"
-                                    formControlName="attivo" />
-                                </div>
-                              </div>
-                              se la commessa ha l id vuol dire che esisteva gia e puo essere storicizzata
-                            </div> -->
-                            <!-- <div class="col-md-3">
-                              <label>Attesa lavori: </label>
-                              <div class="form-group">
-                                <div class="form-check">
-                                  <input style="border-color: black" class="form-check-input" type="checkbox"
-                                    formControlName="attesaLavori" />
-                                </div>
-
-                              </div>
-
-                              <br>
-                            </div> -->
                             <br />
                             <div class="row">
                               <div class="col-12" style="text-align: center; margin: auto">
-                                <button mat-flat-button color="primary" (click)="aggiungiCommessa()" id="button-duplica"
+                                <button mat-mini-fab color="primary" (click)="aggiungiCommessa()" id="button-duplica"
                                   *ngIf="commesse.length != 0">
-                                  Aggiungi Commessa <i class="fa fa-plus"></i>
+                                   <i class="fa fa-plus"></i>
                                 </button>
                                 &nbsp;
-                                <button mat-flat-button color="accent" (click)="rimuoviCommessa(i)" [matTooltip]="
-                                      i === 0
-                                        ? 'La commessa uno non può essere eliminata'
-                                        : ''
-                                    ">
-                                  Rimuovi Commessa <i class="fa fa-trash"></i>
+                                <button mat-mini-fab color="warn" (click)="rimuoviCommessa(i)">
+                                   <i class="fa fa-trash"></i>
                                 </button>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <br />
-                        <div class="text-center">
-                          <button mat-button matStepperPrevious>«Indietro</button> &nbsp;
-                          <button mat-button matStepperNext>Avanti»</button>
-
-                        </div>
+                        <br>
+                      <div class="text-center">
+                        <button mat-mini-fab color="primary" matStepperPrevious>«</button> &nbsp;
+                        <button mat-mini-fab color="primary" matStepperNext disabled>»</button>
+                      </div>
+                      <br>
                       </mat-card-content>
                     </mat-card>
                   </div>
                 </div>
               </mat-step>
-              <!-- <mat-step>
-                <ng-template matStepLabel>Documenti</ng-template>
-                <div class="row">
-                  <div class="col-12">
-                    <mat-card>
-                      <mat-card-title class="text-center" ><h1>Caricamento documenti</h1></mat-card-title>
-                      <mat-card-subtitle class="text-center"><h3>Carica qui i tuoi documenti</h3></mat-card-subtitle>
-                      <mat-card-content class="text-center" >
-
-                        <div *ngIf="!previewData" >
-                          <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" accept=".xlsx, .xls">
-                          <button class="text-center" mat-raised-button color="primary" (click)="fileInput.click()">
-                            <mat-icon>cloud_upload</mat-icon> Carica file Excel
-                          </button>
-                        </div>
-                      <div *ngIf="previewData" class="preview-container">
-                   <h4>{{ selectedFileName }}</h4>
-                     <div [innerHTML]="previewData" class="excel-preview"></div>
-                      </div>
-                      </mat-card-content>
-                      <mat-card-footer class="text-center" *ngIf="previewData">
-                        <button class="btn btn-success" mattooltip="Salva documento" (click)="salvaDocumento()"  > <i class="fa fa-save" ></i> </button>
-                      </mat-card-footer>
-                    </mat-card>
-
-                  </div>
-                </div>
-                <div class="text-center">
-                  <button mat-button matStepperPrevious>«Indietro</button> &nbsp;
-                </div>
-                </mat-step> -->
             </mat-stepper>
             <div class="row">
               <div class="col-6" style="text-align: end">
