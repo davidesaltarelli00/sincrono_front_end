@@ -507,26 +507,29 @@
         </div>
        </div>
        <br>
-       <div class="row">
-        <div class="col-3">
+       <div class="row text-center">
+        <div class="col-4">
           <button [disabled]="risultatoCheckFreeze || !giorno" mat-mini-fab color="primary" matTooltip="Salva tutto il rapportino" (click)="salvaRapportino(giorno)" > <i class="fa fa-save"></i> </button>
         </div>
-        <div class="col-3">
+        <div class="col-4">
           <button mat-mini-fab color="accent" [disabled]="risultatoCheckFreeze" (click)="inviaRapportino()" matTooltip="Invia rapportino" > <i class="fa fa-file" ></i></button>
         </div>
-        <div class="col-3">
+        <div class="col-4">
           <button mat-mini-fab color="warn" [disabled]="risultatoCheckFreeze" (click)="aggiungiNoteDipendente()" matTooltip="Invia nota all'admin " ><i class="fa fa-info"></i></button>
         </div>
        </div>
 
        <div class="row" *ngIf="inviaNoteAlDipendente" >
         <br> <br>
-        <div class="col-8">
+        <div class="col-12">
           <textarea [disabled]="risultatoCheckFreeze" name="noteDipendente" id="noteDipendente" class="form-control" cols="30" rows="10" [(ngModel)]="noteDipendente" placeholder="Inserisci una nota da inviare all'admin." ></textarea>
         </div>
-        <div class="col-2">
-          <button mat-flat-button color="primary" (click)="salvaNoteDipendente()" >Invia nota <i class="fa fa-info"></i> </button>
+        <div class="col-12 text-center">
+          <button mat-mini-fab color="primary" [disabled]="noteDipendente==null" (click)="salvaNoteDipendente()" matTooltip="Invia nota" > <i class="fa fa-info"></i> </button> &nbsp;
+          <button mat-mini-fab color="accent" (click)="resetNote()" matTooltip="Annulla" > <i class="fa fa-undo"></i> </button>
+
         </div>
+
        </div>
      </div>
      <br>
