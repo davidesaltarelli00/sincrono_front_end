@@ -377,7 +377,7 @@
             <div class="form-group">
               <label for="assenze">Assenza</label>
             <button style="width: 30px; height: 30px;" (click)="mostraNascondiPermessi(i)" mat-mini-fab color="primary"
-            [disabled]="risultatoCheckFreeze" matTooltip="Assenze" > <i class="fa fa-ban" ></i> </button>
+            [disabled]="risultatoCheckFreeze  || giorno.festivitaNazionale" matTooltip="Assenze" > <i class="fa fa-ban" ></i> </button>
             </div>
           </div>
         </div>
