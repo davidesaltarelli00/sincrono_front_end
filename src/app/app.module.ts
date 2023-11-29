@@ -65,6 +65,7 @@ import { AlertConfermaComponent } from './alert-conferma/alert-conferma.componen
 import { SelectedDaysComponent } from './components/richieste/selected-days/selected-days.component';
 import { InsertPermessoComponent } from './components/richieste/insert-permesso/insert-permesso.component';
 import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-richiesta/dettaglio-richiesta.component';
+import { FooterComponent } from './components/footer/footer.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -108,7 +109,8 @@ import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-ri
     MailSollecitaComponent,
     AlertConfermaComponent,
     CaricamentoDocumentiComponent,
-    DettaglioRichiestaComponent
+    DettaglioRichiestaComponent,
+    FooterComponent
   ],
   imports: [
     MatIconModule,
