@@ -132,7 +132,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
           if ((result as any).esito.code !== 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
-                Image: '../../../../assets/images/logo.jpeg',
+                image: '../../../../assets/images/logo.jpeg',
                 title: 'Caricamento non riuscito:',
                 message: (result as any).esito.target,
               },
@@ -150,28 +150,28 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
             // console.log(
             //   'Dati get rapportino:' + JSON.stringify(this.rapportinoDto)
             // );
-            if (this.note != null) {
-              const dialogRef = this.dialog.open(AlertDialogComponent, {
-                data: {
-                  Image: '../../../../assets/images/logo.jpeg',
-                  title: 'Attenzione:',
-                  message: this.note,
-                },
-              });
-            }
+            // if (this.note != null) {
+            //   const dialogRef = this.dialog.open(AlertDialogComponent, {
+            //     data: {
+            //       image: '../../../../assets/images/logo.jpeg',
+            //       title: 'Attenzione:',
+            //       message: this.note,
+            //     },
+            //   });
+            // }
+            this.getAllRichiesteAccettate();
+            this.calcolaTotaleFerie();
+            this.calcolaTotaleMalattia();
+            this.calcolaTotaleOreLavorate();
+            this.calcolaTotaleOrePermessi();
+            this.calcolaTotaleStraordinari();
+            this.cdRef.detectChanges();
           }
         },
         (error: string) => {
           console.error('ERRORE:' + JSON.stringify(error));
         }
       );
-      this.getAllRichiesteAccettate();
-      this.calcolaTotaleFerie();
-      this.calcolaTotaleMalattia();
-      this.calcolaTotaleOreLavorate();
-      this.calcolaTotaleOrePermessi();
-      this.calcolaTotaleStraordinari();
-      this.cdRef.detectChanges();
     } else {
       console.error('ERRORE DI AUTENTICAZIONE');
     }
@@ -206,7 +206,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
         ) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
-              Image: '../../../../assets/images/logo.jpeg',
+              image: '../../../../assets/images/danger.png',
               title: 'Salvataggio delle note non riuscito:',
               message: (result as any).esito.target, //(result as any).esito.target,
             },
@@ -216,7 +216,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
           console.log('RESULT AGGIUNGI NOTE:' + JSON.stringify(result));
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
-              Image: '../../../../assets/images/logo.jpeg',
+              image: '../../../../assets/images/logo.jpeg',
               title: 'Note salvate e rapportino rispedito all utente.',
             },
           });
@@ -226,7 +226,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
       (error: any) => {
         const dialogRef = this.dialog.open(AlertDialogComponent, {
           data: {
-            Image: '../../../../assets/images/logo.jpeg',
+            image: '../../../../assets/images/danger.png',
             title: 'Salvataggio delle note non riuscito:',
             message: JSON.stringify(error),
           },
@@ -348,7 +348,6 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
       ? duplicazioneCorrispondente.oreOrdinarie
       : 0;
   }
-
 
   getMonthName(month: number): string {
     const monthNames = [

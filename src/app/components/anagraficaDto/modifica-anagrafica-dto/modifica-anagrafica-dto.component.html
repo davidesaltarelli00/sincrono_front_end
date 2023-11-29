@@ -192,8 +192,8 @@
                     <mat-card-content>
                       <legend>Ruolo e dati anagrafici</legend>
                       <div class="row">
+                          <div class="col-3">
                         <div class="form-group" formGroupName="ruolo">
-                          <div class="col-4">
                             <label for="ruolo">Ruolo *</label>
                             <select class="form-select" aria-label="Default select example" id="ruolo.id"
                               formControlName="id" type="number">
@@ -264,7 +264,7 @@
                           </div>
                           <div class="col-3">
                             <label for="mailAziendale">Mail Aziendale:</label>
-                            <input type="text" placeholder="Inserire mail aziendale" class="form-control"
+                            <input  type="text" placeholder="Inserire mail aziendale" class="form-control"
                               id="mailAziendale" formControlName="mailAziendale" />
                             <div
                               *ngIf="anagraficaDto.get('anagrafica.mailAziendale')?.hasError('required') && anagraficaDto.get('anagrafica.mailAziendale')?.hasError('touched') "
