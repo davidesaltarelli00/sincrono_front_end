@@ -306,7 +306,13 @@
                         <div class="col-3">
                           <label for="filter-Tipo Azienda">Nome Azienda</label>
                           <div formGroupName="tipoAzienda" class="form-group">
-                            <select (change)="onChangeTipoAzienda($event)" class="form-select"
+                            <select (change)="onChangeTipoAzienda($event)" class="form-select" [ngStyle]="{
+                              border: AnagraficaDto.get(
+                                'anagrafica.tipoAzienda.id'
+                              )?.hasError('required')
+                                ? '1px solid red'
+                                : '1px solid green'
+                            }"
                               aria-label="Default select example" formControlName="id" type="number">
                               <option value="">
                                 -- Seleziona azienda --
@@ -315,6 +321,13 @@
                                 {{ tipoAzienda.descrizione }}
                               </option>
                             </select>
+                            <div *ngIf="
+                            AnagraficaDto.get(
+                              'anagrafica.tipoAzienda.id'
+                            )?.hasError('required')
+                          " class="text-danger">
+                        Campo obbligatorio.
+                      </div>
                           </div>
                         </div>
 

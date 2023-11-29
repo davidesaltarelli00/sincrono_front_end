@@ -132,7 +132,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.AnagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
         tipoAzienda: new FormGroup({
-          id: new FormControl(''),
+          id: new FormControl('', Validators.required),
         }),
         nome: new FormControl('', Validators.required),
         cognome: new FormControl('', Validators.required),
@@ -933,10 +933,16 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                 diariaGiornalieraControl &&
                 scattiAnzianitaControl &&
                 retribuzioneMensileLordaControl &&
-                retribuzioneNettaGiornalieraControl
+                retribuzioneNettaGiornalieraControl &&
+                dataFineProvaControl
               ) {
                 mesiDurataControl.disable();
                 mesiDurataControl.setValue('');
+
+                dataFineProvaControl.enable();
+                dataFineProvaControl.setValue('');
+                dataFineProvaControl.clearValidators();
+                dataFineProvaControl.updateValueAndValidity();
 
                 retribuzioneNettaGiornalieraControl.disable();
                 retribuzioneNettaGiornalieraControl.setValue('');
