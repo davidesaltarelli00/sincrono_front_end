@@ -265,6 +265,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.caricaTipoCanaleReclutamento();
   }
 
+  clearCodiceFiscale() {
+    this.AnagraficaDto.get('anagrafica.codiceFiscale')?.setValue('');
+  }
+
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
@@ -1459,7 +1463,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           .insert(body, localStorage.getItem('token'))
           .subscribe(
             (result) => {
-              if ((result as any).esito.code !== 200) {
+              if ((result as any).esito.code !== 200 && (result as any).esito.target!=null ) {
                 const dialogRef = this.dialog.open(AlertDialogComponent, {
                   data: {
                     image: '../../../../assets/images/danger.png',
@@ -1480,13 +1484,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                       "Non hai inserito l'azienda cliente in una o piú commesse.",
                   },
                 });
-              } else {
+              } if((result as any).esito.code === 200 && (result as any).esito.target===null ) {
                 const dialogRef = this.dialog.open(AlertDialogComponent, {
                   data: {
                     image: '../../../../assets/images/logo.jpeg',
                     title: 'Inserimento effettuato.',
-                    message:
-                      " E' stata inviata una mail all'utente con la password per accedere al sistema. ",
+                    message:" E' stata inviata una mail all'utente con la password per accedere al sistema. ",
                   },
                 });
                 // console.log(this.AnagraficaDto.value);

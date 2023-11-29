@@ -251,30 +251,14 @@
                         </div>
 
                         <div class="col-md-3">
-                          <label>Codice Fiscale* </label>
+                          <label>Codice Fiscale*</label>
                           <div class="form-group">
-                            <input [ngStyle]="{
-                                  border:
-                                    AnagraficaDto.get(
-                                      'anagrafica.codiceFiscale'
-                                    )?.hasError('required') ||
-                                    AnagraficaDto.get(
-                                      'anagrafica.codiceFiscale'
-                                    )?.hasError('minlength') ||
-                                    AnagraficaDto.get(
-                                      'anagrafica.codiceFiscale'
-                                    )?.hasError('maxlength')
-                                      ? '1px solid red'
-                                      : '1px solid green'
-                                }" id="anagrafica.codiceFiscale" type="text" class="form-control"
+                            <input #codiceFiscale [ngStyle]="{ border:AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('required') ||AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('minlength') ||AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('maxlength')? '1px solid red': '1px solid green'}"
+                             id="anagrafica.codiceFiscale" type="text" class="form-control"
                               placeholder="Inserire il codice fiscale." formControlName="codiceFiscale" />
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.codiceFiscale'
-                                  )?.hasError('maxLength')
-                                " class="text-danger">
-                              Il campo non rispetta la lunghezza massima
-                              richiesta (15 caratteri)
+                              <div class="text-end">{{ codiceFiscale.value.length || 0 }}/16</div>
+                            <div *ngIf=" AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('maxLength')" class="text-danger">
+                              Il campo non rispetta la lunghezza massima richiesta (16 caratteri)
                             </div>
                             <div *ngIf="
                                   AnagraficaDto.get(
