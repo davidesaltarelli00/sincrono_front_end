@@ -220,7 +220,7 @@
   </div>
   <div class="row" >
     <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"  >
-      <mat-card [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'lightblue' : 'aliceblue'}" >
+      <mat-card  [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' : (giorno.festivitaNazionale ? 'rgb(238, 64, 64)' : 'rgb(214, 234, 251)')}" >
         <mat-card-title style="text-align: center;">
           <p> <button mat-fab color color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}</p>
         </mat-card-title>

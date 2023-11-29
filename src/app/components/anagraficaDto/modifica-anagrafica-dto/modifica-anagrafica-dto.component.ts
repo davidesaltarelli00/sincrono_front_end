@@ -310,6 +310,12 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.caricaMappa();
       this.caricaTipoCausaFineContratto();
 
+      const mailAziendale=this.anagraficaDto.get('anagrafica.mailAziendale');
+      if(mailAziendale){
+        mailAziendale.disable();
+        this.anagraficaDto.updateValueAndValidity();
+      }
+
       const tipoContratto = this.anagraficaDto.get(
         'contratto.tipoContratto.id'
       );
