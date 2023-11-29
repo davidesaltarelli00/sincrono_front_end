@@ -22,6 +22,7 @@ import { MenuService } from '../../menu.service';
 import { MapsService } from './maps.service';
 import * as XLSX from 'xlsx';
 import { ThemeService } from 'src/app/theme.service';
+import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -1399,96 +1400,110 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   inserisci() {
-    const removeEmpty = (obj: any) => {
-      Object.keys(obj).forEach((key) => {
-        if (obj[key] && typeof obj[key] === 'object') {
-          removeEmpty(obj[key]);
-        } else if (obj[key] === '' || obj[key] === null) {
-          delete obj[key];
-        }
-        if (obj.contratto && Object.keys(obj.contratto).length === 0) {
-          delete obj.contratto;
-        }
-        if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
-          delete obj.tipoContratto;
-        }
-        if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
-          delete obj.tipoAzienda;
-        }
-        if (obj.tipoCcnl && Object.keys(obj.tipoCcnl).length === 0) {
-          delete obj.tipoCcnl;
-        }
-        if (
-          obj.tipoLivelloContratto &&
-          Object.keys(obj.tipoLivelloContratto).length === 0
-        ) {
-          delete obj.tipoLivelloContratto;
-        }
-        if (
-          obj.tipoCanaleReclutamento &&
-          Object.keys(obj.tipoCanaleReclutamento).length === 0
-        ) {
-          delete obj.tipoCanaleReclutamento;
-        }
-      });
-    };
-    removeEmpty(this.AnagraficaDto.value);
 
-    this.showErrorAlert = false;
-    this.missingFields = [];
-    if (this.AnagraficaDto.invalid) {
-      console.log('Qualcosa é andato storto, controlla i campi e riprova.');
-    } else {
-      const body = JSON.stringify({
-        anagraficaDto: this.AnagraficaDto.value,
-      });
-      console.log('Backend payload: ' + body);
+    const dialogRef = this.dialog.open(AlertConfermaComponent, {
+      data: {
+        image: '../../../../assets/images/danger.png',
+        title: 'Attenzione:',
+        message:  "Confermi di voler effettuare l'inserimento? Verifica i dati prima di salvare.",
+      },
+    });
 
-      this.anagraficaDtoService
-        .insert(body, localStorage.getItem('token'))
-        .subscribe(
-          (result) => {
-            if ((result as any).esito.code !== 200) {
-              const dialogRef = this.dialog.open(AlertDialogComponent, {
-                data: {
-                  image: '../../../../assets/images/danger.png',
-                  title: 'Inserimento non riuscito:',
-                  message: (result as any).esito.target,
-                },
-              });
-            }
-            if (
-              (result as any).esito.target ===
-              'org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : it.sincrono.entities.Commessa.tipoAziendaCliente -> it.sincrono.entities.TipoAziendaCliente'
-            ) {
-              const dialogRef = this.dialog.open(AlertDialogComponent, {
-                data: {
-                  image: '../../../../assets/images/danger.png',
-                  title: 'Inserimento non riuscito:',
-                  message:
-                    "Non hai inserito l'azienda cliente in una o piú commesse.",
-                },
-              });
-            } else {
-              const dialogRef = this.dialog.open(AlertDialogComponent, {
-                data: {
-                  image: '../../../../assets/images/logo.jpeg',
-                  title: 'Inserimento effettuato.',
-                  message:
-                    " E' stata inviata una mail all'utente con la password per accedere al sistema. ",
-                },
-              });
-              // console.log(this.AnagraficaDto.value);
-              this.router.navigate(['/lista-anagrafica']);
-            }
-          },
-          (error: any) => {
-            console.error(
-              "Si é verificato un errore durante l'inserimento:" + error
-            );
+    dialogRef.componentInstance.conferma.subscribe(() => {
+      const removeEmpty = (obj: any) => {
+        Object.keys(obj).forEach((key) => {
+          if (obj[key] && typeof obj[key] === 'object') {
+            removeEmpty(obj[key]);
+          } else if (obj[key] === '' || obj[key] === null) {
+            delete obj[key];
           }
-        );
+          if (obj.contratto && Object.keys(obj.contratto).length === 0) {
+            delete obj.contratto;
+          }
+          if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
+            delete obj.tipoContratto;
+          }
+          if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
+            delete obj.tipoAzienda;
+          }
+          if (obj.tipoCcnl && Object.keys(obj.tipoCcnl).length === 0) {
+            delete obj.tipoCcnl;
+          }
+          if (
+            obj.tipoLivelloContratto &&
+            Object.keys(obj.tipoLivelloContratto).length === 0
+          ) {
+            delete obj.tipoLivelloContratto;
+          }
+          if (
+            obj.tipoCanaleReclutamento &&
+            Object.keys(obj.tipoCanaleReclutamento).length === 0
+          ) {
+            delete obj.tipoCanaleReclutamento;
+          }
+        });
+      };
+      removeEmpty(this.AnagraficaDto.value);
+
+      this.showErrorAlert = false;
+      this.missingFields = [];
+      if (this.AnagraficaDto.invalid) {
+        console.log('Qualcosa é andato storto, controlla i campi e riprova.');
+      } else {
+        const body = JSON.stringify({
+          anagraficaDto: this.AnagraficaDto.value,
+        });
+        console.log('Backend payload: ' + body);
+
+        this.anagraficaDtoService
+          .insert(body, localStorage.getItem('token'))
+          .subscribe(
+            (result) => {
+              if ((result as any).esito.code !== 200) {
+                const dialogRef = this.dialog.open(AlertDialogComponent, {
+                  data: {
+                    image: '../../../../assets/images/danger.png',
+                    title: 'Inserimento non riuscito:',
+                    message: (result as any).esito.target,
+                  },
+                });
+              }
+              if (
+                (result as any).esito.target ===
+                'org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : it.sincrono.entities.Commessa.tipoAziendaCliente -> it.sincrono.entities.TipoAziendaCliente'
+              ) {
+                const dialogRef = this.dialog.open(AlertDialogComponent, {
+                  data: {
+                    image: '../../../../assets/images/danger.png',
+                    title: 'Inserimento non riuscito:',
+                    message:
+                      "Non hai inserito l'azienda cliente in una o piú commesse.",
+                  },
+                });
+              } else {
+                const dialogRef = this.dialog.open(AlertDialogComponent, {
+                  data: {
+                    image: '../../../../assets/images/logo.jpeg',
+                    title: 'Inserimento effettuato.',
+                    message:
+                      " E' stata inviata una mail all'utente con la password per accedere al sistema. ",
+                  },
+                });
+                // console.log(this.AnagraficaDto.value);
+                this.router.navigate(['/lista-anagrafica']);
+              }
+            },
+            (error: any) => {
+              console.error(
+                "Si é verificato un errore durante l'inserimento:" + error
+              );
+            }
+          );
+      }
     }
+    );
+
+
   }
   caricaTipoContratto() {
     this.contrattoService
