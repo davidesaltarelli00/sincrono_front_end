@@ -991,7 +991,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
       getAziendaCliente(localStorage.getItem('token'))
       .subscribe(
         (result: any) => {
-          console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+          // console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
           this.aziendeClienti = (result as any)['list'];
         },
         (error: any) => {
@@ -1011,12 +1011,12 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
       );
 
       if (selectedObject) {
-        console.log('Azienda cliente selezionata: ', selectedObject);
+        // console.log('Azienda cliente selezionata: ', selectedObject);
       } else {
-        console.log('Azienda non trovata nella lista');
+        // console.log('Azienda non trovata nella lista');
       }
     } else {
-      console.log('Valore non valido o azienda non selezionata');
+      // console.log('Valore non valido o azienda non selezionata');
     }
   }
 
@@ -1052,9 +1052,9 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
   getUserRole() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
-        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+        // console.log('DATI GET USER ROLE:' + JSON.stringify(response));
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
-        console.log('ID UTENTE PER NAV:' + this.idUtente);
+        // console.log('ID UTENTE PER NAV:' + this.idUtente);
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
@@ -1085,7 +1085,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
   getPermissions(functionId: number) {
     this.menuService.getPermissions(this.token, functionId).subscribe(
       (data: any) => {
-        console.log('Permessi ottenuti:', data);
+        // console.log('Permessi ottenuti:', data);
       },
       (error: any) => {
         console.error('Errore nella generazione dei permessi:', error);
@@ -1098,9 +1098,9 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
       (data: any) => {
         this.jsonData = data;
         this.idFunzione = data.list[0].id;
-        console.log(
-          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        );
+        // console.log(
+        //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+        // );
         this.shouldReloadPage = false;
       },
       (error: any) => {
@@ -1114,8 +1114,8 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     let body = {
       codiceFiscale: this.codiceFiscaleDettaglio,
     };
-    console.log(JSON.stringify(body));
-    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    // console.log(JSON.stringify(body));
+    // console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
     this.imageService.getImage(this.token, body).subscribe(
       (result: any) => {
         this.immagine = (result as any).base64;
