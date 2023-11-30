@@ -327,7 +327,7 @@
               <thead>
                 <tr>
                   <th>Nominativo</th>
-                  <th>Codice Fiscale</th>
+                  <!-- <th>Codice Fiscale</th> -->
                   <th>Tipo Contratto</th>
                   <th>Tipo Livello Contratto</th>
                   <th>Sede Assunzione</th>
@@ -368,7 +368,7 @@
               <tbody>
                 <tr *ngFor="let element of listaContrattiInScadenza">
                   <td>{{element.anagrafica.nome}} {{element.anagrafica.cognome}}</td>
-                  <td>{{element.anagrafica.codiceFiscale |uppercase}}</td>
+                  <!-- <td>{{element.anagrafica.codiceFiscale |uppercase}}</td> -->
                   <td>{{ element.contratto.tipoContratto.descrizione }}</td>
                   <td>{{ element.contratto.tipoLivelloContratto.ccnl }} - Livello {{
                     element.contratto.tipoLivelloContratto.livello }}</td>
