@@ -38,25 +38,25 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-12">
+        <div class="col-lg-12">
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th>Azienda Cliente</th>
-                <th>Cliente Finale</th>
-                <th>Titolo Posizione</th>
+                <th>Azienda cliente</th>
+                <th>Cliente finale</th>
+                <th>Titolo posizione</th>
                 <th>Distacco</th>
-                <th>Distacco Azienda</th>
+                <th>Distacco azienda</th>
                 <th>Distacco data</th>
-                <th>Data Inizio</th>
-                <th>Data Fine</th>
-                <th>Tariffa Giornaliera</th>
-                <th>Azienda di Fatturazione Interna</th>
-                <th>Modifica</th>
+                <th>Data inizio</th>
+                <th>Data fine</th>
+                <th>Tariffa giornaliera</th>
+                <th>Azienda fatturazione Interna</th>
+                <th>Azioni</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let commessa of data.anagraficaDto.commesse">
+              <tr *ngFor="let commessa of data.anagraficaDto.commesse; let i=index;">
                 <td *ngIf="commessa.tipoAziendaCliente.descrizione!=null" >{{ commessa.tipoAziendaCliente.descrizione }}</td>
                 <td style="color: red;" *ngIf="commessa.tipoAziendaCliente.descrizione==null" >Dato non inserito.</td>
 
@@ -93,8 +93,11 @@
                 <td *ngIf=" commessa.aziendaDiFatturazioneInterna !=null" >{{ commessa.aziendaDiFatturazioneInterna }} </td>
                 <td style="color: red;" *ngIf=" commessa.aziendaDiFatturazioneInterna==null " >Dato non inserito.</td>
 
+                <td >
+                   <button mat-mini-fab color="accent" matTooltip="Modifica commessa" (click)="modificaCommessa(data.anagraficaDto.anagrafica.id)" > <i class="fa fa-pencil"></i> </button>
+                   <button mat-mini-fab color="warn" matTooltip="Archivia commessa" (click)="storicizzaCommessa(commessa.id, i)"><i class="fa fa-file"></i> </button>
+                </td>
 
-                <td > <button class="btn btn-warning" (click)="modificaCommessa(data.anagraficaDto.anagrafica.id)" > <i class="fa fa-pencil"></i> </button> </td>
               </tr>
             </tbody>
           </table>
