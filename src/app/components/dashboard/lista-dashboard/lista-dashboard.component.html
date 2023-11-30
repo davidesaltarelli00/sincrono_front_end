@@ -168,8 +168,8 @@
       <div class="col-12">
         <mat-card>
           <mat-card-title>
-            <h1>Contratti con scatto livello  <button class="btn btn-success" (click)="exportContrattiFromBatchToExcel()" matTooltip="Esporta in excel i dati presenti nella tabella Contratti scatto livello"
-              title="Esporta come file Excel"><i class="fa-solid fa-file-export"></i></button> &nbsp;   <button class="btn btn-danger" (click)="resetTabella()" matTooltip="Svuota la tabella dei contratti con scatto livello." > <i class="fa fa-trash" ></i> </button> </h1>
+            <h1>Contratti con scatto livello  <button class="btn btn-success" [disabled]="listaContrattiFromBatch==null" (click)="exportContrattiFromBatchToExcel()" matTooltip="Esporta in excel i dati presenti nella tabella Contratti scatto livello"
+              title="Esporta come file Excel"><i class="fa-solid fa-file-export"></i></button> &nbsp;   <button [disabled]="listaContrattiFromBatch==null"  class="btn btn-danger" (click)="resetTabella()" matTooltip="Svuota la tabella dei contratti con scatto livello." > <i class="fa fa-trash" ></i> </button> </h1>
           </mat-card-title>
           <mat-card-subtitle>
             <h3>Elenco dei contratti con scatto livello</h3>
@@ -235,80 +235,10 @@
     <hr>
     <div class="row">
       <div class="col-12">
-        <mat-card>
-          <mat-card-title>
-            <h1>Commesse in scadenza <button class="btn btn-success" (click)="exportCommesseInScadenzaToExcel()" class="btn btn-success"
-              title="Esporta come file Excel"><i class="fa-solid fa-file-export"></i></button></h1>
-          </mat-card-title>
-          <mat-card-subtitle>
-            <h3>Contiene l'elenco delle commesse in scadenza entro 40 giorni</h3>
-          </mat-card-subtitle>
-          <mat-card-content>
-            <table class="table table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th>Nominativo</th>
-                  <th>Azienda Cliente</th>
-                  <th>Cliente finale</th>
-                  <th>Titolo posizione</th>
-                  <th>Distacco</th>
-                  <th>Distacco azienda</th>
-                  <th>Distacco data</th>
-                  <th>Tariffa giornaliera</th>
-                  <th>Azienda di fatturazione interna</th>
-                  <th>Data inizio</th>
-                  <th>Data fine</th>
-                  <th>Tempo rimanente</th>
-                  <th>Anagrafica</th>
-                  <th>Modifica</th>
-
-                </tr>
-              </thead>
-
-              <tbody>
-                <ng-container *ngFor="let element of listaCommesseInScadenza">
-                  <tr *ngFor="let commessa of element.commesse">
-                    <td>{{element.anagrafica.nome}} {{element.anagrafica.cognome}}</td>
-                    <td>{{ commessa.tipoAziendaCliente.descrizione }}</td>
-                    <td>{{ commessa.clienteFinale }}</td>
-                    <td>{{ commessa.titoloPosizione }}</td>
-                    <td>{{ commessa.distacco ? 'Sì' : 'No' }}</td>
-                    <td>{{ commessa.distaccoAzienda ? 'Sì' : 'No' }}</td>
-                    <td>{{ commessa.distaccoData | date:'dd/MM/yyyy' }}</td>
-                    <td>{{ commessa.tariffaGiornaliera || '' }}</td>
-                    <td>{{ commessa.aziendaDiFatturazioneInterna || '' }}</td>
-                    <td>{{ commessa.dataInizio | date:'dd/MM/yyyy' }}</td>
-                    <td>{{ commessa.dataFine | date:'dd/MM/yyyy' }}</td>
-                    <td [ngStyle]="{'color': getDaysRemainingColorCommessa(commessa.dataFine)}">{{ calculateDaysRemainingCommessa(commessa.dataFine) }} gg</td>
-                    <td>
-                      <button [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"
-                            matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
-                            mat-mini-fab color="primary"><i class="fa fa-info"></i></button>
-                    </td>
-                    <td>
-                      <button  mat-mini-fab color="accent" [routerLink]="['/modifica-commessa', element.anagrafica.id]"
-                          matTooltip="Modifica la commessa di {{element.anagrafica.nome}} {{element.anagrafica.cognome}}; cliente: {{commessa.tipoAziendaCliente.descrizione}} "><i
-                            class="fa fa-pencil"></i></button>
-                    </td>
-                  </tr>
-                </ng-container>
-              </tbody>
-
-            </table>
-          </mat-card-content>
-          <mat-card-footer *ngIf="listaCommesseInScadenza===null" >
-            <p>Nessun risultato.</p>
-          </mat-card-footer>
-        </mat-card>
-      </div>
-    </div>
-    <hr>
-    <div class="row">
-      <div class="col-12">
       <mat-card>
         <mat-card-title>
           <h1>
-            Contratti in scadenza <button class="btn btn-success" (click)="exportContrattiInScadenzaToExcel()" class="btn btn-success"
+            Contratti in scadenza <button class="btn btn-success" [disabled]="listaContrattiInScadenza==null" (click)="exportContrattiInScadenzaToExcel()" class="btn btn-success"
             title="Esporta come file Excel"><i class="fa-solid fa-file-export"></i></button>
           </h1>
         </mat-card-title>
@@ -413,7 +343,77 @@
       <div class="col-12">
         <mat-card>
           <mat-card-title>
-            <h1>Lista commesse scadute <button class="btn btn-success" (click)="exportCommesseScaduteToExcel()"
+            <h1>Commesse in scadenza <button [disabled]="listaCommesseInScadenza==null" class="btn btn-success" (click)="exportCommesseInScadenzaToExcel()" class="btn btn-success"
+              title="Esporta come file Excel"><i class="fa-solid fa-file-export"></i></button></h1>
+          </mat-card-title>
+          <mat-card-subtitle>
+            <h3>Contiene l'elenco delle commesse in scadenza entro 40 giorni</h3>
+          </mat-card-subtitle>
+          <mat-card-content>
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Nominativo</th>
+                  <th>Azienda Cliente</th>
+                  <th>Cliente finale</th>
+                  <th>Titolo posizione</th>
+                  <th>Distacco</th>
+                  <th>Distacco azienda</th>
+                  <th>Distacco data</th>
+                  <th>Tariffa giornaliera</th>
+                  <th>Azienda di fatturazione interna</th>
+                  <th>Data inizio</th>
+                  <th>Data fine</th>
+                  <th>Tempo rimanente</th>
+                  <th>Anagrafica</th>
+                  <th>Modifica</th>
+
+                </tr>
+              </thead>
+
+              <tbody>
+                <ng-container *ngFor="let element of listaCommesseInScadenza">
+                  <tr *ngFor="let commessa of element.commesse">
+                    <td>{{element.anagrafica.nome}} {{element.anagrafica.cognome}}</td>
+                    <td>{{ commessa.tipoAziendaCliente.descrizione }}</td>
+                    <td>{{ commessa.clienteFinale }}</td>
+                    <td>{{ commessa.titoloPosizione }}</td>
+                    <td>{{ commessa.distacco ? 'Sì' : 'No' }}</td>
+                    <td>{{ commessa.distaccoAzienda ? 'Sì' : 'No' }}</td>
+                    <td>{{ commessa.distaccoData | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ commessa.tariffaGiornaliera || '' }}</td>
+                    <td>{{ commessa.aziendaDiFatturazioneInterna || '' }}</td>
+                    <td>{{ commessa.dataInizio | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ commessa.dataFine | date:'dd/MM/yyyy' }}</td>
+                    <td [ngStyle]="{'color': getDaysRemainingColorCommessa(commessa.dataFine)}">{{ calculateDaysRemainingCommessa(commessa.dataFine) }} gg</td>
+                    <td>
+                      <button [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"
+                            matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
+                            mat-mini-fab color="primary"><i class="fa fa-info"></i></button>
+                    </td>
+                    <td>
+                      <button  mat-mini-fab color="accent" [routerLink]="['/modifica-commessa', element.anagrafica.id]"
+                          matTooltip="Modifica la commessa di {{element.anagrafica.nome}} {{element.anagrafica.cognome}}; cliente: {{commessa.tipoAziendaCliente.descrizione}} "><i
+                            class="fa fa-pencil"></i></button>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+
+            </table>
+          </mat-card-content>
+          <mat-card-footer *ngIf="listaCommesseInScadenza===null" >
+            <p>Nessun risultato.</p>
+          </mat-card-footer>
+        </mat-card>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-title>
+            <h1>Lista commesse scadute <button class="btn btn-success" [disabled]="listaCommesseScadute==null" (click)="exportCommesseScaduteToExcel()"
               class="btn btn-success" title="Esporta come file Excel"><i class="fa-solid fa-file-export"></i></button>
           </h1>
           </mat-card-title>
@@ -634,7 +634,7 @@
         <thead>
           <tr>
             <th>Nominativo</th>
-            <th>Codice <br> Fiscale</th>
+            <!-- <th>Codice <br> Fiscale</th> -->
             <th>Azienda <br> Cliente</th>
             <th>Cliente <br> Finale</th>
             <th>Titolo <br> Posizione</th>
@@ -650,10 +650,10 @@
             <th>Modifica</th>
           </tr>
         </thead>
-        <tbody [hidden]="pageData.length===0">
+        <tbody>
           <tr *ngFor="let commessa of listaCommesseScadute">
             <td>{{commessa[0]}} {{commessa[1]}}</td>
-            <td>{{commessa[2] |uppercase}}</td>
+            <!-- <td>{{commessa[2] |uppercase}}</td> -->
             <td>{{ commessa[3] }}</td>
             <td>{{ commessa[4] }}</td>
             <td>{{ commessa[5]}}</td>
