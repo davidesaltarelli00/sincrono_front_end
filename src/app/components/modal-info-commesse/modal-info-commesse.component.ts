@@ -61,6 +61,12 @@ export class ModalInfoCommesseComponent implements OnInit {
     this.router.navigate(['/modifica-commessa/' + id]);
     this.dialog.closeAll();
   }
+  dettaglioAnagrafica(id: any) {
+    console.log(id);
+    this.stepperService.setCurrentStep(2);
+    this.router.navigate(['/dettaglio-anagrafica/' + id]);
+    this.dialog.closeAll();
+  }
 
   closeDialog(): void {
     this.dialog.closeAll();
@@ -70,38 +76,30 @@ export class ModalInfoCommesseComponent implements OnInit {
     this.themeService.toggleDarkMode();
   }
 
-  storicizzaCommessa(id: number, posizione: number) {
+  storicizza( posizione: number) {
     const payload = {
       commessa: this.elencoCommesse[posizione],
     };
-    // console.log(JSON.stringify(payload));
+
+    console.log(JSON.stringify(payload));
+
     this.anagraficaDtoService
       .storicizzaCommessa(payload, localStorage.getItem('token'))
       .subscribe(
         (res: any) => {
-          if ((res as any).esito.code != 200) {
-            const dialogRef = this.dialog.open(AlertDialogComponent, {
-              data: {
-                image: '../../../../assets/images/danger.png',
-                title:
-                  "Attenzione: Si é verificato un errore durante l'archiviazione della commessa",
-                message: (res as any).esito.target,
-              },
-            });
-          }
-          if ((res as any).esito.code === 200) {
-            const dialogRef = this.dialog.open(AlertDialogComponent, {
-              data: {
-                image: '../../../../assets/images/logo.jpeg',
-                title: 'Commessa storicizzata correttamente.',
-                message: (res as any).esito.target,
-              },
-            });
-            this.ngOnInit();
-          }
+          console.log(
+            'Commessa storicizzata correttamente: ' + JSON.stringify(res)
+          );
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/logo.jpeg',
+              title: 'Commessa storicizzata correttamente.',
+            },
+          });
+         location.reload();
         },
         (error: any) => {
-          alert(
+          console.error(
             'Si è verificato un errore durante la storicizzazione della commessa selezionata: ' +
               error
           );
