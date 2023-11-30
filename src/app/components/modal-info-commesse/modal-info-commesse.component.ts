@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { StepperService } from 'src/app/stepper.service';
 import { ThemeService } from 'src/app/theme.service';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-modal-info-commesse',
@@ -25,7 +26,7 @@ export class ModalInfoCommesseComponent implements OnInit {
     private datePipe: DatePipe,
     private anagraficaDtoService: AnagraficaDtoService,
     private clipboard: Clipboard,
-    public themeService:ThemeService,
+    public themeService: ThemeService,
     private snackBar: MatSnackBar,
     private stepperService: StepperService,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -69,4 +70,42 @@ export class ModalInfoCommesseComponent implements OnInit {
     this.themeService.toggleDarkMode();
   }
 
+  storicizzaCommessa(id: number, posizione: number) {
+    const payload = {
+      commessa: this.elencoCommesse[posizione],
+    };
+    // console.log(JSON.stringify(payload));
+    this.anagraficaDtoService
+      .storicizzaCommessa(payload, localStorage.getItem('token'))
+      .subscribe(
+        (res: any) => {
+          if ((res as any).esito.code != 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/danger.png',
+                title:
+                  "Attenzione: Si é verificato un errore durante l'archiviazione della commessa",
+                message: (res as any).esito.target,
+              },
+            });
+          }
+          if ((res as any).esito.code === 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/logo.jpeg',
+                title: 'Commessa storicizzata correttamente.',
+                message: (res as any).esito.target,
+              },
+            });
+            this.ngOnInit();
+          }
+        },
+        (error: any) => {
+          alert(
+            'Si è verificato un errore durante la storicizzazione della commessa selezionata: ' +
+              error
+          );
+        }
+      );
+  }
 }

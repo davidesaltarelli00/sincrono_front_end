@@ -344,30 +344,17 @@ export class ProfileBoxComponent {
   }
 
   storicizzaCommessa(id: number, posizione: number) {
-    console.log('ID COMMESSA DA STORICIZZARE: ' + id);
-    console.log("Posizione nell'array: " + posizione);
-
-    // const payload = {
-    //   anagraficaDto: {
-    //     anagrafica: null,
-    //     contratto: null,
-    //     commesse: [this.elencoCommesse[posizione]],
-    //     ruolo: null
-    //   },
-    // };
     const payload = {
       commessa: this.elencoCommesse[posizione],
     };
-
-    console.log(JSON.stringify(payload));
-
+    // console.log(JSON.stringify(payload));
     this.anagraficaDtoService
       .storicizzaCommessa(payload, localStorage.getItem('token'))
       .subscribe(
         (res: any) => {
-          console.log(
-            'Commessa storicizzata correttamente: ' + JSON.stringify(res)
-          );
+          // console.log(
+          //   'Commessa storicizzata correttamente: ' + JSON.stringify(res)
+          // );
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
               image:'../../../../assets/images/logo.jpeg',
