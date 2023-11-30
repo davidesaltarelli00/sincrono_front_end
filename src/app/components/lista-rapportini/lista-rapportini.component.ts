@@ -759,7 +759,7 @@ export class ListaRapportiniComponent implements OnInit {
         image: '../../../../assets/images/danger.png',
         title: 'Attenzione:',
         message:  "Confermi di voler cambiare lo stato del rapportino?",
-      },
+      }, disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {

@@ -31,49 +31,6 @@ body {
   background-color: aliceblue;
 }
 
-footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  text-align: center;
-}
-
-
-
-
-/* Reduce line height for table cells */
-.table th,
-.table td {
-  line-height: 1;
-  /* Adjust as needed */
-}
-
-/* Reduce the spacing between table rows */
-.table tbody tr {
-  margin-bottom: 5px;
-  /* Adjust as needed */
-}
-
-/* Reduce spacing between table header and cells */
-.table thead th,
-.table tbody td {
-  padding-top: 6px;
-  /* Adjust as needed */
-  padding-bottom: 6px;
-  /* Adjust as needed */
-}
-
-/* Reduce spacing between table rows when hovered */
-.table tbody tr:hover {
-  background-color: transparent;
-  /* Remove hover background color if desired */
-}
-
-
 // paginazione light mode
 .pagination {
   display: flex;
@@ -174,13 +131,6 @@ footer {
 
 tr:hover {
   background-color: aliceblue;
-}
-
-table {
-  width: 100%;
-  overflow-x: auto;
-  display: block;
-  /* Ensure the table has a block-level container */
 }
 
 @media (max-width: 768px) {

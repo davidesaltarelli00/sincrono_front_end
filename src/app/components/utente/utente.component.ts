@@ -728,6 +728,7 @@ export class UtenteComponent implements OnInit {
                 title: 'Attenzione, hai delle note:',
                 message: this.note,
               },
+              disableClose: true,
             });
           }
         }
@@ -951,7 +952,7 @@ export class UtenteComponent implements OnInit {
         title: 'Attenzione:',
         message:
           "Se confermi l'invio, il rapportino verrá disabilitato finché l'admin non ti risponderá.",
-      },
+      }, disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {
@@ -1065,7 +1066,7 @@ export class UtenteComponent implements OnInit {
         title: 'Attenzione:',
         message:
           'Confermi di voler inviare il rapportino? Una volta inviato, non potrai piú effettuare modifiche.',
-      },
+      }, disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {
@@ -1524,6 +1525,7 @@ export class UtenteComponent implements OnInit {
                 title: 'Attenzione, hai delle note:',
                 message: this.note,
               },
+              disableClose: true,
             });
           }
         }
@@ -1585,6 +1587,7 @@ export class UtenteComponent implements OnInit {
                 title: 'Attenzione, hai delle note:',
                 message: this.note,
               },
+              disableClose: true,
             });
           }
         }
