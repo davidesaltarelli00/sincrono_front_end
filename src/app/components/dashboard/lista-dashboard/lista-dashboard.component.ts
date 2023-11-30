@@ -58,7 +58,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
   userlogged: any;
   // paginazione
   currentPage: number = 1;
-  itemsPerPage: number = 20; // Numero di elementi per pagina
+  itemsPerPage: number = 25; // Numero di elementi per pagina
   listaCommesseInScadenza: any[] = []; //array 2.0
   listaContrattiInScadenza: any[] = []; //array 2.0
   listaCommesseScadute: any[] = []; //array 2.0
@@ -639,6 +639,16 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
 
   }
   //paginazione
+
+  onChaneItemsPerPage(event: any) {
+    const target = parseInt(event.target.value, 10);
+    if (!isNaN(target)) {
+      this.itemsPerPage = target;
+      this.currentPage = 1;
+      this.pageData = this.getCurrentPageItems();
+    }
+  }
+
   getCurrentPageItems(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;

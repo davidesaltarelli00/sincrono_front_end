@@ -129,7 +129,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   // paginazione
   currentPage: number = 1;
-  itemsPerPage: number = 20; // Numero di elementi per pagina
+  itemsPerPage: number = 25; // Numero di elementi per pagina
   pageData: any[] = [];
 
   risultatiFilter: any[] = [];
@@ -222,7 +222,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
 
-
     this.popolaAnni();
   }
 
@@ -238,6 +237,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       this.anni.push(anno);
     }
   }
+
+
 
   goDown() {
     document.getElementById('finePagina')?.scrollIntoView({
@@ -476,130 +477,152 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-  elimina(idAnagrafica: number, nome:any, cognome:any) {
+  elimina(idAnagrafica: number, nome: any, cognome: any) {
     const dialogRef = this.dialog.open(AlertConfermaComponent, {
       data: {
         image: '../../../../assets/images/danger.png',
         title: 'Attenzione:',
-        message:  "Confermi di voler disattivare l'utenza di "+nome+" "+cognome+"?",
+        message:
+          "Confermi di voler disattivare l'utenza di " +
+          nome +
+          ' ' +
+          cognome +
+          '?',
       },
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {
       this.anagraficaDtoService
-      .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
-      .subscribe(
-        (resp: any) => {
-          // console.log(
-          //   'Dettaglio prima dell eliminazione: ' + JSON.stringify(resp)
-          // );
-          let body = {
-            anagraficaDto: resp.anagraficaDto,
-          };
-          // console.log(
-          //   "PAYLOAD BACKEND PER L'ELIMINAZIONE: " + JSON.stringify(body)
-          // );
-          //se é ok parte l elimina
-          this.anagraficaDtoService
-            .delete(body, localStorage.getItem('token'))
-            .subscribe(
-              (response: any) => {
-                if ((response as any).esito.code != 200) {
+        .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
+        .subscribe(
+          (resp: any) => {
+            // console.log(
+            //   'Dettaglio prima dell eliminazione: ' + JSON.stringify(resp)
+            // );
+            let body = {
+              anagraficaDto: resp.anagraficaDto,
+            };
+            // console.log(
+            //   "PAYLOAD BACKEND PER L'ELIMINAZIONE: " + JSON.stringify(body)
+            // );
+            //se é ok parte l elimina
+            this.anagraficaDtoService
+              .delete(body, localStorage.getItem('token'))
+              .subscribe(
+                (response: any) => {
+                  if ((response as any).esito.code != 200) {
+                    const dialogRef = this.dialog.open(AlertDialogComponent, {
+                      data: {
+                        image: '../../../../assets/images/danger.png',
+                        title: 'Disattivazione non riuscita:',
+                        message: (response as any).esito.target,
+                      },
+                    });
+                  } else {
+                    const dialogRef = this.dialog.open(AlertDialogComponent, {
+                      data: {
+                        image: '../../../../assets/images/logo.jpeg',
+                        title: 'Disattivazione riuscita correttamente',
+                        message: (response as any).esito.target,
+                      },
+                    });
+                    this.ngOnInit();
+                  }
+                },
+                (errorDeleted: any) => {
                   const dialogRef = this.dialog.open(AlertDialogComponent, {
                     data: {
-                      image:'../../../../assets/images/danger.png',
-                      title: 'Disattivazione non riuscita:',
-                      message: (response as any).esito.target,
+                      image: '../../../../assets/images/danger.png',
+                      title: 'Errore durante l eliminazione:',
+                      message: JSON.stringify(errorDeleted),
                     },
                   });
-                } else {
-                  const dialogRef = this.dialog.open(AlertDialogComponent, {
-                    data: {
-                      image:'../../../../assets/images/logo.jpeg',
-                      title: 'Disattivazione riuscita correttamente',
-                      message: (response as any).esito.target,
-                    },
-                  });
-                  this.ngOnInit();
                 }
+              );
+          },
+          (error: any) => {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/danger.png',
+                title: 'Qualcosa é andato storto:',
+                message: JSON.stringify(error),
               },
-              (errorDeleted: any) => {
-                const dialogRef = this.dialog.open(AlertDialogComponent, {
-                  data: {
-                    image:'../../../../assets/images/danger.png',
-                    title: 'Errore durante l eliminazione:',
-                    message: JSON.stringify(errorDeleted),
-                  },
-                });
-              }
-            );
-        },
-        (error: any) => {
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-              image:'../../../../assets/images/danger.png',
-              title: 'Qualcosa é andato storto:',
-              message: JSON.stringify(error),
-            },
-          });
-        }
-      );
+            });
+          }
+        );
     });
   }
 
-  riattivaAnagrafica(id: any, nome:any, cognome:any) {
+  riattivaAnagrafica(id: any, nome: any, cognome: any) {
     const dialogRef = this.dialog.open(AlertConfermaComponent, {
       data: {
         image: '../../../../assets/images/danger.png',
         title: 'Attenzione:',
-        message: "Confermi di voler riattivare l'utenza di "+nome+" "+cognome+"?",
+        message:
+          "Confermi di voler riattivare l'utenza di " +
+          nome +
+          ' ' +
+          cognome +
+          '?',
       },
     });
     dialogRef.componentInstance.conferma.subscribe(() => {
       this.anagraficaDtoService
-      .detailAnagraficaDto(id, localStorage.getItem('token'))
-      .subscribe(
-        (resp: any) => {
-          // console.log('UTENTE DA RIATTIVARE: ' + JSON.stringify(resp));
-          //se é ok parte la riattivazione
-          this.anagraficaDtoService
-            .riattivaUtente(resp, localStorage.getItem('token'))
-            .subscribe(
-              (response: any) => {
-                if ((response as any).esito.code != 200) {
-                  const dialogRef = this.dialog.open(AlertDialogComponent, {
-                    data: {
-                      image:'../../../../assets/images/danger.png',
-                      title: 'Riattivazione non riuscita:.',
-                      message: (response as any).esito.target,
-                    },
-                  });
-                } else {
-                  const dialogRef = this.dialog.open(AlertDialogComponent, {
-                    data: {
-                      image:'../../../../assets/images/logo.jpeg',
-                      title: 'Utente riattivato correttamente.',
-                      message: (response as any).esito.target,
-                    },
-                  });
-                  location.reload();
+        .detailAnagraficaDto(id, localStorage.getItem('token'))
+        .subscribe(
+          (resp: any) => {
+            // console.log('UTENTE DA RIATTIVARE: ' + JSON.stringify(resp));
+            //se é ok parte la riattivazione
+            this.anagraficaDtoService
+              .riattivaUtente(resp, localStorage.getItem('token'))
+              .subscribe(
+                (response: any) => {
+                  if ((response as any).esito.code != 200) {
+                    const dialogRef = this.dialog.open(AlertDialogComponent, {
+                      data: {
+                        image: '../../../../assets/images/danger.png',
+                        title: 'Riattivazione non riuscita:.',
+                        message: (response as any).esito.target,
+                      },
+                    });
+                  } else {
+                    const dialogRef = this.dialog.open(AlertDialogComponent, {
+                      data: {
+                        image: '../../../../assets/images/logo.jpeg',
+                        title: 'Utente riattivato correttamente.',
+                        message: (response as any).esito.target,
+                      },
+                    });
+                    location.reload();
+                  }
+                },
+                (errorDeleted: any) => {
+                  // console.log(
+                  //   'Errore durante la riattivazione: ' + errorDeleted
+                  // );
                 }
-              },
-              (errorDeleted: any) => {
-                // console.log(
-                //   'Errore durante la riattivazione: ' + errorDeleted
-                // );
-              }
-            );
-        },
-        (error: any) => {
-          // console.log(error);
-        }
-      );
+              );
+          },
+          (error: any) => {
+            // console.log(error);
+          }
+        );
     });
   }
 
   //paginazione
+
+
+  onChaneItemsPerPage(event: any) {
+    const target = parseInt(event.target.value, 10);
+    if (!isNaN(target)) {
+      this.itemsPerPage = target;
+      this.currentPage = 1;
+      this.pageData = this.getCurrentPageItems();
+    }
+  }
+
+
   getCurrentPageItems(): any[] {
     if (!this.lista) {
       return [];
