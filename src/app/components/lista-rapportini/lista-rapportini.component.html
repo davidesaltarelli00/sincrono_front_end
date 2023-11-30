@@ -461,6 +461,13 @@
               <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
                 <span> <i class="fa fa-arrow-right"></i> </span>
               </li>
+              <li>
+                <select name="itemsPerPage" id="itemsPerPage" class="form-select" (change)="onChaneItemsPerPage($event)" [(ngModel)]="itemsPerPage">
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                </select>
+              </li>
             </ul>
           </div>
          </mat-card-content>
@@ -721,6 +728,13 @@
               </li>
               <li [class.disabled]="currentPage2 === getTotalPages2()" (click)="goToPage2(currentPage2 + 1)">
                 <span> <i class="fa fa-arrow-right"></i> </span>
+              </li>
+              <li>
+                <select name="itemsPerPage" id="itemsPerPage" class="form-select" (change)="onChangeItemsPerPageFreeze($event)" [(ngModel)]="itemsPerPage2">
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                </select>
               </li>
             </ul>
           </div>

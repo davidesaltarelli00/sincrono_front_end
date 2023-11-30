@@ -57,11 +57,11 @@ export class ListaRapportiniComponent implements OnInit {
   selectedAnnoRapportinoNonFreezato: any;
   // paginazione 1 :tabella rapportini non freezati
   currentPage: number = 1;
-  itemsPerPage: number = 5;
+  itemsPerPage: number = 25;
   pageData: any[] = [];
   // paginazione 2: tabella rapportini freezati
   currentPage2: number = 1;
-  itemsPerPage2: number = 20;
+  itemsPerPage2: number = 25;
   pageData2: any[] = [];
   idUtente: any;
   getAllRapportiniNotFreezeCorretto = false;
@@ -1021,6 +1021,16 @@ export class ListaRapportiniComponent implements OnInit {
   }
 
   //paginazione tabella rapportini non freezati
+
+  onChaneItemsPerPage(event: any) {
+    const target = parseInt(event.target.value, 10);
+    if (!isNaN(target)) {
+      this.itemsPerPage = target;
+      this.currentPage = 1;
+      this.pageData = this.getCurrentPageItems();
+    }
+  }
+
   getCurrentPageItems(): any[] {
     if (!this.elencoRapportiniNonFreezati) {
       return [];
@@ -1052,6 +1062,16 @@ export class ListaRapportiniComponent implements OnInit {
   //fine paginazione tabella rapportini non freezati
 
   //paginazione tabella rapportini  freezati
+
+  onChangeItemsPerPageFreeze(event: any) {
+    const target = parseInt(event.target.value, 10);
+    if (!isNaN(target)) {
+      this.itemsPerPage2 = target;
+      this.currentPage2 = 1;
+      this.pageData2 = this.getCurrentPageItems();
+    }
+  }
+
   getCurrentPageItems2(): any[] {
     if (!this.elencoRapportiniFreezati) {
       return [];
