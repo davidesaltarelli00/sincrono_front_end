@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   url = environment.URL_locale_Sincrono;
   testUrl = environment.URL_login_service;
-  urlProd = environment.URL_PRODUZIONE;
+  urlProd = environment.URL_PRODUZIONE_LOGIN;
   urlLogin = environment.URL_locale_login;
   constructor(private http: HttpClient) {}
 
@@ -31,13 +31,13 @@ export class AuthService {
     });
 
     return this.http
-      .post<AuthenticationResponse>(this.urlLogin + 'login', body, { headers })
+      .post<AuthenticationResponse>(this.urlProd + 'login', body, { headers })
       .pipe(
         tap((response) => {
           if (!response.token) {
             console.error('Token non presente.');
           } else {
-            localStorage.setItem('token', response.token); // Memorizza il token nel localStorage
+            localStorage.setItem('token', response.token);
           }
         })
       );
