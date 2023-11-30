@@ -293,7 +293,7 @@ export class RichiesteComponent implements OnInit {
               title: 'Attenzione:',
               message:
                 'Si é verificato un problema durante il caricamento della lista: '+ (result as any).esito.target ,
-            },
+            }, disableClose: true,
           });
         } else {
           this.elencoRichiesteDipendente = result['list'];

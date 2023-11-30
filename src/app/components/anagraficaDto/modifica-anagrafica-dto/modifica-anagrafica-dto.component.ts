@@ -1661,6 +1661,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         title: 'Attenzione:',
         message: 'Confermi di voler eliminare la commessa selezionata?',
       },
+      disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {
@@ -1736,6 +1737,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         title: 'Attenzione:',
         message:  "Confermi di voler salvare le modifiche?",
       },
+      disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {

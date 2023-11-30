@@ -1663,7 +1663,7 @@ export class ModificaCommessaComponent {
         image: '../../../../assets/images/danger.png',
         title: 'Attenzione:',
         message: 'Confermi di voler eliminare la commessa selezionata?',
-      },
+      }, disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {

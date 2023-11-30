@@ -160,7 +160,7 @@ export class DettaglioAnagraficaDtoComponent {
                        " non lavora più qui." +
                        " Causa: " + (resp as any)['anagraficaDto']['contratto']['tipoCausaFineRapporto']['descrizione'] +
                        " Motivazione: " + (resp as any)['anagraficaDto']['contratto']['tipoCausaFineContratto']['descrizione']
-            },
+            }, disableClose: true,
           });
 
         }
@@ -190,7 +190,7 @@ export class DettaglioAnagraficaDtoComponent {
                 data: {
                   title: 'Salvataggio non riuscito:',
                   message: (response as any).esito.target,
-                },
+                }, disableClose: true,
               });
             } else {
               const dialogRef = this.dialog.open(AlertDialogComponent, {

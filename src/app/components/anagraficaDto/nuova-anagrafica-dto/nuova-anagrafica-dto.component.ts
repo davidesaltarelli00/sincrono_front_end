@@ -1410,7 +1410,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         image: '../../../../assets/images/danger.png',
         title: 'Attenzione:',
         message:  "Confermi di voler effettuare l'inserimento? Verifica i dati prima di salvare.",
-      },
+      }, disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {

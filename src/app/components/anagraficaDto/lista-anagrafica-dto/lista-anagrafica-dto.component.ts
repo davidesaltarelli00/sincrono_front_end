@@ -489,6 +489,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           cognome +
           '?',
       },
+      disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {
@@ -565,6 +566,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           cognome +
           '?',
       },
+      disableClose: true,
     });
     dialogRef.componentInstance.conferma.subscribe(() => {
       this.anagraficaDtoService
