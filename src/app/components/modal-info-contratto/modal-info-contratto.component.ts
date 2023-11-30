@@ -57,7 +57,7 @@ export class ModalInfoContrattoComponent {
   }
   dettaglio(id: any) {
     console.log(id);
-    this.router.navigate(['/dettaglio-anagrafica/' + id]);
+    this.router.navigate(['/dettaglio-contratto/' + id]);
     this.dialog.closeAll();
   }
 

@@ -110,7 +110,7 @@ import { FooterComponent } from './components/footer/footer.component';
     AlertConfermaComponent,
     CaricamentoDocumentiComponent,
     DettaglioRichiestaComponent,
-    FooterComponent
+    FooterComponent,
   ],
   imports: [
     MatIconModule,
