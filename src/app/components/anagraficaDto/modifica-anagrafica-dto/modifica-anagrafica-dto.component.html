@@ -1170,14 +1170,14 @@
                             </div>
                             <br>
                             <div class="row">
-                              <div class="col-12">
-                                <button class="btn btn-danger" (click)="rimuoviCommessa(i)"
-                                  matTooltip="Rimuovi Commessa {{i+1}}">Rimuovi Commessa <i class="fa fa-trash"></i>
+                              <div class="col-12 text-center">
+                                <button mat-mini-fab color="warn" (click)="rimuoviCommessa(i)"
+                                  matTooltip="Rimuovi Commessa {{i+1}}"><i class="fa fa-trash"></i>
                                 </button>
-                                <!-- &nbsp;
-                                    <button class="btn btn-success" matTooltip="Storicizza Commessa {{i+1}}" (click)="storicizza(i)">
-                                      Storicizza Commessa <i class="fa fa-file"></i>
-                                    </button> -->
+                                 &nbsp;
+                                    <button mat-mini-fab color="accent" [disabled]="commessa.get('id')?.value==''" matTooltip="Storicizza Commessa {{i+1}}" (click)="storicizza(i)">
+                                       <i class="fa fa-archive"></i>
+                                    </button>
                               </div>
                             </div>
                             <br>

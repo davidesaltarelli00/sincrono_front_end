@@ -26,6 +26,7 @@ import { Giorno } from './giorno';
 import { AuthService } from '../login/login-service';
 import { ThemeService } from 'src/app/theme.service';
 import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.component';
+import { TutorialCompilazioneRapportinoComponent } from 'src/app/tutorial-compilazione-rapportino/tutorial-compilazione-rapportino.component';
 
 @Component({
   selector: 'app-utente',
@@ -943,6 +944,15 @@ export class UtenteComponent implements OnInit {
 
   resetNote(){
     this.noteDipendente=null;
+  }
+
+  openTutorial(){
+    // this.dialog.open(TutorialCompilazioneRapportinoComponent),{
+
+    // },  disableClose: true,
+    const dialogRef = this.dialog.open(TutorialCompilazioneRapportinoComponent, {
+      disableClose: true,
+    });
   }
 
   salvaNoteDipendente() {
