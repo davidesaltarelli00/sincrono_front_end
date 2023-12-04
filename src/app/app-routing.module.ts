@@ -35,6 +35,7 @@ import { ModificaCommessaComponent } from './components/modifica-commessa/modifi
 import { SelectedDaysComponent } from './components/richieste/selected-days/selected-days.component';
 import { InsertPermessoComponent } from './components/richieste/insert-permesso/insert-permesso.component';
 import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-richiesta/dettaglio-richiesta.component';
+import { TutorialCompilazioneRapportinoComponent } from './tutorial-compilazione-rapportino/tutorial-compilazione-rapportino.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -144,6 +145,11 @@ const routes: Routes = [
   {
     path: 'profile-box',
     component: ProfileBoxComponent,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: 'tutorial-compilazione-rapportino',
+    component: TutorialCompilazioneRapportinoComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
   {
