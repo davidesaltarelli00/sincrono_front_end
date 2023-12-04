@@ -66,6 +66,7 @@ import { SelectedDaysComponent } from './components/richieste/selected-days/sele
 import { InsertPermessoComponent } from './components/richieste/insert-permesso/insert-permesso.component';
 import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-richiesta/dettaglio-richiesta.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { TutorialCompilazioneRapportinoComponent } from './tutorial-compilazione-rapportino/tutorial-compilazione-rapportino.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -111,6 +112,7 @@ import { FooterComponent } from './components/footer/footer.component';
     CaricamentoDocumentiComponent,
     DettaglioRichiestaComponent,
     FooterComponent,
+    TutorialCompilazioneRapportinoComponent
   ],
   imports: [
     MatIconModule,

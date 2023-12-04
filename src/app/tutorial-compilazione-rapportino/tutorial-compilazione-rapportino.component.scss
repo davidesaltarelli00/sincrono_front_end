@@ -1,0 +1,31 @@
+*{
+  box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 10px;
+  padding-left: 20px;
+  position: relative;
+}
+
+li:before {
+  content: '\2022';
+  color: #3498db;
+  font-size: 18px;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 10px;
+}
+
+li:hover {
+  background-color: #f2f2f2;
+  border-radius: 5px;
+}

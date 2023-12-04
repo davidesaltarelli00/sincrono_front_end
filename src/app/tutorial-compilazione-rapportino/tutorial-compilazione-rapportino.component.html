@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container-fluid" style="overflow-y: hidden;">
+   <mat-card>
+   <mat-card-title>
+    <div class="row text-center">
+      <div class="col-12">
+        <!-- <img src="../../../../assets/images/logo.jpeg" alt="Logo sincrono"> -->
+      </div>
+      <div class="col-12">
+        <h1>Guida per la compilazione del rapportino <button style="float: right;" mat-mini-fab color="primary" (click)="ok()"><i class="fa fa-close" ></i></button>
+        </h1>
+      </div>
+    </div>
+   </mat-card-title>
+   <mat-card-content  style="max-height: 400px; overflow-y: auto;">
+    <div class="row">
+      <div class="col-12">
+        <ul>
+          <li>
+            <div class="row">
+              <div class="col-12">
+                <p><i class="fa fa-calendar" ></i> Questa icona ti permetterá di impostare il giorno interessato come <b>Festivo</b>. L'utilizzo é limitato alla sola festivitá del Santo Patrono. </p>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="row">
+              <div class="col-12">
+        <p> <b>Cliente:</b> Questo campo conterrá le aziende cliente con le quali hai svolto o stai svolgendo commesse. <br> Se non hai commesse, conterrá l'opzione <b>Attesa lavori</b>. </p>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="row">
+              <div class="col-12">
+                <p>
+                  <b>Ore ordinarie:</b>
+                  Usa questo campo per contrassegnare le ore ordinare di lavoro svolte.
+                  I valori decimali, dovranno essere separati dal <b>.</b> Ex: 3.5 <br>
+                  Il valore massimo disponibile é 8 ore, valori maggiori non verranno accettati.  </p>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="row">
+              <div class="col-12">
+                <p> <b><i class="fa fa-clock" ></i> Extra time:</b> cliccando su questo bottone, compariranno i campi per inserire le ore di straordinari effettuate; le quali si dividono in 3 fasce: </p>
+                <ul>
+                  <li>
+                    <p> <b>18:00 - 20:00 </b>: accetta valori da 0.5 a 2 </p>
+                  </li>
+                  <li>
+                    <p> <b>20:00 - 22:00 </b>: accetta valori da 0.5 a 2 </p>
+                  </li>
+                  <li>
+                    <p> <b>22:00 - 09:00 </b>: accetta valori da 0.5 a 11 </p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li>
+            <p> <b><i  class="fa fa-clone"></i> Duplicazione giorno:</b> questa impostazione permette di duplicare il giorno interessato n volte quante sono le tue commesse. Usufruisci di questa funzione se in un giorno hai lavorato per piú clienti.
+            <b>Nota:</b> se hai una sola commessa non potrai effettuare la duplicazione.
+            </p>
+          </li>
+          <li>
+            <p> <b> <i class="fa fa-trash"></i>  Elimina duplicazione: </b> Elimina una duplicazione inserita. </p>
+          </li>
+          <li>
+            <p> <b><i class="fa fa-check" ></i> On site: </b> campo per notificare la presenza in sede. </p>
+          </li>
+          <li>
+            <p> <b><i class="fa fa-check" ></i> Smart: </b> campo per notificare la presenza in smartworking. </p>
+          </li>
+          <li>
+            <p> <b><i class="fa fa-ban" ></i> Assenze: </b> Cliccando questo pulsante si aprirá la sezione dedicata alle assenze, con i campi relativi a: </p>
+            <ul>
+              <li>
+                <p><b>Permessi: </b>Inserisci le ore di permesso di cui hai usufruito; sono accettati valori compresi tra 0.5 e 7.5. <b>Nota:</b>non puoi inserire 8 ore di permesso, se si verifica il caso, clicca sul campo ferie.</p>
+              </li>
+              <li>
+                <p><b>Permessi role: </b>Inserisci le ore di permessi role di cui hai usufruito; sono accettati valori compresi tra 0.5 e 7.5</p>
+              </li>
+              <li>
+                <p><b>Festivitá: </b>Inserisci le ore di permessi di festivitá di cui hai usufruito; sono accettati valori compresi tra 0.5 e 7.5</p>
+              </li>
+              <li>
+                <p><b>Ferie: </b>Seleziona questa checkbox se hai usufruito di una giornata di ferie.</p>
+              </li>
+              <li>
+                <p><b>Malattia: </b>Seleziona questa checkbox se hai usufruito di una giornata di malattia.</p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p><b> <i class="fa fa-file"></i> Note: </b>Compila questo campo per inserire eventuali note, non é obbligatorio tranne in caso di malattia, dove avrá inserito il numero del protocollo medico. </p>
+          </li>
+        </ul>
+        <p><b>Per una corretta compilazione</b> il giorno deve contenere almeno un cliente (o attesa lavori), un valore complessivo di 8 ore tra ore ordinarie e ore di permesso e uno dei check tra On site e smartworking.
+           Se hai usufruito di ferie o malattie devi solo fare click sul check relativo.</p>
+      </div>
+    </div>
+
+   </mat-card-content>
+   <mat-card-footer>
+    <div class="row">
+      <div class="col-12 text-center">
+    <button mat-mini-fab color="primary" (click)="ok()" > OK </button>
+      </div>
+    </div>
+  </mat-card-footer>
+   </mat-card>
+  </div>
+</body>
+</html>
