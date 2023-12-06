@@ -198,6 +198,10 @@
                     <div class="color-box" style="background-color: rgb(238, 64, 64);"></div>
                     <span class="label">Giorno festivo</span>
                   </div>
+                  <div class="legend">
+                    <div class="color-box" style="background-color: orange"></div>
+                    <span class="label">Giorno festivo impostato dall'utente</span>
+                  </div>
                 </div>
 
               </div>
@@ -267,8 +271,20 @@
 
      <div class="row">
       <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="text-align: center;" >
-        <mat-card [ngClass]="getBackgroundClasses(giorno)" [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' : (giorno.festivitaNazionale ? 'rgb(238, 64, 64)' : 'rgb(214, 234, 251)')}">
-          <p style=" margin: 0;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }} <i  class="fa fa-calendar" matTooltip="Imposta {{giorno.nomeGiorno |titlecase }} {{giorno.numeroGiorno}} {{selectedMese}} come festivitá del Santo Patrono." (click)="setSantoPatrono()" ></i></p>
+        <mat-card [ngClass]="getBackgroundClasses(giorno)"
+        [ngStyle]="{
+          'background-color':
+            (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' :
+            (giorno.festivitaNazionale ? 'rgb(238, 64, 64)' :
+            (giorno.checkFestivita ? 'orange' : 'rgb(214, 234, 251)'))
+        }"
+
+        >
+          <p style=" margin: 0;"> <button mat-mini-fab color="primary" >{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}
+            <i [hidden]="giorno.checkFestivita || giorno.festivitaNazionale || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'" class="fa fa-calendar" matTooltip="Imposta {{giorno.nomeGiorno | titlecase }} {{giorno.numeroGiorno}} {{selectedMese}} come festivo." (click)="setFestivita(true, giorno)"></i>
+            <i [hidden]="!giorno.checkFestivita || giorno.festivitaNazionale || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'" class="fa fa-suitcase" matTooltip="Imposta {{giorno.nomeGiorno | titlecase }} {{giorno.numeroGiorno}} {{selectedMese}} come non festivo." (click)="unsetFestivita(false, giorno)"></i>
+            <i *ngIf="giorno.festivitaNazionale  || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'" class="fa fa-calendar"></i>
+          </p>
        <div class="container-card" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
           <div class="row">
             <div class="col-8">
