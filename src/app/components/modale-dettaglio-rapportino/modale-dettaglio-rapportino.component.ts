@@ -16,6 +16,7 @@ import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import { ThemeService } from 'src/app/theme.service';
 import { MenuService } from '../menu.service';
+import { RichiesteService } from '../richieste/richieste.service';
 
 @Component({
   selector: 'app-modale-dettaglio-rapportino',
@@ -75,7 +76,8 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
     private profileBoxService: ProfileBoxService,
     private anagraficaDtoService: AnagraficaDtoService,
     private cdRef: ChangeDetectorRef,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private richiesteService: RichiesteService
   ) {
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -244,7 +246,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
       },
     };
     console.log('Payload elenco Richieste accettate: ' + JSON.stringify(body));
-    this.rapportinoService.getAllRichiesteAccettate(this.token, body).subscribe(
+    this.richiesteService.getAllRichiesteAccettate(this.token, body).subscribe(
       (result: any) => {
         this.elencoRichiesteAccettate = result.list;
         console.log(

@@ -7,9 +7,9 @@ import { environment } from './../../../environments/environment';
   providedIn: 'root',
 })
 export class RichiesteService {
-  url =environment.URL_locale_Sincrono;
+  url = environment.URL_locale_Sincrono;
   testUrl = environment.URL_login_service;
-  urlProd=environment.URL_PRODUZIONE;
+  urlProd = environment.URL_PROD;
 
   constructor(private http: HttpClient) {}
 
@@ -35,7 +35,7 @@ export class RichiesteService {
     });
   }
 
-  cambiaStato(token:any, body:any): Observable<any>{
+  cambiaStato(token: any, body: any): Observable<any> {
     //cambia-stato
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -55,6 +55,18 @@ export class RichiesteService {
     });
     const url = `http://localhost:8085/get-richiesta/${idRichiesta}`;
     return this.http.get<any>(url, {
+      headers: headers,
+    });
+  }
+
+  getAllRichiesteAccettate(token: any, body: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    const url = `http://localhost:8085/list-richieste-accettate`;
+    return this.http.post<any>(url, body, {
       headers: headers,
     });
   }
