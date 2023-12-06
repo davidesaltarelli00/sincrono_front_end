@@ -423,7 +423,11 @@ img{
               <div class="col-4">
                 <div class="form-group">
                   <label for="anno">Seleziona l'anno</label>
-                  <input type="number" class="form-control" [(ngModel)]="selectedAnnoForLista">
+                  <!-- <input type="number" class="form-control" [(ngModel)]="selectedAnnoForLista"> -->
+                  <select name="anniDal2023" id="anniDal2023" class="form-select" [(ngModel)]="selectedAnnoForLista">
+                    <option *ngFor="let anno of anniDal2023" [value]="anno">{{ anno }}</option>
+                  </select>
+
                 </div>
               </div>
               <div class="col-4" >

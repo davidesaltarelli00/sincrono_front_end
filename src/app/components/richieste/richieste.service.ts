@@ -19,7 +19,7 @@ export class RichiesteService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.testUrl + `inserisci-richiesta`, body, {
+    return this.http.post<any>(this.url + `inserisci-richiesta`, body, {
       headers: headers,
     });
   }
@@ -30,7 +30,7 @@ export class RichiesteService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.testUrl + `list-richieste`, body, {
+    return this.http.post<any>(this.url + `list-richieste`, body, {
       headers: headers,
     });
   }
@@ -42,7 +42,7 @@ export class RichiesteService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(this.testUrl + `cambia-stato`, body, {
+    return this.http.put<any>(this.url + `cambia-stato`, body, {
       headers: headers,
     });
   }
@@ -53,7 +53,7 @@ export class RichiesteService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    const url = `http://localhost:8085/get-richiesta/${idRichiesta}`;
+    const url = this.url + `get-richiesta/${idRichiesta}`;
     return this.http.get<any>(url, {
       headers: headers,
     });
@@ -65,7 +65,7 @@ export class RichiesteService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    const url = `http://localhost:8085/list-richieste-accettate`;
+    const url = this.url + `list-richieste-accettate`;
     return this.http.post<any>(url, body, {
       headers: headers,
     });

@@ -96,7 +96,6 @@ export class InsertPermessoComponent implements OnInit {
   elencoAnni: number[] = [];
   selectedDaOra: string | null = null;
 
-
   constructor(
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
@@ -156,7 +155,7 @@ export class InsertPermessoComponent implements OnInit {
   onChangeMese(event: any) {
     const target = event.target.value;
 
-    if (target === "--Nessuna opzione--") {
+    if (target === '--Nessuna opzione--') {
       this.permessoMese = null; // Nessuna opzione selezionata
       console.log('Nessuna opzione selezionata');
     } else {
@@ -175,24 +174,29 @@ export class InsertPermessoComponent implements OnInit {
 
   checkValidDate() {
     // Imposta il giorno massimo in base al mese selezionato
-    const maxDay = new Date(Number(this.permessoAnno), Number(this.permessoMese), 0).getDate();
+    const maxDay = new Date(
+      Number(this.permessoAnno),
+      Number(this.permessoMese),
+      0
+    ).getDate();
 
     // Se il giorno selezionato è maggiore del massimo consentito, imposta a null
-    if (this.permessoGiorno !== null && (this.permessoGiorno > maxDay || this.permessoGiorno < 1)) {
+    if (
+      this.permessoGiorno !== null &&
+      (this.permessoGiorno > maxDay || this.permessoGiorno < 1)
+    ) {
       this.permessoGiorno = null;
-      this.permessoMese=null;
-      this.permessoAnno=null;
+      this.permessoMese = null;
+      this.permessoAnno = null;
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
           image: '../../../../assets/images/danger.png',
           title: 'Attenzione:',
-          message: "Hai inserito una data non valida.",
+          message: 'Hai inserito una data non valida.',
         },
       });
     }
   }
-
-
 
   updateAOraOptions() {
     console.log('Chiamato updateAOraOptions()');
@@ -201,7 +205,7 @@ export class InsertPermessoComponent implements OnInit {
       console.log('daOra è cambiato. Nuovo valore:', this.daOra);
 
       this.selectedDaOra = this.daOra;
-      this.arrayAOra = this.arrayAOra.filter(ora => ora > this.daOra);
+      this.arrayAOra = this.arrayAOra.filter((ora) => ora > this.daOra);
 
       console.log('Array aggiornato:', this.arrayAOra);
 
@@ -212,11 +216,10 @@ export class InsertPermessoComponent implements OnInit {
     }
   }
 
-  changeAora(event:any){
-    const target=event.target.value;
+  changeAora(event: any) {
+    const target = event.target.value;
     console.log(target);
   }
-
 
   initializeYears() {
     const currentYear = new Date().getFullYear();
@@ -226,18 +229,45 @@ export class InsertPermessoComponent implements OnInit {
     }
   }
 
-  insertPermesso(insertPermeission: any) {
+  annulla() {
+    this.permessoGiorno == null;
+    this.permessoMese == null;
+    this.permessoAnno == null;
+    this.daOra == null;
+    this.aOra == null;
+  }
 
-      if(this.permessoGiorno==null || this.permessoMese==null || this.permessoAnno==null || this.daOra==null || this.aOra==null){
+  insertPermesso(insertPermeission: any) {
+    const giorno = insertPermeission.permessoGiorno;
+    const mese = insertPermeission.permessoMese;
+    const anno = insertPermeission.permessoAnno;
+    const dataInserita = new Date(anno, mese - 1, giorno);
+
+    if (dataInserita.getDay() === 0 || dataInserita.getDay() === 6) {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
           image: '../../../../assets/images/danger.png',
-          title: 'Attenzione',
-          message: "Qualcosa é andato storto.",
+          title: 'Attenzione:',
+          message:
+            'Il giorno che hai inserito, é un sabato o una domenica e i suddetti non vengono contati come giorni lavorativi.',
         },
       });
-      }
-      else{
+    } else {
+      if (
+        this.permessoGiorno == null ||
+        this.permessoMese == null ||
+        this.permessoAnno == null ||
+        this.daOra == null ||
+        this.aOra == null
+      ) {
+        const dialogRef = this.dialog.open(AlertDialogComponent, {
+          data: {
+            image: '../../../../assets/images/danger.png',
+            title: 'Attenzione',
+            message: 'Qualcosa é andato storto.',
+          },
+        });
+      } else {
         let body = {
           richiestaDto: {
             anno: this.permessoAnno,
@@ -271,14 +301,12 @@ export class InsertPermessoComponent implements OnInit {
                 data: {
                   image: '../../../../assets/images/logo.jpeg',
                   title: 'Richiesta inviata',
-                  // message: "Troverai l'elenco delle tue richieste nel tuo profilo.",
                 },
               });
             }
           });
       }
-
-
+    }
   }
 
   logout() {

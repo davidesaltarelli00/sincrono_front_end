@@ -265,6 +265,167 @@ export class UtenteComponent implements OnInit {
     }
   }
 
+  setFestivita(checkFestivita: boolean, giorno: any) {
+    // Imposta checkFestivita solo per l'oggetto selezionato
+    giorno.checkFestivita = checkFestivita;
+
+    const giorni = this.rapportinoDto.map((giornoItem) => {
+      return {
+        duplicazioniGiornoDto: giornoItem.duplicazioniGiornoDto.map(
+          (duplicazione: any) => {
+            return {
+              cliente: duplicazione.cliente,
+              oreOrdinarie: duplicazione.oreOrdinarie,
+              fascia1: duplicazione.fascia1,
+              fascia2: duplicazione.fascia2,
+              fascia3: duplicazione.fascia3,
+            };
+          }
+        ),
+        ferie: giornoItem.ferie,
+        malattie: giornoItem.malattie,
+        permessi: giornoItem.permessi,
+        checkSmartWorking: giornoItem.checkSmartWorking,
+        checkOnSite: giornoItem.checkOnSite,
+        note: giornoItem.note,
+        numeroGiorno: giornoItem.numeroGiorno,
+        nomeGiorno: giornoItem.nomeGiorno,
+        festivitaNazionale: giornoItem.festivitaNazionale,
+        checkFestivita: giornoItem.checkFestivita,
+      };
+    });
+
+    const body = {
+      rapportinoDto: {
+        mese: {
+          giorni: giorni,
+        },
+        anagrafica: {
+          codiceFiscale: this.codiceFiscale,
+        },
+        note: this.note,
+        giorniUtili: this.giorniUtili,
+        giorniLavorati: this.giorniLavorati,
+        annoRequest: this.selectedAnno,
+        meseRequest: this.selectedMese,
+      },
+    };
+
+    this.rapportinoService
+      .updateRapportino(localStorage.getItem('token'), body)
+      .subscribe(
+        (result: any) => {
+          const message = (result as any).esito.target;
+          if ((result as any).esito.code !== 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/danger.png',
+                title: 'Impostazione da giorno lavorativo a festivo non riuscita:',
+                message: (result as any).esito.target,
+              },
+            });
+            this.rapportinoSalvato = false;
+            console.error(JSON.stringify(result));
+          }
+          if ((result as any).esito.code === 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/logo.jpeg',
+                title: 'Giorno impostato come festivo.',
+                message: (result as any).esito.target,
+              },
+            });
+            this.getRapportino();
+          }
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il salvataggio della riga: ' + JSON.stringify(error)
+          );
+        }
+      );
+  }
+  unsetFestivita(checkFestivita: boolean, giorno: any) {
+    // Imposta checkFestivita solo per l'oggetto selezionato
+    giorno.checkFestivita = checkFestivita;
+
+    const giorni = this.rapportinoDto.map((giornoItem) => {
+      return {
+        duplicazioniGiornoDto: giornoItem.duplicazioniGiornoDto.map(
+          (duplicazione: any) => {
+            return {
+              cliente: duplicazione.cliente,
+              oreOrdinarie: duplicazione.oreOrdinarie,
+              fascia1: duplicazione.fascia1,
+              fascia2: duplicazione.fascia2,
+              fascia3: duplicazione.fascia3,
+            };
+          }
+        ),
+        ferie: giornoItem.ferie,
+        malattie: giornoItem.malattie,
+        permessi: giornoItem.permessi,
+        checkSmartWorking: giornoItem.checkSmartWorking,
+        checkOnSite: giornoItem.checkOnSite,
+        note: giornoItem.note,
+        numeroGiorno: giornoItem.numeroGiorno,
+        nomeGiorno: giornoItem.nomeGiorno,
+        festivitaNazionale: giornoItem.festivitaNazionale,
+        checkFestivita: giornoItem.checkFestivita,
+      };
+    });
+
+    const body = {
+      rapportinoDto: {
+        mese: {
+          giorni: giorni,
+        },
+        anagrafica: {
+          codiceFiscale: this.codiceFiscale,
+        },
+        note: this.note,
+        giorniUtili: this.giorniUtili,
+        giorniLavorati: this.giorniLavorati,
+        annoRequest: this.selectedAnno,
+        meseRequest: this.selectedMese,
+      },
+    };
+
+    this.rapportinoService
+      .updateRapportino(localStorage.getItem('token'), body)
+      .subscribe(
+        (result: any) => {
+          const message = (result as any).esito.target;
+          if ((result as any).esito.code !== 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/danger.png',
+                title: 'Impostazione da giorno festivo a lavorativo non riuscita:',
+                message: (result as any).esito.target,
+              },
+            });
+            this.rapportinoSalvato = false;
+            console.error(JSON.stringify(result));
+          }
+          if ((result as any).esito.code === 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/logo.jpeg',
+                title: 'Giorno impostato come lavorativo.',
+                message: (result as any).esito.target,
+              },
+            });
+            this.getRapportino();
+          }
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il salvataggio della riga: ' + JSON.stringify(error)
+          );
+        }
+      );
+  }
+
   duplicaRiga(index: number, j: number) {
     console.log(
       'lunghezza rapportino:' +
@@ -415,6 +576,8 @@ export class UtenteComponent implements OnInit {
         note: giorno.note,
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
+        festivitaNazionale: giorno.festivitaNazionale,
+        checkFestivita: giorno.checkFestivita,
       };
     });
     for (const giorno of giorni) {
@@ -451,6 +614,8 @@ export class UtenteComponent implements OnInit {
         note: giorno.note,
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
+        festivitaNazionale: giorno.festivitaNazionale,
+        checkFestivita: giorno.checkFestivita,
       };
     });
     for (const giorno of giorni) {
@@ -718,6 +883,9 @@ export class UtenteComponent implements OnInit {
           this.calcolaTotaleMalattia();
           this.calcolaTotaleOrePermessi();
           this.cdRef.detectChanges();
+          console.log(
+            'Risultato getRapportino:' + JSON.stringify(this.rapportinoDto)
+          );
 
           if (this.note === null || this.note === '' || this.note === '') {
             console.log('non hai note.');
@@ -763,6 +931,7 @@ export class UtenteComponent implements OnInit {
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
         festivitaNazionale: giorno.festivitaNazionale,
+        checkFestivita: giorno.checkFestivita,
       };
     });
 
@@ -844,6 +1013,7 @@ export class UtenteComponent implements OnInit {
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
         festivitaNazionale: giorno.festivitaNazionale,
+        checkFestivita: giorno.checkFestivita,
       };
     });
 
@@ -942,17 +1112,20 @@ export class UtenteComponent implements OnInit {
     this.inviaNoteAlDipendente = !this.inviaNoteAlDipendente;
   }
 
-  resetNote(){
-    this.noteDipendente=null;
+  resetNote() {
+    this.noteDipendente = null;
   }
 
-  openTutorial(){
+  openTutorial() {
     // this.dialog.open(TutorialCompilazioneRapportinoComponent),{
 
     // },  disableClose: true,
-    const dialogRef = this.dialog.open(TutorialCompilazioneRapportinoComponent, {
-      disableClose: true,
-    });
+    const dialogRef = this.dialog.open(
+      TutorialCompilazioneRapportinoComponent,
+      {
+        disableClose: true,
+      }
+    );
   }
 
   salvaNoteDipendente() {
@@ -962,7 +1135,8 @@ export class UtenteComponent implements OnInit {
         title: 'Attenzione:',
         message:
           "Se confermi l'invio, il rapportino verrá disabilitato finché l'admin non ti risponderá.",
-      }, disableClose: true,
+      },
+      disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {
@@ -1076,7 +1250,8 @@ export class UtenteComponent implements OnInit {
         title: 'Attenzione:',
         message:
           'Confermi di voler inviare il rapportino? Una volta inviato, non potrai piú effettuare modifiche.',
-      }, disableClose: true,
+      },
+      disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {
@@ -1165,6 +1340,7 @@ export class UtenteComponent implements OnInit {
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
         festivitaNazionale: giorno.festivitaNazionale,
+        checkFestivita: giorno.checkFestivita,
       };
     });
     for (const giorno of giorni) {
@@ -1290,6 +1466,7 @@ export class UtenteComponent implements OnInit {
         numeroGiorno: giorno.numeroGiorno,
         nomeGiorno: giorno.nomeGiorno,
         festivitaNazionale: giorno.festivitaNazionale,
+        checkFestivita: giorno.checkFestivita,
       };
     });
     for (const giorno of giorni) {
