@@ -265,6 +265,8 @@ export class UtenteComponent implements OnInit {
     }
   }
 
+  setSantoPatrono() {}
+
   duplicaRiga(index: number, j: number) {
     console.log(
       'lunghezza rapportino:' +
@@ -718,6 +720,9 @@ export class UtenteComponent implements OnInit {
           this.calcolaTotaleMalattia();
           this.calcolaTotaleOrePermessi();
           this.cdRef.detectChanges();
+          console.log(
+            'Risultato getRapportino:' + JSON.stringify(this.rapportinoDto)
+          );
 
           if (this.note === null || this.note === '' || this.note === '') {
             console.log('non hai note.');
@@ -942,17 +947,20 @@ export class UtenteComponent implements OnInit {
     this.inviaNoteAlDipendente = !this.inviaNoteAlDipendente;
   }
 
-  resetNote(){
-    this.noteDipendente=null;
+  resetNote() {
+    this.noteDipendente = null;
   }
 
-  openTutorial(){
+  openTutorial() {
     // this.dialog.open(TutorialCompilazioneRapportinoComponent),{
 
     // },  disableClose: true,
-    const dialogRef = this.dialog.open(TutorialCompilazioneRapportinoComponent, {
-      disableClose: true,
-    });
+    const dialogRef = this.dialog.open(
+      TutorialCompilazioneRapportinoComponent,
+      {
+        disableClose: true,
+      }
+    );
   }
 
   salvaNoteDipendente() {
@@ -962,7 +970,8 @@ export class UtenteComponent implements OnInit {
         title: 'Attenzione:',
         message:
           "Se confermi l'invio, il rapportino verrá disabilitato finché l'admin non ti risponderá.",
-      }, disableClose: true,
+      },
+      disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {
@@ -1076,7 +1085,8 @@ export class UtenteComponent implements OnInit {
         title: 'Attenzione:',
         message:
           'Confermi di voler inviare il rapportino? Una volta inviato, non potrai piú effettuare modifiche.',
-      }, disableClose: true,
+      },
+      disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {
