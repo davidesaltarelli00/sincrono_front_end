@@ -67,6 +67,7 @@ import { InsertPermessoComponent } from './components/richieste/insert-permesso/
 import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-richiesta/dettaglio-richiesta.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { TutorialCompilazioneRapportinoComponent } from './tutorial-compilazione-rapportino/tutorial-compilazione-rapportino.component';
+import { TruncatePipe } from './pipe/TruncatePipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -112,7 +113,8 @@ import { TutorialCompilazioneRapportinoComponent } from './tutorial-compilazione
     CaricamentoDocumentiComponent,
     DettaglioRichiestaComponent,
     FooterComponent,
-    TutorialCompilazioneRapportinoComponent
+    TutorialCompilazioneRapportinoComponent,
+    TruncatePipe,
   ],
   imports: [
     MatIconModule,
@@ -129,7 +131,6 @@ import { TutorialCompilazioneRapportinoComponent } from './tutorial-compilazione
     MaterialModule,
     CommonModule,
     MatSelectModule,
-
   ],
   providers: [DatePipe, CurrencyPipe],
   //  { provide: LOCALE_ID, useValue: 'it-IT' }

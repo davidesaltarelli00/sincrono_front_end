@@ -492,6 +492,7 @@ img{
                     <th>Dalle ore</th>
                     <th>Alle ore</th>
                     <th>Stato della richiesta</th>
+                    <th>Note</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -519,6 +520,10 @@ img{
                       <td *ngIf="richiesta.stato==false" > <button mat-flat-button color="warn" >Rifiutata</button> </td>
                       <td *ngIf="richiesta.stato==null" > <button mat-flat-button style="background-color: rgb(255, 255, 187); color: #333;">Da elaborare</button> </td>
                     </ng-container>
+                    <td matTooltip="{{ richiesta.note  }}">
+                      {{ richiesta.note | truncate: 10 }}
+                    </td>
+
 
                   </tr>
                 </tbody>
