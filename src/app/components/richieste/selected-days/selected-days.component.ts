@@ -33,6 +33,7 @@ export class SelectedDaysComponent implements OnInit {
   ruolo: any;
   codiceFiscale: any;
   idUtente: any;
+  mobile = false;
 
   constructor(
     private authService: AuthService,
@@ -44,8 +45,22 @@ export class SelectedDaysComponent implements OnInit {
     private formBuilder: FormBuilder,
     private imageService: ImageService,
     private menuService: MenuService,
-    private richiesteService:RichiesteService
-  ) {}
+    private richiesteService: RichiesteService
+  ) {
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
+  }
 
   ngOnInit(): void {
     if (this.token != null) {
@@ -98,27 +113,26 @@ export class SelectedDaysComponent implements OnInit {
     };
     console.log('PAYLOAD INVIO RICHIESTA DI FERIE: ' + JSON.stringify(body));
     this.richiesteService
-    .inviaRichiesta(this.token, body)
-    .subscribe((result: any) => {
-      if ((result as any).esito.code != 200) {
-        const dialogRef = this.dialog.open(AlertDialogComponent, {
-          data: {
-            image: '../../../../assets/images/logo.jpeg',
-            title: 'Invio non riuscito:',
-            message: (result as any).esito.target,
-          },
-        });
-      }
-      else{
-        const dialogRef = this.dialog.open(AlertDialogComponent, {
-          data: {
-            image: '../../../../assets/images/logo.jpeg',
-            title: 'Invio effettuato',
-            // message: "Troverai l'elenco delle tue richieste nel tuo profilo.",
-          },
-        });
-      }
-    });
+      .inviaRichiesta(this.token, body)
+      .subscribe((result: any) => {
+        if ((result as any).esito.code != 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/logo.jpeg',
+              title: 'Invio non riuscito:',
+              message: (result as any).esito.target,
+            },
+          });
+        } else {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/logo.jpeg',
+              title: 'Invio effettuato',
+              // message: "Troverai l'elenco delle tue richieste nel tuo profilo.",
+            },
+          });
+        }
+      });
     /*
 {
 

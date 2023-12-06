@@ -74,6 +74,7 @@ export class RichiesteComponent implements OnInit {
   selectedMeseForLista: any;
   selectedAnnoForLista: any;
   elencoRichiesteDipendente: any[] = [];
+  anniDal2023: any[] = [];
 
   constructor(
     private authService: AuthService,
@@ -94,6 +95,13 @@ export class RichiesteComponent implements OnInit {
 
     for (let anno = 2010; anno <= annoCorrente; anno++) {
       this.anni.push(anno);
+    }
+
+    const startYear = 2023;
+    const endYear = new Date().getFullYear();
+
+    for (let anno = startYear; anno <= endYear; anno++) {
+      this.anniDal2023.push(anno);
     }
 
     this.mesi = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -292,16 +300,20 @@ export class RichiesteComponent implements OnInit {
               image: '../../../../assets/images/danger.png',
               title: 'Attenzione:',
               message:
-                'Si é verificato un problema durante il caricamento della lista: '+ (result as any).esito.target ,
-            }, disableClose: true,
+                'Si é verificato un problema durante il caricamento della lista: ' +
+                (result as any).esito.target,
+            },
+            disableClose: true,
           });
         } else {
           this.elencoRichiesteDipendente = result['list'];
-          console.log("la ricerca ha prodotto i seguenti risultati: " + JSON.stringify(this.elencoRichiesteDipendente))
+          console.log(
+            'la ricerca ha prodotto i seguenti risultati: ' +
+              JSON.stringify(this.elencoRichiesteDipendente)
+          );
         }
       });
   }
-
 
   //paginazione
   getCurrentPageItemsFerie(): any[] {
@@ -329,7 +341,6 @@ export class RichiesteComponent implements OnInit {
       this.currentPage = pageNumber;
     }
   }
-
 
   //------------------------------------------------------------------------------------------------------------------------------------
 

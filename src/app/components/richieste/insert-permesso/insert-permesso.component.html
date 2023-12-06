@@ -38,7 +38,7 @@
                   </div>
                   <div class="col-2">
                     <div class="form-group">
-                      <label for="permessoMese">Mese:</label>
+                      <label for="permessoMese">Mese *</label>
                       <select [ngStyle]="{'border': permessoMese == null ? '1px solid red' : '1px solid lightgreen'}"
                               id="permessoMese" name="permessoMese" [(ngModel)]="permessoMese" required
                               class="form-select" (change)="onChangeMese($event)">
@@ -51,7 +51,7 @@
 
                   <div class="col-2">
                     <div class="form-group">
-                      <label for="permessoAnno">Anno:</label>
+                      <label for="permessoAnno">Anno *</label>
                       <select [ngStyle]="{'border': permessoAnno == null ? '1px solid red' : '1px solid lightgreen'}"
                               id="permessoAnno" name="permessoAnno" [(ngModel)]="permessoAnno" required
                               class="form-select" (change)="onChangeAnno()">
@@ -65,7 +65,7 @@
 
                   <div class="col-2">
                     <div class="form-group">
-                      <label for="daOra">Dalle Ore:</label>
+                      <label for="daOra">Dalle Ore *</label>
                       <select [ngStyle]="{'border': daOra == null ? '1px solid red' : '1px solid lightgreen'}" name="daOra" id="daOra" [(ngModel)]="daOra" class="form-select" required (ngModelChange)="updateAOraOptions()">
                         <option value="" selected>--Nessuna selezione--</option>
                         <option *ngFor="let ora of arrayDaOra" [value]="ora">{{ ora }}</option>
@@ -76,7 +76,7 @@
 
                   <div class="col-2">
                     <div class="form-group">
-                      <label for="aOra">Alle Ore:</label>
+                      <label for="aOra">Alle Ore *</label>
                       <select [ngStyle]="{'border': aOra == null ? '1px solid red' : '1px solid lightgreen'}" name="aOra" id="aOra" [(ngModel)]="aOra" class="form-select" required (change)="changeAora($event)">
                         <option value="" selected>--Nessuna selezione--</option>
                         <option *ngFor="let ora of arrayAOra" [value]="ora">{{ ora }}</option>
@@ -87,8 +87,11 @@
 
 
                 <div class="col-2">
-                  <label for="invio">Azioni</label> <br>
-            <button mat-flat-button color="primary" [disabled]="permessoGiorno==null || permessoMese==null || permessoAnno==null || daOra==null || aOra==null"  >Invia richiesta</button>
+                  <label for="invio" class="text-center">Azioni</label> <br>
+            <button mat-mini-fab color="primary" matTooltip="Invia richiesta di permesso" [disabled]="permessoGiorno==null || permessoMese==null || permessoAnno==null || daOra==null || aOra==null"  ><i class="fa fa-paper-plane" aria-hidden="true"></i>
+            </button> &nbsp;
+            <button mat-mini-fab color="warn" matTooltip="Annulla" (click)="annulla()" ><i class="fa fa-undo" ></i>
+            </button>
                 </div>
               </div>
             </form>
