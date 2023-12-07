@@ -223,7 +223,7 @@ export class InsertPermessoComponent implements OnInit {
 
   initializeYears() {
     const currentYear = new Date().getFullYear();
-    const startYear = 2010;
+    const startYear = currentYear;
     for (let year = startYear; year <= currentYear; year++) {
       this.elencoAnni.push(year);
     }
@@ -296,11 +296,22 @@ export class InsertPermessoComponent implements OnInit {
                   message: (result as any).esito.target,
                 },
               });
-            } else {
+            }
+            if ((result as any).esito.target === 'ERRORE_VALIDAZIONE') {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
                   image: '../../../../assets/images/logo.jpeg',
-                  title: 'Richiesta inviata',
+                  title: 'Attenzione, qualcosa é andato storto:',
+                  message: 'Non puoi inviare una richiesta per un mese inferiore al mese corrente e non puoi inviare la stessa richiesta piú volte.',
+                },
+              });
+            }
+            if ((result as any).esito.code === 200) {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  image: '../../../../assets/images/logo.jpeg',
+                  title: "Richiesta inviata con successo. ",
+                  message: "Tieni d'occhio la lista delle richieste per monitorare lo stato.",
                 },
               });
             }
