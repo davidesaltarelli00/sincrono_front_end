@@ -266,9 +266,28 @@ export class UtenteComponent implements OnInit {
   }
 
   setFestivita(checkFestivita: boolean, giorno: any) {
+    // Verifica se almeno uno dei giorni è già impostato come festivo
+    const isGiornoFestivo = this.rapportinoDto.some(
+      (giornoItem) => giornoItem.checkFestivita
+    );
+
+    // Se almeno un giorno è già festivo, mostra un avviso
+    if (isGiornoFestivo) {
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          image: '../../../../assets/images/danger.png',
+          title: 'Attenzione:',
+          message:
+            'Almeno un giorno è già impostato come festivo. Non è possibile impostare più di un giorno come festivo.',
+        },
+      });
+      return; // Esce dal metodo senza eseguire ulteriori azioni
+    }
+
     // Imposta checkFestivita solo per l'oggetto selezionato
     giorno.checkFestivita = checkFestivita;
 
+    // Crea un nuovo array di giorni aggiornati
     const giorni = this.rapportinoDto.map((giornoItem) => {
       return {
         duplicazioniGiornoDto: giornoItem.duplicazioniGiornoDto.map(
@@ -295,6 +314,7 @@ export class UtenteComponent implements OnInit {
       };
     });
 
+    // Costruisci il corpo della richiesta con l'array dei giorni aggiornato
     const body = {
       rapportinoDto: {
         mese: {
@@ -311,6 +331,7 @@ export class UtenteComponent implements OnInit {
       },
     };
 
+    // Esegui la richiesta di aggiornamento solo se nessun giorno è già festivo
     this.rapportinoService
       .updateRapportino(localStorage.getItem('token'), body)
       .subscribe(
@@ -320,7 +341,8 @@ export class UtenteComponent implements OnInit {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 image: '../../../../assets/images/danger.png',
-                title: 'Impostazione da giorno lavorativo a festivo non riuscita:',
+                title:
+                  'Impostazione da giorno lavorativo a festivo non riuscita:',
                 message: (result as any).esito.target,
               },
             });
@@ -345,6 +367,7 @@ export class UtenteComponent implements OnInit {
         }
       );
   }
+
   unsetFestivita(checkFestivita: boolean, giorno: any) {
     // Imposta checkFestivita solo per l'oggetto selezionato
     giorno.checkFestivita = checkFestivita;
@@ -400,7 +423,8 @@ export class UtenteComponent implements OnInit {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 image: '../../../../assets/images/danger.png',
-                title: 'Impostazione da giorno festivo a lavorativo non riuscita:',
+                title:
+                  'Impostazione da giorno festivo a lavorativo non riuscita:',
                 message: (result as any).esito.target,
               },
             });
