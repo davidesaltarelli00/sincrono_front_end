@@ -96,9 +96,9 @@ export class RichiesteComponent implements OnInit {
     for (let anno = 2010; anno <= annoCorrente; anno++) {
       this.anni.push(anno);
     }
-
-    const startYear = 2023;
-    const endYear = new Date().getFullYear();
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - 5;
+    const endYear = currentYear + 5;
 
     for (let anno = startYear; anno <= endYear; anno++) {
       this.anniDal2023.push(anno);
