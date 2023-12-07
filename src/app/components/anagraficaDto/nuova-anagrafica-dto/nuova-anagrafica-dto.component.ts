@@ -100,7 +100,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   statoDiNascita: any;
   provinciaDiNascita: string = '';
   ruolo: any;
-  base64Documento:any;
+  base64Documento: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -176,7 +176,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         residenza: new FormControl(''),
         domicilio: new FormControl(''),
         dataDiNascita: new FormControl(''),
-
+        tipoCanaleReclutamento: new FormGroup({
+          id: new FormControl('', Validators.required),
+          descrizione: new FormControl(''),
+        }),
         coniugato: new FormControl(false),
         figliACarico: new FormControl(false),
         attesaLavori: new FormControl(false),
@@ -204,7 +207,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         dataInizioProva: new FormControl(''),
         dataFineProva: new FormControl(''),
         dataFineRapporto: new FormControl(''), //, Validators.required
-        dataFineContratto : new FormControl(''), //, Validators.required
+        dataFineContratto: new FormControl(''), //, Validators.required
         mesiDurata: new FormControl(''), //, Validators.required
         livelloAttuale: new FormControl(''), // +
         livelloFinale: new FormControl(''), //+
@@ -230,10 +233,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         tariffaPartitaIva: new FormControl(''),
         retribuzioneNettaGiornaliera: new FormControl(''),
         retribuzioneNettaMensile: new FormControl(''),
-        tipoCanaleReclutamento: new FormGroup({
-          id: new FormControl('', Validators.required),
-          descrizione: new FormControl(''),
-        }),
+        costoAziendale: new FormControl(''),
         // tipoCausaFineRapporto: new FormGroup({
         //   id: new FormControl(''),
         //   descrizione: new FormControl(''),
@@ -511,8 +511,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       }
     }
   }
-
-
 
   onChangeAssicurazioneObbligatoria(event: Event) {
     const target = event.target as HTMLInputElement;
@@ -1404,13 +1402,14 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   inserisci() {
-
     const dialogRef = this.dialog.open(AlertConfermaComponent, {
       data: {
         image: '../../../../assets/images/danger.png',
         title: 'Attenzione:',
-        message:  "Confermi di voler effettuare l'inserimento? Verifica i dati prima di salvare.",
-      }, disableClose: true,
+        message:
+          "Confermi di voler effettuare l'inserimento? Verifica i dati prima di salvare.",
+      },
+      disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {
@@ -1424,7 +1423,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           if (obj.contratto && Object.keys(obj.contratto).length === 0) {
             delete obj.contratto;
           }
-          if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
+          if (
+            obj.tipoContratto &&
+            Object.keys(obj.tipoContratto).length === 0
+          ) {
             delete obj.tipoContratto;
           }
           if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
@@ -1463,7 +1465,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           .insert(body, localStorage.getItem('token'))
           .subscribe(
             (result) => {
-              if ((result as any).esito.code !== 200 && (result as any).esito.target!=null ) {
+              if (
+                (result as any).esito.code !== 200 &&
+                (result as any).esito.target != null
+              ) {
                 const dialogRef = this.dialog.open(AlertDialogComponent, {
                   data: {
                     image: '../../../../assets/images/danger.png',
@@ -1484,12 +1489,17 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
                       "Non hai inserito l'azienda cliente in una o piú commesse.",
                   },
                 });
-              } if((result as any).esito.code === 200 && (result as any).esito.target===null ) {
+              }
+              if (
+                (result as any).esito.code === 200 &&
+                (result as any).esito.target === null
+              ) {
                 const dialogRef = this.dialog.open(AlertDialogComponent, {
                   data: {
                     image: '../../../../assets/images/logo.jpeg',
                     title: 'Inserimento effettuato.',
-                    message:" E' stata inviata una mail all'utente con la password per accedere al sistema. ",
+                    message:
+                      " E' stata inviata una mail all'utente con la password per accedere al sistema. ",
                   },
                 });
                 // console.log(this.AnagraficaDto.value);
@@ -1503,10 +1513,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
             }
           );
       }
-    }
-    );
-
-
+    });
   }
   caricaTipoContratto() {
     this.contrattoService
@@ -1680,7 +1687,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     const selectedValue = parseInt(event.target.value, 10); // Converte il valore selezionato in un numero
 
     const tipoCanaleReclutamento = this.AnagraficaDto.get(
-      'contratto.tipoCanaleReclutamento.id'
+      'anagrafica.tipoCanaleReclutamento.id'
     );
 
     if (!isNaN(selectedValue)) {
@@ -1920,7 +1927,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         const data: ArrayBuffer = e.target.result;
         const base64String: string = this.arrayBufferToBase64(data);
         this.previewExcel(base64String);
-        this.base64Documento=base64String;
+        this.base64Documento = base64String;
       };
 
       reader.readAsArrayBuffer(file);
@@ -1946,30 +1953,33 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     const worksheet: XLSX.WorkSheet = workbook.Sheets[firstSheetName];
 
     // Convert the worksheet to HTML
-    const htmlString: string = XLSX.write(workbook, { bookType: 'html', type: 'string' });
+    const htmlString: string = XLSX.write(workbook, {
+      bookType: 'html',
+      type: 'string',
+    });
 
     // Display the preview
     this.previewData = htmlString;
   }
 
-  salvaDocumento(){
-    let body={
-      base64: this.base64Documento
+  salvaDocumento() {
+    let body = {
+      base64: this.base64Documento,
     };
-    console.log("BODY PER SALVATAGGIO DOCUMENTI: "+JSON.stringify(body));
+    console.log('BODY PER SALVATAGGIO DOCUMENTI: ' + JSON.stringify(body));
     this.anagraficaDtoService.salvaDocumento(body, this.token).subscribe(
-      (result:any)=>{
-        console.log("RISULTATO SALVATAGGIO DOCUMENTI: " + JSON.stringify(result) )
+      (result: any) => {
+        console.log(
+          'RISULTATO SALVATAGGIO DOCUMENTI: ' + JSON.stringify(result)
+        );
       },
-      (error:any)=>{
+      (error: any) => {
         console.error(error);
       }
     );
   }
 
-
   toggleDarkMode(): void {
     this.themeService.toggleDarkMode();
   }
-
 }

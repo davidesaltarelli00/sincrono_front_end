@@ -504,6 +504,36 @@
                               placeholder="Inserire domicilio." />
                           </div>
                         </div>
+                        <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
+                          <label for="tipoCanaleReclutamento">Canale reclutamento*</label>
+                          <div class="form-group">
+                            <select (change)="onChamgeCanaleReclutamento($event)" class="form-select"
+                              aria-label="Default select example" id="anagrafica.tipoCanaleReclutamento.id"
+                              formControlName="id" type="number" [ngStyle]="{
+                                  border: AnagraficaDto.get(
+                                    'anagrafica.tipoCanaleReclutamento.id'
+                                  )?.hasError('required')
+                                    ? '1px solid red'
+                                    : '1px solid #f1f1f1'
+                                }">
+                              <option value="">
+                                --nessuna selezione--
+                              </option>
+                              <option *ngFor="
+                                    let tipoCanaleReclutamento of tipologicaCanaliReclutamento
+                                  " [value]="tipoCanaleReclutamento.id">
+                                {{ tipoCanaleReclutamento.descrizione }}
+                              </option>
+                            </select>
+                            <div *ngIf="
+                                  AnagraficaDto.get(
+                                    'anagrafica.tipoCanaleReclutamento.id'
+                                  )?.hasError('required')
+                                " class="text-danger">
+                              Il campo canale reclutamento è obbligatorio.
+                            </div>
+                          </div>
+                        </div>
                       </div>
                       <br />
                       <div class="row">
@@ -739,37 +769,6 @@
                             <div class="form-group">
                               <input type="text" class="form-control" placeholder="Inserire la sede di assunzione"
                                 formControlName="sedeAssunzione" />
-                            </div>
-                          </div>
-
-                          <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
-                            <label for="filter-tipoCanaleReclutamento">Canale reclutamento*</label>
-                            <div class="form-group">
-                              <select (change)="onChamgeCanaleReclutamento($event)" class="form-select"
-                                aria-label="Default select example" id="contratto.tipoCanaleReclutamento.id"
-                                formControlName="id" type="number" [ngStyle]="{
-                                    border: AnagraficaDto.get(
-                                      'contratto.tipoCanaleReclutamento.id'
-                                    )?.hasError('required')
-                                      ? '1px solid red'
-                                      : '1px solid #f1f1f1'
-                                  }">
-                                <option value="">
-                                  --nessuna selezione--
-                                </option>
-                                <option *ngFor="
-                                      let tipoCanaleReclutamento of tipologicaCanaliReclutamento
-                                    " [value]="tipoCanaleReclutamento.id">
-                                  {{ tipoCanaleReclutamento.descrizione }}
-                                </option>
-                              </select>
-                              <div *ngIf="
-                                    AnagraficaDto.get(
-                                      'contratto.tipoCanaleReclutamento.id'
-                                    )?.hasError('required')
-                                  " class="text-danger">
-                                Il campo canale reclutamento è obbligatorio.
-                              </div>
                             </div>
                           </div>
                           <div class="col-md-2">
@@ -1008,6 +1007,16 @@
                                 <input type="number" class="form-control" placeholder="Inserire diaria giornaliera"
                                   min="0" step="0.01" formControlName="diariaGiornaliera" />
                               </div>
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <legend>Costo aziendale</legend>
+                          <div class="col-md-3">
+                            <label for="costoAziendale">Costo aziendale:</label>
+                            <div class="form-group">
+                              <input type="number" class="form-control" formControlName="costoAziendale" step="0.01">
                             </div>
                           </div>
                         </div>

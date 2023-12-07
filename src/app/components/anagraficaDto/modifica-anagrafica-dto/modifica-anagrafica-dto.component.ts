@@ -207,7 +207,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         coniugato: [''],
         figliACarico: [''],
         attesaLavori: [''],
-
+        tipoCanaleReclutamento: this.formBuilder.group({
+          id: [''],
+          // descrizione: [''],
+        }),
         categoriaProtetta: [''],
         statoDiNascita: [''],
         cittadinanza: [''],
@@ -273,10 +276,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         assicurazioneObbligatoria: [''],
         pc: [''],
         tariffaPartitaIva: [''],
-        tipoCanaleReclutamento: this.formBuilder.group({
-          id: [''],
-          // descrizione: [''],
-        }),
+        costoAziendale: [''],
         visitaMedica: [''],
         dataVisitaMedica: [''],
       }),
@@ -1441,7 +1441,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 mesiDurataControl.setValue(36);
                 this.calculateDataFineContratto();
 
-
                 dataFineContrattoControl.enable();
                 dataFineContrattoControl.setValue(null);
 
@@ -1534,7 +1533,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   // Dichiarazione di una variabile per il valore precedente
   valorePrecedenteDataFineRapporto: any;
 
-  onChangeTipoCausaFineContratto(event:any){
+  onChangeTipoCausaFineContratto(event: any) {
     const target = event.target as HTMLInputElement;
     const value = target.value;
     // console.log(value);
@@ -1654,7 +1653,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   rimuoviCommessa(index: number): void {
-
     const dialogRef = this.dialog.open(AlertConfermaComponent, {
       data: {
         image: '../../../../assets/images/danger.png',
@@ -1709,7 +1707,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           }
         );
     });
-
   }
 
   caricaTipoCanaleReclutamento() {
@@ -1730,111 +1727,110 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
   aggiorna() {
-
     const dialogRef = this.dialog.open(AlertConfermaComponent, {
       data: {
         image: '../../../../assets/images/danger.png',
         title: 'Attenzione:',
-        message:  "Confermi di voler salvare le modifiche?",
+        message: 'Confermi di voler salvare le modifiche?',
       },
       disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {
-
-
-    const removeEmpty = (obj: any) => {
-      Object.keys(obj).forEach((key) => {
-        if (obj[key] && typeof obj[key] === 'object') {
-          removeEmpty(obj[key]);
-        } else if (obj[key] === '' || obj[key] === null) {
-          delete obj[key];
-        }
-        if (obj.contratto && Object.keys(obj.contratto).length === 0) {
-          delete obj.contratto;
-        }
-        if (obj.commesse && Object.keys(obj.commesse).length === 0) {
-          delete obj.commesse;
-        }
-        if (obj.tipoContratto && Object.keys(obj.tipoContratto).length === 0) {
-          delete obj.tipoContratto;
-        }
-        if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
-          delete obj.tipoAzienda;
-        }
-        if (obj.tipoCcnl && Object.keys(obj.tipoCcnl).length === 0) {
-          delete obj.tipoCcnl;
-        }
-        if (
-          obj.tipoLivelloContratto &&
-          Object.keys(obj.tipoLivelloContratto).length === 0
-        ) {
-          delete obj.tipoLivelloContratto;
-        }
-        if (
-          obj.dataFineRapporto &&
-          Object.keys(obj.dataFineRapporto).length === 0
-        ) {
-          delete obj.dataFineRapporto;
-        }
-        if (
-          obj.tipoCausaFineRapporto &&
-          Object.keys(obj.tipoCausaFineRapporto).length === 0
-        ) {
-          delete obj.tipoCausaFineRapporto;
-        }
-        if (
-          obj.tipoCausaFineContratto &&
-          Object.keys(obj.tipoCausaFineContratto).length === 0
-        ) {
-          delete obj.tipoCausaFineContratto;
-        }
-        if (
-          obj.tipoCanaleReclutamento &&
-          Object.keys(obj.tipoCanaleReclutamento).length === 0
-        ) {
-          delete obj.tipoCanaleReclutamento;
-        }
-      });
-    };
-    removeEmpty(this.anagraficaDto.value);
-    const payload = {
-      anagraficaDto: this.anagraficaDto.value,
-      // anagrafica: this.anagraficaDto.get('anagrafica')?.value,
-      // contratto: this.anagraficaDto.get('contratto')?.value,
-      // commesse: this.anagraficaDto.get('commesse')?.value,
-      // ruolo: this.anagraficaDto.get('ruolo')?.value,
-    };
-    // console.log('Payload backend:', payload);
-    this.anagraficaDtoService
-      .update(payload, localStorage.getItem('token'))
-      .subscribe(
-        (response) => {
-          if ((response as any).esito.code !== 200) {
-            const dialogRef = this.dialog.open(AlertDialogComponent, {
-              data: {
-                image: '../../../../assets/images/danger.png',
-                title: 'Modifica non riuscita:',
-                message: (response as any).esito.target,
-              },
-            });
-          } else {
-            // console.log('Payload inviato con successo al server:', response);
-            const dialogRef = this.dialog.open(AlertDialogComponent, {
-              data: {
-                image: '../../../../assets/images/logo.jpeg',
-                title: 'Modifica effettuata correttamente.',
-              },
-            });
-            this.router.navigate(['/lista-anagrafica']);
+      const removeEmpty = (obj: any) => {
+        Object.keys(obj).forEach((key) => {
+          if (obj[key] && typeof obj[key] === 'object') {
+            removeEmpty(obj[key]);
+          } else if (obj[key] === '' || obj[key] === null) {
+            delete obj[key];
           }
-        },
-        (error) => {
-          // console.error("Errore nell'invio del payload al server:", error);
-        }
-      );
+          if (obj.contratto && Object.keys(obj.contratto).length === 0) {
+            delete obj.contratto;
+          }
+          if (obj.commesse && Object.keys(obj.commesse).length === 0) {
+            delete obj.commesse;
+          }
+          if (
+            obj.tipoContratto &&
+            Object.keys(obj.tipoContratto).length === 0
+          ) {
+            delete obj.tipoContratto;
+          }
+          if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
+            delete obj.tipoAzienda;
+          }
+          if (obj.tipoCcnl && Object.keys(obj.tipoCcnl).length === 0) {
+            delete obj.tipoCcnl;
+          }
+          if (
+            obj.tipoLivelloContratto &&
+            Object.keys(obj.tipoLivelloContratto).length === 0
+          ) {
+            delete obj.tipoLivelloContratto;
+          }
+          if (
+            obj.dataFineRapporto &&
+            Object.keys(obj.dataFineRapporto).length === 0
+          ) {
+            delete obj.dataFineRapporto;
+          }
+          if (
+            obj.tipoCausaFineRapporto &&
+            Object.keys(obj.tipoCausaFineRapporto).length === 0
+          ) {
+            delete obj.tipoCausaFineRapporto;
+          }
+          if (
+            obj.tipoCausaFineContratto &&
+            Object.keys(obj.tipoCausaFineContratto).length === 0
+          ) {
+            delete obj.tipoCausaFineContratto;
+          }
+          if (
+            obj.tipoCanaleReclutamento &&
+            Object.keys(obj.tipoCanaleReclutamento).length === 0
+          ) {
+            delete obj.tipoCanaleReclutamento;
+          }
+        });
+      };
+      removeEmpty(this.anagraficaDto.value);
+      const payload = {
+        anagraficaDto: this.anagraficaDto.value,
+        // anagrafica: this.anagraficaDto.get('anagrafica')?.value,
+        // contratto: this.anagraficaDto.get('contratto')?.value,
+        // commesse: this.anagraficaDto.get('commesse')?.value,
+        // ruolo: this.anagraficaDto.get('ruolo')?.value,
+      };
+      // console.log('Payload backend:', payload);
+      this.anagraficaDtoService
+        .update(payload, localStorage.getItem('token'))
+        .subscribe(
+          (response) => {
+            if ((response as any).esito.code !== 200) {
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  image: '../../../../assets/images/danger.png',
+                  title: 'Modifica non riuscita:',
+                  message: (response as any).esito.target,
+                },
+              });
+            } else {
+              // console.log('Payload inviato con successo al server:', response);
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  image: '../../../../assets/images/logo.jpeg',
+                  title: 'Modifica effettuata correttamente.',
+                },
+              });
+              this.router.navigate(['/lista-anagrafica']);
+            }
+          },
+          (error) => {
+            // console.error("Errore nell'invio del payload al server:", error);
+          }
+        );
     });
-
   }
 
   insertContratto() {

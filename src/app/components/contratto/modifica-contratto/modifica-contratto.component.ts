@@ -188,7 +188,10 @@ export class ModificaContrattoComponent implements OnInit{
         coniugato: [''],
         figliACarico: [''],
         attesaLavori: [''],
-
+        tipoCanaleReclutamento: this.formBuilder.group({
+          id: [''],
+          // descrizione: [''],
+        }),
         categoriaProtetta: [''],
         statoDiNascita: [''],
         cittadinanza: [''],
@@ -254,10 +257,8 @@ export class ModificaContrattoComponent implements OnInit{
         assicurazioneObbligatoria: [''],
         pc: [''],
         tariffaPartitaIva: [''],
-        tipoCanaleReclutamento: this.formBuilder.group({
-          id: [''],
-          // descrizione: [''],
-        }),
+
+        costoAziendale:[''],
         visitaMedica: [''],
         dataVisitaMedica: [''],
       }),
