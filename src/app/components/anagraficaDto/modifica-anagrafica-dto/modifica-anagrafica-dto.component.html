@@ -415,6 +415,19 @@
                               </div>
                             </label>
                           </div>
+                          <div class="col-4">
+                            <label>Canale Reclutamento * </label>
+                            <div class="form-group" formGroupName="tipoCanaleReclutamento">
+                              <select class="form-select" aria-label="Default select example"
+                                id="anagrafica.tipoCanaleReclutamento.id" formControlName="id" type="number">
+                                <option value="">--nessuna selezione--</option>
+                                <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento"
+                                  [value]="tipoCanaleReclutamento.id">
+                                  {{ tipoCanaleReclutamento.descrizione }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <br>
@@ -577,20 +590,6 @@
                                 formControlName="sedeAssunzione" placeholder="Inserire indirizzo sede assunzione" />
                             </div>
                           </div>
-                          <div class="col-4">
-                            <label>Canale Reclutamento * </label>
-                            <div class="form-group" formGroupName="tipoCanaleReclutamento">
-                              <select class="form-select" aria-label="Default select example"
-                                id="contratto.tipoCanaleReclutamento.id" formControlName="id" type="number">
-                                <option value="">--nessuna selezione--</option>
-                                <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento"
-                                  [value]="tipoCanaleReclutamento.id">
-                                  {{ tipoCanaleReclutamento.descrizione }}
-                                </option>
-                              </select>
-                            </div>
-                          </div>
-
                         </div>
                         <br>
                         <legend>Altri dati</legend>
@@ -808,7 +807,13 @@
 
                         </div>
                         <br>
-
+                        <div class="row">
+                          <legend>Costo aziendale</legend>
+                          <div class="col-md-3">
+                            <label>Costo aziendale</label>
+                            <input type="number" class="form-control" formControlName="costoAziendale" step="0.01"  >
+                          </div>
+                        </div>
 
                         <div class="row">
                           <legend>Dati economici partita iva</legend>

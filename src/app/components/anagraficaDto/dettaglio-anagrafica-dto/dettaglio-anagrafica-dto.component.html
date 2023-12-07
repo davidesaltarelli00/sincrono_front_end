@@ -285,7 +285,7 @@
                     </tr>
                     <tr>
                       <td><strong>Canale reclutamento</strong></td>
-                      <td>{{data?.contratto?.tipoCanaleReclutamento.descrizione ? data?.contratto?.tipoCanaleReclutamento.descrizione : 'Dato non inserito.'}}</td>
+                      <td>{{data?.anagrafica?.tipoCanaleReclutamento.descrizione ? data?.anagrafica?.tipoCanaleReclutamento.descrizione : 'Dato non inserito.'}}</td>
                     </tr>
                     <tr>
                       <td><strong>Attesa lavori</strong></td>
@@ -576,6 +576,20 @@
                         <td> <strong>Valore Ticket:</strong> </td>
                         <td>{{ data?.contratto?.valoreTicket ? data?.contratto?.valoreTicket: 'Dato non inserito' }} <i
                             class="fa fa-euro-sign" *ngIf="data?.contratto?.valoreTicket!=null"></i></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-12">
+                  <h1>Costo aziendale</h1>
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td><strong>Costo aziendale</strong></td>
+                        <td>{{data?.contratto?.costoAziendale ? data?.contratto?.costoAziendale : 'Dato non inserito'}}</td>
                       </tr>
                     </tbody>
                   </table>
