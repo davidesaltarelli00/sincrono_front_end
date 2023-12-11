@@ -19,7 +19,7 @@ import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import { MailSollecitaComponent } from '../mail-sollecita/mail-sollecita.component';
 import { ThemeService } from 'src/app/theme.service';
 import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.component';
-
+import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-lista-rapportini',
   templateUrl: './lista-rapportini.component.html',
@@ -352,6 +352,42 @@ export class ListaRapportiniComponent implements OnInit {
     }
   }
 
+  ExportCSV(){
+    let body = {
+      codiceFiscale:"PDRMNC87A47L378K",
+      anno: 2022,
+      mese: 11,
+    };
+    this.listaRapportiniService
+    .getExcelRapportino(this.token, body)
+    .subscribe(
+      (result: any) => {
+       console.log(result);
+       this.downloadExcelFile(result["rapportinoB64"])
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato un errore durante il caricamento del rapportino: ' +
+            JSON.stringify(error)
+        );
+      }
+    );
+  
+  }
+
+  downloadExcelFile(base64:string): void {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    saveAs(blob, 'nome_file.xlsx');
+  }
   onTipoContrattoChange(event: Event) {
     const selectedTipoContratto = (event.target as HTMLSelectElement).value;
     const dataFineRapportoControl = this.filterAnagraficaDto.get(

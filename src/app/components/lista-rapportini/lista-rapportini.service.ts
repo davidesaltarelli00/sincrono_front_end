@@ -24,6 +24,17 @@ export class ListaRapportiniService {
     });
   }
 
+
+  getExcelRapportino(token: any, body: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<any>(this.url + `export-rapportino`, body, {
+      headers: headers,
+    });
+  }
   getAllRapportiniFreezati(token: any, body: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
