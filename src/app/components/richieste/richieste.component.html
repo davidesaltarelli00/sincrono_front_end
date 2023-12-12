@@ -450,6 +450,7 @@ img{
                     <th>Giorno</th>
                     <th>Stato della richiesta</th>
                     <th>Note</th>
+                    <th>Azioni</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -469,6 +470,7 @@ img{
                       <td matTooltip="{{ richiesta.note  }}">
                         {{ richiesta.note | truncate: 10 }}
                       </td>
+                      <td> <button mat-mini-fab color="accent" [disabled]="richiesta.stato==null" (click)="updateRichiesta(richiesta.id)" > <i class="fa fa-pencil" ></i> </button> </td>
 
                     </ng-container>
                   </tr>
@@ -503,6 +505,7 @@ img{
                     <th>Alle ore</th>
                     <th>Stato della richiesta</th>
                     <th>Note</th>
+                    <th>Azioni</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -532,6 +535,7 @@ img{
                       <td matTooltip="{{ richiesta.note  }}">
                         {{ richiesta.note | truncate: 10 }}
                       </td>
+                      <td> <button mat-mini-fab color="accent" [disabled]="richiesta.stato==null" (click)="updateRichiesta(richiesta.id)" > <i class="fa fa-pencil" ></i> </button> </td>
                     </ng-container>
 
 

@@ -37,6 +37,7 @@ import { InsertPermessoComponent } from './components/richieste/insert-permesso/
 import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-richiesta/dettaglio-richiesta.component';
 import { TutorialCompilazioneRapportinoComponent } from './tutorial-compilazione-rapportino/tutorial-compilazione-rapportino.component';
 import { AggiungiCommessaComponent } from './components/aggiungi-commessa/aggiungi-commessa.component';
+import { ModificaRichiestaComponent } from './components/richieste/modifica-richiesta/modifica-richiesta.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -224,6 +225,11 @@ const routes: Routes = [
   {
     path: 'richieste/:id',
     component: DettaglioRichiestaComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'update-richiesta/:id',
+    component: ModificaRichiestaComponent,
     canActivate: [AuthGuard],
   },
   {

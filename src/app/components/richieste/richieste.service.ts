@@ -70,4 +70,29 @@ export class RichiesteService {
       headers: headers,
     });
   }
+
+  checkElaborazione(token: any, body: any): Observable<any> {
+    //
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    const url = this.url + `check-elaborazione`;
+    return this.http.post<any>(url, body, {
+      headers: headers,
+    });
+  }
+
+  updateRichiesta(token: any, body: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    const url = this.url + `modifica-richiesta`;
+    return this.http.put<any>(url, body, {
+      headers: headers,
+    });
+  }
 }
