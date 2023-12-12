@@ -165,6 +165,13 @@ export class ModificaRichiestaComponent implements OnInit {
       });
     }
   }
+
+  mostraPulsanteAggiungi(): boolean {
+    // Restituisci true solo se ci sono elementi nella lista e l'ultimo elemento è una richiesta di ferie
+    return this.data.list && this.data.list.length > 0 && this.data.list[this.data.list.length - 1].ferie;
+  }
+
+
   generateCalendar(month: number, year: number) {
     this.currentMonthDays = [];
     const daysInMonth = new Date(year, month, 0).getDate();

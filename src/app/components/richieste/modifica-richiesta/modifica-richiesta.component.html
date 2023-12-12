@@ -159,43 +159,59 @@
       <div *ngIf="data">
         <div class="container">
           <div class="card">
-            <p class="col-3"><strong>Anno:</strong> <input type="number" class="form-control" [(ngModel)]="data.anno" ></p>
-            <p class="col-3"><strong>Mese:</strong> <input type="number" class="form-control" [(ngModel)]="data.mese" > </p>
+            <p class="col-3"><strong>Anno:</strong> <input type="number" class="form-control" [(ngModel)]="data.anno"></p>
+            <p class="col-3"><strong>Mese:</strong> <input type="number" class="form-control" [(ngModel)]="data.mese"></p>
             <p hidden><strong>Codice Fiscale:</strong> {{ data.codiceFiscale }}</p>
 
             <div class="row" *ngIf="data.list && data.list.length > 0">
-              <p *ngIf="tipoRichiesta=='ferie'" ><strong>Tipologia richiesta: </strong>{{ getTitle() }}</p>
+              <p><strong>Tipologia richiesta: </strong>{{ getTitle() }}</p>
               <div class="col-2" *ngFor="let item of data.list; let i = index">
                 <ng-container *ngIf="item.ferie; else permessiTemplate">
                   <!-- Dettagli per richiesta di ferie -->
-                  <p ><input type="number" class="form-control" [(ngModel)]="item.nGiorno ">
-                    <button mat-mini-fab color="warn" (click)="rimuoviCampo(i)"> <i class="fa fa-minus"></i> </button>
+                  <p>
+                    <input type="number" class="form-control" [(ngModel)]="item.nGiorno">
+                    <button mat-mini-fab color="warn" (click)="rimuoviCampo(i)"><i class="fa fa-minus"></i></button>
                   </p>
-                  <div class="buttons-container">
-                    <button mat-mini-fab color="primary" (click)="aggiungiCampo()"> <i class="fa fa-plus" ></i> </button>
-                  </div>
                 </ng-container>
-
 
                 <ng-template #permessiTemplate>
                   <!-- Dettagli per richiesta di permessi -->
-                  <p class="col-12"> <strong>Giorno richiesto:</strong> <input type="text" class="form-control" [(ngModel)]="item.nGiorno"></p>
-                  <p class="col-8"> <strong>Ora Inizio: </strong><input type="text" class="form-control" [(ngModel)]="item.daOra"></p>
-                  <p class="col-8"> <strong>Ora Fine:</strong> <input type="text" class="form-control" [(ngModel)]="item.aOra"> </p>
+                  <p class="col-12">
+                    <strong>Giorno richiesto:</strong>
+                    <input type="text" class="form-control" [(ngModel)]="item.nGiorno">
+                  </p>
+                  <p class="col-8">
+                    <strong>Ora Inizio: </strong>
+                    <input type="text" class="form-control" [(ngModel)]="item.daOra">
+                  </p>
+                  <p class="col-8">
+                    <strong>Ora Fine:</strong>
+                    <input type="text" class="form-control" [(ngModel)]="item.aOra">
+                  </p>
                 </ng-template>
               </div>
 
-              <!-- Pulsanti fuori dal ciclo ngFor -->
+              <!-- Pulsante "Aggiungi" fuori dal ciclo ngFor -->
+              <div class="buttons-container" *ngIf="mostraPulsanteAggiungi()">
+                <button mat-mini-fab color="primary" (click)="aggiungiCampo()"><i class="fa fa-plus"></i></button>
+              </div>
+
+              <!-- Pulsante "Salva" fuori dal ciclo ngFor -->
               <div class="buttons-container">
-                <button mat-mini-fab color="primary" (click)="salva(data)"> <i class="fa fa-save" ></i> </button> &nbsp;
+                <button mat-mini-fab color="primary" (click)="salva(data)"><i class="fa fa-save"></i></button>&nbsp;
               </div>
               <br>
             </div>
-            <p *ngIf="!data.list || data.list.length === 0">Nessun dettaglio disponibile.<button mat-mini-fab color="primary" (click)="aggiungiCampo()"> <i class="fa fa-plus" ></i> </button>
+
+            <!-- Messaggio se la lista è vuota -->
+            <p *ngIf="!data.list || data.list.length === 0">
+              Nessun dettaglio disponibile.
+              <button mat-mini-fab color="primary" (click)="aggiungiCampo()"><i class="fa fa-plus"></i></button>
             </p>
           </div>
         </div>
       </div>
     </div>
+
   </body>
 </html>
