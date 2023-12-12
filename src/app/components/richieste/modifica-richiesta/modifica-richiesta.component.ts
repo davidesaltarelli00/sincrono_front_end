@@ -151,6 +151,7 @@ export class ModificaRichiestaComponent implements OnInit {
       this.getUserLogged();
       this.getUserRole();
       this.getRichiesta();
+      this. getTitle();
       const currentDate = new Date();
       this.currentMonth = currentDate.getMonth() + 1;
       this.currentYear = currentDate.getFullYear();
@@ -182,9 +183,6 @@ export class ModificaRichiestaComponent implements OnInit {
     this.richiesteService.getRichiesta(this.token, this.id).subscribe(
       (result: any) => {
         this.data = result['richiestaDto'];
-        console.log(
-          'Dati restituiti dalla richiesta: ' + JSON.stringify(this.data)
-        );
       },
       (error: any) => {
         console.error('Errore durante il get: ' + JSON.stringify(error));
@@ -192,8 +190,23 @@ export class ModificaRichiestaComponent implements OnInit {
     );
   }
 
+  aggiungiCampo() {
+    this.data.list.push({
+      ferie: true,
+      nGiorno: null,
+      permessi: null,
+      aOra: null,
+      daOra: null,
+      note: null,
+    });
+  }
+
+  // Rimuovi un campo per i giorni di ferie
+  rimuoviCampo(index: number) {
+    this.data.list.splice(index, 1);
+  }
+
   salva(data: any) {
-    console.log('Payload x richiesta update : ' + JSON.stringify(data));
     const dialogRef = this.dialog.open(AlertConfermaComponent, {
       data: {
         image: '../../../../assets/images/danger.png',
@@ -204,7 +217,24 @@ export class ModificaRichiestaComponent implements OnInit {
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {
-      this.richiesteService.updateRichiesta(this.token, this.data).subscribe(
+      let body = {
+        richiestaDto: {
+          id: data.id,
+          anno: data.anno,
+          mese: data.mese,
+          codiceFiscale: data.codiceFiscale,
+          list: data.list.map((item: any) => ({
+            permessi: item.permessi,
+            ferie: item.ferie,
+            daOra: item.daOra,
+            aOra: item.aOra,
+            nGiorno: item.nGiorno,
+          })),
+        },
+      };
+      console.log('Payload x richiesta update : ' + JSON.stringify(body));
+
+      this.richiesteService.updateRichiesta(this.token, body).subscribe(
         (response: any) => {
           if ((response as any).esito.code !== 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
@@ -299,10 +329,6 @@ export class ModificaRichiestaComponent implements OnInit {
         }
       }
     }
-  }
-
-  onTipoRichiestaSelected(event: any) {
-    this.tipoRichiesta = event.target.value;
   }
 
   isWeekend(dayOfWeek: number): boolean {
