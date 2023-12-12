@@ -80,6 +80,8 @@ export class ModificaRichiestaComponent implements OnInit {
   anniDal2023: any[] = [];
   data: any;
   note: any;
+  oraFineOptions: string[] = [];
+  mostraAggiungiCampo: boolean = true;
 
   constructor(
     private authService: AuthService,
@@ -151,7 +153,7 @@ export class ModificaRichiestaComponent implements OnInit {
       this.getUserLogged();
       this.getUserRole();
       this.getRichiesta();
-      this. getTitle();
+      this.getTitle();
       const currentDate = new Date();
       this.currentMonth = currentDate.getMonth() + 1;
       this.currentYear = currentDate.getFullYear();
@@ -166,11 +168,44 @@ export class ModificaRichiestaComponent implements OnInit {
     }
   }
 
-  mostraPulsanteAggiungi(): boolean {
-    // Restituisci true solo se ci sono elementi nella lista e l'ultimo elemento è una richiesta di ferie
-    return this.data.list && this.data.list.length > 0 && this.data.list[this.data.list.length - 1].ferie;
+  updateOraFineOptions(item: any) {
+    const oraInizio = item.daOra;
+    const oraInizioDate = new Date(`01/01/2000 ${oraInizio}`);
+    const oraFineOptions = [];
+    const orarioMassimo = new Date(`01/01/2000 18:00`);
+
+    for (let i = 30; i <= 240; i += 30) {
+      const nuovaOra = new Date(oraInizioDate.getTime() + i * 60000);
+      // Verifica che l'ora sia minore o uguale all'orario massimo
+      if (nuovaOra <= orarioMassimo) {
+        const nuovaOraFormatted = this.formatOra(nuovaOra);
+        oraFineOptions.push(nuovaOraFormatted);
+      }
+    }
+
+    // Imposta il valore di "Ora Fine" solo se è maggiore o uguale a "Ora Inizio"
+    const orarioSelezionato = this.oraFineOptions.find(ora => ora >= item.daOra);
+    item.aOra = orarioSelezionato || (this.oraFineOptions.length > 0 ? this.oraFineOptions[0] : '');
+
+    this.oraFineOptions = oraFineOptions;
   }
 
+
+
+  formatOra(ora: Date): string {
+    const ore = ora.getHours().toString().padStart(2, '0');
+    const minuti = ora.getMinutes().toString().padStart(2, '0');
+    return `${ore}:${minuti}`;
+  }
+
+  mostraPulsanteAggiungi(): boolean {
+    // Restituisci true solo se ci sono elementi nella lista e l'ultimo elemento è una richiesta di ferie
+    return (
+      this.data.list &&
+      this.data.list.length > 0 &&
+      this.data.list[this.data.list.length - 1].ferie
+    );
+  }
 
   generateCalendar(month: number, year: number) {
     this.currentMonthDays = [];
@@ -190,6 +225,7 @@ export class ModificaRichiestaComponent implements OnInit {
     this.richiesteService.getRichiesta(this.token, this.id).subscribe(
       (result: any) => {
         this.data = result['richiestaDto'];
+        console.log("Dati restituiti dal dettaglio: "+ JSON.stringify(this.data));
       },
       (error: any) => {
         console.error('Errore durante il get: ' + JSON.stringify(error));
@@ -278,17 +314,24 @@ export class ModificaRichiestaComponent implements OnInit {
   }
 
   getTitle(): string {
-    if (this.data.list.some((item: any) => item.ferie)) {
+    let hasFerie = this.data.list.some((item: any) => item.ferie);
+    let hasPermessi = this.data.list.some((item: any) => item.permessi);
+
+    if (hasFerie) {
       this.tipoRichiesta = 'ferie';
+      this.mostraAggiungiCampo = true;  // Mostra il pulsante solo se ci sono ferie
       return 'Ferie per i seguenti giorni:';
-    } else if (this.data.list.some((item: any) => item.permessi)) {
+    } else if (hasPermessi) {
       this.tipoRichiesta = 'permessi';
-      return 'Ore di permesso ';
+      this.mostraAggiungiCampo = false;  // Nascondi il pulsante se ci sono permessi
+      return 'Ore di permesso';
     } else {
       this.tipoRichiesta = '';
+      this.mostraAggiungiCampo = true;  // Mostra il pulsante se non ci sono ferie o permessi
       return 'Nessuna tipologia specificata';
     }
   }
+
 
   getMonthName(month: number): string {
     const monthNames = [
