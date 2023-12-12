@@ -296,6 +296,7 @@ export class ModificaRichiestaComponent implements OnInit {
                 message: (response as any).esito.target,
               },
             });
+            this.router.navigate(['/richieste']);
           }
         },
         (error: any) => {
