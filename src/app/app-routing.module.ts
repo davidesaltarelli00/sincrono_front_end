@@ -36,6 +36,8 @@ import { SelectedDaysComponent } from './components/richieste/selected-days/sele
 import { InsertPermessoComponent } from './components/richieste/insert-permesso/insert-permesso.component';
 import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-richiesta/dettaglio-richiesta.component';
 import { TutorialCompilazioneRapportinoComponent } from './tutorial-compilazione-rapportino/tutorial-compilazione-rapportino.component';
+import { AggiungiCommessaComponent } from './components/aggiungi-commessa/aggiungi-commessa.component';
+import { ModificaRichiestaComponent } from './components/richieste/modifica-richiesta/modifica-richiesta.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -215,7 +217,7 @@ const routes: Routes = [
     component: StoricoCommesseComponent,
     canActivate: [AuthGuard],
   },
- {
+  {
     path: 'richieste',
     component: RichiesteComponent,
     canActivate: [AuthGuard],
@@ -225,8 +227,17 @@ const routes: Routes = [
     component: DettaglioRichiestaComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'update-richiesta/:id',
+    component: ModificaRichiestaComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'aggiungi-commessa/:id',
+    component: AggiungiCommessaComponent,
+    canActivate: [AuthGuard],
+  },
 
-  //CALENDARIO
   {
     path: 'utente/:id',
     component: UtenteComponent,

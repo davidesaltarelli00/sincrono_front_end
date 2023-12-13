@@ -95,6 +95,9 @@ export class InsertPermessoComponent implements OnInit {
   ];
   elencoAnni: number[] = [];
   selectedDaOra: string | null = null;
+  selectedAnnoForLista: any;
+  selectedMeseForLista: any;
+  elencoRichiesteDipendente: any[]=[];
 
   constructor(
     private profileBoxService: ProfileBoxService,
@@ -223,8 +226,8 @@ export class InsertPermessoComponent implements OnInit {
 
   initializeYears() {
     const currentYear = new Date().getFullYear();
-    const startYear = currentYear;
-    for (let year = startYear; year <= currentYear; year++) {
+    const startYear = 2023;
+    for (let year = startYear; year <= 2030; year++) {
       this.elencoAnni.push(year);
     }
   }
@@ -314,6 +317,42 @@ export class InsertPermessoComponent implements OnInit {
                   message: "Tieni d'occhio la lista delle richieste per monitorare lo stato.",
                 },
               });
+              const oggi = new Date();
+              this.selectedAnnoForLista = oggi.getFullYear();
+              this.selectedMeseForLista = oggi.getMonth() + 1;
+              let body = {
+                richiestaDto: {
+                  anno: this.selectedAnnoForLista,
+                  mese: this.selectedMeseForLista,
+                  codiceFiscale: this.codiceFiscale,
+                },
+              };
+              console.log(
+                'BODY PER LISTA RICHIESTE DIPENDENTE PER MESE E ANNO CORRENTE COMPONENT INSERT PERMESSO: ' +
+                  JSON.stringify(body)
+              );
+              this.richiesteService
+                .getAllRichiesteDipendente(this.token, body)
+                .subscribe((result: any) => {
+                  if ((result as any).esito.code != 200) {
+                    const dialogRef = this.dialog.open(AlertDialogComponent, {
+                      data: {
+                        image: '../../../../assets/images/danger.png',
+                        title: 'Attenzione:',
+                        message:
+                          'Si é verificato un problema durante il caricamento della lista: ' +
+                          (result as any).esito.target,
+                      },
+                      disableClose: true,
+                    });
+                  } else {
+                    this.elencoRichiesteDipendente = result['list'];
+                    console.log(
+                      'la ricerca ha prodotto i seguenti risultati: ' +
+                        JSON.stringify(this.elencoRichiesteDipendente)
+                    );
+                  }
+                });
             }
           });
       }

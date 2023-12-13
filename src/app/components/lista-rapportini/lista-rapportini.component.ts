@@ -19,7 +19,7 @@ import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import { MailSollecitaComponent } from '../mail-sollecita/mail-sollecita.component';
 import { ThemeService } from 'src/app/theme.service';
 import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.component';
-
+import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-lista-rapportini',
   templateUrl: './lista-rapportini.component.html',
@@ -89,6 +89,10 @@ export class ListaRapportiniComponent implements OnInit {
         id: new FormControl(null),
         descrizione: new FormControl(null),
       }),
+      tipoCanaleReclutamento: new FormGroup({
+        id: new FormControl(null),
+        descrizione: new FormControl(null),
+      }),
     }),
 
     contratto: new FormGroup({
@@ -108,9 +112,7 @@ export class ListaRapportiniComponent implements OnInit {
       tipoAzienda: new FormGroup({
         id: new FormControl(null),
       }),
-      tipoCanaleReclutamento: new FormGroup({
-        id: new FormControl(null),
-      }),
+
       tipoCausaFineRapporto: new FormGroup({
         id: new FormControl(null),
       }),
@@ -127,8 +129,8 @@ export class ListaRapportiniComponent implements OnInit {
   elencoLivelliCCNL: any[] = [];
   inseritoContrattoIndeterminato: any;
   messaggio: any;
-  mostraFiltri = false;
-
+  mostraFiltriFreeze = false;
+  mostraFiltriNotFreeze = false;
   constructor(
     private authService: AuthService,
     private profileBoxService: ProfileBoxService,
@@ -157,8 +159,8 @@ export class ListaRapportiniComponent implements OnInit {
     this.selectedAnno = annoCorrente;
     this.selectedMese = meseCorrente;
 
-    this.currentYear=annoCorrente;
-    this.currentMonth=meseCorrente;
+    this.currentYear = annoCorrente;
+    this.currentMonth = meseCorrente;
 
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -184,6 +186,10 @@ export class ListaRapportiniComponent implements OnInit {
           id: new FormControl(null),
           descrizione: new FormControl(null),
         }),
+        tipoCanaleReclutamento: new FormGroup({
+          id: new FormControl(),
+          descrizione: new FormControl(null),
+        }),
       }),
       contratto: new FormGroup({
         ralAnnua: new FormControl(null),
@@ -202,10 +208,6 @@ export class ListaRapportiniComponent implements OnInit {
           descrizione: new FormControl(null),
         }),
         tipoAzienda: new FormGroup({
-          id: new FormControl(),
-          descrizione: new FormControl(null),
-        }),
-        tipoCanaleReclutamento: new FormGroup({
           id: new FormControl(),
           descrizione: new FormControl(null),
         }),
@@ -267,7 +269,7 @@ export class ListaRapportiniComponent implements OnInit {
                 (error: any) => {
                   console.error(
                     'Si é verificato un errore durante il caricamento dei rapportini freezati: ' +
-                      JSON.stringify(error)
+                    JSON.stringify(error)
                   );
                 }
               );
@@ -277,7 +279,7 @@ export class ListaRapportiniComponent implements OnInit {
           (error: any) => {
             console.error(
               'Errore durante il caricamento dei rapportini not freeze: ' +
-                JSON.stringify(error)
+              JSON.stringify(error)
             );
           }
         );
@@ -325,8 +327,8 @@ export class ListaRapportiniComponent implements OnInit {
         },
         (error: any) => {
           console.error(
-            'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
-              JSON.stringify(error)
+            'Errore durante il caricamento della tipologica canale reclutamento: ' +
+            JSON.stringify(error)
           );
         }
       );
@@ -350,6 +352,42 @@ export class ListaRapportiniComponent implements OnInit {
     }
   }
 
+  ExportCSV(){
+    let body = {
+      codiceFiscale:"PDRMNC87A47L378K",
+      anno: 2022,
+      mese: 11,
+    };
+    this.listaRapportiniService
+    .getExcelRapportino(this.token, body)
+    .subscribe(
+      (result: any) => {
+       console.log(result);
+       this.downloadExcelFile(result["rapportinoB64"])
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato un errore durante il caricamento del rapportino: ' +
+            JSON.stringify(error)
+        );
+      }
+    );
+  
+  }
+
+  downloadExcelFile(base64:string): void {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    saveAs(blob, 'nome_file.xlsx');
+  }
   onTipoContrattoChange(event: Event) {
     const selectedTipoContratto = (event.target as HTMLSelectElement).value;
     const dataFineRapportoControl = this.filterAnagraficaDto.get(
@@ -466,7 +504,7 @@ export class ListaRapportiniComponent implements OnInit {
             (error: any) => {
               console.error(
                 'Errore durante il caricamento dei livelli di contratto: ' +
-                  error
+                error
               );
             }
           );
@@ -691,7 +729,7 @@ export class ListaRapportiniComponent implements OnInit {
         (error: any) => {
           console.error(
             'Errore durante il caricamento dei rapportini not freeze: ' +
-              JSON.stringify(error)
+            JSON.stringify(error)
           );
         }
       );
@@ -719,7 +757,7 @@ export class ListaRapportiniComponent implements OnInit {
         (error: any) => {
           console.error(
             'Si é verificato un errore durante il caricamento dei rapportini freezati: ' +
-              JSON.stringify(error)
+            JSON.stringify(error)
           );
         }
       );
@@ -758,7 +796,7 @@ export class ListaRapportiniComponent implements OnInit {
       data: {
         image: '../../../../assets/images/danger.png',
         title: 'Attenzione:',
-        message:  "Confermi di voler cambiare lo stato del rapportino?",
+        message: "Confermi di voler cambiare lo stato del rapportino?",
       }, disableClose: true,
     });
 
@@ -782,7 +820,7 @@ export class ListaRapportiniComponent implements OnInit {
         (error: any) => {
           console.error(
             'Errore durante il congelamento del rapportino: ' +
-              JSON.stringify(error)
+            JSON.stringify(error)
           );
         }
       );
@@ -903,7 +941,7 @@ export class ListaRapportiniComponent implements OnInit {
     }
     console.log(
       "L'elenco al momento contiene le seguenti mail: " +
-        JSON.stringify(this.elencoMail)
+      JSON.stringify(this.elencoMail)
     );
   }
 
@@ -952,7 +990,7 @@ export class ListaRapportiniComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
+          error
         );
       }
     );
@@ -982,7 +1020,7 @@ export class ListaRapportiniComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
+          error
         );
         this.shouldReloadPage = true;
       }

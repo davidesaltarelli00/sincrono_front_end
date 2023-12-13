@@ -549,7 +549,7 @@
                   </table>
                 </mat-card-content>
                 <mat-card-content *ngIf="elencoCommesse.length<1">
-                  <h3 class="text-primary" >Non hai commesse al momento.</h3>
+                  <h3 class="text-primary" >Non hai commesse al momento. <button [hidden]="ruolo==='DIPENDENTE'" [routerLink]="['/aggiungi-commessa/', id]" mat-mini-fab color="primary" matTooltip="Aggiungi commessa" > <i class="fa fa-plus" ></i> </button> </h3>
                 </mat-card-content>
               </mat-card>
             </div>

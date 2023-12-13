@@ -1,23 +1,25 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from '../login/login-service';
-import { ProfileBoxService } from '../profile-box/profile-box.service';
-import { MatDialog } from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { ImageService } from '../image.service';
-import { MenuService } from '../menu.service';
-import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
-import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../login/login-service';
+import { ProfileBoxService } from '../../profile-box/profile-box.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { ThemeService } from 'src/app/theme.service';
-import { RichiesteService } from './richieste.service';
+import { ImageService } from '../../image.service';
+import { MenuService } from '../../menu.service';
+import { RichiesteService } from '../richieste.service';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
+import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
+import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.component';
 
 @Component({
-  selector: 'app-richieste',
-  templateUrl: './richieste.component.html',
-  styleUrls: ['./richieste.component.scss'],
+  selector: 'app-modifica-richiesta',
+  templateUrl: './modifica-richiesta.component.html',
+  styleUrls: ['./modifica-richiesta.component.scss'],
 })
-export class RichiesteComponent implements OnInit {
+export class ModificaRichiestaComponent implements OnInit {
+  id = this.activatedRouter.snapshot.params['id'];
   userLoggedName: any;
   userLoggedSurname: any;
   shouldReloadPage: any;
@@ -45,7 +47,7 @@ export class RichiesteComponent implements OnInit {
   selectedAnno: any;
   selectedMese: any;
   giorni: any[] = [];
-  selectedGiorno: number;
+  selectedGiorno: any;
   esitoCorretto = false;
   elencoRichieste: any[] = [];
   requestForm: FormGroup;
@@ -76,6 +78,10 @@ export class RichiesteComponent implements OnInit {
   selectedAnnoForLista: any;
   elencoRichiesteDipendente: any[] = [];
   anniDal2023: any[] = [];
+  data: any;
+  note: any;
+  oraFineOptions: string[] = [];
+  mostraAggiungiCampo: boolean = true;
 
   constructor(
     private authService: AuthService,
@@ -87,6 +93,7 @@ export class RichiesteComponent implements OnInit {
     private formBuilder: FormBuilder,
     private imageService: ImageService,
     private menuService: MenuService,
+    private activatedRouter: ActivatedRoute,
     private richiesteService: RichiesteService
   ) {
     const oggi = new Date();
@@ -145,6 +152,8 @@ export class RichiesteComponent implements OnInit {
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
+      this.getRichiesta();
+      this.getTitle();
       const currentDate = new Date();
       this.currentMonth = currentDate.getMonth() + 1;
       this.currentYear = currentDate.getFullYear();
@@ -158,6 +167,46 @@ export class RichiesteComponent implements OnInit {
       });
     }
   }
+
+  updateOraFineOptions(item: any) {
+    const oraInizio = item.daOra;
+    const oraInizioDate = new Date(`01/01/2000 ${oraInizio}`);
+    const oraFineOptions = [];
+    const orarioMassimo = new Date(`01/01/2000 18:00`);
+
+    for (let i = 30; i <= 240; i += 30) {
+      const nuovaOra = new Date(oraInizioDate.getTime() + i * 60000);
+      // Verifica che l'ora sia minore o uguale all'orario massimo
+      if (nuovaOra <= orarioMassimo) {
+        const nuovaOraFormatted = this.formatOra(nuovaOra);
+        oraFineOptions.push(nuovaOraFormatted);
+      }
+    }
+
+    // Imposta il valore di "Ora Fine" solo se è maggiore o uguale a "Ora Inizio"
+    const orarioSelezionato = this.oraFineOptions.find(ora => ora >= item.daOra);
+    item.aOra = orarioSelezionato || (this.oraFineOptions.length > 0 ? this.oraFineOptions[0] : '');
+
+    this.oraFineOptions = oraFineOptions;
+  }
+
+
+
+  formatOra(ora: Date): string {
+    const ore = ora.getHours().toString().padStart(2, '0');
+    const minuti = ora.getMinutes().toString().padStart(2, '0');
+    return `${ore}:${minuti}`;
+  }
+
+  mostraPulsanteAggiungi(): boolean {
+    // Restituisci true solo se ci sono elementi nella lista e l'ultimo elemento è una richiesta di ferie
+    return (
+      this.data.list &&
+      this.data.list.length > 0 &&
+      this.data.list[this.data.list.length - 1].ferie
+    );
+  }
+
   generateCalendar(month: number, year: number) {
     this.currentMonthDays = [];
     const daysInMonth = new Date(year, month, 0).getDate();
@@ -172,10 +221,118 @@ export class RichiesteComponent implements OnInit {
     }
   }
 
+  getRichiesta() {
+    this.richiesteService.getRichiesta(this.token, this.id).subscribe(
+      (result: any) => {
+        this.data = result['richiestaDto'];
+        console.log("Dati restituiti dal dettaglio: "+ JSON.stringify(this.data));
+      },
+      (error: any) => {
+        console.error('Errore durante il get: ' + JSON.stringify(error));
+      }
+    );
+  }
+
+  aggiungiCampo() {
+    this.data.list.push({
+      ferie: true,
+      nGiorno: null,
+      permessi: null,
+      aOra: null,
+      daOra: null,
+      note: null,
+    });
+  }
+
+  // Rimuovi un campo per i giorni di ferie
+  rimuoviCampo(index: number) {
+    this.data.list.splice(index, 1);
+  }
+
+  salva(data: any) {
+    const dialogRef = this.dialog.open(AlertConfermaComponent, {
+      data: {
+        image: '../../../../assets/images/danger.png',
+        title: 'Attenzione:',
+        message: 'Confermi di voler modificare la richiesta ?',
+      },
+      disableClose: true,
+    });
+
+    dialogRef.componentInstance.conferma.subscribe(() => {
+      let body = {
+        richiestaDto: {
+          id: data.id,
+          anno: data.anno,
+          mese: data.mese,
+          codiceFiscale: data.codiceFiscale,
+          list: data.list.map((item: any) => ({
+            permessi: item.permessi,
+            ferie: item.ferie,
+            daOra: item.daOra,
+            aOra: item.aOra,
+            nGiorno: item.nGiorno,
+          })),
+        },
+      };
+      console.log('Payload x richiesta update : ' + JSON.stringify(body));
+
+      this.richiesteService.updateRichiesta(this.token, body).subscribe(
+        (response: any) => {
+          if ((response as any).esito.code !== 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/danger.png',
+                title: 'Modifica non riuscita:',
+                message: (response as any).esito.target,
+              },
+            });
+          }
+          if ((response as any).esito.code === 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/danger.png',
+                title: 'Modifica effettuata con successo.',
+                message: (response as any).esito.target,
+              },
+            });
+            this.router.navigate(['/richieste']);
+          }
+        },
+        (error: any) => {
+          console.error(
+            'Errore durtante la modifica della richiesta: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
+    });
+  }
+
   onChangeMeseForLista(event: any) {
     const target = event.target.value;
     this.selectedMeseForLista = target;
   }
+
+  getTitle(): string {
+    let hasFerie = this.data.list.some((item: any) => item.ferie);
+    let hasPermessi = this.data.list.some((item: any) => item.permessi);
+
+    if (hasFerie) {
+      this.tipoRichiesta = 'ferie';
+      this.mostraAggiungiCampo = true;  // Mostra il pulsante solo se ci sono ferie
+      return 'Ferie per i seguenti giorni:';
+    } else if (hasPermessi) {
+      this.tipoRichiesta = 'permessi';
+      this.mostraAggiungiCampo = false;  // Nascondi il pulsante se ci sono permessi
+      return 'Ore di permesso';
+    } else {
+      this.tipoRichiesta = '';
+      this.mostraAggiungiCampo = true;  // Mostra il pulsante se non ci sono ferie o permessi
+      return 'Nessuna tipologia specificata';
+    }
+  }
+
 
   getMonthName(month: number): string {
     const monthNames = [
@@ -216,11 +373,6 @@ export class RichiesteComponent implements OnInit {
           this.giorniSelezionati.push(dayNumber);
           this.openSelectedDays();
         }
-
-        console.log(
-          'Giorni selezionati singolarmente:' +
-            JSON.stringify(this.giorniSelezionati)
-        );
       } else {
         const index = this.giorniSelezionati.indexOf(dayNumber);
         if (index !== -1) {
@@ -228,11 +380,6 @@ export class RichiesteComponent implements OnInit {
         }
       }
     }
-  }
-
-  onTipoRichiestaSelected(event: any) {
-    this.tipoRichiesta = event.target.value;
-    console.log('Richiesta selezionata: ' + this.tipoRichiesta);
   }
 
   isWeekend(dayOfWeek: number): boolean {
@@ -268,7 +415,6 @@ export class RichiesteComponent implements OnInit {
     this.currentMonthDays.forEach((day) => {
       if (!this.isWeekend(day.dayOfWeek)) {
         this.onDaySelected(day.number);
-        console.log('Giorni selezionati: ' + JSON.stringify(day.number));
       }
     });
   }
@@ -281,167 +427,6 @@ export class RichiesteComponent implements OnInit {
 
   openSelectedDays() {
     this.showSelectedDays = true;
-  }
-
-  checkValidazione(id: number) {
-    console.log(id);
-    let body = {
-      richiestaDto: {
-        id: id,
-        anno: this.permessoAnno,
-        mese: this.permessoMese,
-        codiceFiscale: this.codiceFiscaleDettaglio,
-        list: [
-          {
-            permessi: true,
-            ferie: null,
-            daOra: this.daOra,
-            aOra: this.aOra,
-            nGiorno: this.permessoGiorno,
-          },
-        ],
-      },
-    };
-    console.log('PAYLOAD X CheckValidazione ' + JSON.stringify(body));
-  }
-
-  updateRichiesta(id: number) {
-    console.log(id);
-    this.router.navigate(['/update-richiesta/', id]);
-  }
-
-  getAllRichiesteDipendente() {
-    let body = {
-      richiestaDto: {
-        anno: this.selectedAnnoForLista,
-        mese: this.selectedMeseForLista,
-        codiceFiscale: this.codiceFiscaleDettaglio,
-      },
-    };
-    console.log('BODY PER LISTA RICHIESTE DIPENDENTE: ' + JSON.stringify(body));
-    this.richiesteService
-      .getAllRichiesteDipendente(this.token, body)
-      .subscribe((result: any) => {
-        if ((result as any).esito.code != 200) {
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-              image: '../../../../assets/images/danger.png',
-              title: 'Attenzione:',
-              message:
-                'Si é verificato un problema durante il caricamento della lista: ' +
-                (result as any).esito.target,
-            },
-            disableClose: true,
-          });
-        } else {
-          this.elencoRichiesteDipendente = result['list'];
-          console.log(
-            'la ricerca ha prodotto i seguenti risultati: ' +
-              JSON.stringify(this.elencoRichiesteDipendente)
-          );
-        }
-      });
-  }
-
-  //paginazione
-  getCurrentPageItemsFerie(): any[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.elencoRichiesteDipendente.slice(startIndex, endIndex);
-  }
-  getCurrentPageItemsPermessi(): any[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.elencoRichiesteDipendente.slice(startIndex, endIndex);
-  }
-
-  getTotalPages(): number {
-    return Math.ceil(this.elencoRichiesteDipendente.length / this.itemsPerPage);
-  }
-
-  getPaginationArray(): number[] {
-    const totalPages = this.getTotalPages();
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
-  }
-
-  goToPage(pageNumber: number) {
-    if (pageNumber >= 1 && pageNumber <= this.getTotalPages()) {
-      this.currentPage = pageNumber;
-    }
-  }
-
-  //------------------------------------------------------------------------------------------------------------------------------------
-
-  getAllRichieste() {
-    console.log(
-      'Hai selezionato il seguente periodo:' +
-        JSON.stringify(this.selectedGiorno) +
-        '-' +
-        JSON.stringify(this.selectedMese) +
-        '-' +
-        JSON.stringify(this.selectedAnno)
-    );
-    this.esitoCorretto = true;
-    this.elencoRichieste = [];
-  }
-
-  inviaRichiesta() {
-    console.log(this.requestForm.value);
-  }
-
-  resetForm() {
-    this.requestForm.reset();
-  }
-
-  //metodi form selezione periodo
-
-  onGiornoSelectChange(event: any) {
-    this.selectedGiorno = event.target.value;
-    console.log('Giorno selezionato:', this.selectedGiorno);
-  }
-
-  onMeseSelectChange(event: any) {
-    console.log('Mese selezionato:', event.target.value);
-  }
-
-  onAnnoSelectChange(event: any) {
-    console.log('Anno selezionato:', event.target.value);
-  }
-
-  //metodi immagine
-  getImage() {
-    let body = {
-      codiceFiscale: this.codiceFiscaleDettaglio,
-    };
-    console.log(JSON.stringify(body));
-    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
-    this.imageService.getImage(this.token, body).subscribe(
-      (result: any) => {
-        this.immagine = (result as any).base64;
-        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
-
-        if (this.immagine) {
-          this.convertBase64ToImage(this.immagine);
-        } else {
-          // Assegna un'immagine predefinita se l'immagine non è disponibile
-          this.immaginePredefinita =
-            '../../../../assets/images/profilePicPlaceholder.png';
-        }
-      },
-      (error: any) => {
-        console.error(
-          "Errore durante il caricamento dell'immagine: " +
-            JSON.stringify(error)
-        );
-
-        // Assegna un'immagine predefinita in caso di errore
-        this.immaginePredefinita = '../../../../assets/images/danger.png';
-      }
-    );
-  }
-
-  convertBase64ToImage(base64String: string): void {
-    this.immagineConvertita = base64String;
   }
 
   // metodi per navbar
@@ -459,48 +444,6 @@ export class RichiesteComponent implements OnInit {
         this.ruolo = response.anagraficaDto.ruolo.nome;
         this.codiceFiscaleDettaglio =
           response.anagraficaDto.anagrafica.codiceFiscale;
-        this.getImage();
-        const oggi = new Date();
-        this.selectedAnnoForLista = oggi.getFullYear();
-        this.selectedMeseForLista = oggi.getMonth() + 1;
-        if(this.ruolo==="DIPENDENTE"){
-          let body = {
-            richiestaDto: {
-              anno: this.selectedAnnoForLista,
-              mese: this.selectedMeseForLista,
-              codiceFiscale: this.codiceFiscaleDettaglio,
-            },
-          };
-          console.log(
-            'BODY PER LISTA RICHIESTE DIPENDENTE PER MESE E ANNO CORRENTE: ' +
-              JSON.stringify(body)
-          );
-          this.richiesteService
-            .getAllRichiesteDipendente(this.token, body)
-            .subscribe((result: any) => {
-              if ((result as any).esito.code != 200) {
-                const dialogRef = this.dialog.open(AlertDialogComponent, {
-                  data: {
-                    image: '../../../../assets/images/danger.png',
-                    title: 'Attenzione:',
-                    message:
-                      'Si é verificato un problema durante il caricamento della lista: ' +
-                      (result as any).esito.target,
-                  },
-                  disableClose: true,
-                });
-              } else {
-                this.elencoRichiesteDipendente = result['list'];
-                console.log(
-                  'la ricerca ha prodotto i seguenti risultati: ' +
-                    JSON.stringify(this.elencoRichiesteDipendente)
-                );
-              }
-            });
-        } else{
-          console.error("NON HAI I PERMESSI PER ACCEDERE ALLA SEZIONE.");
-        }
-
       },
       (error: any) => {
         console.error(
@@ -514,11 +457,8 @@ export class RichiesteComponent implements OnInit {
   getUserRole() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
-        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
-
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
-        console.log('ID UTENTE PER NAV:' + this.idUtente);
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
         ) {
@@ -550,9 +490,7 @@ export class RichiesteComponent implements OnInit {
         (data: any) => {
           this.jsonData = data;
           this.idFunzione = data.list[0].id;
-          console.log(
-            JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-          );
+
           this.shouldReloadPage = false;
         },
         (error: any) => {
@@ -565,9 +503,7 @@ export class RichiesteComponent implements OnInit {
 
   getPermissions(functionId: number) {
     this.menuService.getPermissions(this.token, functionId).subscribe(
-      (data: any) => {
-        console.log('Permessi ottenuti:', data);
-      },
+      (data: any) => {},
       (error: any) => {
         console.error('Errore nella generazione dei permessi:', error);
       }

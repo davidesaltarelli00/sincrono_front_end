@@ -68,6 +68,8 @@ import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-ri
 import { FooterComponent } from './components/footer/footer.component';
 import { TutorialCompilazioneRapportinoComponent } from './tutorial-compilazione-rapportino/tutorial-compilazione-rapportino.component';
 import { TruncatePipe } from './pipe/TruncatePipe';
+import { AggiungiCommessaComponent } from './components/aggiungi-commessa/aggiungi-commessa.component';
+import { ModificaRichiestaComponent } from './components/richieste/modifica-richiesta/modifica-richiesta.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -115,6 +117,8 @@ import { TruncatePipe } from './pipe/TruncatePipe';
     FooterComponent,
     TutorialCompilazioneRapportinoComponent,
     TruncatePipe,
+    AggiungiCommessaComponent,
+    ModificaRichiestaComponent
   ],
   imports: [
     MatIconModule,

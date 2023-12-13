@@ -197,13 +197,13 @@
 
           <br>
           <mat-expansion-panel>
-            <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri">
+            <mat-expansion-panel-header (click)="mostraFiltriFreeze = !mostraFiltriFreeze">
 
-              {{ mostraFiltri ? 'Nascondi filtri' : 'Mostra filtri' }}
+              {{ mostraFiltriFreeze ? 'Nascondi filtri' : 'Mostra filtri' }}
             </mat-expansion-panel-header>
 
             <ng-template matExpansionPanelContent>
-              <div *ngIf="mostraFiltri">
+              <div *ngIf="mostraFiltriFreeze">
                 <form [formGroup]="filterAnagraficaDto">
                   <div class="container-filtri">
                     <div formGroupName="anagrafica">
@@ -253,6 +253,20 @@
                             </select>
                           </div>
                         </div>
+                        <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
+                          <div class="form-group">
+                            <label for="filter-tipoCanaleReclutamento">Canale reclutamento</label>
+                            <select  class="form-select"
+                              aria-label="Default select example" id="anagrafica.tipoCanaleReclutamento.id"
+                              formControlName="id">
+                              <option value="">--nessuna selezione--</option>
+                              <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento"
+                                [value]="tipoCanaleReclutamento.id">
+                                {{ tipoCanaleReclutamento.descrizione }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <br>
@@ -289,8 +303,6 @@
                             </select>
 
                           </div>
-
-
 
                         </div>
 
@@ -345,20 +357,6 @@
                               placeholder="Inserire data fine rapporto">
                           </div>
                         </div> -->
-                        <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
-                          <div class="form-group">
-                            <label for="filter-tipoCanaleReclutamento">Canale reclutamento</label>
-                            <select  class="form-select"
-                              aria-label="Default select example" id="contratto.tipoCanaleReclutamento.id"
-                              formControlName="id" type="number">
-                              <option value="">--nessuna selezione--</option>
-                              <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento"
-                                [value]="tipoCanaleReclutamento.id">
-                                {{ tipoCanaleReclutamento.descrizione }}
-                              </option>
-                            </select>
-                          </div>
-                        </div>
                       </div>
                       <br>
 
@@ -480,18 +478,18 @@
       <div class="col-12">
         <mat-card>
          <mat-card-title>
-          <h1>Rapportini controllati ( {{elencoRapportiniFreezati.length}} ) <button [disabled]="elencoRapportiniFreezati.length<1" mat-fab color="primary" (click)="scarica()" matTooltip="Converti in excel" > <i class="fa fa-file" ></i> </button> </h1>
+          <h1>Rapportini controllati ( {{elencoRapportiniFreezati.length}} ) <button [disabled]="elencoRapportiniFreezati.length<1" mat-fab color="primary" (click)="scarica()" matTooltip="Converti in excel" > <i class="fa fa-file" ></i> </button> <button  mat-fab color="primary" (click)="ExportCSV()" matTooltip="Converti in excel" > <i class="fa fa-file" ></i> </button></h1>
          </mat-card-title>
          <mat-card-content>
           <br>
           <mat-expansion-panel>
-            <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri">
+            <mat-expansion-panel-header (click)="mostraFiltriNotFreeze = !mostraFiltriNotFreeze">
 
-              {{ mostraFiltri ? 'Nascondi filtri' : 'Mostra filtri' }}
+              {{ mostraFiltriNotFreeze ? 'Nascondi filtri' : 'Mostra filtri' }}
             </mat-expansion-panel-header>
 
             <ng-template matExpansionPanelContent>
-              <div *ngIf="mostraFiltri">
+              <div *ngIf="mostraFiltriNotFreeze">
                 <form [formGroup]="filterAnagraficaDto">
                   <div class="container-filtri">
                     <div formGroupName="anagrafica">
@@ -510,6 +508,20 @@
                             <input  type="text" class="form-control"
                               id="anagrafica.cognome" name="cognome" placeholder="Inserire il cognome."
                               formControlName="cognome">
+                          </div>
+                        </div>
+                        <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
+                          <div class="form-group">
+                            <label for="filter-tipoCanaleReclutamento">Canale reclutamento</label>
+                            <select  class="form-select"
+                              aria-label="Default select example" id="anagrafica.tipoCanaleReclutamento.id"
+                              formControlName="id">
+                              <option value="">--nessuna selezione--</option>
+                              <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento"
+                                [value]="tipoCanaleReclutamento.id">
+                                {{ tipoCanaleReclutamento.descrizione }}
+                              </option>
+                            </select>
                           </div>
                         </div>
                         <!-- <div class="col-md-1">
@@ -633,20 +645,7 @@
                               placeholder="Inserire data fine rapporto">
                           </div>
                         </div> -->
-                        <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
-                          <div class="form-group">
-                            <label for="filter-tipoCanaleReclutamento">Canale reclutamento</label>
-                            <select  class="form-select"
-                              aria-label="Default select example" id="contratto.tipoCanaleReclutamento.id"
-                              formControlName="id" type="number">
-                              <option value="">--nessuna selezione--</option>
-                              <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento"
-                                [value]="tipoCanaleReclutamento.id">
-                                {{ tipoCanaleReclutamento.descrizione }}
-                              </option>
-                            </select>
-                          </div>
-                        </div>
+                        
                       </div>
                       <br>
 

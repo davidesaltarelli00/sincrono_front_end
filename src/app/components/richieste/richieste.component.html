@@ -155,26 +155,23 @@ img{
       </div>
     </div>
     <br>
-    <!-- <div class="row" *ngIf="ruolo==='ADMIN'">
+    <div class="row" *ngIf="ruolo==='ADMIN'">
       <div class="col-12">
         <mat-card style="margin: auto; text-align: center;">
           <mat-card-title>
             <img src="../../../../assets/images/danger.png" alt="Danger">
           </mat-card-title>
           <mat-card-content>
-            <h2>La sezione Richieste é in manutenzione.</h2>
+            <h2>La sezione é in manutenzione.</h2>
           </mat-card-content>
           <mat-card-footer>
             <a mat-flat-button style="border: 1px solid black;" [routerLink]="['/home']">Torna alla home</a>
           </mat-card-footer>
         </mat-card>
       </div>
-    </div> -->
+    </div>
 
-
-
-
-     <div class="row">
+     <!-- <div class="row">
       <div class="col-12">
         <mat-card style=" height: 100%;">
           <mat-card-content style="text-align: center;">
@@ -289,7 +286,7 @@ img{
         </table>
       </div>
       <p *ngIf="elencoRichieste.length==0" class="text-success" >Non hai richieste per il periodo selezionato.</p>
-    </div>
+    </div> -->
   </div>
    <!-- <div class="row" *ngIf="ruolo==='DIPENDENTE'">
     <div class="col-12">
@@ -450,6 +447,7 @@ img{
                     <th>Giorno</th>
                     <th>Stato della richiesta</th>
                     <th>Note</th>
+                    <th>Azioni</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -469,6 +467,7 @@ img{
                       <td matTooltip="{{ richiesta.note  }}">
                         {{ richiesta.note | truncate: 10 }}
                       </td>
+                      <td> <button mat-mini-fab color="accent" [disabled]="richiesta.stato==null" (click)="updateRichiesta(richiesta.id)" > <i class="fa fa-pencil" ></i> </button> </td>
 
                     </ng-container>
                   </tr>
@@ -503,6 +502,7 @@ img{
                     <th>Alle ore</th>
                     <th>Stato della richiesta</th>
                     <th>Note</th>
+                    <th>Azioni</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -532,6 +532,7 @@ img{
                       <td matTooltip="{{ richiesta.note  }}">
                         {{ richiesta.note | truncate: 10 }}
                       </td>
+                      <td> <button mat-mini-fab color="accent" [disabled]="richiesta.stato==null" (click)="updateRichiesta(richiesta.id)" > <i class="fa fa-pencil" ></i> </button> </td>
                     </ng-container>
 
 
