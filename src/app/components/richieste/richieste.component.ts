@@ -307,7 +307,7 @@ export class RichiesteComponent implements OnInit {
 
   updateRichiesta(id: number) {
     console.log(id);
-    this.router.navigate(['/update-richiesta/',id]);
+    this.router.navigate(['/update-richiesta/', id]);
   }
 
   getAllRichiesteDipendente() {
@@ -460,6 +460,47 @@ export class RichiesteComponent implements OnInit {
         this.codiceFiscaleDettaglio =
           response.anagraficaDto.anagrafica.codiceFiscale;
         this.getImage();
+        const oggi = new Date();
+        this.selectedAnnoForLista = oggi.getFullYear();
+        this.selectedMeseForLista = oggi.getMonth() + 1;
+        if(this.ruolo==="DIPENDENTE"){
+          let body = {
+            richiestaDto: {
+              anno: this.selectedAnnoForLista,
+              mese: this.selectedMeseForLista,
+              codiceFiscale: this.codiceFiscaleDettaglio,
+            },
+          };
+          console.log(
+            'BODY PER LISTA RICHIESTE DIPENDENTE PER MESE E ANNO CORRENTE: ' +
+              JSON.stringify(body)
+          );
+          this.richiesteService
+            .getAllRichiesteDipendente(this.token, body)
+            .subscribe((result: any) => {
+              if ((result as any).esito.code != 200) {
+                const dialogRef = this.dialog.open(AlertDialogComponent, {
+                  data: {
+                    image: '../../../../assets/images/danger.png',
+                    title: 'Attenzione:',
+                    message:
+                      'Si é verificato un problema durante il caricamento della lista: ' +
+                      (result as any).esito.target,
+                  },
+                  disableClose: true,
+                });
+              } else {
+                this.elencoRichiesteDipendente = result['list'];
+                console.log(
+                  'la ricerca ha prodotto i seguenti risultati: ' +
+                    JSON.stringify(this.elencoRichiesteDipendente)
+                );
+              }
+            });
+        } else{
+          console.error("NON HAI I PERMESSI PER ACCEDERE ALLA SEZIONE.");
+        }
+
       },
       (error: any) => {
         console.error(
