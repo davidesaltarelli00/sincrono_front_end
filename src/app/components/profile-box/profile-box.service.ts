@@ -11,6 +11,7 @@ export class ProfileBoxService {
   url =environment.URL_locale_Sincrono;
   testUrl = environment.URL_login_service;
   urlProd=environment.URL_PROD;
+  URLPRODPROVA=environment.URL_PRODUZIONEProva;
 
   constructor(private http: HttpClient) { }
 
@@ -28,7 +29,7 @@ export class ProfileBoxService {
         Authorization: `Bearer ${token}`,
       });
       return this.http.get<any>(
-        this.url+`dettaglio-token/${token}`,
+        this.URLPRODPROVA+`dettaglio-token/${token}`,
         { headers: headers }
       );
     } else {
