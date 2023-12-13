@@ -300,7 +300,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(this.url + `list`, {
+    return this.http.get<any>(this.urlProd + `list`, {
       headers: headers,
     });
   }
@@ -312,7 +312,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      this.url+`tipo-azienda-cliente-map`,
+      this.urlProd+`tipo-azienda-cliente-map`,
       { headers: headers }
     );
   }
@@ -324,7 +324,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      this.url+`dettaglio/${id}`,
+      this.urlProd+`dettaglio/${id}`,
       { headers: headers }
     );
   }
@@ -335,7 +335,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(this.url+`commessa`, body, {
+    return this.http.put<any>(this.urlProd+`commessa`, body, {
       headers: headers,
     });
   }
@@ -346,7 +346,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(this.url+`retain`, body, {
+    return this.http.put<any>(this.urlProd+`retain`, body, {
       headers: headers,
     });
   }
@@ -357,7 +357,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(this.url+`delete`, body, {
+    return this.http.put<any>(this.urlProd+`delete`, body, {
       headers: headers,
     });
   }
@@ -369,7 +369,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     // console.log('BODY SERVICE:' + JSON.stringify(body));
-    return this.http.put<any>(this.url+`modifica`, body, {
+    return this.http.put<any>(this.urlProd+`modifica`, body, {
       headers: headers,
     });
   }
@@ -381,7 +381,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.post<any>(
-      this.url+`inserisci`,
+      this.urlProd+`inserisci`,
       body,
       {
         headers: headers,
@@ -395,7 +395,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.url+`filter`, body, {
+    return this.http.post<any>(this.urlProd+`filter`, body, {
       headers: headers,
     });
   }
@@ -407,7 +407,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(this.url+`utenti-list`, {
+    return this.http.get<any>(this.urlProd+`utenti-list`, {
       headers: headers,
     });
   }
@@ -419,7 +419,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      this.url+`tipo-causa-fine-rapporto-map`,
+      this.urlProd+`tipo-causa-fine-rapporto-map`,
       {
         headers: headers,
       }
@@ -433,7 +433,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      this.url+`tipo-canale-reclutamento-map`,
+      this.urlProd+`tipo-canale-reclutamento-map`,
       {
         headers: headers,
       }
@@ -447,7 +447,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.url+`list`, body, {
+    return this.http.post<any>(this.urlProd+`list`, body, {
       headers: headers,
     });
   }
@@ -471,7 +471,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      this.url+`tipo-livelli-contrattuali-map`,
+      this.urlProd+`tipo-livelli-contrattuali-map`,
       { headers: headers }
     );
   }
@@ -483,7 +483,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      this.url+`tipo-azienda-map`,
+      this.urlProd+`tipo-azienda-map`,
       { headers: headers }
     );
   }
@@ -505,7 +505,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(this.url+`ruoli-map`, {
+    return this.http.get<any>(this.urlProd+`ruoli-map`, {
       headers: headers,
     });
   }
@@ -516,7 +516,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(this.url+'commessa', body, {
+    return this.http.put<any>(this.urlProd+'commessa', body, {
       headers: headers,
     });
   }
@@ -528,7 +528,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    const url = this.url+`livelli-by-ccnl/${ccnl}`;
+    const url = this.urlProd+`livelli-by-ccnl/${ccnl}`;
     // console.log('URL CHANGE CCNL:' + url);
     return this.http.get<any>(url, {
       headers: headers,
@@ -541,7 +541,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    const url = this.url+`tipo-causa-fine-contratto-map`;
+    const url = this.urlProd+`tipo-causa-fine-contratto-map`;
     // console.log('URL changeTipoCausaFineContrattoMap:' + url);
     return this.http.get<any>(url, {
       headers: headers,
@@ -555,7 +555,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.post(this.url+`inserisci-excel`, body, {
+    return this.http.post(this.urlProd+`inserisci-excel`, body, {
       headers: headers,
       reportProgress: true,
       ...options,
