@@ -10,7 +10,7 @@ export class ContrattoService {
   token: any;
   url =environment.URL_locale_Sincrono;
   testUrl = environment.URL_login_service;
-  urlProd=environment.URL_PROD;
+  urlProd=environment.URL_PRODUZIONE;
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +21,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(this.url + `contratto-list`, {
+    return this.http.get<any>(this.urlProd + `contratto-list`, {
       headers: headers,
     });
   }
@@ -32,7 +32,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.delete<any>(this.url + `contratto/${id}`, {
+    return this.http.delete<any>(this.urlProd + `contratto/${id}`, {
       headers: headers,
     });
   }
@@ -43,7 +43,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(this.url + `contratto`, body, {
+    return this.http.put<any>(this.urlProd + `contratto`, body, {
       headers: headers,
     });
   }
@@ -54,7 +54,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.url + `contratto`, body, {
+    return this.http.post<any>(this.urlProd + `contratto`, body, {
       headers: headers,
     });
   }
@@ -65,7 +65,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(this.url + `contratto/${id}`, {
+    return this.http.get<any>(this.urlProd + `contratto/${id}`, {
       headers: headers,
     });
   }
@@ -77,7 +77,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(this.url + `tipo-contratto-map`, {
+    return this.http.get<any>(this.urlProd + `tipo-contratto-map`, {
       headers: headers,
     });
   }
@@ -88,7 +88,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(this.url + `tipo-livelli-contrattuali-map`);
+    return this.http.get<any>(this.urlProd + `tipo-livelli-contrattuali-map`);
   }
 
   getTipoAzienda(token: any): Observable<any> {
@@ -97,7 +97,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(this.url + `tipo-azienda-map`, {
+    return this.http.get<any>(this.urlProd + `tipo-azienda-map`, {
       headers: headers,
     });
   }
@@ -108,7 +108,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(this.url + `tipo-azienda-cliente-map`, {
+    return this.http.get<any>(this.urlProd + `tipo-azienda-cliente-map`, {
       headers: headers,
     });
   }
@@ -119,7 +119,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(this.url + `tipo-ccnl-map`, {
+    return this.http.get<any>(this.urlProd + `tipo-ccnl-map`, {
       headers: headers,
     });
   }
