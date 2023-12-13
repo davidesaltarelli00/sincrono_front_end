@@ -465,7 +465,7 @@ img{
                       <td *ngIf="richiesta.stato==null" > <button mat-flat-button style="background-color: rgb(255, 255, 187); color: #333;" >Da elaborare</button> </td>
 
                       <td matTooltip="{{ richiesta.note  }}">
-                        {{ richiesta.note | truncate: 10 }}
+                        {{ richiesta?.note | truncate: 10 }}
                       </td>
                       <td> <button mat-mini-fab color="accent" [disabled]="richiesta.stato==null" (click)="updateRichiesta(richiesta.id)" > <i class="fa fa-pencil" ></i> </button> </td>
 
@@ -530,7 +530,7 @@ img{
                       <td *ngIf="richiesta.stato==false" > <button mat-flat-button color="warn" >Rifiutata</button> </td>
                       <td *ngIf="richiesta.stato==null" > <button mat-flat-button style="background-color: rgb(255, 255, 187); color: #333;">Da elaborare</button> </td>
                       <td matTooltip="{{ richiesta.note  }}">
-                        {{ richiesta.note | truncate: 10 }}
+                        {{ richiesta?.note | truncate: 10 }}
                       </td>
                       <td> <button mat-mini-fab color="accent" [disabled]="richiesta.stato==null" (click)="updateRichiesta(richiesta.id)" > <i class="fa fa-pencil" ></i> </button> </td>
                     </ng-container>

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../login/login-service';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
@@ -18,7 +18,7 @@ import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.co
   templateUrl: './modifica-richiesta.component.html',
   styleUrls: ['./modifica-richiesta.component.scss'],
 })
-export class ModificaRichiestaComponent implements OnInit {
+export class ModificaRichiestaComponent implements OnInit,AfterViewInit  {
   id = this.activatedRouter.snapshot.params['id'];
   userLoggedName: any;
   userLoggedSurname: any;
@@ -50,7 +50,7 @@ export class ModificaRichiestaComponent implements OnInit {
   selectedGiorno: any;
   esitoCorretto = false;
   elencoRichieste: any[] = [];
-  requestForm: FormGroup;
+  permessoRequestForm: FormGroup;
   currentPage: number = 1;
   itemsPerPage: number = 20; // Numero di elementi per pagina
   currentMonth: any;
@@ -82,6 +82,8 @@ export class ModificaRichiestaComponent implements OnInit {
   note: any;
   oraFineOptions: string[] = [];
   mostraAggiungiCampo: boolean = true;
+  styleApplied = false;
+
 
   constructor(
     private authService: AuthService,
@@ -139,12 +141,10 @@ export class ModificaRichiestaComponent implements OnInit {
     ) {
       this.mobile = true;
     }
-    this.requestForm = this.formBuilder.group({
+    this.permessoRequestForm = this.formBuilder.group({
       giorno: ['', Validators.required],
-      mese: ['', Validators.required],
-      anno: ['', Validators.required],
-      oggettoRichiesta: ['', Validators.required],
-      testoRichiesta: ['', Validators.required],
+      daOra: ['', Validators.required],
+      aOra: ['', Validators.required],
     });
   }
 
@@ -168,6 +168,20 @@ export class ModificaRichiestaComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    this.styleApplied = true;
+  }
+
+  getStyle(fieldName: string) {
+    if (this.styleApplied) {
+      return { border: this.permessoRequestForm.get(fieldName)?.hasError('required') ? '1px solid red' : '1px solid green' };
+    } else {
+      return {};
+    }
+  }
+
+
+
   updateOraFineOptions(item: any) {
     const oraInizio = item.daOra;
     const oraInizioDate = new Date(`01/01/2000 ${oraInizio}`);
@@ -184,13 +198,15 @@ export class ModificaRichiestaComponent implements OnInit {
     }
 
     // Imposta il valore di "Ora Fine" solo se è maggiore o uguale a "Ora Inizio"
-    const orarioSelezionato = this.oraFineOptions.find(ora => ora >= item.daOra);
-    item.aOra = orarioSelezionato || (this.oraFineOptions.length > 0 ? this.oraFineOptions[0] : '');
+    const orarioSelezionato = this.oraFineOptions.find(
+      (ora) => ora >= item.daOra
+    );
+    item.aOra =
+      orarioSelezionato ||
+      (this.oraFineOptions.length > 0 ? this.oraFineOptions[0] : '');
 
     this.oraFineOptions = oraFineOptions;
   }
-
-
 
   formatOra(ora: Date): string {
     const ore = ora.getHours().toString().padStart(2, '0');
@@ -225,7 +241,9 @@ export class ModificaRichiestaComponent implements OnInit {
     this.richiesteService.getRichiesta(this.token, this.id).subscribe(
       (result: any) => {
         this.data = result['richiestaDto'];
-        console.log("Dati restituiti dal dettaglio: "+ JSON.stringify(this.data));
+        // console.log(
+        //   'Dati restituiti dal dettaglio: ' + JSON.stringify(this.data)
+        // );
       },
       (error: any) => {
         console.error('Errore durante il get: ' + JSON.stringify(error));
@@ -244,7 +262,6 @@ export class ModificaRichiestaComponent implements OnInit {
     });
   }
 
-  // Rimuovi un campo per i giorni di ferie
   rimuoviCampo(index: number) {
     this.data.list.splice(index, 1);
   }
@@ -279,12 +296,21 @@ export class ModificaRichiestaComponent implements OnInit {
 
       this.richiesteService.updateRichiesta(this.token, body).subscribe(
         (response: any) => {
-          if ((response as any).esito.code !== 200) {
+          if ((response as any).esito.code !== 200 && (response as any).esito.target ==='Cannot invoke \"java.lang.Integer.intValue()\" because the return value of \"it.sincrono.repositories.dto.DuplicazioniRichiestaDto.getnGiorno()\" is null') {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 image: '../../../../assets/images/danger.png',
                 title: 'Modifica non riuscita:',
-                message: (response as any).esito.target,
+                message: 'Non hai inserito il giorno.',
+              },
+            });
+          }
+          if ((response as any).esito.code != 200 && (response as any).esito.target==='HTTP error code: 400' ) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/danger.png',
+                title: 'Modifica non riuscita:',
+                message: 'Qualcosa é andato storto, controlla i dati inseriti e riprova.',
               },
             });
           }
@@ -315,21 +341,26 @@ export class ModificaRichiestaComponent implements OnInit {
   }
 
   getTitle(): string {
-    let hasFerie = this.data.list.some((item: any) => item.ferie);
-    let hasPermessi = this.data.list.some((item: any) => item.permessi);
+    if (this.data && this.data.list) {
+      let hasFerie = this.data.list.some((item: any) => item.ferie);
+      let hasPermessi = this.data.list.some((item: any) => item.permessi);
 
-    if (hasFerie) {
-      this.tipoRichiesta = 'ferie';
-      this.mostraAggiungiCampo = true;  // Mostra il pulsante solo se ci sono ferie
-      return 'Ferie per i seguenti giorni:';
-    } else if (hasPermessi) {
-      this.tipoRichiesta = 'permessi';
-      this.mostraAggiungiCampo = false;  // Nascondi il pulsante se ci sono permessi
-      return 'Ore di permesso';
+      if (hasFerie) {
+        this.tipoRichiesta = 'ferie';
+        this.mostraAggiungiCampo = true;
+        return 'Ferie per i seguenti giorni:';
+      } else if (hasPermessi) {
+        this.tipoRichiesta = 'permessi';
+        this.mostraAggiungiCampo = false;
+        return 'Ore di permesso';
+      } else {
+        this.tipoRichiesta = '';
+        this.mostraAggiungiCampo = true;
+        return 'Nessuna tipologia specificata';
+      }
     } else {
-      this.tipoRichiesta = '';
-      this.mostraAggiungiCampo = true;  // Mostra il pulsante se non ci sono ferie o permessi
-      return 'Nessuna tipologia specificata';
+      // Gestisci il caso in cui this.data o this.data.list sia null o undefined
+      return 'Errore: Dati non disponibili';
     }
   }
 
