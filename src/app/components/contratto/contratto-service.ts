@@ -8,8 +8,9 @@ import { environment } from 'src/environments/environment';
 })
 export class ContrattoService {
   token: any;
-  url = environment.URL_locale_Sincrono;
+  url =environment.URL_locale_Sincrono;
   testUrl = environment.URL_login_service;
+  urlProd=environment.URL_PROD;
 
   constructor(private http: HttpClient) {}
 
