@@ -217,10 +217,10 @@ export class RichiesteComponent implements OnInit {
           this.openSelectedDays();
         }
 
-        console.log(
-          'Giorni selezionati singolarmente:' +
-            JSON.stringify(this.giorniSelezionati)
-        );
+        // console.log(
+        //   'Giorni selezionati singolarmente:' +
+        //     JSON.stringify(this.giorniSelezionati)
+        // );
       } else {
         const index = this.giorniSelezionati.indexOf(dayNumber);
         if (index !== -1) {
@@ -232,7 +232,7 @@ export class RichiesteComponent implements OnInit {
 
   onTipoRichiestaSelected(event: any) {
     this.tipoRichiesta = event.target.value;
-    console.log('Richiesta selezionata: ' + this.tipoRichiesta);
+    // console.log('Richiesta selezionata: ' + this.tipoRichiesta);
   }
 
   isWeekend(dayOfWeek: number): boolean {
@@ -268,7 +268,7 @@ export class RichiesteComponent implements OnInit {
     this.currentMonthDays.forEach((day) => {
       if (!this.isWeekend(day.dayOfWeek)) {
         this.onDaySelected(day.number);
-        console.log('Giorni selezionati: ' + JSON.stringify(day.number));
+        // console.log('Giorni selezionati: ' + JSON.stringify(day.number));
       }
     });
   }
@@ -302,11 +302,11 @@ export class RichiesteComponent implements OnInit {
         ],
       },
     };
-    console.log('PAYLOAD X CheckValidazione ' + JSON.stringify(body));
+    // console.log('PAYLOAD X CheckValidazione ' + JSON.stringify(body));
   }
 
   updateRichiesta(id: number) {
-    console.log(id);
+    // console.log(id);
     this.router.navigate(['/update-richiesta/', id]);
   }
 
@@ -318,7 +318,7 @@ export class RichiesteComponent implements OnInit {
         codiceFiscale: this.codiceFiscaleDettaglio,
       },
     };
-    console.log('BODY PER LISTA RICHIESTE DIPENDENTE: ' + JSON.stringify(body));
+    // console.log('BODY PER LISTA RICHIESTE DIPENDENTE: ' + JSON.stringify(body));
     this.richiesteService
       .getAllRichiesteDipendente(this.token, body)
       .subscribe((result: any) => {
@@ -335,10 +335,10 @@ export class RichiesteComponent implements OnInit {
           });
         } else {
           this.elencoRichiesteDipendente = result['list'];
-          console.log(
-            'la ricerca ha prodotto i seguenti risultati: ' +
-              JSON.stringify(this.elencoRichiesteDipendente)
-          );
+          // console.log(
+          //   'la ricerca ha prodotto i seguenti risultati: ' +
+          //     JSON.stringify(this.elencoRichiesteDipendente)
+          // );
         }
       });
   }
@@ -373,20 +373,20 @@ export class RichiesteComponent implements OnInit {
   //------------------------------------------------------------------------------------------------------------------------------------
 
   getAllRichieste() {
-    console.log(
-      'Hai selezionato il seguente periodo:' +
-        JSON.stringify(this.selectedGiorno) +
-        '-' +
-        JSON.stringify(this.selectedMese) +
-        '-' +
-        JSON.stringify(this.selectedAnno)
-    );
+    // console.log(
+    //   'Hai selezionato il seguente periodo:' +
+    //     JSON.stringify(this.selectedGiorno) +
+    //     '-' +
+    //     JSON.stringify(this.selectedMese) +
+    //     '-' +
+    //     JSON.stringify(this.selectedAnno)
+    // );
     this.esitoCorretto = true;
     this.elencoRichieste = [];
   }
 
   inviaRichiesta() {
-    console.log(this.requestForm.value);
+    // console.log(this.requestForm.value);
   }
 
   resetForm() {
@@ -397,15 +397,15 @@ export class RichiesteComponent implements OnInit {
 
   onGiornoSelectChange(event: any) {
     this.selectedGiorno = event.target.value;
-    console.log('Giorno selezionato:', this.selectedGiorno);
+    // console.log('Giorno selezionato:', this.selectedGiorno);
   }
 
   onMeseSelectChange(event: any) {
-    console.log('Mese selezionato:', event.target.value);
+    // console.log('Mese selezionato:', event.target.value);
   }
 
   onAnnoSelectChange(event: any) {
-    console.log('Anno selezionato:', event.target.value);
+    // console.log('Anno selezionato:', event.target.value);
   }
 
   //metodi immagine
@@ -413,12 +413,12 @@ export class RichiesteComponent implements OnInit {
     let body = {
       codiceFiscale: this.codiceFiscaleDettaglio,
     };
-    console.log(JSON.stringify(body));
-    console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
+    // console.log(JSON.stringify(body));
+    // console.log('BODY PER GET IMAGE: ' + JSON.stringify(body));
     this.imageService.getImage(this.token, body).subscribe(
       (result: any) => {
         this.immagine = (result as any).base64;
-        console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
+        // console.log('BASE64 ricevuto: ' + JSON.stringify(this.immagine));
 
         if (this.immagine) {
           this.convertBase64ToImage(this.immagine);
@@ -471,10 +471,10 @@ export class RichiesteComponent implements OnInit {
               codiceFiscale: this.codiceFiscaleDettaglio,
             },
           };
-          console.log(
-            'BODY PER LISTA RICHIESTE DIPENDENTE PER MESE E ANNO CORRENTE: ' +
-              JSON.stringify(body)
-          );
+          // console.log(
+          //   'BODY PER LISTA RICHIESTE DIPENDENTE PER MESE E ANNO CORRENTE: ' +
+          //     JSON.stringify(body)
+          // );
           this.richiesteService
             .getAllRichiesteDipendente(this.token, body)
             .subscribe((result: any) => {
@@ -491,10 +491,10 @@ export class RichiesteComponent implements OnInit {
                 });
               } else {
                 this.elencoRichiesteDipendente = result['list'];
-                console.log(
-                  'la ricerca ha prodotto i seguenti risultati: ' +
-                    JSON.stringify(this.elencoRichiesteDipendente)
-                );
+                // console.log(
+                //   'la ricerca ha prodotto i seguenti risultati: ' +
+                //     JSON.stringify(this.elencoRichiesteDipendente)
+                // );
               }
             });
         } else{
@@ -514,11 +514,11 @@ export class RichiesteComponent implements OnInit {
   getUserRole() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
-        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+        // console.log('DATI GET USER ROLE:' + JSON.stringify(response));
 
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
-        console.log('ID UTENTE PER NAV:' + this.idUtente);
+        // console.log('ID UTENTE PER NAV:' + this.idUtente);
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
         ) {
@@ -550,9 +550,9 @@ export class RichiesteComponent implements OnInit {
         (data: any) => {
           this.jsonData = data;
           this.idFunzione = data.list[0].id;
-          console.log(
-            JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-          );
+          // console.log(
+          //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          // );
           this.shouldReloadPage = false;
         },
         (error: any) => {
@@ -566,7 +566,7 @@ export class RichiesteComponent implements OnInit {
   getPermissions(functionId: number) {
     this.menuService.getPermissions(this.token, functionId).subscribe(
       (data: any) => {
-        console.log('Permessi ottenuti:', data);
+        // console.log('Permessi ottenuti:', data);
       },
       (error: any) => {
         console.error('Errore nella generazione dei permessi:', error);

@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContrattoService {
   token: any;
+  url =environment.URL_locale_Sincrono;
+  testUrl = environment.URL_login_service;
+  urlProd=environment.URL_PROD;
 
   constructor(private http: HttpClient) {}
 
@@ -17,7 +21,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`http://192.168.58.196:8080/services/contratto-list`, {
+    return this.http.get<any>(this.url + `contratto-list`, {
       headers: headers,
     });
   }
@@ -28,7 +32,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.delete<any>(`192.168.58.196:8085/contratto/${id}`, {
+    return this.http.delete<any>(this.url + `contratto/${id}`, {
       headers: headers,
     });
   }
@@ -39,7 +43,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(`192.168.58.196:8085/contratto`, body, {
+    return this.http.put<any>(this.url + `contratto`, body, {
       headers: headers,
     });
   }
@@ -50,11 +54,9 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(
-      `http://192.168.58.196:8080/services/contratto`,
-      body,
-      { headers: headers }
-    );
+    return this.http.post<any>(this.url + `contratto`, body, {
+      headers: headers,
+    });
   }
 
   detail(id: any, token: any): Observable<any> {
@@ -63,10 +65,9 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(
-      `http://192.168.58.196:8080/services/contratto/${id}`,
-      { headers: headers }
-    );
+    return this.http.get<any>(this.url + `contratto/${id}`, {
+      headers: headers,
+    });
   }
 
   //GET TIPOLOGICHE
@@ -76,10 +77,9 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(
-      `http://192.168.58.196:8080/services/tipo-contratto-map`,
-      { headers: headers }
-    );
+    return this.http.get<any>(this.url + `tipo-contratto-map`, {
+      headers: headers,
+    });
   }
 
   getLivelloContratto(token: any): Observable<any> {
@@ -88,9 +88,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(
-      `192.168.58.196:8085/tipo-livelli-contrattuali-map`
-    );
+    return this.http.get<any>(this.url + `tipo-livelli-contrattuali-map`);
   }
 
   getTipoAzienda(token: any): Observable<any> {
@@ -99,7 +97,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`192.168.58.196:8085/tipo-azienda-map`, {
+    return this.http.get<any>(this.url + `tipo-azienda-map`, {
       headers: headers,
     });
   }
@@ -110,10 +108,9 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(
-      `http://localhost:8080/services/tipo-azienda-cliente-map`,
-      { headers: headers }
-    );
+    return this.http.get<any>(this.url + `tipo-azienda-cliente-map`, {
+      headers: headers,
+    });
   }
 
   getContrattoNazionale(token: any): Observable<any> {
@@ -122,7 +119,7 @@ export class ContrattoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`192.168.58.196:8085/tipo-ccnl-map`, {
+    return this.http.get<any>(this.url + `tipo-ccnl-map`, {
       headers: headers,
     });
   }
