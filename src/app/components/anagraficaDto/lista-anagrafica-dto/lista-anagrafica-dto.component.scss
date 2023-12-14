@@ -413,3 +413,36 @@ mat-list-item a {
 .dark-mode mat-expansion-panel{
   border: 1px solid #f1f1f1;
 }
+
+
+//tabella anagrafiche responsive
+#table-anagrafica {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#table-anagrafica th, #table-anagrafica td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#table-anagrafica th {
+  background-color: #343a40;
+  color: white;
+}
+
+@media screen and (max-width: 768px) {
+  #table-anagrafica {
+    overflow-x: auto;
+    display: block;
+  }
+
+  #table-anagrafica th, #table-anagrafica td {
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

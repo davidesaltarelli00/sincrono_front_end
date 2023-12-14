@@ -505,10 +505,9 @@
               </li>
             </ul>
           </div>
-          <table id="table" class="table table-bordered">
+          <table id="table-anagrafica" class="table table-bordered">
             <thead class="thead-dark">
               <tr>
-                <!-- <th scope="col">Inserimento <br> parziale</th> -->
                 <th scope="col">Ruolo</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Cognome</th>
@@ -523,17 +522,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let element of pageData; let i=index"
-                [ngStyle]="{'background-color': (anagraficaLoggata === element.anagrafica.id) ? 'aliceblue' : 'white'}">
-                <!-- <td [routerLink]="['/dettaglio-anagrafica/',element.anagrafica.id]">
-                  <span [ngStyle]="{'color': isCampoVuoto(element) ? 'red' : 'green'}">
-                    {{isCampoVuoto(element)? 'Si' : 'No'}}
-                  </span>
-                </td> -->
-                <!-- <td><i *ngIf="element.ruolo.descrizione==='ADMIN'" matTooltip="{{element.ruolo.descrizione}}"
-                    style="color: green;" class="fa-solid fa-user"></i><i
-                    *ngIf="element.ruolo.descrizione==='DIPENDENTE'" style="color: orangered;"
-                    matTooltip="{{element.ruolo.descrizione}}" class="fa-solid fa-user"></i></td> -->
+              <tr *ngFor="let element of pageData; let i=index" [ngStyle]="{'background-color': (anagraficaLoggata === element.anagrafica.id) ? 'aliceblue' : 'white'}">
                     <td>
                       {{element.ruolo.descrizione |titlecase }}
                     </td>
