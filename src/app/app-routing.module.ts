@@ -38,6 +38,7 @@ import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-ri
 import { TutorialCompilazioneRapportinoComponent } from './tutorial-compilazione-rapportino/tutorial-compilazione-rapportino.component';
 import { AggiungiCommessaComponent } from './components/aggiungi-commessa/aggiungi-commessa.component';
 import { ModificaRichiestaComponent } from './components/richieste/modifica-richiesta/modifica-richiesta.component';
+import { ModalInfoCommesseComponent } from './components/modal-info-commesse/modal-info-commesse.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -201,6 +202,11 @@ const routes: Routes = [
   {
     path: 'dettaglio-rapportino/:id/:nome/:cognome/:codiceFiscale/:mese/:anno',
     component: ModaleDettaglioRapportinoComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'info-commesse',
+    component: ModalInfoCommesseComponent,
     canActivate: [AuthGuard],
   },
 

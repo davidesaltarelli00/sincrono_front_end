@@ -420,6 +420,8 @@ mat-list-item a {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  margin: auto;
+  text-align: center;
 }
 
 #table-anagrafica th, #table-anagrafica td {
@@ -436,7 +438,8 @@ mat-list-item a {
 @media screen and (max-width: 768px) {
   #table-anagrafica {
     overflow-x: auto;
-    display: block;
+    // display: block;
+    text-align: center;
   }
 
   #table-anagrafica th, #table-anagrafica td {
