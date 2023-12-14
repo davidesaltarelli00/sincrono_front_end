@@ -46,7 +46,23 @@ export class ModalInfoCommesseComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.id);
+    this.anagraficaDtoService
+      .detailAnagraficaDto(this.id, localStorage.getItem('token'))
+      .subscribe(
+        (resp: any) => {
+          this.data = (resp as any)['anagraficaDto'];
+          this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
+        },
+        (error: any) => {
+          console.error(
+            'ERRORE DURANTE IL CARICAMENTO DELLE COMMESSE:' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
 
   copy(data: any) {
     this.clipboard.copy(data);
