@@ -939,23 +939,3 @@
 </div>
 </body>
 </html>
-
-<table class="table table-striped">
-                  <thead>
-                   <tr>
-                    <th>Attivo</th>
-                    <th>Nome utente</th>
-                    <th>Cambia password</th>
-                    <th>Sessione <i class="fa fa-info-circle" matTooltip="Al termine del timer dovrai rieffettuare il login." ></i> </th>
-                   </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{{ anagrafica?.anagraficaDto.anagrafica?.attivo ? 'Si' : 'No' }}</td>
-                      <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}</td>
-                      <td class="link" [routerLink]="['/cambia-password']" >Cambia password</td>
-                      <td><p>Tempo rimanente:  {{ formatTime(tokenExpirationTime) }}</p>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
