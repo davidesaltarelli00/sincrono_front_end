@@ -136,84 +136,6 @@ button.toggle-button {
 }
 
 
-.calendar {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  max-width: 600px;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.button {
-  padding: 8px 12px;
-  font-size: 14px;
-  cursor: pointer;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-}
-
-.button:hover {
-  background-color: #0056b3;
-}
-
-.days-header {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-  margin-bottom: 10px;
-}
-
-.day-name {
-  font-weight: bold;
-}
-
-.days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-}
-
-.day {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px;
-  border: 1px solid #ddd;
-  cursor: pointer;
-}
-
-.day[selected] {
-  background-color: lightblue;
-}
-
-.checkbox-container {
-  margin-bottom: 5px;
-  background-color: inherit; /* Conserva il colore di sfondo della cella */
-}
-
-
-
-.day:hover {
-  background-color: #f0f0f0;
-}
-
-/* Aggiungi stili per la checkbox */
-.checkbox-container {
-  margin-bottom: 5px;
-}
-
-/* Aggiungi stili per l'evidenziazione */
-.selected {
-  background-color: lightblue;
-}
-
 
 .pagination {
   display: flex;
@@ -259,4 +181,71 @@ button.toggle-button {
 
 table,th,td{
   text-align: center;
+}
+
+
+/* calendario*/
+.calendario {
+  font-family: 'Arial', sans-serif;
+  max-width: 500px;
+  margin: auto;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.giorno.disabled {
+  pointer-events: none;
+  background-color: #eee;
+  color: #999;
+}
+
+.intestazione {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.mese {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.giorni {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 10px;
+}
+
+.giorno-header,
+.giorno {
+  width: 70px;
+  height: 70px;
+  border: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.giorno:hover {
+  background-color: #f0f0f0;
+}
+
+.numero-giorno,
+.nome-giorno {
+  text-align: center;
+}
+
+.giorno-selezionato {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.giorno-selezionato:hover {
+  background-color: #45a049;
 }

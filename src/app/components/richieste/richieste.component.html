@@ -344,43 +344,50 @@ img{
 
 
     <div class="row" *ngIf="tipoRichiesta === 'ferie'">
-        <div class="col-6">
-          <div class="calendar">
-            <div class="header">
-              <button mat-mini-fab color="primary" (click)="onPrevMonth()">«</button>
-              <h2>{{ getMonthName(currentMonth) }} {{ currentYear }}
-                <button mat-flat-button color="primary" (click)="selectAllDays()">
-                  {{ areAllDaysSelected() ? 'Deseleziona tutti' : 'Seleziona tutti' }}
-                </button>
-              </h2>
-              <button mat-mini-fab color="primary" (click)="onNextMonth()">»</button>
-            </div>
-
-            <div class="days">
-              <div *ngFor="let day of currentMonthDays" class="day" (click)="onDaySelected(day.number)"
-                   [style.pointer-events]="isWeekend(day.dayOfWeek) ? 'none' : 'auto'">
-                <div class="day-content">
-                  <div class="day-number" [class.selected]="isDaySelected(day.number)">
-                    {{ day.number }}
-                  </div>
-                  <div class="day-name">{{ getDayName(day.dayOfWeek) }}</div>
-                </div>
-              </div>
-            </div>
-            <br>
-            <div class="header">
-              <button mat-mini-fab color="primary" (click)="onPrevMonth()">«</button>
-              <h2>{{ getMonthName(currentMonth) }} {{ currentYear }}</h2>
-              <button mat-mini-fab color="primary" (click)="onNextMonth()">»</button>
-            </div>
+      <div class="col-6">
+        <div class="calendario">
+          <div class="intestazione">
+            <button mat-mini-fab color="primary" (click)="onMesePrecedente()" [disabled]="navigazioneDisabilitata">«</button>
+            <h2>{{ getNomeMese(meseCorrente) }} {{ annoCorrente }}</h2>
+            <button mat-mini-fab color="primary" (click)="onMeseSuccessivo()" [disabled]="navigazioneDisabilitata">»</button>
           </div>
 
-      </div>
-      <div class="col-6">
-        <div class="calendar" *ngIf="tipoRichiesta === 'ferie'">
-          <app-selected-days *ngIf="showSelectedDays" [selectedDays]="giorniSelezionati" [currentMonth]="currentMonth" [currentYear]="currentYear"></app-selected-days>
+          <div class="giorni">
+            <div *ngFor="let settimana of giorniCalendario" class="settimana">
+              <div *ngFor="let giorno of settimana" class="giorno"
+                   (click)="onGiornoSelezionato(giorno)"
+                   [class.disabled]="isWeekend(giorno?.nome)">
+                <div class="numero-giorno">{{ giorno?.numero || ' ' }}</div>
+                <div class="nome-giorno">{{ giorno?.nome || ' ' }}</div>
+              </div>
+            </div>
+          </div>
         </div>
-       </div>
+      </div>
+     <div class="col-6" *ngIf="almenoUnGiornoSelezionato" >
+      <div class="card">
+        <div class="card-header">
+          <h3>Giorni Selezionati <button mat-flat-button color="primary" (click)="inviaRichiestaFerie()" >Invia richiesta di ferie</button> </h3>
+        </div>
+        <div class="card-body">
+          <div *ngFor="let meseAnno of ordinaChiavi(giorniSelezionati)">
+            <h4>{{ meseAnno.key }}</h4>
+            <ul>
+              <li *ngFor="let giorno of meseAnno.value">
+               <table class="table table-bordered" >
+                <tr>
+                  <td>
+                    {{ giorno.numero }} - {{ giorno.nome }}
+                    <button mat-mini-fab color="warn"  (click)="rimuoviGiorno(meseAnno.key, giorno.numero)"> <i class="fa fa-close" ></i> </button>
+                  </td>
+                </tr>
+               </table>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+     </div>
     </div>
     <div class="row">
      <div class="col-12">
