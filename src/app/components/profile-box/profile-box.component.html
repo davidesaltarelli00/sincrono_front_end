@@ -589,6 +589,125 @@
     </div>
     <div id="finePagina"></div>
   </div>
+
+<div class="container-fluid" *ngIf="mobile">
+  <div class="row">
+    <div class="col-12">
+      <br>
+      <mat-card style="text-align: center;">
+        <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+        <h1>Profilo <button [hidden]="ruolo==='DIPENDENTE'" class=" btn btn-info " [routerLink]="['/modifica-anagrafica/',id]" > <i class="fa fa-pencil" ></i> </button> </h1>
+        <h3> <i class="fa fa-user" ></i>  {{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }} {{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }} </h3>
+      </mat-card>
+    </div>
+  </div>
+  <br>
+  <div class="row"  >
+    <div class="col-12"  id="sezione-immagine-mobile">
+      <div class="image-container-mobile" >
+        <div class="image-container rounded-mobile">
+          <label style="float: right;" for="fileInput" class="file-input-label-mobile" *ngIf="!immagineCancellata && immagineConvertita && !salvaImmagine">
+            <i class="fa fa-pencil btn btn-info" style="cursor: pointer;" matTooltip=" Modifica immagine" ></i>
+          </label>
+          <input [hidden]="immagineConvertita" type="file" #fileInput accept="image/*" id="fileInput" (change)="onFileSelected($event)" />
+          <div class="image-preview-mobile" *ngIf="immagineConvertita">
+            <img [src]="immagineConvertita"  style="cursor: pointer;" alt="Immagine" class="preview-image" />
+          </div>
+          <div class="image-preview-mobile" *ngIf="!immagineConvertita">
+            <img [src]="immaginePredefinita" alt="Immagine" class="preview-image" />
+          </div>
+        </div>
+      </div>
+      <br>
+     <div class="buttons-mobile" *ngIf="salvaImmagine" >
+      <button (click)="addImage()" matTooltip="Salva immagine" class="btn btn-primary"> <i class="fa fa-save"></i></button> &nbsp;
+      <button (click)="cancelImage()" matTooltip="Annulla" class="btn btn-danger">&#x2715;</button>
+     </div>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+
+      </div>
+
+    </div>
+  </div>
+
+<div class="row">
+
+
+  <div class="col-12">
+    <table class="table table-striped" style="text-align: center;" >
+      <thead>
+       <tr>
+         <th>Ruolo</th>
+         <th>Contratto</th>
+         <th>Numero commesse</th>
+         <th>Documenti</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr>
+         <td>{{anagrafica?.anagraficaDto?.ruolo?.descrizione}} </td>
+         <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione}} </td>
+         <td>{{elencoCommesse.length}}</td>
+         <td> Rapportino <button class="btn btn-success" (click)="goToRapportinoByCodiceFiscale()" matTooltip="Rapportino."> <i class="fa fa-file"></i> </button> </td>
+       </tr>
+      </tbody>
+     </table>
+  </div>
+  <div class="col-12">
+    <h3>Dati anagrafici</h3>
+  </div>
+  <div class="col-12">
+    <table class="table table-striped responsive-table" id="table-mobile">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Cognome</th>
+          <th>Codice fiscale</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }}</td>
+          <td>{{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }}</td>
+          <td>{{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12">
+    <h3>Dati di nascita</h3>
+  </div>
+  <div class="col-12">
+    <table class="table table-striped responsive-table" id="table-mobile">
+      <thead>
+        <tr>
+          <th>Cittadinanza</th>
+          <th>Data </th>
+          <th>Nazione</th>
+          <th>Provincia</th>
+          <th>Comune</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{anagrafica?.anagraficaDto.anagrafica?.cittadinanza ? anagrafica?.anagraficaDto.anagrafica?.cittadinanza : 'Dato non inserito' }}</td>
+          <td>{{anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"  }}</td>
+          <td>{{anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita : 'Dato non inserito.'  }}</td>
+          <td>{{anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita : 'Dato non inserito.'  }}</td>
+          <td>{{anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita : 'Dato non inserito.'  }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
+
 </body>
 
 </html>

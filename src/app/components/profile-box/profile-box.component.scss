@@ -336,3 +336,27 @@ button.toggle-button {
   color: aquamarine;
   cursor: pointer;
 }
+
+
+//tabelle mobile
+
+/* Stili predefiniti della tabella */
+.responsive-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+
+.responsive-table th, .responsive-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+  .responsive-table th, .responsive-table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+
