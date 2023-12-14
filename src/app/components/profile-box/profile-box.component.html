@@ -260,7 +260,7 @@
                       <tbody>
                         <tr>
                           <td>{{anagrafica?.anagraficaDto.anagrafica?.cittadinanza ? anagrafica?.anagraficaDto.anagrafica?.cittadinanza : 'Dato non inserito' }}</td>
-                          <td>{{anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"  }}</td>
+                          <td>{{ anagrafica?.anagraficaDto.anagrafica?.dataDiNascita ? (anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy") : 'Dato non inserito' }} </td>
                           <td>{{anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita : 'Dato non inserito.'  }}</td>
                           <td>{{anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita : 'Dato non inserito.'  }}</td>
                           <td>{{anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita : 'Dato non inserito.'  }}</td>
@@ -402,7 +402,7 @@
                     <td>{{ anagrafica?.anagraficaDto.anagrafica?.figliACarico ? 'Si' : 'No' }}</td>
                     <td>{{ anagrafica?.anagraficaDto.anagrafica?.attesaLavori ? 'Si' : 'No' }}</td>
                     <td>{{ anagrafica?.anagraficaDto.anagrafica?.categoriaProtetta ? 'Si' : 'No' }}</td>
-                    <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoCanaleReclutamento?.descrizione ? anagrafica?.anagraficaDto?.contratto?.tipoCanaleReclutamento?.descrizione : 'Dato non inserito' }}</td>
+                    <td>{{ anagrafica?.anagraficaDto?.anagrafica?.tipoCanaleReclutamento?.descrizione ? anagrafica?.anagraficaDto?.anagrafica?.tipoCanaleReclutamento?.descrizione : 'Dato non inserito' }}</td>
                   </tr>
                  </tbody>
                 </table>
@@ -624,91 +624,165 @@
       <button (click)="cancelImage()" matTooltip="Annulla" class="btn btn-danger">&#x2715;</button>
      </div>
     </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td><strong>Ruolo</strong></td>
+            <td>{{anagrafica?.anagraficaDto?.ruolo?.descrizione}}</td>
+          </tr>
+          <tr>
+            <td><strong>Contratto</strong></td>
+            <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione}}</td>
+          </tr>
+          <tr>
+            <td><strong>Numero commesse</strong></td>
+            <td>{{elencoCommesse.length}}</td>
+          </tr>
+          <tr>
+            <td><strong>Rapportino</strong></td>
+            <td>Rapportino <button class="btn btn-success" (click)="goToRapportinoByCodiceFiscale()" matTooltip="Rapportino."> <i class="fa fa-file"></i> </button></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h3>Dati anagrafici <i class="fa fa-user"></i> </h3>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td><strong>Nominativo</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }} {{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }}</td>
+          </tr>
+          <tr>
+            <td><strong>Codice fiscale</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}</td>
+          </tr>
+          <tr>
+            <td><strong>Data di nascita</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.dataDiNascita ? (anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy") : 'Dato non inserito' }}
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Nazione di nascita</strong></td>
+            <td>{{anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita : 'Dato non inserito.'  }}</td>
+          </tr>
+          <tr>
+            <td><strong>Provincia di nascita</strong></td>
+            <td>{{anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita : 'Dato non inserito.'  }}</td>
+          </tr>
+          <tr>
+            <td><strong>Comune di nascita</strong></td>
+            <td>{{anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita : 'Dato non inserito.'  }}</td>
+          </tr>
+          <tr>
+            <td><strong>Cittadinanza</strong></td>
+            <td>{{anagrafica?.anagraficaDto.anagrafica?.cittadinanza ? anagrafica?.anagraficaDto.anagrafica?.cittadinanza : 'Dato non inserito' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
   </div>
   <div class="row">
     <div class="col-12">
-      <div class="table-responsive">
-
-      </div>
+      <h3>Contatti <i class="fa fa-phone"></i> &nbsp; <i class="fa fa-envelope"></i> </h3>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td><strong>Cellulare privato</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.cellularePrivato ? anagrafica?.anagraficaDto.anagrafica?.cellularePrivato : 'Dato non inserito.' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Cellulare aziendale</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale ? anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale : 'Dato non inserito.' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Mail privata</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailPrivata ?  anagrafica?.anagraficaDto.anagrafica?.mailPrivata : 'Dato non inserito.' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Mail aziendale</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale ?  anagrafica?.anagraficaDto.anagrafica?.mailAziendale : 'Dato non inserito.' }}</td>
+          </tr>
+          <tr>
+            <td><strong>PEC</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailPec ? anagrafica?.anagraficaDto.anagrafica?.mailPec : 'Dato non inserito.' }}</td>
+          </tr>
+        </tbody>
+      </table>
 
     </div>
   </div>
-
-<div class="row">
-
-
-  <div class="col-12">
-    <table class="table table-striped" style="text-align: center;" >
-      <thead>
-       <tr>
-         <th>Ruolo</th>
-         <th>Contratto</th>
-         <th>Numero commesse</th>
-         <th>Documenti</th>
-       </tr>
-      </thead>
-      <tbody>
-       <tr>
-         <td>{{anagrafica?.anagraficaDto?.ruolo?.descrizione}} </td>
-         <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione}} </td>
-         <td>{{elencoCommesse.length}}</td>
-         <td> Rapportino <button class="btn btn-success" (click)="goToRapportinoByCodiceFiscale()" matTooltip="Rapportino."> <i class="fa fa-file"></i> </button> </td>
-       </tr>
-      </tbody>
-     </table>
+  <div class="row">
+    <div class="col-12">
+      <h3>Residenza e domicilio <i class="fa fa-address-card" aria-hidden="true"></i>
+      </h3>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td><strong>Residenza</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.residenza ? anagrafica?.anagraficaDto.anagrafica?.residenza : 'Dato non inserito' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Domicilio</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.domicilio ? anagrafica?.anagraficaDto.anagrafica?.domicilio : 'Dato non inserito' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="col-12">
-    <h3>Dati anagrafici</h3>
+  <div class="row">
+    <div class="col-12">
+      <h3>Referenze <i class="fa fa-school"></i> </h3>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td><strong>Titolo di studio</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio ? anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio: 'Dato non inserito.' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Altri titoli</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.altriTitoli ? anagrafica?.anagraficaDto.anagrafica?.altriTitoli : 'Dato non inserito.' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="col-12">
-    <table class="table table-striped responsive-table" id="table-mobile">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Cognome</th>
-          <th>Codice fiscale</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }}</td>
-          <td>{{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }}</td>
-          <td>{{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="col-12">
-    <h3>Dati di nascita</h3>
-  </div>
-  <div class="col-12">
-    <table class="table table-striped responsive-table" id="table-mobile">
-      <thead>
-        <tr>
-          <th>Cittadinanza</th>
-          <th>Data </th>
-          <th>Nazione</th>
-          <th>Provincia</th>
-          <th>Comune</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{anagrafica?.anagraficaDto.anagrafica?.cittadinanza ? anagrafica?.anagraficaDto.anagrafica?.cittadinanza : 'Dato non inserito' }}</td>
-          <td>{{anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"  }}</td>
-          <td>{{anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita : 'Dato non inserito.'  }}</td>
-          <td>{{anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita : 'Dato non inserito.'  }}</td>
-          <td>{{anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita : 'Dato non inserito.'  }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="row">
+    <div class="col-12">
+      <h3>Altre informazioni <i class="fa fa-info-circle" ></i> </h3>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td><strong>Categoria protetta</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.categoriaProtetta ? 'Si' : 'No' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Coniugato</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.coniugato ? 'Si' : 'No' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Figli a carico</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.figliACarico ? 'Si' : 'No' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Attesa lavori</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.attesaLavori ? 'Si' : 'No' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Canale reclutamento</strong></td>
+            <td>{{ anagrafica?.anagraficaDto?.anagrafica?.tipoCanaleReclutamento?.descrizione ? anagrafica?.anagraficaDto?.anagrafica?.tipoCanaleReclutamento?.descrizione : 'Dato non inserito' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
-
-</div>
-
 </body>
-
 </html>
-
