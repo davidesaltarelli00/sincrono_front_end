@@ -77,9 +77,19 @@ export class RichiesteComponent implements OnInit {
   anniDal2023: any[] = [];
   annoCorrente: any;
   meseCorrente: any;
-  giorniCalendario: { numero: any | null, nome: any | null }[][];
-  giorniDellaSettimana: string[] = ['Domenica', 'Lunedí', 'Martedí', 'Mercoledí', 'Giovedí', 'Venerdí', 'Sabato'];
+  giorniCalendario: { numero: any | null; nome: any | null }[][];
+  giorniDellaSettimana: string[] = [
+    'Domenica',
+    'Lunedí',
+    'Martedí',
+    'Mercoledí',
+    'Giovedí',
+    'Venerdí',
+    'Sabato',
+  ];
   giorniSelezionati: { [meseAnno: string]: GiornoSelezionato[] } = {};
+  almenoUnGiornoSelezionato: boolean = false;
+  navigazioneDisabilitata: any;
 
   constructor(
     private authService: AuthService,
@@ -170,6 +180,18 @@ export class RichiesteComponent implements OnInit {
     }
   }
 
+  //inizio metodi per invio richieste delle ferie
+
+  /*
+proprieta usate:
+annoCorrente: any;
+  meseCorrente: any;
+  giorniCalendario: { numero: any | null, nome: any | null }[][];
+  giorniDellaSettimana: string[] = ['Domenica', 'Lunedí', 'Martedí', 'Mercoledí', 'Giovedí', 'Venerdí', 'Sabato'];
+  giorniSelezionati: { [meseAnno: string]: GiornoSelezionato[] } = {};
+
+*/
+
   aggiornaDataCorrente() {
     const dataCorrente = new Date();
     this.annoCorrente = dataCorrente.getFullYear();
@@ -177,8 +199,16 @@ export class RichiesteComponent implements OnInit {
   }
 
   generaCalendario() {
-    const primoGiornoDelMese = new Date(this.annoCorrente, this.meseCorrente, 1);
-    const ultimoGiornoDelMese = new Date(this.annoCorrente, this.meseCorrente + 1, 0);
+    const primoGiornoDelMese = new Date(
+      this.annoCorrente,
+      this.meseCorrente,
+      1
+    );
+    const ultimoGiornoDelMese = new Date(
+      this.annoCorrente,
+      this.meseCorrente + 1,
+      0
+    );
 
     const primoGiornoSettimana = primoGiornoDelMese.getDay();
     const totaleGiorni = ultimoGiornoDelMese.getDate();
@@ -197,7 +227,10 @@ export class RichiesteComponent implements OnInit {
           const numeroGiorno = contatoreGiorni;
           const nomeGiorno = this.getDayName(giornoSettimana);
 
-          this.giorniCalendario[settimana].push({ numero: numeroGiorno, nome: nomeGiorno });
+          this.giorniCalendario[settimana].push({
+            numero: numeroGiorno,
+            nome: nomeGiorno,
+          });
           contatoreGiorni++;
         } else {
           // Aggiungi un giorno vuoto se necessario
@@ -212,14 +245,19 @@ export class RichiesteComponent implements OnInit {
     }
   }
 
-  ordinaChiavi(obj: any): { key: string, value: any }[] {
-    return Object.keys(obj).sort().map(key => ({ key, value: obj[key] }));
+  ordinaChiavi(obj: any): { key: string; value: any }[] {
+    return Object.keys(obj)
+      .sort()
+      .map((key) => ({ key, value: obj[key] }));
   }
 
   rimuoviGiorno(meseAnno: string, numeroGiorno: number) {
     if (this.giorniSelezionati[meseAnno]) {
-      this.giorniSelezionati[meseAnno] = this.giorniSelezionati[meseAnno].filter(giorno => giorno.numero !== numeroGiorno);
+      this.giorniSelezionati[meseAnno] = this.giorniSelezionati[
+        meseAnno
+      ].filter((giorno) => giorno.numero !== numeroGiorno);
     }
+    this.aggiornaCard();
   }
 
   isWeekend(nomeGiorno: string | null): boolean {
@@ -233,6 +271,9 @@ export class RichiesteComponent implements OnInit {
       this.annoCorrente--;
     }
     this.generaCalendario();
+    if (this.almenoUnGiornoSelezionato) {
+      this.navigazioneDisabilitata = true;
+    }
   }
 
   onMeseSuccessivo() {
@@ -242,6 +283,9 @@ export class RichiesteComponent implements OnInit {
       this.annoCorrente++;
     }
     this.generaCalendario();
+    if (this.almenoUnGiornoSelezionato) {
+      this.navigazioneDisabilitata = true;
+    }
   }
 
   getNomeMese(mese: number): string {
@@ -262,50 +306,72 @@ export class RichiesteComponent implements OnInit {
     return nomiMesi[mese];
   }
 
-  onGiornoSelezionato(giorno: { numero: number | null, nome: string | null }) {
+  onGiornoSelezionato(giorno: { numero: number | null; nome: string | null }) {
     if (giorno && giorno.numero !== null) {
       const chiaveMeseAnno = `${this.meseCorrente + 1}-${this.annoCorrente}`;
+
+      // Controlla se la cella è già stata cliccata
       if (!this.giorniSelezionati[chiaveMeseAnno]) {
         this.giorniSelezionati[chiaveMeseAnno] = [];
       }
 
-      this.giorniSelezionati[chiaveMeseAnno].push({
-        numero: giorno.numero,
-        nome: giorno.nome || '',
-      });
+      const giornoGiaSelezionato = this.giorniSelezionati[chiaveMeseAnno].find(
+        (giornoSelezionato) => giornoSelezionato.numero === giorno.numero
+      );
 
-      // Aggiungi qui la logica per gestire la selezione del giorno
+      if (!giornoGiaSelezionato) {
+        this.giorniSelezionati[chiaveMeseAnno].push({
+          numero: giorno.numero,
+          nome: giorno.nome || '',
+        });
 
-      // Per aggiornare la card quando si selezionano i giorni
-      this.aggiornaCard();
+        // Aggiorna qui la logica per gestire la selezione del giorno
+
+        // Per aggiornare la card quando si selezionano i giorni
+        this.aggiornaCard();
+
+        // Imposta la variabile a true quando almeno un giorno è selezionato
+        this.almenoUnGiornoSelezionato = true;
+      }
+
+      // Disabilita la navigazione solo se c'è almeno un giorno selezionato
+      if (this.almenoUnGiornoSelezionato) {
+        this.navigazioneDisabilitata = true;
+      }
     }
   }
 
-
   aggiornaCard() {
-    // Logica per aggiornare la card con i giorni selezionati
-    // Puoi implementare qui la logica di visualizzazione nella card
+    // Verifica se ci sono giorni selezionati
+    const giorniSelezionatiPresenti = Object.keys(this.giorniSelezionati).some(
+      (meseAnno) => this.giorniSelezionati[meseAnno].length > 0
+    );
+    // Aggiorna la variabile di visibilità della card
+    this.almenoUnGiornoSelezionato = giorniSelezionatiPresenti;
   }
+
 
   private getDayName(dayOfWeek: number): string {
     return this.giorniDellaSettimana[dayOfWeek];
   }
 
   inviaRichiestaFerie() {
-    const giorniFerie = Object.keys(this.giorniSelezionati).map((meseAnno) => {
-      return this.giorniSelezionati[meseAnno].map((giorno: any) => {
-        return {
-          ferie: true,
-          permessi: null,
-          nGiorno: giorno.numero,
-        };
-      });
-    }).flat();
+    const giorniFerie = Object.keys(this.giorniSelezionati)
+      .map((meseAnno) => {
+        return this.giorniSelezionati[meseAnno].map((giorno: any) => {
+          return {
+            ferie: true,
+            permessi: null,
+            nGiorno: giorno.numero,
+          };
+        });
+      })
+      .flat();
 
     const body = {
       richiestaDto: {
         anno: this.annoCorrente,
-        mese: this.meseCorrente+1,
+        mese: this.meseCorrente + 1,
         codiceFiscale: this.codiceFiscaleDettaglio,
         list: giorniFerie,
       },
@@ -313,147 +379,45 @@ export class RichiesteComponent implements OnInit {
 
     console.log('PAYLOAD INVIO RICHIESTA DI FERIE: ' + JSON.stringify(body));
 
-    this.richiesteService.inviaRichiesta(this.token, body).subscribe((result: any) => {
-      if ((result as any).esito.code !== 200) {
-        const dialogRef = this.dialog.open(AlertDialogComponent, {
-          data: {
-            image: '../../../../assets/images/logo.jpeg',
-            title: 'Invio non riuscito:',
-            message: (result as any).esito.target,
-          },
-        });
-      } else {
-        const dialogRef = this.dialog.open(AlertDialogComponent, {
-          data: {
-            image: '../../../../assets/images/logo.jpeg',
-            title: 'Invio effettuato',
-          },
-        });
-      }
-    });
+    this.richiesteService
+      .inviaRichiesta(this.token, body)
+      .subscribe((result: any) => {
+        if ((result as any).esito.code !== 200) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/logo.jpeg',
+              title: 'Invio non riuscito:',
+              message: (result as any).esito.target,
+            },
+          });
+          // location.reload();
+        } else {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/logo.jpeg',
+              title: 'Invio effettuato',
+            },
+          });
+          location.reload();
+        }
+      });
   }
 
-
-  // generateCalendar(month: number, year: number) {
-  //   this.currentMonthDays = [];
-  //   const daysInMonth = new Date(year, month, 0).getDate();
-
-  //   for (let day = 1; day <= daysInMonth; day++) {
-  //     const date = new Date(year, month - 1, day);
-  //     this.currentMonthDays.push({
-  //       number: day,
-  //       dayOfWeek: date.getDay(),
-  //       selected: false,
-  //     });
-  //   }
-  // }
+  //fine metodi per la gestione delle ferie
 
   onChangeMeseForLista(event: any) {
     const target = event.target.value;
     this.selectedMeseForLista = target;
   }
 
-  // getMonthName(month: number): string {
-  //   const monthNames = [
-  //     'Gennaio',
-  //     'Febbraio',
-  //     'Marzo',
-  //     'Aprile',
-  //     'Maggio',
-  //     'Giugno',
-  //     'Luglio',
-  //     'Agosto',
-  //     'Settembre',
-  //     'Ottobre',
-  //     'Novembre',
-  //     'Dicembre',
-  //   ];
-  //   return monthNames[month - 1];
-  // }
-
-  // getDayName(dayOfWeek: number): string {
-  //   return this.dayNames[dayOfWeek];
-  // }
-
-  // onDaySelected(dayNumber: number) {
-  //   const day = this.currentMonthDays.find((d) => d.number === dayNumber);
-
-  //   if (day) {
-  //     day.selected = !day.selected;
-
-  //     if (day.selected) {
-  //       // Inserisci il giorno in modo ordinato
-  //       const index = this.giorniSelezionati.findIndex(
-  //         (giorno) => giorno > dayNumber
-  //       );
-  //       if (index !== -1) {
-  //         this.giorniSelezionati.splice(index, 0, dayNumber);
-  //       } else {
-  //         this.giorniSelezionati.push(dayNumber);
-  //         this.openSelectedDays();
-  //       }
-
-  //       // console.log(
-  //       //   'Giorni selezionati singolarmente:' +
-  //       //     JSON.stringify(this.giorniSelezionati)
-  //       // );
-  //     } else {
-  //       const index = this.giorniSelezionati.indexOf(dayNumber);
-  //       if (index !== -1) {
-  //         this.giorniSelezionati.splice(index, 1);
-  //       }
-  //     }
-  //   }
-  // }
-
   onTipoRichiestaSelected(event: any) {
     this.tipoRichiesta = event.target.value;
-    // console.log('Richiesta selezionata: ' + this.tipoRichiesta);
   }
-
-  // isWeekend(dayOfWeek: number): boolean {
-  //   return dayOfWeek === 6 || dayOfWeek === 0; // Sabato = 6, Domenica = 0
-  // }
 
   isDaySelected(dayNumber: number): boolean {
     const day = this.currentMonthDays.find((d) => d.number === dayNumber);
     return day ? day.selected : false;
   }
-
-  // onNextMonth() {
-  //   this.currentMonth = (this.currentMonth % 12) + 1;
-  //   if (this.currentMonth === 1) {
-  //     this.currentYear++;
-  //   }
-  //   this.generateCalendar(this.currentMonth, this.currentYear);
-  // }
-
-  // onPrevMonth() {
-  //   this.currentMonth = this.currentMonth === 1 ? 12 : this.currentMonth - 1;
-  //   if (this.currentMonth === 12) {
-  //     this.currentYear--;
-  //   }
-  //   this.generateCalendar(this.currentMonth, this.currentYear);
-  // }
-
-  // selectAllDays() {
-  //   const areAllSelected = this.currentMonthDays.every(
-  //     (day) => day.selected || this.isWeekend(day.dayOfWeek)
-  //   );
-
-  //   this.currentMonthDays.forEach((day) => {
-  //     if (!this.isWeekend(day.dayOfWeek)) {
-  //       this.onDaySelected(day.number);
-  //       // console.log('Giorni selezionati: ' + JSON.stringify(day.number));
-  //     }
-  //   });
-  // }
-
-  // areAllDaysSelected(): boolean {
-  //   return this.currentMonthDays.every(
-  //     (day) => day.selected || this.isWeekend(day.dayOfWeek)
-  //   );
-  // }
 
   openSelectedDays() {
     this.showSelectedDays = true;
@@ -478,11 +442,9 @@ export class RichiesteComponent implements OnInit {
         ],
       },
     };
-    // console.log('PAYLOAD X CheckValidazione ' + JSON.stringify(body));
   }
 
   updateRichiesta(id: number) {
-    // console.log(id);
     this.router.navigate(['/update-richiesta/', id]);
   }
 
@@ -639,7 +601,7 @@ export class RichiesteComponent implements OnInit {
         const oggi = new Date();
         this.selectedAnnoForLista = oggi.getFullYear();
         this.selectedMeseForLista = oggi.getMonth() + 1;
-        if(this.ruolo==="DIPENDENTE"){
+        if (this.ruolo === 'DIPENDENTE') {
           let body = {
             richiestaDto: {
               anno: this.selectedAnnoForLista,
@@ -673,10 +635,9 @@ export class RichiesteComponent implements OnInit {
                 // );
               }
             });
-        } else{
-          console.error("NON HAI I PERMESSI PER ACCEDERE ALLA SEZIONE.");
+        } else {
+          console.error('NON HAI I PERMESSI PER ACCEDERE ALLA SEZIONE.');
         }
-
       },
       (error: any) => {
         console.error(

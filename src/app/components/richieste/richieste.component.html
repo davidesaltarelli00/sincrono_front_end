@@ -347,9 +347,9 @@ img{
       <div class="col-6">
         <div class="calendario">
           <div class="intestazione">
-            <button mat-mini-fab color="primary" (click)="onMesePrecedente()">«</button>
+            <button mat-mini-fab color="primary" (click)="onMesePrecedente()" [disabled]="navigazioneDisabilitata">«</button>
             <h2>{{ getNomeMese(meseCorrente) }} {{ annoCorrente }}</h2>
-            <button mat-mini-fab color="primary" (click)="onMeseSuccessivo()">»</button>
+            <button mat-mini-fab color="primary" (click)="onMeseSuccessivo()" [disabled]="navigazioneDisabilitata">»</button>
           </div>
 
           <div class="giorni">
@@ -364,7 +364,7 @@ img{
           </div>
         </div>
       </div>
-     <div class="col-6">
+     <div class="col-6" *ngIf="almenoUnGiornoSelezionato" >
       <div class="card">
         <div class="card-header">
           <h3>Giorni Selezionati <button mat-flat-button color="primary" (click)="inviaRichiestaFerie()" >Invia richiesta di ferie</button> </h3>
