@@ -3,6 +3,12 @@ button {  background-color: rgb(24, 122, 0);  color: white;}button:hover {  back
   box-sizing: border-box;
 }
 
+::ng-deep mat-menu-content {
+ 
+  background-color: #333;
+  color: white
+}
+
 .custom-picker {
   display: flex;
   flex-wrap: wrap;
@@ -200,6 +206,7 @@ tr:hover {
   }
 
   .logo-image {
+    border-radius: 50%;
     width: 60px;
     /* Adjust the logo image size for mobile */
     height: 60px;

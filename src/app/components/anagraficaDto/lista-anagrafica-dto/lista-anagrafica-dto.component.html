@@ -505,17 +505,16 @@
               </li>
             </ul>
           </div>
-          <table id="table" class="table table-bordered">
+          <table id="table-anagrafica" class="table table-bordered" *ngIf="!mobile">
             <thead class="thead-dark">
               <tr>
-                <!-- <th scope="col">Inserimento <br> parziale</th> -->
                 <th scope="col">Ruolo</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Cognome</th>
                 <th scope="col">Codice Fiscale</th>
                 <th scope="col">Nome azienda</th>
                 <th scope="col">Mail aziendale</th>
-                <th scope="col">Cell privato</th>
+                <th scope="col">Cellulare privato</th>
                 <th scope="col">Contratto</th>
                 <th scope="col">Commessa</th>
                 <th scope="col">Attesa lavori</th>
@@ -523,17 +522,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let element of pageData; let i=index"
-                [ngStyle]="{'background-color': (anagraficaLoggata === element.anagrafica.id) ? 'aliceblue' : 'white'}">
-                <!-- <td [routerLink]="['/dettaglio-anagrafica/',element.anagrafica.id]">
-                  <span [ngStyle]="{'color': isCampoVuoto(element) ? 'red' : 'green'}">
-                    {{isCampoVuoto(element)? 'Si' : 'No'}}
-                  </span>
-                </td> -->
-                <!-- <td><i *ngIf="element.ruolo.descrizione==='ADMIN'" matTooltip="{{element.ruolo.descrizione}}"
-                    style="color: green;" class="fa-solid fa-user"></i><i
-                    *ngIf="element.ruolo.descrizione==='DIPENDENTE'" style="color: orangered;"
-                    matTooltip="{{element.ruolo.descrizione}}" class="fa-solid fa-user"></i></td> -->
+              <tr *ngFor="let element of pageData; let i=index" [ngStyle]="{'background-color': (anagraficaLoggata === element.anagrafica.id) ? 'aliceblue' : 'white'}">
                     <td>
                       {{element.ruolo.descrizione |titlecase }}
                     </td>
@@ -601,6 +590,95 @@
               </tr>
             </tbody>
           </table>
+          <div class="container" *ngIf="mobile">
+            <div *ngFor="let element of pageData; let i = index" class="card mb-3">
+
+              <div class="card-body">
+                <div>
+                  <p><strong>Ruolo:</strong> {{element.ruolo.descrizione | titlecase }}</p>
+                </div>
+                <div>
+                  <p><strong>Nome:</strong> {{ element.anagrafica?.nome | titlecase }}</p>
+                </div>
+                <div>
+                  <p><strong>Cognome:</strong> {{ element.anagrafica?.cognome | titlecase }}</p>
+                </div>
+                <div>
+                  <p><strong>Codice Fiscale:</strong> {{ element.anagrafica?.codiceFiscale | uppercase }}</p>
+                </div>
+                <div>
+                  <p><strong>Nome azienda:</strong> {{ element.anagrafica?.tipoAzienda?.descrizione | titlecase }}</p>
+                </div>
+                <div>
+                  <p><strong>Mail aziendale:</strong> {{ element.anagrafica?.mailAziendale }}</p>
+                </div>
+                <div>
+                  <p><strong>Cellulare privato:</strong> {{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato : 'Non inserito' }}</p>
+                </div>
+                <div>
+                  <p style="cursor: pointer;" [ngStyle]="{'color': element?.contratto!=null ? 'black' : 'red'}"
+                    [matTooltip]="element?.contratto!=null ? 'Vedi Il contratto di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi contratto a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome"
+                    (click)="handleClickContratto(element)">
+                    <strong>Contratto:</strong>
+                    {{ element?.contratto!=null ? element.contratto.tipoContratto.descrizione : 'Non inserito' }}
+                    <i *ngIf="element?.contratto!=null" class="fa fa-info-circle" style="cursor:pointer;"></i>
+                    <i *ngIf="element?.contratto==null" class="fa fa-plus-circle" style="cursor:pointer;"></i>
+                  </p>
+                </div>
+                <div>
+                  <p *ngIf="element.contratto?.tipoContratto?.descrizione==='#'"><strong>Generico</strong></p>
+                </div>
+                <div>
+                  <p style="cursor: pointer;" [ngStyle]="{'color': element?.commesse?.length > 0 ? 'green' : 'red'}"
+                    [matTooltip]="element?.commesse?.length > 0 ? 'Vedi le commesse di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi commesse a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome" (click)="handleClick(element)">
+                    <strong>Commessa:</strong>
+                    {{ element?.commesse?.length > 0 ? 'Inserita' : 'Non inserita' }}
+                    <i *ngIf="element?.commesse?.length > 0" class="fa fa-info-circle" style="cursor:pointer;"></i>
+                    <i *ngIf="element?.commesse?.length == 0" class="fa fa-plus-circle" style="cursor:pointer;"></i>
+                  </p>
+                </div>
+                <div>
+                  <strong>Attesa lavori:</strong> &nbsp;
+                  <label class="switch">
+                    <input type="checkbox" disabled [checked]="element.anagrafica.attesaLavori">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                <div>
+                  <br>
+                <strong>Azioni:</strong>
+                  <span style="margin:5px;" *ngIf="anagraficaLoggata===element.anagrafica.id">
+                    <a [routerLink]="['/utente/', element?.anagrafica.id]"><button
+                        matTooltip="Rapportino {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
+                        [hidden]="anagraficaLoggata!=element.anagrafica.id" mat-mini-fab id="button"><i
+                          class="fa fa-file"></i></button></a>
+                  </span>
+                  <span style="margin:5px;">
+                    <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button
+                        matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
+                        mat-mini-fab color="primary"><i class="fa fa-info"></i></button></a>
+                  </span>
+                  <span style="margin:5px;">
+                    <button mat-mini-fab color="accent" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
+                      matTooltip="Modifica {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "><i
+                        class="fa fa-pencil"></i></button>
+                  </span>
+                  <span style="margin:5px;"
+                    *ngIf="element.anagrafica.attivo==true && anagraficaLoggata!=element.anagrafica.id">
+                    <button mat-mini-fab color="warn"
+                      matTooltip="Disattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
+                      (click)="elimina(element.anagrafica.id, element.anagrafica.nome, element.anagrafica.cognome)"><i class="fa fa-minus"></i></button>
+                  </span>
+                  <span style="margin:5px;" *ngIf="element.anagrafica.attivo==false">
+                    <button mat-mini-fab  id="button" (click)="riattivaAnagrafica(element.anagrafica.id, element.anagrafica.nome, element.anagrafica.cognome)"
+                      matTooltip="Riattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "> <i
+                        class="fa fa-plus"></i> </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div *ngIf="messaggio!=null">{{messaggio}}</div>
           <div class="pagination">
             <ul>

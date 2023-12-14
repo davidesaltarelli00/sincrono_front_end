@@ -260,7 +260,7 @@
                       <tbody>
                         <tr>
                           <td>{{anagrafica?.anagraficaDto.anagrafica?.cittadinanza ? anagrafica?.anagraficaDto.anagrafica?.cittadinanza : 'Dato non inserito' }}</td>
-                          <td>{{anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"  }}</td>
+                          <td>{{ anagrafica?.anagraficaDto.anagrafica?.dataDiNascita ? (anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy") : 'Dato non inserito' }} </td>
                           <td>{{anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita : 'Dato non inserito.'  }}</td>
                           <td>{{anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita : 'Dato non inserito.'  }}</td>
                           <td>{{anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita : 'Dato non inserito.'  }}</td>
@@ -402,7 +402,7 @@
                     <td>{{ anagrafica?.anagraficaDto.anagrafica?.figliACarico ? 'Si' : 'No' }}</td>
                     <td>{{ anagrafica?.anagraficaDto.anagrafica?.attesaLavori ? 'Si' : 'No' }}</td>
                     <td>{{ anagrafica?.anagraficaDto.anagrafica?.categoriaProtetta ? 'Si' : 'No' }}</td>
-                    <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoCanaleReclutamento?.descrizione ? anagrafica?.anagraficaDto?.contratto?.tipoCanaleReclutamento?.descrizione : 'Dato non inserito' }}</td>
+                    <td>{{ anagrafica?.anagraficaDto?.anagrafica?.tipoCanaleReclutamento?.descrizione ? anagrafica?.anagraficaDto?.anagrafica?.tipoCanaleReclutamento?.descrizione : 'Dato non inserito' }}</td>
                   </tr>
                  </tbody>
                 </table>
@@ -589,7 +589,373 @@
     </div>
     <div id="finePagina"></div>
   </div>
-</body>
 
+<div class="container-fluid" *ngIf="mobile">
+  <div class="row">
+    <div class="col-12">
+      <br>
+      <mat-card style="text-align: center;">
+        <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+        <h1>Profilo <button [hidden]="ruolo==='DIPENDENTE'" class=" btn btn-info " [routerLink]="['/modifica-anagrafica/',id]" > <i class="fa fa-pencil" ></i> </button> </h1>
+        <h3> <i class="fa fa-user" ></i>  {{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }} {{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }} </h3>
+      </mat-card>
+    </div>
+  </div>
+  <br>
+  <div class="row"  >
+    <div class="col-12"  id="sezione-immagine-mobile">
+      <div class="image-container-mobile" >
+        <div class="image-container rounded-mobile">
+          <label style="float: right;" for="fileInput" class="file-input-label-mobile" *ngIf="!immagineCancellata && immagineConvertita && !salvaImmagine">
+            <i class="fa fa-pencil btn btn-info" style="cursor: pointer;" matTooltip=" Modifica immagine" ></i>
+          </label>
+          <input [hidden]="immagineConvertita" type="file" #fileInput accept="image/*" id="fileInput" (change)="onFileSelected($event)" />
+          <div class="image-preview-mobile" *ngIf="immagineConvertita">
+            <img [src]="immagineConvertita"  style="cursor: pointer;" alt="Immagine" class="preview-image" />
+          </div>
+          <div class="image-preview-mobile" *ngIf="!immagineConvertita">
+            <img [src]="immaginePredefinita" alt="Immagine" class="preview-image" />
+          </div>
+        </div>
+      </div>
+      <br>
+     <div class="buttons-mobile" *ngIf="salvaImmagine" >
+      <button (click)="addImage()" matTooltip="Salva immagine" class="btn btn-primary"> <i class="fa fa-save"></i></button> &nbsp;
+      <button (click)="cancelImage()" matTooltip="Annulla" class="btn btn-danger">&#x2715;</button>
+     </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td><strong>Ruolo</strong></td>
+            <td>{{anagrafica?.anagraficaDto?.ruolo?.descrizione}}</td>
+          </tr>
+          <tr>
+            <td><strong>Contratto</strong></td>
+            <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione}}</td>
+          </tr>
+          <tr>
+            <td><strong>Numero commesse</strong></td>
+            <td>{{elencoCommesse.length}}</td>
+          </tr>
+          <tr>
+            <td><strong>Rapportino</strong></td>
+            <td>Rapportino <button class="btn btn-success" (click)="goToRapportinoByCodiceFiscale()" matTooltip="Rapportino."> <i class="fa fa-file"></i> </button></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h3>Dati anagrafici <i class="fa fa-user"></i> </h3>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td><strong>Nominativo</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }} {{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }}</td>
+          </tr>
+          <tr>
+            <td><strong>Codice fiscale</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}</td>
+          </tr>
+          <tr>
+            <td><strong>Data di nascita</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.dataDiNascita ? (anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy") : 'Dato non inserito' }}
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Nazione di nascita</strong></td>
+            <td>{{anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita : 'Dato non inserito.'  }}</td>
+          </tr>
+          <tr>
+            <td><strong>Provincia di nascita</strong></td>
+            <td>{{anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita : 'Dato non inserito.'  }}</td>
+          </tr>
+          <tr>
+            <td><strong>Comune di nascita</strong></td>
+            <td>{{anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita : 'Dato non inserito.'  }}</td>
+          </tr>
+          <tr>
+            <td><strong>Cittadinanza</strong></td>
+            <td>{{anagrafica?.anagraficaDto.anagrafica?.cittadinanza ? anagrafica?.anagraficaDto.anagrafica?.cittadinanza : 'Dato non inserito' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h3>Contatti <i class="fa fa-phone"></i> &nbsp; <i class="fa fa-envelope"></i> </h3>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td><strong>Cellulare privato</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.cellularePrivato ? anagrafica?.anagraficaDto.anagrafica?.cellularePrivato : 'Dato non inserito.' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Cellulare aziendale</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale ? anagrafica?.anagraficaDto.anagrafica?.cellulareAziendale : 'Dato non inserito.' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Mail privata</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailPrivata ?  anagrafica?.anagraficaDto.anagrafica?.mailPrivata : 'Dato non inserito.' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Mail aziendale</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale ?  anagrafica?.anagraficaDto.anagrafica?.mailAziendale : 'Dato non inserito.' }}</td>
+          </tr>
+          <tr>
+            <td><strong>PEC</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailPec ? anagrafica?.anagraficaDto.anagrafica?.mailPec : 'Dato non inserito.' }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h3>Residenza e domicilio <i class="fa fa-address-card" aria-hidden="true"></i>
+      </h3>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td><strong>Residenza</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.residenza ? anagrafica?.anagraficaDto.anagrafica?.residenza : 'Dato non inserito' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Domicilio</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.domicilio ? anagrafica?.anagraficaDto.anagrafica?.domicilio : 'Dato non inserito' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h3>Referenze <i class="fa fa-school"></i> </h3>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td><strong>Titolo di studio</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio ? anagrafica?.anagraficaDto.anagrafica?.titoliDiStudio: 'Dato non inserito.' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Altri titoli</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.altriTitoli ? anagrafica?.anagraficaDto.anagrafica?.altriTitoli : 'Dato non inserito.' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h3>Altre informazioni <i class="fa fa-info-circle" ></i> </h3>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td><strong>Categoria protetta</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.categoriaProtetta ? 'Si' : 'No' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Coniugato</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.coniugato ? 'Si' : 'No' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Figli a carico</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.figliACarico ? 'Si' : 'No' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Attesa lavori</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.attesaLavori ? 'Si' : 'No' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Canale reclutamento</strong></td>
+            <td>{{ anagrafica?.anagraficaDto?.anagrafica?.tipoCanaleReclutamento?.descrizione ? anagrafica?.anagraficaDto?.anagrafica?.tipoCanaleReclutamento?.descrizione : 'Dato non inserito' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h3>Contratto <i class="fa fa-file-contract"></i></h3>
+      <table class="table table-bordered" >
+        <tbody>
+          <tr>
+            <td><strong>Tipo Contratto</strong></td>
+            <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione ? anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione : 'Dato non inserito' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Mesi durata</strong></td>
+            <td>{{ anagrafica?.anagraficaDto?.contratto?.mesiDurata ? anagrafica?.anagraficaDto?.contratto?.mesiDurata : 'Dato non inserito' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Data assunzione</strong></td>
+            <td>{{ anagrafica?.anagraficaDto?.contratto?.dataAssunzione | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Data fine prova</strong></td>
+            <td>{{ anagrafica?.anagraficaDto?.contratto?.dataFineProva | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Data fine contratto</strong></td>
+            <td>{{ anagrafica?.anagraficaDto?.contratto?.dataFineContratto | date:'dd/MM/yyyy' || 'Dato non inserito' }}</td>
+          </tr>
+          <tr>
+            <td><strong>CCNL</strong></td>
+            <td>
+              {{anagrafica?.anagraficaDto.contratto?.tipoLivelloContratto?.ccnl ? anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.ccnl :'Dato non inserito' }}
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Livello</strong></td>
+            <td>
+              {{anagrafica?.anagraficaDto.contratto?.tipoLivelloContratto?.livello ? anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.livello : 'Dato non inserito.'}}
+            </td>
+          </tr>
+          <!-- <tr>
+            <td><strong>Minimi retributivi 23</strong></td>
+            <td>
+              {{anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.minimiRet23 ? anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.minimiRet23 : 'Dato non inserito.'}}
+            </td>
+          </tr> -->
+          <tr>
+            <td><strong>Numero mensilitá</strong></td>
+            <td>
+              {{anagrafica?.anagraficaDto?.contratto?.tipoCcnl?.numeroMensilita ? anagrafica?.anagraficaDto?.contratto?.tipoCcnl?.numeroMensilita : 'Dato non inserito.'}}
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Sede assunzione</strong></td>
+            <td>{{ anagrafica?.anagraficaDto?.contratto?.sedeAssunzione ? anagrafica?.anagraficaDto?.contratto?.sedeAssunzione : 'Dato non inserito' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Qualifica</strong></td>
+            <td>{{ anagrafica?.anagraficaDto?.contratto?.qualifica ? anagrafica?.anagraficaDto?.contratto?.qualifica : 'Dato non inserito' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row" *ngIf="elencoCommesse.length<1">
+    <div class="col-12">
+      <h3>Commesse</h3>
+      <table class="table table-bordered" >
+      <tbody>
+        <tr>
+          <td>
+            Non hai commesse al momento. <button [hidden]="ruolo==='DIPENDENTE'" [routerLink]="['/aggiungi-commessa/', id]" mat-mini-fab color="primary" matTooltip="Aggiungi commessa" > <i class="fa fa-plus" ></i> </button>
+          </td>
+         </tr>
+      </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row" *ngIf="elencoCommesse.length>0">
+    <div class="col-12">
+      <h3>Commesse</h3>
+      <mat-card *ngFor="let commessa of elencoCommesse; let i = index" class="commessa-card">
+        <mat-card-title>
+          <button mat-mini-fab color="primary">{{i+1}}</button>
+        </mat-card-title>
+        <mat-card-content>
+          <div class="info">
+            <strong class="label">Cliente:</strong> {{ commessa.tipoAziendaCliente.descrizione }}
+          </div>
+          <div class="info">
+            <strong class="label">Cliente Finale:</strong> {{ commessa.clienteFinale }}
+          </div>
+          <div class="info">
+            <strong class="label">Titolo Posizione:</strong> {{ commessa.titoloPosizione }}
+          </div>
+          <div class="info">
+            <strong class="label">Distacco:</strong>
+            {{ commessa.distacco === true ? 'Si' : (commessa.distacco === false ? 'No' : 'Dato non inserito') | titlecase }}
+          </div>
+          <div class="info">
+            <strong class="label">Data Inizio:</strong>
+            {{ commessa.dataInizio ? (commessa.dataInizio | date: 'dd/MM/yyyy') : 'Dato non inserito' }}
+          </div>
+          <div class="info">
+            <strong class="label">Data Fine:</strong>
+            {{ commessa.dataFine ? (commessa.dataFine | date: 'dd/MM/yyyy') : 'Dato non inserito' }}
+          </div>
+          <div class="info">
+            <strong class="label">Tariffa Giornaliera:</strong>
+            {{ commessa.tariffaGiornaliera ? commessa.tariffaGiornaliera : 'Dato non inserito' }}
+            <i *ngIf="commessa.tariffaGiornaliera" class="fa-solid fa-euro-sign"></i>
+          </div>
+          <div class="info">
+            <strong class="label">Azienda fatturazione interna:</strong> {{ commessa.aziendaDiFatturazioneInterna }}
+          </div>
+
+          <!-- Pulsanti di azione -->
+          <div *ngIf="ruolo !== 'DIPENDENTE'" class="action-buttons">
+            <button class="btn btn-success" matTooltip="Archivia commessa" (click)="storicizzaCommessa(commessa.id, i)">
+              <i class="fa fa-file"></i> Archivia
+            </button>
+            &nbsp;
+            <button class="btn btn-warning" (click)="modificaCommessa()" matTooltip="Modifica commessa">
+              <i class="fa fa-pencil"></i> Modifica
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <br>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h3>Accesso</h3>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td><strong>Attivo</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.attivo ? 'Si' : 'No' }}</td>
+          </tr>
+          <tr>
+            <td><strong>Nome utente</strong></td>
+            <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}</td>
+          </tr>
+          <tr>
+            <td><strong>Cambio password</strong></td>
+            <td class="link" [routerLink]="['/cambia-password']">Cambia password</td>
+          </tr>
+          <tr>
+            <td><strong>Sessione</strong></td>
+            <td><p>Tempo rimanente:  {{ formatTime(tokenExpirationTime) }}</p></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
 </html>
 
+<table class="table table-striped">
+                  <thead>
+                   <tr>
+                    <th>Attivo</th>
+                    <th>Nome utente</th>
+                    <th>Cambia password</th>
+                    <th>Sessione <i class="fa fa-info-circle" matTooltip="Al termine del timer dovrai rieffettuare il login." ></i> </th>
+                   </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{ anagrafica?.anagraficaDto.anagrafica?.attivo ? 'Si' : 'No' }}</td>
+                      <td>{{ anagrafica?.anagraficaDto.anagrafica?.mailAziendale }}</td>
+                      <td class="link" [routerLink]="['/cambia-password']" >Cambia password</td>
+                      <td><p>Tempo rimanente:  {{ formatTime(tokenExpirationTime) }}</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>

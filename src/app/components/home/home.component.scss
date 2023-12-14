@@ -1,20 +1,25 @@
-
- .clienti {
-  border: 1px solid #ddd; /* Aggiungi un bordo al mat-card */
-  border-radius: 8px; /* Aggiungi un bordo arrotondato */
-  padding: 10px; /* Aggiungi spaziatura interna al mat-card */
-  margin-bottom: 10px; /* Aggiungi spaziatura tra i mat-card */
+.clienti {
+  border: 1px solid #ddd;
+  /* Aggiungi un bordo al mat-card */
+  border-radius: 8px;
+  /* Aggiungi un bordo arrotondato */
+  padding: 10px;
+  /* Aggiungi spaziatura interna al mat-card */
+  margin-bottom: 10px;
+  /* Aggiungi spaziatura tra i mat-card */
 }
 
- /* Stili specifici per schermi di grandi dimensioni (desktop) */
- @media (min-width: 768px) {
+/* Stili specifici per schermi di grandi dimensioni (desktop) */
+@media (min-width: 768px) {
   body {
     font-size: 18px;
   }
+
   /* Altri stili specifici per schermi di grandi dimensioni */
   .container-fluid {
     padding: 20px;
   }
+
   .col-6 {
     width: 50%;
     float: left;
@@ -26,11 +31,13 @@
   body {
     font-size: 16px;
   }
+
   /* Altri stili specifici per schermi di medie dimensioni */
   .col-6 {
     width: 100%;
     float: none;
   }
+
   .banner img {
     max-width: 100%;
   }
@@ -41,13 +48,52 @@
   body {
     font-size: 14px;
   }
+
   /* Altri stili specifici per schermi di piccole dimensioni */
   .container-fluid {
     padding: 10px;
   }
+
   .custom-list-item {
     padding: 10px;
   }
+}
+
+.clienti {
+  max-width: 100%;
+  /* Adjust the maximum width of the mat-card */
+  overflow: hidden;
+  /* Hide overflow content */
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.col-2 {
+  flex: 1 0 200px;
+  /* Adjust the initial width (200px in this example) */
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clienti {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  /* Optional: Add border for better visualization */
+
+}
+
+p {
+  text-align: center;
+  /* Center the text horizontally within the <p> element */
+  margin: 0;
+  /* Remove any default margin to avoid unwanted spacing */
 }
 
 /* Aggiungi animazioni alle mat-card */
@@ -63,12 +109,16 @@ mat-card:hover {
 
 
 #toolbar {
-  background-color: #007bff; /* Colore blu aziendale */
-  color: #ffffff; /* Testo bianco */
+  background-color: #007bff;
+  /* Colore blu aziendale */
+  color: #ffffff;
+  /* Testo bianco */
   display: flex;
   background-color: #333;
-  justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
-  align-items: center; /* Allinea verticalmente gli elementi al centro */
+  justify-content: space-between;
+  /* Allinea gli elementi a sinistra e a destra */
+  align-items: center;
+  /* Allinea verticalmente gli elementi al centro */
 }
 
 .logo-link {
@@ -79,7 +129,7 @@ mat-card:hover {
   display: flex;
   gap: 10px;
   background-color: #333;
-  margin-right:auto;
+  margin-right: auto;
 }
 
 .toolbar-link {
@@ -88,7 +138,7 @@ mat-card:hover {
   /* padding: 10px; */
 }
 
-a{
+a {
   color: white;
 }
 
@@ -102,7 +152,7 @@ a{
   cursor: pointer;
 }
 
-*{
+* {
   box-sizing: border-box;
 }
 
@@ -118,11 +168,12 @@ a{
 }
 
 /* styles.css o nel tuo componente-specifico.css */
-.dark-mode *{
+.dark-mode * {
   background-color: #333;
   color: #fff;
 }
-.dark-mode body{
+
+.dark-mode body {
   background-color: #333;
   color: #fff;
 }
@@ -133,7 +184,9 @@ a{
   border: 1px solid #f1f1f1;
 }
 
-.dark-mode input, .dark-mode textarea, .dark-mode select {
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
   background-color: #444;
   color: #fff;
 }
@@ -142,13 +195,15 @@ a{
   border-color: #555;
 }
 
-.dark-mode th, .dark-mode td {
+.dark-mode th,
+.dark-mode td {
   border-color: #777;
   background-color: #333;
   color: #fff;
 }
 
-.dark-mode button, .dark-mode .btn {
+.dark-mode button,
+.dark-mode .btn {
   background-color: #333;
   color: #fff;
 }
@@ -179,6 +234,7 @@ a{
   color: #fff;
   border: 1px solid #666;
 }
+
 .dark-mode #toolbar {
   color: #ffffff;
   /* Testo bianco */
@@ -214,29 +270,38 @@ mat-list {
 /* Stili comuni per mat-list-item */
 mat-list-item {
   padding: 16px;
-  border-bottom: 1px solid #ddd; /* Aggiungi una sottolineatura tra gli elementi della lista */
+  border-bottom: 1px solid #ddd;
+  /* Aggiungi una sottolineatura tra gli elementi della lista */
 }
 
 /* Stili comuni per gli anchor (link) all'interno di mat-list-item */
 mat-list-item a {
-  color: inherit; /* Eredità del colore del testo dallo stile del padre */
-  text-decoration: none; /* Rimuovi la sottolineatura dei link */
+  color: inherit;
+  /* Eredità del colore del testo dallo stile del padre */
+  text-decoration: none;
+  /* Rimuovi la sottolineatura dei link */
 }
 
 /* Stili specifici per dark mode per mat-list e mat-list-item */
 .dark-mode mat-list {
-  background-color: #333; /* Colore di sfondo scuro per la lista */
-  color: #fff; /* Colore del testo chiaro per la lista */
+  background-color: #333;
+  /* Colore di sfondo scuro per la lista */
+  color: #fff;
+  /* Colore del testo chiaro per la lista */
 }
 
 .dark-mode mat-list-item {
-  border-color: #555; /* Colore del bordo scuro per gli elementi della lista */
-  background-color: #444; /* Colore di sfondo scuro per gli elementi della lista */
-  color: #fff; /* Colore del testo chiaro per gli elementi della lista */
+  border-color: #555;
+  /* Colore del bordo scuro per gli elementi della lista */
+  background-color: #444;
+  /* Colore di sfondo scuro per gli elementi della lista */
+  color: #fff;
+  /* Colore del testo chiaro per gli elementi della lista */
 }
 
 .dark-mode mat-list-item a {
-  color: #fff; /* Colore del testo chiaro per i link in dark mode */
+  color: #fff;
+  /* Colore del testo chiaro per i link in dark mode */
 }
 
 // h1,h2,h3,h4,h5,h6,strong{
