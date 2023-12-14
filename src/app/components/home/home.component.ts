@@ -121,7 +121,7 @@ export class HomeComponent implements OnInit {
       (error: any) => {
         console.error(
           "Errore durante il caricamento dell'immagine: " +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
 
         // Assegna un'immagine predefinita in caso di errore
@@ -207,7 +207,7 @@ export class HomeComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
+          error
         );
       }
     );
@@ -238,7 +238,7 @@ export class HomeComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
+          error
         );
         this.shouldReloadPage = true;
       }
@@ -279,4 +279,5 @@ export class HomeComponent implements OnInit {
   toggleDarkMode(): void {
     this.themeService.toggleDarkMode();
   }
+
 }
