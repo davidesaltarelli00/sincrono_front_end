@@ -225,11 +225,6 @@ table {
   background-position: center;
 }
 
-mat-card {
-  height: 100%;
-}
-
-
 
 
 /* styles.css o nel tuo componente-specifico.css */
@@ -262,9 +257,9 @@ mat-card {
 
 .dark-mode th,
 .dark-mode td {
-  border-color: #777;
+  border-color: #f2f2f2;
   background-color: #333;
-  color: #fff;
+  color: #f1f1f1;
 }
 
 .dark-mode button,
@@ -360,3 +355,10 @@ button.toggle-button {
   }
 
 
+.fa-euro-sign::before {
+  content: "\20AC"; /* Codice dell'euro */
+}
+
+.commessa-card{
+  height: 50%;
+}
