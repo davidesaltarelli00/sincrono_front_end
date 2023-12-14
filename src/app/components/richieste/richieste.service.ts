@@ -19,7 +19,7 @@ export class RichiesteService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.url + `inserisci-richiesta`, body, {
+    return this.http.post<any>(this.urlProd + `inserisci-richiesta`, body, {
       headers: headers,
     });
   }
@@ -30,7 +30,7 @@ export class RichiesteService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.post<any>(this.url + `list-richieste`, body, {
+    return this.http.post<any>(this.urlProd + `list-richieste`, body, {
       headers: headers,
     });
   }
@@ -42,7 +42,7 @@ export class RichiesteService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.put<any>(this.url + `cambia-stato`, body, {
+    return this.http.put<any>(this.urlProd + `cambia-stato`, body, {
       headers: headers,
     });
   }
@@ -53,7 +53,7 @@ export class RichiesteService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    const url = this.url + `get-richiesta/${idRichiesta}`;
+    const url = this.urlProd + `get-richiesta/${idRichiesta}`;
     return this.http.get<any>(url, {
       headers: headers,
     });
@@ -65,7 +65,7 @@ export class RichiesteService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    const url = this.url + `list-richieste-accettate`;
+    const url = this.urlProd + `list-richieste-accettate`;
     return this.http.post<any>(url, body, {
       headers: headers,
     });
@@ -78,7 +78,7 @@ export class RichiesteService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    const url = this.url + `check-elaborazione`;
+    const url = this.urlProd + `check-elaborazione`;
     return this.http.post<any>(url, body, {
       headers: headers,
     });
@@ -90,7 +90,7 @@ export class RichiesteService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    const url = this.url + `modifica-richiesta`;
+    const url = this.urlProd + `modifica-richiesta`;
     return this.http.put<any>(url, body, {
       headers: headers,
     });
