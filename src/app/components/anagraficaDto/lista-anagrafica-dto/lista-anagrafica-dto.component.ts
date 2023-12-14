@@ -1070,6 +1070,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       } else {
         this.router.navigate(['/modifica-anagrafica', element.anagrafica.id]);
       }
+    } else{
+      this.router.navigate(['/info-contratto/',element.anagrafica?.id])
     }
 
   }
@@ -1081,6 +1083,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       } else {
         this.router.navigate(['/modifica-commessa', element.anagrafica.id]);
       }
+    }else{
+      this.router.navigate(['/info-commesse/',element.anagrafica?.id])
     }
 
   }

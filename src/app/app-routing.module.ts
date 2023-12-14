@@ -39,6 +39,7 @@ import { TutorialCompilazioneRapportinoComponent } from './tutorial-compilazione
 import { AggiungiCommessaComponent } from './components/aggiungi-commessa/aggiungi-commessa.component';
 import { ModificaRichiestaComponent } from './components/richieste/modifica-richiesta/modifica-richiesta.component';
 import { ModalInfoCommesseComponent } from './components/modal-info-commesse/modal-info-commesse.component';
+import { ModalInfoContrattoComponent } from './components/modal-info-contratto/modal-info-contratto.component';
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -177,17 +178,14 @@ const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
   },
 
-  //ORGANICO
   {
     path: 'organico',
     component: ListaOrganicoComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
 
-  //LOGIN
   { path: 'login', component: LoginComponent },
 
-  //STORICO CONTRATTI
 
   {
     path: 'storico-contratti/:id',
@@ -205,8 +203,13 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'info-commesse',
+    path: 'info-commesse/:id',
     component: ModalInfoCommesseComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'info-contratto/:id',
+    component: ModalInfoContrattoComponent,
     canActivate: [AuthGuard],
   },
 
