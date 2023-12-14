@@ -293,10 +293,10 @@
 
 
 // overflow
-body {
-  overflow-y: auto; /* Nasconde l'overflow verticale */
-  overflow-x: hidden;
-}
+// body {
+//   overflow-y: auto; /* Nasconde l'overflow verticale */
+//   overflow-x: hidden;
+// }
 
 body::after {
   content: "";
