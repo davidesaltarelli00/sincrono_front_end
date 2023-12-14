@@ -1064,19 +1064,25 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   handleClickContratto(element: any) {
-    if (element?.contratto != null) {
-      this.mostraInfoContratto(element.anagrafica?.id);
-    } else {
-      this.router.navigate(['/modifica-anagrafica', element.anagrafica.id]);
+    if(!this.mobile){
+      if (element?.contratto != null) {
+        this.mostraInfoContratto(element.anagrafica?.id);
+      } else {
+        this.router.navigate(['/modifica-anagrafica', element.anagrafica.id]);
+      }
     }
+
   }
 
   handleClick(element: any) {
-    if (element?.commesse?.length > 0) {
-      this.mostraInfo(element.anagrafica?.id);
-    } else {
-      this.router.navigate(['/modifica-commessa', element.anagrafica.id]);
+    if(!this.mobile){
+      if (element?.commesse?.length > 0) {
+        this.mostraInfo(element.anagrafica?.id);
+      } else {
+        this.router.navigate(['/modifica-commessa', element.anagrafica.id]);
+      }
     }
+
   }
 
   //METODI NAVBAR
