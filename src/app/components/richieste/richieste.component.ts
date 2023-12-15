@@ -50,7 +50,7 @@ export class RichiesteComponent implements OnInit {
   elencoRichieste: any[] = [];
   requestForm: FormGroup;
   currentPage: number = 1;
-  itemsPerPage: number = 20; // Numero di elementi per pagina
+  itemsPerPage: number = 10; // Numero di elementi per pagina
   currentMonth: any;
   currentYear: any;
   currentMonthDays: { number: number; dayOfWeek: number; selected: boolean }[] =

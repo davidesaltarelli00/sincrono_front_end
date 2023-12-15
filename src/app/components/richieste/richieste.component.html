@@ -317,33 +317,33 @@ img{
       <div class="col-12">
         <mat-card style=" height: 100%;">
           <mat-card-content>
-          <div class="row">
-            <div class="col-8">
+            <div class="row">
+              <div class="col-12 col-md-8">
                 <main>
-              <h2>Ciao {{userLoggedName}} {{userLoggedSurname}}.</h2>
-              <p>Questa sezione é dedicata alle richieste. Seleziona la tipologia di richiesta che vuoi inviare.
-             </p>
-            </main>
+                  <h2>Ciao {{userLoggedName}} {{userLoggedSurname}}.</h2>
+                  <p>Questa sezione è dedicata alle richieste. Seleziona la tipologia di richiesta che vuoi inviare.</p>
+                </main>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="form-group">
+                  <label for="tipologicaRichieste">Richiesta di</label>
+                  <select name="tipoRichiesta" (change)="onTipoRichiestaSelected($event)" id="tipoRichiesta" class="form-select">
+                    <option value="" selected>--Seleziona tipologia richiesta--</option>
+                    <option value="ferie">Ferie</option>
+                    <option value="permessi">Permesso</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="col-4">
-             <div class="form-group">
-              <label for="tipologicaRichieste">Richiesta di</label>
-               <select name="tipoRichiesta" (change)="onTipoRichiestaSelected($event)" id="tipoRichiesta" class="form-select">
-                <option value="" selected>--Seleziona tipologia richiesta--</option>
-                <option value="ferie" >Ferie</option>
-                <option value="permessi" >Permesso</option>
-              </select>
-             </div>
-            </div>
-          </div>
+
           </mat-card-content>
         </mat-card>
       </div>
     </div>
     <br>
 
-
-    <div class="row" *ngIf="tipoRichiesta === 'ferie'">
+<!--impostazione ferie da desktop-->
+    <div class="row" *ngIf="tipoRichiesta === 'ferie' && !mobile">
       <div class="col-6">
         <div class="calendario">
           <div class="intestazione">
@@ -357,8 +357,8 @@ img{
               <div *ngFor="let giorno of settimana" class="giorno"
                    (click)="onGiornoSelezionato(giorno)"
                    [class.disabled]="isWeekend(giorno?.nome)">
-                <div class="numero-giorno">{{ giorno?.numero || ' ' }}</div>
-                <div class="nome-giorno">{{ giorno?.nome || ' ' }}</div>
+                <div class="numero-giorno"><small>{{ giorno?.numero || ' ' }}</small></div>
+                <div class="nome-giorno"><small>{{ giorno?.nome || ' ' }}</small></div>
               </div>
             </div>
           </div>
@@ -389,6 +389,55 @@ img{
       </div>
      </div>
     </div>
+    <!--impostazione ferie da mobile-->
+    <div class="row" *ngIf="tipoRichiesta === 'ferie' && mobile">
+      <div class="col-12">
+        <div class="calendario">
+          <div class="intestazione">
+            <button mat-mini-fab color="primary" (click)="onMesePrecedente()" [disabled]="navigazioneDisabilitata">«</button>
+            <h2>{{ getNomeMese(meseCorrente) }} {{ annoCorrente }}</h2>
+            <button mat-mini-fab color="primary" (click)="onMeseSuccessivo()" [disabled]="navigazioneDisabilitata">»</button>
+          </div>
+
+          <div class="giorni">
+            <div *ngFor="let settimana of giorniCalendario" class="settimana">
+              <div *ngFor="let giorno of settimana" class="giorno"
+                   (click)="onGiornoSelezionato(giorno)"
+                   [class.disabled]="isWeekend(giorno?.nome)">
+                <div class="numero-giorno"><small>{{ giorno?.numero || ' ' }}</small></div>
+                <div class="nome-giorno"><small>{{ giorno?.nome || ' ' }}</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+     <div class="col-12" *ngIf="almenoUnGiornoSelezionato" >
+      <div class="card">
+        <div class="card-header">
+          <h3>Giorni Selezionati <button mat-flat-button color="primary" (click)="inviaRichiestaFerie()" >Invia richiesta di ferie</button> </h3>
+        </div>
+        <div class="card-body">
+          <div *ngFor="let meseAnno of ordinaChiavi(giorniSelezionati)">
+            <h4>{{ meseAnno.key }}</h4>
+            <ul>
+              <li *ngFor="let giorno of meseAnno.value">
+               <table class="table table-bordered" >
+                <tr>
+                  <td>
+                    {{ giorno.numero }} - {{ giorno.nome }}
+                    <button mat-mini-fab color="warn"  (click)="rimuoviGiorno(meseAnno.key, giorno.numero)"> <i class="fa fa-close" ></i> </button>
+                  </td>
+                </tr>
+               </table>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+     </div>
+    </div>
+
     <div class="row">
      <div class="col-12">
       <div *ngIf="tipoRichiesta === 'permessi'">
@@ -402,13 +451,10 @@ img{
         <mat-card>
           <mat-card-title>
             <h1>Elenco richieste</h1>
-          </mat-card-title>
-          <mat-card-subtitle>
-            <div class="row">
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="mese">Seleziona il mese</label>
-                  <select name="mese" id="mese" [(ngModel)]="selectedMeseForLista" class="form-select" (change)="onChangeMeseForLista($event)" >
+            <div class="row" style="text-align: center; margin: auto;">
+              <div class="col-12 col-md-3">
+                <label for="mese">Mese</label>
+                <select name="mese" id="mese" [(ngModel)]="selectedMeseForLista" class="form-select" (change)="onChangeMeseForLista($event)">
                   <option value="1">Gennaio</option>
                   <option value="2">Febbraio</option>
                   <option value="3">Marzo</option>
@@ -421,38 +467,34 @@ img{
                   <option value="10">Ottobre</option>
                   <option value="11">Novembre</option>
                   <option value="12">Dicembre</option>
-                  </select>
-                </div>
+                </select>
               </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="anno">Seleziona l'anno</label>
-                  <!-- <input type="number" class="form-control" [(ngModel)]="selectedAnnoForLista"> -->
-                  <select name="anniDal2023" id="anniDal2023" class="form-select" [(ngModel)]="selectedAnnoForLista">
-                    <option *ngFor="let anno of anniDal2023" [value]="anno">{{ anno }}</option>
-                  </select>
-
-                </div>
+              <div class="col-12 col-md-3">
+                <label for="anno">Anno</label>
+                <select name="anniDal2023" id="anniDal2023" class="form-select" [(ngModel)]="selectedAnnoForLista">
+                  <option *ngFor="let anno of anniDal2023" [value]="anno">{{ anno }}</option>
+                </select>
               </div>
-              <div class="col-4" >
+              <div class="col-12 col-md-1">
                 <div class="form-group">
                   <label for="cerca">Cerca</label> <br>
-                  <button mat-mini-fab color="primary" [disabled]="selectedAnnoForLista==null || selectedMeseForLista==null " (click)="getAllRichiesteDipendente()" > <i class="fa fa-search" ></i> </button>
+                  <button mat-mini-fab color="primary" [disabled]="selectedAnnoForLista==null || selectedMeseForLista==null" (click)="getAllRichiesteDipendente()"> <i class="fa fa-search"></i> </button>
                 </div>
               </div>
             </div>
-          </mat-card-subtitle>
+
+          </mat-card-title>
           <mat-card-content>
             <br>
            <div class="row" *ngIf="elencoRichiesteDipendente && elencoRichiesteDipendente.length > 0">
             <div class="col-12">
               <h1>Elenco richieste delle ferie</h1>
-              <table class="table table-bordered">
+              <table class="table table-bordered"  id="table-responsive">
                 <thead>
                   <tr>
                     <th>Tipo richiesta</th>
                     <th>Giorno</th>
-                    <th>Stato della richiesta</th>
+                    <th>Stato</th>
                     <th>Note</th>
                     <th>Azioni</th>
                   </tr>
@@ -467,10 +509,11 @@ img{
                           <ng-container *ngIf="i !== richiesta.list.length - 1">, </ng-container>
                         </ng-container>
                       </td>
-                      <td *ngIf="richiesta.stato==true" > <button mat-flat-button style="background-color: green; color: white;" >Accettata</button> </td>
-                      <td *ngIf="richiesta.stato==false" > <button mat-flat-button color="warn" >Rifiutata</button> </td>
-                      <td *ngIf="richiesta.stato==null" > <button mat-flat-button style="background-color: rgb(255, 255, 187); color: #333;" >Da elaborare</button> </td>
-
+                      <td>
+                        <button *ngIf="richiesta.stato==true" mat-flat-button  id="richiestaAccettata" >Accettata</button>
+                        <button *ngIf="richiesta.stato==false" mat-flat-button color="warn" id="richiestaRifiutata" >Rifiutata</button>
+                        <button *ngIf="richiesta.stato==null" mat-flat-button id="daElaboare" >Da elaborare</button>
+                      </td>
                       <td matTooltip="{{ richiesta.note  }}">
                         {{ richiesta?.note | truncate: 10 }}
                       </td>
@@ -501,13 +544,13 @@ img{
            <div class="row" *ngIf="elencoRichiesteDipendente && elencoRichiesteDipendente.length > 0" >
             <div class="col-12">
               <h1>Elenco richieste dei permessi</h1>
-              <table class="table table-bordered">
+              <table class="table table-bordered"  id="table-responsive">
                 <thead>
                   <tr>
                     <th>Giorno</th>
                     <th>Dalle ore</th>
                     <th>Alle ore</th>
-                    <th>Stato della richiesta</th>
+                    <th>Stato</th>
                     <th>Note</th>
                     <th>Azioni</th>
                   </tr>
@@ -533,9 +576,11 @@ img{
                           <ng-container *ngIf="i !== richiesta.list.length - 1">, </ng-container>
                         </ng-container>
                       </td>
-                      <td *ngIf="richiesta.stato==true" > <button mat-flat-button style="background-color: green; color: white;" >Accettata</button> </td>
-                      <td *ngIf="richiesta.stato==false" > <button mat-flat-button color="warn" >Rifiutata</button> </td>
-                      <td *ngIf="richiesta.stato==null" > <button mat-flat-button style="background-color: rgb(255, 255, 187); color: #333;">Da elaborare</button> </td>
+                      <td>
+                        <button *ngIf="richiesta.stato==true" mat-flat-button  id="richiestaAccettata" >Accettata</button>
+                        <button *ngIf="richiesta.stato==false" mat-flat-button color="warn" id="richiestaRifiutata" >Rifiutata</button>
+                        <button *ngIf="richiesta.stato==null" mat-flat-button id="daElaboare" >Da elaborare</button>
+                      </td>
                       <td matTooltip="{{ richiesta.note  }}">
                         {{ richiesta?.note | truncate: 10 }}
                       </td>
@@ -569,6 +614,5 @@ img{
       </div>
     </div>
   </div>
-  <br><br>
 </body>
 </html>

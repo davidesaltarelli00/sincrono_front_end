@@ -1,12 +1,14 @@
-
-
 #toolbar {
-  background-color: #007bff; /* Colore blu aziendale */
-  color: #ffffff; /* Testo bianco */
+  background-color: #007bff;
+  /* Colore blu aziendale */
+  color: #ffffff;
+  /* Testo bianco */
   display: flex;
   background-color: #333;
-  justify-content: space-between; /* Allinea gli elementi a sinistra e a destra */
-  align-items: center; /* Allinea verticalmente gli elementi al centro */
+  justify-content: space-between;
+  /* Allinea gli elementi a sinistra e a destra */
+  align-items: center;
+  /* Allinea verticalmente gli elementi al centro */
 }
 
 .logo-link {
@@ -17,7 +19,7 @@
   display: flex;
   gap: 10px;
   background-color: #333;
-  margin-right:auto;
+  margin-right: auto;
 }
 
 .toolbar-link {
@@ -26,7 +28,7 @@
   /* padding: 10px; */
 }
 
-a{
+a {
   color: white;
 }
 
@@ -40,18 +42,19 @@ a{
   cursor: pointer;
 }
 
-*{
+* {
   box-sizing: border-box;
 }
 
 
 
 /* styles.css o nel tuo componente-specifico.css */
-.dark-mode *{
+.dark-mode * {
   background-color: #333;
   color: #fff;
 }
-.dark-mode body{
+
+.dark-mode body {
   background-color: #333;
   color: #fff;
 }
@@ -62,7 +65,9 @@ a{
   border: 1px solid #f1f1f1;
 }
 
-.dark-mode input, .dark-mode textarea, .dark-mode select {
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
   background-color: #444;
   color: #fff;
 }
@@ -71,13 +76,15 @@ a{
   border-color: #555;
 }
 
-.dark-mode th, .dark-mode td {
+.dark-mode th,
+.dark-mode td {
   border-color: #777;
   background-color: #333;
   color: #fff;
 }
 
-.dark-mode button, .dark-mode .btn {
+.dark-mode button,
+.dark-mode .btn {
   background-color: #333;
   color: #fff;
 }
@@ -108,6 +115,7 @@ a{
   color: #fff;
   border: 1px solid #666;
 }
+
 .dark-mode #toolbar {
   color: #ffffff;
   /* Testo bianco */
@@ -179,7 +187,9 @@ button.toggle-button {
   border: 1px solid #333;
 }
 
-table,th,td{
+table,
+th,
+td {
   text-align: center;
 }
 
@@ -187,18 +197,25 @@ table,th,td{
 /* calendario*/
 .calendario {
   font-family: 'Arial', sans-serif;
-  max-width: 500px;
-  margin: auto;
+  max-width: 100%;
+  margin: 20px;
   background-color: #fff;
   border: 1px solid #ccc;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .giorno.disabled {
   pointer-events: none;
   background-color: #eee;
   color: #999;
+}
+
+.dark-mode .giorno.disabled {
+  pointer-events: none;
+  background-color: #333;
+  color: #666;
 }
 
 .intestazione {
@@ -214,14 +231,17 @@ table,th,td{
 }
 
 .giorni {
+  // display: grid;
+  // grid-template-columns: repeat(7, 1fr);
+  // grid-gap: 10px;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
   grid-gap: 10px;
 }
 
 .giorno-header,
 .giorno {
-  width: 70px;
+  width: 100%;
   height: 70px;
   border: 1px solid #ddd;
   display: flex;
@@ -232,13 +252,33 @@ table,th,td{
   transition: background-color 0.3s ease;
 }
 
+@media (min-width: 600px) {
+  .calendario {
+    max-width: 600px;
+  }
+}
+
+@media (min-width: 768px) {
+  .calendario {
+    max-width: 768px;
+  }
+}
+
 .giorno:hover {
   background-color: #f0f0f0;
+}
+
+.dark-mode .giorno:hover {
+  background-color: #333;
 }
 
 .numero-giorno,
 .nome-giorno {
   text-align: center;
+}
+
+.dark-mode .numero-giorno {
+  background-color: #333;
 }
 
 .giorno-selezionato {
@@ -248,4 +288,83 @@ table,th,td{
 
 .giorno-selezionato:hover {
   background-color: #45a049;
+}
+
+
+#daElaboare {
+  background-color: rgb(255, 255, 187);
+  color: #333;
+}
+
+.dark-mode #daElaboare {
+  border: 1px solid rgb(255, 255, 187);
+  color: #fff;
+  background-color: #333;
+}
+
+.dark-mode #richiestaRifiutata {
+  border: 1px solid red;
+  color: #fff;
+  background-color: #333;
+}
+
+#richiestaAccettata {
+  background-color: green;
+  color: white;
+}
+
+.dark-mode #richiestaAccettata {
+  border: 1px solid green;
+  color: white;
+  background-color: #333;
+
+}
+
+.dark-mode button {
+  border: 1px solid white;
+}
+
+
+// tabella responsive
+#table-responsive {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin: auto;
+  text-align: center;
+}
+
+#table-responsive th,
+#table-responsive td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#table-responsive th {
+  background-color: #343a40;
+  color: white;
+}
+
+@media screen and (max-width: 768px) {
+  #table-responsive {
+    overflow-x: auto;
+    // display: block;
+    text-align: center;
+  }
+
+  #table-responsive th,
+  #table-responsive td {
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 768px) {
+  .col-md-1,
+  .col-md-3 {
+    width: 25%;
+  }
 }
