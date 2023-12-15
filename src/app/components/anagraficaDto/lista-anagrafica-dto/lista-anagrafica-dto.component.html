@@ -111,9 +111,12 @@
         </a>
       </div>
       <span>
-        <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
-          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
-          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
+        <div class="form-check form-switch"
+          matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()"
+            type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault"
+            matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
         </div>
       </span>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
@@ -132,14 +135,18 @@
       <a [routerLink]="['/home']" class="logo-link">
         <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
       </a>
-      <button style=" background-color:white;color:black;margin-right: 10px;" mat-button [matMenuTriggerFor]="menu">
-        Menu
+      <button
+        style="background-color:#333;color:white;margin-left:-10px;margin-right:3px;border-radius:1px;padding:5px;"
+        mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button style="background-color:white;color:black" mat-menu-item *ngFor="let menuItem of jsonData.list"
-          [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
-          {{ menuItem.nome }}
-        </button>
+        <ng-template matMenuContent>
+          <button style="background-color:#333;color:white" mat-menu-item *ngFor="let menuItem of jsonData.list"
+            [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
+            {{ menuItem.nome }}
+          </button>
+        </ng-template>
       </mat-menu>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
@@ -276,7 +283,7 @@
                       </select>
                     </div>
                   </div>
-<!--
+                  <!--
                   <div class="col-md-3" formGroupName="tipoAzienda">
                     <label for="tipoAzienda">Nome Azienda</label>
                     <select (keyup)="filter(filterAnagraficaDto.value)" class="form-select"
@@ -344,7 +351,8 @@
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="meseAssunzione">Mese di assunzione</label>
-                      <select name="meseAssunzione" id="meseAssunzione" class="form-select" formControlName="meseAssunzione">
+                      <select name="meseAssunzione" id="meseAssunzione" class="form-select"
+                        formControlName="meseAssunzione">
                         <option value="" selected [value]="null">---Nessuna selezione---</option>
                         <option *ngFor="let mese of getOpzioniMesi()" [value]="mese">{{ mese }}</option>
                       </select>
@@ -353,7 +361,8 @@
                   </div>
                   <div class="col-md-3">
                     <label for="annoAssunzione">Anno di assunzione</label>
-                    <select name="annoAssunzione" id="annoAssunzione" class="form-select" formControlName="annoAssunzione">
+                    <select name="annoAssunzione" id="annoAssunzione" class="form-select"
+                      formControlName="annoAssunzione">
                       <option value="" selected [value]="null">---Nessuna selezione---</option>
                       <option *ngFor="let anno of anni" [value]="anno">{{ anno }}</option>
                     </select>
@@ -362,7 +371,8 @@
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="meseFineRapporto">Mese di fine rapporto</label>
-                      <select name="meseFineRapporto" id="meseFineRapporto" class="form-select" formControlName="meseFineRapporto">
+                      <select name="meseFineRapporto" id="meseFineRapporto" class="form-select"
+                        formControlName="meseFineRapporto">
                         <option value="" selected [value]="null">---Nessuna selezione---</option>
                         <option *ngFor="let mese of getOpzioniMesi()" [value]="mese">{{ mese }}</option>
                       </select>
@@ -371,7 +381,8 @@
                   </div>
                   <div class="col-md-3">
                     <label for="annoAssunzione">Anno di fine rapporto</label>
-                    <select name="annoFineRapporto" id="annoFineRapporto" class="form-select" formControlName="annoFineRapporto">
+                    <select name="annoFineRapporto" id="annoFineRapporto" class="form-select"
+                      formControlName="annoFineRapporto">
                       <option value="" selected [value]="null">---Nessuna selezione---</option>
                       <option *ngFor="let anno of anni" [value]="anno">{{ anno }}</option>
                     </select>
@@ -407,12 +418,13 @@
                         <div class="form-group" formGroupName="tipoAziendaCliente">
                           <label for="aziendaCliente">Azienda cliente</label>
                           <select (change)="onChangeAziendaCliente($event)" class="form-select"
-                          aria-label="Default select example" id="commesse.tipoAziendaCliente.id" formControlName="id">
-                          <option value="">--nessuna selezione--</option>
-                          <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
-                            {{ aziendaCliente.descrizione }}
-                          </option>
-                        </select>
+                            aria-label="Default select example" id="commesse.tipoAziendaCliente.id"
+                            formControlName="id">
+                            <option value="">--nessuna selezione--</option>
+                            <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
+                              {{ aziendaCliente.descrizione }}
+                            </option>
+                          </select>
 
                         </div>
                       </div>
@@ -443,7 +455,7 @@
             style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
             <label>Esporta in excel</label>
             <button (click)="exportListaAnagraficaToExcel()" style="margin: 5px;" matTooltip="Esporta in excel"
-            mat-mini-fab id="button">
+              mat-mini-fab id="button">
               <i class="fa-solid fa-file-export"></i>
             </button>
           </div>
@@ -497,10 +509,11 @@
                 <span> <i class="fa fa-arrow-right"></i> </span>
               </li>
               <li>
-                <select name="itemsPerPage" id="itemsPerPage" class="form-select" (change)="onChaneItemsPerPage($event)" [(ngModel)]="itemsPerPage">
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
+                <select name="itemsPerPage" id="itemsPerPage" class="form-select" (change)="onChaneItemsPerPage($event)"
+                  [(ngModel)]="itemsPerPage">
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
                 </select>
               </li>
             </ul>
@@ -522,10 +535,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let element of pageData; let i=index" [ngStyle]="{'background-color': (anagraficaLoggata === element.anagrafica.id) ? 'aliceblue' : 'white'}">
-                    <td>
-                      {{element.ruolo.descrizione |titlecase }}
-                    </td>
+              <tr *ngFor="let element of pageData; let i=index"
+                [ngStyle]="{'background-color': (anagraficaLoggata === element.anagrafica.id) ? 'aliceblue' : 'white'}">
+                <td>
+                  {{element.ruolo.descrizione |titlecase }}
+                </td>
                 <td>{{ element.anagrafica?.nome |titlecase }}</td>
                 <td>{{ element.anagrafica?.cognome |titlecase }}</td>
                 <td>{{ element.anagrafica?.codiceFiscale |uppercase }}</td>
@@ -533,21 +547,22 @@
                 <td>{{ element.anagrafica?.mailAziendale }}</td>
                 <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non inserito' }}
                 </td>
-                <td >
-                 <p style="cursor: pointer;" [ngStyle]="{'color': element?.contratto!=null ? 'black' : 'red'}"
-                 [matTooltip]="element?.contratto!=null ? 'Vedi Il contratto di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi contratto a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome"
-                 (click)="handleClickContratto(element)">
-                  {{ element?.contratto!=null ? element.contratto.tipoContratto.descrizione : 'Non inserito' }}
-                  <i *ngIf="element?.contratto!=null" class="fa fa-info-circle" style="cursor:pointer;"></i>
-                  <i *ngIf="element?.contratto==null" class="fa fa-plus-circle" style="cursor:pointer;"></i>
-                 </p>
+                <td>
+                  <p style="cursor: pointer;" [ngStyle]="{'color': element?.contratto!=null ? 'black' : 'red'}"
+                    [matTooltip]="element?.contratto!=null ? 'Vedi Il contratto di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi contratto a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome"
+                    (click)="handleClickContratto(element)">
+                    {{ element?.contratto!=null ? element.contratto.tipoContratto.descrizione : 'Non inserito' }}
+                    <i *ngIf="element?.contratto!=null" class="fa fa-info-circle" style="cursor:pointer;"></i>
+                    <i *ngIf="element?.contratto==null" class="fa fa-plus-circle" style="cursor:pointer;"></i>
+                  </p>
                 </td>
 
                 <td *ngIf="element.contratto?.tipoContratto?.descrizione==='#'">
                   Generico
                 </td>
                 <td style="cursor: pointer;" [ngStyle]="{'color': element?.commesse?.length > 0 ? 'green' : 'red'}"
-                  [matTooltip]="element?.commesse?.length > 0 ? 'Vedi le commesse di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi commesse a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome" (click)="handleClick(element)">
+                  [matTooltip]="element?.commesse?.length > 0 ? 'Vedi le commesse di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi commesse a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome"
+                  (click)="handleClick(element)">
                   {{ element?.commesse?.length > 0 ? 'Inserita' : 'Non inserita' }}
                   <i *ngIf="element?.commesse?.length > 0" class="fa fa-info-circle" style="cursor:pointer;"></i>
                   <i *ngIf="element?.commesse?.length == 0" class="fa fa-plus-circle" style="cursor:pointer;"></i>
@@ -567,8 +582,8 @@
                   </span>
                   <span style="margin:5px;">
                     <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button
-                        matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
-                        mat-mini-fab color="primary"><i class="fa fa-info"></i></button></a>
+                        matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} " mat-mini-fab
+                        color="primary"><i class="fa fa-info"></i></button></a>
                   </span>
                   <span style="margin:5px;">
                     <button mat-mini-fab color="accent" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
@@ -579,10 +594,12 @@
                     *ngIf="element.anagrafica.attivo==true && anagraficaLoggata!=element.anagrafica.id">
                     <button mat-mini-fab color="warn"
                       matTooltip="Disattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
-                      (click)="elimina(element.anagrafica.id, element.anagrafica.nome, element.anagrafica.cognome)"><i class="fa fa-minus"></i></button>
+                      (click)="elimina(element.anagrafica.id, element.anagrafica.nome, element.anagrafica.cognome)"><i
+                        class="fa fa-minus"></i></button>
                   </span>
                   <span style="margin:5px;" *ngIf="element.anagrafica.attivo==false">
-                    <button mat-mini-fab  id="button" (click)="riattivaAnagrafica(element.anagrafica.id, element.anagrafica.nome, element.anagrafica.cognome)"
+                    <button mat-mini-fab id="button"
+                      (click)="riattivaAnagrafica(element.anagrafica.id, element.anagrafica.nome, element.anagrafica.cognome)"
                       matTooltip="Riattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "> <i
                         class="fa fa-plus"></i> </button>
                   </span>
@@ -613,7 +630,8 @@
                   <p><strong>Mail aziendale:</strong> {{ element.anagrafica?.mailAziendale }}</p>
                 </div>
                 <div>
-                  <p><strong>Cellulare privato:</strong> {{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato : 'Non inserito' }}</p>
+                  <p><strong>Cellulare privato:</strong> {{ element.anagrafica?.cellularePrivato ?
+                    element.anagrafica.cellularePrivato : 'Non inserito' }}</p>
                 </div>
                 <div>
                   <p style="cursor: pointer;" [ngStyle]="{'color': element?.contratto!=null ? 'black' : 'red'}"
@@ -630,7 +648,8 @@
                 </div>
                 <div>
                   <p style="cursor: pointer;" [ngStyle]="{'color': element?.commesse?.length > 0 ? 'green' : 'red'}"
-                    [matTooltip]="element?.commesse?.length > 0 ? 'Vedi le commesse di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi commesse a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome" (click)="handleClick(element)">
+                    [matTooltip]="element?.commesse?.length > 0 ? 'Vedi le commesse di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi commesse a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome"
+                    (click)="handleClick(element)">
                     <strong>Commessa:</strong>
                     {{ element?.commesse?.length > 0 ? 'Inserita' : 'Non inserita' }}
                     <i *ngIf="element?.commesse?.length > 0" class="fa fa-info-circle" style="cursor:pointer;"></i>
@@ -646,7 +665,7 @@
                 </div>
                 <div>
                   <br>
-                <strong>Azioni:</strong>
+                  <strong>Azioni:</strong>
                   <span style="margin:5px;" *ngIf="anagraficaLoggata===element.anagrafica.id">
                     <a [routerLink]="['/utente/', element?.anagrafica.id]"><button
                         matTooltip="Rapportino {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
@@ -655,8 +674,8 @@
                   </span>
                   <span style="margin:5px;">
                     <a [routerLink]="['/dettaglio-anagrafica', element?.anagrafica.id]"><button
-                        matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
-                        mat-mini-fab color="primary"><i class="fa fa-info"></i></button></a>
+                        matTooltip="Dettaglio {{element.anagrafica.nome}} {{element.anagrafica.cognome}} " mat-mini-fab
+                        color="primary"><i class="fa fa-info"></i></button></a>
                   </span>
                   <span style="margin:5px;">
                     <button mat-mini-fab color="accent" [routerLink]="['/modifica-anagrafica', element.anagrafica.id]"
@@ -667,10 +686,12 @@
                     *ngIf="element.anagrafica.attivo==true && anagraficaLoggata!=element.anagrafica.id">
                     <button mat-mini-fab color="warn"
                       matTooltip="Disattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
-                      (click)="elimina(element.anagrafica.id, element.anagrafica.nome, element.anagrafica.cognome)"><i class="fa fa-minus"></i></button>
+                      (click)="elimina(element.anagrafica.id, element.anagrafica.nome, element.anagrafica.cognome)"><i
+                        class="fa fa-minus"></i></button>
                   </span>
                   <span style="margin:5px;" *ngIf="element.anagrafica.attivo==false">
-                    <button mat-mini-fab  id="button" (click)="riattivaAnagrafica(element.anagrafica.id, element.anagrafica.nome, element.anagrafica.cognome)"
+                    <button mat-mini-fab id="button"
+                      (click)="riattivaAnagrafica(element.anagrafica.id, element.anagrafica.nome, element.anagrafica.cognome)"
                       matTooltip="Riattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "> <i
                         class="fa fa-plus"></i> </button>
                   </span>
@@ -693,10 +714,11 @@
                 <span> <i class="fa fa-arrow-right"></i> </span>
               </li>
               <li>
-                <select name="itemsPerPage" id="itemsPerPage" class="form-select" (change)="onChaneItemsPerPage($event)" [(ngModel)]="itemsPerPage">
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
+                <select name="itemsPerPage" id="itemsPerPage" class="form-select" (change)="onChaneItemsPerPage($event)"
+                  [(ngModel)]="itemsPerPage">
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
                 </select>
               </li>
             </ul>
@@ -716,7 +738,7 @@
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/danger.png" alt="Logo Sincrono"></h1>
           <h1>Non hai i permessi per accedere a questa sezione.</h1>
-           <a mat-stroked-button [routerLink]="['/home']" target="_blank">Vai alla home.</a>
+          <a mat-stroked-button [routerLink]="['/home']" target="_blank">Vai alla home.</a>
         </mat-card>
       </div>
     </div>

@@ -24,6 +24,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
   id = this.activatedRoute.snapshot.params['id'];
 
   //navbar
+  mobile:any;
   userLoggedName: any;
   userLoggedSurname: any;
   shouldReloadPage: any;
@@ -66,6 +67,20 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
     private dialog: MatDialog,
     private http: HttpClient
   ) {
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
+
     this.filterAnagraficaDto = this.formBuilder.group({
 
 

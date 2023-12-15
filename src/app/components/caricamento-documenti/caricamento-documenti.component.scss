@@ -282,3 +282,34 @@ button.toggle-button {
   color: #fff;
   /* Altri stili specifici per il dark mode per il bottone di toggle */
 }
+@media (max-width: 768px){
+.container-toolbar {
+  /* Styles for smaller screens (e.g., mobile devices) */
+  background-color: #333;
+  /* Change background color */
+  padding: 10px;
+  /* Add padding around the container */
+  text-align: center;
+  /* Center the content in the container */
+}
+
+.logo-link {
+  display: block;
+  /* Make the logo a block-level element */
+  margin: 0 auto;
+  /* Center the logo horizontally */
+}
+
+.logo-image {
+  border-radius: 50%;
+  width: 60px;
+  /* Adjust the logo image size for mobile */
+  height: 60px;
+}
+.custom-picker {
+flex-direction: column;
+/* Stack the pickers vertically on small screens */
+align-items: flex-start;
+/* Align pickers to the left */
+}
+}

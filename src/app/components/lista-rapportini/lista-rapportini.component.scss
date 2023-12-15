@@ -235,3 +235,80 @@ mat-card-title{
   border: 1px solid #f3f3f3;
 
 }
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+  .container-toolbar {
+    /* Styles for smaller screens (e.g., mobile devices) */
+    background-color: #333;
+    /* Change background color */
+    padding: 10px;
+    /* Add padding around the container */
+    text-align: center;
+    /* Center the content in the container */
+  }
+
+  .logo-link {
+    display: block;
+    /* Make the logo a block-level element */
+    margin: 0 auto;
+    /* Center the logo horizontally */
+  }
+
+  .logo-image {
+    border-radius: 50%;
+    width: 60px;
+    /* Adjust the logo image size for mobile */
+    height: 60px;
+  }
+  /* Altri stili specifici per schermi di medie dimensioni */
+  .col-6 {
+    width: 100%;
+    float: none;
+  }
+
+  .banner img {
+    max-width: 100%;
+  }
+}
+
+/* Stili specifici per schermi di piccole dimensioni (dispositivi mobili) */
+@media (max-width: 480px) {
+  .container-toolbar {
+    /* Styles for smaller screens (e.g., mobile devices) */
+    background-color: #333;
+    /* Change background color */
+    padding: 10px;
+    /* Add padding around the container */
+    text-align: center;
+    /* Center the content in the container */
+  }
+
+  .logo-link {
+    display: block;
+    /* Make the logo a block-level element */
+    margin: 0 auto;
+    /* Center the logo horizontally */
+  }
+
+  .logo-image {
+    border-radius: 50%;
+    width: 60px;
+    /* Adjust the logo image size for mobile */
+    height: 60px;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  /* Altri stili specifici per schermi di piccole dimensioni */
+  .container-fluid {
+    padding: 10px;
+  }
+
+  .custom-list-item {
+    padding: 10px;
+  }
+}

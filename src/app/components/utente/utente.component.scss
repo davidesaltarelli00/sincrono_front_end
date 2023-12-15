@@ -99,7 +99,7 @@ button[type="submit"]:hover {
   font-size: 12px;
 }
 
-.form-group{
+.form-group {
   text-align: center;
 }
 
@@ -107,7 +107,7 @@ button[type="submit"]:hover {
 //   text-align: left;
 // }
 
-input{
+input {
   border: 1px solid black;
 }
 
@@ -170,6 +170,30 @@ input{
   .col-s-12 {
     width: 100%;
   }
+
+  .container-toolbar {
+    /* Styles for smaller screens (e.g., mobile devices) */
+    background-color: #333;
+    /* Change background color */
+    padding: 10px;
+    /* Add padding around the container */
+    text-align: center;
+    /* Center the content in the container */
+  }
+
+  .logo-link {
+    display: block;
+    /* Make the logo a block-level element */
+    margin: 0 auto;
+    /* Center the logo horizontally */
+  }
+
+  .logo-image {
+    border-radius: 50%;
+    width: 60px;
+    /* Adjust the logo image size for mobile */
+    height: 60px;
+  }
 }
 
 
@@ -226,6 +250,86 @@ input{
   }
 }
 
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+
+  .container-toolbar {
+    /* Styles for smaller screens (e.g., mobile devices) */
+    background-color: #333;
+    /* Change background color */
+    padding: 10px;
+    /* Add padding around the container */
+    text-align: center;
+    /* Center the content in the container */
+  }
+
+  .logo-link {
+    display: block;
+    /* Make the logo a block-level element */
+    margin: 0 auto;
+    /* Center the logo horizontally */
+  }
+
+  .logo-image {
+    border-radius: 50%;
+    width: 60px;
+    /* Adjust the logo image size for mobile */
+    height: 60px;
+  }
+
+  /* Altri stili specifici per schermi di medie dimensioni */
+  .col-6 {
+    width: 100%;
+    float: none;
+  }
+
+  .banner img {
+    max-width: 100%;
+  }
+}
+
+/* Stili specifici per schermi di piccole dimensioni (dispositivi mobili) */
+@media (max-width: 480px) {
+  .container-toolbar {
+    /* Styles for smaller screens (e.g., mobile devices) */
+    background-color: #333;
+    /* Change background color */
+    padding: 10px;
+    /* Add padding around the container */
+    text-align: center;
+    /* Center the content in the container */
+  }
+
+  .logo-link {
+    display: block;
+    /* Make the logo a block-level element */
+    margin: 0 auto;
+    /* Center the logo horizontally */
+  }
+
+  .logo-image {
+    border-radius: 50%;
+    width: 60px;
+    /* Adjust the logo image size for mobile */
+    height: 60px;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  /* Altri stili specifici per schermi di piccole dimensioni */
+  .container-fluid {
+    padding: 10px;
+  }
+
+  .custom-list-item {
+    padding: 10px;
+  }
+}
+  
 //navbar
 
 
@@ -332,15 +436,15 @@ a {
   transition: .4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: green;
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -368,16 +472,17 @@ input:checked + .slider:before {
 
 
 /* styles.css o nel tuo componente-specifico.css */
-.dark-mode *{
-  background-color: #333;
-  color: #fff;
-}
-.dark-mode body{
+.dark-mode * {
   background-color: #333;
   color: #fff;
 }
 
-mat-card{
+.dark-mode body {
+  background-color: #333;
+  color: #fff;
+}
+
+mat-card {
   padding: 1%;
 }
 
@@ -388,7 +493,9 @@ mat-card{
   border: 1px solid #f1f1f1;
 }
 
-.dark-mode input, .dark-mode textarea, .dark-mode select {
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
   background-color: #444;
   color: #fff;
 }
@@ -397,13 +504,15 @@ mat-card{
   border-color: #555;
 }
 
-.dark-mode th, .dark-mode td {
+.dark-mode th,
+.dark-mode td {
   border-color: #777;
   background-color: #333;
   color: #fff;
 }
 
-.dark-mode button, .dark-mode .btn {
+.dark-mode button,
+.dark-mode .btn {
   background-color: #333;
   color: #fff;
 }
@@ -434,6 +543,7 @@ mat-card{
   color: #fff;
   border: 1px solid #666;
 }
+
 .dark-mode #toolbar {
   color: #ffffff;
   /* Testo bianco */
@@ -460,4 +570,3 @@ button.toggle-button {
   color: #fff;
   /* Altri stili specifici per il dark mode per il bottone di toggle */
 }
-
