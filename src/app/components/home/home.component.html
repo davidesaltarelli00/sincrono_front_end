@@ -202,10 +202,16 @@ img{
   </div>
   <br>
   <div class="row">
-    <div class="col-12" *ngIf="ruolo!='DIPENDENTE'">
+    <div class="col-12" *ngIf="ruolo=='ADMIN'">
       <mat-card style=" height: 100%;">
         <mat-card-content>
           <mat-list role="list" class="custom-list">
+            <mat-list-item role="listitem" (click)="vaiAlRapportino()" class="custom-list-item" >
+              Compilazione rapportino
+            </mat-list-item>
+            <mat-list-item role="listitem" [routerLink]="['/profile-box']" class="custom-list-item" >
+              Profilo
+            </mat-list-item>
             <mat-list-item role="listitem" [routerLink]="['/lista-anagrafica']" class="custom-list-item"  (click)="openDetailsPageListaAnagrafica()"> <!--(mouseover)="startVoiceActionListaAnagrafica()"-->
               <a href="/lista-anagrafica">Lista anagrafica</a>
             </mat-list-item>
@@ -222,6 +228,26 @@ img{
 
         </mat-card-content>
        </mat-card>
+    </div>
+  </div>
+  <br>
+  <div class="row" *ngIf="ruolo=='DIPENDENTE'" >
+    <div class="col-12">
+      <mat-card style=" height: 100%;">
+       <mat-card-content>
+        <mat-list role="list" class="custom-list">
+          <mat-list-item role="listitem" (click)="vaiAlRapportino()" class="custom-list-item" >
+            Compilazione rapportino
+          </mat-list-item>
+          <mat-list-item role="listitem" [routerLink]="['/profile-box']" class="custom-list-item" >
+            Profilo
+          </mat-list-item>
+          <mat-list-item role="listitem" [routerLink]="['/richieste']" class="custom-list-item" >
+            Richieste
+          </mat-list-item>
+        </mat-list>
+       </mat-card-content>
+      </mat-card>
     </div>
   </div>
   <br>

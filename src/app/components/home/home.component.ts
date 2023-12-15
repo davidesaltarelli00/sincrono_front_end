@@ -121,7 +121,7 @@ export class HomeComponent implements OnInit {
       (error: any) => {
         console.error(
           "Errore durante il caricamento dell'immagine: " +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
 
         // Assegna un'immagine predefinita in caso di errore
@@ -187,6 +187,10 @@ export class HomeComponent implements OnInit {
     this.immagineConvertita = base64String;
   }
 
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
+  }
+
   // metodi per navbar
 
   logout() {
@@ -207,7 +211,7 @@ export class HomeComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
@@ -220,6 +224,7 @@ export class HomeComponent implements OnInit {
 
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        this.idAnagraficaLoggata=response.anagraficaDto.anagrafica.id;
         console.log('ID UTENTE PER NAV:' + this.idUtente);
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
@@ -238,7 +243,7 @@ export class HomeComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-          error
+            error
         );
         this.shouldReloadPage = true;
       }
@@ -279,5 +284,4 @@ export class HomeComponent implements OnInit {
   toggleDarkMode(): void {
     this.themeService.toggleDarkMode();
   }
-
 }
