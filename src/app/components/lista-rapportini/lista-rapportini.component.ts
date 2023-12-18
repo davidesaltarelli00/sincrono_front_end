@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from '../login/login-service';
@@ -42,8 +42,8 @@ export class ListaRapportiniComponent implements OnInit {
   checkFreeze = false;
   mobile: any = false;
   selectedAnno: any;
-  selectedMeseRapportino:any;
-  selectedAnnoRapportino:any;
+  selectedMeseRapportino: any;
+  selectedAnnoRapportino: any;
 
   selectedMese: any;
   currentDate = new Date();
@@ -52,8 +52,8 @@ export class ListaRapportiniComponent implements OnInit {
   codiceFiscale = '';
   note: any;
   anni: number[] = [];
-  mesi: any
-  mesitest:any;
+  mesi: any;
+  mesitest: any;
   rapportinoDto: any;
   giorniUtili: any;
   giorniLavorati: any;
@@ -135,6 +135,10 @@ export class ListaRapportiniComponent implements OnInit {
   messaggio: any;
   mostraFiltriFreeze = false;
   mostraFiltriNotFreeze = false;
+  windowWidth: any;
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+
   constructor(
     private authService: AuthService,
     private profileBoxService: ProfileBoxService,
@@ -158,28 +162,29 @@ export class ListaRapportiniComponent implements OnInit {
       this.anni.push(anno);
     }
 
-    this.mesi = [{"mese":"Gennaio","value":1},
-    {"mese":"Febbraio","value":1},
-    {"mese":"Marzo","value":1},
-    {"mese":"Aprile","value":1},
-    {"mese":"Maggio","value":1},
-    {"mese":"Giugno","value":1},
-    {"mese":"Luglio","value":1},
-    {"mese":"Agosto","value":1},
-    {"mese":"Settembre","value":1},
-    {"mese":"Ottobre","value":1},
-    {"mese":"Novembre","value":1},
-    {"mese":"Dicembre","value":1},];
-   
+    this.mesi = [
+      { mese: 'Gennaio', value: 1 },
+      { mese: 'Febbraio', value: 1 },
+      { mese: 'Marzo', value: 1 },
+      { mese: 'Aprile', value: 1 },
+      { mese: 'Maggio', value: 1 },
+      { mese: 'Giugno', value: 1 },
+      { mese: 'Luglio', value: 1 },
+      { mese: 'Agosto', value: 1 },
+      { mese: 'Settembre', value: 1 },
+      { mese: 'Ottobre', value: 1 },
+      { mese: 'Novembre', value: 1 },
+      { mese: 'Dicembre', value: 1 },
+    ];
 
-
-  
     this.selectedAnno = annoCorrente;
     this.selectedMese = meseCorrente;
-this.selectedMeseRapportino=meseCorrente;
-this.selectedAnnoRapportino=annoCorrente;
+    this.selectedMeseRapportino = meseCorrente;
+    this.selectedAnnoRapportino = annoCorrente;
     this.currentYear = annoCorrente;
     this.currentMonth = meseCorrente;
+    this.windowWidth = window.innerWidth;
+
 
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -239,9 +244,24 @@ this.selectedAnnoRapportino=annoCorrente;
 
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
   }
- 
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
+  }
+
   ngOnInit(): void {
-   
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
@@ -271,7 +291,6 @@ this.selectedAnnoRapportino=annoCorrente;
             this.currentPage = 1;
             this.pageData = this.getCurrentPageItems();
 
-
             let body = {
               anno: this.currentYear,
               mese: this.currentMonth,
@@ -289,23 +308,18 @@ this.selectedAnnoRapportino=annoCorrente;
                 (error: any) => {
                   console.error(
                     'Si é verificato un errore durante il caricamento dei rapportini freezati: ' +
-                    JSON.stringify(error)
+                      JSON.stringify(error)
                   );
                 }
               );
-
-
           },
           (error: any) => {
             console.error(
               'Errore durante il caricamento dei rapportini not freeze: ' +
-              JSON.stringify(error)
+                JSON.stringify(error)
             );
           }
         );
-
-
-
     } else {
       console.error('Errore di autenticazione.');
     }
@@ -348,7 +362,7 @@ this.selectedAnnoRapportino=annoCorrente;
         (error: any) => {
           console.error(
             'Errore durante il caricamento della tipologica canale reclutamento: ' +
-            JSON.stringify(error)
+              JSON.stringify(error)
           );
         }
       );
@@ -371,69 +385,78 @@ this.selectedAnnoRapportino=annoCorrente;
       console.log('Valore non valido o azienda non selezionata');
     }
   }
-private transcodificaMesi(mese:any):any{
-  console.log(mese);
-  switch(mese) { 
-    case "1": { 
-      return "Gennaio"
-       break; 
-    } 
-    case "2": { 
-      return "Febbraio"
-       break; 
-    }  
-    case "3": { 
-      return "Marzo"
-      break; 
-   } 
-   
- case "4": { 
-  return "Aprile"
-  break; 
-} 
-case "5": { 
-  return "Maggio"
-  break; 
-}  case "6": { 
-  return "Giugno"
-  break; 
-}  case "7": { 
-  return "Luglio"
-  break; 
-}  case "8": { 
-  return "Agosto"
-  break; 
-}  case "9": { 
-  return "Settembre"
-  break; 
-}  case "10": { 
-  return "Ottobre"
-  break; 
-}  case "11": { 
-  return "Novembre"
-  break; 
-}  case "12": { 
-  return "Dicembre"
-  break; 
-} 
- } 
-}
-  ExportCSV(){
+  private transcodificaMesi(mese: any): any {
+    console.log(mese);
+    switch (mese) {
+      case '1': {
+        return 'Gennaio';
+        break;
+      }
+      case '2': {
+        return 'Febbraio';
+        break;
+      }
+      case '3': {
+        return 'Marzo';
+        break;
+      }
+
+      case '4': {
+        return 'Aprile';
+        break;
+      }
+      case '5': {
+        return 'Maggio';
+        break;
+      }
+      case '6': {
+        return 'Giugno';
+        break;
+      }
+      case '7': {
+        return 'Luglio';
+        break;
+      }
+      case '8': {
+        return 'Agosto';
+        break;
+      }
+      case '9': {
+        return 'Settembre';
+        break;
+      }
+      case '10': {
+        return 'Ottobre';
+        break;
+      }
+      case '11': {
+        return 'Novembre';
+        break;
+      }
+      case '12': {
+        return 'Dicembre';
+        break;
+      }
+    }
+  }
+  ExportCSV() {
     let body = {
-      
       anno: this.selectedAnnoRapportino,
       mese: this.selectedMeseRapportino,
     };
-    this.listaRapportiniService
-    .getExcelRapportino(this.token, body)
-    .subscribe(
+    this.listaRapportiniService.getExcelRapportino(this.token, body).subscribe(
       (result: any) => {
-       console.log(result);
-      if(result["rapportinoB64"]!=null){
-       this.downloadExcelFile(result["rapportinoB64"])
-      }else{
-       alert("Non ce nessun utente con il mese di "+this.transcodificaMesi(this.selectedMeseRapportino)+" "+this.selectedAnnoRapportino)
-      }
+        console.log(result);
+        if (result['rapportinoB64'] != null) {
+          this.downloadExcelFile(result['rapportinoB64']);
+        } else {
+          alert(
+            'Non ce nessun utente con il mese di ' +
+              this.transcodificaMesi(this.selectedMeseRapportino) +
+              ' ' +
+              this.selectedAnnoRapportino
+          );
+        }
       },
       (error: any) => {
         console.error(
@@ -442,10 +465,9 @@ case "5": {
         );
       }
     );
-  
   }
 
-  downloadExcelFile(base64:string): void {
+  downloadExcelFile(base64: string): void {
     const byteCharacters = atob(base64);
     const byteNumbers = new Array(byteCharacters.length);
 
@@ -454,7 +476,9 @@ case "5": {
     }
 
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const blob = new Blob([byteArray], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
 
     saveAs(blob, 'nome_file.xlsx');
   }
@@ -574,7 +598,7 @@ case "5": {
             (error: any) => {
               console.error(
                 'Errore durante il caricamento dei livelli di contratto: ' +
-                error
+                  error
               );
             }
           );
@@ -784,7 +808,7 @@ case "5": {
       .getAllRapportiniNonFreezati(this.token, body)
       .subscribe(
         (result: any) => {
-          console.log("Rapportini non freezati "+JSON.stringify(result))
+          console.log('Rapportini non freezati ' + JSON.stringify(result));
           this.getAllRapportiniNotFreezeCorretto = true;
           this.elencoRapportiniNonFreezati = result['list'];
           this.selectedMeseRapportinoNonFreezato = result['list']['mese'];
@@ -800,14 +824,13 @@ case "5": {
         (error: any) => {
           console.error(
             'Errore durante il caricamento dei rapportini not freeze: ' +
-            JSON.stringify(error)
+              JSON.stringify(error)
           );
         }
       );
   }
 
-
-  deleteRapportino(codiceFiscale:any,anno:any,mese:any){
+  deleteRapportino(codiceFiscale: any, anno: any, mese: any) {
     let body = {
       rapportinoDto: {
         anagrafica: {
@@ -817,23 +840,21 @@ case "5": {
         meseRequest: mese,
       },
     };
-    console.log("Rapportino test "+JSON.stringify(body));
-    this.listaRapportiniService
-    .deleteRapportino(this.token, body)
-    .subscribe(
+    console.log('Rapportino test ' + JSON.stringify(body));
+    this.listaRapportiniService.deleteRapportino(this.token, body).subscribe(
       (result: any) => {
-        console.log("Rapportini update "+JSON.stringify(result));
-    
+        console.log('Rapportini update ' + JSON.stringify(result));
+
         // console.log(
         //   'Rapportini freezati caricati: ' +
         //     JSON.stringify(this.elencoRapportiniFreezati)
         // );
-      //  this.insertRapportino();
+        //  this.insertRapportino();
       },
       (error: any) => {
         console.error(
           'Si é verificato un errore durante il caricamento dei rapportini freezati: ' +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       }
     );
@@ -850,7 +871,7 @@ case "5": {
       .getAllRapportiniFreezati(this.token, body)
       .subscribe(
         (result: any) => {
-          console.log("Rapportini freezati "+JSON.stringify(result));
+          console.log('Rapportini freezati ' + JSON.stringify(result));
           this.elencoRapportiniFreezati = result['list'];
           this.currentPage2 = 1;
           this.pageData2 = this.getCurrentPageItems2();
@@ -858,12 +879,11 @@ case "5": {
           //   'Rapportini freezati caricati: ' +
           //     JSON.stringify(this.elencoRapportiniFreezati)
           // );
-         
         },
         (error: any) => {
           console.error(
             'Si é verificato un errore durante il caricamento dei rapportini freezati: ' +
-            JSON.stringify(error)
+              JSON.stringify(error)
           );
         }
       );
@@ -897,13 +917,13 @@ case "5": {
     anno: number,
     mese: number
   ) {
-
     const dialogRef = this.dialog.open(AlertConfermaComponent, {
       data: {
         image: '../../../../assets/images/danger.png',
         title: 'Attenzione:',
-        message: "Confermi di voler cambiare lo stato del rapportino?",
-      }, disableClose: true,
+        message: 'Confermi di voler cambiare lo stato del rapportino?',
+      },
+      disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {
@@ -922,20 +942,18 @@ case "5": {
           console.log('RAPPORTINO CONGELATO:' + JSON.stringify(result));
           this.getAllRapportiniFreezati();
           this.getAllRapportiniNonFreezati();
-          if(checkFreeze==false){
-            this.deleteRapportino(codiceFiscale,anno,mese);
-    
+          if (checkFreeze == false) {
+            this.deleteRapportino(codiceFiscale, anno, mese);
           }
         },
         (error: any) => {
           console.error(
             'Errore durante il congelamento del rapportino: ' +
-            JSON.stringify(error)
+              JSON.stringify(error)
           );
         }
       );
     });
-
   }
 
   resetNote() {
@@ -1051,7 +1069,7 @@ case "5": {
     }
     console.log(
       "L'elenco al momento contiene le seguenti mail: " +
-      JSON.stringify(this.elencoMail)
+        JSON.stringify(this.elencoMail)
     );
   }
 
@@ -1100,7 +1118,7 @@ case "5": {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
@@ -1130,7 +1148,7 @@ case "5": {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-          error
+            error
         );
         this.shouldReloadPage = true;
       }

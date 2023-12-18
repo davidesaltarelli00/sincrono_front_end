@@ -63,33 +63,56 @@
 
 <body [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div id="inizioPagina"></div>
-  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
-    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
-      <a [routerLink]="['/home']" class="logo-link">
-        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
-      </a>
-      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
-        <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
-          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
-          {{ menuItem.nome }}
+  <div class="container-toolbar" *ngIf="!mobile">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <a [routerLink]="['/home']" class="logo-link">
+          <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
         </a>
       </div>
-      <span>
+
+      <div class="col-auto">
+        <button  *ngIf="getWindowWidth() < 830" mat-icon-button [matMenuTriggerFor]="hamburgerMenu" (click)="toggleHamburgerMenu()" class="hamburger-icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+
+      <div class="col-auto">
+        <mat-menu #hamburgerMenu="matMenu" class="hamburger-menu">
+          <button id="menu-voice" mat-menu-item *ngFor="let menuItem of jsonData.list" (click)="navigateTo(menuItem.percorso)">
+            {{ menuItem.nome }}
+          </button>
+        </mat-menu>
+
+        <div class="toolbar-menu" *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen">
+          <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+            *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+            {{ menuItem.nome }}
+          </a>
+        </div>
+      </div>
+
+      <div class="col-auto">
         <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
           <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
           <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
         </div>
+      </div>
 
-      </span>
-      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
-        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
-          class="fa fa-user"></i>
-      </span> &nbsp;&nbsp;
-      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
-        <i class="fa fa-sign-out" aria-hidden="true"></i>
-      </span>
-    </mat-toolbar>
+      <div class="col-auto">
+        <div style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+          <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+          <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+          <i class="fa fa-user"></i>
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <div style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
@@ -135,58 +158,58 @@
       <div class="col-6" style="margin: auto; text-align: center;">
         <mat-card>
           <form>
-            <div class="row" style="margin: auto; text-align: center;">
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="meseSelect">Seleziona il mese:</label>
-                  <select
-                    (change)="onMeseSelectChange($event)"
-                    class="form-select"
-                    aria-label="Default select example"
-                    id="meseSelect"
-                    [(ngModel)]="selectedMese"
-                    name="mese"
-                  >
-                    <option
-                      *ngFor="let month of mesi; let i = index"
-                      [value]="i + 1"
+            <div class="container">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="meseSelect">Mese:</label>
+                    <select
+                      (change)="onMeseSelectChange($event)"
+                      class="form-select"
+                      aria-label="Default select example"
+                      id="meseSelect"
+                      [(ngModel)]="selectedMese"
+                      name="mese"
                     >
-                      {{ month.mese }}
-                    </option>
-                  </select>
+                      <option *ngFor="let month of mesi; let i = index" [value]="i + 1">
+                        {{ month.mese }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="annoSelect">Seleziona l'anno:</label>
-                  <select
-                    (change)="onAnnoSelectChange($event)"
-                    class="form-select"
-                    aria-label="Default select example"
-                    id="annoSelect"
-                    [(ngModel)]="selectedAnno"
-                    name="anno">
-                    <option *ngFor="let year of anni" [value]="year">
-                      {{ year }}
-                    </option>
-                  </select>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="annoSelect">Anno:</label>
+                    <select
+                      (change)="onAnnoSelectChange($event)"
+                      class="form-select"
+                      aria-label="Default select example"
+                      id="annoSelect"
+                      [(ngModel)]="selectedAnno"
+                      name="anno"
+                    >
+                      <option *ngFor="let year of anni" [value]="year">
+                        {{ year }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div class="col-4">
-                <label for="getRapportino">Azioni</label><br />
-                <button
-                 mat-flat-button color="primary"
-                  (click)="getAllRapportiniNonFreezati()"
-                  [disabled]="selectedMese == null || selectedAnno == null"
-                >
-                  Carica lista
-                  <i class="fa fa-print" aria-hidden="true"></i></button
-                >
+                <div class="col-md-4">
+                  <label for="getRapportino">Azioni</label><br />
+                  <button
+                    mat-mini-fab
+                    color="primary"
+                    (click)="getAllRapportiniNonFreezati()"
+                    [disabled]="selectedMese == null || selectedAnno == null">
+                    <i class="fa fa-print" aria-hidden="true"></i>
+                  </button>
+                </div>
               </div>
             </div>
             <br />
           </form>
         </mat-card>
+
       </div>
      </div>
      <br>
@@ -405,7 +428,7 @@
           </mat-expansion-panel>
           <br>
 
-          <table class="table table-striped table-bordered">
+          <table class="table table-striped table-bordered" id="table-rapportini">
             <thead>
               <tr>
                 <th>Seleziona</th>
@@ -482,65 +505,69 @@
         <mat-card>
          <mat-card-title>
           <h1>Rapportini controllati ( {{elencoRapportiniFreezati.length}} ) </h1>
-          <div class="row" style="margin: auto; text-align: center;">
-            <div class="col-6" style="margin: auto; text-align: center;">
-              <mat-card>
-                <form>
-                  <div class="row" style="margin: auto; text-align: center;">
-                 
-                    <div class="col-4">
-                      <div class="form-group">
-                        <label for="meseSelect">Seleziona il mese:</label>
-                        <select
-                          (change)="onMeseSelectChange($event)"
-                          class="form-select"
-                          aria-label="Default select example"
-                          id="meseSelect"
-                          [(ngModel)]="selectedMeseRapportino"
-                          name="mese"
-                        >
-                          <option
-                            *ngFor="let month of mesi; let i = index"
-                            [value]="i + 1"
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <mat-card>
+                  <form>
+                    <div class="row">
+                      <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                          <label for="meseSelect">Mese:</label>
+                          <select
+                            (change)="onMeseSelectChange($event)"
+                            class="form-select"
+                            aria-label="Default select example"
+                            id="meseSelect"
+                            [(ngModel)]="selectedMeseRapportino"
+                            name="mese"
                           >
-                            {{  month.mese}}
-                          </option>
-                        </select>
+                            <option *ngFor="let month of mesi; let i = index" [value]="i + 1">
+                              {{ month.mese }}
+                            </option>
+                          </select>
+                        </div>
                       </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="form-group">
-                        <label for="annoSelect">Seleziona l'anno:</label>
-                        <select
-                          (change)="onAnnoSelectChange($event)"
-                          class="form-select"
-                          aria-label="Default select example"
-                          id="annoSelect"
-                          [(ngModel)]="selectedAnnoRapportino"
-                          name="anno">
-                          <option *ngFor="let year of anni" [value]="year">
-                            {{ year }}
-                          </option>
-                        </select>
+                      <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                          <label for="annoSelect">Anno:</label>
+                          <select
+                            (change)="onAnnoSelectChange($event)"
+                            class="form-select"
+                            aria-label="Default select example"
+                            id="annoSelect"
+                            [(ngModel)]="selectedAnnoRapportino"
+                            name="anno"
+                          >
+                            <option *ngFor="let year of anni" [value]="year">
+                              {{ year }}
+                            </option>
+                          </select>
+                        </div>
                       </div>
-                    </div>
-                    <div class="col-4">
-                      <label for="getRapportino">Azioni</label><br />
-                      <button
-                       mat-flat-button color="primary"
+
+                      <div class="col-md-4">
+                        <label for="azioni">Azioni</label> <br>
+                        <button mat-mini-fab color="primary" (click)="getAllRapportiniFreezati()">  <i class="fa fa-print" aria-hidden="true"></i></button>
+                        &nbsp;
+                        <button
+                        mat-mini-fab
+                        color="primary"
                         (click)="ExportCSV()"
                         [disabled]="selectedMeseRapportino == null || selectedAnnoRapportino == null || elencoRapportiniFreezati.length<1 "
                       >
-                        Scarica rapportino
-                        <i class="fa fa-file" aria-hidden="true"></i></button
-                      >
+                        <i class="fa fa-file" aria-hidden="true"></i>
+                      </button>
+                      </div>
                     </div>
-                  </div>
-                  <br />
-                </form>
-              </mat-card>
+                    <br />
+                  </form>
+                </mat-card>
+
+              </div>
             </div>
-           </div>
+          </div>
+
          </mat-card-title>
          <mat-card-content>
           <br>
@@ -707,7 +734,7 @@
                               placeholder="Inserire data fine rapporto">
                           </div>
                         </div> -->
-                        
+
                       </div>
                       <br>
 
@@ -752,7 +779,7 @@
             </ng-template>
           </mat-expansion-panel>
           <br>
-          <table class="table table-striped table-bordered" >
+          <table class="table table-striped table-bordered"  id="table-rapportini" >
             <thead>
               <tr>
                 <th>Ruolo</th>

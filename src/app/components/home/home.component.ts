@@ -81,6 +81,13 @@ export class HomeComponent implements OnInit {
   getWindowWidth(): number {
     return this.windowWidth;
   }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
+  }
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
@@ -95,13 +102,7 @@ export class HomeComponent implements OnInit {
       });
     }
   }
-  toggleHamburgerMenu(): void {
-    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
-  }
-  navigateTo(route: string): void {
-    console.log(`Navigating to ${route}`);
-    this.router.navigate([route]);
-  }
+
   caricaAziendeClienti() {
     this.contrattoService.getAllAziendaCliente(this.token).subscribe(
       (result: any) => {
