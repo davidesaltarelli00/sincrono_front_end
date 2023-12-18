@@ -67,7 +67,7 @@
         <br>
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Inserimento anagrafica da excel <i class="fa fa-user" ></i> <i class="fa fa-file-excel"></i> </h1>
+          <h1>Inserimento anagrafica da excel  </h1>
           <h4>Carica un file excel con delle anagrafiche, se corrette, verranno salvate nel sistema, altrimenti verranno salvate nella lista sottostante.</h4>
         </mat-card>
       </div>
@@ -89,14 +89,14 @@
               <div *ngIf="!previewData">
                 <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" accept=".xlsx, .xls">
                 <button class="text-center" mat-raised-button color="primary" (click)="fileInput.click()">
-                  <mat-icon>cloud_upload</mat-icon> Carica file Excel
+                   Carica file Excel
                 </button>
               </div>
               <br>
               <!-- Anteprima del documento -->
             <div *ngIf="previewData" class="preview-container">
             <h4>{{ selectedFileName }}</h4>
-            <div [innerHTML]="previewData" class="excel-preview"></div>
+            <div [innerHTML]='previewData'  class="excel-preview"></div>
             </div>
 
 <!-- Placeholder per l'anteprima del documento (mostrato prima del caricamento) -->
@@ -106,15 +106,20 @@
 </div>
 
             </mat-card-content>
-            <br>
             <!-- Footer con barra di progresso e pulsante di salvataggio -->
-            <mat-card-footer class="text-center" *ngIf="previewData">
-              <mat-progress-bar mode="determinate" [value]="uploadProgress" [color]="uploadProgressColor" *ngIf="uploadProgress !== undefined"></mat-progress-bar>
-              <button class="btn btn-success" mattooltip="Salva documento" (click)="salvaDocumento()">
-                <i class="fa fa-save"></i> Salva documento
-              </button>
-            </mat-card-footer>
+            
           </mat-card>
+          <br>
+          <div class="text-center" *ngIf="previewData">
+            <mat-progress-bar mode="determinate" [value]="uploadProgress" [color]="uploadProgressColor" *ngIf="uploadProgress !== undefined"></mat-progress-bar>
+            <button class="btn btn-success" mattooltip="Salva documento" (click)="salvaDocumento()">
+              <i class="fa fa-save"></i> Salva documento
+            </button>
+            |
+            <button class="btn btn-danger" mattooltip="Salva documento" (click)="previewData =''">
+              Annulla
+            </button>
+          </div>
           <br><br>
 
           <div class="row">

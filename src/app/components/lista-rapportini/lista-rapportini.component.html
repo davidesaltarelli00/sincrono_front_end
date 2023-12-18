@@ -151,7 +151,7 @@
                       *ngFor="let month of mesi; let i = index"
                       [value]="i + 1"
                     >
-                      {{ i + 1 }}
+                      {{ month.mese }}
                     </option>
                   </select>
                 </div>
@@ -481,7 +481,66 @@
       <div class="col-12">
         <mat-card>
          <mat-card-title>
-          <h1>Rapportini controllati ( {{elencoRapportiniFreezati.length}} ) <button [disabled]="elencoRapportiniFreezati.length<1" mat-fab color="primary" (click)="scarica()" matTooltip="Converti in excel" > <i class="fa fa-file" ></i> </button> <button  mat-fab color="primary" (click)="ExportCSV()" matTooltip="Converti in excel" > <i class="fa fa-file" ></i> </button></h1>
+          <h1>Rapportini controllati ( {{elencoRapportiniFreezati.length}} ) </h1>
+          <div class="row" style="margin: auto; text-align: center;">
+            <div class="col-6" style="margin: auto; text-align: center;">
+              <mat-card>
+                <form>
+                  <div class="row" style="margin: auto; text-align: center;">
+                 
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label for="meseSelect">Seleziona il mese:</label>
+                        <select
+                          (change)="onMeseSelectChange($event)"
+                          class="form-select"
+                          aria-label="Default select example"
+                          id="meseSelect"
+                          [(ngModel)]="selectedMeseRapportino"
+                          name="mese"
+                        >
+                          <option
+                            *ngFor="let month of mesi; let i = index"
+                            [value]="i + 1"
+                          >
+                            {{  month.mese}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label for="annoSelect">Seleziona l'anno:</label>
+                        <select
+                          (change)="onAnnoSelectChange($event)"
+                          class="form-select"
+                          aria-label="Default select example"
+                          id="annoSelect"
+                          [(ngModel)]="selectedAnnoRapportino"
+                          name="anno">
+                          <option *ngFor="let year of anni" [value]="year">
+                            {{ year }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <label for="getRapportino">Azioni</label><br />
+                      <button
+                       mat-flat-button color="primary"
+                        (click)="ExportCSV()"
+                        [disabled]="selectedMeseRapportino == null || selectedAnnoRapportino == null || elencoRapportiniFreezati.length<1 "
+                      >
+                        Scarica rapportino
+                        <i class="fa fa-file" aria-hidden="true"></i></button
+                      >
+                    </div>
+                  </div>
+                  <br />
+                </form>
+              </mat-card>
+            </div>
+           </div>
          </mat-card-title>
          <mat-card-content>
           <br>

@@ -28,7 +28,8 @@ body, .container-fluid{
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombra leggera per effetto di sollevamento */
-  padding: 20px;
+padding: 20px;
+ 
 }
 
 .preview-container h4 {
@@ -36,10 +37,14 @@ body, .container-fluid{
   margin-bottom: 10px;
 }
 
+
 /* Stile per l'anteprima Excel */
 .excel-preview {
   overflow-x: auto;
   max-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Stile per la barra di progresso */

@@ -42,6 +42,9 @@ export class ListaRapportiniComponent implements OnInit {
   checkFreeze = false;
   mobile: any = false;
   selectedAnno: any;
+  selectedMeseRapportino:any;
+  selectedAnnoRapportino:any;
+
   selectedMese: any;
   currentDate = new Date();
   currentMonth: any;
@@ -49,7 +52,8 @@ export class ListaRapportiniComponent implements OnInit {
   codiceFiscale = '';
   note: any;
   anni: number[] = [];
-  mesi: number[] = [];
+  mesi: any
+  mesitest:any;
   rapportinoDto: any;
   giorniUtili: any;
   giorniLavorati: any;
@@ -154,11 +158,26 @@ export class ListaRapportiniComponent implements OnInit {
       this.anni.push(anno);
     }
 
-    this.mesi = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    this.mesi = [{"mese":"Gennaio","value":1},
+    {"mese":"Febbraio","value":1},
+    {"mese":"Marzo","value":1},
+    {"mese":"Aprile","value":1},
+    {"mese":"Maggio","value":1},
+    {"mese":"Giugno","value":1},
+    {"mese":"Luglio","value":1},
+    {"mese":"Agosto","value":1},
+    {"mese":"Settembre","value":1},
+    {"mese":"Ottobre","value":1},
+    {"mese":"Novembre","value":1},
+    {"mese":"Dicembre","value":1},];
+   
 
+
+  
     this.selectedAnno = annoCorrente;
     this.selectedMese = meseCorrente;
-
+this.selectedMeseRapportino=meseCorrente;
+this.selectedAnnoRapportino=annoCorrente;
     this.currentYear = annoCorrente;
     this.currentMonth = meseCorrente;
 
@@ -220,8 +239,9 @@ export class ListaRapportiniComponent implements OnInit {
 
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
   }
-
+ 
   ngOnInit(): void {
+   
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
@@ -351,19 +371,69 @@ export class ListaRapportiniComponent implements OnInit {
       console.log('Valore non valido o azienda non selezionata');
     }
   }
-
+private transcodificaMesi(mese:any):any{
+  console.log(mese);
+  switch(mese) { 
+    case "1": { 
+      return "Gennaio"
+       break; 
+    } 
+    case "2": { 
+      return "Febbraio"
+       break; 
+    }  
+    case "3": { 
+      return "Marzo"
+      break; 
+   } 
+   
+ case "4": { 
+  return "Aprile"
+  break; 
+} 
+case "5": { 
+  return "Maggio"
+  break; 
+}  case "6": { 
+  return "Giugno"
+  break; 
+}  case "7": { 
+  return "Luglio"
+  break; 
+}  case "8": { 
+  return "Agosto"
+  break; 
+}  case "9": { 
+  return "Settembre"
+  break; 
+}  case "10": { 
+  return "Ottobre"
+  break; 
+}  case "11": { 
+  return "Novembre"
+  break; 
+}  case "12": { 
+  return "Dicembre"
+  break; 
+} 
+ } 
+}
   ExportCSV(){
     let body = {
-      codiceFiscale:"PDRMNC87A47L378K",
-      anno: 2022,
-      mese: 11,
+      
+      anno: this.selectedAnnoRapportino,
+      mese: this.selectedMeseRapportino,
     };
     this.listaRapportiniService
     .getExcelRapportino(this.token, body)
     .subscribe(
       (result: any) => {
        console.log(result);
+      if(result["rapportinoB64"]!=null){
        this.downloadExcelFile(result["rapportinoB64"])
+      }else{
+       alert("Non ce nessun utente con il mese di "+this.transcodificaMesi(this.selectedMeseRapportino)+" "+this.selectedAnnoRapportino)
+      }
       },
       (error: any) => {
         console.error(
@@ -714,6 +784,7 @@ export class ListaRapportiniComponent implements OnInit {
       .getAllRapportiniNonFreezati(this.token, body)
       .subscribe(
         (result: any) => {
+          console.log("Rapportini non freezati "+JSON.stringify(result))
           this.getAllRapportiniNotFreezeCorretto = true;
           this.elencoRapportiniNonFreezati = result['list'];
           this.selectedMeseRapportinoNonFreezato = result['list']['mese'];
@@ -735,6 +806,39 @@ export class ListaRapportiniComponent implements OnInit {
       );
   }
 
+
+  deleteRapportino(codiceFiscale:any,anno:any,mese:any){
+    let body = {
+      rapportinoDto: {
+        anagrafica: {
+          codiceFiscale: codiceFiscale,
+        },
+        annoRequest: anno,
+        meseRequest: mese,
+      },
+    };
+    console.log("Rapportino test "+JSON.stringify(body));
+    this.listaRapportiniService
+    .deleteRapportino(this.token, body)
+    .subscribe(
+      (result: any) => {
+        console.log("Rapportini update "+JSON.stringify(result));
+    
+        // console.log(
+        //   'Rapportini freezati caricati: ' +
+        //     JSON.stringify(this.elencoRapportiniFreezati)
+        // );
+      //  this.insertRapportino();
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato un errore durante il caricamento dei rapportini freezati: ' +
+          JSON.stringify(error)
+        );
+      }
+    );
+  }
+
   getAllRapportiniFreezati() {
     let body = {
       anno: this.selectedAnno,
@@ -746,6 +850,7 @@ export class ListaRapportiniComponent implements OnInit {
       .getAllRapportiniFreezati(this.token, body)
       .subscribe(
         (result: any) => {
+          console.log("Rapportini freezati "+JSON.stringify(result));
           this.elencoRapportiniFreezati = result['list'];
           this.currentPage2 = 1;
           this.pageData2 = this.getCurrentPageItems2();
@@ -753,6 +858,7 @@ export class ListaRapportiniComponent implements OnInit {
           //   'Rapportini freezati caricati: ' +
           //     JSON.stringify(this.elencoRapportiniFreezati)
           // );
+         
         },
         (error: any) => {
           console.error(
@@ -816,6 +922,10 @@ export class ListaRapportiniComponent implements OnInit {
           console.log('RAPPORTINO CONGELATO:' + JSON.stringify(result));
           this.getAllRapportiniFreezati();
           this.getAllRapportiniNonFreezati();
+          if(checkFreeze==false){
+            this.deleteRapportino(codiceFiscale,anno,mese);
+    
+          }
         },
         (error: any) => {
           console.error(

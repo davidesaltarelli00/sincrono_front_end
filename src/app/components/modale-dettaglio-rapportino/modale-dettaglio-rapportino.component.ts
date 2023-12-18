@@ -129,9 +129,12 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
           meseRequest: this.mese,
         },
       };
+      console.log("Rapportini update "+JSON.stringify(body));
       this.rapportinoService.getRapportino(this.token, body).subscribe(
         (result: any) => {
+          console.log("Rapportini update "+JSON.stringify(result));
           if ((result as any).esito.code !== 200) {
+         
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 image: '../../../../assets/images/logo.jpeg',
