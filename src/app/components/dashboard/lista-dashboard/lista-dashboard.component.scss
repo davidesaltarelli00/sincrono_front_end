@@ -149,25 +149,8 @@ tr:hover {
 }
 
 
+
 @media (max-width: 1024px) {
-
-
-  #table-dashboard {
-    overflow-x: auto;
-    // display: block;
-    text-align: center;
-  }
-
-  #table-dashboard th,
-  #table-dashboard td {
-    white-space: nowrap;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-  }
-}
-
-@media (max-width: 768px) {
   .custom-picker {
     flex-direction: column;
     /* Stack the pickers vertically on small screens */
@@ -239,19 +222,6 @@ tr:hover {
     /* Center the logo horizontally */
   }
 
-  #table-dashboard {
-    overflow-x: auto;
-    // display: block;
-    text-align: center;
-  }
-
-  #table-dashboard th,
-  #table-dashboard td {
-    white-space: nowrap;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-  }
 }
 
 @media (max-width: 600px) {
@@ -395,29 +365,6 @@ mat-card-footer {
   background-color: #333;
 }
 
-
-#table-dashboard {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  margin: auto;
-  text-align: center;
-}
-
-#table-dashboard th,
-#table-dashboard td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-#table-dashboard th {
-  background-color: #343a40;
-  color: white;
-}
-
-
-
 /* responsive form*/
 form {
   max-width: 100%;
@@ -443,5 +390,127 @@ form {
 
   .col-3 {
     width: 100%;
+  }
+}
+
+#toolbar{
+  background-color: #333;
+  color: #f2f2f2;
+}
+
+.container-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: white;
+  padding: 10px;
+}
+
+.logo-link {
+  margin-right: 10px;
+}
+
+.logo-image {
+  border-radius: 100%;
+}
+
+.toolbar-menu {
+  display: flex;
+  gap: 10px;
+}
+
+.toolbar-link {
+  color: white;
+  text-decoration: none;
+}
+
+.form-switch {
+  margin-right: 10px;
+}
+
+:root {
+  --primary-color: #333;
+  --text-color: white;
+}
+
+@media screen and (max-width: 1024px) {
+  .hamburger-menu {
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 20px;
+  }
+
+  .toolbar-link {
+    display: none;
+  }
+
+  .hamburger-icon {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .hamburger-menu {
+    display: none;
+  }
+
+  .toolbar-link {
+    display: flex;
+  }
+}
+
+#table-dashboard {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin: auto;
+  text-align: center;
+}
+
+#table-dashboard th, #table-dashboard td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#table-dashboard th {
+  background-color: #343a40;
+  color: white;
+}
+
+@media screen and (max-width: 1115px) {
+  .container-toolbar {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .logo-link {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .logo-image {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+  }
+
+  mat-card {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  #table-dashboard {
+    overflow-x: auto;
+    text-align: center;
+  }
+
+  #table-dashboard th, #table-dashboard td {
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
   }
 }

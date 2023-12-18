@@ -49,7 +49,7 @@
   --text-color: white;
 }
 
-@media screen and (max-width: 830px) {
+@media screen and (max-width: 1024px) {
   .hamburger-menu {
     cursor: pointer;
     color: var(--text-color);
@@ -65,7 +65,7 @@
   }
 }
 
-@media screen and (min-width: 831px) {
+@media screen and (min-width: 1025px) {
   .hamburger-menu {
     display: none;
   }
@@ -74,6 +74,14 @@
     display: flex;
   }
 }
+
+@media screen and (max-width: 1115px) {
+  mat-card {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
 
   </style>
 </head>
@@ -89,7 +97,7 @@
       </div>
 
       <div class="col-auto">
-        <button mat-icon-button [matMenuTriggerFor]="hamburgerMenu" (click)="toggleHamburgerMenu()" class="hamburger-icon">
+        <button  *ngIf="getWindowWidth() < 1024" mat-icon-button [matMenuTriggerFor]="hamburgerMenu" (click)="toggleHamburgerMenu()" class="hamburger-icon">
           <mat-icon>menu</mat-icon>
         </button>
       </div>

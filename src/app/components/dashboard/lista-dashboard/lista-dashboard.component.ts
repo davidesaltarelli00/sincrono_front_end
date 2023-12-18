@@ -14,7 +14,7 @@ import {
   FormArray,
   Validators,
 } from '@angular/forms';
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../login/login-service';
 import { startWith } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -115,6 +115,8 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
   });
 
   @ViewChild('tortaCanvas') tortaCanvas!: ElementRef;
+  windowWidth:any;
+
 
   constructor(
     private dashboardService: DashboardService,
@@ -132,6 +134,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     private menuService: MenuService,
     private imageService: ImageService
   ) {
+    this.windowWidth = window.innerWidth;
 
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -275,6 +278,15 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     if (this.tortaCanvas) {
       this.visualizzaGraficoTorta();
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
   }
 
   visualizzaGraficoTorta() {
