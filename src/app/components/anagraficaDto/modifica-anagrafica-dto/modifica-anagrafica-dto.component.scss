@@ -698,6 +698,87 @@ input[type="text"] {
   }
 }
 
+@media (max-width: 600px) {
+  .container-toolbar {
+    /* Styles for smaller screens (e.g., mobile devices) */
+    background-color: #333;
+    /* Change background color */
+    padding: 10px;
+    /* Add padding around the container */
+    text-align: center;
+    /* Center the content in the container */
+  }
+
+  .logo-link {
+    display: block;
+    /* Make the logo a block-level element */
+    margin: 0 auto;
+    /* Center the logo horizontally */
+  }
+
+  .logo-image {
+    border-radius: 50%;
+    width: 60px;
+    /* Adjust the logo image size for mobile */
+    height: 60px;
+  }
+
+  .mobile-select {
+    width: 100%;
+    /* Make the select element full-width */
+  }
+
+  .user-icon,
+  .logout-icon {
+    display: block;
+    /* Make the icon buttons block-level elements */
+    margin: 10px auto;
+    /* Center the icon buttons horizontally with some spacing */
+  }
+
+  .user-icon i,
+  .logout-icon i {
+    font-size: 24px;
+    /* Adjust icon size for mobile */
+  }
+}
+
+/* Stili specifici per schermi di piccole dimensioni (dispositivi mobili) */
+@media (max-width: 480px) {
+  .container-toolbar {
+    
+    background-color: #333; 
+    padding: 10px;
+    text-align: center;
+   
+  }
+
+  .logo-link {
+    display: block;
+    margin: 0 auto;
+
+  }
+
+  .logo-image {
+    border-radius: 50%;
+    width: 60px;
+    /* Adjust the logo image size for mobile */
+    height: 60px;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  /* Altri stili specifici per schermi di piccole dimensioni */
+  .container-fluid {
+    padding: 10px;
+  }
+
+  .custom-list-item {
+    padding: 10px;
+  }
+}
 .preview-container {
   margin-top: 20px;
   border: 1px solid #ccc;
