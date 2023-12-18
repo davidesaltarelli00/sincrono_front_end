@@ -138,7 +138,96 @@ tr:hover {
   background-color: aliceblue;
 }
 
+
+
+
+
+.mobile-select mat-select {
+  font-size: 16px; // Adjust the font size as needed
+  width: 100%;
+  max-width: 300px;
+}
+
+.mobile-select mat-option {
+  font-size: 16px; // Adjust the font size as needed
+  color: #333; // Change the text color to make it readable
+  background-color: #fff; // Set a background color for the options
+}
+
+
+@media (max-width: 1024px) {
+
+
+  #table-dashboard {
+    overflow-x: auto;
+    // display: block;
+    text-align: center;
+  }
+
+  #table-dashboard th,
+  #table-dashboard td {
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
 @media (max-width: 768px) {
+  .custom-picker {
+    flex-direction: column;
+    /* Stack the pickers vertically on small screens */
+    align-items: flex-start;
+    /* Align pickers to the left */
+  }
+
+  .mobile-select {
+    width: 100%;
+    /* Make the select element full-width */
+  }
+
+  .user-icon,
+  .logout-icon {
+    display: block;
+    /* Make the icon buttons block-level elements */
+    margin: 10px auto;
+
+    /* Center the icon buttons horizontally with some spacing */
+    .container-toolbar {
+      /* Styles for smaller screens (e.g., mobile devices) */
+      background-color: #333;
+      /* Change background color */
+      padding: 10px;
+      /* Add padding around the container */
+      text-align: center;
+      /* Center the content in the container */
+    }
+
+    .logo-link {
+      display: block;
+      /* Make the logo a block-level element */
+      margin: 0 auto;
+      /* Center the logo horizontally */
+    }
+
+    .logo-image {
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+    }
+
+    table {
+      font-size: 14px;
+      /* Reduce font size for smaller screens */
+    }
+
+    th,
+    td {
+      padding: 5px;
+      /* Adjust padding for smaller screens */
+    }
+  }
+
   .container-toolbar {
     /* Styles for smaller screens (e.g., mobile devices) */
     background-color: #333;
@@ -156,57 +245,18 @@ tr:hover {
     /* Center the logo horizontally */
   }
 
-  .logo-image {
-    border-radius: 50%;
-    width: 60px;
-    /* Adjust the logo image size for mobile */
-    height: 60px;
-  }
-
-  table {
-    font-size: 14px;
-    /* Reduce font size for smaller screens */
-  }
-
-  th,
-  td {
-    padding: 5px;
-    /* Adjust padding for smaller screens */
-  }
-}
-
-
-
-@media (max-width: 768px) {
-
-  td,
-  th {
+  #table-dashboard {
+    overflow-x: auto;
+    // display: block;
     text-align: center;
   }
-}
 
-
-
-.mobile-select mat-select {
-  font-size: 16px; // Adjust the font size as needed
-  width: 100%;
-  max-width: 300px;
-}
-
-.mobile-select mat-option {
-  font-size: 16px; // Adjust the font size as needed
-  color: #333; // Change the text color to make it readable
-  background-color: #fff; // Set a background color for the options
-}
-
-
-/* Media query for screens smaller than 768px (typical mobile devices) */
-@media screen and (max-width: 768px) {
-  .custom-picker {
-    flex-direction: column;
-    /* Stack the pickers vertically on small screens */
-    align-items: flex-start;
-    /* Align pickers to the left */
+  #table-dashboard th,
+  #table-dashboard td {
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
@@ -372,7 +422,8 @@ mat-card-footer {
   text-align: center;
 }
 
-#table-dashboard th, #table-dashboard td {
+#table-dashboard th,
+#table-dashboard td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
@@ -383,40 +434,3 @@ mat-card-footer {
   color: white;
 }
 
-@media screen and (max-width: 768px) {
-  .container-toolbar {
-    /* Styles for smaller screens (e.g., mobile devices) */
-    background-color: #333;
-    /* Change background color */
-    padding: 10px;
-    /* Add padding around the container */
-    text-align: center;
-    /* Center the content in the container */
-  }
-
-  .logo-link {
-    display: block;
-    /* Make the logo a block-level element */
-    margin: 0 auto;
-    /* Center the logo horizontally */
-  }
-
-  .logo-image {
-    border-radius: 50%;
-    width: 60px;
-    /* Adjust the logo image size for mobile */
-    height: 60px;
-  }
-  #table-dashboard {
-    overflow-x: auto;
-    // display: block;
-    text-align: center;
-  }
-
-  #table-dashboard th, #table-dashboard td {
-    white-space: nowrap;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-  }
-}
