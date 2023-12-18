@@ -82,6 +82,7 @@ export class ListaRapportiniComponent implements OnInit {
   idCCNLselezionato: any;
   commesse!: FormArray;
   target: { [key: number]: boolean } = {};
+  tutteLeRigheSelezionate: boolean = false;
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -184,7 +185,6 @@ export class ListaRapportiniComponent implements OnInit {
     this.currentYear = annoCorrente;
     this.currentMonth = meseCorrente;
     this.windowWidth = window.innerWidth;
-
 
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -1057,16 +1057,35 @@ export class ListaRapportiniComponent implements OnInit {
     });
   }
 
-  selezionaRiga(mailAziendale: string, rapportino: any) {
-    rapportino.rowSelected = !rapportino.rowSelected;
+  toggleSelezione() {
+    this.elencoMail = [];
+
+    this.tutteLeRigheSelezionate = !this.tutteLeRigheSelezionate;
+
+    this.pageData.forEach((rapportino) => {
+      rapportino.rowSelected = this.tutteLeRigheSelezionate;
+
+      if (this.tutteLeRigheSelezionate) {
+        this.elencoMail.push(rapportino.anagrafica.mailAziendale);
+      }
+    });
+
+    console.log("L'elenco al momento contiene le seguenti mail: " + JSON.stringify(this.elencoMail));
+  }
+
+
+  selezionaRiga(rapportino: any) {
     if (rapportino.rowSelected) {
-      this.elencoMail.push(mailAziendale);
+      this.elencoMail.push(rapportino.anagrafica.mailAziendale);
     } else {
-      const index = this.elencoMail.indexOf(mailAziendale);
+      const index = this.elencoMail.indexOf(
+        rapportino.anagrafica.mailAziendale
+      );
       if (index !== -1) {
         this.elencoMail.splice(index, 1);
       }
     }
+
     console.log(
       "L'elenco al momento contiene le seguenti mail: " +
         JSON.stringify(this.elencoMail)

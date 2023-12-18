@@ -431,7 +431,14 @@
           <table class="table table-striped table-bordered" id="table-rapportini">
             <thead>
               <tr>
-                <th>Seleziona</th>
+                <th>
+                  <button *ngIf="!tutteLeRigheSelezionate" mat-mini-fab color="primary" matTooltip="Seleziona tutti" (click)="toggleSelezione()">
+                   <i class="fa fa-check" ></i>
+                  </button>
+                  <button mat-mini-fab color="accent" *ngIf="tutteLeRigheSelezionate" matTooltip="Deseleziona tutti" (click)="toggleSelezione()">
+                   <i class="fa fa-close" ></i>
+                  </button>
+                </th>
                 <th>Ruolo</th>
                 <th>Nominativo</th>
                 <th>Codice fiscale</th>
@@ -442,36 +449,36 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let rapportinoNonFreezato of pageData; let i=index">
+              <tr *ngFor="let rapportinoNonFreezato of pageData; let i = index">
                 <td>
-                  <input type="checkbox" (change)="selezionaRiga(rapportinoNonFreezato.anagrafica.mailAziendale, rapportinoNonFreezato)">
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="rapportinoNonFreezato.rowSelected"
+                    (change)="selezionaRiga(rapportinoNonFreezato)"
+                  />
                 </td>
-                <td>{{rapportinoNonFreezato.ruolo.descrizione |titlecase }}</td>
-                <td>{{rapportinoNonFreezato.anagrafica.nome |titlecase}}  {{rapportinoNonFreezato.anagrafica.cognome |titlecase}}</td>
-                <td>{{rapportinoNonFreezato.anagrafica.codiceFiscale |uppercase}}</td>
-                <td>{{rapportinoNonFreezato.anagrafica.cellularePrivato ? rapportinoNonFreezato.anagrafica.cellularePrivato : 'Dato non inserito'}}</td>
-                <td>{{rapportinoNonFreezato.anagrafica.mailAziendale}}</td>
+                <td>{{ rapportinoNonFreezato.ruolo.descrizione | titlecase }}</td>
+                <td>{{ rapportinoNonFreezato.anagrafica.nome | titlecase }} {{ rapportinoNonFreezato.anagrafica.cognome | titlecase }}</td>
+                <td>{{ rapportinoNonFreezato.anagrafica.codiceFiscale | uppercase }}</td>
+                <td>{{ rapportinoNonFreezato.anagrafica.cellularePrivato ? rapportinoNonFreezato.anagrafica.cellularePrivato : 'Dato non inserito' }}</td>
+                <td>{{ rapportinoNonFreezato.anagrafica.mailAziendale }}</td>
                 <td *ngIf="rapportinoNonFreezato.anagrafica.checkInviato">
                   Inviato, da controllare
                   <button mat-mini-fab color="accent" (click)="onChangecheckFreeze(true, rapportinoNonFreezato.anagrafica.codiceFiscale, rapportinoNonFreezato.anagrafica.id, selectedAnno, selectedMese)" matTooltip="Imposta come 'CONTROLLATO'"> <i class="fa fa-lock"></i></button>
                 </td>
                 <td *ngIf="!rapportinoNonFreezato.anagrafica.checkInviato">
                   Non inviato
-                  <button mat-mini-fab color="warn"
-                   (click)="sollecita(rapportinoNonFreezato.anagrafica.mailAziendale)"
-                   matTooltip="Sollecita {{rapportinoNonFreezato.anagrafica.nome}}  {{rapportinoNonFreezato.anagrafica.cognome}}"
-                  > <i class="fa fa-envelope" aria-hidden="true"></i></button> <!--[disabled]="!rapportinoNonFreezato.rowSelected"-->
+                  <button mat-mini-fab color="warn" (click)="sollecita(rapportinoNonFreezato.anagrafica.mailAziendale)" matTooltip="Sollecita {{ rapportinoNonFreezato.anagrafica.nome }} {{ rapportinoNonFreezato.anagrafica.cognome }}"> <i class="fa fa-envelope" aria-hidden="true"></i></button>
                 </td>
                 <td>
-                  <button [disabled]="!rapportinoNonFreezato.anagrafica.checkInviato"
-                          mat-fab color="primary"
-                          (click)="getRapportino(rapportinoNonFreezato.anagrafica.id, rapportinoNonFreezato.anagrafica.nome, rapportinoNonFreezato.anagrafica.cognome, rapportinoNonFreezato.anagrafica.codiceFiscale, selectedMese, selectedAnno)">
+                  <button [disabled]="!rapportinoNonFreezato.anagrafica.checkInviato" mat-fab color="primary" (click)="          getRapportino(rapportinoNonFreezato.anagrafica.id, rapportinoNonFreezato.anagrafica.nome, rapportinoNonFreezato.anagrafica.cognome, rapportinoNonFreezato.anagrafica.codiceFiscale, selectedMese, selectedAnno)">
                     <mat-icon>info</mat-icon>
                   </button>
                 </td>
               </tr>
             </tbody>
           </table>
+
 
           <div class="pagination">
             <ul>
