@@ -1,9 +1,50 @@
+body, .container-fluid{
+  background-color: aliceblue;
+}
+
+// lista
+.custom-list {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.custom-list-item {
+  margin-right: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.custom-list-item a {
+  text-decoration: none;
+  color: black;
+}
+
+@media screen and (max-width: 600px) {
+  .custom-list {
+    flex-direction: column;
+  }
+
+  .custom-list-item {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
+
+
+//elenco aziende
+
 .clienti {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 10px;
 }
+
+//navbar
 
 #toolbar{
   background-color: #333;
@@ -72,4 +113,37 @@
   .toolbar-link {
     display: flex;
   }
+}
+
+//dark mode
+
+.dark-mode body,
+.dark-mode .container-fluid,
+.dark-mode mat-card {
+  background-color: #333;
+  color: white;
+  border: 1px solid white;
+}
+
+body:not(.dark-mode),
+.container-fluid:not(.dark-mode),
+mat-card:not(.dark-mode) {
+  background-color: initial;
+  color: initial;
+  border: initial;
+}
+
+.dark-mode .custom-list {
+  background-color: #333;
+  color: white;
+}
+
+.dark-mode .custom-list-item {
+  background-color: #444;
+  color: white;
+}
+
+.dark-mode .custom-list-item a {
+  text-decoration: none;
+  color: white;
 }
