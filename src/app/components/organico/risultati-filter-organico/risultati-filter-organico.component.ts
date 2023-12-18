@@ -1,6 +1,6 @@
 import { OrganicoService } from './../organico-service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,9 +22,12 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
   tipoContrattoFilter = this.activatedRoute.snapshot.params['tipoContratto'];
   tipoAziendaFilter = this.activatedRoute.snapshot.params['tipoAzienda'];
   id = this.activatedRoute.snapshot.params['id'];
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+  windowWidth: any;
 
   //navbar
-  mobile:any;
+  mobile: any;
   userLoggedName: any;
   userLoggedSurname: any;
   shouldReloadPage: any;
@@ -61,12 +64,14 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     public authService: AuthService,
     private router: Router,
-    private menuService:MenuService,
+    private menuService: MenuService,
     public themeService: ThemeService,
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
     private http: HttpClient
   ) {
+    this.windowWidth = window.innerWidth;
+
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -82,19 +87,14 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
     }
 
     this.filterAnagraficaDto = this.formBuilder.group({
-
-
       contratto: new FormGroup({
-
         tipoContratto: new FormGroup({
           descrizione: new FormControl(null),
         }),
-        tipoAzienda:new FormGroup({
+        tipoAzienda: new FormGroup({
           descrizione: new FormControl(null),
-        })
-
+        }),
       }),
-
     });
 
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
@@ -111,22 +111,36 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
   }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
 
   ngOnInit(): void {
     if (this.token != null) {
-
       this.activatedRoute.queryParams.subscribe((params) => {
         this.tipoContrattoFilter = params['tipoContratto'];
         this.tipoAziendaFilter = params['azienda'];
 
         console.log('Tipo Contratto:', this.tipoContrattoFilter);
         console.log('Azienda:', this.tipoAziendaFilter);
-
       });
 
       this.getUserLogged();
@@ -156,9 +170,9 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
             if ((result as any).esito.code != 200) {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
-                  image:'../../../../assets/images/danger.png',
+                  image: '../../../../assets/images/danger.png',
                   title: 'Attenzione:',
-                  message: "Qualcosa é andato storto, riprova."
+                  message: 'Qualcosa é andato storto, riprova.',
                 },
               });
             } else {
@@ -177,13 +191,12 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
           (error: any) => {
             console.log(
               'Si é verificato un errore durante il passaggio dei dati da organico: ' +
-              error
+                error
             );
           }
         );
       this.filterValidate(this.pageData);
     }
-
   }
 
   setFilterFromOrganico(tipoContrattoFilter: any, tipoAziendaFilter: any) {
@@ -192,10 +205,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
         this.tipoContrattoFilter;
       this.filterAnagraficaDto.value.contratto.tipoAzienda.descrizione =
         this.tipoAziendaFilter;
-
     }
-
-
   }
 
   filterValidate(value: any) {
@@ -225,39 +235,31 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
         ) {
           delete obj.tipoLivelloContratto;
         }
-
       });
-
     };
     removeEmpty(this.filterAnagraficaDto.value);
     const body = {
-      anagraficaDto: this.filterAnagraficaDto.value
-
+      anagraficaDto: this.filterAnagraficaDto.value,
     };
     // console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
-
-
-
-
   }
 
   dettaglioAnagrafica(idAnagrafica: number) {
-
     // this.anagraficaDtoService
     //   .detailAnagraficaDto(idAnagrafica, localStorage.getItem('token'))
     //   .subscribe((resp: any) => {
     //     console.log(resp);
-        this.router.navigate(['/dettaglio-anagrafica/' + idAnagrafica]);
-      // });
+    this.router.navigate(['/dettaglio-anagrafica/' + idAnagrafica]);
+    // });
   }
 
   vaiAModificaAnagrafica(idAnagrafica: number) {
     // this.anagraficaDtoService
     //   .update(idAnagrafica, localStorage.getItem('token'))
     //   .subscribe((resp: any) => {
-        // console.log(resp);
-        this.router.navigate(['/modifica-anagrafica/' + idAnagrafica]);
-      // });
+    // console.log(resp);
+    this.router.navigate(['/modifica-anagrafica/' + idAnagrafica]);
+    // });
   }
 
   getUserLogged() {
@@ -270,7 +272,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
@@ -300,7 +302,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-          error
+            error
         );
         this.shouldReloadPage = true;
       }
@@ -308,21 +310,23 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        // console.log(
-        //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        // );
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-        this.jsonData = { list: [] };
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          // console.log(
+          //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          // );
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
 
   getPermissions(functionId: number) {
