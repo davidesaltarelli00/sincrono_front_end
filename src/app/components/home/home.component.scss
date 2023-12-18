@@ -1,433 +1,75 @@
 .clienti {
   border: 1px solid #ddd;
-  /* Aggiungi un bordo al mat-card */
   border-radius: 8px;
-  /* Aggiungi un bordo arrotondato */
   padding: 10px;
-  /* Aggiungi spaziatura interna al mat-card */
   margin-bottom: 10px;
-  /* Aggiungi spaziatura tra i mat-card */
 }
 
-.logo-image {
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-}
-@media (max-width: 768px) {
-  .custom-picker {
-    flex-direction: column;
-    /* Stack the pickers vertically on small screens */
-    align-items: flex-start;
-    /* Align pickers to the left */
-  }
-
-  .mobile-select {
-    width: 100%;
-    /* Make the select element full-width */
-  }
-
-  .user-icon,
-  .logout-icon {
-    display: block;
-    /* Make the icon buttons block-level elements */
-    margin: 10px auto;
-
-    /* Center the icon buttons horizontally with some spacing */
-    .container-toolbar {
-      /* Styles for smaller screens (e.g., mobile devices) */
-      background-color: #333;
-      /* Change background color */
-      padding: 10px;
-      /* Add padding around the container */
-      text-align: center;
-      /* Center the content in the container */
-    }
-
-    .logo-link {
-      display: block;
-      /* Make the logo a block-level element */
-      margin: 0 auto;
-      /* Center the logo horizontally */
-    }
-
-    .logo-image {
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-    }
-
-    table {
-      font-size: 14px;
-      /* Reduce font size for smaller screens */
-    }
-
-    th,
-    td {
-      padding: 5px;
-      /* Adjust padding for smaller screens */
-    }
-  }
-
-  .container-toolbar {
-    /* Styles for smaller screens (e.g., mobile devices) */
-    background-color: #333;
-    /* Change background color */
-    padding: 10px;
-    /* Add padding around the container */
-    text-align: center;
-    /* Center the content in the container */
-  }
-
-  .logo-link {
-    display: block;
-    /* Make the logo a block-level element */
-    margin: 0 auto;
-    /* Center the logo horizontally */
-  }
-
-  #table-dashboard {
-    overflow-x: auto;
-    // display: block;
-    text-align: center;
-  }
-
-  #table-dashboard th,
-  #table-dashboard td {
-    white-space: nowrap;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-  }
-}
-
-@media (max-width: 600px) {
-  .container-toolbar {
-    /* Styles for smaller screens (e.g., mobile devices) */
-    background-color: #333;
-    /* Change background color */
-    padding: 10px;
-    /* Add padding around the container */
-    text-align: center;
-    /* Center the content in the container */
-  }
-
-  .logo-link {
-    display: block;
-    /* Make the logo a block-level element */
-    margin: 0 auto;
-    /* Center the logo horizontally */
-  }
-
-  .logo-image {
-    border-radius: 50%;
-    width: 60px;
-    /* Adjust the logo image size for mobile */
-    height: 60px;
-  }
-
-  .mobile-select {
-    width: 100%;
-    /* Make the select element full-width */
-  }
-
-  .user-icon,
-  .logout-icon {
-    display: block;
-    /* Make the icon buttons block-level elements */
-    margin: 10px auto;
-    /* Center the icon buttons horizontally with some spacing */
-  }
-
-  .user-icon i,
-  .logout-icon i {
-    font-size: 24px;
-    /* Adjust icon size for mobile */
-  }
-}
-
-/* Stili specifici per schermi di piccole dimensioni (dispositivi mobili) */
-@media (max-width: 480px) {
-  .container-toolbar {
-    
-    background-color: #333; 
-    padding: 10px;
-    text-align: center;
-   
-  }
-
-  .logo-link {
-    display: block;
-    margin: 0 auto;
-
-  }
-
-  .logo-image {
-    border-radius: 50%;
-    width: 60px;
-    /* Adjust the logo image size for mobile */
-    height: 60px;
-  }
-
-  body {
-    font-size: 14px;
-  }
-
-  /* Altri stili specifici per schermi di piccole dimensioni */
-  .container-fluid {
-    padding: 10px;
-  }
-
-  .custom-list-item {
-    padding: 10px;
-  }
-}
-
-.clienti {
-  max-width: 100%;
-  /* Adjust the maximum width of the mat-card */
-  overflow: hidden;
-  /* Hide overflow content */
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-
-}
-
-.col-2 {
-  flex: 1 0 200px;
-  /* Adjust the initial width (200px in this example) */
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.clienti {
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  /* Optional: Add border for better visualization */
-
-}
-
-p {
-  text-align: center;
-  /* Center the text horizontally within the <p> element */
-  margin: 0;
-  /* Remove any default margin to avoid unwanted spacing */
-}
-
-/* Aggiungi animazioni alle mat-card */
-mat-card {
-  transition: box-shadow 0.3s, transform 0.3s;
-}
-
-/* Effetto di ombra al passaggio del mouse */
-mat-card:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transform: scale(1.02);
-}
-
-
-#toolbar {
-  background-color: #007bff;
-  /* Colore blu aziendale */
-  color: #ffffff;
-  /* Testo bianco */
-  display: flex;
+#toolbar{
   background-color: #333;
+  color: #f2f2f2;
+}
+
+.container-toolbar {
+  display: flex;
   justify-content: space-between;
-  /* Allinea gli elementi a sinistra e a destra */
   align-items: center;
-  /* Allinea verticalmente gli elementi al centro */
+  background-color: #333;
+  color: white;
+  padding: 10px;
 }
 
 .logo-link {
   margin-right: 10px;
 }
 
+.logo-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
 .toolbar-menu {
   display: flex;
   gap: 10px;
-  background-color: #333;
-  margin-right: auto;
 }
 
 .toolbar-link {
-  text-decoration: none;
-  color: #ffffff;
-  /* padding: 10px; */
-}
-
-a {
   color: white;
-}
-
-.toolbar-link:hover {
-  color: #d8d8d8;
-}
-
-.user-icon,
-.logout-icon {
-  color: #ffffff;
-  cursor: pointer;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-.dark-mode #toolbar {
-  color: #ffffff;
-  /* Testo bianco */
-  display: flex;
-  background-color: #333;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #f3f3f3;
-
-}
-
-/* styles.css o nel tuo componente-specifico.css */
-.dark-mode * {
-  background-color: #333;
-  color: #fff;
-}
-
-.dark-mode body {
-  background-color: #333;
-  color: #fff;
-}
-
-.dark-mode mat-card {
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #f1f1f1;
-}
-
-.dark-mode input,
-.dark-mode textarea,
-.dark-mode select {
-  background-color: #444;
-  color: #fff;
-}
-
-.dark-mode table {
-  border-color: #555;
-}
-
-.dark-mode th,
-.dark-mode td {
-  border-color: #777;
-  background-color: #333;
-  color: #fff;
-}
-
-.dark-mode button,
-.dark-mode .btn {
-  background-color: #333;
-  color: #fff;
-}
-
-
-.dark-mode .pagination {
-  background-color: #333;
-}
-
-.dark-mode .pagination li {
-  border: 1px solid #555;
-}
-
-.dark-mode .pagination li.disabled {
-  background-color: #444;
-  color: #666;
-  border: 1px solid #555;
-}
-
-.dark-mode .pagination li.active {
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #007bff;
-}
-
-.dark-mode .pagination li:hover {
-  background-color: #555;
-  color: #fff;
-  border: 1px solid #666;
-}
-
-.dark-mode #toolbar {
-  color: #ffffff;
-  /* Testo bianco */
-  display: flex;
-  background-color: #333;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #f3f3f3;
-
-}
-
-/* Stili comuni per i bottoni */
-button.toggle-button {
-  padding: 8px 16px;
-  margin: 8px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-/* Stili specifici per dark mode */
-.dark-mode button.toggle-button {
-  background-color: #333;
-  color: #fff;
-  /* Altri stili specifici per il dark mode per il bottone di toggle */
-}
-
-/* Stili comuni per mat-list */
-mat-list {
-  width: 100%;
-}
-
-/* Stili comuni per mat-list-item */
-mat-list-item {
-  padding: 16px;
-  border-bottom: 1px solid #ddd;
-  /* Aggiungi una sottolineatura tra gli elementi della lista */
-}
-
-/* Stili comuni per gli anchor (link) all'interno di mat-list-item */
-mat-list-item a {
-  color: inherit;
-  /* Eredità del colore del testo dallo stile del padre */
   text-decoration: none;
-  /* Rimuovi la sottolineatura dei link */
 }
 
-/* Stili specifici per dark mode per mat-list e mat-list-item */
-.dark-mode mat-list {
-  background-color: #333;
-  /* Colore di sfondo scuro per la lista */
-  color: #fff;
-  /* Colore del testo chiaro per la lista */
+.form-switch {
+  margin-right: 10px;
 }
 
-.dark-mode mat-list-item {
-  border-color: #555;
-  /* Colore del bordo scuro per gli elementi della lista */
-  background-color: #444;
-  /* Colore di sfondo scuro per gli elementi della lista */
-  color: #fff;
-  /* Colore del testo chiaro per gli elementi della lista */
+:root {
+  --primary-color: #333;
+  --text-color: white;
 }
 
-.dark-mode mat-list-item a {
-  color: #fff;
-  /* Colore del testo chiaro per i link in dark mode */
+@media screen and (max-width: 830px) {
+  .hamburger-menu {
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 20px;
+  }
+
+  .toolbar-link {
+    display: none;
+  }
+
+  .hamburger-icon {
+    display: block;
+  }
 }
 
-// h1,h2,h3,h4,h5,h6,strong{
-//   color: #3f51b5;
-// }
+@media screen and (min-width: 831px) {
+  .hamburger-menu {
+    display: none;
+  }
+
+  .toolbar-link {
+    display: flex;
+  }
+}

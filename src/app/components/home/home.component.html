@@ -5,126 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
 </head>
-<style>
-  mat-list{
-  margin: 30px;
-}
 
-footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  text-align: center;
-}
-
-.container-fluid{
-  background-color: aliceblue;
-}
-
-body{
-  background-color: aliceblue;
-}
-
-.banner {
-  white-space: nowrap;
-  overflow: hidden;
-  position: relative;
-  animation: scroll 10s linear infinite;
-  background-color: aliceblue; /* Sfondo del banner */
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Ombra del banner */
-  border-radius: 5px; /* Bordo arrotondato */
-}
-.banner img {
-  display: inline-block;
-  width: 100%;
-  max-width: 20%;
-  height: auto;
-  margin-right: 10px;
-  border: 2px solid #fff;
-  border-radius: 5px;
-}
-
-@keyframes scroll {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-300%);
-  }
-}
-
-img{
-  max-height: 30%;
-}
-.custom-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.custom-list-item {
-  margin-bottom: 10px;
-  padding: 5px;
-  background-color: #f5f5f5;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.custom-list-item:hover {
-  background-color: #e0e0e0;
-  cursor: pointer;
-}
-
-.custom-list-item a {
-  text-decoration: none;
-  color: #333;
-}
-
-.custom-list-item a:hover {
-  text-decoration: underline;
-  color: blue;
-
-}
-
-
-</style>
 <body [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div id="inizioPagina"></div>
-  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
-    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
-      <a [routerLink]="['/home']" class="logo-link">
-        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
-      </a>
-      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
-        <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
-          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
-          {{ menuItem.nome }}
+  <div class="container-toolbar" *ngIf="!mobile">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <a [routerLink]="['/home']" class="logo-link">
+          <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
         </a>
       </div>
-      <span>
+
+      <div class="col-auto">
+        <button mat-icon-button [matMenuTriggerFor]="hamburgerMenu" (click)="toggleHamburgerMenu()" class="hamburger-icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+
+      <div class="col-auto">
+        <mat-menu #hamburgerMenu="matMenu" class="hamburger-menu">
+          <button mat-menu-item *ngFor="let menuItem of jsonData.list" (click)="navigateTo(menuItem.percorso)">
+            {{ menuItem.nome }}
+          </button>
+        </mat-menu>
+
+        <div class="toolbar-menu" *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen">
+          <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+            *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+            {{ menuItem.nome }}
+          </a>
+        </div>
+      </div>
+
+      <div class="col-auto">
         <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
           <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
           <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
         </div>
+      </div>
 
-      </span>
-      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
-        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
-          class="fa fa-user"></i>
-        <!--<img *ngIf="immaginePredefinita" style="border-radius:100%" [src]="immaginePredefinita" alt="Immagine" width="40px"  />-->
-      </span> &nbsp;&nbsp;
-      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
-        <i class="fa fa-sign-out" aria-hidden="true"></i>
-      </span>
-    </mat-toolbar>
+      <div class="col-auto">
+        <div style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+          <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+          <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+          <i class="fa fa-user"></i>
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <div style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+ <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && mobile">
       <a [routerLink]="['/home']" class="logo-link">
         <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
@@ -151,6 +87,8 @@ img{
       </span>
     </mat-toolbar>
   </div>
+
+
 <div class="container-fluid" [ngClass]="{'dark-mode': toggleMode}">
   <div class="row">
     <div class="col-12">
@@ -210,10 +148,10 @@ img{
         <mat-card-content>
           <mat-list role="list" class="custom-list">
             <mat-list-item role="listitem" (click)="vaiAlRapportino()" class="custom-list-item" >
-              Compilazione rapportino
+             <a href="/lista-rapportini">Compilazione rapportino</a>
             </mat-list-item>
             <mat-list-item role="listitem" [routerLink]="['/profile-box']" class="custom-list-item" >
-              Profilo
+              <a href="/profilo">Profilo</a>
             </mat-list-item>
             <mat-list-item role="listitem" [routerLink]="['/lista-anagrafica']" class="custom-list-item"  (click)="openDetailsPageListaAnagrafica()"> <!--(mouseover)="startVoiceActionListaAnagrafica()"-->
               <a href="/lista-anagrafica">Lista anagrafica</a>
@@ -313,145 +251,3 @@ img{
 </body>
 </html>
 
-
-    <!-- <html>
-  <head>
-    <title>Home</title>
-  </head>
-  <style>
-    .sidebar {
-      width: 250px;
-      background-color: #333;
-      color: #ffffff;
-      height: 200vh;
-      position: inherit;
-    }
-
-    /* Stile delle voci di menu nella sidebar */
-    .sidebar-item {
-      padding: 10px 20px;
-      border-bottom: 1px solid #ffffff;
-    }
-
-    .sidebar-item:last-child {
-      border-bottom: none;
-    }
-
-    .sidebar-link {
-      text-decoration: none;
-      color: #ffffff;
-    }
-
-    .sidebar-link:hover {
-      color: #d8d8d8;
-    }
-
-    .content {
-      flex: 1;
-      padding: 20px;
-    }
-
-    .navbar {
-      padding: 10px 20px;
-    }
-
-    .navbar-brand {
-      font-weight: bold;
-    }
-
-    .navbar-nav {
-      margin-left: auto;
-    }
-
-    .nav-link {
-      color: #ffffff;
-      text-decoration: none;
-      margin-left: 10px;
-    }
-
-    .nav-link:hover {
-      color: #d8d8d8;
-    }
-
-    .login-page .sidebar {
-      display: none;
-    }
-
-    .example-container {
-     width: 100%;
-      height: 100%;
-    }
-
-    .spacer {
-      flex: 1 1 auto;
-    }
-
-    mat-drawer{
-      background-color: #333;
-    }
-
-    p{
-      cursor: pointer;
-    }
-
-    mat-icon-button:hover{
-    background-color: none;
-    }
-
-    mat-toolbar{
-      background-color: #333;
-      color: white;
-    }
-
-    </style>
-  <body>
-      <mat-toolbar>
-        <a [routerLink]="['/home']" style="margin:5px; text-align: center;" > <img style="margin:5px; text-align: center;" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo"> </a>
-        <span> Sincrono CRM <button (click)="drawer.toggle()" mat-flat-button style="background-color: transparent; color: black;" > <mat-icon style="color: #ffffff;" >menu</mat-icon> </button> </span>
-
-        <span class="spacer"></span>
-        <span style="cursor: pointer;" id="icona" mat-icon-button (click)="logout()" [routerLink]="['/login']">
-           <mat-icon>logout</mat-icon>
-        </span>
-      </mat-toolbar>
-      <mat-drawer-container autosize class="example-container" >
-        <mat-drawer #drawer class="example-sidenav" mode="side" opened>
-          <div class="profile-box" (click)="profile()" style="text-align: center;
-          color: white;
-          font-weight: 400;
-          border-bottom: 1px solid #f2f2f2; margin:auto;">
-            <mat-icon>account_circle</mat-icon> <br>
-            <p>{{userlogged}}</p>
-              </div>
-          <nav>
-            <ul class="list-unstyled">
-              <li class="sidebar-item">
-                <p class="sidebar-link" [routerLink]="['/lista-anagrafica']">Lista anagrafiche</p>
-              </li>
-              <mat-divider></mat-divider>
-              <li class="sidebar-item" [hidden]="role==='risorseumane' || role==='dipendente'" >
-                <p class="sidebar-link"  [routerLink]="['/dashboard']">Dashboard</p>
-              </li>
-              <mat-divider></mat-divider>
-              <li class="sidebar-item">
-                <p class="sidebar-link" [routerLink]="['/organico']">Organico</p>
-              </li>
-              <mat-divider></mat-divider>
-            </ul>
-          </nav>
-        </mat-drawer>
-        <mat-drawer-content>
-
-        </mat-drawer-content>
-
-      </mat-drawer-container>
-
-<script>
-      const userLogged = localStorage.getItem('userLogged');
-    if (userLogged) {
-      this.userlogged = userLogged;
-      }
-</script>
-
-  </body>
-</html> -->

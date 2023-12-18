@@ -42,6 +42,8 @@ export class HomeComponent implements OnInit {
   isVoiceActionActivated = false;
   toggleMode: boolean = false;
   aziendeClienti: any[] = [];
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
 
   constructor(
     private authService: AuthService,
@@ -83,7 +85,13 @@ export class HomeComponent implements OnInit {
       });
     }
   }
-
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
+  }
   caricaAziendeClienti() {
     this.contrattoService.getAllAziendaCliente(this.token).subscribe(
       (result: any) => {
@@ -224,7 +232,7 @@ export class HomeComponent implements OnInit {
 
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
-        this.idAnagraficaLoggata=response.anagraficaDto.anagrafica.id;
+        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
         console.log('ID UTENTE PER NAV:' + this.idUtente);
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
