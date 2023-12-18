@@ -449,7 +449,7 @@
     </mat-expansion-panel>
     <br>
     <div class="row">
-      <div class="col-6">
+      <div class="col-4">
         <mat-card style="height: 100%;">
           <div
             style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
@@ -462,7 +462,7 @@
         </mat-card>
       </div>
 
-      <div class="col-6">
+      <div class="col-4">
         <mat-card style="height: 100%;">
           <div
             style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
@@ -478,7 +478,7 @@
           <div
             style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
             <label>Inserisci nuova anagrafica da excel</label>
-            <button class="btn btn-success" [routerLink]="['/documenti']">
+            <button mat-mini-fab id="button"  [routerLink]="['/documenti']">
               <i matTooltip="Carica documenti" class="fa fa-file-upload"></i>
             </button>
           </div>
@@ -548,7 +548,7 @@
                 <td>{{ element.anagrafica?.cellularePrivato ? element.anagrafica.cellularePrivato: 'Non inserito' }}
                 </td>
                 <td>
-                  <p style="cursor: pointer;" [ngStyle]="{'color': element?.contratto!=null ? 'black' : 'red'}"
+                  <p style="cursor: pointer;"
                     [matTooltip]="element?.contratto!=null ? 'Vedi Il contratto di ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome : 'Aggiungi contratto a ' + element.anagrafica?.nome + ' ' + element.anagrafica?.cognome"
                     (click)="handleClickContratto(element)">
                     {{ element?.contratto!=null ? element.contratto.tipoContratto.descrizione : 'Non inserito' }}

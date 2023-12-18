@@ -14,6 +14,12 @@ input:invalid {
 
 .dark-mode #button{
   background-color: #333;
+  border: 1px solid white;
+}
+
+.dark-mode button{
+  background-color: #333;
+  border: 1px solid white;
 }
 
 body {
@@ -305,7 +311,9 @@ input[type="checkbox"]:disabled + .slider::before {
   background-color: #ffffff;
 }
 
-
+.dark-mode input[type="checkbox"] {
+ border: 1px solid white;
+}
 
 /* styles.css o nel tuo componente-specifico.css */
 .dark-mode *{
@@ -471,4 +479,8 @@ mat-list-item a {
     width: 100%;
     box-sizing: border-box;
   }
+}
+.custom-modal-class {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }

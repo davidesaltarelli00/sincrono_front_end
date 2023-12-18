@@ -16,12 +16,6 @@
   margin-bottom: 10px;
 }
 
-.custom-picker mat-form-field {
-  flex: 1;
-  /* Let the form field take as much space as possible */
-  margin-right: 10px;
-}
-
 .dark-mode table {
   border: 1px solid #ffffff;
 }
@@ -418,5 +412,34 @@ mat-card-footer {
     display: block;
     width: 100%;
     box-sizing: border-box;
+  }
+}
+
+
+/* responsive form*/
+form {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 992px) {
+  form {
+    padding: 10px;
+  }
+
+  .col-3 {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  form {
+    padding: 5px;
+  }
+
+  .col-3 {
+    width: 100%;
   }
 }

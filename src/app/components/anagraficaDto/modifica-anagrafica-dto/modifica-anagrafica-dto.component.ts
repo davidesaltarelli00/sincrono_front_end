@@ -1512,7 +1512,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     return this.formBuilder.group({
       id: [commessa.id],
       tipoAziendaCliente: this.formBuilder.group({
-        id: [''],
+        id: ['', Validators.required],
         descrizione: [''],
       }),
       clienteFinale: [commessa.clienteFinale, Validators.required],

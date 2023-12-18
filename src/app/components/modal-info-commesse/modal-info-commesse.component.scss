@@ -177,3 +177,62 @@ button.toggle-button {
 #spazio{
   margin: 5px;
 }
+
+
+
+#table-commesse {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin: auto;
+  text-align: center;
+}
+
+#table-commesse th, #table-commesse td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#table-commesse th {
+  background-color: #343a40;
+  color: white;
+}
+
+@media screen and (max-width: 768px) {
+  .container-toolbar {
+    /* Styles for smaller screens (e.g., mobile devices) */
+    background-color: #333;
+    /* Change background color */
+    padding: 10px;
+    /* Add padding around the container */
+    text-align: center;
+    /* Center the content in the container */
+  }
+
+  .logo-link {
+    display: block;
+    /* Make the logo a block-level element */
+    margin: 0 auto;
+    /* Center the logo horizontally */
+  }
+
+  .logo-image {
+    border-radius: 50%;
+    width: 60px;
+    /* Adjust the logo image size for mobile */
+    height: 60px;
+  }
+  #table-commesse {
+    overflow-x: auto;
+    // display: block;
+    text-align: center;
+  }
+
+  #table-commesse th, #table-commesse td {
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

@@ -655,10 +655,10 @@
                           <div class="col-md-3">
                             <label>Retribuzione Mensile Lorda:</label>
                             <div class="input-group mb-2">
-                              <div class="input-group-prepend">
+                              <!-- <div class="input-group-prepend">
                                 <div class="input-group-text prefix" style="background-color: black; color: white;">€
                                 </div>
-                              </div>
+                              </div> -->
                               <input matInput type="number" step="0.01" min="0" class="form-control"
                                 [value]="data?.contratto?.retribuzioneMensileLorda"
                                 formControlName="retribuzioneMensileLorda"
@@ -672,9 +672,9 @@
                             <label>Superminimo Mensile:</label>
                             <div class="form-group">
                               <div class="input-group">
-                                <div class="input-group-prepend">
+                                <!-- <div class="input-group-prepend">
                                   <span class="input-group-text custom-prefix">€</span>
-                                </div>
+                                </div> -->
                                 <input type="number" class="form-control"
                                   value="{{ data?.contratto?.superminimoMensile }}" formControlName="superminimoMensile"
                                   step="0.01" min="0" placeholder="Inserire Superminimo mensile" id="superminimoMensile"
@@ -687,9 +687,9 @@
                             <label>Scatti anzianitá:</label>
                             <div class="form-group">
                               <div class="input-group">
-                                <div class="input-group-prepend">
+                                <!-- <div class="input-group-prepend">
                                   <span class="input-group-text custom-prefix">€</span>
-                                </div>
+                                </div> -->
                                 <input type="number" class="form-control" value="{{ data?.contratto?.scattiAnzianita }}"
                                   formControlName="scattiAnzianita" step="0.01" min="0"
                                   placeholder="Inserire scatti anzianitá" id="scattiAnzianita"
@@ -705,10 +705,10 @@
 
 
                             <div class="input-group mb-2">
-                              <div class="input-group-prepend">
+                              <!-- <div class="input-group-prepend">
                                 <div class="input-group-text prefix" style="background-color: black; color: white;">€
                                 </div>
-                              </div>
+                              </div> -->
                               <input matInput type="number" readonly class="form-control" placeholder="Mensile tot"
                                 id="mensileTOT" />
                             </div>
@@ -724,9 +724,9 @@
                             <label>Retribuzione netta mensile:</label>
                             <div class="form-group">
                               <div class="input-group">
-                                <div class="input-group-prepend">
+                                <!-- <div class="input-group-prepend">
                                   <span class="input-group-text custom-prefix">€</span>
-                                </div>
+                                </div> -->
                                 <input type="number" class="form-control"
                                   value="{{ data?.contratto?.retribuzioneNettaMensile }}"
                                   formControlName="retribuzioneNettaMensile" step="0.01" min="0"
@@ -742,9 +742,9 @@
                             <label>RAL Annua:</label>
                             <div class="form-group">
                               <div class="input-group">
-                                <div class="input-group-prepend">
+                                <!-- <div class="input-group-prepend">
                                   <span class="input-group-text custom-prefix">€</span>
-                                </div>
+                                </div> -->
                                 <input type="number" class="form-control" value="{{ data?.contratto?.ralAnnua }}"
                                   formControlName="ralAnnua" step="0.01" min="0" placeholder="Inserire RAL annua"
                                   (input)="calculateRalPartTime()" />
@@ -757,9 +757,9 @@
                             <label>Superminimo RAL:</label>
                             <div class="form-group">
                               <div class="input-group">
-                                <div class="input-group-prepend">
+                                <!-- <div class="input-group-prepend">
                                   <span class="input-group-text custom-prefix">€</span>
-                                </div>
+                                </div> -->
                                 <input type="number" class="form-control" value="{{ data?.contratto?.superminimoRal }}"
                                   formControlName="superminimoRal" step="0.01" min="0"
                                   placeholder="Inserire superminimo RAL" />
@@ -774,9 +774,9 @@
                             <label>Diaria annua:</label>
                             <div class="form-group">
                               <div class="input-group">
-                                <div class="input-group-prepend">
+                                <!-- <div class="input-group-prepend">
                                   <span class="input-group-text custom-prefix">€</span>
-                                </div>
+                                </div> -->
                                 <input type="number" class="form-control" value="{{ data?.contratto?.diariaAnnua }}"
                                   formControlName="diariaAnnua" step="0.01" min="0"
                                   placeholder="Inserire diaria annua" />
@@ -788,9 +788,9 @@
                             <label>Diaria mensile:</label>
                             <div class="form-group">
                               <div class="input-group">
-                                <div class="input-group-prepend">
+                                <!-- <div class="input-group-prepend">
                                   <span class="input-group-text custom-prefix">€</span>
-                                </div>
+                                </div> -->
                                 <input type="number" class="form-control" value="{{ data?.contratto?.diariaMensile }}"
                                   formControlName="diariaMensile" step="0.01" min="0"
                                   placeholder="Inserire diaria mensile" />
@@ -802,9 +802,9 @@
                             <label>Diaria giornaliera:</label>
                             <div class="form-group">
                               <div class="input-group">
-                                <div class="input-group-prepend">
+                                <!-- <div class="input-group-prepend">
                                   <span class="input-group-text custom-prefix">€</span>
-                                </div>
+                                </div> -->
                                 <input type="number" class="form-control"
                                   value="{{ data?.contratto?.diariaGiornaliera }}" formControlName="diariaGiornaliera"
                                   step="0.01" min="0" placeholder="Inserire diaria giornaliera" />
@@ -818,7 +818,7 @@
                           <legend>Costo aziendale</legend>
                           <div class="col-md-3">
                             <label>Costo aziendale</label>
-                            <input type="number" class="form-control" formControlName="costoAziendale" step="0.01">
+                            <input type="number" class="form-control" placeholder="Inserire costo aziendale" formControlName="costoAziendale" step="0.01">
                           </div>
                         </div>
 
@@ -827,7 +827,7 @@
                           <div class="col-md-3">
                             <div class="form-group">
                               <label>Tariffa Partita IVA: </label>
-                              <input type="number" class="form-control" value="{{ data?.contratto?.tariffaPartitaIva }}"
+                              <input placeholder="Inserire tariffa partita IVA" type="number" class="form-control" value="{{ data?.contratto?.tariffaPartitaIva }}"
                                 formControlName="tariffaPartitaIva" />
                             </div>
                           </div>
@@ -836,9 +836,9 @@
                             <label>Retribuzione netta giornaliera:</label>
                             <div class="form-group">
                               <div class="input-group">
-                                <div class="input-group-prepend">
+                                <!-- <div class="input-group-prepend">
                                   <span class="input-group-text custom-prefix">€</span>
-                                </div>
+                                </div> -->
                                 <input type="number" class="form-control"
                                   value="{{ data?.contratto?.retribuzioneNettaGiornaliera }}"
                                   formControlName="retribuzioneNettaGiornaliera" step="0.01" min="0"
@@ -1066,16 +1066,20 @@
                                 <div class="form-group" formGroupName="tipoAziendaCliente">
                                   <select (change)="onChangeAziendaCliente($event)" class="form-select"
                                     aria-label="Default select example" id="commesse.tipoAziendaCliente.id"
+                                    [ngStyle]="{ 'border': commessa.get('tipoAziendaCliente.id')?.value=='' ? '1px solid red' : ''}"
                                     formControlName="id">
                                     <option value="">--nessuna selezione--</option>
                                     <option *ngFor="let aziendaCliente of aziendeClienti" [value]="aziendaCliente.id">
                                       {{ aziendaCliente.descrizione }}
                                     </option>
                                   </select>
+                                  <div *ngIf="commessa.get('tipoAziendaCliente.id')?.hasError('required')" class="text-danger">
+                                    Il campo Cliente finale è obbligatorio.
+                                  </div>
                                 </div>
                               </div>
                               <div class="col-md-3">
-                                <label>Cliente Finale</label><br>
+                                <label>Cliente Finale</label>
                                 <input class="form-control" placeholder="Inserire l' azienda cliente finale"
                                   [ngStyle]="{ 'border': commessa.get('clienteFinale')?.value=='' ? '1px solid red' : ''}"
                                   formControlName="clienteFinale" type="text" />
@@ -1086,7 +1090,7 @@
 
 
                               <div class="col-md-3">
-                                <label>Azienda di Fatturazione Interna</label><br>
+                                <label>Azienda di Fatturazione Interna</label>
                                 <input
                                   [ngStyle]="{ 'border': commessa.get('aziendaDiFatturazioneInterna')?.value=='' ? '1px solid red' : ''}"
                                   class="form-control" formControlName="aziendaDiFatturazioneInterna"
@@ -1098,7 +1102,7 @@
                               </div>
 
                               <div class="col-md-3">
-                                <label>Titolo posizione</label><br>
+                                <label>Titolo posizione</label>
                                 <input class="form-control" formControlName="titoloPosizione"
                                   [ngStyle]="{ 'border': commessa.get('titoloPosizione')?.value=='' ? '1px solid red' : ''}"
                                   placeholder="Aggiungere la posizione da ricoprire." type="text" />
@@ -1112,7 +1116,7 @@
                             <div class="row">
                               <legend>Dati distacco</legend>
                               <div class="col-md-2" style="margin: auto; ">
-                                <label>Distacco</label><br>
+                                <label>Distacco</label>
                                 <label class="switch">
                                   <input (change)="onChangeDistaccoCommessa($event, i)" class="form-check-input"
                                     type="checkbox" formControlName="distacco" />
@@ -1140,7 +1144,7 @@
                               <legend>Date commessa</legend>
 
                               <div class="col-md-4">
-                                <label>Data di Inizio</label><br>
+                                <label>Data di Inizio</label>
                                 <input class="form-control"
                                   [ngStyle]="{ 'border': commessa.get('dataInizio')?.value=='' ? '1px solid red' : ''}"
                                   formControlName="dataInizio" type="date" />
@@ -1151,7 +1155,7 @@
                               <div class="col-md-4">
                                 <label>Data di Fine <i class="fa fa-question-circle"
                                     matTooltip="Inserire la data di fine commessa se la commessa é terminata o si sa una data di fine."
-                                    aria-hidden="true"></i> </label> <br>
+                                    aria-hidden="true"></i> </label>
                                 <!--*ngIf="commessa.get('dataFine')?.value==''"-->
                                 <input class="form-control" formControlName="dataFine" type="date" />
                               </div>
@@ -1165,10 +1169,10 @@
                               <div class="col-md-3">
                                 <label>Tariffa Giornaliera</label>
                                 <div class="input-group mb-2">
-                                  <div class="input-group-prepend">
+                                  <!-- <div class="input-group-prepend">
                                     <div class="input-group-text prefix" style="background-color: black; color: white;">
                                       €</div>
-                                  </div>
+                                  </div> -->
                                   <input matInput formControlName="tariffaGiornaliera" step="0.01" class="form-control"
                                     min="0" placeholder="Inserire la tariffa giornaliera" type="number" />
                                 </div>
