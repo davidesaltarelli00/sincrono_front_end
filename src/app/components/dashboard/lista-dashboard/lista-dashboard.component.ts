@@ -83,6 +83,9 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
   mobile: any = false;
   ruolo: any;
   idUtente: any;
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+
   filterAnagraficaDto: FormGroup = new FormGroup({
 
     anagrafica: new FormGroup({
@@ -594,6 +597,15 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
       }
     }
   }
+
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
+  }
+
   resetTabella() {
     const dialogRef = this.dialog.open(AlertConfermaComponent, {
       data: {

@@ -1,5 +1,5 @@
 import { AnagraficaDtoService } from './../anagraficaDto-service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -126,6 +126,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   tipologicaCanaliReclutamento: any[] = [];
   motivazioniFineRapporto: any[] = [];
   commesse!: FormArray;
+  windowWidth: any;
 
   // paginazione
   currentPage: number = 1;
@@ -147,6 +148,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   anni: number[] = [];
 
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
@@ -162,6 +166,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     public themeService: ThemeService,
     private imageService: ImageService
   ) {
+    this.windowWidth = window.innerWidth;
+
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -225,6 +231,15 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.popolaAnni();
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+
   getOpzioniMesi(): number[] {
     return this.mesi;
   }
@@ -251,6 +266,14 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       block: 'start',
       inline: 'nearest',
     });
+  }
+
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
   }
 
   profile() {

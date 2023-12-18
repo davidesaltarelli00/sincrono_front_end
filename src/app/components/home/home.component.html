@@ -17,14 +17,14 @@
       </div>
 
       <div class="col-auto">
-        <button mat-icon-button [matMenuTriggerFor]="hamburgerMenu" (click)="toggleHamburgerMenu()" class="hamburger-icon">
+        <button  *ngIf="getWindowWidth() < 830" mat-icon-button [matMenuTriggerFor]="hamburgerMenu" (click)="toggleHamburgerMenu()" class="hamburger-icon">
           <mat-icon>menu</mat-icon>
         </button>
       </div>
 
       <div class="col-auto">
         <mat-menu #hamburgerMenu="matMenu" class="hamburger-menu">
-          <button mat-menu-item *ngFor="let menuItem of jsonData.list" (click)="navigateTo(menuItem.percorso)">
+          <button id="menu-voice" mat-menu-item *ngFor="let menuItem of jsonData.list" (click)="navigateTo(menuItem.percorso)">
             {{ menuItem.nome }}
           </button>
         </mat-menu>

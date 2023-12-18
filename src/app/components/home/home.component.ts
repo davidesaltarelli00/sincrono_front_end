@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../login/login-service';
 import { Router } from '@angular/router';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
@@ -44,6 +44,7 @@ export class HomeComponent implements OnInit {
   aziendeClienti: any[] = [];
   isHamburgerMenuOpen: boolean = false;
   selectedMenuItem: string | undefined;
+  windowWidth: any;
 
   constructor(
     private authService: AuthService,
@@ -56,6 +57,7 @@ export class HomeComponent implements OnInit {
     private contrattoService: ContrattoService,
     public themeService: ThemeService
   ) {
+    this.windowWidth = window.innerWidth;
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -71,6 +73,14 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();

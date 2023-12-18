@@ -300,18 +300,6 @@ tr:hover {
 }
 
 
-.dark-mode #toolbar {
-  color: #ffffff;
-  /* Testo bianco */
-  display: flex;
-  background-color: #333;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #f3f3f3;
-
-}
-
-
 /* styles.css o nel tuo componente-specifico.css */
 .dark-mode * {
   background-color: #333;
