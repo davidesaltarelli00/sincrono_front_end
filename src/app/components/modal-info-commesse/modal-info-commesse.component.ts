@@ -47,13 +47,13 @@ export class ModalInfoCommesseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.id);
     this.anagraficaDtoService
       .detailAnagraficaDto(this.id, localStorage.getItem('token'))
       .subscribe(
         (resp: any) => {
           this.data = (resp as any)['anagraficaDto'];
           this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
+          console.log(this.id);
         },
         (error: any) => {
           console.error(
@@ -72,7 +72,7 @@ export class ModalInfoCommesseComponent implements OnInit {
   }
 
   modificaCommessa(id: any) {
-    console.log(id);
+    console.log("id per routing "+id);
     this.stepperService.setCurrentStep(2);
     this.router.navigate(['/modifica-commessa/' + id]);
     this.dialog.closeAll();
@@ -92,7 +92,7 @@ export class ModalInfoCommesseComponent implements OnInit {
     this.themeService.toggleDarkMode();
   }
 
-  storicizza( posizione: number) {
+  storicizza(posizione: number) {
     const payload = {
       commessa: this.elencoCommesse[posizione],
     };
@@ -112,7 +112,7 @@ export class ModalInfoCommesseComponent implements OnInit {
               title: 'Commessa storicizzata correttamente.',
             },
           });
-         location.reload();
+          location.reload();
         },
         (error: any) => {
           console.error(
