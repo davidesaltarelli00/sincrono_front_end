@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ThemeService } from '../theme.service';
 
 @Component({
   selector: 'app-alert-conferma',
@@ -11,11 +12,16 @@ export class AlertConfermaComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public themeService: ThemeService,
     public dialogRef: MatDialogRef<AlertConfermaComponent>
   ) {}
 
   chiudi() {
     this.dialogRef.close();
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 
   si() {
