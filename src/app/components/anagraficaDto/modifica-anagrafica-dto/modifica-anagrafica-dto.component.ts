@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  HostListener,
   OnInit,
   Renderer2,
   ViewChild,
@@ -116,7 +117,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   dati: any = [];
   statoDiNascita: any;
   provinciaDiNascita: string = '';
-
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+  windowWidth: any;
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private activatedRouter: ActivatedRoute,
@@ -136,6 +139,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     private mapsService: MapsService,
     private stepperService: StepperService
   ) {
+    this.windowWidth = window.innerWidth;
+
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -288,6 +293,22 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
   getCommessas(): FormArray {
     return this.anagraficaDto.get('commesse') as FormArray;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
   }
 
   ngOnInit(): void {
