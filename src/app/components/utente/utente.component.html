@@ -319,10 +319,10 @@
                     <label for="cliente-{{ i }}{{j}}">Cliente</label>
                     <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
                       [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}"
-                      class="form-select" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}"
+                      class="form-select form-select-sm" id="cliente-{{ i }}{{j}}" name="cliente-{{ i }}{{j}}"
                       [(ngModel)]="duplicazione.cliente" (change)="selezionaAzienda($event)"
                       matTooltip="{{duplicazione.cliente}}">
-                      <option selected [ngValue]="null">--Nessuna opzione---</option>
+                      <option selected [ngValue]="null">Nessuna opzione</option>
                       <option>Attesa lavori</option>
                       <option *ngFor="let azienda of aziendeClienti" [value]="azienda">{{azienda}}</option>
                     </select>
@@ -340,6 +340,7 @@
                   </div>
                 </div>
               </div>
+              <br>
               <div class="row">
                 <div class="col-2"></div>
                 <div class="col-2">
@@ -437,7 +438,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] " style="border-top: 1px solid #f1f1f1;">
+            <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] " >
               <!-- <div class="col-4">
                 <div class="form-group">
                   <label for="permessi-{{ i }}"
@@ -516,6 +517,7 @@
               </div>
 
             </div>
+            <br>
           </mat-card>
           <br>
         </div>
@@ -632,6 +634,7 @@
       </div>
     </div>
   </div>
+  <br><br><br><br>
 </body>
 
 </html>

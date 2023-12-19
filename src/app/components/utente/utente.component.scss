@@ -5,6 +5,13 @@
 body {
   background-color: aliceblue;
 }
+.dark-mode .container-fluid {
+  background-color: #333;
+}
+
+.dark-mode body {
+  background-color: #333;
+}
 
 * {
   box-sizing: border-box;
@@ -257,7 +264,22 @@ mat-card:not(.dark-mode) {
   color: white !important;
 }
 
-.dark-mode table,th,td{
+.dark-mode td{
+  background-color: #444 ;
+  color: white ;
+}
+
+.dark-mode input {
   background-color: #444 !important;
   color: white !important;
+  border: 1px solid #ccc;
+}
+.dark-mode select {
+  background-color: #444 !important;
+  color: white !important;
+  border: 1px solid #ccc;
+}
+
+mat-card{
+  padding: 2px;
 }
