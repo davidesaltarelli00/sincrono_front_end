@@ -150,6 +150,50 @@ body,
   --text-color: white;
 }
 
+
+.pagination .dark-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.pagination ul .dark-mode {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.pagination li .dark-mode{
+  margin: 0 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination li.disabled .dark-mode{
+  pointer-events: none;
+  background-color: #444;
+  color: #555;
+  border: 1px solid #555;
+}
+
+.pagination li.active .dark-mode{
+  background-color: #007bff;
+  color: #fff;
+  border: 1px solid #007bff;
+}
+
+.pagination li:hover .dark-mode {
+  background-color: #555;
+  color: #fff;
+  border: 1px solid #fff;
+}
+
 @media screen and (max-width: 830px) {
   .hamburger-menu {
     cursor: pointer;

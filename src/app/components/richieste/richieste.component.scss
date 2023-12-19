@@ -1,60 +1,81 @@
-#toolbar {
-  background-color: #007bff;
-  /* Colore blu aziendale */
-  color: #ffffff;
-  /* Testo bianco */
-  display: flex;
+
+#toolbar{
   background-color: #333;
+  color: #f2f2f2;
+}
+
+.container-toolbar {
+  display: flex;
   justify-content: space-between;
-  /* Allinea gli elementi a sinistra e a destra */
   align-items: center;
-  /* Allinea verticalmente gli elementi al centro */
+  background-color: #333;
+  color: white;
+  padding: 10px;
 }
 
 .logo-link {
   margin-right: 10px;
 }
 
+.logo-image {
+  border-radius: 100%;
+}
+
 .toolbar-menu {
   display: flex;
   gap: 10px;
-  background-color: #333;
-  margin-right: auto;
 }
 
 .toolbar-link {
-  text-decoration: none;
-  color: #ffffff;
-  /* padding: 10px; */
-}
-
-a {
   color: white;
+  text-decoration: none;
 }
 
-.toolbar-link:hover {
-  color: #d8d8d8;
+.form-switch {
+  margin-right: 10px;
 }
 
-.user-icon,
-.logout-icon {
-  color: #ffffff;
-  cursor: pointer;
+:root {
+  --primary-color: #333;
+  --text-color: white;
 }
 
-* {
-  box-sizing: border-box;
+@media screen and (max-width: 830px) {
+  .hamburger-menu {
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 20px;
+  }
+
+  .toolbar-link {
+    display: none;
+  }
+
+  .hamburger-icon {
+    display: block;
+  }
 }
 
+@media screen and (min-width: 831px) {
+  .hamburger-menu {
+    display: none;
+  }
 
+  .toolbar-link {
+    display: flex;
+  }
+}
 
-/* styles.css o nel tuo componente-specifico.css */
 .dark-mode * {
   background-color: #333;
   color: #fff;
 }
 
 .dark-mode body {
+  background-color: #333;
+  color: #fff;
+}
+.dark-mode .container-fluid {
   background-color: #333;
   color: #fff;
 }

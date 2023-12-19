@@ -390,10 +390,10 @@
                   <td>{{ element.contratto.sedeAssunzione ? element.contratto.sedeAssunzione : 'Dato non inserito.' }}
                   </td>
                   <td>{{ element.contratto.dataAssunzione | date:'dd/MM/yyyy' }}</td>
-                  <td>{{ element.contratto.dataFineRapporto | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ element.contratto.dataFineContratto | date:'dd/MM/yyyy' }}</td>
                   <td>{{ element.contratto.mesiDurata ? element.contratto.mesiDurata: 'Dato non inserito' }}</td>
-                  <td [ngStyle]="{'color': getDaysRemainingColor(element.contratto.dataFineRapporto)}">{{
-                    calculateDaysRemaining(element.contratto.dataFineRapporto) }} gg</td>
+                  <td [ngStyle]="{'color': getDaysRemainingColor(element.contratto.dataFineContratto)}">{{
+                    calculateDaysRemaining(element.contratto.dataFineContratto) }} gg</td>
                   <td>{{ element.contratto.tipoLivelloContratto.livello ?
                     element.contratto.tipoLivelloContratto.livello: 'Dato non inserito' }}</td>
                   <td>{{ element.contratto.livelloFinale ? element.contratto.livelloFinale: 'Dato non inserito' }}</td>

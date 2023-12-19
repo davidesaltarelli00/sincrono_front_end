@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostListener,
   ViewChild,
 } from '@angular/core';
 import { AuthService } from '../login/login-service';
@@ -65,6 +66,9 @@ export class ProfileBoxComponent {
   tokenExpirationTime: any;
   timer: any;
   ruolo: any;
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+  windowWidth: any;
 
   constructor(
     private authService: AuthService,
@@ -80,6 +84,8 @@ export class ProfileBoxComponent {
     private cdRef: ChangeDetectorRef,
     private richiesteService:RichiesteService
   ) {
+    this.windowWidth = window.innerWidth;
+
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -97,6 +103,25 @@ export class ProfileBoxComponent {
       codiceFiscale: new FormControl(null),
     });
   }
+
+
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
+  }
+
   close() {
     this.dialog.closeAll();
   }

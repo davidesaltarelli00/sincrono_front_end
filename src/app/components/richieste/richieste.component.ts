@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AuthService } from '../login/login-service';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -90,6 +96,9 @@ export class RichiesteComponent implements OnInit {
   giorniSelezionati: { [meseAnno: string]: GiornoSelezionato[] } = {};
   almenoUnGiornoSelezionato: boolean = false;
   navigazioneDisabilitata: any;
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+  windowWidth: any;
 
   constructor(
     private authService: AuthService,
@@ -103,6 +112,8 @@ export class RichiesteComponent implements OnInit {
     private menuService: MenuService,
     private richiesteService: RichiesteService
   ) {
+    this.windowWidth = window.innerWidth;
+
     this.giorniCalendario = [[]];
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -154,6 +165,22 @@ export class RichiesteComponent implements OnInit {
       oggettoRichiesta: ['', Validators.required],
       testoRichiesta: ['', Validators.required],
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
   }
 
   ngOnInit(): void {
@@ -349,7 +376,6 @@ annoCorrente: any;
     // Aggiorna la variabile di visibilità della card
     this.almenoUnGiornoSelezionato = giorniSelezionatiPresenti;
   }
-
 
   private getDayName(dayOfWeek: number): string {
     return this.giorniDellaSettimana[dayOfWeek];
