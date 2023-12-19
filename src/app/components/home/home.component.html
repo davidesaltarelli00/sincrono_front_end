@@ -92,13 +92,14 @@
 <div class="container-fluid">
   <br>
   <div class="row">
-    <div class="col-12">
+    <div class="col-md-12">
       <mat-card style="text-align: center;">
-        <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-        <h1>Home <i class="fa fa-house" ></i> </h1>
+        <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono" class="img-fluid"></h1>
+        <h1>Home <i class="fa fa-house"></i></h1>
       </mat-card>
     </div>
   </div>
+
 <br>
   <div class="row">
     <div class="col-12">
@@ -179,24 +180,22 @@
   </div>
   <br>
   <div class="row">
-    <div class="col-6">
+    <div class="col-md-6">
       <mat-card>
         <mat-card-title class="text-center">
           <legend> <img src="../../../../assets/images/logo.jpeg" width="50" height="50" alt="Logo Sincrono"> Consulenza  <img src="../../../../assets/images/logo.jpeg" width="50" height="50" alt="Logo Sincrono"></legend> <br>
-
         </mat-card-title>
         <mat-card-content>
           <p>
-            Fornisce ai propri clienti, in base alle loro necessitá consulenti a vari livelli di preparazione e in diversi ambiti professionali, avendo a disposizione una vasta gamma di potenzialitá nel proprio organico.
+            Fornisce ai propri clienti, in base alle loro necessità, consulenti a vari livelli di preparazione e in diversi ambiti professionali, avendo a disposizione una vasta gamma di potenzialità nel proprio organico.
           </p>
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="col-6">
+    <div class="col-md-6">
       <mat-card>
         <mat-card-title class="text-center">
           <legend> <img src="../../../../assets/images/sincrono_formazione.png" width="50" height="50" alt="Logo Sincrono"> Formazione  <img src="../../../../assets/images/sincrono_formazione.png" width="50" height="50" alt="Logo Sincrono"></legend> <br>
-
         </mat-card-title>
         <mat-card-content>
           <p>
@@ -206,18 +205,20 @@
       </mat-card>
     </div>
   </div>
+
   <br>
   <div class="row" *ngIf="ruolo!='DIPENDENTE'">
     <div class="col-12 text-center">
       <h2>I nostri clienti</h2>
     </div>
     <div class="row">
-      <div class="col-2" *ngFor="let azienda of aziendeClienti; let i=index;" [hidden]="azienda.descrizione==='interno'" >
+      <div class="col-md-2" *ngFor="let azienda of aziendeClienti; let i=index;" [hidden]="azienda.descrizione==='interno'">
         <mat-card class="clienti">
           <p>{{azienda.descrizione}}</p>
         </mat-card>
       </div>
     </div>
+
   </div>
   <br>
   <div class="row">

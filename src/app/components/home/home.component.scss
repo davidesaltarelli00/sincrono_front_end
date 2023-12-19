@@ -166,3 +166,16 @@ mat-card:not(.dark-mode) {
   background-color: #333;
   color: #fff;
 }
+.col-2 {
+  width: 16.66%;
+  float: left;
+  padding: 0 10px;
+}
+
+@media (max-width: 768px) {
+  .col-2 {
+    width: 100%;
+    float: none;
+    padding: 0;
+  }
+}
