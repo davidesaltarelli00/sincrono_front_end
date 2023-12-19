@@ -9,72 +9,90 @@
 
 <body [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div id="inizioPagina"></div>
+  <div class="container-toolbar" *ngIf="!mobile">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <a [routerLink]="['/home']" class="logo-link">
+          <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+        </a>
+      </div>
 
-  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
-    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
+      <div class="col-auto">
+        <button  *ngIf="getWindowWidth() < 830" mat-icon-button [matMenuTriggerFor]="hamburgerMenu" (click)="toggleHamburgerMenu()" class="hamburger-icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+
+      <div class="col-auto">
+        <mat-menu #hamburgerMenu="matMenu" class="hamburger-menu">
+          <button id="menu-voice" mat-menu-item *ngFor="let menuItem of jsonData.list" (click)="navigateTo(menuItem.percorso)">
+            {{ menuItem.nome }}
+          </button>
+        </mat-menu>
+
+        <div class="toolbar-menu" *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen">
+          <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+            *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+            {{ menuItem.nome }}
+          </a>
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <div style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+          <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+          <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+          <i class="fa fa-user"></i>
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <div style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && mobile">
       <a [routerLink]="['/home']" class="logo-link">
         <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
       </a>
-      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
-        <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
-          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
-          {{ menuItem.nome }}
-        </a>
-      </div>
-      <span>
-        <div class="form-check form-switch"
-          matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
-          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()"
-            type="checkbox" id="flexSwitchCheckDefault">
-          <label class="form-check-label" for="flexSwitchCheckDefault"
-            matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
-        </div>
-
-      </span>
+      <button style="background-color:#333;color:white;margin-left:-10px;margin-right:3px;border-radius:1px;padding:5px;"
+        mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <ng-template matMenuContent>
+          <button style="background-color:#333;color:white" mat-menu-item *ngFor="let menuItem of jsonData.list"
+            [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
+            {{ menuItem.nome }}
+          </button>
+        </ng-template>
+      </mat-menu>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
-          class="fa fa-user"></i>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+        <i class="fa fa-user"></i>
       </span> &nbsp;&nbsp;
       <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
         <i class="fa fa-sign-out" aria-hidden="true"></i>
       </span>
     </mat-toolbar>
-    <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
-      <mat-toolbar id="toolbar" *ngIf="token && mobile">
-        <a [routerLink]="['/home']" class="logo-link">
-          <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
-        </a>
-        <button
-          style="background-color:#333;color:white;margin-left:-10px;margin-right:3px;border-radius:1px;padding:5px;"
-          mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>menu</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <ng-template matMenuContent>
-            <button style="background-color:#333;color:white" mat-menu-item *ngFor="let menuItem of jsonData.list"
-              [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
-              {{ menuItem.nome }}
-            </button>
-          </ng-template>
-        </mat-menu>
-        <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
-          <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-          <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
-          <i class="fa fa-user"></i>
-        </span> &nbsp;&nbsp;
-        <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
-          <i class="fa fa-sign-out" aria-hidden="true"></i>
-        </span>
-      </mat-toolbar>
-    </div>
-
   </div>
   <div class="container-fluid " *ngIf="!dettaglioSbagliato" [ngClass]="{'dark-mode': toggleMode}">
-    <!-- <div class="fixed-button-container" *ngIf="esitoCorretto" > -->
-    <!-- <button mat-flat-button color="primary" (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-up fa-beat"></i></button> -->
-    <!-- <button mat-flat-button color="primary" (click)="goDown()" matTooltip="Vai a fine pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-down fa-beat"></i></button> -->
-    <!-- </div> -->
+    <!-- <div class="fixed-button-container" *ngIf="esitoCorretto" >
+    <button mat-flat-button color="primary" (click)="goTop()" matTooltip="Vai a inizio pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-up fa-beat"></i></button>
+    <button mat-flat-button color="primary" (click)="goDown()" matTooltip="Vai a fine pagina" matTooltipPosition="left"><i class="fa-solid fa-arrow-down fa-beat"></i></button>
+    </div> -->
 
     <div class="row">
       <div class="col-12">
@@ -140,9 +158,21 @@
                     <select (change)="onMeseSelectChange($event)" class="form-select"
                       aria-label="Default select example" id="meseSelect" [(ngModel)]="selectedMese" name="mese">
                       <option selected>Nessuna selezione</option>
-                      <option *ngFor="let month of mesi; let i = index" [value]="i + 1">
+                      <!-- <option *ngFor="let month of mesi; let i = index" [value]="i + 1">
                         {{ i + 1 }}
-                      </option>
+                      </option> -->
+                      <option value="1">Gennaio</option>
+                      <option value="2">Febbraio</option>
+                      <option value="3">Marzo</option>
+                      <option value="4">Aprile</option>
+                      <option value="5">Maggio</option>
+                      <option value="6">Giugno</option>
+                      <option value="7">Luglio</option>
+                      <option value="8">Agosto</option>
+                      <option value="9">Settembre</option>
+                      <option value="10">Ottobre</option>
+                      <option value="11">Novembre</option>
+                      <option value="12">Dicembre</option>
                     </select>
                   </div>
                 </div>
@@ -174,24 +204,24 @@
                   </button>
                   -->
                 </div>
-                <div class="col-5">
+                <!-- <div class="col-5">
                   <div class="legend">
-                    <div class="color-box" style="background-color: rgb(214, 234, 251);"></div>
+                    <div class="color-box" style="background-color: rgb(214, 234, 251) !important;"></div>
                     <span class="label">Giorno Lavorativo</span>
                   </div>
                   <div class="legend">
-                    <div class="color-box" style="background-color: aliceblue;"></div>
+                    <div class="color-box" style="background-color: aliceblue !important;"></div>
                     <span class="label">Weekend</span>
                   </div>
                   <div class="legend">
-                    <div class="color-box" style="background-color: rgb(238, 64, 64);"></div>
+                    <div class="color-box" style="background-color: rgb(238, 64, 64) !important;;"></div>
                     <span class="label">Giorno festivo</span>
                   </div>
                   <div class="legend">
-                    <div class="color-box" style="background-color: orange"></div>
+                    <div class="color-box" style="background-color: orange !important;"></div>
                     <span class="label">Giorno festivo impostato dall'utente</span>
                   </div>
-                </div>
+                </div> -->
 
               </div>
               <br />
@@ -232,7 +262,7 @@
       </div>
       <div class="row">
         <div class="col-12" style="text-align: center;">
-          <table class="table table-striped">
+          <table class="table table-striped" id="table-rapportino">
             <thead>
               <tr>
                 <!-- <th>Nominativo</th> -->
@@ -259,7 +289,7 @@
           </table>
         </div>
       </div>
-
+      <hr style="background-color: aliceblue;">
       <div class="row">
         <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"
           style="text-align: center;">
@@ -267,8 +297,7 @@
           'background-color':
             (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' :
             (giorno.festivitaNazionale ? 'rgb(238, 64, 64)' :
-            (giorno.checkFestivita ? 'orange' : 'rgb(214, 234, 251)'))
-        }">
+            (giorno.checkFestivita ? 'orange' : 'rgb(214, 234, 251)'))}">
             <p style=" margin: 0;"> <button mat-mini-fab color="primary">{{giorno.numeroGiorno}}</button>
               {{giorno.nomeGiorno |titlecase }}
               <i [hidden]="giorno.checkFestivita || giorno.festivitaNazionale || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
@@ -408,10 +437,8 @@
                 </div>
               </div>
             </div>
-            <div class="row"
-              *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] "
-              style="border-top: 1px solid #f1f1f1;">
-              <div class="col-4">
+            <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] " style="border-top: 1px solid #f1f1f1;">
+              <!-- <div class="col-4">
                 <div class="form-group">
                   <label for="permessi-{{ i }}"
                     matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Permessi</label>
@@ -419,8 +446,9 @@
                     class="form-control form-control-sm" step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
                     id="permessi-{{ i }}" name="permessi-{{ i }}" [(ngModel)]="giorno.permessi">
                 </div>
-              </div>
-              <div class="col-4">
+              </div> -->
+             <div class="row">
+              <div class="col-6">
                 <div class="form-group">
                   <label for="permessiRole-{{ i }}"
                     matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Role</label>
@@ -429,7 +457,7 @@
                     id="permessiRole-{{ i }}" name="permessiRole-{{ i }}" [(ngModel)]="giorno.permessiRole">
                 </div>
               </div>
-              <div class="col-4">
+              <div class="col-6">
                 <div class="form-group">
                   <label for="permessiExfestivita-{{ i }}"
                     matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Festivitá</label>
@@ -439,7 +467,9 @@
                     [(ngModel)]="giorno.permessiExfestivita">
                 </div>
               </div>
-              <div class="col-4">
+             </div>
+             <div class="row">
+              <div class="col-6">
                 <div class="form-group">
                   <label for="ferie-{{ i }}">Ferie</label> <br>
                   <input
@@ -448,7 +478,7 @@
                     class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
                 </div>
               </div>
-              <div class="col-4">
+              <div class="col-6">
                 <div class="form-group">
                   <label for="malattie-{{i}}">Malattia</label><br>
                   <input
@@ -458,6 +488,7 @@
                     [(ngModel)]="giorno.malattie">
                 </div>
               </div>
+             </div>
             </div>
             <div class="row">
               <div class="col-5">
@@ -517,7 +548,7 @@
 
       <div class="row">
         <div class="col-12">
-          <table class="table table-bordered">
+          <table class="table table-bordered" id="table-rapportino">
             <thead>
               <tr>
                 <th>Tot giorni ferie</th>
