@@ -162,33 +162,35 @@ body,
 .pagination ul .dark-mode {
   list-style: none;
   padding: 0;
+  background-color: #444;
   display: flex;
   align-items: center;
 }
 
-.pagination li .dark-mode{
+.pagination li .dark-mode {
   margin: 0 5px;
   cursor: pointer;
   padding: 5px 10px;
   border: 1px solid #555;
   border-radius: 5px;
+  background-color: #444;
   transition: background-color 0.3s, color 0.3s;
 }
 
-.pagination li.disabled .dark-mode{
+.dark-mode .pagination li.disabled  {
   pointer-events: none;
   background-color: #444;
   color: #555;
   border: 1px solid #555;
 }
 
-.pagination li.active .dark-mode{
-  background-color: #007bff;
+.dark-mode .pagination li.active  {
+  background-color: #333;
   color: #fff;
   border: 1px solid #007bff;
 }
 
-.pagination li:hover .dark-mode {
+.dark-mode .pagination li:hover {
   background-color: #555;
   color: #fff;
   border: 1px solid #fff;
@@ -233,4 +235,10 @@ body,
 
 .dark-mode mat-card {
   border: 1px solid white;
+}
+
+.dark-mode button {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #fff;
 }
