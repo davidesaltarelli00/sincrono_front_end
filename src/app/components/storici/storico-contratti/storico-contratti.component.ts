@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StoricoService } from '../storico-service';
@@ -40,6 +40,9 @@ export class StoricoContrattiComponent implements OnInit {
   itemsPerPage: number = 3;
   tipoContratto: any;
   pageData: any[] = [];
+  windowWidth: any;
+  mobile: any;
+  isHamburgerMenuOpen: boolean = false;
 
   constructor(
     private storicoService: StoricoService,
@@ -48,11 +51,26 @@ export class StoricoContrattiComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
-    public themeService:ThemeService,
+    public themeService: ThemeService,
     private http: HttpClient,
-    private menuService:MenuService,
+    private menuService: MenuService,
     private anagraficaDtoService: AnagraficaDtoService
-  ) { }
+  ) {
+    this.windowWidth = window.innerWidth;
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
+  }
 
   toggleDarkMode(): void {
     this.themeService.toggleDarkMode();
@@ -93,6 +111,22 @@ export class StoricoContrattiComponent implements OnInit {
       );
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
+  }
   //paginazione
   getCurrentPageItems(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
