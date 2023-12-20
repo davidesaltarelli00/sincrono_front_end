@@ -1,6 +1,6 @@
 import { ImageService } from './../image.service';
 import { MenuService } from './../menu.service';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../login/login-service';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
+import { ThemeService } from 'src/app/theme.service';
 @Component({
   selector: 'app-cambio-password',
   templateUrl: './cambio-password.component.html',
@@ -36,11 +37,15 @@ export class CambioPasswordComponent {
   userlogged: any;
   jsonData: any;
   userRoleNav: any;
-  ruolo:any;
+  ruolo: any;
   codiceFiscaleDettaglio: any;
   idNav: any;
   shouldReloadPage: any;
   idFunzione: any;
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+  windowWidth: any;
+  orarioAttuale: Date = new Date();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,9 +55,9 @@ export class CambioPasswordComponent {
     private authService: AuthService,
     private dialog: MatDialog,
     private menuService: MenuService,
-    private imageService: ImageService
+    private imageService: ImageService,
+    public themeService: ThemeService
   ) {
-
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -84,6 +89,26 @@ export class CambioPasswordComponent {
     );
   }
 
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
+  }
+
   ngOnInit(): void {
     window.scrollTo(0, 0);
 
@@ -100,7 +125,7 @@ export class CambioPasswordComponent {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
@@ -164,7 +189,7 @@ export class CambioPasswordComponent {
           passwordNuova: newPassword,
         };
 
-        console.log("BODY CAMBIO PSW: " + JSON.stringify(body));
+        console.log('BODY CAMBIO PSW: ' + JSON.stringify(body));
 
         this.cambioPasswordService
           .cambioPassword(localStorage.getItem('token'), body)
@@ -244,7 +269,7 @@ export class CambioPasswordComponent {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
@@ -274,14 +299,12 @@ export class CambioPasswordComponent {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-          error
+            error
         );
         this.shouldReloadPage = true;
       }
     );
   }
-
-
 
   getPermissions(functionId: number) {
     this.menuService.getPermissions(this.token, functionId).subscribe(
@@ -295,23 +318,24 @@ export class CambioPasswordComponent {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        console.log(
-          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        );
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-        this.jsonData = { list: [] };
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          console.log(
+            JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          );
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
-
 
   getImage() {
     let body = {
@@ -336,7 +360,7 @@ export class CambioPasswordComponent {
       (error: any) => {
         console.error(
           "Errore durante il caricamento dell'immagine: " +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
 
         // Assegna un'immagine predefinita in caso di errore
@@ -352,5 +376,4 @@ export class CambioPasswordComponent {
   logout() {
     this.dialog.open(AlertLogoutComponent);
   }
-  
 }
