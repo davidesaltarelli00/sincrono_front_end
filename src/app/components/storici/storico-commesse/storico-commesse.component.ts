@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoricoService } from '../storico-service';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
@@ -34,16 +34,35 @@ export class StoricoCommesseComponent implements OnInit {
   tokenProvvisorio: any;
   idUtente: any;
   pageData: any[] = [];
+  windowWidth: any;
+  mobile: any;
+  isHamburgerMenuOpen: boolean = false;
   constructor(
     private router: Router,
     private activatedRouter: ActivatedRoute,
     private storicoService: StoricoService,
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
-    private menuService:MenuService,
+    private menuService: MenuService,
     private http: HttpClient,
-    public themeService:ThemeService
-  ) { }
+    public themeService: ThemeService
+  ) {
+    this.windowWidth = window.innerWidth;
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
+
+  }
 
   ngOnInit(): void {
     if (this.token != null) {
@@ -63,6 +82,21 @@ export class StoricoCommesseComponent implements OnInit {
           console.error('Errore durante il caricamento dei dati: ' + error);
         }
       );
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
   }
   getStoricoCommesse(idAnagrafica: number): any {
     this.router.navigate(['/storico-commesse', idAnagrafica]);
