@@ -237,6 +237,50 @@ mat-card{
 }
 
 
+.pagination .dark-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.pagination ul .dark-mode {
+  list-style: none;
+  padding: 0;
+  background-color: #444;
+  display: flex;
+  align-items: center;
+}
+
+.pagination li .dark-mode {
+  margin: 0 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #444;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-mode .pagination li.disabled  {
+  pointer-events: none;
+  background-color: #444;
+  color: #555;
+  border: 1px solid #555;
+}
+
+.dark-mode .pagination li.active  {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #007bff;
+}
+
+.dark-mode .pagination li:hover {
+  background-color: #555;
+  color: #fff;
+  border: 1px solid #fff;
+}
 
 /* styles.css o nel tuo componente-specifico.css */
 .dark-mode *{
