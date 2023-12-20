@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild, HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,7 +17,6 @@ import { AuthService } from '../login/login-service';
 import { MenuService } from '../menu.service';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.component';
-
 @Component({
   selector: 'app-modifica-commessa',
   templateUrl: './modifica-commessa.component.html',
@@ -98,7 +97,8 @@ export class ModificaCommessaComponent {
   dati: any = [];
   statoDiNascita: any;
   provinciaDiNascita: string = '';
-
+  isHamburgerMenuOpen: boolean = false;
+  windowWidth: any;
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private activatedRouter: ActivatedRoute,
@@ -117,6 +117,7 @@ export class ModificaCommessaComponent {
     private menuService: MenuService,
     private mapsService: MapsService,
     private stepperService: StepperService
+
   ) {
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -268,6 +269,24 @@ export class ModificaCommessaComponent {
       }),
     });
   }
+
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+
   getCommessas(): FormArray {
     return this.anagraficaDto.get('commesse') as FormArray;
   }
@@ -576,7 +595,7 @@ export class ModificaCommessaComponent {
             (error: any) => {
               console.error(
                 'Errore durante il caricamento dei livelli di contratto: ' +
-                  error
+                error
               );
             }
           );
@@ -927,7 +946,7 @@ export class ModificaCommessaComponent {
           this.elencoLivelliCCNL = response['list'];
           console.log(
             '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
-              JSON.stringify(this.elencoLivelliCCNL)
+            JSON.stringify(this.elencoLivelliCCNL)
           );
         },
         (error: any) => {
@@ -969,7 +988,7 @@ export class ModificaCommessaComponent {
             (error: any) => {
               console.error(
                 'Errore durante il caricamento dei livelli di contratto: ' +
-                  error
+                error
               );
             }
           );
@@ -1510,7 +1529,7 @@ export class ModificaCommessaComponent {
   // Dichiarazione di una variabile per il valore precedente
   valorePrecedenteDataFineRapporto: any;
 
-  onChangeTipoCausaFineContratto(event:any){
+  onChangeTipoCausaFineContratto(event: any) {
     const target = event.target as HTMLInputElement;
     const value = target.value;
     console.log(value);
@@ -1625,7 +1644,7 @@ export class ModificaCommessaComponent {
       );
   }
 
-  storicizza( posizione: number) {
+  storicizza(posizione: number) {
     const payload = {
       commessa: this.elencoCommesse[posizione],
     };
@@ -1645,12 +1664,12 @@ export class ModificaCommessaComponent {
               title: 'Commessa storicizzata correttamente.',
             },
           });
-         location.reload();
+          location.reload();
         },
         (error: any) => {
           console.error(
             'Si è verificato un errore durante la storicizzazione della commessa selezionata: ' +
-              error
+            error
           );
         }
       );
@@ -1724,7 +1743,7 @@ export class ModificaCommessaComponent {
         (error: any) => {
           console.log(
             'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
-              JSON.stringify(error)
+            JSON.stringify(error)
           );
         }
       );
@@ -1789,7 +1808,7 @@ export class ModificaCommessaComponent {
 
     console.log(
       'Valore di anagrafica: ' +
-        JSON.stringify(this.anagraficaDto.get('anagrafica')?.value)
+      JSON.stringify(this.anagraficaDto.get('anagrafica')?.value)
     );
     const payload = {
       anagraficaDto: this.anagraficaDto.value,
@@ -1923,12 +1942,12 @@ export class ModificaCommessaComponent {
       .subscribe(
         (result: any) => {
           this.tipiCausaFineContratto = (result as any)['list'];
-          console.log("Cause di fine contratto caricate: "+ JSON.stringify(this.tipiCausaFineContratto));
+          console.log("Cause di fine contratto caricate: " + JSON.stringify(this.tipiCausaFineContratto));
         },
         (error: any) => {
           console.error(
             'Errore durante il caricamento delle cause di fine contratto: ' +
-              JSON.stringify(error)
+            JSON.stringify(error)
           );
         }
       );
@@ -1942,7 +1961,7 @@ export class ModificaCommessaComponent {
           this.tipiContratti = (result as any)['list'];
           console.log(
             '------------------------TIPI DI CONTRATTI CARICATI:------------------------ ' +
-              JSON.stringify(result)
+            JSON.stringify(result)
           );
         },
         (error: any) => {
@@ -1961,7 +1980,7 @@ export class ModificaCommessaComponent {
           this.livelliContratti = (result as any)['list'];
           console.log(
             '------------------------LIVELLI CONTRATTO CARICATI:------------------------ ' +
-              JSON.stringify(result)
+            JSON.stringify(result)
           );
         },
         (error: any) => {
@@ -1980,7 +1999,7 @@ export class ModificaCommessaComponent {
           this.tipiAziende = (result as any)['list'];
           console.log(
             '------------------------AZIENDE CARICATE:------------------------ ' +
-              JSON.stringify(result)
+            JSON.stringify(result)
           );
         },
         (error: any) => {
@@ -1998,7 +2017,7 @@ export class ModificaCommessaComponent {
           this.ccnl = (result as any)['list'];
           console.log(
             '------------------------CCNL CARICATI:------------------------ ' +
-              JSON.stringify(result)
+            JSON.stringify(result)
           );
           this.changeElencoLivelliCCNL();
         },
@@ -2016,7 +2035,7 @@ export class ModificaCommessaComponent {
         this.ruoli = (result as any)['list'];
         console.log(
           '------------------------RUOLI CARICATI:------------------------ ' +
-            JSON.stringify(result)
+          JSON.stringify(result)
         );
       },
       (error: any) => {
@@ -2410,9 +2429,9 @@ export class ModificaCommessaComponent {
       this.mensileTOT = mensileTot;
       console.log(
         'MENSILE TOTALE CALCOLATO:' +
-          this.mensileTOT +
-          '\n Numero mensilitá: ' +
-          this.numeroMensilitaDaDettaglio
+        this.mensileTOT +
+        '\n Numero mensilitá: ' +
+        this.numeroMensilitaDaDettaglio
       );
       this.calcoloRAL();
     } else {
@@ -2455,7 +2474,7 @@ export class ModificaCommessaComponent {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
+          error
         );
       }
     );
@@ -2485,7 +2504,7 @@ export class ModificaCommessaComponent {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
+          error
         );
         this.shouldReloadPage = true;
       }
@@ -2546,7 +2565,7 @@ export class ModificaCommessaComponent {
       (error: any) => {
         console.error(
           "Errore durante il caricamento dell'immagine: " +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
 
         // Assegna un'immagine predefinita in caso di errore
