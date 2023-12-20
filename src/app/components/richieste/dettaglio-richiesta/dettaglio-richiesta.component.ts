@@ -2,6 +2,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostListener,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -46,6 +47,9 @@ export class DettaglioRichiestaComponent implements OnInit {
   tipoRichiesta: any;
   note: any;
   compilaNote = false;
+  windowWidth: any;
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -61,7 +65,22 @@ export class DettaglioRichiestaComponent implements OnInit {
     private anagraficaDtoService: AnagraficaDtoService,
     private cdRef: ChangeDetectorRef,
     private richiesteService: RichiesteService
-  ) {}
+  ) {
+    this.windowWidth = window.innerWidth;
+    if (window.innerWidth >= 900) {
+      // 768px portrait
+      this.mobile = false;
+    } else {
+      this.mobile = true;
+    }
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) == true
+    ) {
+      this.mobile = true;
+    }
+  }
 
   ngOnInit(): void {
     if (this.token != null) {
@@ -98,6 +117,22 @@ export class DettaglioRichiestaComponent implements OnInit {
       this.tipoRichiesta = '';
       return 'Nessuna tipologia specificata';
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
   }
 
   /*
