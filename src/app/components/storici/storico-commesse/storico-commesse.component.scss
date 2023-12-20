@@ -203,6 +203,45 @@
   --text-color: white;
 }
 
+
+
+@media screen and (max-width: 1115px) {
+  .container-toolbar {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .logo-link {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .logo-image {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+  }
+
+  mat-card {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  #table {
+    overflow-x: auto;
+    text-align: center;
+  }
+
+  #table th,
+  #table td {
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
 @media screen and (max-width: 830px) {
   .hamburger-menu {
     cursor: pointer;
@@ -246,4 +285,124 @@
     width: 60px;
     height: 60px;
   }
+
+  #table {
+    overflow-x: auto;
+    text-align: center;
+  }
+
+  #table th,
+  #table td {
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .table {
+    width: 100%;
+    margin-top: 20px;
+    /* Adjust margin as needed */
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      /* Add border style as needed */
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f2f2f2;
+      /* Add even row background color */
+    }
+
+    tbody tr:hover {
+      background-color: #ddd;
+      /* Add hover background color */
+    }
+  }
+}
+
+.footer {
+  width: 100%;
+  background-color: #333;
+  // position: fixed;
+  bottom: 0;
+  left: 0;
+  // z-index: 1000;
+}
+
+.dark-mode .footer {
+  border: 1px solid white;
+}
+
+.footer .col {
+  width: 190px;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.footer .col h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  line-height: 17px;
+  padding: 10px 0;
+  color: #007bff;
+  text-transform: uppercase;
+}
+
+.footer .col ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.footer .col ul li {
+  color: white;
+  font-size: 12px;
+  padding: 5px 0px;
+}
+
+.address ul li {
+  display: inline-block;
+  padding-right: 5px !important;
+}
+
+.footer .col ul li:hover {
+  cursor: pointer;
+  color: lightgray;
+  font-weight: bold;
+}
+
+.clearfix {
+  clear: both;
+}
+
+body {
+  background-color: aliceblue;
+
+}
+
+.container-fluid {
+  background-color: aliceblue;
+}
+
+mat-stepper {
+  background-color: aliceblue;
+}
+
+.invalid-field {
+  border-color: red;
+
+}
+
+select {
+  width: 50%;
+}
+
+mat-card {
+  margin: 20px;
 }
