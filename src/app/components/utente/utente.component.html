@@ -271,7 +271,7 @@
                 <th>Contratto</th>
                 <th>Periodo di riferimento</th>
                 <th>Giorni utili di lavoro</th>
-                <th>Richieste</th>
+                <th *ngIf="ruolo==='DIPENDENTE'">Richieste</th>
               </tr>
             </thead>
             <tbody>
@@ -282,7 +282,7 @@
                 <td> {{contrattoUser}}</td>
                 <td>{{nomeMeseDaNumero(selectedMese)}} - {{ selectedAnno }}</td>
                 <td>{{giorniUtili}}</td>
-                <td> <button mat-mini-fab color="primary" [routerLink]="['/richieste']"> <i class="fa fa-envelope"></i>
+                <td *ngIf="ruolo==='DIPENDENTE'"> <button mat-mini-fab color="primary" [routerLink]="['/richieste']"> <i class="fa fa-envelope"></i>
                   </button> </td>
               </tr>
             </tbody>
