@@ -1,4 +1,11 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AuthService } from '../login/login-service';
 import { Router } from '@angular/router';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
@@ -45,6 +52,7 @@ export class HomeComponent implements OnInit {
   isHamburgerMenuOpen: boolean = false;
   selectedMenuItem: string | undefined;
   windowWidth: any;
+  orarioAttuale: Date = new Date();
 
   constructor(
     private authService: AuthService,
@@ -55,7 +63,8 @@ export class HomeComponent implements OnInit {
     private imageService: ImageService,
     private menuService: MenuService,
     private contrattoService: ContrattoService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    private cdRef: ChangeDetectorRef
   ) {
     this.windowWidth = window.innerWidth;
     if (window.innerWidth >= 900) {
@@ -93,6 +102,9 @@ export class HomeComponent implements OnInit {
       this.getUserLogged();
       this.getUserRole();
       this.caricaAziendeClienti();
+      setInterval(() => {
+        this.orarioAttuale = new Date();
+      }, 1000);
     } else {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {

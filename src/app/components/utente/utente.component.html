@@ -271,7 +271,7 @@
                 <th>Contratto</th>
                 <th>Periodo di riferimento</th>
                 <th>Giorni utili di lavoro</th>
-                <th>Richieste</th>
+                <th *ngIf="ruolo==='DIPENDENTE'">Richieste</th>
               </tr>
             </thead>
             <tbody>
@@ -282,7 +282,7 @@
                 <td> {{contrattoUser}}</td>
                 <td>{{nomeMeseDaNumero(selectedMese)}} - {{ selectedAnno }}</td>
                 <td>{{giorniUtili}}</td>
-                <td> <button mat-mini-fab color="primary" [routerLink]="['/richieste']"> <i class="fa fa-envelope"></i>
+                <td *ngIf="ruolo==='DIPENDENTE'"> <button mat-mini-fab color="primary" [routerLink]="['/richieste']"> <i class="fa fa-envelope"></i>
                   </button> </td>
               </tr>
             </tbody>
@@ -293,22 +293,25 @@
       <div class="row">
         <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"
           style="text-align: center;">
-          <mat-card [ngClass]="getBackgroundClasses(giorno)" [ngStyle]="{
-          'background-color':
-            (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' :
-            (giorno.festivitaNazionale ? 'rgb(238, 64, 64)' :
-            (giorno.checkFestivita ? 'orange' : 'rgb(214, 234, 251)'))}">
+          <mat-card [ngClass]="getBackgroundClasses(giorno)"
+          [ngStyle]="{
+            'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') && !giorno.festivitaNazionale ? 'aliceblue' :
+                                (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') && giorno.festivitaNazionale ? 'rgb(238, 64, 64)' :
+                                (!giorno.checkFestivita ? (giorno.festivitaNazionale ? 'rgb(238, 64, 64)' : 'rgb(214, 234, 251)') :
+                                'orange')
+          }"
+          >
             <p style=" margin: 0;"> <button mat-mini-fab color="primary">{{giorno.numeroGiorno}}</button>
               {{giorno.nomeGiorno |titlecase }}
-              <i [hidden]="giorno.checkFestivita || giorno.festivitaNazionale || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
+              <i [hidden]="giorno.checkFestivita || giorno.ferie || giorno.festivitaNazionale || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
                 class="fa fa-calendar"
                 matTooltip="Imposta {{giorno.nomeGiorno | titlecase }} {{giorno.numeroGiorno}} {{selectedMese}} come festivo."
                 (click)="setFestivita(true, giorno)"></i>
-              <i [hidden]="!giorno.checkFestivita || giorno.festivitaNazionale || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
+              <i [hidden]="!giorno.checkFestivita || giorno.ferie || giorno.festivitaNazionale || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
                 class="fa fa-suitcase"
                 matTooltip="Imposta {{giorno.nomeGiorno | titlecase }} {{giorno.numeroGiorno}} {{selectedMese}} come non festivo."
                 (click)="unsetFestivita(false, giorno)"></i>
-              <i *ngIf="giorno.festivitaNazionale  || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
+              <i *ngIf="giorno.festivitaNazionale || giorno.ferie || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
                 class="fa fa-calendar"></i>
             </p>
             <div class="container-card"
@@ -574,7 +577,7 @@
           </table>
         </div>
       </div>
-      <br>
+      <hr>
       <div class="row text-center">
         <div class="col-4">
           <button [disabled]="risultatoCheckFreeze || !giorno" mat-mini-fab color="primary"
@@ -590,7 +593,7 @@
             matTooltip="Invia nota all'admin "><i class="fa fa-info"></i></button>
         </div>
       </div>
-
+      <hr>
       <div class="row" *ngIf="inviaNoteAlDipendente">
         <br> <br>
         <div class="col-12">
@@ -610,7 +613,6 @@
     </div>
     <br>
     <div id="finePagina"></div>
-    <br /><br /><br />
   </div>
   <div class="container-fluid" *ngIf="dettaglioSbagliato">
     <div class="not-found-container">
@@ -634,7 +636,50 @@
       </div>
     </div>
   </div>
-  <br><br><br><br>
+  <footer>
+    <div class="footer">
+      <div class="contain">
+      <div class="col">
+        <h2>Sito web</h2>
+        <ul>
+          <li> <a href="https://www.sincrono.it/" target="_blank"> <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo"></a> </li>
+        </ul>
+      </div>
+      <div class="col">
+        <h2>Social</h2>
+        <ul>
+          <li>
+            <a href="https://www.linkedin.com/company/gruppo-sincrono/mycompany/" target="_blank" class="social-icon"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.facebook.com/g.sincrono" class="social-icon" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/grupposincrono?igshid=OGQ5ZDc2ODk2ZA==" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.sincrono.it/#pinterest" class="social-icon" target="_blank"><i class="fab fa-pinterest"></i></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col">
+        <h2>Contatti</h2>
+        <ul>
+          <li> <b>Tel:</b> 06 7101227</li>
+          <li> <b>Fax:</b> 06 89716493</li>
+          <li> <b>P.IVA:</b> 14651701006</li>
+          <li matTooltip="Invia il tuo CV" > <b>Lavora con noi: </b>cv@sincrono.it </li>
+        </ul>
+      </div>
+      <div class="col address">
+        <h2>Indirizzo </h2>
+        <ul>
+          <li> <b>Indirizzo:</b> Via Vinicio Cortese 147/F - 00128 Roma (RM) - Lazio, Italia</li>
+          <li> <b>Sede legale:</b> Via Isole del Capoverde 310, 00121 (Roma) (RM) - Lazio, Italia</li>
+      </ul>
+      </div>
+      <div class="col">
+        <h2>Tutti i diritti riservati</h2>
+      </div>
+    <div class="clearfix"></div>
+    </div>
+    </div>
+    </footer>
 </body>
 
 </html>
