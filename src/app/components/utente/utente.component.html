@@ -293,11 +293,14 @@
       <div class="row">
         <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"
           style="text-align: center;">
-          <mat-card [ngClass]="getBackgroundClasses(giorno)" [ngStyle]="{
-          'background-color':
-            (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') ? 'aliceblue' :
-            (giorno.festivitaNazionale ? 'rgb(238, 64, 64)' :
-            (giorno.checkFestivita ? 'orange' : 'rgb(214, 234, 251)'))}">
+          <mat-card [ngClass]="getBackgroundClasses(giorno)"
+          [ngStyle]="{
+            'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') && !giorno.festivitaNazionale ? 'aliceblue' :
+                                (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') && giorno.festivitaNazionale ? 'rgb(238, 64, 64)' :
+                                (!giorno.checkFestivita ? (giorno.festivitaNazionale ? 'rgb(238, 64, 64)' : 'rgb(214, 234, 251)') :
+                                'orange')
+          }"
+          >
             <p style=" margin: 0;"> <button mat-mini-fab color="primary">{{giorno.numeroGiorno}}</button>
               {{giorno.nomeGiorno |titlecase }}
               <i [hidden]="giorno.checkFestivita || giorno.festivitaNazionale || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
