@@ -184,7 +184,10 @@ mat-card:not(.dark-mode) {
 
 .footer {
   width: 100%;
-  background-color: black;
+  background-color: #333;
+}
+.dark-mode .footer{
+  border: 1px solid white;
 }
 .footer .col {
   width: 190px;
