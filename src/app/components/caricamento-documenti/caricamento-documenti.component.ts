@@ -11,6 +11,7 @@ import { ThemeService } from 'src/app/theme.service';
 import { Observable, of } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-caricamento-documenti',
@@ -38,7 +39,7 @@ export class CaricamentoDocumentiComponent implements OnInit {
 
   base64Documento: any;
   selectedFileName: string = '';
-  previewData: string | undefined;
+  previewData: SafeHtml | undefined;
   token = localStorage.getItem('token');
   mobile: boolean=false;
   uploadProgress: number | undefined;
@@ -48,6 +49,7 @@ export class CaricamentoDocumentiComponent implements OnInit {
 
 
   constructor(
+    private sanitizer: DomSanitizer,
     private anagraficaDtoService: AnagraficaDtoService,
     private menuService: MenuService,
     public themeService:ThemeService,
@@ -168,8 +170,8 @@ export class CaricamentoDocumentiComponent implements OnInit {
     return btoa(binary);
   }
 
-  previewExcel(base64String: string): void {
-    const workbook: XLSX.WorkBook = XLSX.read(base64String, { type: 'base64' });
+  //previewExcel(base64String: string): void {
+    /*const workbook: XLSX.WorkBook = XLSX.read(base64String, { type: 'base64' });
 
     // Assuming the first sheet is the one you want to preview
     const firstSheetName = workbook.SheetNames[0];
@@ -182,8 +184,67 @@ export class CaricamentoDocumentiComponent implements OnInit {
     });
 
     // Display the preview
-    this.previewData = htmlString;
+    this.previewData = htmlString;*/
+  
+//  }
+previewExcel(base64String: string): void {
+  const binaryString = atob(base64String);
+
+  const bytes = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
   }
+
+  const workbook: XLSX.WorkBook = XLSX.read(bytes, { type: 'array' });
+  const firstSheetName = workbook.SheetNames[0];
+  const worksheet: XLSX.WorkSheet = workbook.Sheets[firstSheetName];
+
+  const htmlString: string = this.sheetToHtml(worksheet);
+
+  this.previewData = this.sanitizer.bypassSecurityTrustHtml(htmlString);
+  console.log(this.previewData)
+}
+
+
+sheetToHtml(sheet: XLSX.WorkSheet): string {
+  const range = sheet['!ref'] ? XLSX.utils.decode_range(sheet['!ref']) : { s: { r: 0, c: 0 }, e: { r: 0, c: 0 } };
+
+  let html = '<table style="border-collapse: collapse; width: 100%;">';
+  
+  for (let R = range.s.r; R <= range.e.r; ++R) {
+    html += '<tr>';
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cell_address = { c: C, r: R };
+      const cell_ref = XLSX.utils.encode_cell(cell_address);
+      const cell = sheet[cell_ref];
+  
+      // Get the cell value
+      const value = cell ? cell.v : '';
+  
+      // Get the cell style
+      const cellStyle = XLSX.utils.format_cell(cell);
+  
+      // Map Excel color codes to CSS color values
+      const backgroundColorMatch = cellStyle.match(/background-color:(.*?);/);
+      const backgroundColor = backgroundColorMatch ? backgroundColorMatch[1] : '';
+  
+      const fontColorMatch = cellStyle.match(/color:(.*?);/);
+      const fontColor = fontColorMatch ? fontColorMatch[1] : '';
+  
+      // Determine the background color for the row and text color for the first row
+      const rowBackgroundColor = R === range.s.r ? 'gray' : backgroundColor;
+      const textColor = R === range.s.r ? 'white' : fontColor;
+  
+      // Apply style and color to the HTML with borders
+      html += `<td style="background-color:${rowBackgroundColor}; color:${textColor}; border: 1px solid #000; padding: 8px;">${value}</td>`;
+    }
+    html += '</tr>';
+  }
+  
+  html += '</table>';
+  return html;
+}
+
 
   mostraAlert(tipo: string, titolo: string, messaggio: string): void {
     const dialogRef = this.dialog.open(AlertDialogComponent, {

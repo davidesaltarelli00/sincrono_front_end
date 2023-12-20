@@ -135,6 +135,9 @@ import { ModificaRichiestaComponent } from './components/richieste/modifica-rich
     MaterialModule,
     CommonModule,
     MatSelectModule,
+
+
+
   ],
   providers: [DatePipe, CurrencyPipe],
   //  { provide: LOCALE_ID, useValue: 'it-IT' }

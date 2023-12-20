@@ -63,33 +63,56 @@
 
 <body [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div id="inizioPagina"></div>
-  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
-    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
-      <a [routerLink]="['/home']" class="logo-link">
-        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
-      </a>
-      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
-        <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
-          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
-          {{ menuItem.nome }}
+  <div class="container-toolbar" *ngIf="!mobile">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <a [routerLink]="['/home']" class="logo-link">
+          <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
         </a>
       </div>
-      <span>
+
+      <div class="col-auto">
+        <button  *ngIf="getWindowWidth() < 830" mat-icon-button [matMenuTriggerFor]="hamburgerMenu" (click)="toggleHamburgerMenu()" class="hamburger-icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+
+      <div class="col-auto">
+        <mat-menu #hamburgerMenu="matMenu" class="hamburger-menu">
+          <button id="menu-voice" mat-menu-item *ngFor="let menuItem of jsonData.list" (click)="navigateTo(menuItem.percorso)">
+            {{ menuItem.nome }}
+          </button>
+        </mat-menu>
+
+        <div class="toolbar-menu" *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen">
+          <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+            *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+            {{ menuItem.nome }}
+          </a>
+        </div>
+      </div>
+
+      <div class="col-auto">
         <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
           <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
           <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
         </div>
+      </div>
 
-      </span>
-      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
-        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
-          class="fa fa-user"></i>
-      </span> &nbsp;&nbsp;
-      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
-        <i class="fa fa-sign-out" aria-hidden="true"></i>
-      </span>
-    </mat-toolbar>
+      <div class="col-auto">
+        <div style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+          <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+          <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+          <i class="fa fa-user"></i>
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <div style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
@@ -97,14 +120,17 @@
       <a [routerLink]="['/home']" class="logo-link">
         <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
       </a>
-      <button style=" background-color:white;color:black;margin-right: 10px;" mat-button [matMenuTriggerFor]="menu">
-        Menu
+      <button style="background-color:#333;color:white;margin-left:-10px;margin-right:3px;border-radius:1px;padding:5px;"
+        mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button style="background-color:white;color:black" mat-menu-item *ngFor="let menuItem of jsonData.list"
-          [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
-          {{ menuItem.nome }}
-        </button>
+        <ng-template matMenuContent>
+          <button style="background-color:#333;color:white" mat-menu-item *ngFor="let menuItem of jsonData.list"
+            [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
+            {{ menuItem.nome }}
+          </button>
+        </ng-template>
       </mat-menu>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
@@ -132,58 +158,58 @@
       <div class="col-6" style="margin: auto; text-align: center;">
         <mat-card>
           <form>
-            <div class="row" style="margin: auto; text-align: center;">
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="meseSelect">Seleziona il mese:</label>
-                  <select
-                    (change)="onMeseSelectChange($event)"
-                    class="form-select"
-                    aria-label="Default select example"
-                    id="meseSelect"
-                    [(ngModel)]="selectedMese"
-                    name="mese"
-                  >
-                    <option
-                      *ngFor="let month of mesi; let i = index"
-                      [value]="i + 1"
+            <div class="container">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="meseSelect">Mese:</label>
+                    <select
+                      (change)="onMeseSelectChange($event)"
+                      class="form-select"
+                      aria-label="Default select example"
+                      id="meseSelect"
+                      [(ngModel)]="selectedMese"
+                      name="mese"
                     >
-                      {{ i + 1 }}
-                    </option>
-                  </select>
+                      <option *ngFor="let month of mesi; let i = index" [value]="i + 1">
+                        {{ month.mese }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="annoSelect">Seleziona l'anno:</label>
-                  <select
-                    (change)="onAnnoSelectChange($event)"
-                    class="form-select"
-                    aria-label="Default select example"
-                    id="annoSelect"
-                    [(ngModel)]="selectedAnno"
-                    name="anno">
-                    <option *ngFor="let year of anni" [value]="year">
-                      {{ year }}
-                    </option>
-                  </select>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="annoSelect">Anno:</label>
+                    <select
+                      (change)="onAnnoSelectChange($event)"
+                      class="form-select"
+                      aria-label="Default select example"
+                      id="annoSelect"
+                      [(ngModel)]="selectedAnno"
+                      name="anno"
+                    >
+                      <option *ngFor="let year of anni" [value]="year">
+                        {{ year }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div class="col-4">
-                <label for="getRapportino">Azioni</label><br />
-                <button
-                 mat-flat-button color="primary"
-                  (click)="getAllRapportiniNonFreezati()"
-                  [disabled]="selectedMese == null || selectedAnno == null"
-                >
-                  Carica lista
-                  <i class="fa fa-print" aria-hidden="true"></i></button
-                >
+                <div class="col-md-4">
+                  <label for="getRapportino">Azioni</label><br />
+                  <button
+                    mat-mini-fab
+                    color="primary"
+                    (click)="getAllRapportiniNonFreezati()"
+                    [disabled]="selectedMese == null || selectedAnno == null">
+                    <i class="fa fa-print" aria-hidden="true"></i>
+                  </button>
+                </div>
               </div>
             </div>
             <br />
           </form>
         </mat-card>
+
       </div>
      </div>
      <br>
@@ -402,10 +428,17 @@
           </mat-expansion-panel>
           <br>
 
-          <table class="table table-striped table-bordered">
+          <table class="table table-striped table-bordered" id="table-rapportini">
             <thead>
               <tr>
-                <th>Seleziona</th>
+                <th>
+                  <button *ngIf="!tutteLeRigheSelezionate" mat-mini-fab color="primary" matTooltip="Seleziona tutti" (click)="toggleSelezione()">
+                   <i class="fa fa-check" ></i>
+                  </button>
+                  <button mat-mini-fab color="primary" *ngIf="tutteLeRigheSelezionate" matTooltip="Deseleziona tutti" (click)="toggleSelezione()">
+                   <i class="fa fa-close" ></i>
+                  </button>
+                </th>
                 <th>Ruolo</th>
                 <th>Nominativo</th>
                 <th>Codice fiscale</th>
@@ -416,36 +449,36 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let rapportinoNonFreezato of pageData; let i=index">
+              <tr *ngFor="let rapportinoNonFreezato of pageData; let i = index">
                 <td>
-                  <input type="checkbox" (change)="selezionaRiga(rapportinoNonFreezato.anagrafica.mailAziendale, rapportinoNonFreezato)">
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="rapportinoNonFreezato.rowSelected"
+                    (change)="selezionaRiga(rapportinoNonFreezato)"
+                  />
                 </td>
-                <td>{{rapportinoNonFreezato.ruolo.descrizione |titlecase }}</td>
-                <td>{{rapportinoNonFreezato.anagrafica.nome |titlecase}}  {{rapportinoNonFreezato.anagrafica.cognome |titlecase}}</td>
-                <td>{{rapportinoNonFreezato.anagrafica.codiceFiscale |uppercase}}</td>
-                <td>{{rapportinoNonFreezato.anagrafica.cellularePrivato ? rapportinoNonFreezato.anagrafica.cellularePrivato : 'Dato non inserito'}}</td>
-                <td>{{rapportinoNonFreezato.anagrafica.mailAziendale}}</td>
+                <td>{{ rapportinoNonFreezato.ruolo.descrizione | titlecase }}</td>
+                <td>{{ rapportinoNonFreezato.anagrafica.nome | titlecase }} {{ rapportinoNonFreezato.anagrafica.cognome | titlecase }}</td>
+                <td>{{ rapportinoNonFreezato.anagrafica.codiceFiscale | uppercase }}</td>
+                <td>{{ rapportinoNonFreezato.anagrafica.cellularePrivato ? rapportinoNonFreezato.anagrafica.cellularePrivato : 'Dato non inserito' }}</td>
+                <td>{{ rapportinoNonFreezato.anagrafica.mailAziendale }}</td>
                 <td *ngIf="rapportinoNonFreezato.anagrafica.checkInviato">
                   Inviato, da controllare
                   <button mat-mini-fab color="accent" (click)="onChangecheckFreeze(true, rapportinoNonFreezato.anagrafica.codiceFiscale, rapportinoNonFreezato.anagrafica.id, selectedAnno, selectedMese)" matTooltip="Imposta come 'CONTROLLATO'"> <i class="fa fa-lock"></i></button>
                 </td>
                 <td *ngIf="!rapportinoNonFreezato.anagrafica.checkInviato">
                   Non inviato
-                  <button mat-mini-fab color="warn"
-                   (click)="sollecita(rapportinoNonFreezato.anagrafica.mailAziendale)"
-                   matTooltip="Sollecita {{rapportinoNonFreezato.anagrafica.nome}}  {{rapportinoNonFreezato.anagrafica.cognome}}"
-                  > <i class="fa fa-envelope" aria-hidden="true"></i></button> <!--[disabled]="!rapportinoNonFreezato.rowSelected"-->
+                  <button mat-mini-fab color="warn" (click)="sollecita(rapportinoNonFreezato.anagrafica.mailAziendale)" matTooltip="Sollecita {{ rapportinoNonFreezato.anagrafica.nome }} {{ rapportinoNonFreezato.anagrafica.cognome }}"> <i class="fa fa-envelope" aria-hidden="true"></i></button>
                 </td>
                 <td>
-                  <button [disabled]="!rapportinoNonFreezato.anagrafica.checkInviato"
-                          mat-fab color="primary"
-                          (click)="getRapportino(rapportinoNonFreezato.anagrafica.id, rapportinoNonFreezato.anagrafica.nome, rapportinoNonFreezato.anagrafica.cognome, rapportinoNonFreezato.anagrafica.codiceFiscale, selectedMese, selectedAnno)">
+                  <button [disabled]="!rapportinoNonFreezato.anagrafica.checkInviato" mat-fab color="primary" (click)="          getRapportino(rapportinoNonFreezato.anagrafica.id, rapportinoNonFreezato.anagrafica.nome, rapportinoNonFreezato.anagrafica.cognome, rapportinoNonFreezato.anagrafica.codiceFiscale, selectedMese, selectedAnno)">
                     <mat-icon>info</mat-icon>
                   </button>
                 </td>
               </tr>
             </tbody>
           </table>
+
 
           <div class="pagination">
             <ul>
@@ -478,7 +511,70 @@
       <div class="col-12">
         <mat-card>
          <mat-card-title>
-          <h1>Rapportini controllati ( {{elencoRapportiniFreezati.length}} ) <button [disabled]="elencoRapportiniFreezati.length<1" mat-fab color="primary" (click)="scarica()" matTooltip="Converti in excel" > <i class="fa fa-file" ></i> </button> <button  mat-fab color="primary" (click)="ExportCSV()" matTooltip="Converti in excel" > <i class="fa fa-file" ></i> </button></h1>
+          <h1>Rapportini controllati ( {{elencoRapportiniFreezati.length}} ) </h1>
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <mat-card>
+                  <form>
+                    <div class="row">
+                      <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                          <label for="meseSelect">Mese:</label>
+                          <select
+                            (change)="onMeseSelectChange($event)"
+                            class="form-select"
+                            aria-label="Default select example"
+                            id="meseSelect"
+                            [(ngModel)]="selectedMeseRapportino"
+                            name="mese"
+                          >
+                            <option *ngFor="let month of mesi; let i = index" [value]="i + 1">
+                              {{ month.mese }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                          <label for="annoSelect">Anno:</label>
+                          <select
+                            (change)="onAnnoSelectChange($event)"
+                            class="form-select"
+                            aria-label="Default select example"
+                            id="annoSelect"
+                            [(ngModel)]="selectedAnnoRapportino"
+                            name="anno"
+                          >
+                            <option *ngFor="let year of anni" [value]="year">
+                              {{ year }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="azioni">Azioni</label> <br>
+                        <button mat-mini-fab color="primary" (click)="getAllRapportiniFreezati()">  <i class="fa fa-print" aria-hidden="true"></i></button>
+                        &nbsp;
+                        <button
+                        mat-mini-fab
+                        color="primary"
+                        (click)="ExportCSV()"
+                        [disabled]="selectedMeseRapportino == null || selectedAnnoRapportino == null || elencoRapportiniFreezati.length<1 "
+                      >
+                        <i class="fa fa-file" aria-hidden="true"></i>
+                      </button>
+                      </div>
+                    </div>
+                    <br />
+                  </form>
+                </mat-card>
+
+              </div>
+            </div>
+          </div>
+
          </mat-card-title>
          <mat-card-content>
           <br>
@@ -645,7 +741,7 @@
                               placeholder="Inserire data fine rapporto">
                           </div>
                         </div> -->
-                        
+
                       </div>
                       <br>
 
@@ -690,7 +786,7 @@
             </ng-template>
           </mat-expansion-panel>
           <br>
-          <table class="table table-striped table-bordered" >
+          <table class="table table-striped table-bordered"  id="table-rapportini" >
             <thead>
               <tr>
                 <th>Ruolo</th>

@@ -6,7 +6,7 @@ import {
   FormArray,
   Validators,
 } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { AnagraficaDtoService } from '../anagraficaDto-service';
 import { Router } from '@angular/router';
 import { ContrattoService } from '../../contratto/contratto-service';
@@ -101,6 +101,9 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   provinciaDiNascita: string = '';
   ruolo: any;
   base64Documento: any;
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+  windowWidth: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -116,6 +119,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     private menuService: MenuService,
     private mapsService: MapsService
   ) {
+    this.windowWidth = window.innerWidth;
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -263,6 +267,22 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     // this.caricaTipoCausaFineRapporto();
     this.caricaRuoli();
     this.caricaTipoCanaleReclutamento();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
   }
 
   clearCodiceFiscale() {

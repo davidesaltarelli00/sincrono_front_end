@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostListener,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -148,6 +149,9 @@ export class UtenteComponent implements OnInit {
   showPermessiRole: boolean[] = [];
   showPermessiExfestivita: boolean[] = [];
   ruolo: any;
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+  windowWidth: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -166,6 +170,8 @@ export class UtenteComponent implements OnInit {
     private scroller: ViewportScroller,
     private cdRef: ChangeDetectorRef
   ) {
+    this.windowWidth = window.innerWidth;
+
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
     const meseCorrente = oggi.getMonth() + 1;
@@ -192,6 +198,22 @@ export class UtenteComponent implements OnInit {
     ) {
       this.mobile = true;
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
   }
 
   filterOptions() {

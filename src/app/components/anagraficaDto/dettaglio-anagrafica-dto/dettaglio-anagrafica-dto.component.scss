@@ -1,4 +1,72 @@
-/* Stili per schermi di larghezza superiore a 768px (desktop) */
+//navbar
+
+#toolbar{
+  background-color: #333;
+  color: #f2f2f2;
+}
+
+.container-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: white;
+  padding: 10px;
+}
+
+.logo-link {
+  margin-right: 10px;
+}
+
+.logo-image {
+  border-radius: 100%;
+}
+
+.toolbar-menu {
+  display: flex;
+  gap: 10px;
+}
+
+.toolbar-link {
+  color: white;
+  text-decoration: none;
+}
+
+.form-switch {
+  margin-right: 10px;
+}
+
+:root {
+  --primary-color: #333;
+  --text-color: white;
+}
+
+@media screen and (max-width: 830px) {
+  .hamburger-menu {
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 20px;
+  }
+
+  .toolbar-link {
+    display: none;
+  }
+
+  .hamburger-icon {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 831px) {
+  .hamburger-menu {
+    display: none;
+  }
+
+  .toolbar-link {
+    display: flex;
+  }
+}
+
 
 body{
   background-color: aliceblue;
@@ -213,15 +281,4 @@ mat-card{
   background-color: #333;
   color: #fff;
   /* Altri stili specifici per il dark mode per il bottone di toggle */
-}
-
-.dark-mode #toolbar {
-  color: #ffffff;
-  /* Testo bianco */
-  display: flex;
-  background-color: #333;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #f3f3f3;
-
 }

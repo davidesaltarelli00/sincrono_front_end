@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { AnagraficaDtoService } from '../anagraficaDto-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -90,6 +90,9 @@ export class DettaglioAnagraficaDtoComponent {
   idUtente: any;
   vediStoricoCommesse: boolean=false;
   ruolo: any;
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+  windowWidth: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -109,6 +112,8 @@ export class DettaglioAnagraficaDtoComponent {
     public themeService: ThemeService
 
   ) {
+    this.windowWidth = window.innerWidth;
+
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -124,6 +129,22 @@ export class DettaglioAnagraficaDtoComponent {
     }
 
     // console.log('DATA DI OGGI: ' + this.dataOdierna);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
   }
 
   ngOnInit(): void {

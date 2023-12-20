@@ -1,6 +1,6 @@
 import { OrganicoService } from '../organico-service';
 import { Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthService } from '../../login/login-service';
 import { Chart } from 'chart.js/auto';
 import * as XLSX from 'xlsx';
@@ -30,6 +30,7 @@ export class ListaOrganicoComponent implements OnInit {
   userlogged: any;
   role: any;
   mobile: any = false;
+  windowWidth: any;
   //nav
   userLoggedName: any;
   userLoggedSurname: any;
@@ -47,6 +48,8 @@ export class ListaOrganicoComponent implements OnInit {
   codiceFiscaleDettaglio: any;
   originalLista: any;
   idUtente: any;
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
 
   constructor(
     private organicoService: OrganicoService,
@@ -61,6 +64,7 @@ export class ListaOrganicoComponent implements OnInit {
     private menuService: MenuService
   ) {
     this.userlogged = localStorage.getItem('userLogged');
+    this.windowWidth = window.innerWidth;
 
     const userLogged = localStorage.getItem('userLogged');
     if (userLogged) {
@@ -79,6 +83,23 @@ export class ListaOrganicoComponent implements OnInit {
     ) {
       this.mobile = true;
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
   }
 
   profile() {
@@ -354,7 +375,7 @@ export class ListaOrganicoComponent implements OnInit {
     (error: any) => {
       console.error(
         'Si è verificato un errore durante il recupero della lista dell organico: ' +
-        error
+          error
       );
     };
   }
@@ -404,7 +425,7 @@ export class ListaOrganicoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
@@ -435,14 +456,12 @@ export class ListaOrganicoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-          error
+            error
         );
         this.shouldReloadPage = true;
       }
     );
   }
-
-
 
   getPermissions(functionId: number) {
     this.menuService.getPermissions(this.token, functionId).subscribe(
@@ -456,21 +475,23 @@ export class ListaOrganicoComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        console.log(
-          JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        );
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-        this.jsonData = { list: [] };
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          console.log(
+            JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          );
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
   getImage() {
     let body = {
@@ -494,7 +515,7 @@ export class ListaOrganicoComponent implements OnInit {
       (error: any) => {
         console.error(
           "Errore durante il caricamento dell'immagine: " +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
 
         // Assegna un'immagine predefinita in caso di errore

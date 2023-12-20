@@ -1,0 +1,44 @@
+.dark-mode * {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode body {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode mat-card {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #f1f1f1;
+}
+
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background-color: #444;
+  color: #fff;
+}
+
+.dark-mode table {
+  border-color: #555;
+}
+
+.dark-mode th,
+.dark-mode td {
+  border-color: #777;
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode button,
+.dark-mode .btn {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+.dark-mode #text-danger{
+  color: rgb(112, 29, 29);
+}

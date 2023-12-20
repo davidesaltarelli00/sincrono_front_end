@@ -2,6 +2,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostListener,
   Inject,
   OnInit,
   ViewChild,
@@ -65,6 +66,9 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
   totaleStraordinari: any;
   totaleOrePermessi: any;
   elencoRichiesteAccettate: any[] = [];
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+  windowWidth: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -79,6 +83,8 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
     private menuService: MenuService,
     private richiesteService: RichiesteService
   ) {
+    this.windowWidth = window.innerWidth;
+
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
     const meseCorrente = oggi.getMonth() + 1;
@@ -107,6 +113,22 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
     }
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
+  }
+
   ngOnInit() {
     if (this.token != null) {
       this.getUserLogged();
@@ -129,9 +151,12 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
           meseRequest: this.mese,
         },
       };
+      console.log("Rapportini update "+JSON.stringify(body));
       this.rapportinoService.getRapportino(this.token, body).subscribe(
         (result: any) => {
+          console.log("Rapportini update "+JSON.stringify(result));
           if ((result as any).esito.code !== 200) {
+
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 image: '../../../../assets/images/logo.jpeg',

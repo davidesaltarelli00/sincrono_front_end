@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-<body>
+<body [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
@@ -33,7 +33,7 @@
                       <input [ngStyle]="{'border': permessoGiorno == null ? '1px solid red' : '1px solid lightgreen'}"
                              type="number" min="1" max="31" id="permessoGiorno" name="permessoGiorno" required
                              [(ngModel)]="permessoGiorno" class="form-control" />
-                      <div class="text-danger" *ngIf="permessoGiorno==null">Campo obbligatorio.</div>
+                      <div id="text-danger" class="text-danger" *ngIf="permessoGiorno==null">Campo obbligatorio.</div>
                     </div>
                   </div>
                   <div class="col-2">
@@ -45,7 +45,7 @@
                         <option [value]="null" selected>--Nessuna opzione--</option>
                         <option *ngFor="let month of mesi; let i = index" [value]="i + 1">{{ getMonthName(i + 1) }}</option>
                       </select>
-                      <div class="text-danger" *ngIf="permessoMese == null">Campo obbligatorio.</div>
+                      <div id="text-danger" class="text-danger" *ngIf="permessoMese == null">Campo obbligatorio.</div>
                     </div>
                   </div>
 
@@ -58,7 +58,7 @@
                         <option [value]="null" selected>--Nessuna selezione--</option>
                         <option *ngFor="let year of elencoAnni" [value]="year">{{ year }}</option>
                       </select>
-                      <div class="text-danger" *ngIf="permessoAnno == null">Campo obbligatorio.</div>
+                      <div id="text-danger" class="text-danger" *ngIf="permessoAnno == null">Campo obbligatorio.</div>
                     </div>
                   </div>
 
@@ -70,7 +70,7 @@
                         <option value="" selected>--Nessuna selezione--</option>
                         <option *ngFor="let ora of arrayDaOra" [value]="ora">{{ ora }}</option>
                       </select>
-                      <div class="text-danger" *ngIf="daOra == null">Campo obbligatorio.</div>
+                      <div id="text-danger" class="text-danger" *ngIf="daOra == null">Campo obbligatorio.</div>
                     </div>
                   </div>
 
@@ -81,7 +81,7 @@
                         <option value="" selected>--Nessuna selezione--</option>
                         <option *ngFor="let ora of arrayAOra" [value]="ora">{{ ora }}</option>
                       </select>
-                      <div class="text-danger" *ngIf="aOra == null">Campo obbligatorio.</div>
+                      <div id="text-danger" class="text-danger" *ngIf="aOra == null">Campo obbligatorio.</div>
                     </div>
                   </div>
 

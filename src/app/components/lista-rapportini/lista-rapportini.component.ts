@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from '../login/login-service';
@@ -42,6 +42,9 @@ export class ListaRapportiniComponent implements OnInit {
   checkFreeze = false;
   mobile: any = false;
   selectedAnno: any;
+  selectedMeseRapportino: any;
+  selectedAnnoRapportino: any;
+
   selectedMese: any;
   currentDate = new Date();
   currentMonth: any;
@@ -49,7 +52,8 @@ export class ListaRapportiniComponent implements OnInit {
   codiceFiscale = '';
   note: any;
   anni: number[] = [];
-  mesi: number[] = [];
+  mesi: any;
+  mesitest: any;
   rapportinoDto: any;
   giorniUtili: any;
   giorniLavorati: any;
@@ -78,6 +82,7 @@ export class ListaRapportiniComponent implements OnInit {
   idCCNLselezionato: any;
   commesse!: FormArray;
   target: { [key: number]: boolean } = {};
+  tutteLeRigheSelezionate: boolean = false;
 
   filterAnagraficaDto: FormGroup = new FormGroup({
     anagrafica: new FormGroup({
@@ -131,6 +136,10 @@ export class ListaRapportiniComponent implements OnInit {
   messaggio: any;
   mostraFiltriFreeze = false;
   mostraFiltriNotFreeze = false;
+  windowWidth: any;
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+
   constructor(
     private authService: AuthService,
     private profileBoxService: ProfileBoxService,
@@ -154,13 +163,28 @@ export class ListaRapportiniComponent implements OnInit {
       this.anni.push(anno);
     }
 
-    this.mesi = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    this.mesi = [
+      { mese: 'Gennaio', value: 1 },
+      { mese: 'Febbraio', value: 1 },
+      { mese: 'Marzo', value: 1 },
+      { mese: 'Aprile', value: 1 },
+      { mese: 'Maggio', value: 1 },
+      { mese: 'Giugno', value: 1 },
+      { mese: 'Luglio', value: 1 },
+      { mese: 'Agosto', value: 1 },
+      { mese: 'Settembre', value: 1 },
+      { mese: 'Ottobre', value: 1 },
+      { mese: 'Novembre', value: 1 },
+      { mese: 'Dicembre', value: 1 },
+    ];
 
     this.selectedAnno = annoCorrente;
     this.selectedMese = meseCorrente;
-
+    this.selectedMeseRapportino = meseCorrente;
+    this.selectedAnnoRapportino = annoCorrente;
     this.currentYear = annoCorrente;
     this.currentMonth = meseCorrente;
+    this.windowWidth = window.innerWidth;
 
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -221,6 +245,22 @@ export class ListaRapportiniComponent implements OnInit {
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
+  }
+
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
@@ -251,7 +291,6 @@ export class ListaRapportiniComponent implements OnInit {
             this.currentPage = 1;
             this.pageData = this.getCurrentPageItems();
 
-
             let body = {
               anno: this.currentYear,
               mese: this.currentMonth,
@@ -269,23 +308,18 @@ export class ListaRapportiniComponent implements OnInit {
                 (error: any) => {
                   console.error(
                     'Si é verificato un errore durante il caricamento dei rapportini freezati: ' +
-                    JSON.stringify(error)
+                      JSON.stringify(error)
                   );
                 }
               );
-
-
           },
           (error: any) => {
             console.error(
               'Errore durante il caricamento dei rapportini not freeze: ' +
-              JSON.stringify(error)
+                JSON.stringify(error)
             );
           }
         );
-
-
-
     } else {
       console.error('Errore di autenticazione.');
     }
@@ -328,7 +362,7 @@ export class ListaRapportiniComponent implements OnInit {
         (error: any) => {
           console.error(
             'Errore durante il caricamento della tipologica canale reclutamento: ' +
-            JSON.stringify(error)
+              JSON.stringify(error)
           );
         }
       );
@@ -351,19 +385,78 @@ export class ListaRapportiniComponent implements OnInit {
       console.log('Valore non valido o azienda non selezionata');
     }
   }
+  private transcodificaMesi(mese: any): any {
+    console.log(mese);
+    switch (mese) {
+      case '1': {
+        return 'Gennaio';
+        break;
+      }
+      case '2': {
+        return 'Febbraio';
+        break;
+      }
+      case '3': {
+        return 'Marzo';
+        break;
+      }
 
-  ExportCSV(){
+      case '4': {
+        return 'Aprile';
+        break;
+      }
+      case '5': {
+        return 'Maggio';
+        break;
+      }
+      case '6': {
+        return 'Giugno';
+        break;
+      }
+      case '7': {
+        return 'Luglio';
+        break;
+      }
+      case '8': {
+        return 'Agosto';
+        break;
+      }
+      case '9': {
+        return 'Settembre';
+        break;
+      }
+      case '10': {
+        return 'Ottobre';
+        break;
+      }
+      case '11': {
+        return 'Novembre';
+        break;
+      }
+      case '12': {
+        return 'Dicembre';
+        break;
+      }
+    }
+  }
+  ExportCSV() {
     let body = {
-      codiceFiscale:"PDRMNC87A47L378K",
-      anno: 2022,
-      mese: 11,
+      anno: this.selectedAnnoRapportino,
+      mese: this.selectedMeseRapportino,
     };
-    this.listaRapportiniService
-    .getExcelRapportino(this.token, body)
-    .subscribe(
+    this.listaRapportiniService.getExcelRapportino(this.token, body).subscribe(
       (result: any) => {
-       console.log(result);
-       this.downloadExcelFile(result["rapportinoB64"])
+        console.log(result);
+        if (result['rapportinoB64'] != null) {
+          this.downloadExcelFile(result['rapportinoB64']);
+        } else {
+          alert(
+            'Non ce nessun utente con il mese di ' +
+              this.transcodificaMesi(this.selectedMeseRapportino) +
+              ' ' +
+              this.selectedAnnoRapportino
+          );
+        }
       },
       (error: any) => {
         console.error(
@@ -372,10 +465,9 @@ export class ListaRapportiniComponent implements OnInit {
         );
       }
     );
-  
   }
 
-  downloadExcelFile(base64:string): void {
+  downloadExcelFile(base64: string): void {
     const byteCharacters = atob(base64);
     const byteNumbers = new Array(byteCharacters.length);
 
@@ -384,7 +476,9 @@ export class ListaRapportiniComponent implements OnInit {
     }
 
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const blob = new Blob([byteArray], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
 
     saveAs(blob, 'nome_file.xlsx');
   }
@@ -504,7 +598,7 @@ export class ListaRapportiniComponent implements OnInit {
             (error: any) => {
               console.error(
                 'Errore durante il caricamento dei livelli di contratto: ' +
-                error
+                  error
               );
             }
           );
@@ -714,6 +808,7 @@ export class ListaRapportiniComponent implements OnInit {
       .getAllRapportiniNonFreezati(this.token, body)
       .subscribe(
         (result: any) => {
+          console.log('Rapportini non freezati ' + JSON.stringify(result));
           this.getAllRapportiniNotFreezeCorretto = true;
           this.elencoRapportiniNonFreezati = result['list'];
           this.selectedMeseRapportinoNonFreezato = result['list']['mese'];
@@ -729,10 +824,40 @@ export class ListaRapportiniComponent implements OnInit {
         (error: any) => {
           console.error(
             'Errore durante il caricamento dei rapportini not freeze: ' +
-            JSON.stringify(error)
+              JSON.stringify(error)
           );
         }
       );
+  }
+
+  deleteRapportino(codiceFiscale: any, anno: any, mese: any) {
+    let body = {
+      rapportinoDto: {
+        anagrafica: {
+          codiceFiscale: codiceFiscale,
+        },
+        annoRequest: anno,
+        meseRequest: mese,
+      },
+    };
+    console.log('Rapportino test ' + JSON.stringify(body));
+    this.listaRapportiniService.deleteRapportino(this.token, body).subscribe(
+      (result: any) => {
+        console.log('Rapportini update ' + JSON.stringify(result));
+
+        // console.log(
+        //   'Rapportini freezati caricati: ' +
+        //     JSON.stringify(this.elencoRapportiniFreezati)
+        // );
+        //  this.insertRapportino();
+      },
+      (error: any) => {
+        console.error(
+          'Si é verificato un errore durante il caricamento dei rapportini freezati: ' +
+            JSON.stringify(error)
+        );
+      }
+    );
   }
 
   getAllRapportiniFreezati() {
@@ -746,6 +871,7 @@ export class ListaRapportiniComponent implements OnInit {
       .getAllRapportiniFreezati(this.token, body)
       .subscribe(
         (result: any) => {
+          console.log('Rapportini freezati ' + JSON.stringify(result));
           this.elencoRapportiniFreezati = result['list'];
           this.currentPage2 = 1;
           this.pageData2 = this.getCurrentPageItems2();
@@ -757,7 +883,7 @@ export class ListaRapportiniComponent implements OnInit {
         (error: any) => {
           console.error(
             'Si é verificato un errore durante il caricamento dei rapportini freezati: ' +
-            JSON.stringify(error)
+              JSON.stringify(error)
           );
         }
       );
@@ -791,13 +917,13 @@ export class ListaRapportiniComponent implements OnInit {
     anno: number,
     mese: number
   ) {
-
     const dialogRef = this.dialog.open(AlertConfermaComponent, {
       data: {
         image: '../../../../assets/images/danger.png',
         title: 'Attenzione:',
-        message: "Confermi di voler cambiare lo stato del rapportino?",
-      }, disableClose: true,
+        message: 'Confermi di voler cambiare lo stato del rapportino?',
+      },
+      disableClose: true,
     });
 
     dialogRef.componentInstance.conferma.subscribe(() => {
@@ -816,16 +942,18 @@ export class ListaRapportiniComponent implements OnInit {
           console.log('RAPPORTINO CONGELATO:' + JSON.stringify(result));
           this.getAllRapportiniFreezati();
           this.getAllRapportiniNonFreezati();
+          if (checkFreeze == false) {
+            this.deleteRapportino(codiceFiscale, anno, mese);
+          }
         },
         (error: any) => {
           console.error(
             'Errore durante il congelamento del rapportino: ' +
-            JSON.stringify(error)
+              JSON.stringify(error)
           );
         }
       );
     });
-
   }
 
   resetNote() {
@@ -929,19 +1057,38 @@ export class ListaRapportiniComponent implements OnInit {
     });
   }
 
-  selezionaRiga(mailAziendale: string, rapportino: any) {
-    rapportino.rowSelected = !rapportino.rowSelected;
+  toggleSelezione() {
+    this.elencoMail = [];
+
+    this.tutteLeRigheSelezionate = !this.tutteLeRigheSelezionate;
+
+    this.pageData.forEach((rapportino) => {
+      rapportino.rowSelected = this.tutteLeRigheSelezionate;
+
+      if (this.tutteLeRigheSelezionate) {
+        this.elencoMail.push(rapportino.anagrafica.mailAziendale);
+      }
+    });
+
+    console.log("L'elenco al momento contiene le seguenti mail: " + JSON.stringify(this.elencoMail));
+  }
+
+
+  selezionaRiga(rapportino: any) {
     if (rapportino.rowSelected) {
-      this.elencoMail.push(mailAziendale);
+      this.elencoMail.push(rapportino.anagrafica.mailAziendale);
     } else {
-      const index = this.elencoMail.indexOf(mailAziendale);
+      const index = this.elencoMail.indexOf(
+        rapportino.anagrafica.mailAziendale
+      );
       if (index !== -1) {
         this.elencoMail.splice(index, 1);
       }
     }
+
     console.log(
       "L'elenco al momento contiene le seguenti mail: " +
-      JSON.stringify(this.elencoMail)
+        JSON.stringify(this.elencoMail)
     );
   }
 
@@ -990,7 +1137,7 @@ export class ListaRapportiniComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
@@ -1020,7 +1167,7 @@ export class ListaRapportiniComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-          error
+            error
         );
         this.shouldReloadPage = true;
       }

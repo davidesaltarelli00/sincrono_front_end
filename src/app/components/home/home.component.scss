@@ -1,309 +1,181 @@
-.clienti {
-  border: 1px solid #ddd;
-  /* Aggiungi un bordo al mat-card */
-  border-radius: 8px;
-  /* Aggiungi un bordo arrotondato */
+body{
+  background-color: aliceblue;
+}
+// lista
+.custom-list {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.custom-list-item {
+  margin-right: 20px;
   padding: 10px;
-  /* Aggiungi spaziatura interna al mat-card */
-  margin-bottom: 10px;
-  /* Aggiungi spaziatura tra i mat-card */
+  border-radius: 5px;
+  background-color: #fff;
 }
 
-/* Stili specifici per schermi di grandi dimensioni (desktop) */
-@media (min-width: 768px) {
-  body {
-    font-size: 18px;
-  }
-
-  /* Altri stili specifici per schermi di grandi dimensioni */
-  .container-fluid {
-    padding: 20px;
-  }
-
-  .col-6 {
-    width: 50%;
-    float: left;
-  }
+.custom-list-item a {
+  text-decoration: none;
+  color: black;
 }
 
-/* Stili specifici per schermi di medie dimensioni (tablet) */
-@media (max-width: 768px) {
-  body {
-    font-size: 16px;
-  }
-
-  /* Altri stili specifici per schermi di medie dimensioni */
-  .col-6 {
-    width: 100%;
-    float: none;
-  }
-
-  .banner img {
-    max-width: 100%;
-  }
-}
-
-/* Stili specifici per schermi di piccole dimensioni (dispositivi mobili) */
-@media (max-width: 480px) {
-  body {
-    font-size: 14px;
-  }
-
-  /* Altri stili specifici per schermi di piccole dimensioni */
-  .container-fluid {
-    padding: 10px;
+@media screen and (max-width: 600px) {
+  .custom-list {
+    flex-direction: column;
   }
 
   .custom-list-item {
-    padding: 10px;
+    margin-right: 0;
+    margin-bottom: 10px;
   }
 }
 
-.clienti {
-  max-width: 100%;
-  /* Adjust the maximum width of the mat-card */
-  overflow: hidden;
-  /* Hide overflow content */
-}
 
-.row {
-  display: flex;
-  flex-wrap: wrap;
-
-}
-
-.col-2 {
-  flex: 1 0 200px;
-  /* Adjust the initial width (200px in this example) */
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+//elenco aziende
 
 .clienti {
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  /* Optional: Add border for better visualization */
-
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
-p {
-  text-align: center;
-  /* Center the text horizontally within the <p> element */
-  margin: 0;
-  /* Remove any default margin to avoid unwanted spacing */
-}
+//navbar
 
-/* Aggiungi animazioni alle mat-card */
-mat-card {
-  transition: box-shadow 0.3s, transform 0.3s;
-}
-
-/* Effetto di ombra al passaggio del mouse */
-mat-card:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transform: scale(1.02);
-}
-
-
-#toolbar {
-  background-color: #007bff;
-  /* Colore blu aziendale */
-  color: #ffffff;
-  /* Testo bianco */
-  display: flex;
+#toolbar{
   background-color: #333;
+  color: #f2f2f2;
+}
+
+.container-toolbar {
+  display: flex;
   justify-content: space-between;
-  /* Allinea gli elementi a sinistra e a destra */
   align-items: center;
-  /* Allinea verticalmente gli elementi al centro */
+  background-color: #333;
+  color: white;
+  padding: 10px;
 }
 
 .logo-link {
   margin-right: 10px;
 }
 
+.logo-image {
+  border-radius: 100%;
+}
+
 .toolbar-menu {
   display: flex;
   gap: 10px;
-  background-color: #333;
-  margin-right: auto;
 }
 
 .toolbar-link {
+  color: white;
   text-decoration: none;
-  color: #ffffff;
-  /* padding: 10px; */
 }
 
-a {
+.form-switch {
+  margin-right: 10px;
+}
+
+:root {
+  --primary-color: #333;
+  --text-color: white;
+}
+
+@media screen and (max-width: 830px) {
+  .hamburger-menu {
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 20px;
+  }
+
+  .toolbar-link {
+    display: none;
+  }
+
+  .hamburger-icon {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 831px) {
+  .hamburger-menu {
+    display: none;
+  }
+
+  .toolbar-link {
+    display: flex;
+  }
+}
+
+//dark mode
+
+.dark-mode body,
+.dark-mode .container-fluid,
+.dark-mode mat-card {
+  background-color: #333;
+  color: white;
+  border: 1px solid white;
+}
+
+body:not(.dark-mode),
+.container-fluid:not(.dark-mode),
+mat-card:not(.dark-mode) {
+  background-color: initial;
+  color: initial;
+  border: initial;
+}
+
+.dark-mode .custom-list {
+  background-color: #333;
   color: white;
 }
 
-.toolbar-link:hover {
-  color: #d8d8d8;
-}
-
-.user-icon,
-.logout-icon {
-  color: #ffffff;
-  cursor: pointer;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-.dark-mode #toolbar {
-  color: #ffffff;
-  /* Testo bianco */
-  display: flex;
-  background-color: #333;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #f3f3f3;
-
-}
-
-/* styles.css o nel tuo componente-specifico.css */
-.dark-mode * {
-  background-color: #333;
-  color: #fff;
-}
-
-.dark-mode body {
-  background-color: #333;
-  color: #fff;
-}
-
-.dark-mode mat-card {
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #f1f1f1;
-}
-
-.dark-mode input,
-.dark-mode textarea,
-.dark-mode select {
+.dark-mode .custom-list-item {
   background-color: #444;
-  color: #fff;
+  color: white;
 }
 
-.dark-mode table {
-  border-color: #555;
-}
-
-.dark-mode th,
-.dark-mode td {
-  border-color: #777;
-  background-color: #333;
-  color: #fff;
-}
-
-.dark-mode button,
-.dark-mode .btn {
-  background-color: #333;
-  color: #fff;
-}
-
-
-.dark-mode .pagination {
-  background-color: #333;
-}
-
-.dark-mode .pagination li {
-  border: 1px solid #555;
-}
-
-.dark-mode .pagination li.disabled {
-  background-color: #444;
-  color: #666;
-  border: 1px solid #555;
-}
-
-.dark-mode .pagination li.active {
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #007bff;
-}
-
-.dark-mode .pagination li:hover {
-  background-color: #555;
-  color: #fff;
-  border: 1px solid #666;
-}
-
-.dark-mode #toolbar {
-  color: #ffffff;
-  /* Testo bianco */
-  display: flex;
-  background-color: #333;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #f3f3f3;
-
-}
-
-/* Stili comuni per i bottoni */
-button.toggle-button {
-  padding: 8px 16px;
-  margin: 8px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-/* Stili specifici per dark mode */
-.dark-mode button.toggle-button {
-  background-color: #333;
-  color: #fff;
-  /* Altri stili specifici per il dark mode per il bottone di toggle */
-}
-
-/* Stili comuni per mat-list */
-mat-list {
-  width: 100%;
-}
-
-/* Stili comuni per mat-list-item */
-mat-list-item {
-  padding: 16px;
-  border-bottom: 1px solid #ddd;
-  /* Aggiungi una sottolineatura tra gli elementi della lista */
-}
-
-/* Stili comuni per gli anchor (link) all'interno di mat-list-item */
-mat-list-item a {
-  color: inherit;
-  /* Eredità del colore del testo dallo stile del padre */
+.dark-mode .custom-list-item a {
   text-decoration: none;
-  /* Rimuovi la sottolineatura dei link */
+  color: white;
 }
 
-/* Stili specifici per dark mode per mat-list e mat-list-item */
-.dark-mode mat-list {
+.dark-mode .hamburger-menu {
+  background-color: #333 !important;
+  color: white !important;
+}
+
+.dark-mode #menu-voice {
+  color: white !important;
+}
+
+.dark-mode .mat-menu-panel {
+  background-color: #333 !important;
+}
+
+.dark-mode .mat-menu-content {
+  color: white;
+}
+
+.dark-mode .toolbar-menu{
   background-color: #333;
-  /* Colore di sfondo scuro per la lista */
   color: #fff;
-  /* Colore del testo chiaro per la lista */
+}
+.col-2 {
+  width: 16.66%;
+  float: left;
+  padding: 0 10px;
 }
 
-.dark-mode mat-list-item {
-  border-color: #555;
-  /* Colore del bordo scuro per gli elementi della lista */
-  background-color: #444;
-  /* Colore di sfondo scuro per gli elementi della lista */
-  color: #fff;
-  /* Colore del testo chiaro per gli elementi della lista */
+@media (max-width: 768px) {
+  .col-2 {
+    width: 100%;
+    float: none;
+    padding: 0;
+  }
 }
-
-.dark-mode mat-list-item a {
-  color: #fff;
-  /* Colore del testo chiaro per i link in dark mode */
-}
-
-// h1,h2,h3,h4,h5,h6,strong{
-//   color: #3f51b5;
-// }

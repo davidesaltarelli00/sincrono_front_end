@@ -1,275 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body [class.dark-mode]="themeService.isDarkModeEnabled()">
-    <div id="inizioPagina"></div>
-    <div
-      class="container-toolbar"
-      [hidden]="tokenProvvisorio != null && tokenProvvisorio == null"
-    >
-      <mat-toolbar id="toolbar" *ngIf="token && !mobile">
-        <a [routerLink]="['/home']" class="logo-link">
-          <img
-            class="logo-image"
-            width="40"
-            height="40"
-            src="../../../../assets/images/logo.jpeg"
-            alt="Logo"
-          />
-        </a>
-        <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
-          <a
-            (click)="getPermissions(menuItem.id)"
-            style="color: white"
-            class="toolbar-link"
-            *ngFor="let menuItem of jsonData.list"
-            [routerLink]="[menuItem.percorso]"
-          >
-            {{ menuItem.nome }}
-          </a>
-        </div>
-        <span>
-          <div
-            class="form-check form-switch"
-            matTooltip="{{
-              themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode'
-            }}"
-          >
-            <input
-              class="form-check-input"
-              [checked]="themeService.isDarkModeEnabled()"
-              (click)="toggleDarkMode()"
-              type="checkbox"
-              id="flexSwitchCheckDefault"
-            />
-            <label
-              class="form-check-label"
-              for="flexSwitchCheckDefault"
-              matTooltip="{{
-                themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode'
-              }}"
-            ></label>
-          </div>
-        </span>
-        <span
-          style="cursor: pointer"
-          mat-icon-button
-          [routerLink]="['/profile-box']"
-          class="user-icon"
-        >
-          <small *ngIf="userRoleNav === false"
-            >{{ userLoggedName }} {{ userLoggedSurname }} (Admin) &nbsp;</small
-          >
-          <small *ngIf="userRoleNav === true"
-            >{{ userLoggedName }} {{ userLoggedSurname }} (Dipendente)
-            &nbsp;</small
-          >
-          <i class="fa fa-user"></i>
-        </span>
-        &nbsp;&nbsp;
-        <span
-          style="cursor: pointer"
-          mat-icon-button
-          (click)="logout()"
-          class="logout-icon"
-        >
-          <i class="fa fa-sign-out" aria-hidden="true"></i>
-        </span>
-      </mat-toolbar>
-    </div>
 
-    <div
-      class="container-toolbar"
-      [hidden]="tokenProvvisorio != null && tokenProvvisorio == null"
-    >
-      <mat-toolbar id="toolbar" *ngIf="token && mobile">
-        <a [routerLink]="['/home']" class="logo-link">
-          <img
-            class="logo-image"
-            width="40"
-            height="40"
-            src="../../../../assets/images/logo.jpeg"
-            alt="Logo"
-          />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body [class.dark-mode]="themeService.isDarkModeEnabled()">
+  <div id="inizioPagina"></div>
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo" />
+      </a>
+      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
+        <a (click)="getPermissions(menuItem.id)" style="color: white" class="toolbar-link"
+          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+          {{ menuItem.nome }}
         </a>
-        <button
-          style="background-color: white; color: black; margin-right: 10px"
-          mat-button
-          [matMenuTriggerFor]="menu"
-        >
-          Menu
-        </button>
-        <mat-menu #menu="matMenu">
-          <button
-            style="background-color: white; color: black"
-            mat-menu-item
-            *ngFor="let menuItem of jsonData.list"
-            [routerLink]="[menuItem.percorso]"
-            (click)="getPermissions(menuItem.id)"
-          >
+      </div>
+      <span>
+        <div class="form-check form-switch" matTooltip="{{
+              themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode'
+            }}">
+          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()"
+            type="checkbox" id="flexSwitchCheckDefault" />
+          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{
+                themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode'
+              }}"></label>
+        </div>
+      </span>
+      <span style="cursor: pointer" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav === false">{{ userLoggedName }} {{ userLoggedSurname }} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav === true">{{ userLoggedName }} {{ userLoggedSurname }} (Dipendente)
+          &nbsp;</small>
+        <i class="fa fa-user"></i>
+      </span>
+      &nbsp;&nbsp;
+      <span style="cursor: pointer" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
+  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && mobile">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+      </a>
+      <button
+        style="background-color:#333;color:white;margin-left:-10px;margin-right:3px;border-radius:1px;padding:5px;"
+        mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <ng-template matMenuContent>
+          <button style="background-color:#333;color:white" mat-menu-item *ngFor="let menuItem of jsonData.list"
+            [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
             {{ menuItem.nome }}
           </button>
-        </mat-menu>
-        <span
-          style="cursor: pointer"
-          mat-icon-button
-          [routerLink]="['/profile-box']"
-          class="user-icon"
-        >
-          <small *ngIf="userRoleNav === false"
-            >{{ userLoggedName }} {{ userLoggedSurname }} (Admin) &nbsp;</small
-          >
-          <small *ngIf="userRoleNav === true"
-            >{{ userLoggedName }} {{ userLoggedSurname }} (Dipendente)
-            &nbsp;</small
-          >
-          <i class="fa fa-user"></i>
-        </span>
-        &nbsp;&nbsp;
-        <span
-          style="cursor: pointer"
-          mat-icon-button
-          (click)="logout()"
-          class="logout-icon"
-        >
-          <i class="fa fa-sign-out" aria-hidden="true"></i>
-        </span>
-      </mat-toolbar>
+        </ng-template>
+      </mat-menu>
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+        <i class="fa fa-user"></i>
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
+  <div class="row" *ngIf="ruolo === 'DIPENDENTE'">
+    <div class="col-12">
+      <br />
+      <mat-card style="text-align: center">
+        <h1>
+          <img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono" />
+        </h1>
+        <h1>Modifica richiesta <i class="fa fa-envelope"></i></h1>
+      </mat-card>
     </div>
-    <div class="row" *ngIf="ruolo === 'DIPENDENTE'">
-      <div class="col-12">
-        <br />
-        <mat-card style="text-align: center">
-          <h1>
-            <img
-              src="../../../../assets/images/logoSincronoCompleto.png"
-              alt="Logo Sincrono"
-            />
-          </h1>
-          <h1>Modifica richiesta <i class="fa fa-envelope"></i></h1>
-        </mat-card>
-      </div>
-    </div>
+  </div>
 
-    <div class="container-fluid" *ngIf="ruolo === 'DIPENDENTE'">
-      <div *ngIf="data">
-        <div class="container">
-          <div class="card">
-            <div class="row">
-              <div class="col-2">
-                <div class="form-group">
-                  <label for="mese"><strong>Mese:</strong></label>
-                  <input type="number" class="form-control" id="mese" [(ngModel)]="data.mese">
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-group">
-                  <label for="anno"><strong>Anno:</strong></label>
-                  <input type="number" class="form-control" id="anno" [(ngModel)]="data.anno">
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="form-group">
-                  <label><strong>Tipologia richiesta:</strong></label>
-                  <br>
-                  {{ getTitle() }}
-                </div>
+  <div class="container-fluid" *ngIf="ruolo === 'DIPENDENTE'">
+    <div *ngIf="data">
+      <div class="container">
+        <div class="card">
+          <div class="row">
+            <div class="col-2">
+              <div class="form-group">
+                <label for="mese"><strong>Mese:</strong></label>
+                <input type="number" class="form-control" id="mese" [(ngModel)]="data.mese">
               </div>
             </div>
-
-            <p hidden><strong>Codice Fiscale:</strong> {{ data.codiceFiscale }}</p> <br>
-
-            <div class="row" *ngIf="data.list && data.list.length > 0">
-              <div class="col-6" *ngFor="let item of data.list; let i = index">
-                <ng-container *ngIf="item.ferie; else permessiTemplate">
-                  <form #ferieRequestForm="ngForm" (ngSubmit)="salva(data)">
-                    <div class="row">
-                      <div class="col-3 input-group">
-                        <input style="width: 50%;" type="number" required class="form-control" [(ngModel)]="item.nGiorno" name="nGiorno">
-                        <div class="input-group-append">
-                          <button mat-mini-fab color="warn" (click)="rimuoviCampo(i)">
-                            <i class="fa fa-minus"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-3">
-                        <div class="text-danger" *ngIf="item.nGiorno == null">Campo obbligatorio</div>
-                      </div>
-                    </div>
-                    <br>
-                  </form>
-
-
-                </ng-container>
-
-                <ng-template #permessiTemplate>
-                  <!-- Dettagli per richiesta di permessi -->
-                  <form [formGroup]="permessoRequestForm" (ngSubmit)="salva(data)">
-                    <div class="row">
-                      <div class="col-3">
-                        <div class="form-group">
-                          <label for="giorno"><strong>Giorno:</strong></label>
-                          <input type="text" class="form-control" id="giorno" [(ngModel)]="item.nGiorno" formControlName="giorno" [ngStyle]="getStyle('giorno')" >
-                          <div *ngIf="permessoRequestForm.get('giorno')?.hasError('required')" class="text-danger">
-                            Il campo è obbligatorio.
-                          </div>
-                        </div>
-
-                      </div>
-                      <div class="col-3">
-                        <div class="form-group">
-                          <label for="oraInizio"><strong>Ora Inizio:</strong></label>
-                          <input type="text" class="form-control" id="oraInizio" [(ngModel)]="item.daOra" formControlName="daOra" [ngStyle]="getStyle('daOra')">
-                        </div>
-                      </div>
-                      <div class="col-3">
-                        <div class="form-group">
-                          <label for="oraFine"><strong>Ora Fine:</strong></label>
-                          <input type="text" class="form-control" id="oraFine" [(ngModel)]="item.aOra" formControlName="aOra" [ngStyle]="getStyle('aOra')">
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-
-
-                </ng-template>
+            <div class="col-2">
+              <div class="form-group">
+                <label for="anno"><strong>Anno:</strong></label>
+                <input type="number" class="form-control" id="anno" [(ngModel)]="data.anno">
               </div>
             </div>
-
-            <!-- Pulsanti fuori dal ciclo ngFor -->
-            <div class="buttons-container">
-              <div class="row">
-                <div class="col-12">
-                  <button mat-mini-fab color="primary" style="text-align: center;" *ngIf="mostraAggiungiCampo" (click)="aggiungiCampo()" matTooltip="Aggiungi un campo">
-                    <i class="fa fa-plus"></i>
-                  </button>
-                </div> <br>
+            <div class="col-6">
+              <div class="form-group">
+                <label><strong>Tipologia richiesta:</strong></label>
+                <br>
+                {{ getTitle() }}
               </div>
-              <div class="row">
-                <div class="col-12" style="text-align: center;">
-                  <button mat-flat-button color="primary" (click)="salva(data)" matTooltip="Salva modifiche">
-                    <i class="fa fa-save"></i>
-                  </button>
-                </div>
-              </div>
-
             </div>
-
-            <p *ngIf="!data.list || data.list.length === 0 || data==null">
-              Nessun dettaglio disponibile.
-            </p>
           </div>
+
+          <p hidden><strong>Codice Fiscale:</strong> {{ data.codiceFiscale }}</p> <br>
+
+          <div class="row" *ngIf="data.list && data.list.length > 0">
+            <div class="col-6" *ngFor="let item of data.list; let i = index">
+              <ng-container *ngIf="item.ferie; else permessiTemplate">
+                <form #ferieRequestForm="ngForm" (ngSubmit)="salva(data)">
+                  <div class="row">
+                    <div class="col-3 input-group">
+                      <input style="width: 50%;" type="number" required class="form-control" [(ngModel)]="item.nGiorno"
+                        name="nGiorno">
+                      <div class="input-group-append">
+                        <button mat-mini-fab color="warn" (click)="rimuoviCampo(i)">
+                          <i class="fa fa-minus"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-3">
+                      <div class="text-danger" *ngIf="item.nGiorno == null">Campo obbligatorio</div>
+                    </div>
+                  </div>
+                  <br>
+                </form>
+
+
+              </ng-container>
+
+              <ng-template #permessiTemplate>
+                <!-- Dettagli per richiesta di permessi -->
+                <form [formGroup]="permessoRequestForm" (ngSubmit)="salva(data)">
+                  <div class="row">
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label for="giorno"><strong>Giorno:</strong></label>
+                        <input type="text" class="form-control" id="giorno" [(ngModel)]="item.nGiorno"
+                          formControlName="giorno" [ngStyle]="getStyle('giorno')">
+                        <div *ngIf="permessoRequestForm.get('giorno')?.hasError('required')" class="text-danger">
+                          Il campo è obbligatorio.
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label for="oraInizio"><strong>Ora Inizio:</strong></label>
+                        <input type="text" class="form-control" id="oraInizio" [(ngModel)]="item.daOra"
+                          formControlName="daOra" [ngStyle]="getStyle('daOra')">
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <div class="form-group">
+                        <label for="oraFine"><strong>Ora Fine:</strong></label>
+                        <input type="text" class="form-control" id="oraFine" [(ngModel)]="item.aOra"
+                          formControlName="aOra" [ngStyle]="getStyle('aOra')">
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+
+              </ng-template>
+            </div>
+          </div>
+
+          <!-- Pulsanti fuori dal ciclo ngFor -->
+          <div class="buttons-container">
+            <div class="row">
+              <div class="col-12">
+                <button mat-mini-fab color="primary" style="text-align: center;" *ngIf="mostraAggiungiCampo"
+                  (click)="aggiungiCampo()" matTooltip="Aggiungi un campo">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </div> <br>
+            </div>
+            <div class="row">
+              <div class="col-12" style="text-align: center;">
+                <button mat-flat-button color="primary" (click)="salva(data)" matTooltip="Salva modifiche">
+                  <i class="fa fa-save"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <p *ngIf="!data.list || data.list.length === 0 || data==null">
+            Nessun dettaglio disponibile.
+          </p>
         </div>
       </div>
     </div>
+  </div>
 
 
-  </body>
+</body>
+
 </html>

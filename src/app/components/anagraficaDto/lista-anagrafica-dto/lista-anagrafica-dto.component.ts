@@ -1,5 +1,5 @@
 import { AnagraficaDtoService } from './../anagraficaDto-service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -126,6 +126,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   tipologicaCanaliReclutamento: any[] = [];
   motivazioniFineRapporto: any[] = [];
   commesse!: FormArray;
+  windowWidth: any;
 
   // paginazione
   currentPage: number = 1;
@@ -147,6 +148,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   anni: number[] = [];
 
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private formBuilder: FormBuilder,
@@ -162,6 +166,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     public themeService: ThemeService,
     private imageService: ImageService
   ) {
+    this.windowWidth = window.innerWidth;
+
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -225,6 +231,15 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     this.popolaAnni();
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+
   getOpzioniMesi(): number[] {
     return this.mesi;
   }
@@ -237,8 +252,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       this.anni.push(anno);
     }
   }
-
-
 
   goDown() {
     document.getElementById('finePagina')?.scrollIntoView({
@@ -253,6 +266,14 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       block: 'start',
       inline: 'nearest',
     });
+  }
+
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
   }
 
   profile() {
@@ -614,7 +635,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   //paginazione
 
-
   onChaneItemsPerPage(event: any) {
     const target = parseInt(event.target.value, 10);
     if (!isNaN(target)) {
@@ -623,7 +643,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       this.pageData = this.getCurrentPageItems();
     }
   }
-
 
   getCurrentPageItems(): any[] {
     if (!this.lista) {
@@ -912,10 +931,11 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           // Apro il dialog e passo i dati al componente
           const dialogRef = this.dialog.open(ModalInfoCommesseComponent, {
             data: {
-              // Passa qui i dati che desideri
               anagraficaDto: this.data,
               commesse: this.elencoCommesse,
             },
+            panelClass: 'custom-modal-class',
+            width: '100%',
           });
         },
         (error: any) => {
@@ -1064,29 +1084,27 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   handleClickContratto(element: any) {
-    if(!this.mobile){
+    if (!this.mobile) {
       if (element?.contratto != null) {
         this.mostraInfoContratto(element.anagrafica?.id);
       } else {
         this.router.navigate(['/modifica-anagrafica', element.anagrafica.id]);
       }
-    } else{
-      this.router.navigate(['/info-contratto/',element.anagrafica?.id])
+    } else {
+      this.router.navigate(['/info-contratto/', element.anagrafica?.id]);
     }
-
   }
 
   handleClick(element: any) {
-    if(!this.mobile){
+    if (!this.mobile) {
       if (element?.commesse?.length > 0) {
         this.mostraInfo(element.anagrafica?.id);
       } else {
         this.router.navigate(['/modifica-commessa', element.anagrafica.id]);
       }
-    }else{
-      this.router.navigate(['/info-commesse/',element.anagrafica?.id])
+    } else {
+      this.router.navigate(['/info-commesse/', element.anagrafica?.id]);
     }
-
   }
 
   //METODI NAVBAR

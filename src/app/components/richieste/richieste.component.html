@@ -5,135 +5,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-<style>
-  mat-list{
-  margin: 30px;
-}
-
-footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  text-align: center;
-}
-
-.container-fluid{
-  background-color: aliceblue;
-}
-
-body{
-  background-color: aliceblue;
-}
-
-.banner {
-  white-space: nowrap;
-  overflow: hidden;
-  position: relative;
-  animation: scroll 10s linear infinite;
-  background-color: aliceblue; /* Sfondo del banner */
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Ombra del banner */
-  border-radius: 5px; /* Bordo arrotondato */
-}
-.banner img {
-  display: inline-block;
-  width: 100%;
-  max-width: 20%;
-  height: auto;
-  margin-right: 10px;
-  border: 2px solid #fff;
-  border-radius: 5px;
-}
-
-@keyframes scroll {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-300%);
-  }
-}
-
-img{
-  max-height: 30%;
-}
-.custom-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.custom-list-item {
-  margin-bottom: 10px;
-  padding: 5px;
-  background-color: #f5f5f5;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.custom-list-item:hover {
-  background-color: #e0e0e0;
-  cursor: pointer;
-}
-
-.custom-list-item a {
-  text-decoration: none;
-  color: #333;
-}
-
-.custom-list-item a:hover {
-  text-decoration: underline;
-  color: blue;
-
-}
-
-</style>
 <body [class.dark-mode]="themeService.isDarkModeEnabled()">
-  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
-    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
-      <a [routerLink]="['/home']" class="logo-link">
-        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
-      </a>
-      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
-        <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
-          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
-          {{ menuItem.nome }}
+  <div class="container-toolbar" *ngIf="!mobile">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <a [routerLink]="['/home']" class="logo-link">
+          <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
         </a>
       </div>
-      <span>
+
+      <div class="col-auto">
+        <button  *ngIf="getWindowWidth() < 830" mat-icon-button [matMenuTriggerFor]="hamburgerMenu" (click)="toggleHamburgerMenu()" class="hamburger-icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+
+      <div class="col-auto">
+        <mat-menu #hamburgerMenu="matMenu" class="hamburger-menu">
+          <button id="menu-voice" mat-menu-item *ngFor="let menuItem of jsonData.list" (click)="navigateTo(menuItem.percorso)">
+            {{ menuItem.nome }}
+          </button>
+        </mat-menu>
+
+        <div class="toolbar-menu" *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen">
+          <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+            *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+            {{ menuItem.nome }}
+          </a>
+        </div>
+      </div>
+
+      <div class="col-auto">
         <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
           <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
           <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
         </div>
+      </div>
 
-      </span>
-      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
-        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small> <i
-          class="fa fa-user"></i>
-      </span> &nbsp;&nbsp;
-      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
-        <i class="fa fa-sign-out" aria-hidden="true"></i>
-      </span>
-    </mat-toolbar>
+      <div class="col-auto">
+        <div style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+          <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+          <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+          <i class="fa fa-user"></i>
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <div style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+ <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && mobile">
       <a [routerLink]="['/home']" class="logo-link">
         <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
       </a>
-      <button style=" background-color:white;color:black;margin-right: 10px;" mat-button [matMenuTriggerFor]="menu">
-        Menu
+      <button style="background-color:#333;color:white;margin-left:-10px;margin-right:3px;border-radius:1px;padding:5px;"
+        mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button style="background-color:white;color:black" mat-menu-item *ngFor="let menuItem of jsonData.list"
-          [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
-          {{ menuItem.nome }}
-        </button>
+        <ng-template matMenuContent>
+          <button style="background-color:#333;color:white" mat-menu-item *ngFor="let menuItem of jsonData.list"
+            [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
+            {{ menuItem.nome }}
+          </button>
+        </ng-template>
       </mat-menu>
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
@@ -145,6 +85,7 @@ img{
       </span>
     </mat-toolbar>
   </div>
+
   <div class="container-fluid" *ngIf="ruolo==='ADMIN'">
     <div class="row">
       <div class="col-12">
@@ -159,10 +100,11 @@ img{
       <div class="col-12">
         <mat-card style="margin: auto; text-align: center;">
           <mat-card-title>
-            <img src="../../../../assets/images/danger.png" alt="Danger">
+            <!-- <img src="../../../../assets/images/danger.png" alt="Danger"> -->
+                <i class="fa fa-exclamation-triangle fa-5x" aria-hidden="true" style="font-size: 15em;" ></i>
           </mat-card-title>
           <mat-card-content>
-            <h2>La sezione é in manutenzione.</h2>
+            <h2>Pagina in manutenzione.</h2>
           </mat-card-content>
           <mat-card-footer>
             <a mat-flat-button style="border: 1px solid black;" [routerLink]="['/home']">Torna alla home</a>
@@ -317,33 +259,33 @@ img{
       <div class="col-12">
         <mat-card style=" height: 100%;">
           <mat-card-content>
-          <div class="row">
-            <div class="col-8">
+            <div class="row">
+              <div class="col-12 col-md-8">
                 <main>
-              <h2>Ciao {{userLoggedName}} {{userLoggedSurname}}.</h2>
-              <p>Questa sezione é dedicata alle richieste. Seleziona la tipologia di richiesta che vuoi inviare.
-             </p>
-            </main>
+                  <h2>Ciao {{userLoggedName}} {{userLoggedSurname}}.</h2>
+                  <p>Questa sezione è dedicata alle richieste. Seleziona la tipologia di richiesta che vuoi inviare.</p>
+                </main>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="form-group">
+                  <label for="tipologicaRichieste">Richiesta di</label>
+                  <select name="tipoRichiesta" (change)="onTipoRichiestaSelected($event)" id="tipoRichiesta" class="form-select">
+                    <option value="" selected>--Seleziona tipologia richiesta--</option>
+                    <option value="ferie">Ferie</option>
+                    <option value="permessi">Permesso</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="col-4">
-             <div class="form-group">
-              <label for="tipologicaRichieste">Richiesta di</label>
-               <select name="tipoRichiesta" (change)="onTipoRichiestaSelected($event)" id="tipoRichiesta" class="form-select">
-                <option value="" selected>--Seleziona tipologia richiesta--</option>
-                <option value="ferie" >Ferie</option>
-                <option value="permessi" >Permesso</option>
-              </select>
-             </div>
-            </div>
-          </div>
+
           </mat-card-content>
         </mat-card>
       </div>
     </div>
     <br>
 
-
-    <div class="row" *ngIf="tipoRichiesta === 'ferie'">
+<!--impostazione ferie da desktop-->
+    <div class="row" *ngIf="tipoRichiesta === 'ferie' && !mobile">
       <div class="col-6">
         <div class="calendario">
           <div class="intestazione">
@@ -357,8 +299,8 @@ img{
               <div *ngFor="let giorno of settimana" class="giorno"
                    (click)="onGiornoSelezionato(giorno)"
                    [class.disabled]="isWeekend(giorno?.nome)">
-                <div class="numero-giorno">{{ giorno?.numero || ' ' }}</div>
-                <div class="nome-giorno">{{ giorno?.nome || ' ' }}</div>
+                <div class="numero-giorno"><small>{{ giorno?.numero || ' ' }}</small></div>
+                <div class="nome-giorno"><small>{{ giorno?.nome || ' ' }}</small></div>
               </div>
             </div>
           </div>
@@ -389,6 +331,55 @@ img{
       </div>
      </div>
     </div>
+    <!--impostazione ferie da mobile-->
+    <div class="row" *ngIf="tipoRichiesta === 'ferie' && mobile">
+      <div class="col-12">
+        <div class="calendario">
+          <div class="intestazione">
+            <button mat-mini-fab color="primary" (click)="onMesePrecedente()" [disabled]="navigazioneDisabilitata">«</button>
+            <h2>{{ getNomeMese(meseCorrente) }} {{ annoCorrente }}</h2>
+            <button mat-mini-fab color="primary" (click)="onMeseSuccessivo()" [disabled]="navigazioneDisabilitata">»</button>
+          </div>
+
+          <div class="giorni">
+            <div *ngFor="let settimana of giorniCalendario" class="settimana">
+              <div *ngFor="let giorno of settimana" class="giorno"
+                   (click)="onGiornoSelezionato(giorno)"
+                   [class.disabled]="isWeekend(giorno?.nome)">
+                <div class="numero-giorno"><small>{{ giorno?.numero || ' ' }}</small></div>
+                <div class="nome-giorno"><small>{{ giorno?.nome || ' ' }}</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+     <div class="col-12" *ngIf="almenoUnGiornoSelezionato" >
+      <div class="card">
+        <div class="card-header">
+          <h3>Giorni Selezionati <button mat-flat-button color="primary" (click)="inviaRichiestaFerie()" >Invia richiesta di ferie</button> </h3>
+        </div>
+        <div class="card-body">
+          <div *ngFor="let meseAnno of ordinaChiavi(giorniSelezionati)">
+            <h4>{{ meseAnno.key }}</h4>
+            <ul>
+              <li *ngFor="let giorno of meseAnno.value">
+               <table class="table table-bordered" >
+                <tr>
+                  <td>
+                    {{ giorno.numero }} - {{ giorno.nome }}
+                    <button mat-mini-fab color="warn"  (click)="rimuoviGiorno(meseAnno.key, giorno.numero)"> <i class="fa fa-close" ></i> </button>
+                  </td>
+                </tr>
+               </table>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+     </div>
+    </div>
+
     <div class="row">
      <div class="col-12">
       <div *ngIf="tipoRichiesta === 'permessi'">
@@ -402,13 +393,10 @@ img{
         <mat-card>
           <mat-card-title>
             <h1>Elenco richieste</h1>
-          </mat-card-title>
-          <mat-card-subtitle>
-            <div class="row">
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="mese">Seleziona il mese</label>
-                  <select name="mese" id="mese" [(ngModel)]="selectedMeseForLista" class="form-select" (change)="onChangeMeseForLista($event)" >
+            <div class="row" style="text-align: center; margin: auto;">
+              <div class="col-12 col-md-3">
+                <label for="mese">Mese</label>
+                <select name="mese" id="mese" [(ngModel)]="selectedMeseForLista" class="form-select" (change)="onChangeMeseForLista($event)">
                   <option value="1">Gennaio</option>
                   <option value="2">Febbraio</option>
                   <option value="3">Marzo</option>
@@ -421,38 +409,34 @@ img{
                   <option value="10">Ottobre</option>
                   <option value="11">Novembre</option>
                   <option value="12">Dicembre</option>
-                  </select>
-                </div>
+                </select>
               </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="anno">Seleziona l'anno</label>
-                  <!-- <input type="number" class="form-control" [(ngModel)]="selectedAnnoForLista"> -->
-                  <select name="anniDal2023" id="anniDal2023" class="form-select" [(ngModel)]="selectedAnnoForLista">
-                    <option *ngFor="let anno of anniDal2023" [value]="anno">{{ anno }}</option>
-                  </select>
-
-                </div>
+              <div class="col-12 col-md-3">
+                <label for="anno">Anno</label>
+                <select name="anniDal2023" id="anniDal2023" class="form-select" [(ngModel)]="selectedAnnoForLista">
+                  <option *ngFor="let anno of anniDal2023" [value]="anno">{{ anno }}</option>
+                </select>
               </div>
-              <div class="col-4" >
+              <div class="col-12 col-md-1">
                 <div class="form-group">
                   <label for="cerca">Cerca</label> <br>
-                  <button mat-mini-fab color="primary" [disabled]="selectedAnnoForLista==null || selectedMeseForLista==null " (click)="getAllRichiesteDipendente()" > <i class="fa fa-search" ></i> </button>
+                  <button mat-mini-fab color="primary" [disabled]="selectedAnnoForLista==null || selectedMeseForLista==null" (click)="getAllRichiesteDipendente()"> <i class="fa fa-search"></i> </button>
                 </div>
               </div>
             </div>
-          </mat-card-subtitle>
+
+          </mat-card-title>
           <mat-card-content>
             <br>
            <div class="row" *ngIf="elencoRichiesteDipendente && elencoRichiesteDipendente.length > 0">
             <div class="col-12">
               <h1>Elenco richieste delle ferie</h1>
-              <table class="table table-bordered">
+              <table class="table table-bordered"  id="table-responsive">
                 <thead>
                   <tr>
                     <th>Tipo richiesta</th>
                     <th>Giorno</th>
-                    <th>Stato della richiesta</th>
+                    <th>Stato</th>
                     <th>Note</th>
                     <th>Azioni</th>
                   </tr>
@@ -467,10 +451,11 @@ img{
                           <ng-container *ngIf="i !== richiesta.list.length - 1">, </ng-container>
                         </ng-container>
                       </td>
-                      <td *ngIf="richiesta.stato==true" > <button mat-flat-button style="background-color: green; color: white;" >Accettata</button> </td>
-                      <td *ngIf="richiesta.stato==false" > <button mat-flat-button color="warn" >Rifiutata</button> </td>
-                      <td *ngIf="richiesta.stato==null" > <button mat-flat-button style="background-color: rgb(255, 255, 187); color: #333;" >Da elaborare</button> </td>
-
+                      <td>
+                        <button *ngIf="richiesta.stato==true" mat-flat-button  id="richiestaAccettata" >Accettata</button>
+                        <button *ngIf="richiesta.stato==false" mat-flat-button color="warn" id="richiestaRifiutata" >Rifiutata</button>
+                        <button *ngIf="richiesta.stato==null" mat-flat-button id="daElaboare" >Da elaborare</button>
+                      </td>
                       <td matTooltip="{{ richiesta.note  }}">
                         {{ richiesta?.note | truncate: 10 }}
                       </td>
@@ -501,13 +486,13 @@ img{
            <div class="row" *ngIf="elencoRichiesteDipendente && elencoRichiesteDipendente.length > 0" >
             <div class="col-12">
               <h1>Elenco richieste dei permessi</h1>
-              <table class="table table-bordered">
+              <table class="table table-bordered"  id="table-responsive">
                 <thead>
                   <tr>
                     <th>Giorno</th>
                     <th>Dalle ore</th>
                     <th>Alle ore</th>
-                    <th>Stato della richiesta</th>
+                    <th>Stato</th>
                     <th>Note</th>
                     <th>Azioni</th>
                   </tr>
@@ -533,17 +518,16 @@ img{
                           <ng-container *ngIf="i !== richiesta.list.length - 1">, </ng-container>
                         </ng-container>
                       </td>
-                      <td *ngIf="richiesta.stato==true" > <button mat-flat-button style="background-color: green; color: white;" >Accettata</button> </td>
-                      <td *ngIf="richiesta.stato==false" > <button mat-flat-button color="warn" >Rifiutata</button> </td>
-                      <td *ngIf="richiesta.stato==null" > <button mat-flat-button style="background-color: rgb(255, 255, 187); color: #333;">Da elaborare</button> </td>
+                      <td>
+                        <button *ngIf="richiesta.stato==true" mat-flat-button  id="richiestaAccettata" >Accettata</button>
+                        <button *ngIf="richiesta.stato==false" mat-flat-button color="warn" id="richiestaRifiutata" >Rifiutata</button>
+                        <button *ngIf="richiesta.stato==null" mat-flat-button id="daElaboare" >Da elaborare</button>
+                      </td>
                       <td matTooltip="{{ richiesta.note  }}">
                         {{ richiesta?.note | truncate: 10 }}
                       </td>
                       <td> <button mat-mini-fab color="accent" [disabled]="richiesta.stato==null" (click)="updateRichiesta(richiesta.id)" > <i class="fa fa-pencil" ></i> </button> </td>
                     </ng-container>
-
-
-
                   </tr>
                 </tbody>
               </table>
@@ -569,6 +553,5 @@ img{
       </div>
     </div>
   </div>
-  <br><br>
 </body>
 </html>

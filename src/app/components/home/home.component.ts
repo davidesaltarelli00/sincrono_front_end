@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../login/login-service';
 import { Router } from '@angular/router';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
@@ -42,6 +42,9 @@ export class HomeComponent implements OnInit {
   isVoiceActionActivated = false;
   toggleMode: boolean = false;
   aziendeClienti: any[] = [];
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+  windowWidth: any;
 
   constructor(
     private authService: AuthService,
@@ -54,6 +57,7 @@ export class HomeComponent implements OnInit {
     private contrattoService: ContrattoService,
     public themeService: ThemeService
   ) {
+    this.windowWidth = window.innerWidth;
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -69,6 +73,21 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
+  }
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
@@ -121,7 +140,7 @@ export class HomeComponent implements OnInit {
       (error: any) => {
         console.error(
           "Errore durante il caricamento dell'immagine: " +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
 
         // Assegna un'immagine predefinita in caso di errore
@@ -187,6 +206,10 @@ export class HomeComponent implements OnInit {
     this.immagineConvertita = base64String;
   }
 
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
+  }
+
   // metodi per navbar
 
   logout() {
@@ -207,7 +230,7 @@ export class HomeComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
+            error
         );
       }
     );
@@ -220,6 +243,7 @@ export class HomeComponent implements OnInit {
 
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
         console.log('ID UTENTE PER NAV:' + this.idUtente);
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
@@ -238,7 +262,7 @@ export class HomeComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-          error
+            error
         );
         this.shouldReloadPage = true;
       }
@@ -279,5 +303,4 @@ export class HomeComponent implements OnInit {
   toggleDarkMode(): void {
     this.themeService.toggleDarkMode();
   }
-
 }

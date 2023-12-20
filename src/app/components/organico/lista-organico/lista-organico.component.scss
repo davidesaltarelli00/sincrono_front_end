@@ -1,114 +1,146 @@
-body{
-  background-color: aliceblue;
+* {
+  box-sizing: border-box;
 }
 
+body,
 .container-fluid {
   background-color: aliceblue;
 }
 
-table,
-th,
-td {
-  font-size: 12px;
-}
-
-.table-responsive {
-  overflow-x: auto;
-}
-
-.table {
+//tabella anagrafiche responsive
+#table-organico {
   width: 100%;
-  max-width: 100%;
-  margin-bottom: 1rem;
-  background-color: transparent;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin: auto;
+  text-align: center;
 }
 
-.table th,
-.table td {
-  padding: 0.75rem;
-  vertical-align: top;
-  border-top: 1px solid #dee2e6;
+#table-organico th,
+#table-organico td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
 }
 
-@media (max-width: 575.98px) {
-  .table-responsive {
+#table-organico th {
+  background-color: #343a40;
+  color: white;
+}
+
+@media screen and (max-width: 830px) {
+  .container-toolbar {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .logo-link {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .logo-image {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+  }
+
+  #table-organico {
+    overflow-x: auto;
+    text-align: center;
+  }
+
+  #table-organico th,
+  #table-organico td {
+    white-space: nowrap;
+    display: block;
     width: 100%;
-    margin-bottom: 1.5rem;
-    overflow-y: hidden;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
-    border: 1px solid #dee2e6;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .table {
-    position: relative;
-    background-color: transparent;
-    border-collapse: collapse;
-  }
-
-  .table-bordered {
-    border: 0;
-  }
-
-  .table-bordered th,
-  .table-bordered td {
-    border: 1px solid #dee2e6;
+    box-sizing: border-box;
   }
 }
 
 
+//navbar
 
-/* styles.css o nel tuo componente-specifico.css */
-.dark-mode *{
+#toolbar {
+  background-color: #333;
+  color: #f2f2f2;
+}
+
+.container-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: white;
+  padding: 10px;
+}
+
+.logo-link {
+  margin-right: 10px;
+}
+
+.logo-image {
+  border-radius: 100%;
+}
+
+.toolbar-menu {
+  display: flex;
+  gap: 10px;
+}
+
+.toolbar-link {
+  color: white;
+  text-decoration: none;
+}
+
+.form-switch {
+  margin-right: 10px;
+}
+
+:root {
+  --primary-color: #333;
+  --text-color: white;
+}
+
+@media screen and (max-width: 830px) {
+  .hamburger-menu {
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 20px;
+  }
+
+  .toolbar-link {
+    display: none;
+  }
+
+  .hamburger-icon {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 831px) {
+  .hamburger-menu {
+    display: none;
+  }
+
+  .toolbar-link {
+    display: flex;
+  }
+}
+
+//dark mode
+
+.dark-mode * {
   background-color: #333;
   color: #fff;
-}
-
-.dark-mode input::placeholder {
-  color: #ddd; /* Colore del placeholder nei temi scuri */
-}
-
-.dark-mode mat-card {
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #f1f1f1;
-}
-
-/* Stili specifici per dark mode */
-.dark-mode input {
-  background-color: #333; /* Colore di sfondo scuro per gli input */
-  color: #fff; /* Colore del testo chiaro per gli input */
 }
 
 .dark-mode table {
-  border-color: #fff;
+  border: 1px solid white;
 }
 
-.dark-mode th, .dark-mode td {
-  border-color: #777;
-  background-color: #333;
-  color: #fff;
-}
-
-.dark-mode button, .dark-mode .btn {
-  background-color: #333;
-  color: #fff;
-}
-
-
-/* Stili specifici per dark mode */
-.dark-mode button.toggle-button {
-  background-color: #333;
-  color: #fff;
-  /* Altri stili specifici per il dark mode per il bottone di toggle */
-}
-.dark-mode #toolbar {
-  color: #ffffff;
-  /* Testo bianco */
-  display: flex;
-  background-color: #333;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #f3f3f3;
-
+.dark-mode mat-card {
+  border: 1px solid white;
 }

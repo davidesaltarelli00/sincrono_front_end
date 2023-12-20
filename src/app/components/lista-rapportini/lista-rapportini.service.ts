@@ -24,6 +24,20 @@ export class ListaRapportiniService {
     });
   }
 
+  
+
+  deleteRapportino(token: any, body: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    // const url = this.url + 'get-rapportino';
+    // console.log('URL:' + url);
+    return this.http.post<any>(this.url + `rapportino-dbdelete`, body, {
+      headers: headers,
+    });
+  }
 
   getExcelRapportino(token: any, body: any): Observable<any> {
     const headers = new HttpHeaders({

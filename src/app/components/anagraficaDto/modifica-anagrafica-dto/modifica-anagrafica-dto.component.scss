@@ -1,5 +1,137 @@
 
-.invalid-field {    border-color: red;  }select{  width: 50%;}.commessa-list {  padding: 0;}.commessa-item {  align-items: center;  margin-bottom: 8px;}.commessa-cell {  flex: 1;  padding: 4px;  border: 1px solid #ccc;}ng-container{  border: 1px solid #f1f1f1;}select{  width: 100%;}.campo-nullo {  border-color: red;}mat-card-title{  text-align: center;}.toggle-switch {  display: inline-block;  position: relative;  width: 60px;  height: 34px;}.toggle-switch input {  opacity: 0;  width: 0;  height: 0;}.slider {  position: absolute;  cursor: pointer;  top: 0;  left: 0;  right: 0;  bottom: 0;  background-color: #ccc;   transition: 0.4s;  border-radius: 34px;}.toggle-switch input:checked + .slider {  background-color: #2196F3;}.slider:before {  position: absolute;  content: "";  height: 26px;  width: 26px;  left: 4px;  bottom: 4px;  background-color: white;  transition: 0.4s;  border-radius: 50%;}.toggle-switch input:checked + .slider:before {  transform: translateX(26px);}.toggle-switch label {  display: flex;  align-items: center;  user-select: none;  cursor: pointer;}.custom-prefix {  background-color: black;  color: white;}.card {  border: 1px solid #ccc;  border-radius: 5px;  padding: 20px;  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  background-color: #fff;}.card-title {  font-size: 1.25rem;  font-weight: bold;  margin-bottom: 10px;}.card-content {  font-size: 1rem;  line-height: 1.4;}.card-button {  display: inline-block;  padding: 10px 20px;  background-color: #007bff;  color: #fff;  border: none;  border-radius: 3px;  cursor: pointer;  transition: background-color 0.3s ease;}.card-button:hover {  background-color: #0056b3;}mat-card-contnt{  width: 100%;}.campo-nullo {  border: 1px solid red;}
+// /* Stile generale del toggle switch */
+// .toggle-switch {
+//   display: inline-block;
+//   position: relative;
+//   width: 60px;
+//   height: 34px;
+// }
+
+// /* Nasconde la checkbox reale */
+// .toggle-switch input {
+//   opacity: 0;
+//   width: 0;
+//   height: 0;
+// }
+
+// /* Stile del slider (il cursore del toggle) */
+// .slider {
+//   position: absolute;
+//   cursor: pointer;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   background-color: #ccc;
+//   /* Colore di sfondo quando disattivato */
+//   transition: 0.4s;
+//   /* Effetto di transizione */
+//   border-radius: 34px;
+// }
+
+// /* Cambia il colore di sfondo quando attivato */
+// .toggle-switch input:checked+.slider {
+//   background-color: #2196F3;
+// }
+
+// /* Stile del cursore del toggle */
+// .slider:before {
+//   position: absolute;
+//   content: "";
+//   height: 26px;
+//   width: 26px;
+//   left: 4px;
+//   bottom: 4px;
+//   background-color: white;
+//   transition: 0.4s;
+//   border-radius: 50%;
+// }
+
+// /* Posizione del cursore quando attivato */
+// .toggle-switch input:checked+.slider:before {
+//   transform: translateX(26px);
+// }
+
+// /* Opzionale: stile aggiuntivo per l'etichetta del toggle switch */
+// .toggle-switch label {
+//   display: flex;
+//   align-items: center;
+//   user-select: none;
+//   cursor: pointer;
+// }
+
+// .custom-prefix {
+//   background-color: black;
+//   color: white;
+// }
+//navbar
+
+#toolbar{
+  background-color: #333;
+  color: #f2f2f2;
+}
+
+.container-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: white;
+  padding: 10px;
+}
+
+.logo-link {
+  margin-right: 10px;
+}
+
+.logo-image {
+  border-radius: 100%;
+}
+
+.toolbar-menu {
+  display: flex;
+  gap: 10px;
+}
+
+.toolbar-link {
+  color: white;
+  text-decoration: none;
+}
+
+.form-switch {
+  margin-right: 10px;
+}
+
+:root {
+  --primary-color: #333;
+  --text-color: white;
+}
+
+@media screen and (max-width: 830px) {
+  .hamburger-menu {
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 20px;
+  }
+
+  .toolbar-link {
+    display: none;
+  }
+
+  .hamburger-icon {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 831px) {
+  .hamburger-menu {
+    display: none;
+  }
+
+  .toolbar-link {
+    display: flex;
+  }
+}
 
 body {
   background-color: aliceblue;
@@ -262,6 +394,10 @@ input[type="checkbox"]:disabled {
   border: 2px solid #ccc;
   background-color: #ffffff;
 }
+.dark-mode input[type="checkbox"] {
+  border: 1px solid #ccc;
+  background-color: #333;
+}
 
 /* Icona della checkbox disabilitata */
 input[type="checkbox"]:disabled+.slider::before {
@@ -271,6 +407,9 @@ input[type="checkbox"]:disabled+.slider::before {
 * {
   box-sizing: border-box;
 }
+
+
+
 
 .dark-mode *{
   background-color: #333;
@@ -315,6 +454,7 @@ input[type="checkbox"]:disabled+.slider::before {
 .dark-mode button.toggle-button {
   background-color: #333;
   color: #fff;
+  border: 1px solid white;
 }
 
 ::ng-deep .mat-step-label {
@@ -335,14 +475,30 @@ input[type="checkbox"]:disabled+.slider::before {
   border-bottom-color: rgba(255, 255, 255, 0.12);
 }
 
-/* Stile per i campi di input disabilitati in dark mode */
 :root {
   --disabled-input-text: rgba(255, 255, 255, 0.7);
   --disabled-input-background: rgba(255, 255, 255, 0.12);
 }
 
-/* Applica lo stile ai campi di input disabilitati */
 .dark-mode input:disabled {
  background-color: #555;
 }
 
+@media screen and (max-width: 768px) {
+  .container-toolbar {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .logo-link {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .logo-image {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+  }
+}
