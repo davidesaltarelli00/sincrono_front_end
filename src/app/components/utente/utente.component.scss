@@ -163,6 +163,26 @@ body {
   color: white;
 }
 
+.dark-mode button{
+  background-color: #333;
+  color: #f2f2f2;
+  border: 1px solid #f2f2f2;
+}
+
+.dark-mode textarea{
+  background-color: #555;
+  color: #f2f2f2;
+  border: 1px solid #f2f2f2;
+}
+
+.dark-mode input[type="text"]::placeholder,
+.dark-mode input[type="number"]::placeholder,
+.dark-mode select::placeholder,
+.dark-mode textarea::placeholder {
+  color: #f2f2f2;
+}
+
+
 @media screen and (max-width: 900px) {
   .container-toolbar {
     /* Styles for smaller screens (e.g., mobile devices) */

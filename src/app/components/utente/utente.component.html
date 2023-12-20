@@ -303,15 +303,15 @@
           >
             <p style=" margin: 0;"> <button mat-mini-fab color="primary">{{giorno.numeroGiorno}}</button>
               {{giorno.nomeGiorno |titlecase }}
-              <i [hidden]="giorno.checkFestivita || giorno.festivitaNazionale || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
+              <i [hidden]="giorno.checkFestivita || giorno.ferie || giorno.festivitaNazionale || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
                 class="fa fa-calendar"
                 matTooltip="Imposta {{giorno.nomeGiorno | titlecase }} {{giorno.numeroGiorno}} {{selectedMese}} come festivo."
                 (click)="setFestivita(true, giorno)"></i>
-              <i [hidden]="!giorno.checkFestivita || giorno.festivitaNazionale || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
+              <i [hidden]="!giorno.checkFestivita || giorno.ferie || giorno.festivitaNazionale || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
                 class="fa fa-suitcase"
                 matTooltip="Imposta {{giorno.nomeGiorno | titlecase }} {{giorno.numeroGiorno}} {{selectedMese}} come non festivo."
                 (click)="unsetFestivita(false, giorno)"></i>
-              <i *ngIf="giorno.festivitaNazionale  || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
+              <i *ngIf="giorno.festivitaNazionale || giorno.ferie || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
                 class="fa fa-calendar"></i>
             </p>
             <div class="container-card"
@@ -577,7 +577,7 @@
           </table>
         </div>
       </div>
-      <br>
+      <hr>
       <div class="row text-center">
         <div class="col-4">
           <button [disabled]="risultatoCheckFreeze || !giorno" mat-mini-fab color="primary"
@@ -593,7 +593,7 @@
             matTooltip="Invia nota all'admin "><i class="fa fa-info"></i></button>
         </div>
       </div>
-
+      <hr>
       <div class="row" *ngIf="inviaNoteAlDipendente">
         <br> <br>
         <div class="col-12">
@@ -613,7 +613,6 @@
     </div>
     <br>
     <div id="finePagina"></div>
-    <br /><br /><br />
   </div>
   <div class="container-fluid" *ngIf="dettaglioSbagliato">
     <div class="not-found-container">
