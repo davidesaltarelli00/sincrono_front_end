@@ -160,6 +160,10 @@ export class ModificaCommessaComponent {
         residenza: [''],
         domicilio: [''],
         cellularePrivato: ['', Validators.pattern(/^[0-9]{10}$/)],
+        tipoCanaleReclutamento: this.formBuilder.group({
+          id: [''],
+          // descrizione: [''],
+        }),
         cellulareAziendale: ['', Validators.pattern(/^[0-9]{10}$/)],
         mailPrivata: [
           '',
@@ -214,6 +218,7 @@ export class ModificaCommessaComponent {
           id: [''],
         }),
         qualifica: [''],
+        costoAziendale: [''],
         sedeAssunzione: [''],
         dataAssunzione: [''],
         dataInizioProva: [''],
@@ -256,10 +261,6 @@ export class ModificaCommessaComponent {
         assicurazioneObbligatoria: [''],
         pc: [''],
         tariffaPartitaIva: [''],
-        tipoCanaleReclutamento: this.formBuilder.group({
-          id: [''],
-          // descrizione: [''],
-        }),
         visitaMedica: [''],
         dataVisitaMedica: [''],
       }),
