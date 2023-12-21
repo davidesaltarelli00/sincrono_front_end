@@ -290,7 +290,10 @@ export class ListaRapportiniComponent implements OnInit {
             this.selectedAnnoRapportinoNonFreezato = result['list']['anno'];
             this.currentPage = 1;
             this.pageData = this.getCurrentPageItems();
-
+            console.log(
+              'Questo é l elenco dei rapportini da controllare: ' +
+                JSON.stringify(this.elencoRapportiniNonFreezati)
+            );
             let body = {
               anno: this.currentYear,
               mese: this.currentMonth,
@@ -1059,29 +1062,34 @@ export class ListaRapportiniComponent implements OnInit {
 
   toggleSelezione() {
     this.elencoMail = [];
-
     this.tutteLeRigheSelezionate = !this.tutteLeRigheSelezionate;
-
     this.pageData.forEach((rapportino) => {
-      rapportino.rowSelected = this.tutteLeRigheSelezionate;
-
-      if (this.tutteLeRigheSelezionate) {
-        this.elencoMail.push(rapportino.anagrafica.mailAziendale);
+      if (!rapportino.anagrafica.checkInviato) {
+        rapportino.rowSelected = this.tutteLeRigheSelezionate;
+        if (this.tutteLeRigheSelezionate) {
+          this.elencoMail.push(rapportino.anagrafica.mailAziendale);
+        }
       }
     });
 
-    console.log("L'elenco al momento contiene le seguenti mail: " + JSON.stringify(this.elencoMail));
+    console.log(
+      "L'elenco al momento contiene le seguenti mail: " +
+        JSON.stringify(this.elencoMail)
+    );
   }
 
-
   selezionaRiga(rapportino: any) {
+    console.log('RAPPORTINO:' + JSON.stringify(rapportino));
+    const checkInviato = rapportino.anagrafica.checkInviato;
+    console.log('Check inviato select all rows ' + checkInviato);
     if (rapportino.rowSelected) {
       this.elencoMail.push(rapportino.anagrafica.mailAziendale);
     } else {
       const index = this.elencoMail.indexOf(
         rapportino.anagrafica.mailAziendale
       );
-      if (index !== -1) {
+
+      if (index !== -1 || checkInviato) {
         this.elencoMail.splice(index, 1);
       }
     }

@@ -77,9 +77,9 @@
         </button>
       </div>
 
-      <div class="col-auto">
-        <mat-menu #hamburgerMenu="matMenu" class="hamburger-menu">
-          <button id="menu-voice" mat-menu-item *ngFor="let menuItem of jsonData.list" (click)="navigateTo(menuItem.percorso)">
+      <div class="col-auto"  >
+        <mat-menu #hamburgerMenu="matMenu" class="hamburger-menu" >
+          <button  id="menu-voice" mat-menu-item *ngFor="let menuItem of jsonData.list" (click)="navigateTo(menuItem.percorso)">
             {{ menuItem.nome }}
           </button>
         </mat-menu>
@@ -452,7 +452,7 @@
               <tr *ngFor="let rapportinoNonFreezato of pageData; let i = index">
                 <td>
                   <input
-                    type="checkbox"
+                    type="checkbox" [disabled]="rapportinoNonFreezato.anagrafica.checkInviato"
                     [(ngModel)]="rapportinoNonFreezato.rowSelected"
                     (change)="selezionaRiga(rapportinoNonFreezato)"
                   />
