@@ -747,7 +747,7 @@ export class UtenteComponent implements OnInit {
           this.gestisciPermessi(this.rapportinoDto);
           setTimeout(() => {
             this.checkRapportinoInviato();
-            console.log("ritardo");
+            console.log('ritardo 1');
           }, 1000);
           this.calcolaTotaleOreLavorate();
           this.calcolaTotaleStraordinari();
@@ -1295,6 +1295,7 @@ export class UtenteComponent implements OnInit {
             });
             console.log(JSON.stringify(result));
             setTimeout(() => {
+              console.log('Ritardo 2');
               this.getRapportino();
             }, 1000);
             if (this.tabellaCompletata) {
