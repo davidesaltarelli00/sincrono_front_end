@@ -6,7 +6,7 @@
     <title>Login Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 </head>
-<body style="overflow-y: hidden;" [class.dark-mode]="themeService.isDarkModeEnabled()">
+<body  [class.dark-mode]="themeService.isDarkModeEnabled()">
 
   <div class="container-fluid">
     <div class="row">
@@ -68,11 +68,6 @@
                     required
 
                   />
-                  <!--
-                      (copy)="onCopy($event)"
-                    (cut)="onCut($event)"
-                    (paste)="onPaste($event)"
-                  -->
                   <span
                     class="toggle-password"
                     (click)="togglePasswordVisibility()"
@@ -90,7 +85,6 @@
               <br>
               <div class="col-3">
                 <button mat-stroked-button class="btn btn success" type="submit" [disabled]="loginForm.invalid">Login</button>
-                <!-- <button mat-flat-button class="btn btn info" (click)="reset()" [disabled]="loginForm==null">Annulla</button> -->
               </div>
               <br>
               <div class="col-9">
