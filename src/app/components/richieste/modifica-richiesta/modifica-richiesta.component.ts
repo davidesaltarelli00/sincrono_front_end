@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../login/login-service';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
@@ -18,7 +25,7 @@ import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.co
   templateUrl: './modifica-richiesta.component.html',
   styleUrls: ['./modifica-richiesta.component.scss'],
 })
-export class ModificaRichiestaComponent implements OnInit,AfterViewInit  {
+export class ModificaRichiestaComponent implements OnInit, AfterViewInit {
   id = this.activatedRouter.snapshot.params['id'];
   userLoggedName: any;
   userLoggedSurname: any;
@@ -83,7 +90,10 @@ export class ModificaRichiestaComponent implements OnInit,AfterViewInit  {
   oraFineOptions: string[] = [];
   mostraAggiungiCampo: boolean = true;
   styleApplied = false;
-
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+  windowWidth: any;
+  orarioAttuale: Date = new Date();
 
   constructor(
     private authService: AuthService,
@@ -127,6 +137,7 @@ export class ModificaRichiestaComponent implements OnInit,AfterViewInit  {
 
     // Imposta il giorno selezionato come giorno corrente
     this.selectedGiorno = giornoCorrente;
+    this.windowWidth = window.innerWidth;
 
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -146,6 +157,22 @@ export class ModificaRichiestaComponent implements OnInit,AfterViewInit  {
       daOra: ['', Validators.required],
       aOra: ['', Validators.required],
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
   }
 
   ngOnInit(): void {
@@ -174,13 +201,15 @@ export class ModificaRichiestaComponent implements OnInit,AfterViewInit  {
 
   getStyle(fieldName: string) {
     if (this.styleApplied) {
-      return { border: this.permessoRequestForm.get(fieldName)?.hasError('required') ? '1px solid red' : '1px solid green' };
+      return {
+        border: this.permessoRequestForm.get(fieldName)?.hasError('required')
+          ? '1px solid red'
+          : '1px solid green',
+      };
     } else {
       return {};
     }
   }
-
-
 
   updateOraFineOptions(item: any) {
     const oraInizio = item.daOra;
@@ -296,7 +325,11 @@ export class ModificaRichiestaComponent implements OnInit,AfterViewInit  {
 
       this.richiesteService.updateRichiesta(this.token, body).subscribe(
         (response: any) => {
-          if ((response as any).esito.code !== 200 && (response as any).esito.target ==='Cannot invoke \"java.lang.Integer.intValue()\" because the return value of \"it.sincrono.repositories.dto.DuplicazioniRichiestaDto.getnGiorno()\" is null') {
+          if (
+            (response as any).esito.code !== 200 &&
+            (response as any).esito.target ===
+              'Cannot invoke "java.lang.Integer.intValue()" because the return value of "it.sincrono.repositories.dto.DuplicazioniRichiestaDto.getnGiorno()" is null'
+          ) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 image: '../../../../assets/images/danger.png',
@@ -305,12 +338,16 @@ export class ModificaRichiestaComponent implements OnInit,AfterViewInit  {
               },
             });
           }
-          if ((response as any).esito.code != 200 && (response as any).esito.target==='HTTP error code: 400' ) {
+          if (
+            (response as any).esito.code != 200 &&
+            (response as any).esito.target === 'HTTP error code: 400'
+          ) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 image: '../../../../assets/images/danger.png',
                 title: 'Modifica non riuscita:',
-                message: 'Qualcosa é andato storto, controlla i dati inseriti e riprova.',
+                message:
+                  'Qualcosa é andato storto, controlla i dati inseriti e riprova.',
               },
             });
           }
@@ -363,7 +400,6 @@ export class ModificaRichiestaComponent implements OnInit,AfterViewInit  {
       return 'Errore: Dati non disponibili';
     }
   }
-
 
   getMonthName(month: number): string {
     const monthNames = [

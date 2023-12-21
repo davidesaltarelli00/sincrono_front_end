@@ -97,6 +97,7 @@ export class HomeComponent implements OnInit {
     console.log(`Navigating to ${route}`);
     this.router.navigate([route]);
   }
+
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
