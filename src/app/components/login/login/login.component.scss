@@ -14,6 +14,12 @@
   color: #007bff;
 }
 
+.dark-mode input {
+  background-color: #444 !important;
+  color: white !important;
+  border: 1px solid #ccc;
+}
+
 a{
   color: blue;
   cursor: pointer;
@@ -41,7 +47,7 @@ a{
 }
 
 .dark-mode input, .dark-mode textarea, .dark-mode select {
-  background-color: #444;
+  background-color: #333;
   color: #fff;
 }
 

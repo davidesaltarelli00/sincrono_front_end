@@ -7,10 +7,6 @@ import { ModificaContrattoComponent } from './components/contratto/modifica-cont
 import { ListaDashboardComponent } from './components/dashboard/lista-dashboard/lista-dashboard.component';
 import { ListaContrattiComponent } from './components/contratto/lista-contratti/lista-contratti.component';
 import { ListaOrganicoComponent } from './components/organico/lista-organico/lista-organico.component';
-import { ListaAnagraficaDtoComponent } from './components/anagraficaDto/lista-anagrafica-dto/lista-anagrafica-dto.component';
-import { DettaglioAnagraficaDtoComponent } from './components/anagraficaDto/dettaglio-anagrafica-dto/dettaglio-anagrafica-dto.component';
-import { NuovaAnagraficaDtoComponent } from './components/anagraficaDto/nuova-anagrafica-dto/nuova-anagrafica-dto.component';
-import { ModificaAnagraficaDtoComponent } from './components/anagraficaDto/modifica-anagrafica-dto/modifica-anagrafica-dto.component';
 import { LoginComponent } from './components/login/login/login.component';
 import { StoricoContrattiComponent } from './components/storici/storico-contratti/storico-contratti.component';
 import { StoricoCommesseComponent } from './components/storici/storico-commesse/storico-commesse.component';
@@ -30,7 +26,6 @@ import { ModaleDettaglioRapportinoComponent } from './components/modale-dettagli
 import { ImmagineComponent } from './components/immagine/immagine.component';
 import { RichiesteComponent } from './components/richieste/richieste.component';
 import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
-import { NuovaAnagraficaDtoExcelComponent } from './components/anagraficaDto/nuova-anagrafica-dto-excel/nuova-anagrafica-dto-excel.component';
 import { ModificaCommessaComponent } from './components/modifica-commessa/modifica-commessa.component';
 import { SelectedDaysComponent } from './components/richieste/selected-days/selected-days.component';
 import { InsertPermessoComponent } from './components/richieste/insert-permesso/insert-permesso.component';
@@ -61,44 +56,23 @@ const routes: Routes = [
     component: AlertLogoutComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./components/anagraficaDto/anagraficaDto.module').then(
+        (m) => m.AnagraficaDtoModule
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./components/organico/organico.module').then(
+        (m) => m.OrganicoModule
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+  },
 
-  //ANAGRAFICA
-  {
-    path: 'lista-anagrafica',
-    component: ListaAnagraficaDtoComponent,
-    canActivate: [AuthGuard, RoleGuard],
-  },
-  {
-    path: 'anagraficaDto',
-    component: ListaAnagraficaDtoComponent,
-    canActivate: [AuthGuard, RoleGuard],
-  },
-  {
-    path: 'lista-anagrafica/:body',
-    component: ListaAnagraficaDtoComponent,
-    canActivate: [AuthGuard, RoleGuard],
-  },
-  {
-    path: 'dettaglio-anagrafica/:id',
-    component: DettaglioAnagraficaDtoComponent,
-    canActivate: [AuthGuard, RoleGuard],
-  },
-  {
-    path: 'dettaglio-anagrafica',
-    component: DettaglioAnagraficaDtoComponent,
-    canActivate: [AuthGuard, RoleGuard],
-  },
-  {
-    path: 'nuova-anagrafica',
-    component: NuovaAnagraficaDtoComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    // data: { 'expectedRoles': ['admin', 'risorseumane'] }
-  },
-  {
-    path: 'modifica-anagrafica/:id',
-    component: ModificaAnagraficaDtoComponent,
-    canActivate: [AuthGuard, RoleGuard],
-  },
   {
     path: 'selected-days',
     component: SelectedDaysComponent,
@@ -117,11 +91,6 @@ const routes: Routes = [
   {
     path: 'documenti',
     component: CaricamentoDocumentiComponent,
-    canActivate: [AuthGuard, RoleGuard],
-  },
-  {
-    path: 'nuova-anagrafica-dto-excel/:codiceFiscale',
-    component: NuovaAnagraficaDtoExcelComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
 
@@ -178,14 +147,7 @@ const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
   },
 
-  {
-    path: 'organico',
-    component: ListaOrganicoComponent,
-    canActivate: [AuthGuard, RoleGuard],
-  },
-
   { path: 'login', component: LoginComponent },
-
 
   {
     path: 'storico-contratti/:id',
@@ -211,13 +173,6 @@ const routes: Routes = [
     path: 'info-contratto/:id',
     component: ModalInfoContrattoComponent,
     canActivate: [AuthGuard],
-  },
-
-  {
-    path: 'risultati-filter-organico',
-    component: RisultatiFilterOrganicoComponent,
-    canActivate: [AuthGuard],
-    pathMatch: 'full',
   },
 
   //STORICO COMMESSE

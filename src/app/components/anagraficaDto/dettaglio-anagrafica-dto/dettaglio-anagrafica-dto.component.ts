@@ -23,6 +23,8 @@ import { ThemeService } from 'src/app/theme.service';
 })
 export class DettaglioAnagraficaDtoComponent {
   id: any = this.activatedRoute.snapshot.params['id'];
+  nome=this.activatedRoute.snapshot.params['nome'];
+  cognome=this.activatedRoute.snapshot.params['cognome'];
   data: any;
   date: any;
   errore = false;
