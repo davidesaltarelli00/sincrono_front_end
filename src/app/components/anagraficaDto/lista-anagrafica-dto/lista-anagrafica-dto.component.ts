@@ -76,6 +76,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       cognome: new FormControl(null),
       attivo: new FormControl(true),
       attesaLavori: new FormControl(null),
+      tipoCanaleReclutamento: new FormGroup({
+        id: new FormControl(null)
+      }),
       tipoAzienda: new FormGroup({
         id: new FormControl(null),
         descrizione: new FormControl(null),
@@ -99,9 +102,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         id: new FormControl(null),
       }),
       tipoAzienda: new FormGroup({
-        id: new FormControl(null),
-      }),
-      tipoCanaleReclutamento: new FormGroup({
         id: new FormControl(null),
       }),
       tipoCausaFineRapporto: new FormGroup({
@@ -188,6 +188,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         cognome: new FormControl(null),
         attivo: new FormControl(true),
         attesaLavori: new FormControl(null),
+        tipoCanaleReclutamento: new FormGroup({
+          id: new FormControl(),
+          descrizione: new FormControl(null),
+        }),
         tipoAzienda: new FormGroup({
           id: new FormControl(null),
           descrizione: new FormControl(null),
@@ -212,10 +216,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
           descrizione: new FormControl(null),
         }),
         tipoAzienda: new FormGroup({
-          id: new FormControl(),
-          descrizione: new FormControl(null),
-        }),
-        tipoCanaleReclutamento: new FormGroup({
           id: new FormControl(),
           descrizione: new FormControl(null),
         }),
