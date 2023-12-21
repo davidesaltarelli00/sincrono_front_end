@@ -47,6 +47,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   maxCommessaId: any;
   data: any;
   id = this.activatedRouter.snapshot.params['id'];
+  nome=this.activatedRoute.snapshot.params['nome'];
+  cognome=this.activatedRoute.snapshot.params['cognome'];
   submitted = false;
   errore = false;
   messaggio: any;

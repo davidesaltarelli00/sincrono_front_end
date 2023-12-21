@@ -10,12 +10,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { saveAs } from 'file-saver';
-//ANAGRAFICA
-import { ListaAnagraficaDtoComponent } from './components/anagraficaDto/lista-anagrafica-dto/lista-anagrafica-dto.component';
-import { DettaglioAnagraficaDtoComponent } from './components/anagraficaDto/dettaglio-anagrafica-dto/dettaglio-anagrafica-dto.component';
-import { NuovaAnagraficaDtoComponent } from './components/anagraficaDto/nuova-anagrafica-dto/nuova-anagrafica-dto.component';
-import { ModificaAnagraficaDtoComponent } from './components/anagraficaDto/modifica-anagrafica-dto/modifica-anagrafica-dto.component';
-
 //CONTRATTO
 import { ListaContrattiComponent } from './components/contratto/lista-contratti/lista-contratti.component';
 import { DettaglioContrattoComponent } from './components/contratto/dettaglio-contratto/dettaglio-contratto.component';
@@ -59,7 +53,6 @@ import { BottoniComponent } from './bottoni/bottoni.component';
 import { MailSollecitaComponent } from './components/mail-sollecita/mail-sollecita.component';
 import { RichiesteComponent } from './components/richieste/richieste.component';
 import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
-import { NuovaAnagraficaDtoExcelComponent } from './components/anagraficaDto/nuova-anagrafica-dto-excel/nuova-anagrafica-dto-excel.component';
 import { ModificaCommessaComponent } from './components/modifica-commessa/modifica-commessa.component';
 import { AlertConfermaComponent } from './alert-conferma/alert-conferma.component';
 import { SelectedDaysComponent } from './components/richieste/selected-days/selected-days.component';
@@ -70,6 +63,7 @@ import { TutorialCompilazioneRapportinoComponent } from './tutorial-compilazione
 import { TruncatePipe } from './pipe/TruncatePipe';
 import { AggiungiCommessaComponent } from './components/aggiungi-commessa/aggiungi-commessa.component';
 import { ModificaRichiestaComponent } from './components/richieste/modifica-richiesta/modifica-richiesta.component';
+import { AnagraficaDtoModule } from './components/anagraficaDto/anagraficaDto.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -82,10 +76,6 @@ import { ModificaRichiestaComponent } from './components/richieste/modifica-rich
     ListaOrganicoComponent,
     HomeComponent,
     ModalInfoCommesseComponent,
-    ListaAnagraficaDtoComponent,
-    DettaglioAnagraficaDtoComponent,
-    ModificaAnagraficaDtoComponent,
-    NuovaAnagraficaDtoComponent,
     LoginComponent,
     StoricoContrattiComponent,
     StoricoCommesseComponent,
@@ -105,7 +95,6 @@ import { ModificaRichiestaComponent } from './components/richieste/modifica-rich
     ModificaCommessaComponent,
     ModaleDettaglioRapportinoComponent,
     HeaderComponent,
-    NuovaAnagraficaDtoExcelComponent,
     ImmagineComponent,
     SelectedDaysComponent,
     InsertPermessoComponent,
@@ -118,7 +107,7 @@ import { ModificaRichiestaComponent } from './components/richieste/modifica-rich
     TutorialCompilazioneRapportinoComponent,
     TruncatePipe,
     AggiungiCommessaComponent,
-    ModificaRichiestaComponent
+    ModificaRichiestaComponent,
   ],
   imports: [
     MatIconModule,
@@ -135,9 +124,7 @@ import { ModificaRichiestaComponent } from './components/richieste/modifica-rich
     MaterialModule,
     CommonModule,
     MatSelectModule,
-
-
-
+    AnagraficaDtoModule,
   ],
   providers: [DatePipe, CurrencyPipe],
   //  { provide: LOCALE_ID, useValue: 'it-IT' }
