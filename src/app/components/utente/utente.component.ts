@@ -745,8 +745,9 @@ export class UtenteComponent implements OnInit {
           this.noteDipendente = result['rapportinoDto']['noteDipendente'];
           this.gestisciStraordinari(this.rapportinoDto);
           this.gestisciPermessi(this.rapportinoDto);
-          setInterval(() => {
+          setTimeout(() => {
             this.checkRapportinoInviato();
+            console.log("ritardo");
           }, 1000);
           this.calcolaTotaleOreLavorate();
           this.calcolaTotaleStraordinari();
@@ -1293,7 +1294,7 @@ export class UtenteComponent implements OnInit {
               },
             });
             console.log(JSON.stringify(result));
-            setInterval(() => {
+            setTimeout(() => {
               this.getRapportino();
             }, 1000);
             if (this.tabellaCompletata) {
