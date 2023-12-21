@@ -64,6 +64,14 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard, RoleGuard],
   },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./components/organico/organico.module').then(
+        (m) => m.OrganicoModule
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+  },
 
   {
     path: 'selected-days',
@@ -85,7 +93,6 @@ const routes: Routes = [
     component: CaricamentoDocumentiComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
-
 
   //CONTRATTO
   {
@@ -140,12 +147,6 @@ const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
   },
 
-  {
-    path: 'organico',
-    component: ListaOrganicoComponent,
-    canActivate: [AuthGuard, RoleGuard],
-  },
-
   { path: 'login', component: LoginComponent },
 
   {
@@ -172,13 +173,6 @@ const routes: Routes = [
     path: 'info-contratto/:id',
     component: ModalInfoContrattoComponent,
     canActivate: [AuthGuard],
-  },
-
-  {
-    path: 'risultati-filter-organico',
-    component: RisultatiFilterOrganicoComponent,
-    canActivate: [AuthGuard],
-    pathMatch: 'full',
   },
 
   //STORICO COMMESSE

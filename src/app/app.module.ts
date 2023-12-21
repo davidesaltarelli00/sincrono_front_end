@@ -64,6 +64,7 @@ import { TruncatePipe } from './pipe/TruncatePipe';
 import { AggiungiCommessaComponent } from './components/aggiungi-commessa/aggiungi-commessa.component';
 import { ModificaRichiestaComponent } from './components/richieste/modifica-richiesta/modifica-richiesta.component';
 import { AnagraficaDtoModule } from './components/anagraficaDto/anagraficaDto.module';
+import { OrganicoModule } from './components/organico/organico.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,7 +74,6 @@ import { AnagraficaDtoModule } from './components/anagraficaDto/anagraficaDto.mo
     ListaContrattiComponent,
     ListaDashboardComponent,
     HighlightNullFieldDirective,
-    ListaOrganicoComponent,
     HomeComponent,
     ModalInfoCommesseComponent,
     LoginComponent,
@@ -90,7 +90,6 @@ import { AnagraficaDtoModule } from './components/anagraficaDto/anagraficaDto.mo
     NotFoundComponent,
     AlertDialogComponent,
     ModalInfoContrattoComponent,
-    RisultatiFilterOrganicoComponent,
     ListaRapportiniComponent,
     ModificaCommessaComponent,
     ModaleDettaglioRapportinoComponent,
@@ -125,6 +124,7 @@ import { AnagraficaDtoModule } from './components/anagraficaDto/anagraficaDto.mo
     CommonModule,
     MatSelectModule,
     AnagraficaDtoModule,
+    OrganicoModule,
   ],
   providers: [DatePipe, CurrencyPipe],
   //  { provide: LOCALE_ID, useValue: 'it-IT' }
