@@ -20,7 +20,6 @@ import { ModificaContrattoComponent } from './components/contratto/modifica-cont
 import { ListaDashboardComponent } from './components/dashboard/lista-dashboard/lista-dashboard.component';
 
 //DASHBOARD
-import { ListaOrganicoComponent } from './components/organico/lista-organico/lista-organico.component';
 
 //HOME
 import { HomeComponent } from './components/home/home.component';
@@ -34,7 +33,6 @@ import { CambioPasswordComponent } from './components/cambio-password/cambio-pas
 import { RecuperoPasswordComponent } from './components/recupero-password/recupero-password.component';
 import { FormRecuperoPasswordComponent } from './components/form-recupero-password/form-recupero-password.component';
 import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
-import { UtenteComponent } from './components/utente/utente.component';
 import { GiornoComponent } from './components/giorno/giorno.component';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { HighlightNullFieldDirective } from './directive/HighlightNullFieldDirective';
@@ -43,9 +41,6 @@ import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import { ModalInfoCommesseComponent } from './components/modal-info-commesse/modal-info-commesse.component';
 import { ModalInfoContrattoComponent } from './components/modal-info-contratto/modal-info-contratto.component';
 import { MatSelectModule } from '@angular/material/select';
-import { RisultatiFilterOrganicoComponent } from './components/organico/risultati-filter-organico/risultati-filter-organico.component';
-import { ListaRapportiniComponent } from './components/lista-rapportini/lista-rapportini.component';
-import { ModaleDettaglioRapportinoComponent } from './components/modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
 import { HeaderComponent } from './header/header.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ImmagineComponent } from './components/immagine/immagine.component';
@@ -84,15 +79,12 @@ import { OrganicoModule } from './components/organico/organico.module';
     RecuperoPasswordComponent,
     FormRecuperoPasswordComponent,
     AlertLogoutComponent,
-    UtenteComponent,
     RichiesteComponent,
     GiornoComponent,
     NotFoundComponent,
     AlertDialogComponent,
     ModalInfoContrattoComponent,
-    ListaRapportiniComponent,
     ModificaCommessaComponent,
-    ModaleDettaglioRapportinoComponent,
     HeaderComponent,
     ImmagineComponent,
     SelectedDaysComponent,
