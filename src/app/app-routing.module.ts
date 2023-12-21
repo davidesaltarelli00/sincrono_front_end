@@ -6,7 +6,6 @@ import { NuovoContrattoComponent } from './components/contratto/nuovo-contratto/
 import { ModificaContrattoComponent } from './components/contratto/modifica-contratto/modifica-contratto.component';
 import { ListaDashboardComponent } from './components/dashboard/lista-dashboard/lista-dashboard.component';
 import { ListaContrattiComponent } from './components/contratto/lista-contratti/lista-contratti.component';
-import { ListaOrganicoComponent } from './components/organico/lista-organico/lista-organico.component';
 import { LoginComponent } from './components/login/login/login.component';
 import { StoricoContrattiComponent } from './components/storici/storico-contratti/storico-contratti.component';
 import { StoricoCommesseComponent } from './components/storici/storico-commesse/storico-commesse.component';
@@ -17,12 +16,8 @@ import { CambioPasswordComponent } from './components/cambio-password/cambio-pas
 import { RecuperoPasswordComponent } from './components/recupero-password/recupero-password.component';
 import { FormRecuperoPasswordComponent } from './components/form-recupero-password/form-recupero-password.component';
 import { AlertLogoutComponent } from './components/alert-logout/alert-logout.component';
-import { UtenteComponent } from './components/utente/utente.component';
 import { GiornoComponent } from './components/giorno/giorno.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { RisultatiFilterOrganicoComponent } from './components/organico/risultati-filter-organico/risultati-filter-organico.component';
-import { ListaRapportiniComponent } from './components/lista-rapportini/lista-rapportini.component';
-import { ModaleDettaglioRapportinoComponent } from './components/modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
 import { ImmagineComponent } from './components/immagine/immagine.component';
 import { RichiesteComponent } from './components/richieste/richieste.component';
 import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
@@ -68,6 +63,14 @@ const routes: Routes = [
     path: '',
     loadChildren: () =>
       import('./components/organico/organico.module').then(
+        (m) => m.OrganicoModule
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./components/utente/rapportino.module').then(
         (m) => m.OrganicoModule
       ),
     canActivate: [AuthGuard, RoleGuard],
@@ -154,16 +157,8 @@ const routes: Routes = [
     component: StoricoContrattiComponent,
     canActivate: [AuthGuard],
   },
-  {
-    path: 'lista-rapportini',
-    component: ListaRapportiniComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'dettaglio-rapportino/:id/:nome/:cognome/:codiceFiscale/:mese/:anno',
-    component: ModaleDettaglioRapportinoComponent,
-    canActivate: [AuthGuard],
-  },
+
+
   {
     path: 'info-commesse/:id',
     component: ModalInfoCommesseComponent,
@@ -202,11 +197,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
 
-  {
-    path: 'utente/:id',
-    component: UtenteComponent,
-    canActivate: [AuthGuard],
-  },
   {
     path: 'giorno/:date',
     component: GiornoComponent,

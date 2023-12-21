@@ -9,47 +9,64 @@
 
 <body [class.dark-mode]="themeService.isDarkModeEnabled()">
   <div id="inizioPagina"></div>
-  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
-    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
-      <a [routerLink]="['/home']" class="logo-link">
-        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo" />
-      </a>
-      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
-        <a (click)="getPermissions(menuItem.id)" style="color: white" class="toolbar-link"
-          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
-          {{ menuItem.nome }}
+  <div class="container-toolbar" *ngIf="!mobile">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <a [routerLink]="['/home']" class="logo-link">
+          <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
         </a>
       </div>
-      <span>
-        <div class="form-check form-switch" matTooltip="{{
-              themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode'
-            }}">
-          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()"
-            type="checkbox" id="flexSwitchCheckDefault" />
-          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{
-                themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode'
-              }}"></label>
+
+      <div class="col-auto">
+        <button  *ngIf="getWindowWidth() < 830" mat-icon-button [matMenuTriggerFor]="hamburgerMenu" (click)="toggleHamburgerMenu()" class="hamburger-icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+
+      <div class="col-auto">
+        <mat-menu #hamburgerMenu="matMenu" class="hamburger-menu">
+          <button id="menu-voice" mat-menu-item *ngFor="let menuItem of jsonData.list" (click)="navigateTo(menuItem.percorso)">
+            {{ menuItem.nome }}
+          </button>
+        </mat-menu>
+
+        <div class="toolbar-menu" *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen">
+          <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+            *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+            {{ menuItem.nome }}
+          </a>
         </div>
-      </span>
-      <span style="cursor: pointer" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
-        <small *ngIf="userRoleNav === false">{{ userLoggedName }} {{ userLoggedSurname }} (Admin) &nbsp;</small>
-        <small *ngIf="userRoleNav === true">{{ userLoggedName }} {{ userLoggedSurname }} (Dipendente)
-          &nbsp;</small>
-        <i class="fa fa-user"></i>
-      </span>
-      &nbsp;&nbsp;
-      <span style="cursor: pointer" mat-icon-button (click)="logout()" class="logout-icon">
-        <i class="fa fa-sign-out" aria-hidden="true"></i>
-      </span>
-    </mat-toolbar>
+      </div>
+
+      <div class="col-auto">
+        <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <div style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+          <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+          <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+          <i class="fa fa-user"></i>
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <div style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+
+ <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && mobile">
       <a [routerLink]="['/home']" class="logo-link">
         <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
       </a>
-      <button
-        style="background-color:#333;color:white;margin-left:-10px;margin-right:3px;border-radius:1px;padding:5px;"
+      <button style="background-color:#333;color:white;margin-left:-10px;margin-right:3px;border-radius:1px;padding:5px;"
         mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>menu</mat-icon>
       </button>
@@ -71,19 +88,22 @@
       </span>
     </mat-toolbar>
   </div>
-  <div class="row" *ngIf="ruolo === 'DIPENDENTE'">
-    <div class="col-12">
-      <br />
-      <mat-card style="text-align: center">
-        <h1>
-          <img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono" />
-        </h1>
-        <h1>Modifica richiesta <i class="fa fa-envelope"></i></h1>
-      </mat-card>
-    </div>
-  </div>
+
+
 
   <div class="container-fluid" *ngIf="ruolo === 'DIPENDENTE'">
+    <div class="row" *ngIf="ruolo === 'DIPENDENTE'">
+      <div class="col-12">
+        <br />
+        <mat-card style="text-align: center">
+          <h1>
+            <img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono" />
+          </h1>
+          <h1>Modifica richiesta <i class="fa fa-envelope"></i></h1>
+        </mat-card>
+      </div>
+    </div>
+    <br>
     <div *ngIf="data">
       <div class="container">
         <div class="card">
@@ -91,7 +111,21 @@
             <div class="col-2">
               <div class="form-group">
                 <label for="mese"><strong>Mese:</strong></label>
-                <input type="number" class="form-control" id="mese" [(ngModel)]="data.mese">
+                <!-- <input type="number" class="form-control" id="mese" [(ngModel)]="data.mese"> -->
+                <select name="mese" class="form-select" id="mese" [(ngModel)]="data.mese">
+                <option value="1"  >Gennaio</option>
+                <option value="2">Febbraio</option>
+                <option value="3">Marzo</option>
+                <option value="4">Aprile</option>
+                <option value="5">Maggio</option>
+                <option value="6">Giugno</option>
+                <option value="7">Luglio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Settembre</option>
+                <option value="10">Ottobre</option>
+                <option value="11">Novembre</option>
+                <option value="12">Dicembre</option>
+                </select>
               </div>
             </div>
             <div class="col-2">
@@ -134,8 +168,6 @@
                   </div>
                   <br>
                 </form>
-
-
               </ng-container>
 
               <ng-template #permessiTemplate>
@@ -202,7 +234,56 @@
       </div>
     </div>
   </div>
+  <footer style="margin-top: 10px;">
+    <div class="footer">
+      <div class="contain">
+      <div class="col">
+        <h2>Sito web</h2>
+        <ul>
+          <li> <a href="https://www.sincrono.it/" target="_blank"> <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo"></a> </li>
+        </ul>
+      </div>
+      <div class="col">
+        <h2>Social</h2>
+        <ul>
+          <li>
+            <a href="https://www.linkedin.com/company/gruppo-sincrono/mycompany/" target="_blank" class="social-icon"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.facebook.com/g.sincrono" class="social-icon" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/grupposincrono?igshid=OGQ5ZDc2ODk2ZA==" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.sincrono.it/#pinterest" class="social-icon" target="_blank"><i class="fab fa-pinterest"></i></a>
+          </li>
+        </ul>
+      </div>
 
+      <div class="col">
+        <h2>Contatti</h2>
+        <ul>
+          <li> <b>Tel:</b> 06 7101227</li>
+          <li> <b>Fax:</b> 06 89716493</li>
+          <li> <b>P.IVA:</b> 14651701006</li>
+          <li matTooltip="Invia il tuo CV" > <b>Lavora con noi: </b>cv@sincrono.it </li>
+        </ul>
+      </div>
+      <div class="col address">
+        <h2>Indirizzo </h2>
+        <ul>
+          <li> <b>Indirizzo:</b> Via Vinicio Cortese 147/F - 00128 Roma (RM) - Lazio, Italia</li>
+          <li> <b>Sede legale:</b> Via Isole del Capoverde 310, 00121 (Roma) (RM) - Lazio, Italia</li>
+      </ul>
+      </div>
+      <div class="col">
+        <h2>Tutti i diritti riservati</h2>
+      </div>
+      <!-- <div class="col">
+        <h2>Data</h2>
+        <ul>
+          <li>{{ orarioAttuale | date: 'dd/MM/yyyy HH:mm:ss' }}</li>
+        </ul>
+      </div> -->
+    <div class="clearfix"></div>
+    </div>
+    </div>
+    </footer>
 
 </body>
 

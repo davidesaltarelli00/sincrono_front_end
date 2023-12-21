@@ -4,6 +4,7 @@ import { ListaOrganicoComponent } from './lista-organico/lista-organico.componen
 import { RoleGuard } from '../login/RoleGuard ';
 import { AuthGuard } from '../login/AuthGuard';
 import { RisultatiFilterOrganicoComponent } from './risultati-filter-organico/risultati-filter-organico.component';
+import { ModaleDettaglioRapportinoComponent } from '../modale-dettaglio-rapportino/modale-dettaglio-rapportino.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,11 @@ const routes: Routes = [
   {
     path: 'risultati-filter-organico',
     component: RisultatiFilterOrganicoComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'dettaglio-rapportino/:id/:nome/:cognome/:codiceFiscale/:mese/:anno',
+    component: ModaleDettaglioRapportinoComponent,
     canActivate: [AuthGuard],
   },
 ];

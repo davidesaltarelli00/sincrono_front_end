@@ -745,16 +745,18 @@ export class UtenteComponent implements OnInit {
           this.noteDipendente = result['rapportinoDto']['noteDipendente'];
           this.gestisciStraordinari(this.rapportinoDto);
           this.gestisciPermessi(this.rapportinoDto);
-          this.checkRapportinoInviato();
+          setInterval(() => {
+            this.checkRapportinoInviato();
+          }, 1000);
           this.calcolaTotaleOreLavorate();
           this.calcolaTotaleStraordinari();
           this.calcolaTotaleFerie();
           this.calcolaTotaleMalattia();
           this.calcolaTotaleOrePermessi();
           this.cdRef.detectChanges();
-          console.log(
-            'Risultato getRapportino:' + JSON.stringify(this.rapportinoDto)
-          );
+          // console.log(
+          //   'Risultato getRapportino:' + JSON.stringify(this.rapportinoDto)
+          // );
 
           if (this.note === null || this.note === '' || this.note === '') {
             console.log('non hai note.');
@@ -1291,7 +1293,9 @@ export class UtenteComponent implements OnInit {
               },
             });
             console.log(JSON.stringify(result));
-            this.getRapportino();
+            setInterval(() => {
+              this.getRapportino();
+            }, 1000);
             if (this.tabellaCompletata) {
               this.rapportinoSalvato = true;
             } else {
