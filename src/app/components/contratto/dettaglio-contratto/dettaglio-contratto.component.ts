@@ -1,7 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { ContrattoService } from '../contratto-service';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { AnagraficaDtoService } from '../../anagraficaDto/anagraficaDto-service';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -24,7 +24,9 @@ export class DettaglioContrattoComponent implements OnInit {
   data: any;
   codiceFiscaleDettaglio: any;
   elencoCommesse: any;
-
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+  windowWidth: any;
   //dati navbar
   userLoggedName: any;
   userLoggedSurname: any;
@@ -53,8 +55,11 @@ export class DettaglioContrattoComponent implements OnInit {
     private dialog: MatDialog,
     private profileBoxService: ProfileBoxService,
     private menuService: MenuService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    private router:Router
   ) {
+    this.windowWidth = window.innerWidth;
+
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -68,6 +73,22 @@ export class DettaglioContrattoComponent implements OnInit {
     ) {
       this.mobile = true;
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
+
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
   }
 
   ngOnInit(): void {

@@ -1,384 +1,931 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<style>
-  #toolbar {
-    background-color: #007bff;
-    /* Colore blu aziendale */
-    color: #ffffff;
-    /* Testo bianco */
-    display: flex;
-    background-color: #333;
-    justify-content: space-between;
-    /* Allinea gli elementi a sinistra e a destra */
-    align-items: center;
-    /* Allinea verticalmente gli elementi al centro */
-  }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    #toolbar {
+      background-color: #333;
+      color: #f2f2f2;
+    }
 
-  .logo-link {
-    margin-right: 10px;
-  }
+    .container-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #333;
+      color: white;
+      padding: 10px;
+    }
 
-  .toolbar-menu {
-    display: flex;
-    gap: 10px;
-    background-color: #333;
-    margin-right: auto;
-  }
+    .logo-link {
+      margin-right: 10px;
+    }
 
-  .toolbar-link {
-    text-decoration: none;
-    color: #ffffff;
-    /* padding: 10px; */
-  }
+    .logo-image {
+      border-radius: 100%;
+    }
 
-  a {
-    color: white;
-  }
+    .toolbar-menu {
+      display: flex;
+      gap: 10px;
+    }
 
-  .toolbar-link:hover {
-    color: #d8d8d8;
-  }
+    .toolbar-link {
+      color: white;
+      text-decoration: none;
+    }
 
-  .user-icon,
-  .logout-icon {
-    color: #ffffff;
-    cursor: pointer;
-  }
+    .form-switch {
+      margin-right: 10px;
+    }
 
+    :root {
+      --primary-color: #333;
+      --text-color: white;
+    }
 
-  #toolbar {
-    background-color: #007bff;
-    /* Colore blu aziendale */
-    color: #ffffff;
-    /* Testo bianco */
-    display: flex;
-    background-color: #333;
-    justify-content: space-between;
-    /* Allinea gli elementi a sinistra e a destra */
-    align-items: center;
-    /* Allinea verticalmente gli elementi al centro */
-  }
+    @media screen and (max-width: 830px) {
+      .hamburger-menu {
+        cursor: pointer;
+        color: var(--text-color);
+        font-size: 20px;
+      }
 
-  .logo-link {
-    margin-right: 10px;
-  }
+      .toolbar-link {
+        display: none;
+      }
 
-  .toolbar-menu {
-    display: flex;
-    gap: 10px;
-    background-color: #333;
-    margin-right: auto;
-  }
+      .hamburger-icon {
+        display: block;
+      }
+    }
 
-  .toolbar-link {
-    text-decoration: none;
-    color: #ffffff;
-    /* padding: 10px; */
-  }
+    @media screen and (min-width: 831px) {
+      .hamburger-menu {
+        display: none;
+      }
 
-  a {
-    color: white;
-  }
+      .toolbar-link {
+        display: flex;
+      }
+    }
 
-  .toolbar-link:hover {
-    color: #d8d8d8;
-  }
+    .dark-mode body,
+    .dark-mode .container-fluid,
+    .dark-mode mat-card {
+      background-color: #333;
+      color: white;
+      border: 1px solid white;
+    }
 
-  .user-icon,
-  .logout-icon {
-    color: #ffffff;
-    cursor: pointer;
-  }
-</style>
-<body [class.dark-mode]="themeService.isDarkModeEnabled()">
-  <div id="inizioPagina"></div>
-  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
-    <mat-toolbar id="toolbar" *ngIf="token && !mobile">
-      <a [routerLink]="['/home']" class="logo-link">
-        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
-      </a>
-      <div class="toolbar-menu" *ngIf="jsonData && jsonData.list">
-        <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
-          *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
-          {{ menuItem.nome }}
-        </a>
-      </div>
-      <span>
-        <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
-          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
-          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
+    body:not(.dark-mode),
+    .container-fluid:not(.dark-mode),
+    mat-card:not(.dark-mode) {
+      background-color: initial;
+      color: initial;
+      border: initial;
+    }
+
+    .dark-mode .custom-list {
+      background-color: #333;
+      color: white;
+    }
+
+    .dark-mode .custom-list-item {
+      background-color: #444;
+      color: white;
+    }
+
+    .dark-mode .custom-list-item a {
+      text-decoration: none;
+      color: white;
+    }
+
+    .dark-mode .hamburger-menu {
+      background-color: #333 !important;
+      color: white !important;
+    }
+
+    .dark-mode #menu-voice {
+      color: white !important;
+    }
+
+    .dark-mode .mat-menu-panel {
+      background-color: #333 !important;
+    }
+
+    .dark-mode .mat-menu-content {
+      color: white;
+    }
+
+    .dark-mode .toolbar-menu {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .col-2 {
+      width: 16.66%;
+      float: left;
+      padding: 0 10px;
+    }
+
+    @media (max-width: 768px) {
+      .col-2 {
+        width: 100%;
+        float: none;
+        padding: 0;
+      }
+    }
+
+    .footer {
+      width: 100%;
+      background-color: #333;
+    }
+    .dark-mode .footer {
+      border: 1px solid white;
+    }
+    .footer .col {
+      width: 190px;
+      height: auto;
+      float: left;
+      box-sizing: border-box;
+      padding: 20px;
+    }
+    .footer .col h2 {
+      margin: 0;
+      padding: 0;
+      font-size: 15px;
+      line-height: 17px;
+      padding: 10px 0;
+      color: #007bff;
+      text-transform: uppercase;
+    }
+    .footer .col ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .footer .col ul li {
+      color: white;
+      font-size: 12px;
+      padding: 5px 0px;
+    }
+    .address ul li {
+      display: inline-block;
+      padding-right: 5px !important;
+    }
+
+    .footer .col ul li:hover {
+      cursor: pointer;
+      color: lightgray;
+      font-weight: bold;
+    }
+    .clearfix {
+      clear: both;
+    }
+    @media only screen and (min-width: 1280px) {
+      .contain {
+        width: 1200px;
+        margin: 0 auto;
+      }
+    }
+    @media only screen and (max-width: 1139px) {
+      .contain .address {
+        width: 1000px;
+        display: block;
+      }
+      .address h2 {
+        margin: 0px;
+      }
+    }
+    @media only screen and (max-width: 950px) {
+      .footer .col {
+        width: 33%;
+      }
+      .footer .col h2 {
+        font-size: 14px;
+      }
+      .footer .col ul li {
+        font-size: 13px;
+      }
+    }
+    @media only screen and (max-width: 500px) {
+      .footer .col {
+        width: 50%;
+      }
+      .footer .col h2 {
+        font-size: 14px;
+      }
+      .footer .col ul li {
+        font-size: 13px;
+      }
+    }
+    @media only screen and (max-width: 340px) {
+      .footer .col {
+        width: 100%;
+      }
+    }
+
+    .social-icon {
+      color: #fff;
+      font-size: 1.5em;
+      margin-right: 10px;
+      text-decoration: none;
+    }
+
+    .dark-mode table {
+      background-color: #444;
+      color: white;
+      border: 1px solid #fff;
+    }
+  </style>
+  <body [class.dark-mode]="themeService.isDarkModeEnabled()">
+    <div id="inizioPagina"></div>
+    <div class="container-toolbar" *ngIf="!mobile">
+      <div class="row align-items-center">
+        <div class="col-auto">
+          <a [routerLink]="['/home']" class="logo-link">
+            <img
+              class="logo-image"
+              width="40"
+              height="40"
+              src="../../../../assets/images/logo.jpeg"
+              alt="Logo"
+            />
+          </a>
         </div>
-      </span>
-      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
-        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
-        <i class="fa fa-user"></i>
-      </span> &nbsp;&nbsp;
-      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
-        <i class="fa fa-sign-out" aria-hidden="true"></i>
-      </span>
-    </mat-toolbar>
-  </div>
 
-  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
-    <mat-toolbar id="toolbar" *ngIf="token && mobile">
-      <a [routerLink]="['/home']" class="logo-link">
-        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
-      </a>
-      <button style=" background-color:white;color:black;margin-right: 10px;" mat-button [matMenuTriggerFor]="menu">
-        Menu
-      </button>
-      <mat-menu #menu="matMenu">
-        <button style="background-color:white;color:black" mat-menu-item *ngFor="let menuItem of jsonData.list"
-          [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
-          {{ menuItem.nome }}
-        </button>
-      </mat-menu>
-      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
-        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
-        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
-        <i class="fa fa-user"></i>
-      </span> &nbsp;&nbsp;
-      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
-        <i class="fa fa-sign-out" aria-hidden="true"></i>
-      </span>
-    </mat-toolbar>
-  </div>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <br>
-        <mat-card style="text-align: center;">
-          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Dettaglio contratto di {{data?.anagrafica?.nome}} {{data?.anagrafica.cognome}} <button mat-flat-button color="primary" [routerLink]="['/modifica-contratto/',id]" > <i class="fa fa-pencil"></i> </button> </h1>
-          <h4></h4>
-        </mat-card>
+        <div class="col-auto">
+          <button
+            *ngIf="getWindowWidth() < 830"
+            mat-icon-button
+            [matMenuTriggerFor]="hamburgerMenu"
+            (click)="toggleHamburgerMenu()"
+            class="hamburger-icon"
+          >
+            <mat-icon>menu</mat-icon>
+          </button>
+        </div>
+
+        <div class="col-auto">
+          <mat-menu #hamburgerMenu="matMenu" class="hamburger-menu">
+            <button
+              id="menu-voice"
+              mat-menu-item
+              *ngFor="let menuItem of jsonData.list"
+              (click)="navigateTo(menuItem.percorso)"
+            >
+              {{ menuItem.nome }}
+            </button>
+          </mat-menu>
+
+          <div
+            class="toolbar-menu"
+            *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen"
+          >
+            <a
+              (click)="getPermissions(menuItem.id)"
+              style="color: white"
+              class="toolbar-link"
+              *ngFor="let menuItem of jsonData.list"
+              [routerLink]="[menuItem.percorso]"
+            >
+              {{ menuItem.nome }}
+            </a>
+          </div>
+        </div>
+
+        <div class="col-auto">
+          <div
+            class="form-check form-switch"
+            matTooltip="{{
+              themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode'
+            }}"
+          >
+            <input
+              class="form-check-input"
+              [checked]="themeService.isDarkModeEnabled()"
+              (click)="toggleDarkMode()"
+              type="checkbox"
+              id="flexSwitchCheckDefault"
+            />
+            <label
+              class="form-check-label"
+              for="flexSwitchCheckDefault"
+              matTooltip="{{
+                themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode'
+              }}"
+            ></label>
+          </div>
+        </div>
+
+        <div class="col-auto">
+          <div
+            style="cursor: pointer"
+            mat-icon-button
+            [routerLink]="['/profile-box']"
+            class="user-icon"
+          >
+            <small *ngIf="userRoleNav === false"
+              >{{ userLoggedName }} {{ userLoggedSurname }} (Admin)
+              &nbsp;</small
+            >
+            <small *ngIf="userRoleNav === true"
+              >{{ userLoggedName }} {{ userLoggedSurname }} (Dipendente)
+              &nbsp;</small
+            >
+            <i class="fa fa-user"></i>
+          </div>
+        </div>
+
+        <div class="col-auto">
+          <div
+            style="cursor: pointer"
+            mat-icon-button
+            (click)="logout()"
+            class="logout-icon"
+          >
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+          </div>
+        </div>
       </div>
     </div>
-    <br>
-  <div class="row">
-    <div class="col-12">
-      <div class="container-contratto" [hidden]="data?.contratto===null">
-        <table class="table table-bordered">
-          <tbody>
-            <tr>
-              <td><strong>Nome Azienda:</strong></td>
-              <td>{{ data?.contratto?.tipoAzienda?.descrizione }}</td>
-            </tr>
-            <tr>
-              <td><strong>Tipo Contratto:</strong></td>
-              <td>{{ data?.contratto?.tipoContratto?.descrizione }}</td>
-            </tr>
-            <tr [hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"><!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
-              <td><strong>Mesi durata:</strong></td>
-              <td>{{ data?.contratto?.mesiDurata }}</td>
-            </tr>
-            <tr>
-              <td><strong>Tipo CCNL:</strong></td>
-              <td>{{ data?.contratto?.tipoCcnl?.descrizione }}</td>
-            </tr>
 
-            <tr>
-              <td><strong>Liv. Contratto:</strong></td>
-              <td>{{ data?.contratto?.tipoLivelloContratto?.livello }}</td>
-            </tr>
-            <tr>
-              <td><strong>Data assunzione:</strong></td>
-              <td>{{ data?.contratto?.dataAssunzione | date: 'dd/MM/yyyy' }}</td>
-            </tr>
-            <tr>
-              <td><strong>Data fine prova:</strong></td>
-              <td>{{ data?.contratto?.dataFineProva | date: 'dd/MM/yyyy' }}</td>
-            </tr>
-            <tr> <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
-              <td><strong>Data fine contratto:</strong></td>
-              <td>{{ data?.contratto?.dataFineContratto | date: 'dd/MM/yyyy' }}</td>
-            </tr>
-            <!-- <tr>
+    <div
+      class="container-toolbar"
+      [hidden]="tokenProvvisorio != null && tokenProvvisorio == null"
+    >
+      <mat-toolbar id="toolbar" *ngIf="token && mobile">
+        <a [routerLink]="['/home']" class="logo-link">
+          <img
+            class="logo-image"
+            width="40"
+            height="40"
+            src="../../../../assets/images/logo.jpeg"
+            alt="Logo"
+          />
+        </a>
+        <button
+          style="
+            background-color: #333;
+            color: white;
+            margin-left: -10px;
+            margin-right: 3px;
+            border-radius: 1px;
+            padding: 5px;
+          "
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <ng-template matMenuContent>
+            <button
+              style="background-color: #333; color: white"
+              mat-menu-item
+              *ngFor="let menuItem of jsonData.list"
+              [routerLink]="[menuItem.percorso]"
+              (click)="getPermissions(menuItem.id)"
+            >
+              {{ menuItem.nome }}
+            </button>
+          </ng-template>
+        </mat-menu>
+        <span
+          style="cursor: pointer"
+          mat-icon-button
+          [routerLink]="['/profile-box']"
+          class="user-icon"
+        >
+          <small *ngIf="userRoleNav === false"
+            >{{ userLoggedName }} {{ userLoggedSurname }} (Admin) &nbsp;</small
+          >
+          <small *ngIf="userRoleNav === true"
+            >{{ userLoggedName }} {{ userLoggedSurname }} (Dipendente)
+            &nbsp;</small
+          >
+          <i class="fa fa-user"></i>
+        </span>
+        &nbsp;&nbsp;
+        <span
+          style="cursor: pointer"
+          mat-icon-button
+          (click)="logout()"
+          class="logout-icon"
+        >
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </span>
+      </mat-toolbar>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <br />
+          <mat-card style="text-align: center">
+            <h1>
+              <img
+                src="../../../../assets/images/logoSincronoCompleto.png"
+                alt="Logo Sincrono"
+              />
+            </h1>
+            <h1>
+              Dettaglio contratto di {{ data?.anagrafica?.nome }}
+              {{ data?.anagrafica.cognome }}
+              <button
+                mat-flat-button
+                color="primary"
+                [routerLink]="['/modifica-contratto/', id]"
+              >
+                <i class="fa fa-pencil"></i>
+              </button>
+            </h1>
+            <h4></h4>
+          </mat-card>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-12">
+          <div class="container-contratto" [hidden]="data?.contratto === null">
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td><strong>Nome Azienda:</strong></td>
+                  <td>{{ data?.contratto?.tipoAzienda?.descrizione }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Tipo Contratto:</strong></td>
+                  <td>{{ data?.contratto?.tipoContratto?.descrizione }}</td>
+                </tr>
+                <tr
+                  [hidden]="
+                    data?.contratto?.tipoContratto?.descrizione ===
+                    'Indeterminato'
+                  "
+                >
+                  <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
+                  <td><strong>Mesi durata:</strong></td>
+                  <td>{{ data?.contratto?.mesiDurata }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Tipo CCNL:</strong></td>
+                  <td>{{ data?.contratto?.tipoCcnl?.descrizione }}</td>
+                </tr>
+
+                <tr>
+                  <td><strong>Liv. Contratto:</strong></td>
+                  <td>{{ data?.contratto?.tipoLivelloContratto?.livello }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Data assunzione:</strong></td>
+                  <td>
+                    {{ data?.contratto?.dataAssunzione | date : "dd/MM/yyyy" }}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Data fine prova:</strong></td>
+                  <td>
+                    {{ data?.contratto?.dataFineProva | date : "dd/MM/yyyy" }}
+                  </td>
+                </tr>
+                <tr>
+                  <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Indeterminato'"-->
+                  <td><strong>Data fine contratto:</strong></td>
+                  <td>
+                    {{
+                      data?.contratto?.dataFineContratto | date : "dd/MM/yyyy"
+                    }}
+                  </td>
+                </tr>
+                <!-- <tr>
               <td><strong>Data fine rapporto:</strong></td>
               <td>{{ data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy' }}</td>
             </tr> -->
-            <tr>
-              <td><strong>Livello attuale:</strong></td>
-              <td>{{ data?.contratto?.livelloAttuale ? data?.contratto?.livelloAttuale : 'Dato non inserito' }}
-              </td>
-            </tr>
-            <tr>
-              <td><strong>Livello finale:</strong></td>
-              <td>{{ data?.contratto?.livelloFinale ? data?.contratto?.livelloFinale : 'Dato non inserito' }}</td>
-            </tr>
-            <tr>
-              <td><strong>Qualifica:</strong></td>
-              <td>{{ data?.contratto?.qualifica ? data?.contratto?.qualifica : 'Dato non inserito' }}</td>
-            </tr>
-            <tr>
-              <td><strong>Sede assunzione:</strong></td>
-              <td>{{ data?.contratto?.sedeAssunzione ? data?.contratto?.sedeAssunzione : 'Dato non inserito' }}
-              </td>
-            </tr>
-            <tr [hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' || data?.contratto?.tipoContratto?.descrizione!='Apprendistato' " > <!--[hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' || data?.contratto?.tipoContratto?.descrizione!='Apprendistato' "-->
-              <td><strong>Tutor:</strong></td>
-              <td>{{ data?.contratto?.tutor ? data?.contratto?.tutor : 'Dato non inserito' }}
-              </td>
-            </tr>
-            <tr [hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' || data?.contratto?.tipoContratto?.descrizione!='Apprendistato' " > <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Stage' || data?.contratto?.tipoContratto?.descrizione==='Apprendistato' "-->
-              <td><strong>Piano formativo individuale:</strong></td>
-              <td>{{ data?.contratto?.pfi ?'Si' : 'No' }}
-              </td>
-            </tr>
-            <tr>
-              <td><strong>Corso di sicurezza:</strong></td>
-              <td>{{data?.contratto?.corsoSicurezza ? 'Si': 'No'}}</td>
-            </tr>
-            <tr>
-              <td><strong>Data corso di sicurezza:</strong></td>
-              <td>{{data?.contratto?.dataCorsoSicurezza | date: 'dd/MM/yyyy'  }}</td>
-            </tr>
-            <tr>
-              <td><strong>Assicurazione obbligatoria:</strong></td>
-              <td>{{data?.contratto?.assicurazioneObbligatoria ? 'Si':'No'}}</td>
-            </tr>
-          </tbody>
-        </table>
-        <br>
-        <div class="row" *ngIf="data?.contratto?.partTime===true">
-          <div class="col-12">
-            <h1>Dati part-time</h1>
-            <table class="table table-bordered">
-              <tbody>
                 <tr>
-                  <td><strong>Part time</strong></td>
-                  <td> {{data?.contratto?.partTime ? 'Si' : 'No' }} </td>
-                </tr>
-                <tr>
-                  <td><strong>% part time</strong></td>
-                  <td>{{data?.contratto?.percentualePartTime ? data?.contratto?.percentualePartTime : 'Dato non inserito' }}</td>
-                </tr>
-                <tr>
-                  <td><strong>RAL Part-time</strong></td>
-                  <td>{{data?.contratto?.ralPartTime ? data?.contratto?.ralPartTime : 'Dato non inserito' }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <h1>Dati economici <button class="btn btn-danger"
-                *ngIf="data?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
-                matTooltip="Dal {{data?.contratto?.dataFineRapporto | date: 'dd/MM/yyyy'}}, {{data?.anagrafica?.nome |titlecase}} {{data?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{data?.contratto?.tipoCausaFineRapporto?.descrizione}}">
-                <i class="fa fa-exclamation-triangle"></i> </button></h1> <br>
-            <h1>Retribuzione</h1>
-            <table class="table table-bordered">
-              <tbody>
-                <tr>
-                  <td><strong>Retribuzione mensile lorda:</strong></td>
-                  <td>{{data?.contratto?.retribuzioneMensileLorda ? data?.contratto?.retribuzioneMensileLorda :'Dato non inserito'}} </td>
-                </tr>
-                <tr>
-                  <td><strong>Superminimo mensile:</strong></td>
-                  <td>{{data?.contratto?.superminimoMensile ? data?.contratto?.superminimoMensile :'Dato non inserito'}} </td>
-                </tr>
-                <tr>
-                  <td><strong>Scatti anzianitá:</strong></td>
-                  <td>{{data?.contratto?.scattiAnzianita ? data?.contratto?.scattiAnzianita :'Dato non inserito'}}
+                  <td><strong>Livello attuale:</strong></td>
+                  <td>
+                    {{
+                      data?.contratto?.livelloAttuale
+                        ? data?.contratto?.livelloAttuale
+                        : "Dato non inserito"
+                    }}
                   </td>
                 </tr>
                 <tr>
-                  <td><strong>Retribuzione netta mensile:</strong></td>
-                  <td>{{data?.contratto?.retribuzioneNettaMensile ? data?.contratto?.retribuzioneNettaMensile :'Dato non inserito'}} </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-12">
-            <h1>RAL</h1>
-            <table class="table table-bordered">
-              <tbody>
-                <tr>
-                  <td><strong>RAL annua</strong></td>
-                  <td>{{data?.contratto?.ralAnnua ? data?.contratto?.ralAnnua: 'Dato non inserito'}}</td>
+                  <td><strong>Livello finale:</strong></td>
+                  <td>
+                    {{
+                      data?.contratto?.livelloFinale
+                        ? data?.contratto?.livelloFinale
+                        : "Dato non inserito"
+                    }}
+                  </td>
                 </tr>
                 <tr>
-                  <td><strong>Superminimo RAL</strong></td>
-                  <td>{{data?.contratto?.superminimoRal ? data?.contratto?.superminimoRal: 'Dato non inserito'}}
+                  <td><strong>Qualifica:</strong></td>
+                  <td>
+                    {{
+                      data?.contratto?.qualifica
+                        ? data?.contratto?.qualifica
+                        : "Dato non inserito"
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Sede assunzione:</strong></td>
+                  <td>
+                    {{
+                      data?.contratto?.sedeAssunzione
+                        ? data?.contratto?.sedeAssunzione
+                        : "Dato non inserito"
+                    }}
+                  </td>
+                </tr>
+                <tr
+                  [hidden]="
+                    data?.contratto?.tipoContratto?.descrizione != 'Stage' ||
+                    data?.contratto?.tipoContratto?.descrizione !=
+                      'Apprendistato'
+                  "
+                >
+                  <!--[hidden]="data?.contratto?.tipoContratto?.descrizione!='Stage' || data?.contratto?.tipoContratto?.descrizione!='Apprendistato' "-->
+                  <td><strong>Tutor:</strong></td>
+                  <td>
+                    {{
+                      data?.contratto?.tutor
+                        ? data?.contratto?.tutor
+                        : "Dato non inserito"
+                    }}
+                  </td>
+                </tr>
+                <tr
+                  [hidden]="
+                    data?.contratto?.tipoContratto?.descrizione != 'Stage' ||
+                    data?.contratto?.tipoContratto?.descrizione !=
+                      'Apprendistato'
+                  "
+                >
+                  <!--[hidden]="data?.contratto?.tipoContratto?.descrizione==='Stage' || data?.contratto?.tipoContratto?.descrizione==='Apprendistato' "-->
+                  <td><strong>Piano formativo individuale:</strong></td>
+                  <td>{{ data?.contratto?.pfi ? "Si" : "No" }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Corso di sicurezza:</strong></td>
+                  <td>{{ data?.contratto?.corsoSicurezza ? "Si" : "No" }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Data corso di sicurezza:</strong></td>
+                  <td>
+                    {{
+                      data?.contratto?.dataCorsoSicurezza | date : "dd/MM/yyyy"
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Assicurazione obbligatoria:</strong></td>
+                  <td>
+                    {{
+                      data?.contratto?.assicurazioneObbligatoria ? "Si" : "No"
+                    }}
                   </td>
                 </tr>
               </tbody>
             </table>
-          </div>
-        </div>
-        <br>
+            <br />
+            <div class="row" *ngIf="data?.contratto?.partTime === true">
+              <div class="col-12">
+                <h1>Dati part-time</h1>
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <td><strong>Part time</strong></td>
+                      <td>{{ data?.contratto?.partTime ? "Si" : "No" }}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>% part time</strong></td>
+                      <td>
+                        {{
+                          data?.contratto?.percentualePartTime
+                            ? data?.contratto?.percentualePartTime
+                            : "Dato non inserito"
+                        }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>RAL Part-time</strong></td>
+                      <td>
+                        {{
+                          data?.contratto?.ralPartTime
+                            ? data?.contratto?.ralPartTime
+                            : "Dato non inserito"
+                        }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <h1>
+                  Dati economici
+                  <button
+                    class="btn btn-danger"
+                    *ngIf="
+                      data?.contratto?.tipoCausaFineRapporto?.descrizione !=
+                      null
+                    "
+                    matTooltip="Dal {{
+                      data?.contratto?.dataFineRapporto | date : 'dd/MM/yyyy'
+                    }}, {{ data?.anagrafica?.nome | titlecase }} {{
+                      data?.anagrafica?.cognome | titlecase
+                    }} non lavora piú qui, causa {{
+                      data?.contratto?.tipoCausaFineRapporto?.descrizione
+                    }}"
+                  >
+                    <i class="fa fa-exclamation-triangle"></i>
+                  </button>
+                </h1>
+                <br />
+                <h1>Retribuzione</h1>
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <td><strong>Retribuzione mensile lorda:</strong></td>
+                      <td>
+                        {{
+                          data?.contratto?.retribuzioneMensileLorda
+                            ? data?.contratto?.retribuzioneMensileLorda
+                            : "Dato non inserito"
+                        }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>Superminimo mensile:</strong></td>
+                      <td>
+                        {{
+                          data?.contratto?.superminimoMensile
+                            ? data?.contratto?.superminimoMensile
+                            : "Dato non inserito"
+                        }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>Scatti anzianitá:</strong></td>
+                      <td>
+                        {{
+                          data?.contratto?.scattiAnzianita
+                            ? data?.contratto?.scattiAnzianita
+                            : "Dato non inserito"
+                        }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>Retribuzione netta mensile:</strong></td>
+                      <td>
+                        {{
+                          data?.contratto?.retribuzioneNettaMensile
+                            ? data?.contratto?.retribuzioneNettaMensile
+                            : "Dato non inserito"
+                        }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="col-12">
+                <h1>RAL</h1>
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <td><strong>RAL annua</strong></td>
+                      <td>
+                        {{
+                          data?.contratto?.ralAnnua
+                            ? data?.contratto?.ralAnnua
+                            : "Dato non inserito"
+                        }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>Superminimo RAL</strong></td>
+                      <td>
+                        {{
+                          data?.contratto?.superminimoRal
+                            ? data?.contratto?.superminimoRal
+                            : "Dato non inserito"
+                        }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <br />
 
-        <div class="row">
-          <div class="col-12">
-            <h1>Diaria</h1>
-            <table class="table table-bordered">
-              <tbody>
-                <tr>
-                  <td><strong>Diaria mensile</strong></td>
-                  <td>{{data?.contratto?.diariaMensile ? data?.contratto?.diariaMensile :'Dato non inserito'}}</td>
-                </tr>
-                <tr>
-                  <td><strong>Diaria giornaliera</strong></td>
-                  <td>{{data?.contratto?.diariaGiornaliera ? data?.contratto?.diariaGiornaliera :'Dato non inserito'}}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="row">
+              <div class="col-12">
+                <h1>Diaria</h1>
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <td><strong>Diaria mensile</strong></td>
+                      <td>
+                        {{
+                          data?.contratto?.diariaMensile
+                            ? data?.contratto?.diariaMensile
+                            : "Dato non inserito"
+                        }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>Diaria giornaliera</strong></td>
+                      <td>
+                        {{
+                          data?.contratto?.diariaGiornaliera
+                            ? data?.contratto?.diariaGiornaliera
+                            : "Dato non inserito"
+                        }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="col-12">
+                <h1>Costo aziendale</h1>
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <td><strong>Costo aziendale</strong></td>
+                      <td>
+                        {{
+                          data?.contratto?.costoAziendale
+                            ? data?.contratto?.costoAziendale
+                            : "Dato non inserito"
+                        }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <br />
+            <div
+              class="row"
+              [hidden]="data?.contratto?.tipoContratto.descrizione != 'P.Iva'"
+            >
+              <div class="col-12">
+                <h1>Dati economici partita IVA</h1>
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <td><strong>Tariffa partita IVA</strong></td>
+                      <td>
+                        {{
+                          data?.contratto?.tariffaPartitaIva
+                            ? data?.contratto?.tariffaPartitaIva
+                            : "Dato non inserito"
+                        }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>Retribuzione netta giornaliera</strong></td>
+                      <td>
+                        {{
+                          data?.contratto?.retribuzioneNettaGiornaliera
+                            ? data?.contratto?.retribuzioneNettaGiornaliera
+                            : "Dato non inserito"
+                        }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="col-12">
+                <h1>Ticket e agevolazioni</h1>
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <td><strong>Ticket:</strong></td>
+                      <td>{{ data?.contratto?.ticket ? "Sì" : "No" }}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Valore Ticket:</strong></td>
+                      <td>
+                        {{
+                          data?.contratto?.valoreTicket
+                            ? data?.contratto?.valoreTicket
+                            : "Dato non inserito"
+                        }}
+                        <i
+                          class="fa fa-euro-sign"
+                          *ngIf="data?.contratto?.valoreTicket != null"
+                        ></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
-        <br>
-        <div class="row" [hidden]="data?.contratto?.tipoContratto.descrizione!='P.Iva'">
-          <div class="col-12">
-            <h1>Dati economici partita IVA</h1>
-            <table class="table table-bordered">
-              <tbody>
-                <tr>
-                  <td><strong>Tariffa partita IVA</strong></td>
-                  <td>{{data?.contratto?.tariffaPartitaIva ? data?.contratto?.tariffaPartitaIva:'Dato non inserito'
-                    }}</td>
-                </tr>
-                <tr>
-                  <td><strong>Retribuzione netta giornaliera</strong></td>
-                  <td>{{data?.contratto?.retribuzioneNettaGiornaliera ? data?.contratto?.retribuzioneNettaGiornaliera:'Dato non inserito' }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-12">
-            <h1>Ticket e agevolazioni</h1>
-            <table class="table table-bordered">
-              <tbody>
-                <tr>
-                  <td> <strong>Ticket:</strong> </td>
-                  <td>{{ data?.contratto?.ticket ? 'Sì' : 'No' }}</td>
-                </tr>
-                <tr>
-                  <td> <strong>Valore Ticket:</strong> </td>
-                  <td>{{ data?.contratto?.valoreTicket ? data?.contratto?.valoreTicket: 'Dato non inserito' }} <i
-                      class="fa fa-euro-sign" *ngIf="data?.contratto?.valoreTicket!=null"></i></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
       </div>
     </div>
-  </div>
-  </div>
-  <div id="finePagina"></div>
+    <div id="finePagina"></div>
+    <footer>
+      <div class="footer">
+        <div class="contain">
+          <div class="col">
+            <h2>Sito web</h2>
+            <ul>
+              <li>
+                <a href="https://www.sincrono.it/" target="_blank">
+                  <img
+                    class="logo-image"
+                    width="40"
+                    height="40"
+                    src="../../../../assets/images/logo.jpeg"
+                    alt="Logo"
+                /></a>
+              </li>
+            </ul>
+          </div>
+          <div class="col">
+            <h2>Social</h2>
+            <ul>
+              <li>
+                <a
+                  href="https://www.linkedin.com/company/gruppo-sincrono/mycompany/"
+                  target="_blank"
+                  class="social-icon"
+                  ><i class="fab fa-linkedin"></i
+                ></a>
+                <a
+                  href="https://www.facebook.com/g.sincrono"
+                  class="social-icon"
+                  target="_blank"
+                  ><i class="fab fa-facebook"></i
+                ></a>
+                <a
+                  href="https://www.instagram.com/grupposincrono?igshid=OGQ5ZDc2ODk2ZA=="
+                  class="social-icon"
+                  target="_blank"
+                  ><i class="fab fa-instagram"></i
+                ></a>
+                <a
+                  href="https://www.sincrono.it/#pinterest"
+                  class="social-icon"
+                  target="_blank"
+                  ><i class="fab fa-pinterest"></i
+                ></a>
+              </li>
+            </ul>
+          </div>
 
-</body>
+          <div class="col">
+            <h2>Contatti</h2>
+            <ul>
+              <li><b>Tel:</b> 06 7101227</li>
+              <li><b>Fax:</b> 06 89716493</li>
+              <li><b>P.IVA:</b> 14651701006</li>
+              <li matTooltip="Invia il tuo CV">
+                <b>Lavora con noi: </b>cv@sincrono.it
+              </li>
+            </ul>
+          </div>
+          <div class="col address">
+            <h2>Indirizzo</h2>
+            <ul>
+              <li>
+                <b>Indirizzo:</b> Via Vinicio Cortese 147/F - 00128 Roma (RM) -
+                Lazio, Italia
+              </li>
+              <li>
+                <b>Sede legale:</b> Via Isole del Capoverde 310, 00121 (Roma)
+                (RM) - Lazio, Italia
+              </li>
+            </ul>
+          </div>
+          <div class="col">
+            <h2>Tutti i diritti riservati</h2>
+          </div>
+
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>
