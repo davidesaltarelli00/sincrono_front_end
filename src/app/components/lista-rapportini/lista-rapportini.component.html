@@ -458,7 +458,7 @@
                   />
                 </td>
                 <td>{{ rapportinoNonFreezato.ruolo.descrizione | titlecase }}</td>
-                <td>{{ rapportinoNonFreezato.anagrafica.nome | titlecase }} {{ rapportinoNonFreezato.anagrafica.cognome | titlecase }}</td>
+                <td>{{ rapportinoNonFreezato.anagrafica.nome | titlecase }} {{ rapportinoNonFreezato.anagrafica.cognome | titlecase }} <i [routerLink]="['/dettaglio-anagrafica/', rapportinoNonFreezato.anagrafica.id]" class="fa fa-info-circle" ></i> </td>
                 <td>{{ rapportinoNonFreezato.anagrafica.codiceFiscale | uppercase }}</td>
                 <td>{{ rapportinoNonFreezato.anagrafica.cellularePrivato ? rapportinoNonFreezato.anagrafica.cellularePrivato : 'Dato non inserito' }}</td>
                 <td>{{ rapportinoNonFreezato.anagrafica.mailAziendale }}</td>
