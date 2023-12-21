@@ -235,10 +235,19 @@
       text-decoration: none;
     }
 
-    .dark-mode table {
+    .dark-mode table,
+    th,
+    td {
       background-color: #444;
       color: white;
       border: 1px solid #fff;
+    }
+    table,
+    th,
+    td {
+      background-color: #fff;
+      color: black;
+      border: 1px solid #000;
     }
   </style>
   <body [class.dark-mode]="themeService.isDarkModeEnabled()">
