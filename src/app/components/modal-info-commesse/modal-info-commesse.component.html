@@ -30,7 +30,7 @@
                 <th>Cognome</th>
                 <th>Codice fiscale</th>
                 <th>Mail aziendale</th>
-                <th>Anagrafica</th>
+                <!-- <th>Anagrafica</th> -->
               </tr>
             </thead>
             <tbody>
@@ -39,7 +39,7 @@
                 <td>{{ data.anagraficaDto.anagrafica.cognome }}</td>
                 <td>{{ data.anagraficaDto.anagrafica.codiceFiscale | uppercase }}  <i  style="cursor: pointer;" matTooltip="Copia" class="fa-solid fa-copy" (click)="copy(data.anagraficaDto.anagrafica.codiceFiscale)"></i></td>
                 <td>{{data.anagraficaDto.anagrafica.mailAziendale}}  <i  style="cursor: pointer;" matTooltip="Copia" class="fa-solid fa-copy" (click)="copy(data.anagraficaDto.anagrafica.mailAziendale)"></i></td>
-                <td> <button mat-mini-fab color="primary" (click)="dettaglioAnagrafica(data.anagraficaDto.anagrafica.id)"> <i class="fa fa-info" ></i> </button> </td>
+                <!-- <td> <button mat-mini-fab color="primary" (click)="dettaglioAnagrafica(data.anagraficaDto.anagrafica.id)"> <i class="fa fa-info" ></i> </button> </td> -->
               </tr>
             </tbody>
           </table>
@@ -61,7 +61,7 @@
                 <th>Data fine</th>
                 <th>Tariffa giornaliera</th>
                 <th>Azienda fatturazione Interna</th>
-                <th>Azioni</th>
+                <!-- <th>Azioni</th> -->
               </tr>
             </thead>
             <tbody>
@@ -102,10 +102,10 @@
                 <td *ngIf=" commessa.aziendaDiFatturazioneInterna !=null" >{{ commessa.aziendaDiFatturazioneInterna }} </td>
                 <td style="color: red;" *ngIf=" commessa.aziendaDiFatturazioneInterna==null " >Dato non inserito.</td>
 
-                <td >
+                <!-- <td >
                    <button mat-mini-fab color="accent" matTooltip="Modifica commessa" (click)="modificaCommessa(data.anagraficaDto.anagrafica.id)" > <i class="fa fa-pencil"></i> </button>
                    <button mat-mini-fab color="warn" matTooltip="Archivia commessa" (click)="storicizza( i)"><i class="fa fa-archive"></i> </button>
-                </td>
+                </td> -->
 
               </tr>
             </tbody>
