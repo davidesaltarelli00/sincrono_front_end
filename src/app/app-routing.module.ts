@@ -19,17 +19,15 @@ import { AlertLogoutComponent } from './components/alert-logout/alert-logout.com
 import { GiornoComponent } from './components/giorno/giorno.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ImmagineComponent } from './components/immagine/immagine.component';
-import { RichiesteComponent } from './components/richieste/richieste.component';
 import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
 import { ModificaCommessaComponent } from './components/modifica-commessa/modifica-commessa.component';
 import { SelectedDaysComponent } from './components/richieste/selected-days/selected-days.component';
 import { InsertPermessoComponent } from './components/richieste/insert-permesso/insert-permesso.component';
-import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-richiesta/dettaglio-richiesta.component';
 import { TutorialCompilazioneRapportinoComponent } from './tutorial-compilazione-rapportino/tutorial-compilazione-rapportino.component';
 import { AggiungiCommessaComponent } from './components/aggiungi-commessa/aggiungi-commessa.component';
-import { ModificaRichiestaComponent } from './components/richieste/modifica-richiesta/modifica-richiesta.component';
 import { ModalInfoCommesseComponent } from './components/modal-info-commesse/modal-info-commesse.component';
 import { ModalInfoContrattoComponent } from './components/modal-info-contratto/modal-info-contratto.component';
+
 const routes: Routes = [
   //HOME
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -71,7 +69,16 @@ const routes: Routes = [
     path: '',
     loadChildren: () =>
       import('./components/utente/rapportino.module').then(
-        (m) => m.OrganicoModule
+        (m) => m.RapportinoModule
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+  },
+
+  {
+    path: '',
+    loadChildren: () =>
+      import('./components/richieste/richieste.module').then(
+        (m) => m.RichiesteModule
       ),
     canActivate: [AuthGuard, RoleGuard],
   },
@@ -158,7 +165,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
 
-
   {
     path: 'info-commesse/:id',
     component: ModalInfoCommesseComponent,
@@ -176,21 +182,7 @@ const routes: Routes = [
     component: StoricoCommesseComponent,
     canActivate: [AuthGuard],
   },
-  {
-    path: 'richieste',
-    component: RichiesteComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'richieste/:id',
-    component: DettaglioRichiestaComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'update-richiesta/:id',
-    component: ModificaRichiestaComponent,
-    canActivate: [AuthGuard],
-  },
+
   {
     path: 'aggiungi-commessa/:id',
     component: AggiungiCommessaComponent,
