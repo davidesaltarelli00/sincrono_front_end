@@ -84,10 +84,9 @@ export class AppComponent implements OnInit, AfterViewInit {
       const currentTime = Date.now() / 1000;
       this.tokenExpirationTime = Math.floor(tokenPayload.exp - currentTime);
 
-      // Avvia il timer per aggiornare il tempo rimanente ogni secondo
       this.timer = setInterval(() => {
         this.tokenExpirationTime -= 1;
-        this.cdRef.detectChanges(); // Forza l'aggiornamento del template
+        this.cdRef.detectChanges();
 
         if (this.tokenExpirationTime === 600000) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
