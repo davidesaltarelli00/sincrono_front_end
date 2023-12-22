@@ -254,10 +254,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
     // this.caricaListaUtenti();
 
-    console.log(
-      'TIPO AZIENDA VALIDITY: ' +
-        this.AnagraficaDto.get('tipoAzienda.id')?.hasError('required')
-    );
+    // console.log(
+    //   'TIPO AZIENDA VALIDITY: ' +
+    //     this.AnagraficaDto.get('tipoAzienda.id')?.hasError('required')
+    // );
 
     this.caricaTipoContratto();
     // this.caricaLivelloContratto();
@@ -281,7 +281,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
   }
   navigateTo(route: string): void {
-    console.log(`Navigating to ${route}`);
+    // console.log(`Navigating to ${route}`);
     this.router.navigate([route]);
   }
 
@@ -292,7 +292,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
-      this.getUserRole();
+      // this.getUserRole();
       this.caricaMappa();
     }
 
@@ -477,9 +477,9 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       }
     }
 
-    console.log('Nazione selezionata: ' + this.statoDiNascita);
-    console.log('Province selezionate: ' + JSON.stringify(this.province));
-    console.log('Capitali selezionate: ' + JSON.stringify(this.capitali));
+    // console.log('Nazione selezionata: ' + this.statoDiNascita);
+    // console.log('Province selezionate: ' + JSON.stringify(this.province));
+    // console.log('Capitali selezionate: ' + JSON.stringify(this.capitali));
   }
 
   calcoloRAL() {
@@ -1539,7 +1539,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.contrattoService
       .getTipoContratto(localStorage.getItem('token'))
       .subscribe((result: any) => {
-        console.log('TIPI DI CONTRATTI: ' + JSON.stringify(result));
+        // console.log('TIPI DI CONTRATTI: ' + JSON.stringify(result));
         this.tipiContratti = (result as any)['list'];
       });
   }
@@ -1549,7 +1549,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       .getTipoAzienda(localStorage.getItem('token'))
       .subscribe(
         (result: any) => {
-          console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+          // console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
           this.tipiAziende = (result as any)['list'];
         },
         (error: any) => {
@@ -1565,7 +1565,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       .getAllAziendaCliente(localStorage.getItem('token'))
       .subscribe(
         (result: any) => {
-          console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
+          // console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
           this.aziendeClienti = (result as any)['list'];
         },
         (error: any) => {
@@ -1580,7 +1580,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     this.contrattoService
       .getContrattoNazionale(localStorage.getItem('token'))
       .subscribe((result: any) => {
-        console.log('caricaContrattoNazionale: ' + JSON.stringify(result));
+        // console.log('caricaContrattoNazionale: ' + JSON.stringify(result));
         this.contrattiNazionali = (result as any)['list'];
       });
   }
@@ -1868,13 +1868,27 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.ruolo = response.anagraficaDto.ruolo.nome;
+        // this.codiceFiscaleDettaglio =response.anagraficaDto.anagrafica.codiceFiscale;
+        this.ruolo = response.anagraficaDto.ruolo.descrizione;
+        // this.anagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
       },
       (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
-        );
+        // this.authService.logout();
       }
     );
   }
@@ -1986,12 +2000,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     let body = {
       base64: this.base64Documento,
     };
-    console.log('BODY PER SALVATAGGIO DOCUMENTI: ' + JSON.stringify(body));
+    // console.log('BODY PER SALVATAGGIO DOCUMENTI: ' + JSON.stringify(body));
     this.anagraficaDtoService.salvaDocumento(body, this.token).subscribe(
       (result: any) => {
-        console.log(
-          'RISULTATO SALVATAGGIO DOCUMENTI: ' + JSON.stringify(result)
-        );
+        // console.log(
+        //   'RISULTATO SALVATAGGIO DOCUMENTI: ' + JSON.stringify(result)
+        // );
       },
       (error: any) => {
         console.error(error);

@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
-      this.getUserRole();
+      // this.getUserRole();
       this.caricaAziendeClienti();
       setInterval(() => {
         this.orarioAttuale = new Date();
@@ -235,29 +235,11 @@ export class HomeComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.ruolo = response.anagraficaDto.ruolo.nome;
-        this.codiceFiscaleDettaglio =
-          response.anagraficaDto.anagrafica.codiceFiscale;
-        this.getImage();
-      },
-      (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
-        );
-      }
-    );
-  }
-
-  getUserRole() {
-    this.profileBoxService.getData().subscribe(
-      (response: any) => {
-        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
-
-        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        this.codiceFiscaleDettaglio =response.anagraficaDto.anagrafica.codiceFiscale;
+        this.ruolo = response.anagraficaDto.ruolo.descrizione;
+        // this.anagraficaLoggata = response.anagraficaDto.anagrafica.id;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
-        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
-        console.log('ID UTENTE PER NAV:' + this.idUtente);
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
         ) {
@@ -273,14 +255,42 @@ export class HomeComponent implements OnInit {
         }
       },
       (error: any) => {
-        console.error(
-          'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
-        );
-        this.shouldReloadPage = true;
+        this.authService.logout();
       }
     );
   }
+  // getUserRole() {
+  //   this.profileBoxService.getData().subscribe(
+  //     (response: any) => {
+  //       console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+
+  //       this.userRoleNav = response.anagraficaDto.ruolo.nome;
+  //       this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+  //       this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
+  //       console.log('ID UTENTE PER NAV:' + this.idUtente);
+  //       if (
+  //         (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+  //       ) {
+  //         this.idNav = 1;
+  //         this.generateMenuByUserRole();
+  //       }
+  //       if (
+  //         (this.userRoleNav =
+  //           response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+  //       ) {
+  //         this.idNav = 2;
+  //         this.generateMenuByUserRole();
+  //       }
+  //     },
+  //     (error: any) => {
+  //       console.error(
+  //         'Si è verificato il seguente errore durante il recupero del ruolo: ' +
+  //           error
+  //       );
+  //       this.shouldReloadPage = true;
+  //     }
+  //   );
+  // }
 
   generateMenuByUserRole() {
     this.menuService
