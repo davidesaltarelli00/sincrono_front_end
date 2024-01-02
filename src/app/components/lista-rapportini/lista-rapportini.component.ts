@@ -264,7 +264,7 @@ export class ListaRapportiniComponent implements OnInit {
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
-      this.getUserRole();
+      // this.getUserRole();
       this.caricaAziendeClienti();
       this.caricaTipoContratto();
       this.caricaTipoAzienda();
@@ -290,10 +290,10 @@ export class ListaRapportiniComponent implements OnInit {
             this.selectedAnnoRapportinoNonFreezato = result['list']['anno'];
             this.currentPage = 1;
             this.pageData = this.getCurrentPageItems();
-            console.log(
-              'Questo é l elenco dei rapportini da controllare: ' +
-                JSON.stringify(this.elencoRapportiniNonFreezati)
-            );
+            // console.log(
+            //   'Questo é l elenco dei rapportini da controllare: ' +
+            //     JSON.stringify(this.elencoRapportiniNonFreezati)
+            // );
             let body = {
               anno: this.currentYear,
               mese: this.currentMonth,
@@ -1139,14 +1139,27 @@ export class ListaRapportiniComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.ruolo = response.anagraficaDto.ruolo.nome;
-        this.codiceFiscale = response.anagraficaDto.anagrafica.codiceFiscale;
+        this.codiceFiscale =response.anagraficaDto.anagrafica.codiceFiscale;
+        this.ruolo = response.anagraficaDto.ruolo.descrizione;
+        // this.anagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
       },
       (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
-        );
+        this.authService.logout();
       }
     );
   }

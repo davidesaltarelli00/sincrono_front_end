@@ -270,7 +270,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
 
     if (this.token != null) {
       this.getUserLogged();
-      this.getUserRole();
+      // this.getUserRole();
     }
   }
 
@@ -1069,16 +1069,27 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.ruolo = response.anagraficaDto.ruolo.nome;
-        this.codiceFiscaleDettaglio =
-          response.anagraficaDto.anagrafica.codiceFiscale;
-        this.getImage();
+        this.codiceFiscaleDettaglio =response.anagraficaDto.anagrafica.codiceFiscale;
+        this.ruolo = response.anagraficaDto.ruolo.descrizione;
+        // this.anagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
       },
       (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
-        );
+        this.authService.logout();
       }
     );
   }
