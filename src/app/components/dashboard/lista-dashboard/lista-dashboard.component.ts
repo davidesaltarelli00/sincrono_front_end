@@ -14,10 +14,21 @@ import {
   FormArray,
   Validators,
 } from '@angular/forms';
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AuthService } from '../../login/login-service';
 import { startWith } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
@@ -33,7 +44,7 @@ declare var $: any;
   templateUrl: './lista-dashboard.component.html',
   styleUrls: ['./lista-dashboard.component.scss'],
 })
-export class ListaDashboardComponent implements OnInit,AfterViewInit  {
+export class ListaDashboardComponent implements OnInit, AfterViewInit {
   codiceFiscaleDettaglio: any;
   immagine: any;
   immagineConvertita: string | null = null;
@@ -87,7 +98,6 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
   selectedMenuItem: string | undefined;
 
   filterAnagraficaDto: FormGroup = new FormGroup({
-
     anagrafica: new FormGroup({
       nome: new FormControl(null),
       cognome: new FormControl(null),
@@ -115,8 +125,8 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
   });
 
   @ViewChild('tortaCanvas') tortaCanvas!: ElementRef;
-  windowWidth:any;
-
+  windowWidth: any;
+  idAnagraficaLoggata: any;
 
   constructor(
     private dashboardService: DashboardService,
@@ -176,8 +186,6 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
       meseFineContratto: new FormControl(null),
     });
     this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
-
-
   }
 
   isTableVisible: boolean = false;
@@ -185,93 +193,118 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
   isTableVisible1: boolean = false;
 
   ngOnInit(): void {
-    this.caricaAziendeClienti();
-    this.populateYears()
-    this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
-    const commessaFormGroup = this.creaFormCommessa();
-    this.commesse.push(commessaFormGroup);
-    this.caricaTipoAzienda();
-
-
-    this.dashboardService.listaScattiContratto(localStorage.getItem('token')).subscribe(
-      (resp: any) => {
-        this.listaContrattiFromBatch = (resp as any)['list'];
-        // console.log('Lista contratti in arrivo dal batch: ' + JSON.stringify(resp));
-      },
-      (error: any) => {
-        console.error(
-          'Si é verificato un errore durante il recupero dei contratti con scatto livello già effettuato: ' +
-          error
-        );
-      }
-    );
-
-    this.dashboardService
-      .getListaCommesseInScadenza(localStorage.getItem('token'))
-      .subscribe(
-        (resp: any) => {
-          this.listaCommesseInScadenza = (resp as any)['list'];
-          (resp.list || []).forEach((item: any) => {
-            if (item.anagrafica && item.anagrafica.id) {
-              this.idutenteCommessaInScadenza = item.anagrafica.id;
-              return;
-            }
-          });
-          // console.log(
-          //   'UTENTE CON LA COMMESSA IN SCADENZA:' +
-          //   this.idutenteCommessaInScadenza
-          // );
-          // console.log('Lista commesse in scadenza: ' + JSON.stringify(resp));
-        },
-        (error: any) => {
-          console.error(
-            'Si é verificato un errore durante il recupero della lista delle commesse in scadenza: ' +
-            error
-          );
-        }
-      );
-    this.dashboardService
-      .getListaContrattiInScadenza(localStorage.getItem('token'))
-      .subscribe(
-        (resp: any) => {
-          this.listaContrattiInScadenza = (resp as any)['list'];
-          // console.log('Lista contratti in scadenza: ' + JSON.stringify(resp));
-        },
-        (error: any) => {
-          console.error(
-            'Si é verificato un errore durante il recupero della lista dei contratti in scadenza: ' +
-            error
-          );
-        }
-      );
-
-    this.dashboardService
-      .getAllCommesseScadute(localStorage.getItem('token'))
-      .subscribe(
-        (resp: any) => {
-          this.listaCommesseScadute = this.createAnagraficaDtoList(resp.list);
-          // console.log(
-          //   'Lista commesse scadute: ' +
-          //   JSON.stringify(this.listaCommesseScadute)
-          // );
-
-          this.currentPage = 1;
-          this.pageData = this.getCurrentPageItems();
-        },
-        (error: any) => {
-          console.error(
-            'Si è verificato un errore durante il recupero della lista delle commesse: ' +
-            error
-          );
-        }
-      );
-
-    this.mostraFiltri = false;
-
     if (this.token != null) {
       this.getUserLogged();
-      // this.getUserRole();
+      this.caricaAziendeClienti();
+      this.populateYears();
+      this.commesse = this.filterAnagraficaDto.get('commesse') as FormArray;
+      const commessaFormGroup = this.creaFormCommessa();
+      this.commesse.push(commessaFormGroup);
+      this.caricaTipoAzienda();
+
+      this.dashboardService
+        .listaScattiContratto(localStorage.getItem('token'))
+        .subscribe(
+          (resp: any) => {
+            this.listaContrattiFromBatch = (resp as any)['list'];
+          },
+          (error: any) => {
+            console.error(
+              'Si é verificato un errore durante il recupero dei contratti con scatto livello già effettuato: ' +
+                error
+            );
+          }
+        );
+
+      this.dashboardService
+        .getListaCommesseInScadenza(localStorage.getItem('token'))
+        .subscribe(
+          (resp: any) => {
+            this.listaCommesseInScadenza = (resp as any)['list'];
+            (resp.list || []).forEach((item: any) => {
+              if (item.anagrafica && item.anagrafica.id) {
+                this.idutenteCommessaInScadenza = item.anagrafica.id;
+                return;
+              }
+            });
+          },
+          (error: any) => {
+            console.error(
+              'Si é verificato un errore durante il recupero della lista delle commesse in scadenza: ' +
+                error
+            );
+          }
+        );
+      this.dashboardService
+        .getListaContrattiInScadenza(localStorage.getItem('token'))
+        .subscribe(
+          (resp: any) => {
+            this.listaContrattiInScadenza = (resp as any)['list'];
+          },
+          (error: any) => {
+            console.error(
+              'Si é verificato un errore durante il recupero della lista dei contratti in scadenza: ' +
+                error
+            );
+          }
+        );
+
+      this.dashboardService
+        .getAllCommesseScadute(localStorage.getItem('token'))
+        .subscribe(
+          (resp: any) => {
+            this.listaCommesseScadute = this.createAnagraficaDtoList(resp.list);
+            this.currentPage = 1;
+            this.pageData = this.getCurrentPageItems();
+          },
+          (error: any) => {
+            console.error(
+              'Si è verificato un errore durante il recupero della lista delle commesse: ' +
+                error
+            );
+          }
+        );
+
+      this.mostraFiltri = false;
     }
+
+    if (this.token == null) {
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          title: 'Attenzione:',
+          message: 'Errore di autenticazione; effettua il login.',
+        },
+      });
+      this.authService.logout().subscribe(
+        (response: any) => {
+          if (response.status === 200) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('isDarkMode');
+            localStorage.removeItem('DatiSbagliati');
+            localStorage.removeItem('tokenProvvisorio');
+            sessionStorage.clear();
+            this.router.navigate(['/login']);
+            this.dialog.closeAll();
+          } else {
+            this.handleLogoutError();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          if (error.status === 403) {
+            this.handleLogoutError();
+          } else {
+            this.handleLogoutError();
+          }
+        }
+      );
+    }
+  }
+
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
   }
 
   ngAfterViewInit(): void {
@@ -297,7 +330,9 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     const ctx = this.tortaCanvas.nativeElement.getContext('2d');
 
     // Estrai i dati relativi alle commesse
-    const commesse = this.listaCommesseInScadenza.flatMap(anagrafica => anagrafica.commesse);
+    const commesse = this.listaCommesseInScadenza.flatMap(
+      (anagrafica) => anagrafica.commesse
+    );
 
     // Raggruppa le commesse per tipo di azienda cliente
     const commesseRaggruppate = commesse.reduce((acc, commessa) => {
@@ -320,10 +355,12 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
       type: 'pie',
       data: {
         labels: labels,
-        datasets: [{
-          data: dati,
-          backgroundColor: colori,
-        }],
+        datasets: [
+          {
+            data: dati,
+            backgroundColor: colori,
+          },
+        ],
       },
     });
   }
@@ -336,7 +373,9 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     const differenzaInMillisecondi = fineRapporto.getTime() - oggi.getTime();
 
     // Convertire la differenza in millisecondi in giorni
-    const giorniRimanenti = Math.ceil(differenzaInMillisecondi / (1000 * 60 * 60 * 24));
+    const giorniRimanenti = Math.ceil(
+      differenzaInMillisecondi / (1000 * 60 * 60 * 24)
+    );
 
     return giorniRimanenti;
   }
@@ -361,7 +400,9 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     const differenzaInMillisecondi = fineCommessa.getTime() - oggi.getTime();
 
     // Convertire la differenza in millisecondi in giorni
-    const giorniRimanenti = Math.ceil(differenzaInMillisecondi / (1000 * 60 * 60 * 24));
+    const giorniRimanenti = Math.ceil(
+      differenzaInMillisecondi / (1000 * 60 * 60 * 24)
+    );
 
     // Calcolare la data di ieri
     const ieri = new Date();
@@ -381,7 +422,6 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     return giorniRimanenti;
   }
 
-
   getDaysRemainingColorCommessa(datafineCommessa: any): string {
     const giorniRimanenti = this.calculateDaysRemaining(datafineCommessa);
 
@@ -394,7 +434,6 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     }
   }
 
-
   calculateDaysElapsed(dataFineCommessa: Date): number {
     const oggi = new Date(); // Data odierna
     const fineCommessa = new Date(dataFineCommessa);
@@ -403,11 +442,12 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     const differenzaInMillisecondi = oggi.getTime() - fineCommessa.getTime();
 
     // Convertire la differenza in millisecondi in giorni
-    const giorniTrascorsi = Math.floor(differenzaInMillisecondi / (1000 * 60 * 60 * 24));
+    const giorniTrascorsi = Math.floor(
+      differenzaInMillisecondi / (1000 * 60 * 60 * 24)
+    );
 
     return giorniTrascorsi;
   }
-
 
   filter(value: any) {
     // console.log('Valore del form: ' + JSON.stringify(value));
@@ -427,7 +467,10 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
         if (obj.commesse && Object.keys(obj.commesse).length === 0) {
           delete obj.commesse;
         }
-        if (obj.tipoAziendaCliente && Object.keys(obj.tipoAziendaCliente).length === 0) {
+        if (
+          obj.tipoAziendaCliente &&
+          Object.keys(obj.tipoAziendaCliente).length === 0
+        ) {
           delete obj.tipoAziendaCliente;
         }
 
@@ -487,7 +530,6 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     };
     removeEmpty(this.filterAnagraficaDto.value);
 
-
     const body = {
       anagraficaDto: this.filterAnagraficaDto.value,
       annoDataFine: this.filterAnagraficaDto.get('annoDataFine')?.value,
@@ -502,55 +544,54 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
 
     // console.log('PAYLOAD BACKEND FILTER: ' + JSON.stringify(body));
     this.dashboardService
-  .commesseListFilter(localStorage.getItem('token'), body)
-  .subscribe(
-    (result) => {
-      if ((result as any).esito.code !== 200) {
-        const dialogRef = this.dialog.open(AlertDialogComponent, {
-          data: {
-            image: '../../../../assets/images/danger.png',
-            title: 'Attenzione:',
-            message: "Qualcosa é andato storto, riprova.",
-          },
-        });
-      } else {
-        if (Array.isArray(result.list)) {
-          this.pageData = [];
-          this.listaCommesseScadute = this.createAnagraficaDtoList(result.list);
-          this.currentPage = 1;
-          this.pageData = this.getCurrentPageItems();
-          // console.log("result is " + JSON.stringify(result.list));
-
-          if (this.pageData.length === 0) {
+      .commesseListFilter(localStorage.getItem('token'), body)
+      .subscribe(
+        (result) => {
+          if ((result as any).esito.code !== 200) {
             const dialogRef = this.dialog.open(AlertDialogComponent, {
               data: {
                 image: '../../../../assets/images/danger.png',
                 title: 'Attenzione:',
-                message: "La ricerca non ha prodotto nessun risultato.",
+                message: 'Qualcosa é andato storto, riprova.',
               },
             });
-          }
-        } else {
-          this.pageData = [];
-          this.messaggio =
-            'Nessun risultato trovato per i filtri inseriti, riprova.';
-        }
-        // console.log(
-        //   'Trovati i seguenti risultati: ' + JSON.stringify(result.list)
-        // );
-      }
-    },
-    (error: any) => {
-      console.log('Si è verificato un errore: ' + error);
-    }
-  );
+          } else {
+            if (Array.isArray(result.list)) {
+              this.pageData = [];
+              this.listaCommesseScadute = this.createAnagraficaDtoList(
+                result.list
+              );
+              this.currentPage = 1;
+              this.pageData = this.getCurrentPageItems();
+              // console.log("result is " + JSON.stringify(result.list));
 
+              if (this.pageData.length === 0) {
+                const dialogRef = this.dialog.open(AlertDialogComponent, {
+                  data: {
+                    image: '../../../../assets/images/danger.png',
+                    title: 'Attenzione:',
+                    message: 'La ricerca non ha prodotto nessun risultato.',
+                  },
+                });
+              }
+            } else {
+              this.pageData = [];
+              this.messaggio =
+                'Nessun risultato trovato per i filtri inseriti, riprova.';
+            }
+            // console.log(
+            //   'Trovati i seguenti risultati: ' + JSON.stringify(result.list)
+            // );
+          }
+        },
+        (error: any) => {
+          console.log('Si è verificato un errore: ' + error);
+        }
+      );
   }
 
   annullaFiltri() {
-
     location.reload();
-
   }
 
   dettaglioAnagraficaContrattoInScadenza(idAnagrafica: number) {
@@ -561,7 +602,6 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
         this.router.navigate(['/dettaglio-anagrafica/' + idAnagrafica]);
       });
   }
-
 
   dettaglioAnagraficaCommessaScaduta(idAnagrafica: number) {
     idAnagrafica = this.idAnagraficaCommessaScaduta;
@@ -576,8 +616,6 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
   profile() {
     this.router.navigate(['/profile-box/', this.userlogged]);
   }
-
-
 
   transformDate(dateString: string): string {
     const dateObject = new Date(dateString);
@@ -637,7 +675,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
               data: {
                 image: '../../../../assets/images/danger.png',
                 title: 'Attenzione: cancellazione non riuscita:',
-                message:  (resp as any).esito.target,
+                message: (resp as any).esito.target,
               },
             });
           } else {
@@ -646,7 +684,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
               data: {
                 image: '../../../../assets/images/logo.jpeg',
                 title: 'Cancellazione riuscita.',
-                message:  (resp as any).esito.target,
+                message: (resp as any).esito.target,
               },
             });
             location.reload();
@@ -656,11 +694,9 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
   }
 
   populateYears() {
-
     for (let year = 1999; year <= 2099; year++) {
       this.years.push(year);
     }
-
   }
   //paginazione
 
@@ -715,14 +751,28 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     // Verifica che ci siano dati validi prima di esportare
     // console.log('Dati da esportare:', this.listaContrattiInScadenza);
 
-
-
     // Crea un nuovo libro Excel
     const workBook = XLSX.utils.book_new();
 
     const workSheetData = [
       // Intestazioni delle colonne
-      ["Nome", "Cognome", "Tipo contratto", "CCNL", "Sede di assunzione", "Data Assunzione", "Mesi durata", "livello attuale", "livello finale", "RAL", "Ticket", "Categoria protetta", "Tutor", "PFI", "Sede di assunzione"]
+      [
+        'Nome',
+        'Cognome',
+        'Tipo contratto',
+        'CCNL',
+        'Sede di assunzione',
+        'Data Assunzione',
+        'Mesi durata',
+        'livello attuale',
+        'livello finale',
+        'RAL',
+        'Ticket',
+        'Categoria protetta',
+        'Tutor',
+        'PFI',
+        'Sede di assunzione',
+      ],
     ];
 
     // Aggiungi dati
@@ -730,22 +780,40 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
       workSheetData.push([
         item.anagrafica.nome ? item.anagrafica.nome.toString() : '',
         item.anagrafica.cognome ? item.anagrafica.cognome.toString() : '',
-        item.contratto.tipoContratto.descrizione ? item.contratto.tipoContratto.descrizione.toString() : '',
-        item.contratto.tipoLivelloContratto.ccnl ? item.contratto.tipoLivelloContratto.ccnl.toString() : '',
-        item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : '',
+        item.contratto.tipoContratto.descrizione
+          ? item.contratto.tipoContratto.descrizione.toString()
+          : '',
+        item.contratto.tipoLivelloContratto.ccnl
+          ? item.contratto.tipoLivelloContratto.ccnl.toString()
+          : '',
+        item.contratto.sedeAssunzione
+          ? item.contratto.sedeAssunzione.toString()
+          : '',
         this.datePipe.transform(
-          item.contratto.dataAssunzione ? item.contratto.dataAssunzione.toString() : '',
+          item.contratto.dataAssunzione
+            ? item.contratto.dataAssunzione.toString()
+            : '',
           'yyyy-MM-dd'
         ),
         item.contratto.mesiDurata ? item.contratto.mesiDurata.toString() : '',
-        item.contratto.livelloAttuale ? item.contratto.livelloAttuale.toString() : '',
-        item.contratto.livelloFinale ? item.contratto.livelloFinale.toString() : '',
-        item.contratto.retribuzioneMensileLorda ? item.contratto.retribuzioneMensileLorda.toString() : '',
+        item.contratto.livelloAttuale
+          ? item.contratto.livelloAttuale.toString()
+          : '',
+        item.contratto.livelloFinale
+          ? item.contratto.livelloFinale.toString()
+          : '',
+        item.contratto.retribuzioneMensileLorda
+          ? item.contratto.retribuzioneMensileLorda.toString()
+          : '',
         item.contratto.ticket ? item.contratto.ticket.toString() : '',
-        item.contratto.categoriaProtetta ? item.contratto.categoriaProtetta.toString() : '',
+        item.contratto.categoriaProtetta
+          ? item.contratto.categoriaProtetta.toString()
+          : '',
         item.contratto.tutor ? item.contratto.tutor.toString() : '',
         item.contratto.pfi ? item.contratto.pfi.toString() : '',
-        item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : ''
+        item.contratto.sedeAssunzione
+          ? item.contratto.sedeAssunzione.toString()
+          : '',
       ]);
     });
 
@@ -762,8 +830,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
       //   'Si è verificato un errore durante il recupero della lista dei contratti in scadenza: ' +
       //   error
       // );
-    }
-
+    };
   }
 
   exportCommesseInScadenzaToExcel() {
@@ -775,29 +842,49 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
 
     const workSheetData = [
       // Intestazioni delle colonne
-      ["Azienda Cliente", "Cliente finale", "Titolo posizione", "Distacco", "Distacco azienda", "Distacco data", "Tariffa giornaliera", "Azienda di fatturazione interna", "Data inizio", "Data fine", "Attivo"]
+      [
+        'Azienda Cliente',
+        'Cliente finale',
+        'Titolo posizione',
+        'Distacco',
+        'Distacco azienda',
+        'Distacco data',
+        'Tariffa giornaliera',
+        'Azienda di fatturazione interna',
+        'Data inizio',
+        'Data fine',
+        'Attivo',
+      ],
     ];
 
     // Aggiungi dati
     this.listaCommesseInScadenza.forEach((item: any) => {
-
       item.commesse.forEach((commessa: any) => {
         workSheetData.push([
-          commessa.tipoAziendaCliente.descrizione ? commessa.tipoAziendaCliente.descrizione.toString() : '',
+          commessa.tipoAziendaCliente.descrizione
+            ? commessa.tipoAziendaCliente.descrizione.toString()
+            : '',
           commessa.clienteFinale ? commessa.clienteFinale.toString() : '',
           commessa.titoloPosizione ? commessa.titoloPosizione.toString() : '',
           commessa.distacco ? commessa.distacco.toString() : '',
           commessa.distaccoAzienda ? commessa.distaccoAzienda.toString() : '',
           this.datePipe.transform(
-            commessa.distaccoData ? commessa.distaccoData.toString() : '', 'yyyy-MM-dd'
+            commessa.distaccoData ? commessa.distaccoData.toString() : '',
+            'yyyy-MM-dd'
           ),
-          commessa.tariffaGiornaliera ? commessa.tariffaGiornaliera.toString() : '',
-          commessa.aziendaDiFatturazioneInterna ? commessa.aziendaDiFatturazioneInterna.toString() : '',
+          commessa.tariffaGiornaliera
+            ? commessa.tariffaGiornaliera.toString()
+            : '',
+          commessa.aziendaDiFatturazioneInterna
+            ? commessa.aziendaDiFatturazioneInterna.toString()
+            : '',
           this.datePipe.transform(
-            commessa.dataInizio ? commessa.dataInizio.toString() : '', 'yyyy-MM-dd'
+            commessa.dataInizio ? commessa.dataInizio.toString() : '',
+            'yyyy-MM-dd'
           ),
           this.datePipe.transform(
-            commessa.dataFine ? commessa.dataFine.toString() : '', 'yyyy-MM-dd'
+            commessa.dataFine ? commessa.dataFine.toString() : '',
+            'yyyy-MM-dd'
           ),
           commessa.attivo,
         ]);
@@ -827,11 +914,25 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
 
     const workSheetData = [
       // Intestazioni delle colonne
-      ["Nominativo", "Codice fiscale", "Azienda Cliente", "Cliente finale", "Titolo posizione", "Distacco", "Distacco azienda", "Distacco data", "Tariffa giornaliera", "Azienda di fatturazione interna", "Data inizio", "Data fine", "Attivo", "Attesa lavori"]
+      [
+        'Nominativo',
+        'Codice fiscale',
+        'Azienda Cliente',
+        'Cliente finale',
+        'Titolo posizione',
+        'Distacco',
+        'Distacco azienda',
+        'Distacco data',
+        'Tariffa giornaliera',
+        'Azienda di fatturazione interna',
+        'Data inizio',
+        'Data fine',
+        'Attivo',
+        'Attesa lavori',
+      ],
     ];
 
     this.listaCommesseScadute.forEach((element: any) => {
-
       workSheetData.push([
         `${element[0]} ${element[1]}`,
         element[2] ? element[2].toString() : '',
@@ -840,17 +941,24 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
         element[5] ? element[5].toString() : '',
         element[6] ? element[6].toString() : '',
         element[7] ? element[7].toString() : '',
-        this.datePipe.transform(element[8] ? element[8].toString() : '', 'yyyy-MM-dd'),
+        this.datePipe.transform(
+          element[8] ? element[8].toString() : '',
+          'yyyy-MM-dd'
+        ),
         element[9] ? element[9].toString() : '',
         element[10] ? element[10].toString() : '',
-        this.datePipe.transform(element[11] ? element[11].toString() : '', 'yyyy-MM-dd'),
-        this.datePipe.transform(element[12] ? element[12].toString() : '', 'yyyy-MM-dd'),
+        this.datePipe.transform(
+          element[11] ? element[11].toString() : '',
+          'yyyy-MM-dd'
+        ),
+        this.datePipe.transform(
+          element[12] ? element[12].toString() : '',
+          'yyyy-MM-dd'
+        ),
         element[13] ? 'Sì' : 'No',
         element[14] ? 'Sì' : 'No',
       ]);
-
     });
-
 
     const workSheet = XLSX.utils.aoa_to_sheet(workSheetData);
 
@@ -864,19 +972,33 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     } catch (error) {
       // console.error('Errore durante l\'esportazione del file Excel:', error);
     }
-
   }
   exportContrattiFromBatchToExcel() {
     // Verifica che ci siano dati validi prima di esportare
     // console.log('Dati da esportare:', this.listaContrattiFromBatch);
-
 
     // Crea un nuovo libro Excel
     const workBook = XLSX.utils.book_new();
 
     const workSheetData = [
       // Intestazioni delle colonne
-      ["Nome", "Cognome", "Tipo contratto", "CCNL", "Sede di assunzione", "Data Assunzione", "Mesi durata", "livello attuale", "livello finale", "RAL", "Ticket", "Categoria protetta", "Tutor", "PFI", "Sede di assunzione"]
+      [
+        'Nome',
+        'Cognome',
+        'Tipo contratto',
+        'CCNL',
+        'Sede di assunzione',
+        'Data Assunzione',
+        'Mesi durata',
+        'livello attuale',
+        'livello finale',
+        'RAL',
+        'Ticket',
+        'Categoria protetta',
+        'Tutor',
+        'PFI',
+        'Sede di assunzione',
+      ],
     ];
 
     // Aggiungi dati
@@ -884,22 +1006,40 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
       workSheetData.push([
         item.anagrafica.nome ? item.anagrafica.nome.toString() : '',
         item.anagrafica.cognome ? item.anagrafica.cognome.toString() : '',
-        item.contratto.tipoContratto.descrizione ? item.contratto.tipoContratto.descrizione.toString() : '',
-        item.contratto.tipoLivelloContratto.ccnl ? item.contratto.tipoLivelloContratto.ccnl.toString() : '',
-        item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : '',
+        item.contratto.tipoContratto.descrizione
+          ? item.contratto.tipoContratto.descrizione.toString()
+          : '',
+        item.contratto.tipoLivelloContratto.ccnl
+          ? item.contratto.tipoLivelloContratto.ccnl.toString()
+          : '',
+        item.contratto.sedeAssunzione
+          ? item.contratto.sedeAssunzione.toString()
+          : '',
         this.datePipe.transform(
-          item.contratto.dataAssunzione ? item.contratto.dataAssunzione.toString() : '',
+          item.contratto.dataAssunzione
+            ? item.contratto.dataAssunzione.toString()
+            : '',
           'yyyy-MM-dd'
         ),
         item.contratto.mesiDurata ? item.contratto.mesiDurata.toString() : '',
-        item.contratto.livelloAttuale ? item.contratto.livelloAttuale.toString() : '',
-        item.contratto.livelloFinale ? item.contratto.livelloFinale.toString() : '',
-        item.contratto.retribuzioneMensileLorda ? item.contratto.retribuzioneMensileLorda.toString() : '',
+        item.contratto.livelloAttuale
+          ? item.contratto.livelloAttuale.toString()
+          : '',
+        item.contratto.livelloFinale
+          ? item.contratto.livelloFinale.toString()
+          : '',
+        item.contratto.retribuzioneMensileLorda
+          ? item.contratto.retribuzioneMensileLorda.toString()
+          : '',
         item.contratto.ticket ? item.contratto.ticket.toString() : '',
-        item.contratto.categoriaProtetta ? item.contratto.categoriaProtetta.toString() : '',
+        item.contratto.categoriaProtetta
+          ? item.contratto.categoriaProtetta.toString()
+          : '',
         item.contratto.tutor ? item.contratto.tutor.toString() : '',
         item.contratto.pfi ? item.contratto.pfi.toString() : '',
-        item.contratto.sedeAssunzione ? item.contratto.sedeAssunzione.toString() : ''
+        item.contratto.sedeAssunzione
+          ? item.contratto.sedeAssunzione.toString()
+          : '',
       ]);
     });
 
@@ -914,11 +1054,9 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     (error: any) => {
       console.error(
         'Si è verificato un errore durante il recupero della lista dei contratti con scatto livello effettuato: ' +
-        error
+          error
       );
-    }
-
-
+    };
   }
 
   setForm() {
@@ -960,7 +1098,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
         meseDataFine.enable();
       } else {
         meseDataFine.disable();
-        meseDataFine.setValue(null)
+        meseDataFine.setValue(null);
       }
     });
 
@@ -1013,7 +1151,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
           commessa.dataFine,
           commessa.attivo,
           commessa.attesaLavori,
-          item.anagrafica.id
+          item.anagrafica.id,
         ]);
       });
     });
@@ -1021,8 +1159,8 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
   }
 
   caricaAziendeClienti() {
-    this.dashboardService.
-      getAziendaCliente(localStorage.getItem('token'))
+    this.dashboardService
+      .getAziendaCliente(localStorage.getItem('token'))
       .subscribe(
         (result: any) => {
           // console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
@@ -1054,9 +1192,6 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
     }
   }
 
-
-
-
   //metodi nav
 
   logout() {
@@ -1069,9 +1204,10 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.codiceFiscaleDettaglio =response.anagraficaDto.anagrafica.codiceFiscale;
+        this.codiceFiscaleDettaglio =
+          response.anagraficaDto.anagrafica.codiceFiscale;
         this.ruolo = response.anagraficaDto.ruolo.descrizione;
-        // this.anagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
@@ -1092,6 +1228,10 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
         this.authService.logout();
       }
     );
+  }
+
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
   }
 
   getUserRole() {
@@ -1118,14 +1258,12 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-          error
+            error
         );
         this.shouldReloadPage = true;
       }
     );
   }
-
-
 
   getPermissions(functionId: number) {
     this.menuService.getPermissions(this.token, functionId).subscribe(
@@ -1139,21 +1277,23 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        // console.log(
-        //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        // );
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-        this.jsonData = { list: [] };
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          // console.log(
+          //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          // );
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
   getImage() {
     let body = {
@@ -1178,7 +1318,7 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
       (error: any) => {
         console.error(
           "Errore durante il caricamento dell'immagine: " +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
 
         // Assegna un'immagine predefinita in caso di errore
@@ -1194,7 +1334,6 @@ export class ListaDashboardComponent implements OnInit,AfterViewInit  {
   toggleDarkMode(): void {
     this.themeService.toggleDarkMode();
   }
-
 }
 
 interface MenuData {

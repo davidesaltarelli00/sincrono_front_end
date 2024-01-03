@@ -137,7 +137,7 @@
     </div>
   </div>
   <br>
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-12" *ngIf="ruolo=='ADMIN'">
       <mat-card style=" height: 100%;">
         <mat-card-content>
@@ -148,10 +148,10 @@
             <mat-list-item role="listitem" [routerLink]="['/profile-box']" class="custom-list-item" >
               <a >Profilo</a>
             </mat-list-item>
-            <mat-list-item role="listitem" [routerLink]="['/lista-anagrafica']" class="custom-list-item"  (click)="openDetailsPageListaAnagrafica()"> <!--(mouseover)="startVoiceActionListaAnagrafica()"-->
+            <mat-list-item role="listitem" [routerLink]="['/lista-anagrafica']" class="custom-list-item"  (click)="openDetailsPageListaAnagrafica()">
               <a>Lista anagrafica</a>
             </mat-list-item>
-            <mat-list-item role="listitem" [routerLink]="['/dashboard']" class="custom-list-item"  (click)="openDetailsPageDashboard()"> <!--(mouseover)="startVoiceActionDashboard()"-->
+            <mat-list-item role="listitem" [routerLink]="['/dashboard']" class="custom-list-item"  (click)="openDetailsPageDashboard()">
               <a>Dashboard</a>
             </mat-list-item>
             <mat-list-item role="listitem" [routerLink]="['/organico']" class="custom-list-item">
@@ -166,7 +166,7 @@
        </mat-card>
     </div>
   </div>
-  <br>
+  <br> -->
   <div class="row" *ngIf="ruolo=='DIPENDENTE'" >
     <div class="col-12">
       <mat-card style=" height: 100%;">
