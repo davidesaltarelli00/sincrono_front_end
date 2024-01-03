@@ -1,8 +1,8 @@
 import { OrganicoService } from '../organico-service';
 import { Router } from '@angular/router';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { AuthService } from '../../login/login-service';
-import { Chart } from 'chart.js/auto';
+import { Chart } from 'chart.js';
 import * as XLSX from 'xlsx';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,7 @@ import { ThemeService } from 'src/app/theme.service';
   templateUrl: './lista-organico.component.html',
   styleUrls: ['./lista-organico.component.scss'],
 })
-export class ListaOrganicoComponent implements OnInit {
+export class ListaOrganicoComponent implements OnInit, AfterViewInit {
   ruolo: any;
   lista: any;
   labelsX: string[] = [];
@@ -50,6 +50,7 @@ export class ListaOrganicoComponent implements OnInit {
   idUtente: any;
   isHamburgerMenuOpen: boolean = false;
   selectedMenuItem: string | undefined;
+  idAnagraficaLoggata: any;
 
   constructor(
     private organicoService: OrganicoService,
@@ -109,14 +110,10 @@ export class ListaOrganicoComponent implements OnInit {
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
-      // this.getUserRole();
     }
     this.organicoService.listaOrganico(localStorage.getItem('token')).subscribe(
       (resp: any) => {
-        const jsonResp = JSON.stringify(resp);
-        // console.log(jsonResp);
         this.lista = resp.list;
-        this.createBarChart();
       },
       (error: string) => {
         console.log(
@@ -124,6 +121,12 @@ export class ListaOrganicoComponent implements OnInit {
         );
       }
     );
+  }
+
+  ngAfterViewInit() {
+    if (this.lista != null) {
+        this.createBarChart();
+    }
   }
 
   filter(tipoContratto: any, azienda: any) {
@@ -191,138 +194,138 @@ export class ListaOrganicoComponent implements OnInit {
     );
 
     const ctx = document.getElementById('barChart') as HTMLCanvasElement;
-    const myChart = new Chart(ctx, {
-      type: 'bar',
+    if (ctx) {
+      const myChart = new Chart(ctx, {
+        type: 'bar',
 
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'Numero Dipendenti',
-            data: dataNumeroDipendenti,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1,
-          },
-          {
-            label: 'Contratti Indeterminati',
-            data: dataIndeterminati,
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1,
-          },
-          {
-            label: 'Contratti determinati',
-            data: dataDeterminati,
-            backgroundColor: 'rgb(243, 243, 143)',
-            borderColor: 'rgb(243, 243, 143)',
-            borderWidth: 1,
-          },
-          {
-            label: 'Contratti apprendistato',
-            data: dataApprendistato,
-            backgroundColor: '#82FF00',
-            borderColor: '#82FF00',
-            borderWidth: 1,
-          },
-          {
-            label: 'Contratti consulenza',
-            data: dataConsulenza,
-            backgroundColor: '#FF8C00',
-            borderColor: '#FF8C00',
-            borderWidth: 1,
-          },
-          {
-            label: 'Contratti stage',
-            data: dataStage,
-            backgroundColor: '#00FFAA',
-            borderColor: '#00FFAA',
-            borderWidth: 1,
-          },
-          {
-            label: 'Partita iva',
-            data: dataPartitaIva,
-            backgroundColor: '#00A0FF',
-            borderColor: '#00A0FF',
-            borderWidth: 1,
-          },
-          {
-            label: 'Potenziale stage',
-            data: dataPotenzialeStage,
-            backgroundColor: '#E600FF',
-            borderColor: '#E600FF',
-            borderWidth: 1,
-          },
-          {
-            label: 'Slot stage',
-            data: dataSlotStage,
-            backgroundColor: '#7F8C83',
-            borderColor: '#7F8C83',
-            borderWidth: 1,
-          },
-          {
-            label: 'Potenziale apprendistato',
-            data: dataPotenzialeApprendistato,
-            backgroundColor: '#FF8FBA',
-            borderColor: '#FF8FBA',
-            borderWidth: 1,
-          },
-          {
-            label: 'Slot apprendistato',
-            data: dataSlotApprendistato,
-            backgroundColor: '#B1983E',
-            borderColor: '#B1983E',
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        scales: {
-          x: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Aziende',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Numero Dipendenti',
+              data: dataNumeroDipendenti,
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1,
+            },
+            {
+              label: 'Contratti Indeterminati',
+              data: dataIndeterminati,
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1,
+            },
+            {
+              label: 'Contratti determinati',
+              data: dataDeterminati,
+              backgroundColor: 'rgb(243, 243, 143)',
+              borderColor: 'rgb(243, 243, 143)',
+              borderWidth: 1,
+            },
+            {
+              label: 'Contratti apprendistato',
+              data: dataApprendistato,
+              backgroundColor: '#82FF00',
+              borderColor: '#82FF00',
+              borderWidth: 1,
+            },
+            {
+              label: 'Contratti consulenza',
+              data: dataConsulenza,
+              backgroundColor: '#FF8C00',
+              borderColor: '#FF8C00',
+              borderWidth: 1,
+            },
+            {
+              label: 'Contratti stage',
+              data: dataStage,
+              backgroundColor: '#00FFAA',
+              borderColor: '#00FFAA',
+              borderWidth: 1,
+            },
+            {
+              label: 'Partita iva',
+              data: dataPartitaIva,
+              backgroundColor: '#00A0FF',
+              borderColor: '#00A0FF',
+              borderWidth: 1,
+            },
+            {
+              label: 'Potenziale stage',
+              data: dataPotenzialeStage,
+              backgroundColor: '#E600FF',
+              borderColor: '#E600FF',
+              borderWidth: 1,
+            },
+            {
+              label: 'Slot stage',
+              data: dataSlotStage,
+              backgroundColor: '#7F8C83',
+              borderColor: '#7F8C83',
+              borderWidth: 1,
+            },
+            {
+              label: 'Potenziale apprendistato',
+              data: dataPotenzialeApprendistato,
+              backgroundColor: '#FF8FBA',
+              borderColor: '#FF8FBA',
+              borderWidth: 1,
+            },
+            {
+              label: 'Slot apprendistato',
+              data: dataSlotApprendistato,
+              backgroundColor: '#B1983E',
+              borderColor: '#B1983E',
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            x: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Aziende',
+              },
+            },
+            y: {
+              beginAtZero: true,
             },
           },
-          y: {
-            beginAtZero: true,
-          },
-        },
 
-        onClick: (event, elements) => {
-          if (elements.length > 0) {
-            const clickedIndex = elements[0].index;
-            const clickedLabel = labels[clickedIndex];
-            const tipoContratto =
-              myChart.data.datasets[elements[0].datasetIndex].label;
+          onClick: (event, elements) => {
+            if (elements.length > 0) {
+              const clickedIndex = elements[0].index;
+              const clickedLabel = labels[clickedIndex];
+              const tipoContratto =
+                myChart.data.datasets[elements[0].datasetIndex].label;
 
-            // Verifica se il tipo di contratto è uno di quelli desiderati
-            if (
-              tipoContratto === 'Numero Dipendenti' ||
-              tipoContratto === 'Contratti Indeterminati' ||
-              tipoContratto === 'Contratti determinati'
-            ) {
-              // Modifica il tipo di contratto in "Determinato" se necessario
-              const tipoContrattoCorretto1 =
+              if (
+                tipoContratto === 'Numero Dipendenti' ||
+                tipoContratto === 'Contratti Indeterminati' ||
                 tipoContratto === 'Contratti determinati'
-                  ? 'Determinato'
-                  : tipoContratto;
-              const tipoContrattoCorretto2 =
-                tipoContratto === 'Contratti Indeterminati'
-                  ? 'Indeterminato'
-                  : tipoContratto;
-              if (tipoContrattoCorretto1) {
-                this.filter(tipoContrattoCorretto1, clickedLabel);
-              }
-              if (tipoContrattoCorretto2) {
-                this.filter(tipoContrattoCorretto2, clickedLabel);
+              ) {
+                const tipoContrattoCorretto1 =
+                  tipoContratto === 'Contratti determinati'
+                    ? 'Determinato'
+                    : tipoContratto;
+                const tipoContrattoCorretto2 =
+                  tipoContratto === 'Contratti Indeterminati'
+                    ? 'Indeterminato'
+                    : tipoContratto;
+                if (tipoContrattoCorretto1) {
+                  this.filter(tipoContrattoCorretto1, clickedLabel);
+                }
+                if (tipoContrattoCorretto2) {
+                  this.filter(tipoContrattoCorretto2, clickedLabel);
+                }
               }
             }
-          }
+          },
         },
-      },
-    });
+      });
+    }
   }
 
   exportOrganicoToExcel() {
@@ -411,15 +414,20 @@ export class ListaOrganicoComponent implements OnInit {
     this.dialog.open(AlertLogoutComponent);
   }
 
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
+  }
+
   getUserLogged() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.codiceFiscaleDettaglio =response.anagraficaDto.anagrafica.codiceFiscale;
+        this.codiceFiscaleDettaglio =
+          response.anagraficaDto.anagrafica.codiceFiscale;
         this.ruolo = response.anagraficaDto.ruolo.descrizione;
-        // this.anagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
