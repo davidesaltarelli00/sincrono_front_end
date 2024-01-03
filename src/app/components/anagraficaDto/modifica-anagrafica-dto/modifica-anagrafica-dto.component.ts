@@ -122,6 +122,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   isHamburgerMenuOpen: boolean = false;
   selectedMenuItem: string | undefined;
   windowWidth: any;
+  ruolo: any;
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
     private activatedRouter: ActivatedRoute,
@@ -316,7 +317,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
-      this.getUserRole();
+      // this.getUserRole();
       this.inizializzaStatoCampiDistacco();
       this.caricaTipoContratto();
       this.caricaTipoAzienda();
@@ -2476,15 +2477,27 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.codiceFiscaleDettaglio =
-          response.anagraficaDto.anagrafica.codiceFiscale;
-        this.getImage();
+        this.codiceFiscaleDettaglio =response.anagraficaDto.anagrafica.codiceFiscale;
+        this.ruolo = response.anagraficaDto.ruolo.descrizione;
+        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
       },
       (error: any) => {
-        // console.error(
-        //   'Si é verificato il seguente errore durante il recupero dei dati : ' +
-        //     error
-        // );
+        this.authService.logout();
       }
     );
   }
@@ -2538,6 +2551,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           this.jsonData = { list: [] };
         }
       );
+  }
+
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
   }
 
   getPermissions(functionId: number) {
