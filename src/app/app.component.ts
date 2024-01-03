@@ -54,7 +54,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     private cdRef: ChangeDetectorRef
   ) {}
 
-
   toggleDarkMode() {
     this.toggleMode = !this.toggleMode;
   }
@@ -109,36 +108,55 @@ export class AppComponent implements OnInit, AfterViewInit {
           this.authService.logout().subscribe(
             (response: any) => {
               if (response.status === 200) {
-                // Logout effettuato con successo
                 localStorage.removeItem('token');
                 localStorage.removeItem('tokenProvvisorio');
                 sessionStorage.clear();
                 this.router.navigate(['/login']);
                 this.dialog.closeAll();
               } else {
-                // Gestione di altri stati di risposta (es. 404, 500, ecc.)
-                // console.log(
-                //   'Errore durante il logout:',
-                //   response.status,
-                //   response.body
-                // );
                 this.handleLogoutError();
               }
             },
             (error: HttpErrorResponse) => {
               if (error.status === 403) {
-                // Logout a causa di errore 403 (Forbidden)
-                // console.log('Errore 403: Accesso negato');
                 this.handleLogoutError();
               } else {
-                // Gestione di altri errori di rete o server
-                // console.log('Errore durante il logout:', error.message);
                 this.handleLogoutError();
               }
             }
           );
         }
       }, 1000);
+    }
+    if (this.token == null) {
+      // const dialogRef = this.dialog.open(AlertDialogComponent, {
+      //   data: {
+      //     title: 'Attenzione:',
+      //     message: `sessione scaduta, esegui il login.`,
+      //   },
+      // });
+      // this.authService.logout().subscribe(
+      //   (response: any) => {
+      //     if (response.status === 200) {
+      //       localStorage.removeItem('token');
+      //       localStorage.removeItem('isDarkMode');
+      //       localStorage.removeItem('DatiSbagliati');
+      //       localStorage.removeItem('tokenProvvisorio');
+      //       sessionStorage.clear();
+      //       this.router.navigate(['/login']);
+      //       this.dialog.closeAll();
+      //     } else {
+      //       this.handleLogoutError();
+      //     }
+      //   },
+      //   (error: HttpErrorResponse) => {
+      //     if (error.status === 403) {
+      //       this.handleLogoutError();
+      //     } else {
+      //       this.handleLogoutError();
+      //     }
+      //   }
+      // );
     }
 
     const currentDate = new Date();

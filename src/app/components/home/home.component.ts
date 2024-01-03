@@ -9,7 +9,11 @@ import {
 import { AuthService } from '../login/login-service';
 import { Router } from '@angular/router';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ImageService } from '../image.service';
@@ -101,19 +105,48 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
-      // this.getUserRole();
       this.caricaAziendeClienti();
       setInterval(() => {
         this.orarioAttuale = new Date();
       }, 1000);
-    } else {
+    }
+    if (this.token == null) {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
           title: 'Attenzione:',
           message: 'Errore di autenticazione; effettua il login.',
         },
       });
+      this.authService.logout().subscribe(
+        (response: any) => {
+          if (response.status === 200) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('isDarkMode');
+            localStorage.removeItem('DatiSbagliati');
+            localStorage.removeItem('tokenProvvisorio');
+            sessionStorage.clear();
+            this.router.navigate(['/login']);
+            this.dialog.closeAll();
+          } else {
+            this.handleLogoutError();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          if (error.status === 403) {
+            this.handleLogoutError();
+          } else {
+            this.handleLogoutError();
+          }
+        }
+      );
     }
+  }
+
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
   }
 
   caricaAziendeClienti() {
@@ -235,9 +268,10 @@ export class HomeComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.codiceFiscaleDettaglio =response.anagraficaDto.anagrafica.codiceFiscale;
+        this.codiceFiscaleDettaglio =
+          response.anagraficaDto.anagrafica.codiceFiscale;
         this.ruolo = response.anagraficaDto.ruolo.descrizione;
-        // this.anagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
