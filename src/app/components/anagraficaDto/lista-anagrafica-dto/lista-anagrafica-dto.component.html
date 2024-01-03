@@ -41,6 +41,10 @@
         </div>
       </div>
 
+      <div class="col-auto" *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen">
+        <a style="color:white; cursor: pointer;" (click)="vaiAlRapportino()">Rapportino</a>
+      </div>
+
       <div class="col-auto">
         <div class="form-check form-switch"
           matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
@@ -79,9 +83,12 @@
       </button>
       <mat-menu #menu="matMenu">
         <ng-template matMenuContent>
-          <button style="background-color:#333;color:white" mat-menu-item *ngFor="let menuItem of jsonData.list"
+          <button  mat-menu-item *ngFor="let menuItem of jsonData.list"
             [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
             {{ menuItem.nome }}
+          </button>
+          <button mat-menu-item  (click)="vaiAlRapportino()">
+            Rapportino
           </button>
         </ng-template>
       </mat-menu>

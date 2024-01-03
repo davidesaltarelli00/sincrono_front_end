@@ -1080,6 +1080,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   //METODI NAVBAR
 
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
+  }
+
   logout() {
     this.dialog.open(AlertLogoutComponent);
   }
@@ -1092,7 +1096,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.codiceFiscaleDettaglio =response.anagraficaDto.anagrafica.codiceFiscale;
         this.ruolo = response.anagraficaDto.ruolo.descrizione;
-        this.anagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (

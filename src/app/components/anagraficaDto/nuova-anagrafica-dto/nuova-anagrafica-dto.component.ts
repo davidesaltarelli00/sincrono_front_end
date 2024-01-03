@@ -104,6 +104,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   isHamburgerMenuOpen: boolean = false;
   selectedMenuItem: string | undefined;
   windowWidth: any;
+  idAnagraficaLoggata: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -1858,6 +1859,12 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   //navbar
+
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
+  }
+
+
   logout() {
     this.dialog.open(AlertLogoutComponent);
   }
@@ -1870,7 +1877,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         // this.codiceFiscaleDettaglio =response.anagraficaDto.anagrafica.codiceFiscale;
         this.ruolo = response.anagraficaDto.ruolo.descrizione;
-        // this.anagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (

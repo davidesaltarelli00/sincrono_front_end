@@ -36,6 +36,10 @@
         </div>
       </div>
 
+      <div class="col-auto" *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen">
+        <a style="color:white" (click)="goToRapportinoByCodiceFiscale()">Rapportino</a>
+      </div>
+
       <div class="col-auto">
         <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
           <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
@@ -95,7 +99,6 @@
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
           <h1>Profilo <button [hidden]="ruolo==='DIPENDENTE'" class=" btn btn-info " [routerLink]="['/modifica-anagrafica/',id]" > <i class="fa fa-pencil" ></i> </button> </h1>
-          <h3> <i class="fa fa-user" ></i>  {{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }} {{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }} </h3>
         </mat-card>
       </div>
     </div>
@@ -103,53 +106,58 @@
     <div class="row">
       <div class="col-12">
         <div class="profile-box-container">
-          <br />
-          <div class="row" id="profilo" >
-            <div class="col-4"  id="sezione-immagine">
-              <div class="image-container" >
-                <div class="image-container rounded">
-                  <label style="float: right;" for="fileInput" class="file-input-label" *ngIf="!immagineCancellata && immagineConvertita && !salvaImmagine">
-                    <i class="fa fa-pencil btn btn-info" style="cursor: pointer;" matTooltip=" Modifica immagine" ></i>
-                  </label>
-                  <input [hidden]="immagineConvertita" type="file" #fileInput accept="image/*" id="fileInput" (change)="onFileSelected($event)" />
-                  <div class="image-preview" *ngIf="immagineConvertita">
-                    <img [src]="immagineConvertita" (click)="vediImmagineProfilo()" style="cursor: pointer;" alt="Immagine" class="preview-image" />
+          <mat-card>
+            <mat-card-content>
+              <div class="row" id="profilo" >
+                <div class="col-4"  id="sezione-immagine">
+                  <div class="image-container" >
+                    <div class="image-container rounded">
+                      <label style="float: right;" for="fileInput" class="file-input-label" *ngIf="!immagineCancellata && immagineConvertita && !salvaImmagine">
+                        <i class="fa fa-pencil btn btn-info" style="cursor: pointer;" matTooltip=" Modifica immagine" ></i>
+                      </label>
+                      <input [hidden]="immagineConvertita" type="file" #fileInput accept="image/*" id="fileInput" (change)="onFileSelected($event)" />
+                      <div class="image-preview" *ngIf="immagineConvertita">
+                        <img [src]="immagineConvertita" (click)="vediImmagineProfilo()" style="cursor: pointer;" alt="Immagine" class="preview-image" />
+                      </div>
+                      <div class="image-preview" *ngIf="!immagineConvertita">
+                        <img [src]="immaginePredefinita" alt="Immagine" class="preview-image" />
+                      </div>
+                    </div>
                   </div>
-                  <div class="image-preview" *ngIf="!immagineConvertita">
-                    <img [src]="immaginePredefinita" alt="Immagine" class="preview-image" />
+                  <br>
+                 <div class="buttons" *ngIf="salvaImmagine" >
+                  <button (click)="addImage()" matTooltip="Salva immagine" class="btn btn-primary"> <i class="fa fa-save"></i></button> &nbsp;
+                  <button (click)="cancelImage()" matTooltip="Annulla" class="btn btn-danger">&#x2715;</button>
+                 </div>
+                 <h3 style="text-align:center"> {{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }} {{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }} </h3>
+                </div>
+                <div class="col-6">
+                  <div class="table-responsive">
+                    <table class="table table-striped" style="text-align: center;" >
+                      <thead>
+                       <tr>
+                         <th>Ruolo</th>
+                         <th>Contratto</th>
+                         <th>Numero commesse</th>
+                         <th>Documenti</th>
+                       </tr>
+                      </thead>
+                      <tbody>
+                       <tr>
+                         <td>{{anagrafica?.anagraficaDto?.ruolo?.descrizione}} </td>
+                         <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione}} </td>
+                         <td>{{elencoCommesse.length}}</td>
+                         <td> Rapportino <button class="btn btn-success" (click)="goToRapportinoByCodiceFiscale()" matTooltip="Rapportino."> <i class="fa fa-file"></i> </button> </td>
+                       </tr>
+                      </tbody>
+                     </table>
                   </div>
+
                 </div>
               </div>
-              <br>
-             <div class="buttons" *ngIf="salvaImmagine" >
-              <button (click)="addImage()" matTooltip="Salva immagine" class="btn btn-primary"> <i class="fa fa-save"></i></button> &nbsp;
-              <button (click)="cancelImage()" matTooltip="Annulla" class="btn btn-danger">&#x2715;</button>
-             </div>
-            </div>
-            <div class="col-6">
-              <div class="table-responsive">
-                <table class="table table-striped" style="text-align: center;" >
-                  <thead>
-                   <tr>
-                     <th>Ruolo</th>
-                     <th>Contratto</th>
-                     <th>Numero commesse</th>
-                     <th>Documenti</th>
-                   </tr>
-                  </thead>
-                  <tbody>
-                   <tr>
-                     <td>{{anagrafica?.anagraficaDto?.ruolo?.descrizione}} </td>
-                     <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione}} </td>
-                     <td>{{elencoCommesse.length}}</td>
-                     <td> Rapportino <button class="btn btn-success" (click)="goToRapportinoByCodiceFiscale()" matTooltip="Rapportino."> <i class="fa fa-file"></i> </button> </td>
-                   </tr>
-                  </tbody>
-                 </table>
-              </div>
-
-            </div>
-          </div>
+            </mat-card-content>
+          </mat-card>
+            <br>
           <div class="row">
             <div class="col-6">
               <mat-card class="profile-box">
