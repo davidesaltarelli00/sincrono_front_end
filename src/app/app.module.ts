@@ -46,20 +46,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { ImmagineComponent } from './components/immagine/immagine.component';
 import { BottoniComponent } from './bottoni/bottoni.component';
 import { MailSollecitaComponent } from './components/mail-sollecita/mail-sollecita.component';
-import { RichiesteComponent } from './components/richieste/richieste.component';
 import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
 import { ModificaCommessaComponent } from './components/modifica-commessa/modifica-commessa.component';
 import { AlertConfermaComponent } from './alert-conferma/alert-conferma.component';
 import { SelectedDaysComponent } from './components/richieste/selected-days/selected-days.component';
 import { InsertPermessoComponent } from './components/richieste/insert-permesso/insert-permesso.component';
-import { DettaglioRichiestaComponent } from './components/richieste/dettaglio-richiesta/dettaglio-richiesta.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { TutorialCompilazioneRapportinoComponent } from './tutorial-compilazione-rapportino/tutorial-compilazione-rapportino.component';
 import { TruncatePipe } from './pipe/TruncatePipe';
 import { AggiungiCommessaComponent } from './components/aggiungi-commessa/aggiungi-commessa.component';
-import { ModificaRichiestaComponent } from './components/richieste/modifica-richiesta/modifica-richiesta.component';
 import { AnagraficaDtoModule } from './components/anagraficaDto/anagraficaDto.module';
 import { OrganicoModule } from './components/organico/organico.module';
+import { RichiesteModule } from './components/richieste/richieste.module';
+import { RapportinoModule } from './components/utente/rapportino.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -79,7 +78,6 @@ import { OrganicoModule } from './components/organico/organico.module';
     RecuperoPasswordComponent,
     FormRecuperoPasswordComponent,
     AlertLogoutComponent,
-    RichiesteComponent,
     GiornoComponent,
     NotFoundComponent,
     AlertDialogComponent,
@@ -88,17 +86,13 @@ import { OrganicoModule } from './components/organico/organico.module';
     HeaderComponent,
     ImmagineComponent,
     SelectedDaysComponent,
-    InsertPermessoComponent,
     BottoniComponent,
     MailSollecitaComponent,
     AlertConfermaComponent,
     CaricamentoDocumentiComponent,
-    DettaglioRichiestaComponent,
     FooterComponent,
     TutorialCompilazioneRapportinoComponent,
-    TruncatePipe,
     AggiungiCommessaComponent,
-    ModificaRichiestaComponent,
   ],
   imports: [
     MatIconModule,
@@ -117,6 +111,8 @@ import { OrganicoModule } from './components/organico/organico.module';
     MatSelectModule,
     AnagraficaDtoModule,
     OrganicoModule,
+    RapportinoModule,
+    RichiesteModule
   ],
   providers: [DatePipe, CurrencyPipe],
   //  { provide: LOCALE_ID, useValue: 'it-IT' }
@@ -124,6 +120,6 @@ import { OrganicoModule } from './components/organico/organico.module';
 })
 export class AppModule {
   constructor() {
-    window['saveAs'] = saveAs; // Dichiarazione globale di saveAs
+    window['saveAs'] = saveAs;
   }
 }

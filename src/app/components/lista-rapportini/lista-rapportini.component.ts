@@ -1,4 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -139,6 +143,7 @@ export class ListaRapportiniComponent implements OnInit {
   windowWidth: any;
   isHamburgerMenuOpen: boolean = false;
   selectedMenuItem: string | undefined;
+  idAnagraficaLoggata: any;
 
   constructor(
     private authService: AuthService,
@@ -264,7 +269,7 @@ export class ListaRapportiniComponent implements OnInit {
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
-      this.getUserRole();
+      // this.getUserRole();
       this.caricaAziendeClienti();
       this.caricaTipoContratto();
       this.caricaTipoAzienda();
@@ -290,10 +295,10 @@ export class ListaRapportiniComponent implements OnInit {
             this.selectedAnnoRapportinoNonFreezato = result['list']['anno'];
             this.currentPage = 1;
             this.pageData = this.getCurrentPageItems();
-            console.log(
-              'Questo é l elenco dei rapportini da controllare: ' +
-                JSON.stringify(this.elencoRapportiniNonFreezati)
-            );
+            // console.log(
+            //   'Questo é l elenco dei rapportini da controllare: ' +
+            //     JSON.stringify(this.elencoRapportiniNonFreezati)
+            // );
             let body = {
               anno: this.currentYear,
               mese: this.currentMonth,
@@ -323,9 +328,44 @@ export class ListaRapportiniComponent implements OnInit {
             );
           }
         );
-    } else {
-      console.error('Errore di autenticazione.');
     }
+    if (this.token == null) {
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          title: 'Attenzione:',
+          message: 'Errore di autenticazione; effettua il login.',
+        },
+      });
+      this.authService.logout().subscribe(
+        (response: any) => {
+          if (response.status === 200) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('isDarkMode');
+            localStorage.removeItem('DatiSbagliati');
+            localStorage.removeItem('tokenProvvisorio');
+            sessionStorage.clear();
+            this.router.navigate(['/login']);
+            this.dialog.closeAll();
+          } else {
+            this.handleLogoutError();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          if (error.status === 403) {
+            this.handleLogoutError();
+          } else {
+            this.handleLogoutError();
+          }
+        }
+      );
+    }
+  }
+
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
   }
 
   creaFormCommessa(): FormGroup {
@@ -1139,14 +1179,27 @@ export class ListaRapportiniComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.ruolo = response.anagraficaDto.ruolo.nome;
         this.codiceFiscale = response.anagraficaDto.anagrafica.codiceFiscale;
+        this.ruolo = response.anagraficaDto.ruolo.descrizione;
+        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
       },
       (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
-        );
+        this.authService.logout();
       }
     );
   }
@@ -1200,6 +1253,10 @@ export class ListaRapportiniComponent implements OnInit {
           this.jsonData = { list: [] };
         }
       );
+  }
+
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
   }
 
   getPermissions(functionId: number) {

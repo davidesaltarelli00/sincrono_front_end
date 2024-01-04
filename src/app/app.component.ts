@@ -54,7 +54,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     private cdRef: ChangeDetectorRef
   ) {}
 
-
   toggleDarkMode() {
     this.toggleMode = !this.toggleMode;
   }
@@ -84,10 +83,9 @@ export class AppComponent implements OnInit, AfterViewInit {
       const currentTime = Date.now() / 1000;
       this.tokenExpirationTime = Math.floor(tokenPayload.exp - currentTime);
 
-      // Avvia il timer per aggiornare il tempo rimanente ogni secondo
       this.timer = setInterval(() => {
         this.tokenExpirationTime -= 1;
-        this.cdRef.detectChanges(); // Forza l'aggiornamento del template
+        this.cdRef.detectChanges();
 
         if (this.tokenExpirationTime === 600000) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
@@ -98,7 +96,7 @@ export class AppComponent implements OnInit, AfterViewInit {
           });
         }
 
-        if (this.tokenExpirationTime === 0) {
+        if (this.tokenExpirationTime === 0 || this.token == null) {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
               Image: '../../../../assets/images/logo.jpeg',
@@ -110,30 +108,20 @@ export class AppComponent implements OnInit, AfterViewInit {
           this.authService.logout().subscribe(
             (response: any) => {
               if (response.status === 200) {
-                // Logout effettuato con successo
                 localStorage.removeItem('token');
                 localStorage.removeItem('tokenProvvisorio');
+                this.token = null;
                 sessionStorage.clear();
                 this.router.navigate(['/login']);
                 this.dialog.closeAll();
               } else {
-                // Gestione di altri stati di risposta (es. 404, 500, ecc.)
-                // console.log(
-                //   'Errore durante il logout:',
-                //   response.status,
-                //   response.body
-                // );
                 this.handleLogoutError();
               }
             },
             (error: HttpErrorResponse) => {
               if (error.status === 403) {
-                // Logout a causa di errore 403 (Forbidden)
-                // console.log('Errore 403: Accesso negato');
                 this.handleLogoutError();
               } else {
-                // Gestione di altri errori di rete o server
-                // console.log('Errore durante il logout:', error.message);
                 this.handleLogoutError();
               }
             }
@@ -155,11 +143,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe((params) => {
       this.tokenProvvisorio = params['tokenProvvisorio'];
     });
-    // if (this.token != null) {
-    //   this.getUserLogged();
-    //   this.getUserRole();
-    //   this.generateMenuByUserRole();
-    // }
   }
 
   private handleLogoutError() {
@@ -186,96 +169,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // getUserLogged() {
-  //   const token = localStorage.getItem('token');
-  //   this.profileBoxService.getData().subscribe(
-  //     (response: any) => {
-  //       this.userLoggedMail = response.anagraficaDto.anagrafica.mailAziendale;
-  //       this.userLoggedName = response.anagraficaDto.anagrafica.nome;
-  //       this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-  //       console.log('DATI GET USER LOGGED:' + JSON.stringify(response));
-  //     },
-  //     (error: any) => {
-  //       console.error(
-  //         'Si è verificato il seguente errore durante il recupero dei dati: ' +
-  //           error
-  //       );
-  //     }
-  //   );
-  // }
-
-  // getUserRole() {
-  //   this.profileBoxService.getData().subscribe(
-  //     (response: any) => {
-  //       console.log('DATI GET USER ROLE:' + JSON.stringify(response));
-
-  //       this.userRole = response.anagraficaDto.ruolo.nome;
-  //       if ((this.userRole = response.anagraficaDto.ruolo.nome === 'ADMIN')) {
-  //         this.id = 1;
-  //         this.generateMenuByUserRole();
-  //         if (this.shouldReloadPage) {
-  //           window.location.reload();
-  //         }
-  //       }
-  //       if (
-  //         (this.userRole = response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
-  //       ) {
-  //         this.id = 2;
-  //         this.generateMenuByUserRole();
-  //         if (this.shouldReloadPage) {
-  //           window.location.reload();
-  //           this.shouldReloadPage = false;
-  //         }
-  //       }
-  //     },
-  //     (error: any) => {
-  //       console.error(
-  //         'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-  //           error
-  //       );
-  //       this.shouldReloadPage = true;
-  //     }
-  //   );
-  // }
-
-  // generateMenuByUserRole() {
-  //   const headers = new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     'Access-Control-Allow-Origin': '*',
-  //     Authorization: `Bearer ${this.token}`,
-  //   });
-  //   const url = `http://localhost:8080/services/funzioni-ruolo-tree/${this.id}`;
-  //   this.http.get<MenuData>(url, { headers: headers }).subscribe(
-  //     (data) => {
-  //       this.jsonData = data;
-  //       this.idFunzione = data.list[0].id;
-  //       console.log(JSON.stringify('DATI NAVBAR: ' + this.jsonData));
-  //       this.shouldReloadPage = false;
-  //     },
-  //     (error) => {
-  //       console.error('Errore nella generazione del menu:', error);
-  //       this.shouldReloadPage = true;
-  //     }
-  //   );
-  // }
-
-  // getPermissions(functionId: number) {
-  //   const headers = new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     'Access-Control-Allow-Origin': '*',
-  //     Authorization: `Bearer ${this.token}`,
-  //   });
-  //   const url = `http://localhost:8080/services/operazioni/${functionId}`;
-  //   this.http.get(url, { headers: headers }).subscribe(
-  //     (data: any) => {
-  //       console.log('Permessi ottenuti:', data);
-  //     },
-  //     (error) => {
-  //       console.error('Errore nella generazione dei permessi:', error);
-  //     }
-  //   );
-  // }
-
   logout() {
     this.dialog.open(AlertLogoutComponent);
   }
@@ -288,22 +181,3 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.isRecuperoPassword = false;
   }
 }
-
-// interface MenuData {
-//   esito: {
-//     code: number;
-//     target: any;
-//     args: any;
-//   };
-//   list: {
-//     id: number;
-//     funzione: any;
-//     menuItem: number;
-//     nome: string;
-//     percorso: string;
-//     immagine: any;
-//     ordinamento: number;
-//     funzioni: any;
-//     privilegio: any;
-//   }[];
-// }

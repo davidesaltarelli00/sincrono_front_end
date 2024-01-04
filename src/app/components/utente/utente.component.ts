@@ -165,7 +165,7 @@ export class UtenteComponent implements OnInit {
     private rapportinoService: RapportinoService,
     private fb: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
-    private authSerice: AuthService,
+    private authService: AuthService,
     public themeService: ThemeService,
     private scroller: ViewportScroller,
     private cdRef: ChangeDetectorRef
@@ -394,18 +394,44 @@ export class UtenteComponent implements OnInit {
       this.getUserRole();
       this.salvaAziendeClienti();
       // this.getAnagraficaRapportino();
-    } else {
-      if (this.error.status === 403) {
-        const dialogRef = this.dialog.open(AlertDialogComponent, {
-          data: {
-            image: '../../../../assets/images/logo.jpeg',
-            title: 'Errore di autenticazione:',
-            message: 'Effettua il login.',
-          },
-        });
-        this.authSerice.logout();
-      }
     }
+    if (this.token == null) {
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          title: 'Attenzione:',
+          message: 'Errore di autenticazione; effettua il login.',
+        },
+      });
+      this.authService.logout().subscribe(
+        (response: any) => {
+          if (response.status === 200) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('isDarkMode');
+            localStorage.removeItem('DatiSbagliati');
+            localStorage.removeItem('tokenProvvisorio');
+            sessionStorage.clear();
+            this.router.navigate(['/login']);
+            this.dialog.closeAll();
+          } else {
+            this.handleLogoutError();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          if (error.status === 403) {
+            this.handleLogoutError();
+          } else {
+            this.handleLogoutError();
+          }
+        }
+      );
+    }
+  }
+
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
   }
 
   private clearFieldValue(element: HTMLInputElement): void {
@@ -1665,6 +1691,10 @@ export class UtenteComponent implements OnInit {
 
   logout() {
     this.dialog.open(AlertLogoutComponent);
+  }
+
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idUtenteLoggato]);
   }
 
   getUserLogged() {

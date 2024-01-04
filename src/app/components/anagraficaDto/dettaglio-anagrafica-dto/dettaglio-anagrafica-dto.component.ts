@@ -9,7 +9,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import * as XLSX from 'xlsx';
 import { DatePipe } from '@angular/common';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ImageService } from '../../image.service';
@@ -23,8 +27,8 @@ import { ThemeService } from 'src/app/theme.service';
 })
 export class DettaglioAnagraficaDtoComponent {
   id: any = this.activatedRoute.snapshot.params['id'];
-  nome=this.activatedRoute.snapshot.params['nome'];
-  cognome=this.activatedRoute.snapshot.params['cognome'];
+  nome = this.activatedRoute.snapshot.params['nome'];
+  cognome = this.activatedRoute.snapshot.params['cognome'];
   data: any;
   date: any;
   errore = false;
@@ -90,7 +94,7 @@ export class DettaglioAnagraficaDtoComponent {
   salvaImmagine: boolean = false;
   immagineCancellata: boolean = false;
   idUtente: any;
-  vediStoricoCommesse: boolean=false;
+  vediStoricoCommesse: boolean = false;
   ruolo: any;
   isHamburgerMenuOpen: boolean = false;
   selectedMenuItem: string | undefined;
@@ -110,9 +114,8 @@ export class DettaglioAnagraficaDtoComponent {
     private profileBoxService: ProfileBoxService,
     private http: HttpClient,
     private imageService: ImageService,
-    private menuService:MenuService,
+    private menuService: MenuService,
     public themeService: ThemeService
-
   ) {
     this.windowWidth = window.innerWidth;
 
@@ -152,48 +155,98 @@ export class DettaglioAnagraficaDtoComponent {
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
-      this.getUserRole();
+      this.anagraficaDtoService
+        .detailAnagraficaDto(this.id, localStorage.getItem('token'))
+        .subscribe((resp: any) => {
+          this.data = (resp as any)['anagraficaDto'];
+          this.codiceFiscaleDettaglio = (resp as any)['anagraficaDto'][
+            'anagrafica'
+          ]['codiceFiscale'];
+          this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
+          this.getImage();
+
+          if (
+            (resp as any)?.anagraficaDto?.contratto?.tipoCausaFineRapporto
+              ?.id != null
+          ) {
+            //conversione date
+            if (
+              (resp as any)['anagraficaDto']['contratto']['dataFineRapporto']
+            ) {
+              (resp as any)['anagraficaDto']['contratto']['dataFineRapporto'] =
+                this.datePipe.transform(
+                  (resp as any)['anagraficaDto']['contratto'][
+                    'dataFineRapporto'
+                  ],
+                  'dd-MM-yyyy'
+                );
+            }
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/danger.png',
+                title: 'Attenzione:',
+                message:
+                  'Dal ' +
+                  (resp as any)['anagraficaDto']['contratto'][
+                    'dataFineRapporto'
+                  ] +
+                  ' ' +
+                  (resp as any)['anagraficaDto']['anagrafica']['nome'] +
+                  ' ' +
+                  (resp as any)['anagraficaDto']['anagrafica']['cognome'] +
+                  ' non lavora più qui.' +
+                  ' Causa: ' +
+                  (resp as any)['anagraficaDto']['contratto'][
+                    'tipoCausaFineRapporto'
+                  ]['descrizione'] +
+                  ' Motivazione: ' +
+                  (resp as any)['anagraficaDto']['contratto'][
+                    'tipoCausaFineContratto'
+                  ]['descrizione'],
+              },
+              disableClose: true,
+            });
+          }
+        });
+
+      this.uppercaseCodiceFiscale();
     }
-    // console.log(this.id);
-    this.anagraficaDtoService
-      .detailAnagraficaDto(this.id, localStorage.getItem('token'))
-      .subscribe((resp: any) => {
-        // console.log(resp);
-        this.data = (resp as any)['anagraficaDto'];
-        this.codiceFiscaleDettaglio = (resp as any)['anagraficaDto'][
-          'anagrafica'
-        ]['codiceFiscale'];
-        // console.log(this.codiceFiscaleDettaglio);
-        this.elencoCommesse = (resp as any)['anagraficaDto']['commesse'];
-        // console.log(this.elencoCommesse);
-        this.getImage();
-
-        if((resp as any)['anagraficaDto']['contratto']['tipoCausaFineRapporto']['id']!=null){
-          //conversione date
-        if ((resp as any)['anagraficaDto']['contratto']['dataFineRapporto'] ) {
-          (resp as any)['anagraficaDto']['contratto']['dataFineRapporto'] = this.datePipe.transform((resp as any)['anagraficaDto']['contratto']['dataFineRapporto'] ,'dd-MM-yyyy');
-        }
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-              image: '../../../../assets/images/danger.png',
-              title: "Attenzione:",
-              message: "Dal " + (resp as any)['anagraficaDto']['contratto']['dataFineRapporto'] +
-                       " " + (resp as any)['anagraficaDto']['anagrafica']['nome'] +
-                       " " + (resp as any)['anagraficaDto']['anagrafica']['cognome'] +
-                       " non lavora più qui." +
-                       " Causa: " + (resp as any)['anagraficaDto']['contratto']['tipoCausaFineRapporto']['descrizione'] +
-                       " Motivazione: " + (resp as any)['anagraficaDto']['contratto']['tipoCausaFineContratto']['descrizione']
-            }, disableClose: true,
-          });
-
-        }
+    if (this.token == null) {
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          title: 'Attenzione:',
+          message: 'Errore di autenticazione; effettua il login.',
+        },
       });
-    const userLogged = localStorage.getItem('userLogged');
-    if (userLogged) {
-      this.userlogged = userLogged;
+      this.authService.logout().subscribe(
+        (response: any) => {
+          if (response.status === 200) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('isDarkMode');
+            localStorage.removeItem('DatiSbagliati');
+            localStorage.removeItem('tokenProvvisorio');
+            sessionStorage.clear();
+            this.router.navigate(['/login']);
+            this.dialog.closeAll();
+          } else {
+            this.handleLogoutError();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          if (error.status === 403) {
+            this.handleLogoutError();
+          } else {
+            this.handleLogoutError();
+          }
+        }
+      );
     }
-
-    this.uppercaseCodiceFiscale();
+  }
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
   }
 
   addImage() {
@@ -213,7 +266,8 @@ export class DettaglioAnagraficaDtoComponent {
                 data: {
                   title: 'Salvataggio non riuscito:',
                   message: (response as any).esito.target,
-                }, disableClose: true,
+                },
+                disableClose: true,
               });
             } else {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
@@ -253,7 +307,8 @@ export class DettaglioAnagraficaDtoComponent {
         if (this.immagine) {
           this.convertBase64ToImage(this.immagine);
         } else {
-          this.immaginePredefinita = '../../../../assets/images/profilePicPlaceholder.png';
+          this.immaginePredefinita =
+            '../../../../assets/images/profilePicPlaceholder.png';
         }
       },
       (error: any) => {
@@ -419,21 +474,21 @@ export class DettaglioAnagraficaDtoComponent {
   }
   getStoricoCommessa(idAnagrafica: any) {
     this.router.navigate(['/storico-commesse-anagrafica', idAnagrafica]);
-    this.vediStoricoCommesse=true;
+    this.vediStoricoCommesse = true;
   }
 
   goDown() {
-    document.getElementById("finePagina")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "nearest"
+    document.getElementById('finePagina')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
     });
   }
   goTop() {
-    document.getElementById("inizioPagina")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "nearest"
+    document.getElementById('inizioPagina')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
     });
   }
 
@@ -797,22 +852,34 @@ export class DettaglioAnagraficaDtoComponent {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.codiceFiscaleDettaglio =
+          response.anagraficaDto.anagrafica.codiceFiscale;
+        this.ruolo = response.anagraficaDto.ruolo.descrizione;
         this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
-        this.ruolo=response.anagraficaDto.ruolo.nome;
-        // console.log('ID ANAGRAFICA LOGGATA:' + this.idAnagraficaLoggata);
-        if (this.id === this.idAnagraficaLoggata) {
-          this.disabilitaImmagine = true;
-        } else {
-          this.disabilitaImmagine = false;
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
         }
       },
       (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
-        );
+        this.authService.logout();
       }
     );
+  }
+
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
   }
 
   getUserRole() {
@@ -847,21 +914,23 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        // console.log(
-        //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        // );
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-        this.jsonData = { list: [] };
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          // console.log(
+          //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          // );
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
 
   getPermissions(functionId: number) {

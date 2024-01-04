@@ -1,5 +1,11 @@
 import { AnagraficaDtoService } from './../anagraficaDto-service';
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -77,7 +83,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       attivo: new FormControl(true),
       attesaLavori: new FormControl(null),
       tipoCanaleReclutamento: new FormGroup({
-        id: new FormControl(null)
+        id: new FormControl(null),
       }),
       tipoAzienda: new FormGroup({
         id: new FormControl(null),
@@ -337,7 +343,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
-      this.getUserRole();
       this.caricaAziendeClienti();
     } else {
       console.error('errore di autenticazione.');
@@ -345,43 +350,15 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
     const commessaFormGroup = this.creaFormCommessa();
     this.commesse.push(commessaFormGroup);
-
-    this.profileBoxService.getData().subscribe(
-      (response: any) => {
-        this.anagraficaLoggata = response.anagraficaDto.anagrafica.id;
-        // console.log(
-        //   'ID UTENTE LOGGATO: ' + JSON.stringify(this.anagraficaLoggata)
-        // );
-        this.ruolo = response.anagraficaDto.ruolo.descrizione;
-        // console.log('RUOLO UTENTE LOGGATO:' + this.ruolo);
-        this.isGreenBackground(this.anagraficaLoggata);
-      },
-      (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
-        );
-      }
-    );
     this.mostraFiltri = false;
-
-    // this.setFilterFromOrganico(
-    //   this.tipoContrattoFilter,
-    //   this.tipoAziendaFilter
-    // );
-
     this.anagraficaDtoService
       .listAnagraficaDto(localStorage.getItem('token'))
       .subscribe(
         (resp: any) => {
           this.originalLista = resp.list;
           this.lista = this.originalLista;
-          // console.log('Elenco record: ' + JSON.stringify(this.lista));
-
-          // Inizializza la pagina corrente e i dati della pagina
           this.currentPage = 1;
           this.pageData = this.getCurrentPageItems();
-
           this.verificaCampiVuoti();
         },
         (error: any) => {
@@ -409,16 +386,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   // Metodo per verificare campi vuoti
   verificaCampiVuoti() {
     for (const record of this.originalLista) {
-      // Verifica se ci sono campi vuoti in questo record
       for (const key in record) {
         if (record.hasOwnProperty(key)) {
           const value = record[key];
           if (value === null || value === undefined || value === '') {
-            // Hai un campo vuoto in questo record
-            // console.log(
-            //   `Campo vuoto trovato in record con ID ${record.anagrafica.id}` +
-            //     `: ${value}`
-            // );
           }
         }
       }
@@ -1109,6 +1080,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   //METODI NAVBAR
 
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
+  }
+
   logout() {
     this.dialog.open(AlertLogoutComponent);
   }
@@ -1119,26 +1094,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.codiceFiscaleDettaglio =
-          response.anagraficaDto.anagrafica.codiceFiscale;
-        this.getImage();
-      },
-      (error: any) => {
-        // console.error(
-        //   'Si é verificato il seguente errore durante il recupero dei dati : ' +
-        //     error
-        // );
-        this.authService.logout();
-      }
-    );
-  }
-
-  getUserRole() {
-    this.profileBoxService.getData().subscribe(
-      (response: any) => {
-        // console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+        this.codiceFiscaleDettaglio =response.anagraficaDto.anagrafica.codiceFiscale;
+        this.ruolo = response.anagraficaDto.ruolo.descrizione;
+        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
-        // console.log('ID UTENTE PER NAV:' + this.idUtente);
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
@@ -1155,11 +1114,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         }
       },
       (error: any) => {
-        // console.error(
-        //   'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-        //     error
-        // );
-        this.shouldReloadPage = true;
+        this.authService.logout();
       }
     );
   }

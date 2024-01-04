@@ -1,5 +1,5 @@
 import { OrganicoService } from './../organico-service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -56,6 +56,8 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
     }),
   });
   idUtente: any;
+  codiceFiscaleDettaglio: any;
+  idAnagraficaLoggata: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -144,7 +146,7 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
       });
 
       this.getUserLogged();
-      this.getUserRole();
+      // this.getUserRole();
       this.setFilterFromOrganico(
         this.tipoContrattoFilter,
         this.tipoAziendaFilter
@@ -197,6 +199,43 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
         );
       this.filterValidate(this.pageData);
     }
+    if (this.token == null) {
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+        data: {
+          title: 'Attenzione:',
+          message: 'Errore di autenticazione; effettua il login.',
+        },
+      });
+      this.authService.logout().subscribe(
+        (response: any) => {
+          if (response.status === 200) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('isDarkMode');
+            localStorage.removeItem('DatiSbagliati');
+            localStorage.removeItem('tokenProvvisorio');
+            sessionStorage.clear();
+            this.router.navigate(['/login']);
+            this.dialog.closeAll();
+          } else {
+            this.handleLogoutError();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          if (error.status === 403) {
+            this.handleLogoutError();
+          } else {
+            this.handleLogoutError();
+          }
+        }
+      );
+    }
+  }
+
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
   }
 
   setFilterFromOrganico(tipoContrattoFilter: any, tipoAziendaFilter: any) {
@@ -268,12 +307,28 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.codiceFiscaleDettaglio =
+          response.anagraficaDto.anagrafica.codiceFiscale;
+        this.ruolo = response.anagraficaDto.ruolo.descrizione;
+        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
       },
       (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
-        );
+        this.authService.logout();
       }
     );
   }
@@ -316,9 +371,6 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
         (data: any) => {
           this.jsonData = data;
           this.idFunzione = data.list[0].id;
-          // console.log(
-          //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-          // );
           this.shouldReloadPage = false;
         },
         (error: any) => {
@@ -327,6 +379,10 @@ export class RisultatiFilterOrganicoComponent implements OnInit {
           this.jsonData = { list: [] };
         }
       );
+  }
+
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
   }
 
   getPermissions(functionId: number) {

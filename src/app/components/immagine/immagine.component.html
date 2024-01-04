@@ -4,12 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .container-fluid {
+      background-color: black;
+      width: 100%;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .col-12 {
+      text-align: center;
+    }
+
+    .fa-close {
+      float: right;
+      cursor: pointer;
+      color: white;
+    }
+
+    .preview-image {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
 </head>
 <body>
-  <div class="container-fluid" style="background-color: black;">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-12" style="text-align: center;">
-        <i class="fa fa-close" style="float: right; cursor:pointer; color: white;" (click)="close()" ></i>
+      <div class="col-12">
+        <i class="fa fa-close" (click)="close()"></i>
         <img [src]="immagineConvertita" alt="Immagine" class="preview-image" />
       </div>
     </div>

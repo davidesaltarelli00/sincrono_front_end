@@ -82,7 +82,7 @@ export class ProfileBoxComponent {
     private menuService: MenuService,
     private anagraficaDtoService: AnagraficaDtoService,
     private cdRef: ChangeDetectorRef,
-    private richiesteService:RichiesteService
+    private richiesteService: RichiesteService
   ) {
     this.windowWidth = window.innerWidth;
 
@@ -103,8 +103,6 @@ export class ProfileBoxComponent {
       codiceFiscale: new FormControl(null),
     });
   }
-
-
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -151,7 +149,6 @@ export class ProfileBoxComponent {
         this.cdRef.detectChanges(); // Forza l'aggiornamento del template
 
         if (this.tokenExpirationTime === 0) {
-
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
               image: '../../../../assets/images/danger.png',
@@ -197,26 +194,7 @@ export class ProfileBoxComponent {
 
     if (this.token != null) {
       this.getUserLogged();
-      this.getUserRole();
     }
-    this.profileBoxService.getData().subscribe(
-      (response: any) => {
-        this.anagrafica = response;
-        this.id = response.anagraficaDto.anagrafica.id;
-        this.username_accesso = response.anagraficaDto.anagrafica.mailAziendale;
-        this.codiceFiscaleUtenteLoggato =response.anagraficaDto.anagrafica.codiceFiscale;
-        this.bodyGet.setValue({
-          codiceFiscale: this.codiceFiscaleUtenteLoggato,
-        });
-        this.getImage();
-      },
-      (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
-        );
-      }
-    );
   }
 
   formatTime(seconds: number): string {
@@ -233,7 +211,13 @@ export class ProfileBoxComponent {
   }
 
   vediImmagineProfilo() {
-    this.dialog.open(ImmagineComponent);
+    const dialogRef = this.dialog.open(ImmagineComponent, {
+      width: '600px',
+      height: 'auto',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog chiusa', result);
+    });
   }
 
   addImage() {
@@ -251,7 +235,7 @@ export class ProfileBoxComponent {
             if ((response as any).esito.code != 200) {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
-                  image:'../../../../assets/images/danger.png',
+                  image: '../../../../assets/images/danger.png',
                   title: 'Salvataggio non riuscito:',
                   message: (response as any).esito.target,
                 },
@@ -259,7 +243,7 @@ export class ProfileBoxComponent {
             } else {
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
-                  image:'../../../../assets/images/logo.jpeg',
+                  image: '../../../../assets/images/logo.jpeg',
                   title: 'Immagine salvata correttamente:',
                   message: (response as any).esito.target,
                 },
@@ -279,7 +263,7 @@ export class ProfileBoxComponent {
     } else {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
         data: {
-          image:'../../../../assets/images/danger.png',
+          image: '../../../../assets/images/danger.png',
           title: 'Attenzione:',
           message: 'Nessuna immagine selezionata.',
         },
@@ -318,7 +302,7 @@ export class ProfileBoxComponent {
   cancelImage() {
     const dialogRef = this.dialog.open(AlertDialogComponent, {
       data: {
-        image:'../../../../assets/images/danger.png',
+        image: '../../../../assets/images/danger.png',
         title: '',
         message: 'Cambio immagine annullato.',
       },
@@ -382,8 +366,8 @@ export class ProfileBoxComponent {
           // );
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
-              image:'../../../../assets/images/logo.jpeg',
-              title: 'Immagine salvata correttamente.',
+              image: '../../../../assets/images/logo.jpeg',
+              title: 'Commessa storicizzata correttamente.',
               message: (res as any).esito.target,
             },
           });
@@ -410,30 +394,24 @@ export class ProfileBoxComponent {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         localStorage.getItem('token');
-        console.log(JSON.stringify(response));
+        // console.log(JSON.stringify(response));
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.userLoggedFiscalCode =
-          response.anagraficaDto.anagrafica.codiceFiscale;
+        this.userLoggedFiscalCode = response.anagraficaDto.anagrafica.codiceFiscale;
         this.elencoCommesse = response.anagraficaDto.commesse;
         this.ruolo = response.anagraficaDto.ruolo.descrizione;
-      },
-      (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-            error
-        );
-      }
-    );
-  }
-
-  getUserRole() {
-    this.profileBoxService.getData().subscribe(
-      (response: any) => {
-        // console.log('DATI GET USER ROLE:' + JSON.stringify(response));
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        this.anagrafica = response;
+        this.id = response.anagraficaDto.anagrafica.id;
+        this.username_accesso = response.anagraficaDto.anagrafica.mailAziendale;
+        this.codiceFiscaleUtenteLoggato =
+          response.anagraficaDto.anagrafica.codiceFiscale;
+        this.bodyGet.setValue({
+          codiceFiscale: this.codiceFiscaleUtenteLoggato,
+        });
+        this.getImage();
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
-        if (
+         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
         ) {
           this.idNav = 1;
@@ -449,13 +427,14 @@ export class ProfileBoxComponent {
       },
       (error: any) => {
         console.error(
-          'Si è verificato il seguente errore durante il recupero del ruolo: ' +
+          'Si é verificato il seguente errore durante il recupero dei dati : ' +
             error
         );
-        this.shouldReloadPage = true;
       }
     );
   }
+
+
 
   generateMenuByUserRole() {
     this.menuService

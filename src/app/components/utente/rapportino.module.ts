@@ -23,4 +23,4 @@ import { ModaleDettaglioRapportinoComponent } from '../modale-dettaglio-rapporti
     FormsModule,
   ],
 })
-export class OrganicoModule {}
+export class RapportinoModule {}
