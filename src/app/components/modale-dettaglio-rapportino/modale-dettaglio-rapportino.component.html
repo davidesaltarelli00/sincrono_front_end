@@ -10,7 +10,7 @@
 
   <div id="inizioPagina"></div>
 
-  <div class="container-toolbar" *ngIf="!mobile">
+  <div class="container-toolbar" *ngIf="!mobile && jsonData?.list">
     <div class="row align-items-center">
       <div class="col-auto">
         <a [routerLink]="['/home']" class="logo-link">
@@ -39,6 +39,10 @@
         </div>
       </div>
 
+      <div class="col-auto" *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen">
+        <a style="color:white; cursor: pointer;" (click)="vaiAlRapportino()">Rapportino</a>
+      </div>
+
       <div class="col-auto">
         <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
           <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
@@ -63,7 +67,7 @@
   </div>
 
  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
-    <mat-toolbar id="toolbar" *ngIf="token && mobile">
+    <mat-toolbar id="toolbar" *ngIf="token && mobile  && jsonData?.list">
       <a [routerLink]="['/home']" class="logo-link">
         <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
       </a>
@@ -73,12 +77,16 @@
       </button>
       <mat-menu #menu="matMenu">
         <ng-template matMenuContent>
-          <button style="background-color:#333;color:white" mat-menu-item *ngFor="let menuItem of jsonData.list"
+          <button  mat-menu-item *ngFor="let menuItem of jsonData.list"
             [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
             {{ menuItem.nome }}
           </button>
+          <button mat-menu-item  (click)="vaiAlRapportino()">
+            Rapportino
+          </button>
         </ng-template>
       </mat-menu>
+
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
         <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
@@ -89,7 +97,6 @@
       </span>
     </mat-toolbar>
   </div>
-
 <div class="container-fluid"  *ngIf="ruolo==='ADMIN'" >
   <div class="row">
     <div class="col-12">
