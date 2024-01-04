@@ -359,7 +359,7 @@
           <div class="row">
             <div class="col-12">
               <mat-card class="profile-box">
-                <h3>Contratto <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                <h3>Contratto <i class="fa fa-file-contract"></i> <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
                   matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                   <i class="fa fa-exclamation-triangle"></i> </button></h3>
                 <div class="table-responsive">
@@ -444,7 +444,7 @@
           <div class="row">
             <div class="col-12">
               <mat-card class="profile-box">
-                <h3>Commesse <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                <h3>Commesse <i class="fa-solid fa-briefcase"></i> <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
                   matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                   <i class="fa fa-exclamation-triangle"></i> </button></h3>
                 <mat-card-content *ngIf="elencoCommesse.length>0">
@@ -504,7 +504,7 @@
           <div class="row">
             <div class="col-12">
               <mat-card class="profile-box">
-                <h3>Accesso</h3>
+                <h3>Accesso <i class="fa fa-cog" ></i> </h3>
                 <table class="table table-striped">
                   <thead>
                    <tr>
@@ -792,7 +792,7 @@
   </div>
   <div class="row" *ngIf="elencoCommesse.length<1">
     <div class="col-12">
-      <h3>Commesse</h3>
+      <h3>Commesse <i class="fa-solid fa-briefcase"></i></h3>
       <table class="table table-bordered" >
       <tbody>
         <tr>
@@ -806,7 +806,7 @@
   </div>
   <div class="row" *ngIf="elencoCommesse.length>0">
     <div class="col-12">
-      <h3>Commesse</h3>
+      <h3>Commesse <i class="fa fa-briefcase"></i></h3>
       <mat-card *ngFor="let commessa of elencoCommesse; let i = index" class="commessa-card">
         <mat-card-title>
           <button mat-mini-fab color="primary">{{i+1}}</button>
@@ -859,7 +859,7 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <h3>Accesso</h3>
+      <h3>Accesso <i class="fa fa-cog" ></i></h3>
       <table class="table table-bordered">
         <tbody>
           <tr>
