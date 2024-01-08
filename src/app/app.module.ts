@@ -10,6 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { saveAs } from 'file-saver';
+import { APP_BASE_HREF, LocationStrategy, PlatformLocation } from '@angular/common';
+
 //CONTRATTO
 import { ListaContrattiComponent } from './components/contratto/lista-contratti/lista-contratti.component';
 import { DettaglioContrattoComponent } from './components/contratto/dettaglio-contratto/dettaglio-contratto.component';
@@ -114,7 +116,13 @@ import { RapportinoModule } from './components/utente/rapportino.module';
     RapportinoModule,
     RichiesteModule
   ],
-  providers: [DatePipe, CurrencyPipe],
+  providers: [DatePipe, CurrencyPipe,  {
+    provide: APP_BASE_HREF,
+    useFactory: (platformLocation: PlatformLocation) => {
+      return platformLocation.getBaseHrefFromDOM();
+    },
+    deps: [PlatformLocation],
+  },],
   //  { provide: LOCALE_ID, useValue: 'it-IT' }
   bootstrap: [AppComponent],
 })

@@ -391,7 +391,7 @@ export class UtenteComponent implements OnInit {
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
-      this.getUserRole();
+      // this.getUserRole();
       this.salvaAziendeClienti();
       // this.getAnagraficaRapportino();
     }
@@ -479,9 +479,9 @@ export class UtenteComponent implements OnInit {
       if (!giorno.checkSmartWorking) {
         giorno.checkSmartWorking = null;
       }
-      // console.log("Oggetto giorniArray iterato checkSmartworking: "+JSON.stringify(giorno, null, 2));
     }
   }
+
   onChangeSmartworking(event: any) {
     const target = event.target as HTMLInputElement;
     if (target) {
@@ -514,12 +514,12 @@ export class UtenteComponent implements OnInit {
       };
     });
     for (const giorno of giorni) {
-      if (!giorno.checkSmartWorking) {
-        giorno.checkSmartWorking = null;
+      if (!giorno.checkOnSite) {
+        giorno.checkOnSite = null;
       }
-      // console.log("Oggetto giorniArray iterato checkSmartworking: "+JSON.stringify(giorno, null, 2));
     }
   }
+
 
   onChangeFerie(event: any, i: number) {
     const target = event.target as HTMLInputElement;
@@ -781,9 +781,9 @@ export class UtenteComponent implements OnInit {
           this.calcolaTotaleMalattia();
           this.calcolaTotaleOrePermessi();
           this.cdRef.detectChanges();
-          // console.log(
-          //   'Risultato getRapportino:' + JSON.stringify(this.rapportinoDto)
-          // );
+          console.log(
+            'Risultato getRapportino:' + JSON.stringify(this.rapportinoDto)
+          );
 
           if (this.note === null || this.note === '' || this.note === '') {
             console.log('non hai note.');
@@ -1704,13 +1704,26 @@ export class UtenteComponent implements OnInit {
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.idUtenteLoggato = response.anagraficaDto.anagrafica.id;
-        this.contrattoUser =
-          response.anagraficaDto.contratto.tipoContratto.descrizione;
-        this.aziendaUser =
-          response.anagraficaDto.contratto.tipoAzienda.descrizione;
+        this.contrattoUser =response.anagraficaDto.contratto.tipoContratto.descrizione;
+        this.aziendaUser = response.anagraficaDto.contratto.tipoAzienda.descrizione;
         this.elencoCommesse = response.anagraficaDto.commesse;
         this.numeroCommessePresenti = this.elencoCommesse.length;
         this.ruolo = response.anagraficaDto.ruolo.descrizione;
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
         this.elencoCommesse.forEach((commessa: any) => {
           if (commessa.tipoAziendaCliente.descrizione) {
             this.aziendeClienti.push(commessa.tipoAziendaCliente.descrizione);

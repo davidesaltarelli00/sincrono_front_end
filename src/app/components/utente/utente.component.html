@@ -299,19 +299,11 @@
       </div>
       <hr style="background-color: aliceblue;">
       <div class="row">
-        <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn"
-          style="text-align: center;">
+        <div class="col-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn">
           <mat-card [ngClass]="getBackgroundClasses(giorno)"
-          [ngStyle]="{
-            'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') && !giorno.festivitaNazionale ? 'aliceblue' :
-                                (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') && giorno.festivitaNazionale ? 'rgb(238, 64, 64)' :
-                                (!giorno.checkFestivita ? (giorno.festivitaNazionale ? 'rgb(238, 64, 64)' : 'rgb(214, 234, 251)') :
-                                'orange')
-          }"
-          >
-            <p style=" margin: 0;"> <button mat-mini-fab color="primary">{{giorno.numeroGiorno}}</button>
-              {{giorno.nomeGiorno |titlecase }}
-              <i [hidden]="giorno.checkFestivita || giorno.ferie || giorno.festivitaNazionale || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
+          [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') && !giorno.festivitaNazionale ? 'aliceblue' : (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') && giorno.festivitaNazionale ? 'rgb(238, 64, 64)' : (!giorno.checkFestivita ? (giorno.festivitaNazionale ? 'rgb(238, 64, 64)' : 'rgb(214, 234, 251)') : 'orange')}">
+            <p> <button mat-mini-fab color="primary">{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }}
+              <!-- <i [hidden]="giorno.checkFestivita || giorno.ferie || giorno.festivitaNazionale || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
                 class="fa fa-calendar"
                 matTooltip="Imposta {{giorno.nomeGiorno | titlecase }} {{giorno.numeroGiorno}} {{selectedMese}} come festivo."
                 (click)="setFestivita(true, giorno)"></i>
@@ -320,12 +312,11 @@
                 matTooltip="Imposta {{giorno.nomeGiorno | titlecase }} {{giorno.numeroGiorno}} {{selectedMese}} come non festivo."
                 (click)="unsetFestivita(false, giorno)"></i>
               <i *ngIf="giorno.festivitaNazionale || giorno.ferie || giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica'"
-                class="fa fa-calendar"></i>
+                class="fa fa-calendar"></i> -->
             </p>
-            <div class="container-card"
-              *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
+            <div class="container-card" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
               <div class="row">
-                <div class="col-8">
+                <div class="col-10" style="text-align: center; margin: auto;">
                   <div class="form-group">
                     <label for="cliente-{{ i }}{{j}}">Cliente</label>
                     <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
@@ -341,37 +332,27 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-4">
+              </div>
+              <br>
+              <div class="row" style="text-align: center; margin: auto;">
+                <div class="col-6">
                   <div class="form-group">
                     <label for="ore-ordinarie-{{ i }}{{j}}" matTooltipPosition="above"
-                      matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Ore</label>
+                      matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Ore ordinarie</label>
                     <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text"
                       class="form-control form-control-sm" step="0.5" min="0" max="8" id="ore-ordinarie-{{ i }}{{j}}"
                       name="ore-ordinarie-{{ i }}{{j}}" [(ngModel)]="duplicazione.oreOrdinarie">
                   </div>
                 </div>
+                <div class="col-6">
+              <div class="form-group">
+                <label for="extratime">Extra time</label> <br>
+                <button mat-mini-fab color="primary"  style="width: 30px; height: 30px;"
+                (click)=" mostraNascondiStraordinari(i,j)"
+                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Extra time"> <i
+                  class="fa fa-clock"></i> </button>
               </div>
-              <br>
-              <div class="row">
-                <div class="col-2"></div>
-                <div class="col-2">
-                  <button style="width: 30px; height: 30px;" mat-mini-fab color="primary"
-                    (click)=" mostraNascondiStraordinari(i,j)"
-                    [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Extra time"> <i
-                      class="fa fa-clock"></i> </button>
                 </div>
-                <div class="col-2">
-                  <button style="width: 30px; height: 30px;"
-                    [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie || aziendeClienti.length<1 "
-                    mat-mini-fab id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga"><i
-                      class="fa fa-clone"></i></button>
-                </div>
-                <div class="col-2">
-                  <button style="width: 30px; height: 30px;"
-                    [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie " mat-mini-fab color="warn"
-                    (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"><i class="fa fa-trash"></i></button>
-                </div>
-                <div class="col-2"></div>
               </div>
 
               <!--straordinari-->
@@ -404,6 +385,23 @@
                   </div>
                 </div>
               </div>
+              <br>
+              <!--duplicazione-->
+              <!-- <div class="row" *ngIf="numeroCommessePresenti>1">
+                <div class="col-2"></div>
+                <div class="col-4">
+                  <button style="width: 30px; height: 30px;"
+                    [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie || aziendeClienti.length<1 "
+                    mat-mini-fab id="duplica" (click)="duplicaRiga(i,j)" matTooltip="Duplica riga"><i
+                      class="fa fa-clone"></i></button>
+                </div>
+                <div class="col-4">
+                  <button style="width: 30px; height: 30px;"
+                    [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie " mat-mini-fab color="warn"
+                    (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"><i class="fa fa-trash"></i></button>
+                </div>
+                <div class="col-2"></div>
+              </div> -->
             </div>
             <!--PERMESSI-->
             <!-- <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] " >
@@ -425,7 +423,7 @@
               <div class="col-4">
                 <div class="form-group">
                   <label for="onSite-{{i}}">On site</label><br>
-                  <input (change)="onChangePresenza($event)" (keyup.enter)="toggleOnSite(giorno)"
+                  <input (change)="onChangePresenza($event)"
                     [(ngModel)]="giorno.checkOnSite"
                     [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkSmartworking"
                     class="form-check-input" type="checkbox" id="onSite-{{i}}">
@@ -434,9 +432,9 @@
               <div class="col-4">
                 <div class="form-group">
                   <label for="smartworking-{{i}}">Smart</label><br>
-                  <input (change)="onChangeSmartworking($event)" (keyup.enter)="toggleSmartworking(giorno)"
+                  <input (change)="onChangeSmartworking($event)"
                     [(ngModel)]="giorno.checkSmartWorking"
-                    [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite "
+                    [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite"
                     class="form-check-input" type="checkbox" id="smartworking-{{i}}">
                 </div>
               </div>
@@ -503,30 +501,32 @@
              </div>
             </div>
             <div class="row">
-              <div class="col-5">
+              <div class="col-12">
                 <div class="form-group">
                   <label for="note-{{ i }}">Note</label>
-                  <input [disabled]="risultatoCheckFreeze  || giorno.ferie"
+                  <input [disabled]="risultatoCheckFreeze  || giorno.ferie" placeholder="Inserire note"
                     [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text"
                     class="form-control form-control-sm" matTooltip="{{giorno.note}}" id="note-{{ i }}"
                     name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
                 </div>
               </div>
-              <div class="col-3">
+            </div>
+            <br>
+            <div class="row" style="text-align: center;">
+                <div class="col-6">
                 <div class="form-group">
-                  <label for="salvaRiga">Salva</label>
+                  <!-- <label for="salvaRiga">Salva</label> -->
                   <button [disabled]="risultatoCheckFreeze" mat-mini-fab color="primary"
                     (click)="salvaRapportino(giorno)" matTooltip="Salva riga"><i class="fa fa-save"></i> </button>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-6">
                 <div class="form-group">
-                  <label for="salvaRiga">Annulla</label>
+                  <!-- <label for="salvaRiga">Annulla</label> -->
                   <button [disabled]="risultatoCheckFreeze" mat-mini-fab color="warn" (click)="annulla()"
                     matTooltip="Annulla"><i class="fa fa-undo"></i> </button>
                 </div>
               </div>
-
             </div>
             <br>
           </mat-card>

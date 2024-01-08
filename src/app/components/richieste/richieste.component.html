@@ -6,7 +6,7 @@
   <title>Document</title>
 </head>
 <body [class.dark-mode]="themeService.isDarkModeEnabled()">
-  <div class="container-toolbar" *ngIf="!mobile">
+  <div class="container-toolbar" *ngIf="!mobile && jsonData?.list">
     <div class="row align-items-center">
       <div class="col-auto">
         <a [routerLink]="['/home']" class="logo-link">
@@ -35,6 +35,10 @@
         </div>
       </div>
 
+      <div class="col-auto" *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen">
+        <a style="color:white; cursor: pointer;" (click)="vaiAlRapportino()">Rapportino</a>
+      </div>
+
       <div class="col-auto">
         <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
           <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
@@ -59,7 +63,7 @@
   </div>
 
  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
-    <mat-toolbar id="toolbar" *ngIf="token && mobile">
+    <mat-toolbar id="toolbar" *ngIf="token && mobile  && jsonData?.list">
       <a [routerLink]="['/home']" class="logo-link">
         <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
       </a>
@@ -69,12 +73,16 @@
       </button>
       <mat-menu #menu="matMenu">
         <ng-template matMenuContent>
-          <button style="background-color:#333;color:white" mat-menu-item *ngFor="let menuItem of jsonData.list"
+          <button  mat-menu-item *ngFor="let menuItem of jsonData.list"
             [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
             {{ menuItem.nome }}
           </button>
+          <button mat-menu-item  (click)="vaiAlRapportino()">
+            Rapportino
+          </button>
         </ng-template>
       </mat-menu>
+
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
         <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
@@ -434,6 +442,7 @@
               <table class="table table-bordered"  id="table-responsive">
                 <thead>
                   <tr>
+                    <th>ID</th>
                     <th>Tipo richiesta</th>
                     <th>Giorno</th>
                     <th>Stato</th>
@@ -444,6 +453,7 @@
                 <tbody>
                   <tr *ngFor="let richiesta of getCurrentPageItemsFerie()">
                     <ng-container *ngIf="richiesta.list && richiesta.list.length > 0 && richiesta.list[0].ferie">
+                      <td>{{richiesta.id}}</td>
                       <td>Ferie</td>
                       <td>
                         <ng-container *ngFor="let item of richiesta.list; let i = index">
@@ -489,6 +499,7 @@
               <table class="table table-bordered"  id="table-responsive">
                 <thead>
                   <tr>
+                    <th>ID</th>
                     <th>Giorno</th>
                     <th>Dalle ore</th>
                     <th>Alle ore</th>
@@ -500,6 +511,7 @@
                 <tbody>
                   <tr *ngFor="let richiesta of getCurrentPageItemsPermessi()">
                     <ng-container *ngIf="richiesta.list && richiesta.list.length > 0 && richiesta.list[0].permessi">
+                      <td>{{richiesta.id}}</td>
                       <td>
                         <ng-container *ngFor="let item of richiesta.list; let i = index">
                           {{ item.nGiorno }}

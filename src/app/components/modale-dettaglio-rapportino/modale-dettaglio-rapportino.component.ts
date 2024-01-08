@@ -113,6 +113,10 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
     }
   }
 
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idUtenteLoggato]);
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.windowWidth = window.innerWidth;

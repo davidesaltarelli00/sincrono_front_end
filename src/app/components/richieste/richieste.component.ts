@@ -99,6 +99,7 @@ export class RichiesteComponent implements OnInit {
   isHamburgerMenuOpen: boolean = false;
   selectedMenuItem: string | undefined;
   windowWidth: any;
+  idUtenteLoggato: any;
 
   constructor(
     private authService: AuthService,
@@ -507,6 +508,11 @@ annoCorrente: any;
       });
   }
 
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idUtenteLoggato]);
+  }
+
+
   //paginazione
   getCurrentPageItemsFerie(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -620,6 +626,7 @@ annoCorrente: any;
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
+        this.idUtenteLoggato=response.anagraficaDto.anagrafica.id;
         this.ruolo = response.anagraficaDto.ruolo.nome;
         this.codiceFiscaleDettaglio =
           response.anagraficaDto.anagrafica.codiceFiscale;
@@ -635,10 +642,7 @@ annoCorrente: any;
               codiceFiscale: this.codiceFiscaleDettaglio,
             },
           };
-          // console.log(
-          //   'BODY PER LISTA RICHIESTE DIPENDENTE PER MESE E ANNO CORRENTE: ' +
-          //     JSON.stringify(body)
-          // );
+
           this.richiesteService
             .getAllRichiesteDipendente(this.token, body)
             .subscribe((result: any) => {
