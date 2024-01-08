@@ -1,5 +1,6 @@
 import { AnagraficaDtoService } from './../anagraficaDto-service';
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
@@ -16,7 +17,11 @@ import * as XLSX from 'xlsx';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalInfoCommesseComponent } from '../../modal-info-commesse/modal-info-commesse.component';
 import { ModalInfoContrattoComponent } from '../../modal-info-contratto/modal-info-contratto.component';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { MenuService } from '../../menu.service';
@@ -148,6 +153,9 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   numeroMensilitaCCNL: any;
   idCCNLselezionato: any;
   contratto: any;
+  orarioAttuale: Date = new Date();
+  tokenExpirationTime: any;
+  timer: any;
 
   // Dichiarazione dell'array dei mesi
   mesi: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -170,7 +178,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     private menuService: MenuService,
     private http: HttpClient,
     public themeService: ThemeService,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private cdRef: ChangeDetectorRef
   ) {
     this.windowWidth = window.innerWidth;
 
@@ -341,12 +350,58 @@ export class ListaAnagraficaDtoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.token != null) {
+    if (this.token) {
       this.getUserLogged();
       this.caricaAziendeClienti();
-    } else {
-      console.error('errore di autenticazione.');
+      const tokenParts = this.token.split('.');
+      const tokenPayload = JSON.parse(atob(tokenParts[1]));
+      const currentTime = Date.now() / 1000;
+      this.tokenExpirationTime = Math.floor(tokenPayload.exp - currentTime);
+      this.timer = setInterval(() => {
+        this.tokenExpirationTime -= 1;
+        this.cdRef.detectChanges();
+
+        if (this.tokenExpirationTime === 0) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Attenzione:',
+              message: 'Sessione terminata; esegui il login.',
+            },
+          });
+
+          this.authService.logout().subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenProvvisorio');
+                sessionStorage.clear();
+                this.router.navigate(['/login']);
+                this.dialog.closeAll();
+              } else {
+                console.log(
+                  'Errore durante il logout:',
+                  response.status,
+                  response.body
+                );
+                this.handleLogoutError();
+              }
+            },
+            (error: HttpErrorResponse) => {
+              if (error.status === 403) {
+                // console.log('Errore 403: Accesso negato');
+                this.handleLogoutError();
+              } else {
+                console.log('Errore durante il logout:', error.message);
+                this.handleLogoutError();
+              }
+            }
+          );
+        }
+      }, 1000);
     }
+
+    //fine autenticazione
 
     const commessaFormGroup = this.creaFormCommessa();
     this.commesse.push(commessaFormGroup);
@@ -381,6 +436,26 @@ export class ListaAnagraficaDtoComponent implements OnInit {
     if (livelloContrattoControl) {
       livelloContrattoControl.disable();
     }
+  }
+
+  formatTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(
+      remainingSeconds
+    )}`;
+  }
+
+  pad(value: number): string {
+    return value.toString().padStart(2, '0');
+  }
+
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
   }
 
   // Metodo per verificare campi vuoti
@@ -1094,7 +1169,8 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.codiceFiscaleDettaglio =response.anagraficaDto.anagrafica.codiceFiscale;
+        this.codiceFiscaleDettaglio =
+          response.anagraficaDto.anagrafica.codiceFiscale;
         this.ruolo = response.anagraficaDto.ruolo.descrizione;
         this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;

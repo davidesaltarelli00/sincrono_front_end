@@ -2560,10 +2560,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   getPermissions(functionId: number) {
     this.menuService.getPermissions(this.token, functionId).subscribe(
       (data: any) => {
-        // console.log('Permessi ottenuti:', data);
       },
       (error: any) => {
-        // console.error('Errore nella generazione dei permessi:', error);
       }
     );
   }
