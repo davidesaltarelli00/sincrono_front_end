@@ -516,10 +516,8 @@
                   </label>
                 </td>
                 <td>
-                  <span style="margin:5px;" *ngIf="anagraficaLoggata===element.anagrafica.id">
-                    <a [routerLink]="['/utente/', element?.anagrafica.id]"><button
-                        matTooltip="Rapportino {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
-                        [hidden]="anagraficaLoggata!=element.anagrafica.id" mat-mini-fab id="button"><i
+                  <span style="margin:5px;" *ngIf="idAnagraficaLoggata===element.anagrafica.id">
+                    <a [routerLink]="['/utente/', element?.anagrafica.id]"><button mat-mini-fab id="button"><i
                           class="fa fa-file"></i></button></a>
                   </span>
                   <span style="margin:5px;">
@@ -533,7 +531,7 @@
                         class="fa fa-pencil"></i></button>
                   </span>
                   <span style="margin:5px;"
-                    *ngIf="element.anagrafica.attivo==true && anagraficaLoggata!=element.anagrafica.id">
+                    *ngIf="element.anagrafica.attivo==true && idAnagraficaLoggata!=element.anagrafica.id">
                     <button mat-mini-fab color="warn"
                       matTooltip="Disattiva {{element.anagrafica.nome}} {{element.anagrafica.cognome}} "
                       (click)="elimina(element.anagrafica.id, element.anagrafica.nome, element.anagrafica.cognome)"><i
