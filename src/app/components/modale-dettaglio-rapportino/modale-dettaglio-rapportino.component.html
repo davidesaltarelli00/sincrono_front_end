@@ -110,7 +110,7 @@
   <br>
   <div class="row">
     <div class="col-12">
-      <legend>Dati anagrafici</legend>
+      <!-- <legend>Dati anagrafici</legend> -->
       <table class="table table-striped">
         <thead>
           <tr>
@@ -135,7 +135,7 @@
   <div class="row">
     <div class="col-12">
       <legend>Richieste accettate</legend>
-      <table class="table table-striped">
+      <table class="table table-striped" *ngIf="elencoRichiesteAccettate.length>0" >
         <thead>
           <tr>
             <!-- <th>ID</th> -->
@@ -171,11 +171,17 @@
           </tr>
         </tbody>
       </table>
+      <mat-card *ngIf="elencoRichiesteAccettate.length==0" >
+        <mat-card-content>
+          <p> <i class="fa fa-info-circle" ></i> Non ci sono richieste accettate al momento.</p>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
+  <br>
   <div class="row">
     <div class="col-12">
-      <legend>Rapportino</legend>
+      <!-- <legend>Rapportino</legend> -->
     </div>
   </div>
   <div class="row" >
@@ -408,7 +414,12 @@
     <div class="col">
       <h2>Tutti i diritti riservati</h2>
     </div>
-
+    <div class="col">
+      <h2>Tempo di sessione:</h2>
+      <ul>
+        <li><p>{{ formatTime(tokenExpirationTime) }}</p></li>
+      </ul>
+    </div>
   <div class="clearfix"></div>
   </div>
   </div>
