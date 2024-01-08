@@ -6,7 +6,12 @@ import {
   FormArray,
   Validators,
 } from '@angular/forms';
-import { Component, HostListener, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import { AnagraficaDtoService } from '../anagraficaDto-service';
 import { Router } from '@angular/router';
 import { ContrattoService } from '../../contratto/contratto-service';
@@ -16,13 +21,18 @@ import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.componen
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { MenuService } from '../../menu.service';
 import { MapsService } from './maps.service';
 import * as XLSX from 'xlsx';
 import { ThemeService } from 'src/app/theme.service';
 import { AlertConfermaComponent } from 'src/app/alert-conferma/alert-conferma.component';
+import { AuthService } from '../../login/login-service';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -105,6 +115,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   selectedMenuItem: string | undefined;
   windowWidth: any;
   idAnagraficaLoggata: any;
+  tokenExpirationTime: any;
+  timer: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -118,7 +130,9 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     private http: HttpClient,
     public themeService: ThemeService,
     private menuService: MenuService,
-    private mapsService: MapsService
+    private mapsService: MapsService,
+    private cdRef: ChangeDetectorRef,
+    private authService: AuthService
   ) {
     this.windowWidth = window.innerWidth;
     if (window.innerWidth >= 900) {
@@ -291,6 +305,55 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.token) {
+      const tokenParts = this.token.split('.');
+      const tokenPayload = JSON.parse(atob(tokenParts[1]));
+      const currentTime = Date.now() / 1000;
+      this.tokenExpirationTime = Math.floor(tokenPayload.exp - currentTime);
+      this.timer = setInterval(() => {
+        this.tokenExpirationTime -= 1;
+        this.cdRef.detectChanges();
+
+        if (this.tokenExpirationTime === 0) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Attenzione:',
+              message: 'Sessione terminata; esegui il login.',
+            },
+          });
+
+          this.authService.logout().subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenProvvisorio');
+                sessionStorage.clear();
+                this.router.navigate(['/login']);
+                this.dialog.closeAll();
+              } else {
+                console.log(
+                  'Errore durante il logout:',
+                  response.status,
+                  response.body
+                );
+                this.handleLogoutError();
+              }
+            },
+            (error: HttpErrorResponse) => {
+              if (error.status === 403) {
+                console.log('Errore 403: Accesso negato');
+                this.handleLogoutError();
+              } else {
+                console.log('Errore durante il logout:', error.message);
+                this.handleLogoutError();
+              }
+            }
+          );
+        }
+      }, 1000);
+    }
+
     if (this.token != null) {
       this.getUserLogged();
       // this.getUserRole();
@@ -434,6 +497,26 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       this.calcoloRAL();
     });
     this.calcoloRAL();
+  }
+
+  formatTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(
+      remainingSeconds
+    )}`;
+  }
+
+  pad(value: number): string {
+    return value.toString().padStart(2, '0');
+  }
+
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
   }
 
   caricaMappa() {
@@ -1863,7 +1946,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   vaiAlRapportino() {
     this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
   }
-
 
   logout() {
     this.dialog.open(AlertLogoutComponent);
