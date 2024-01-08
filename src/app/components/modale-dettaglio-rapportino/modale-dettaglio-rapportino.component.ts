@@ -11,13 +11,14 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RapportinoService } from '../utente/rapportino.service';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import { ThemeService } from 'src/app/theme.service';
 import { MenuService } from '../menu.service';
 import { RichiesteService } from '../richieste/richieste.service';
+import { AuthService } from '../login/login-service';
 
 @Component({
   selector: 'app-modale-dettaglio-rapportino',
@@ -69,6 +70,8 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
   isHamburgerMenuOpen: boolean = false;
   selectedMenuItem: string | undefined;
   windowWidth: any;
+  tokenExpirationTime: any;
+  timer: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -81,7 +84,9 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
     private anagraficaDtoService: AnagraficaDtoService,
     private cdRef: ChangeDetectorRef,
     private menuService: MenuService,
-    private richiesteService: RichiesteService
+    private richiesteService: RichiesteService,
+    private authService: AuthService,
+
   ) {
     this.windowWidth = window.innerWidth;
 
@@ -134,17 +139,67 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    if (this.token) {
+      const tokenParts = this.token.split('.');
+      const tokenPayload = JSON.parse(atob(tokenParts[1]));
+      const currentTime = Date.now() / 1000;
+      this.tokenExpirationTime = Math.floor(tokenPayload.exp - currentTime);
+      this.timer = setInterval(() => {
+        this.tokenExpirationTime -= 1;
+        this.cdRef.detectChanges();
+
+        if (this.tokenExpirationTime === 0) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Attenzione:',
+              message: 'Sessione terminata; esegui il login.',
+            },
+          });
+
+          this.authService.logout().subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenProvvisorio');
+                sessionStorage.clear();
+                this.router.navigate(['/login']);
+                this.dialog.closeAll();
+              } else {
+                console.log(
+                  'Errore durante il logout:',
+                  response.status,
+                  response.body
+                );
+                this.handleLogoutError();
+              }
+            },
+            (error: HttpErrorResponse) => {
+              if (error.status === 403) {
+                console.log('Errore 403: Accesso negato');
+                this.handleLogoutError();
+              } else {
+                console.log('Errore durante il logout:', error.message);
+                this.handleLogoutError();
+              }
+            }
+          );
+        }
+      }, 1000);
+    }
+
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
-      console.log(
-        this.id,
-        this.nome,
-        this.cognome,
-        this.codiceFiscale,
-        this.mese,
-        this.anno
-      );
+      // console.log(
+      //   this.id,
+      //   this.nome,
+      //   this.cognome,
+      //   this.codiceFiscale,
+      //   this.mese,
+      //   this.anno
+      // );
 
       let body = {
         rapportinoDto: {
@@ -207,6 +262,27 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
       console.error('ERRORE DI AUTENTICAZIONE');
     }
   }
+
+  formatTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(
+      remainingSeconds
+    )}`;
+  }
+
+  pad(value: number): string {
+    return value.toString().padStart(2, '0');
+  }
+
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
+  }
+
 
   trackByFn(index: number, item: any): number {
     return index;

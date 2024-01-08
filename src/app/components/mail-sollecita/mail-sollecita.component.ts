@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 import { ListaRapportiniService } from '../lista-rapportini/lista-rapportini.service';
 import { ThemeService } from 'src/app/theme.service';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-mail-sollecita',
@@ -62,7 +63,15 @@ export class MailSollecitaComponent {
     console.log('BODY PER SEND MAIL:' + JSON.stringify(body));
     this.listaRapportiniService.mailSollecita(this.token, body).subscribe(
       (result: any) => {
-        console.log('Mail inviata correttamente:' + JSON.stringify(result));
+        // console.log('Mail inviata correttamente:' + JSON.stringify(result));
+
+        const dialogRef = this.dialog.open(AlertDialogComponent, {
+          data: {
+            image: '../../../../assets/images/logo.jpeg',
+            title: 'Mail inviata con successo:',
+            // message: (result as any).esito.target,
+          },
+        });
       },
       (error: any) => {
         console.error(
