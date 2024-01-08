@@ -351,8 +351,6 @@ export class ListaAnagraficaDtoComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.token) {
-      this.getUserLogged();
-      this.caricaAziendeClienti();
       const tokenParts = this.token.split('.');
       const tokenPayload = JSON.parse(atob(tokenParts[1]));
       const currentTime = Date.now() / 1000;
@@ -389,7 +387,7 @@ export class ListaAnagraficaDtoComponent implements OnInit {
             },
             (error: HttpErrorResponse) => {
               if (error.status === 403) {
-                // console.log('Errore 403: Accesso negato');
+                console.log('Errore 403: Accesso negato');
                 this.handleLogoutError();
               } else {
                 console.log('Errore durante il logout:', error.message);
@@ -401,7 +399,12 @@ export class ListaAnagraficaDtoComponent implements OnInit {
       }, 1000);
     }
 
-    //fine autenticazione
+    if (this.token != null) {
+      this.getUserLogged();
+      this.caricaAziendeClienti();
+    } else {
+      console.error('errore di autenticazione.');
+    }
 
     const commessaFormGroup = this.creaFormCommessa();
     this.commesse.push(commessaFormGroup);
@@ -1169,10 +1172,10 @@ export class ListaAnagraficaDtoComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.codiceFiscaleDettaglio =
-          response.anagraficaDto.anagrafica.codiceFiscale;
+        this.codiceFiscaleDettaglio = response.anagraficaDto.anagrafica.codiceFiscale;
         this.ruolo = response.anagraficaDto.ruolo.descrizione;
         this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
+        console.log(this.idAnagraficaLoggata);
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
