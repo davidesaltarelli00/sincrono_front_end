@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
@@ -11,7 +12,7 @@ import { AuthService } from '../../login/login-service';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ThemeService } from 'src/app/theme.service';
 import { ImageService } from '../../image.service';
 import { MenuService } from '../../menu.service';
@@ -94,6 +95,8 @@ export class ModificaRichiestaComponent implements OnInit, AfterViewInit {
   selectedMenuItem: string | undefined;
   windowWidth: any;
   orarioAttuale: Date = new Date();
+  tokenExpirationTime: any;
+  timer: any;
 
   constructor(
     private authService: AuthService,
@@ -106,7 +109,9 @@ export class ModificaRichiestaComponent implements OnInit, AfterViewInit {
     private imageService: ImageService,
     private menuService: MenuService,
     private activatedRouter: ActivatedRoute,
-    private richiesteService: RichiesteService
+    private richiesteService: RichiesteService,
+    private cdRef: ChangeDetectorRef
+
   ) {
     const oggi = new Date();
     const annoCorrente = oggi.getFullYear();
@@ -176,6 +181,56 @@ export class ModificaRichiestaComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+
+    if (this.token) {
+      const tokenParts = this.token.split('.');
+      const tokenPayload = JSON.parse(atob(tokenParts[1]));
+      const currentTime = Date.now() / 1000;
+      this.tokenExpirationTime = Math.floor(tokenPayload.exp - currentTime);
+      this.timer = setInterval(() => {
+        this.tokenExpirationTime -= 1;
+        this.cdRef.detectChanges();
+
+        if (this.tokenExpirationTime === 0) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Attenzione:',
+              message: 'Sessione terminata; esegui il login.',
+            },
+          });
+
+          this.authService.logout().subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenProvvisorio');
+                sessionStorage.clear();
+                this.router.navigate(['/login']);
+                this.dialog.closeAll();
+              } else {
+                console.log(
+                  'Errore durante il logout:',
+                  response.status,
+                  response.body
+                );
+                this.handleLogoutError();
+              }
+            },
+            (error: HttpErrorResponse) => {
+              if (error.status === 403) {
+                console.log('Errore 403: Accesso negato');
+                this.handleLogoutError();
+              } else {
+                console.log('Errore durante il logout:', error.message);
+                this.handleLogoutError();
+              }
+            }
+          );
+        }
+      }, 1000);
+    }
+
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
@@ -193,6 +248,26 @@ export class ModificaRichiestaComponent implements OnInit, AfterViewInit {
         },
       });
     }
+  }
+
+  formatTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(
+      remainingSeconds
+    )}`;
+  }
+
+  pad(value: number): string {
+    return value.toString().padStart(2, '0');
+  }
+
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
   }
 
   ngAfterViewInit() {

@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
@@ -8,7 +9,7 @@ import {
 import { AuthService } from '../login/login-service';
 import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ImageService } from '../image.service';
 import { MenuService } from '../menu.service';
@@ -100,6 +101,8 @@ export class RichiesteComponent implements OnInit {
   selectedMenuItem: string | undefined;
   windowWidth: any;
   idUtenteLoggato: any;
+  tokenExpirationTime: any;
+  timer: any;
 
   constructor(
     private authService: AuthService,
@@ -111,7 +114,9 @@ export class RichiesteComponent implements OnInit {
     private formBuilder: FormBuilder,
     private imageService: ImageService,
     private menuService: MenuService,
-    private richiesteService: RichiesteService
+    private richiesteService: RichiesteService,
+    private cdRef: ChangeDetectorRef
+
   ) {
     this.windowWidth = window.innerWidth;
 
@@ -185,6 +190,56 @@ export class RichiesteComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    if (this.token) {
+      const tokenParts = this.token.split('.');
+      const tokenPayload = JSON.parse(atob(tokenParts[1]));
+      const currentTime = Date.now() / 1000;
+      this.tokenExpirationTime = Math.floor(tokenPayload.exp - currentTime);
+      this.timer = setInterval(() => {
+        this.tokenExpirationTime -= 1;
+        this.cdRef.detectChanges();
+
+        if (this.tokenExpirationTime === 0) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Attenzione:',
+              message: 'Sessione terminata; esegui il login.',
+            },
+          });
+
+          this.authService.logout().subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenProvvisorio');
+                sessionStorage.clear();
+                this.router.navigate(['/login']);
+                this.dialog.closeAll();
+              } else {
+                console.log(
+                  'Errore durante il logout:',
+                  response.status,
+                  response.body
+                );
+                this.handleLogoutError();
+              }
+            },
+            (error: HttpErrorResponse) => {
+              if (error.status === 403) {
+                console.log('Errore 403: Accesso negato');
+                this.handleLogoutError();
+              } else {
+                console.log('Errore durante il logout:', error.message);
+                this.handleLogoutError();
+              }
+            }
+          );
+        }
+      }, 1000);
+    }
+
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
@@ -219,6 +274,27 @@ annoCorrente: any;
   giorniSelezionati: { [meseAnno: string]: GiornoSelezionato[] } = {};
 
 */
+
+
+formatTime(seconds: number): string {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+  return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(
+    remainingSeconds
+  )}`;
+}
+
+pad(value: number): string {
+  return value.toString().padStart(2, '0');
+}
+
+private handleLogoutError() {
+  sessionStorage.clear();
+  window.location.href = 'login';
+  localStorage.removeItem('token');
+  localStorage.removeItem('tokenProvvisorio');
+}
 
   aggiornaDataCorrente() {
     const dataCorrente = new Date();
