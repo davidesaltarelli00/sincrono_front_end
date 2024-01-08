@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { AnagraficaDtoService } from '../anagraficaDto-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -99,6 +99,8 @@ export class DettaglioAnagraficaDtoComponent {
   isHamburgerMenuOpen: boolean = false;
   selectedMenuItem: string | undefined;
   windowWidth: any;
+  tokenExpirationTime: any;
+  timer: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -115,7 +117,8 @@ export class DettaglioAnagraficaDtoComponent {
     private http: HttpClient,
     private imageService: ImageService,
     private menuService: MenuService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    private cdRef: ChangeDetectorRef
   ) {
     this.windowWidth = window.innerWidth;
 
@@ -153,8 +156,55 @@ export class DettaglioAnagraficaDtoComponent {
   }
 
   ngOnInit(): void {
-    if (this.token != null) {
-      this.getUserLogged();
+
+    if (this.token) {
+      const tokenParts = this.token.split('.');
+      const tokenPayload = JSON.parse(atob(tokenParts[1]));
+      const currentTime = Date.now() / 1000;
+      this.tokenExpirationTime = Math.floor(tokenPayload.exp - currentTime);
+      this.timer = setInterval(() => {
+        this.tokenExpirationTime -= 1;
+        this.cdRef.detectChanges();
+
+        if (this.tokenExpirationTime === 0) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Attenzione:',
+              message: 'Sessione terminata; esegui il login.',
+            },
+          });
+
+          this.authService.logout().subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenProvvisorio');
+                sessionStorage.clear();
+                this.router.navigate(['/login']);
+                this.dialog.closeAll();
+              } else {
+                console.log(
+                  'Errore durante il logout:',
+                  response.status,
+                  response.body
+                );
+                this.handleLogoutError();
+              }
+            },
+            (error: HttpErrorResponse) => {
+              if (error.status === 403) {
+                console.log('Errore 403: Accesso negato');
+                this.handleLogoutError();
+              } else {
+                console.log('Errore durante il logout:', error.message);
+                this.handleLogoutError();
+              }
+            }
+          );
+        }
+        else{
+          this.getUserLogged();
       this.anagraficaDtoService
         .detailAnagraficaDto(this.id, localStorage.getItem('token'))
         .subscribe((resp: any) => {
@@ -210,6 +260,8 @@ export class DettaglioAnagraficaDtoComponent {
         });
 
       this.uppercaseCodiceFiscale();
+        }
+      }, 1000);
     }
     if (this.token == null) {
       const dialogRef = this.dialog.open(AlertDialogComponent, {
@@ -247,6 +299,19 @@ export class DettaglioAnagraficaDtoComponent {
     window.location.href = 'login';
     localStorage.removeItem('token');
     localStorage.removeItem('tokenProvvisorio');
+  }
+
+  formatTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(
+      remainingSeconds
+    )}`;
+  }
+
+  pad(value: number): string {
+    return value.toString().padStart(2, '0');
   }
 
   addImage() {
