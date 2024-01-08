@@ -1,17 +1,28 @@
 import { OrganicoService } from '../organico-service';
 import { Router } from '@angular/router';
-import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import { AuthService } from '../../login/login-service';
 import { Chart } from 'chart.js';
 import * as XLSX from 'xlsx';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { MatDialog } from '@angular/material/dialog';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { AnagraficaDtoService } from '../../anagraficaDto/anagraficaDto-service';
 import { ImageService } from './../../image.service';
 import { MenuService } from './../../menu.service';
 import { ThemeService } from 'src/app/theme.service';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 @Component({
   selector: 'app-lista-organico',
   templateUrl: './lista-organico.component.html',
@@ -51,6 +62,8 @@ export class ListaOrganicoComponent implements OnInit, AfterViewInit {
   isHamburgerMenuOpen: boolean = false;
   selectedMenuItem: string | undefined;
   idAnagraficaLoggata: any;
+  tokenExpirationTime: any;
+  timer: any;
 
   constructor(
     private organicoService: OrganicoService,
@@ -62,7 +75,8 @@ export class ListaOrganicoComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private anagraficaDtoService: AnagraficaDtoService,
     private imageService: ImageService,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private cdRef: ChangeDetectorRef
   ) {
     this.userlogged = localStorage.getItem('userLogged');
     this.windowWidth = window.innerWidth;
@@ -108,6 +122,55 @@ export class ListaOrganicoComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    if (this.token) {
+      const tokenParts = this.token.split('.');
+      const tokenPayload = JSON.parse(atob(tokenParts[1]));
+      const currentTime = Date.now() / 1000;
+      this.tokenExpirationTime = Math.floor(tokenPayload.exp - currentTime);
+      this.timer = setInterval(() => {
+        this.tokenExpirationTime -= 1;
+        this.cdRef.detectChanges();
+
+        if (this.tokenExpirationTime === 0) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Attenzione:',
+              message: 'Sessione terminata; esegui il login.',
+            },
+          });
+
+          this.authService.logout().subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenProvvisorio');
+                sessionStorage.clear();
+                this.router.navigate(['/login']);
+                this.dialog.closeAll();
+              } else {
+                console.log(
+                  'Errore durante il logout:',
+                  response.status,
+                  response.body
+                );
+                this.handleLogoutError();
+              }
+            },
+            (error: HttpErrorResponse) => {
+              if (error.status === 403) {
+                console.log('Errore 403: Accesso negato');
+                this.handleLogoutError();
+              } else {
+                console.log('Errore durante il logout:', error.message);
+                this.handleLogoutError();
+              }
+            }
+          );
+        }
+      }, 1000);
+    }
+
     if (this.token != null) {
       this.getUserLogged();
     }
@@ -123,9 +186,29 @@ export class ListaOrganicoComponent implements OnInit, AfterViewInit {
     );
   }
 
+  formatTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(
+      remainingSeconds
+    )}`;
+  }
+
+  pad(value: number): string {
+    return value.toString().padStart(2, '0');
+  }
+
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
+  }
+
   ngAfterViewInit() {
     if (this.lista != null) {
-        this.createBarChart();
+      this.createBarChart();
     }
   }
 
