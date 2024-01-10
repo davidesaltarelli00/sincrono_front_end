@@ -17,6 +17,6 @@ export class RecuperoPasswordService {
     const body = {
       username: email,
     };
-    return this.http.post<any>(this.urlLogin + `recupero-password`, body);
+    return this.http.post<any>(this.urlProd + `recupero-password`, body);
   }
 }

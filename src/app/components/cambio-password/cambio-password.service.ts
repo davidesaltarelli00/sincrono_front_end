@@ -46,7 +46,7 @@ export class CambioPasswordService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.put(this.url + `modifica-utente`, body, {
+    return this.http.put(this.urlProd + `modifica-utente`, body, {
       headers,
     });
   }
