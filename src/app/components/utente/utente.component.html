@@ -280,6 +280,7 @@
                 <th>Periodo di riferimento</th>
                 <th>Giorni utili di lavoro</th>
                 <th *ngIf="ruolo==='DIPENDENTE'">Richieste</th>
+                <th>Ho lavorato un fine settimana</th>
               </tr>
             </thead>
             <tbody>
@@ -292,7 +293,13 @@
                 <td>{{giorniUtili}}</td>
                 <td *ngIf="ruolo==='DIPENDENTE'"> <button mat-mini-fab color="primary" [routerLink]="['/richieste']"> <i class="fa fa-envelope"></i>
                   </button> </td>
-              </tr>
+                  <td>
+                    <select id="lavoratoWeekend" [(ngModel)]="lavoratoWeekend" (change)="onChange()">
+                      <option value="no" selected>No</option>
+                      <option value="si">Si</option>
+                    </select>
+                  </td>
+                </tr>
             </tbody>
           </table>
         </div>
@@ -387,7 +394,7 @@
               </div>
               <br>
               <!--duplicazione-->
-              <!-- <div class="row" *ngIf="numeroCommessePresenti>1">
+              <div class="row" *ngIf="numeroCommessePresenti>1">
                 <div class="col-2"></div>
                 <div class="col-4">
                   <button style="width: 30px; height: 30px;"
@@ -401,7 +408,7 @@
                     (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"><i class="fa fa-trash"></i></button>
                 </div>
                 <div class="col-2"></div>
-              </div> -->
+              </div>
             </div>
             <!--PERMESSI-->
             <!-- <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] " >
