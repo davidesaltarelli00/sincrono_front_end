@@ -154,6 +154,7 @@ export class UtenteComponent implements OnInit {
   windowWidth: any;
   tokenExpirationTime: any;
   timer: any;
+  lavoratoWeekend: string = 'no';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -391,7 +392,6 @@ export class UtenteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     if (this.token) {
       const tokenParts = this.token.split('.');
       const tokenPayload = JSON.parse(atob(tokenParts[1]));
@@ -584,7 +584,6 @@ export class UtenteComponent implements OnInit {
       }
     }
   }
-
 
   onChangeFerie(event: any, i: number) {
     const target = event.target as HTMLInputElement;
@@ -845,11 +844,11 @@ export class UtenteComponent implements OnInit {
           this.calcolaTotaleFerie();
           this.calcolaTotaleMalattia();
           this.calcolaTotaleOrePermessi();
+          this.rimuoviWeekend();
           this.cdRef.detectChanges();
-          console.log(
-            'Risultato getRapportino:' + JSON.stringify(this.rapportinoDto)
-          );
-
+          // console.log(
+          //   'Risultato getRapportino:' + JSON.stringify(this.rapportinoDto)
+          // );
           if (this.note === null || this.note === '' || this.note === '') {
             console.log('non hai note.');
           } else {
@@ -869,6 +868,116 @@ export class UtenteComponent implements OnInit {
         console.error('ERRORE:' + JSON.stringify(error));
       }
     );
+  }
+
+  rimuoviWeekend(): void {
+    if (!this.rapportinoDto) {
+      console.error('I dati di rapportino non sono disponibili.');
+      return;
+    }
+    // Filtra i giorni che non sono sabato o domenica
+    const giorniLavorativi = this.rapportinoDto.filter(
+      (giorno) =>
+        giorno.nomeGiorno !== 'sabato' && giorno.nomeGiorno !== 'domenica'
+    );
+    this.rapportinoDto = giorniLavorativi;
+    console.log(
+      'Dati con weekend rimossi:',
+      JSON.stringify(this.rapportinoDto)
+    );
+  }
+
+  onChange() {
+    console.log('Valore selezionato:', this.lavoratoWeekend);
+    if (this.lavoratoWeekend === 'si') {
+      let body = {
+        rapportinoDto: {
+          anagrafica: {
+            codiceFiscale: this.codiceFiscale,
+          },
+          annoRequest: this.selectedAnno,
+          meseRequest: this.selectedMese,
+        },
+      };
+      console.log(JSON.stringify(body));
+      this.rapportinoService.getRapportino(this.token, body).subscribe(
+        (result: any) => {
+          if ((result as any).esito.code !== 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/danger.png',
+                title: 'Caricamento non riuscito:',
+                message: (result as any).esito.target,
+              },
+            });
+          } else {
+            this.esitoCorretto = true;
+            this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
+            this.duplicazioniGiornoDto =
+              result['rapportinoDto']['mese']['giorni'][
+                'duplicazioniGiornoDto'
+              ];
+            this.giorniUtili = result['rapportinoDto']['giorniUtili'];
+            this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
+            this.note = result['rapportinoDto']['note'];
+            this.noteDipendente = result['rapportinoDto']['noteDipendente'];
+            this.gestisciStraordinari(this.rapportinoDto);
+            this.gestisciPermessi(this.rapportinoDto);
+            setTimeout(() => {
+              this.checkRapportinoInviato();
+              console.log('ritardo 1');
+            }, 1000);
+            this.calcolaTotaleOreLavorate();
+            this.calcolaTotaleStraordinari();
+            this.calcolaTotaleFerie();
+            this.calcolaTotaleMalattia();
+            this.calcolaTotaleOrePermessi();
+            this.cdRef.detectChanges();
+            // console.log(
+            //   'Risultato getRapportino:' + JSON.stringify(this.rapportinoDto)
+            // );
+            if (this.note === null || this.note === '' || this.note === '') {
+              console.log('non hai note.');
+            } else {
+              console.log('Hai note: ' + JSON.stringify(this.note));
+              const dialogRef = this.dialog.open(AlertDialogComponent, {
+                data: {
+                  image: '../../../../assets/images/logo.jpeg',
+                  title: 'Attenzione, hai delle note:',
+                  message: this.note,
+                },
+                disableClose: true,
+              });
+            }
+          }
+        },
+        (error: string) => {
+          console.error('ERRORE:' + JSON.stringify(error));
+        }
+      );
+    }
+    if (this.lavoratoWeekend === 'no') {
+      this.getRapportino();
+    }
+  }
+
+  manipolaDatiRapportino(): void {
+    if (!this.rapportinoDto) {
+      console.error('I dati di rapportino non sono disponibili.');
+      return;
+    }
+
+    // Ordina i giorni della settimana
+    this.rapportinoDto.sort((a, b) => a.numeroGiorno - b.numeroGiorno);
+
+    // Manipola direttamente i dati e stampa il risultato in console
+    const datiManipolati = this.rapportinoDto.map((giorno) => ({
+      ...giorno,
+      isNewLine: giorno.nomeGiorno === 'domenica',
+    }));
+
+    // Stampa il risultato manipolato in console
+    console.log('Dati manipolati:', datiManipolati);
   }
 
   gestisciStraordinari(rapportinoDto: any[]) {
@@ -1769,8 +1878,10 @@ export class UtenteComponent implements OnInit {
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.idUtenteLoggato = response.anagraficaDto.anagrafica.id;
-        this.contrattoUser =response.anagraficaDto.contratto.tipoContratto.descrizione;
-        this.aziendaUser = response.anagraficaDto.contratto.tipoAzienda.descrizione;
+        this.contrattoUser =
+          response.anagraficaDto.contratto.tipoContratto.descrizione;
+        this.aziendaUser =
+          response.anagraficaDto.contratto.tipoAzienda.descrizione;
         this.elencoCommesse = response.anagraficaDto.commesse;
         this.numeroCommessePresenti = this.elencoCommesse.length;
         this.ruolo = response.anagraficaDto.ruolo.descrizione;

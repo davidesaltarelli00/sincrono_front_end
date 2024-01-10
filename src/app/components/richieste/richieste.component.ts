@@ -18,6 +18,7 @@ import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.componen
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ThemeService } from 'src/app/theme.service';
 import { RichiesteService } from './richieste.service';
+import { catchError, tap, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-richieste',
@@ -116,7 +117,6 @@ export class RichiesteComponent implements OnInit {
     private menuService: MenuService,
     private richiesteService: RichiesteService,
     private cdRef: ChangeDetectorRef
-
   ) {
     this.windowWidth = window.innerWidth;
 
@@ -190,7 +190,6 @@ export class RichiesteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     if (this.token) {
       const tokenParts = this.token.split('.');
       const tokenPayload = JSON.parse(atob(tokenParts[1]));
@@ -275,26 +274,25 @@ annoCorrente: any;
 
 */
 
+  formatTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(
+      remainingSeconds
+    )}`;
+  }
 
-formatTime(seconds: number): string {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const remainingSeconds = seconds % 60;
-  return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(
-    remainingSeconds
-  )}`;
-}
+  pad(value: number): string {
+    return value.toString().padStart(2, '0');
+  }
 
-pad(value: number): string {
-  return value.toString().padStart(2, '0');
-}
-
-private handleLogoutError() {
-  sessionStorage.clear();
-  window.location.href = 'login';
-  localStorage.removeItem('token');
-  localStorage.removeItem('tokenProvvisorio');
-}
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
+  }
 
   aggiornaDataCorrente() {
     const dataCorrente = new Date();
@@ -484,25 +482,33 @@ private handleLogoutError() {
 
     this.richiesteService
       .inviaRichiesta(this.token, body)
-      .subscribe((result: any) => {
-        if ((result as any).esito.code !== 200) {
+      .pipe(
+        tap((result: any) => {
+          if (result && result.esito && result.esito.code !== 200) {
+            throw new Error(result.esito.target);
+          }
+        }),
+        catchError((error) => {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
               image: '../../../../assets/images/logo.jpeg',
-              title: 'Invio non riuscito:',
-              message: (result as any).esito.target,
+              title: "Errore durante l'invio:",
+              message: error.message || 'Si è verificato un errore imprevisto.',
             },
           });
-          // location.reload();
-        } else {
-          const dialogRef = this.dialog.open(AlertDialogComponent, {
-            data: {
-              image: '../../../../assets/images/logo.jpeg',
-              title: 'Invio effettuato',
-            },
-          });
-          location.reload();
-        }
+
+          // Ritorna un observable che emette un errore
+          return throwError(error);
+        })
+      )
+      .subscribe(() => {
+        const dialogRef = this.dialog.open(AlertDialogComponent, {
+          data: {
+            image: '../../../../assets/images/logo.jpeg',
+            title: 'Invio effettuato',
+          },
+        });
+        location.reload();
       });
   }
 
@@ -559,27 +565,28 @@ private handleLogoutError() {
         codiceFiscale: this.codiceFiscaleDettaglio,
       },
     };
-    // console.log('BODY PER LISTA RICHIESTE DIPENDENTE: ' + JSON.stringify(body));
+
     this.richiesteService
       .getAllRichiesteDipendente(this.token, body)
-      .subscribe((result: any) => {
-        if ((result as any).esito.code != 200) {
+      .pipe(
+        catchError((error) => {
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             data: {
               image: '../../../../assets/images/danger.png',
               title: 'Attenzione:',
               message:
-                'Si é verificato un problema durante il caricamento della lista: ' +
-                (result as any).esito.target,
+                'Si è verificato un problema durante il caricamento della lista: ' +
+                error.target,
             },
             disableClose: true,
           });
-        } else {
+
+          return throwError(error);
+        })
+      )
+      .subscribe((result: any) => {
+        if (result && result.esito && result.esito.code === 200) {
           this.elencoRichiesteDipendente = result['list'];
-          // console.log(
-          //   'la ricerca ha prodotto i seguenti risultati: ' +
-          //     JSON.stringify(this.elencoRichiesteDipendente)
-          // );
         }
       });
   }
@@ -587,7 +594,6 @@ private handleLogoutError() {
   vaiAlRapportino() {
     this.router.navigate(['/utente/' + this.idUtenteLoggato]);
   }
-
 
   //paginazione
   getCurrentPageItemsFerie(): any[] {
@@ -702,7 +708,7 @@ private handleLogoutError() {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-        this.idUtenteLoggato=response.anagraficaDto.anagrafica.id;
+        this.idUtenteLoggato = response.anagraficaDto.anagrafica.id;
         this.ruolo = response.anagraficaDto.ruolo.nome;
         this.codiceFiscaleDettaglio =
           response.anagraficaDto.anagrafica.codiceFiscale;
