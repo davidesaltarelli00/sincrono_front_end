@@ -198,10 +198,14 @@
         <br>
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1 *ngIf="elencoCommesse.length>0" >Modifica commesse di {{data?.anagrafica?.nome}} {{data?.anagrafica?.cognome}} <i class="fa fa-user"></i>
-            <i class="fa fa-pencil"></i> </h1>
-          <h1 *ngIf="elencoCommesse.length==0" >Aggiungi commesse a {{data?.anagrafica?.nome}} {{data?.anagrafica?.cognome}} <i class="fa fa-user"></i>
-            <i class="fa fa-plus"></i> </h1>
+          <h1 *ngIf="elencoCommesse.length>0">Modifica commesse di {{data?.anagrafica?.nome}}
+            {{data?.anagrafica?.cognome}} <i class="fa fa-user"></i>
+            <i class="fa fa-pencil"></i>
+          </h1>
+          <h1 *ngIf="elencoCommesse.length==0">Aggiungi commesse a {{data?.anagrafica?.nome}}
+            {{data?.anagrafica?.cognome}} <i class="fa fa-user"></i>
+            <i class="fa fa-plus"></i>
+          </h1>
         </mat-card>
       </div>
     </div>
@@ -350,14 +354,14 @@
                             </div>
                             <br>
                             <div class="row">
-                              <div class="col-12">
-                                <button class="btn btn-danger" (click)="rimuoviCommessa(i)"
-                                  matTooltip="Rimuovi Commessa {{i+1}}">Rimuovi Commessa <i class="fa fa-trash"></i>
+                              <div class="col-12 text-center">
+                                <button *ngIf="!commessa.get('id')?.value" mat-mini-fab color="warn" (click)="rimuoviCommessa(i)"
+                                  matTooltip="Rimuovi Commessa {{i+1}}"><i class="fa fa-trash"></i>
                                 </button>
                                 &nbsp;
-                                <button class="btn btn-success" matTooltip="Storicizza Commessa"
+                                <button *ngIf="commessa.get('id')?.value" mat-mini-fab color="accent" matTooltip="Storicizza Commessa {{i+1}}"
                                   (click)="storicizza(i)">
-                                  Storicizza Commessa <i class="fa fa-file"></i>
+                                  <i class="fa fa-archive"></i>
                                 </button>
                               </div>
                             </div>
