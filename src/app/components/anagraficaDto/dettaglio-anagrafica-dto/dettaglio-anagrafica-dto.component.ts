@@ -231,32 +231,42 @@ export class DettaglioAnagraficaDtoComponent {
                   'dd-MM-yyyy'
                 );
             }
-            const dialogRef = this.dialog.open(AlertDialogComponent, {
-              data: {
-                image: '../../../../assets/images/danger.png',
-                title: 'Attenzione:',
-                message:
-                  'Dal ' +
-                  (resp as any)['anagraficaDto']['contratto'][
-                    'dataFineRapporto'
-                  ] +
-                  ' ' +
-                  (resp as any)['anagraficaDto']['anagrafica']['nome'] +
-                  ' ' +
-                  (resp as any)['anagraficaDto']['anagrafica']['cognome'] +
-                  ' non lavora più qui.' +
-                  ' Causa: ' +
-                  (resp as any)['anagraficaDto']['contratto'][
-                    'tipoCausaFineRapporto'
-                  ]['descrizione'] +
-                  ' Motivazione: ' +
-                  (resp as any)['anagraficaDto']['contratto'][
-                    'tipoCausaFineContratto'
-                  ]['descrizione'],
-              },
-              disableClose: true,
-            });
+            // const dialogRef = this.dialog.open(AlertDialogComponent, {
+            //   data: {
+            //     image: '../../../../assets/images/danger.png',
+            //     title: 'Attenzione:',
+            //     message:
+            //       'Dal ' +
+            //       (resp as any)['anagraficaDto']['contratto'][
+            //         'dataFineRapporto'
+            //       ] +
+            //       ' ' +
+            //       (resp as any)['anagraficaDto']['anagrafica']['nome'] +
+            //       ' ' +
+            //       (resp as any)['anagraficaDto']['anagrafica']['cognome'] +
+            //       ' non lavora più qui.' +
+            //       ' Causa: ' +
+            //       (resp as any)['anagraficaDto']['contratto'][
+            //         'tipoCausaFineRapporto'
+            //       ]['descrizione'] +
+            //       ' Motivazione: ' +
+            //       (resp as any)['anagraficaDto']['contratto'][
+            //         'tipoCausaFineContratto'
+            //       ]['descrizione'],
+            //   },
+            //   disableClose: true,
+            // });
           }
+        },
+
+        (error:any)=>{
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Attenzione:',
+              message: 'Errore durante il caricamento della anagrafica.',
+            },
+          });
         });
 
       this.uppercaseCodiceFiscale();
