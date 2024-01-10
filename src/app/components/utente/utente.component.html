@@ -280,7 +280,7 @@
                 <th>Periodo di riferimento</th>
                 <th>Giorni utili di lavoro</th>
                 <th *ngIf="ruolo==='DIPENDENTE'">Richieste</th>
-                <th>Ho lavorato un fine settimana</th>
+                <th >Ho lavorato un weekend</th>
               </tr>
             </thead>
             <tbody>
@@ -297,7 +297,8 @@
                     <select id="lavoratoWeekend" [(ngModel)]="lavoratoWeekend" (change)="onChange()">
                       <option value="no" selected>No</option>
                       <option value="si">Si</option>
-                    </select>
+                    </select> &nbsp;
+                    <i class="fa fa-info-circle" matTooltip="Le ore lavorate inserite verranno conteggiate come straordinari." *ngIf="lavoratoWeekend==='si'" ></i>
                   </td>
                 </tr>
             </tbody>
