@@ -433,7 +433,7 @@
                   <label for="onSite-{{i}}">On site</label><br>
                   <input (change)="onChangePresenza($event)"
                     [(ngModel)]="giorno.checkOnSite"
-                    [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkSmartworking"
+                    [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkSmartWorking"
                     class="form-check-input" type="checkbox" id="onSite-{{i}}">
                 </div>
               </div>
