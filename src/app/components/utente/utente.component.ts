@@ -1224,9 +1224,9 @@ export class UtenteComponent implements OnInit {
           meseRequest: this.selectedMese,
         },
       };
-      // console.log(
-      //   'invia al dipendente le seguenti note: ' + JSON.stringify(body)
-      // );
+      console.log(
+        'invia al dipendente le seguenti note: ' + JSON.stringify(body)
+      );
       this.rapportinoService.aggiungiNoteDipendente(this.token, body).subscribe(
         (result: any) => {
           if ((result as any).esito.code !== 200) {
