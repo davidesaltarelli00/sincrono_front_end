@@ -135,7 +135,7 @@
   <div class="row">
     <div class="col-12">
       <legend>Richieste accettate</legend>
-      <table class="table table-striped" *ngIf="elencoRichiesteAccettate.length>0" >
+      <table class="table table-striped" *ngIf="elencoRichiesteAccettate && elencoRichiesteAccettate.length > 0" >
         <thead>
           <tr>
             <!-- <th>ID</th> -->
@@ -171,7 +171,7 @@
           </tr>
         </tbody>
       </table>
-      <mat-card *ngIf="elencoRichiesteAccettate.length==0" >
+      <mat-card  *ngIf="!elencoRichiesteAccettate ">
         <mat-card-content>
           <p> <i class="fa fa-info-circle" ></i> Non ci sono richieste accettate al momento.</p>
         </mat-card-content>
@@ -196,13 +196,13 @@
           <div class="col-8">
             <div class="form-group">
               <label for="cliente-{{ i }}{{j}}">Cliente</label>
-              <input type="text" id="cliente-{{ i }}{{j}}" class="form-control" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" disabled>
+              <input type="text" id="cliente-{{ i }}{{j}}" class="form-control" name="cliente-{{ i }}{{j}}" [(ngModel)]="duplicazione.cliente" readonly>
             </div>
           </div>
           <div class="col-4">
             <div class="form-group">
               <label for="ore-ordinarie-{{ i }}{{j}}">Ore</label>
-                <input disabled
+                <input readonly
                 type="text" class="form-control"
                 id="ore-ordinarie-{{ i }}{{j}}" name="ore-ordinarie-{{ i }}{{j}}"
                 [(ngModel)]="duplicazione.oreOrdinarie">
@@ -215,7 +215,7 @@
           <div class="col-4">
            <div class="form-group">
             <label for="fascia1-{{ i }}{{j}}">18-20</label>
-            <input disabled
+            <input readonly
             type="text" class="form-control"
             id="fascia1-{{ i }}{{j}}" name="fascia1-{{ i }}{{j}}"
             [(ngModel)]="duplicazione.fascia1">
@@ -224,7 +224,7 @@
           <div class="col-4" >
            <div class="form-group">
             <label for="fascia2-{{ i }}{{j}}">20-22</label>
-            <input disabled
+            <input readonly
             type="text" class="form-control"
             id="fascia2-{{ i }}" name="fascia2-{{ i }}{{j}}"
             [(ngModel)]="duplicazione.fascia2">
@@ -233,7 +233,7 @@
           <div class="col-4"  >
             <div class="form-group">
               <label for="fascia3-{{ i }}{{j}}">22-09</label>
-              <input disabled
+              <input readonly
               type="text" class="form-control"
               id="fascia3-{{ i }}{{j}}" name="fascia3-{{ i }}{{j}}"
               [(ngModel)]="duplicazione.fascia3">
@@ -247,7 +247,7 @@
       <div class="col-4" >
        <div class="form-group">
         <label for="permessi-{{ i }}">Permessi</label>
-        <input disabled
+        <input readonly
         type="text" class="form-control"
         id="permessi-{{ i }}" name="permessi-{{ i }}"
         [(ngModel)]="giorno.permessi">
@@ -256,7 +256,7 @@
       <div class="col-4" >
         <div class="form-group">
          <label for="permessiRole-{{ i }}">Role</label>
-         <input disabled
+         <input readonly
          type="text" class="form-control form-control-sm"
          step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
          id="permessiRole-{{ i }}" name="permessiRole-{{ i }}"
@@ -266,7 +266,7 @@
        <div class="col-4"  >
         <div class="form-group">
          <label for="permessiExfestivita-{{ i }}">Festivitá</label>
-         <input disabled
+         <input readonly
          type="text" class="form-control form-control-sm"
          step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
          id="permessiExfestivita-{{ i }}" name="permessiExfestivita-{{ i }}"
@@ -279,13 +279,13 @@
       <div class="col-4" >
         <div class="form-group">
          <label for="ferie-{{ i }}">Ferie</label> <br>
-         <input disabled class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
+         <input readonly class="form-check-input" id="ferie-{{ i }}" name="ferie-{{ i }}" [(ngModel)]="giorno.ferie">
         </div>
        </div>
        <div class="col-4">
        <div class="form-group">
          <label for="malattie-{{i}}">Malattia</label><br>
-         <input disabled class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
+         <input readonly class="form-check-input" id="malattie-{{ i }}" name="malattie-{{ i }}" [(ngModel)]="giorno.malattie">
        </div>
        </div>
     </div>
@@ -293,14 +293,14 @@
       <div class="col-4">
         <div class="form-group">
           <label for="onSite-{{i}}">On site</label><br>
-            <input  [checked]="giorno.checkOnSite" disabled
+            <input  [checked]="giorno.checkOnSite" readonly
             class="form-check-input" type="checkbox" id="onSite-{{i}}">
         </div>
       </div>
       <div class="col-4" >
         <div class="form-group">
           <label for="smartworking-{{i}}">Smartworking</label><br>
-            <input [checked]="giorno.checkSmartWorking" disabled
+            <input [checked]="giorno.checkSmartWorking" readonly
             class="form-check-input" type="checkbox" id="smartworking-{{i}}">
         </div>
       </div>
@@ -309,7 +309,7 @@
       <div class="col-12">
       <div class="form-group">
         <label for="note-{{ i }}">Note  </label>
-        <input disabled type="text" class="form-control" id="note-{{ i }}"  name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
+        <input readonly type="text" class="form-control" id="note-{{ i }}"  name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
       </div>
       </div>
     </div>
@@ -323,7 +323,7 @@
       <div class="form-group">
         <label for="note">Note:</label>
         <textarea name="note" class="form-control" placeholder="Inserisci eventuali note" [(ngModel)]="note" id="note" cols="15" rows="5"  ></textarea> <br>
-        <button class="btn btn-warning" (click)="aggiungiNote()" >Rispedisci al dipendente<i class="fa fa-save" ></i> </button> &nbsp; <!--[disabled]="note==null"-->
+        <button class="btn btn-warning" (click)="aggiungiNote()" >Rispedisci al dipendente<i class="fa fa-save" ></i> </button> &nbsp;
         <button class="btn btn-info" (click)="resetNote()" >Cancella note<i class="fa fa-undo" ></i> </button> <br>
       </div>
     </div>

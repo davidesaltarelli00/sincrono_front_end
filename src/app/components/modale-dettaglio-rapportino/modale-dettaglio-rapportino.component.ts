@@ -35,6 +35,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
   token = localStorage.getItem('token');
   rapportinoDto: any[] = [];
   note: any;
+  noteDipendente:any;
   giorniUtili: any;
   giorniLavorati: any;
   @ViewChild('editableTable') editableTable!: ElementRef;
@@ -139,7 +140,6 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
   }
 
   ngOnInit() {
-
     if (this.token) {
       const tokenParts = this.token.split('.');
       const tokenPayload = JSON.parse(atob(tokenParts[1]));
@@ -191,15 +191,6 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
 
     if (this.token != null) {
       this.getUserLogged();
-      this.getUserRole();
-      // console.log(
-      //   this.id,
-      //   this.nome,
-      //   this.cognome,
-      //   this.codiceFiscale,
-      //   this.mese,
-      //   this.anno
-      // );
 
       let body = {
         rapportinoDto: {
@@ -226,21 +217,16 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
           } else {
             this.esitoCorretto = true;
             this.rapportinoDto = result['rapportinoDto']['mese']['giorni'];
-            this.duplicazioniGiornoDto =
-              result['rapportinoDto']['mese']['giorni'][
-                'duplicazioniGiornoDto'
-              ];
+            this.duplicazioniGiornoDto = result['rapportinoDto']['mese']['giorni'][ 'duplicazioniGiornoDto' ];
             this.giorniUtili = result['rapportinoDto']['giorniUtili'];
             this.giorniLavorati = result['rapportinoDto']['giorniLavorati'];
             this.note = result['rapportinoDto']['note'];
-            // console.log(
-            //   'Dati get rapportino:' + JSON.stringify(this.rapportinoDto)
-            // );
-            // if (this.note != null) {
+            this.noteDipendente = result['rapportinoDto']['noteDipendente'];
+            // if (this.noteDipendente != null || this.noteDipendente!="") {
             //   const dialogRef = this.dialog.open(AlertDialogComponent, {
             //     data: {
             //       image: '../../../../assets/images/logo.jpeg',
-            //       title: 'Attenzione:',
+            //       title: 'Attenzione,' + this.nome+ ''+ this.cognome +' ti ha inviato una nota:',
             //       message: this.note,
             //     },
             //   });
@@ -291,6 +277,7 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
   resetNote() {
     this.note = null;
   }
+
 
   aggiungiNote() {
     let body = {
@@ -489,6 +476,21 @@ export class ModaleDettaglioRapportinoComponent implements OnInit {
         this.idUtenteLoggato = response.anagraficaDto.anagrafica.id;
         this.ruolo = response.anagraficaDto.ruolo.nome;
         console.log('ID USER LOGGATO: ' + JSON.stringify(this.idUtenteLoggato));
+        this.userRoleNav = response.anagraficaDto.ruolo.nome;
+        this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        if (
+          (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
+        ) {
+          this.idNav = 1;
+          this.generateMenuByUserRole();
+        }
+        if (
+          (this.userRoleNav =
+            response.anagraficaDto.ruolo.nome === 'DIPENDENTE')
+        ) {
+          this.idNav = 2;
+          this.generateMenuByUserRole();
+        }
 
         if (this.idUtenteLoggato != this.id) {
           this.dettaglioSbagliato = true;
