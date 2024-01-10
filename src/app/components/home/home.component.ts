@@ -216,6 +216,7 @@ export class HomeComponent implements OnInit {
   caricaAziendeClienti() {
     this.contrattoService.getAllAziendaCliente(this.token).subscribe(
       (result: any) => {
+
         console.log('NOMI AZIENDE CARICATI:' + JSON.stringify(result));
         this.aziendeClienti = (result as any)['list'];
       },
@@ -326,10 +327,41 @@ export class HomeComponent implements OnInit {
     this.dialog.open(AlertLogoutComponent);
   }
 
+  //{"esito":{"code":-1,"target":"ERRORE_GENERICO","args":null}}
   getUserLogged() {
     this.profileBoxService.getData().subscribe(
       (response: any) => {
         localStorage.getItem('token');
+        if((response as any).esito.code === -1 &&  (response as any).esito.target === 'ERRORE_GENERICO' ){
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              title: 'Attenzione:',
+              message: 'Errore di autenticazione; effettua il login.',
+            },
+          });
+          this.authService.logout().subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('isDarkMode');
+                localStorage.removeItem('DatiSbagliati');
+                localStorage.removeItem('tokenProvvisorio');
+                sessionStorage.clear();
+                this.router.navigate(['/login']);
+                this.dialog.closeAll();
+              } else {
+                this.handleLogoutError();
+              }
+            },
+            (error: HttpErrorResponse) => {
+              if (error.status === 403) {
+                this.handleLogoutError();
+              } else {
+                this.handleLogoutError();
+              }
+            }
+          );
+        }
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
         this.codiceFiscaleDettaglio =
