@@ -459,7 +459,7 @@ export class AnagraficaDtoService {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(
-      this.url+`tipo-contratto-map`,
+      this.urlProd+`tipo-contratto-map`,
       { headers: headers }
     );
   }
@@ -494,7 +494,7 @@ export class AnagraficaDtoService {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(this.url+`tipo-ccnl-map`, {
+    return this.http.get<any>(this.urlProd+`tipo-ccnl-map`, {
       headers: headers,
     }); //tipo-ccnl
   }
