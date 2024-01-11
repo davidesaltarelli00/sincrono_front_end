@@ -42,3 +42,29 @@
 .dark-mode #text-danger{
   color: rgb(112, 29, 29);
 }
+
+
+//responsive
+/* Stili di base */
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Layout per schermi più piccoli */
+@media (max-width: 767px) {
+  .col-4 {
+    display: none;
+  }
+
+  .col-2,
+  .col-4,
+  .col-6 {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+}

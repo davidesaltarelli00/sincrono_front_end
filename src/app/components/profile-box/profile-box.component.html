@@ -469,7 +469,6 @@
                         <td>{{ commessa.clienteFinale }}</td>
                         <td>{{ commessa.titoloPosizione }}</td>
                         <td>{{ commessa.distacco === true ? 'Si' : (commessa.distacco === false ? 'No' : 'Dato non inserito') | titlecase }}</td>
-                        <!--<td>{{ data?.anagrafica?.dataDiNascita ? (data?.anagrafica?.dataDiNascita | date : "dd/MM/yyyy") : 'Dato non inserito' }}</td>-->
                         <td>{{ commessa.dataInizio ? (commessa.dataInizio | date: 'dd/MM/yyyy') : 'Dato non inserito' }}</td>
                         <td >{{ commessa.dataFine ? (commessa.dataFine | date: 'dd/MM/yyyy') : 'Dato non inserito' }}</td>
                         <td>{{ commessa.tariffaGiornaliera ? commessa.tariffaGiornaliera: 'Dato non inserito' }} <i [hidden]="!commessa.tariffaGiornaliera" class="fa-solid fa-euro-sign"></i></td>
@@ -484,11 +483,6 @@
                           <button [hidden]="ruolo==='DIPENDENTE'" class="btn btn-warning" (click)="modificaCommessa()" matTooltip="Modifica commessa">
                             <i class="fa fa-pencil"></i>
                           </button>
-                        </td>
-                        <td>
-                          <!-- <button class="btn btn-danger" (click)="rimuoviCommessa(i)">
-                            <i class="fa fa-trash"></i>
-                          </button> -->
                         </td>
                       </tr>
                     </tbody>
