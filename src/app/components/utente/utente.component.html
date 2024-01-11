@@ -280,7 +280,7 @@
                 <th>Periodo di riferimento</th>
                 <th>Giorni utili di lavoro</th>
                 <th *ngIf="ruolo==='DIPENDENTE'">Richieste</th>
-                <th >Ho lavorato un weekend</th>
+                <!-- <th >Ho lavorato un weekend</th> -->
               </tr>
             </thead>
             <tbody>
@@ -293,13 +293,13 @@
                 <td>{{giorniUtili}}</td>
                 <td *ngIf="ruolo==='DIPENDENTE'"> <button mat-mini-fab color="primary" [routerLink]="['/richieste']"> <i class="fa fa-envelope"></i>
                   </button> </td>
-                  <td>
+                  <!-- <td>
                     <select id="lavoratoWeekend" [(ngModel)]="lavoratoWeekend" (change)="onChange()">
                       <option value="no" selected>No</option>
                       <option value="si">Si</option>
                     </select> &nbsp;
                     <i class="fa fa-info-circle" matTooltip="Le ore lavorate inserite verranno conteggiate come straordinari." *ngIf="lavoratoWeekend==='si'" ></i>
-                  </td>
+                  </td> -->
                 </tr>
             </tbody>
           </table>
@@ -310,10 +310,10 @@
         <div class="col-sm-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="font-size: 12px;">
           <mat-card [ngClass]="getBackgroundClasses(giorno)"
           [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') && !giorno.festivitaNazionale ? 'aliceblue' : (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') && giorno.festivitaNazionale ? 'rgb(238, 64, 64)' : (!giorno.checkFestivita ? (giorno.festivitaNazionale ? 'rgb(238, 64, 64)' : 'rgb(214, 234, 251)') : 'orange')}">
-            <label style="text-align: center;"> <button (click)="setEight()" style="width: 30px; height: 30px;" mat-mini-fab color="primary">{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }} </label>
+            <label style="text-align: center;"> <button (click)="setEight(giorno)" style="width: 30px; height: 30px;" mat-mini-fab color="primary">{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }} </label>
             <div class="container-card" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
               <div class="row">
-                <div class="col-8" *ngIf="numeroCommessePresenti>1" >
+                <div class="col-7" *ngIf="numeroCommessePresenti>1" >
                     <label for="cliente-{{ i }}{{j}}">Cliente</label>
                     <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
                       [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}"
@@ -327,25 +327,24 @@
                     <div *ngIf="!duplicazione.cliente && duplicazione.giorno" class="error-message">Campo obbligatorio
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-2">
                     <label for="ore-ordinarie-{{ i }}{{j}}" matTooltipPosition="above"
                       matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Ore</label>
-                    <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text"
+                    <!-- <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text"
                       class="form-control form-control-sm" step="0.5" min="0" max="8" id="ore-ordinarie-{{ i }}{{j}}"
-                      name="ore-ordinarie-{{ i }}{{j}}" [(ngModel)]="duplicazione.oreOrdinarie">
+                      name="ore-ordinarie-{{ i }}{{j}}" [(ngModel)]="duplicazione.oreOrdinarie"> -->
+                      <p [hidden]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"  id="ore-ordinarie-{{ i }}{{j}}"> {{duplicazione.oreOrdinarie ? duplicazione.oreOrdinarie : '``'}}</p>
+                </div>
+                <div class="col-3">
+                  <label for="extra--{{i}}{{j}}">Extra</label>
+                  <button mat-mini-fab color="primary"  style="width: 30px; height: 30px;"
+                  (click)=" mostraNascondiStraordinari(i,j)"
+                  [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Extra time"> <i
+                    class="fa fa-clock"></i> </button>
                 </div>
               </div>
-              <br>
-              <div class="row">
-
-                <div class="col-4">
-                <!-- <label for="extratime">Extra time</label> <br> -->
-                <button mat-mini-fab color="primary"  style="width: 30px; height: 30px;"
-                (click)=" mostraNascondiStraordinari(i,j)"
-                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Extra time"> <i
-                  class="fa fa-clock"></i> </button>
-                </div>
-
+             <!--duplicazione-->
+              <!-- <div class="row">
                 <div class="col-4" *ngIf="numeroCommessePresenti>1">
                   <button style="width: 30px; height: 30px;"
                     [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie || aziendeClienti.length<1 "
@@ -357,7 +356,7 @@
                     [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie " mat-mini-fab color="warn"
                     (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"><i class="fa fa-trash"></i></button>
                 </div>
-              </div>
+              </div> -->
               <!--straordinari-->
               <div class="row" *ngIf="checkstraordinari || showStraordinari[i]?.[j]">
                 <div class="col-4">
@@ -401,7 +400,7 @@
             <div class="row">
               <div class="col-4">
                 <!-- <div class="form-group"> -->
-                  <label for="onSite-{{i}}">Onsite</label>
+                  <label for="onSite-{{i}}">On site</label>
                   <input (change)="onChangePresenza($event)"
                     [(ngModel)]="giorno.checkOnSite"
                     [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkSmartWorking"
@@ -410,20 +409,18 @@
               </div>
               <div class="col-4">
                 <!-- <div class="form-group"> -->
-                  <label for="smartworking-{{i}}">Smart</label>
+                  <label for="smartworking-{{i}}">Smartworking</label>
                   <input (change)="onChangeSmartworking($event)"
                     [(ngModel)]="giorno.checkSmartWorking"
                     [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite"
                     class="form-check-input" type="checkbox" id="smartworking-{{i}}">
                 <!-- </div> -->
               </div>
-              <div class="col-4">
-                <!-- <div class="form-group"> -->
+              <div class="col-4" style="text-align: end;">
                   <!-- <label for="assenze">Assenza</label> -->
                   <button style="width: 30px; height: 30px;" (click)="mostraNascondiPermessi(i)" mat-mini-fab
                     color="primary" [disabled]="risultatoCheckFreeze  " matTooltip="Assenze"> <i class="fa fa-ban"></i>
                   </button>
-                <!-- </div> -->
               </div>
             </div>
             <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] " >
