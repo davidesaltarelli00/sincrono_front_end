@@ -438,20 +438,58 @@
               <div class="col-6">
                 <!-- <div class="form-group"> -->
                   <label for="permessiRole-{{ i }}"
-                    matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Role</label>
-                  <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text" (change)="onChangePermHours(giorno)"
+                    matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Rol</label>
+                  <!-- <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text" (change)="onChangePermHours(giorno)"
                     class="form-control form-control-sm" step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
-                    id="permessiRole-{{ i }}" name="permessiRole-{{ i }}" [(ngModel)]="giorno.permessiRole">
+                    id="permessiRole-{{ i }}" name="permessiRole-{{ i }}" [(ngModel)]="giorno.permessiRole"> -->
+                    <select (change)="onChangePermHours(giorno)" name="permessiRole-{{ i }}" id="permessiRole-{{ i }}" class="form-select form-select-sm" [(ngModel)]="giorno.permessiRole">
+                      <option value="" selected>Nessuna opzione</option>
+                      <option value="0.5">0.5</option>
+                      <option value="1">1</option>
+                      <option value="1.5">1.5</option>
+                      <option value="2">2</option>
+                      <option value="2.5">2.5</option>
+                      <option value="3">3</option>
+                      <option value="3.5">3.5</option>
+                      <option value="4">4</option>
+                      <option value="4.5">4.5</option>
+                      <option value="5">5</option>
+                      <option value="5.5">5.5</option>
+                      <option value="6">6</option>
+                      <option value="6.5">6.5</option>
+                      <option value="7">7</option>
+                      <option value="7.5">7.5</option>
+                      <option value="8">8</option>
+                    </select>
                 <!-- </div> -->
               </div>
               <div class="col-6">
                 <!-- <div class="form-group"> -->
                   <label for="permessiExfestivita-{{ i }}"
                     matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Festivitá</label>
-                  <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text" (change)="onChangePermHours(giorno)"
+                  <!-- <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text" (change)="onChangePermHours(giorno)"
                     class="form-control form-control-sm" step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
                     id="permessiExfestivita-{{ i }}" name="permessiExfestivita-{{ i }}"
-                    [(ngModel)]="giorno.permessiExfestivita">
+                    [(ngModel)]="giorno.permessiExfestivita"> -->
+                    <select (change)="onChangePermHours(giorno)" name="permessiExfestivita-{{ i }}" id="permessiExfestivita-{{ i }}" class="form-select form-select-sm" [(ngModel)]="giorno.permessiExfestivita">
+                      <option value="" selected>Nessuna opzione</option>
+                      <option value="0.5">0.5</option>
+                      <option value="1">1</option>
+                      <option value="1.5">1.5</option>
+                      <option value="2">2</option>
+                      <option value="2.5">2.5</option>
+                      <option value="3">3</option>
+                      <option value="3.5">3.5</option>
+                      <option value="4">4</option>
+                      <option value="4.5">4.5</option>
+                      <option value="5">5</option>
+                      <option value="5.5">5.5</option>
+                      <option value="6">6</option>
+                      <option value="6.5">6.5</option>
+                      <option value="7">7</option>
+                      <option value="7.5">7.5</option>
+                      <option value="8">8</option>
+                    </select>
                 <!-- </div> -->
               </div>
              </div>
