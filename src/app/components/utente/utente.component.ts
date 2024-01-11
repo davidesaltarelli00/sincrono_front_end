@@ -870,6 +870,44 @@ export class UtenteComponent implements OnInit {
     );
   }
 
+  setEight() {
+    const giorni = this.rapportinoDto.map((giorno) => {
+      return {
+        duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
+          (duplicazione: any) => {
+            return {
+              cliente: duplicazione.cliente,
+              oreOrdinarie: duplicazione.oreOrdinarie,
+              fascia1: duplicazione.fascia1,
+              fascia2: duplicazione.fascia2,
+              fascia3: duplicazione.fascia3,
+            };
+          }
+        ),
+        ferie: giorno.ferie,
+        malattie: giorno.malattie,
+        permessi: giorno.permessi,
+        checkSmartWorking: giorno.checkSmartWorking,
+        checkOnSite: giorno.checkOnSite,
+        permessiRole: giorno.permessiRole,
+        permessiExfestivita: giorno.permessiExfestivita,
+        note: giorno.note,
+        numeroGiorno: giorno.numeroGiorno,
+        nomeGiorno: giorno.nomeGiorno,
+        festivitaNazionale: giorno.festivitaNazionale,
+        checkFestivita: giorno.checkFestivita,
+      };
+    });
+
+    for (const giorno of giorni) {
+      giorno.duplicazioniGiornoDto.forEach((duplicazione: any) => {
+        if (duplicazione.oreOrdinarie == null) {
+          duplicazione.oreOrdinarie = 8;
+        }
+      });
+    }
+  }
+
   rimuoviWeekend(): void {
     if (!this.rapportinoDto) {
       console.error('I dati di rapportino non sono disponibili.');
@@ -889,7 +927,7 @@ export class UtenteComponent implements OnInit {
 
   onChange() {
     console.log('Valore selezionato:', this.lavoratoWeekend);
-    if (this.lavoratoWeekend === 'si') {
+    if (this.lavoratoWeekend === 'si') { //faccio il get rapportino senza la rimozione dei weekend
       let body = {
         rapportinoDto: {
           anagrafica: {
@@ -933,9 +971,6 @@ export class UtenteComponent implements OnInit {
             this.calcolaTotaleMalattia();
             this.calcolaTotaleOrePermessi();
             this.cdRef.detectChanges();
-            // console.log(
-            //   'Risultato getRapportino:' + JSON.stringify(this.rapportinoDto)
-            // );
             if (this.note === null || this.note === '' || this.note === '') {
               console.log('non hai note.');
             } else {
@@ -956,7 +991,7 @@ export class UtenteComponent implements OnInit {
         }
       );
     }
-    if (this.lavoratoWeekend === 'no') {
+    if (this.lavoratoWeekend === 'no') { //faccio il get rapportino con la rimozione dei weekend
       this.getRapportino();
     }
   }
