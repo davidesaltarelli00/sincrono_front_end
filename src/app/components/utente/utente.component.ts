@@ -870,48 +870,26 @@ export class UtenteComponent implements OnInit {
     );
   }
 
-  // setEight() {
-  //   const giorni = this.rapportinoDto.map((giorno) => {
-  //     return {
-  //       duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
-  //         (duplicazione: any) => {
-  //           return {
-  //             cliente: duplicazione.cliente,
-  //             oreOrdinarie: duplicazione.oreOrdinarie,
-  //             fascia1: duplicazione.fascia1,
-  //             fascia2: duplicazione.fascia2,
-  //             fascia3: duplicazione.fascia3,
-  //           };
-  //         }
-  //       ),
-  //       ferie: giorno.ferie,
-  //       malattie: giorno.malattie,
-  //       permessi: giorno.permessi,
-  //       checkSmartWorking: giorno.checkSmartWorking,
-  //       checkOnSite: giorno.checkOnSite,
-  //       permessiRole: giorno.permessiRole,
-  //       permessiExfestivita: giorno.permessiExfestivita,
-  //       note: giorno.note,
-  //       numeroGiorno: giorno.numeroGiorno,
-  //       nomeGiorno: giorno.nomeGiorno,
-  //       festivitaNazionale: giorno.festivitaNazionale,
-  //       checkFestivita: giorno.checkFestivita,
-  //     };
-  //   });
-
-  //   for (const giorno of giorni) {
-  //     giorno.duplicazioniGiornoDto.forEach((duplicazione: any) => {
-  //       if (duplicazione.oreOrdinarie == null) {
-  //         duplicazione.oreOrdinarie = 8;
-  //       }
-  //     });
-  //   }
-  // }
+  toggleSetEight(giorno: any) {
+    if (giorno.duplicazioniGiornoDto.some((duplicazione: any) => duplicazione.oreOrdinarie === 8)) {
+      this.unsetEight(giorno);
+    } else {
+      this.setEight(giorno);
+    }
+  }
 
   setEight(giorno: any) {
-    giorno.duplicazioniGiornoDto.forEach((duplicazione: any) => {
-      if (duplicazione.oreOrdinarie == null) {
+    if (!giorno.ferie && !giorno.malattie) {
+      giorno.duplicazioniGiornoDto.forEach((duplicazione: any) => {
         duplicazione.oreOrdinarie = 8;
+      });
+    }
+  }
+
+  unsetEight(giorno: any) {
+    giorno.duplicazioniGiornoDto.forEach((duplicazione: any) => {
+      if (!giorno.ferie && !giorno.malattie) {
+        duplicazione.oreOrdinarie = null;
       }
     });
   }
@@ -1559,131 +1537,6 @@ export class UtenteComponent implements OnInit {
       );
   }
 
-  // salvaRigaRapportino(formValue: any) {
-  //   console.log(formValue.value);
-
-  //   const giorni = this.rapportinoDto.map((giorno) => {
-  //     return {
-  //       duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
-  //         (duplicazione: any) => {
-  //           return {
-  //             cliente: duplicazione.cliente,
-  //             oreOrdinarie: duplicazione.oreOrdinarie,
-  //             fascia1: duplicazione.fascia1,
-  //             fascia2: duplicazione.fascia2,
-  //             fascia3: duplicazione.fascia3,
-  //           };
-  //         }
-  //       ),
-  //       ferie: giorno.ferie,
-  //       malattie: giorno.malattie,
-  //       permessi: giorno.permessi,
-  //       checkSmartWorking: giorno.checkSmartWorking,
-  //       checkOnSite: giorno.checkOnSite,
-  //       permessiRole: giorno.permessiRole,
-  //       permessiExfestivita: giorno.permessiExfestivita,
-  //       note: giorno.note,
-  //       numeroGiorno: giorno.numeroGiorno,
-  //       nomeGiorno: giorno.nomeGiorno,
-  //       festivitaNazionale: giorno.festivitaNazionale,
-  //       checkFestivita: giorno.checkFestivita,
-  //     };
-  //   });
-  //   for (const giorno of giorni) {
-  //     //imposto a null i booleani a false
-
-  //     if (!giorno.ferie) {
-  //       giorno.ferie = null;
-  //     }
-
-  //     if (!giorno.malattie) {
-  //       giorno.malattie = null;
-  //     }
-
-  //     if (!giorno.checkSmartWorking) {
-  //       giorno.checkSmartWorking = null;
-  //     }
-  //     if (!giorno.checkOnSite) {
-  //       giorno.checkOnSite = null;
-  //     }
-
-  //     console.log(
-  //       'Oggetto giorniArray iterato: ' + JSON.stringify(giorno, null, 2)
-  //     );
-  //   }
-
-  //   const body = {
-  //     rapportinoDto: {
-  //       mese: {
-  //         giorni: giorni,
-  //       },
-  //       anagrafica: {
-  //         codiceFiscale: this.codiceFiscale,
-  //       },
-  //       note: this.note,
-  //       giorniUtili: this.giorniUtili,
-  //       giorniLavorati: this.giorniLavorati,
-  //       annoRequest: this.selectedAnno,
-  //       meseRequest: this.selectedMese,
-  //     },
-  //   };
-  //   // console.log(JSON.stringify(body));
-  //   this.rapportinoService
-  //     .updateRapportino(localStorage.getItem('token'), body)
-  //     .subscribe(
-  //       (result: any) => {
-  //         const message = (result as any).esito.target;
-
-  //         if ((result as any).esito.code !== 200) {
-  //           const dialogRef = this.dialog.open(AlertDialogComponent, {
-  //             data: {
-  //               image: '../../../../assets/images/danger.png',
-  //               title: 'Salvataggio non riuscito:',
-  //               message: (result as any).esito.target,
-  //             },
-  //           });
-  //           this.rapportinoSalvato = false;
-  //           console.error(JSON.stringify(result));
-  //         }
-  //         if ((result as any).esito.target === 'HTTP error code: 400') {
-  //           const dialogRef = this.dialog.open(AlertDialogComponent, {
-  //             data: {
-  //               image: '../../../../assets/images/danger.png',
-  //               title: 'Hai inserito un valore non valido.',
-  //               message: 'Controlla e riprova.',
-  //             },
-  //           });
-  //         }
-  //         if ((result as any).esito.target === 'ERRORE_GENERICO') {
-  //           const dialogRef = this.dialog.open(AlertDialogComponent, {
-  //             data: {
-  //               image: '../../../../assets/images/danger.png',
-  //               title: 'Attenzione:',
-  //               message: 'Qualcosa é andato storto, controlla e riprova.',
-  //             },
-  //           });
-  //         }
-  //         if ((result as any).esito.code === 200) {
-  //           const dialogRef = this.dialog.open(AlertDialogComponent, {
-  //             data: {
-  //               image: '../../../../assets/images/logo.jpeg',
-  //               title: 'Dati salvati correttamente.',
-  //               message: (result as any).esito.target,
-  //             },
-  //           });
-  //           setTimeout(() => {
-  //             console.log('Ritardo');
-  //             this.getRapportino();
-  //           }, 1000);
-  //         }
-  //       },
-  //       (error: any) => {
-  //         console.error(
-  //           'Errore durante il salvataggio della riga: ' + JSON.stringify(error)
-  //         );
-  //       }
-  //     );
-  // }
 
   annulla() {
     this.getRapportino();
