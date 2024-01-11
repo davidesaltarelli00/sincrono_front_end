@@ -844,7 +844,7 @@ export class UtenteComponent implements OnInit {
           this.calcolaTotaleFerie();
           this.calcolaTotaleMalattia();
           this.calcolaTotaleOrePermessi();
-          this.rimuoviWeekend();
+          // this.rimuoviWeekend();
           this.cdRef.detectChanges();
           // console.log(
           //   'Risultato getRapportino:' + JSON.stringify(this.rapportinoDto)
@@ -870,43 +870,57 @@ export class UtenteComponent implements OnInit {
     );
   }
 
-  setEight() {
-    const giorni = this.rapportinoDto.map((giorno) => {
-      return {
-        duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
-          (duplicazione: any) => {
-            return {
-              cliente: duplicazione.cliente,
-              oreOrdinarie: duplicazione.oreOrdinarie,
-              fascia1: duplicazione.fascia1,
-              fascia2: duplicazione.fascia2,
-              fascia3: duplicazione.fascia3,
-            };
-          }
-        ),
-        ferie: giorno.ferie,
-        malattie: giorno.malattie,
-        permessi: giorno.permessi,
-        checkSmartWorking: giorno.checkSmartWorking,
-        checkOnSite: giorno.checkOnSite,
-        permessiRole: giorno.permessiRole,
-        permessiExfestivita: giorno.permessiExfestivita,
-        note: giorno.note,
-        numeroGiorno: giorno.numeroGiorno,
-        nomeGiorno: giorno.nomeGiorno,
-        festivitaNazionale: giorno.festivitaNazionale,
-        checkFestivita: giorno.checkFestivita,
-      };
-    });
+  toggleSetEight(giorno: any) {
+    if (
+      giorno.duplicazioniGiornoDto.some(
+        (duplicazione: any) => duplicazione.oreOrdinarie === 8
+      )
+    ) {
+      this.unsetEight(giorno);
+    } else {
+      this.setEight(giorno);
+    }
+  }
 
-    for (const giorno of giorni) {
+  setEight(giorno: any) {
+    if (!giorno.ferie && !giorno.malattie) {
       giorno.duplicazioniGiornoDto.forEach((duplicazione: any) => {
-        if (duplicazione.oreOrdinarie == null) {
-          duplicazione.oreOrdinarie = 8;
-        }
+        duplicazione.oreOrdinarie = 8;
       });
     }
   }
+
+  unsetEight(giorno: any) {
+    giorno.duplicazioniGiornoDto.forEach((duplicazione: any) => {
+      if (!giorno.ferie && !giorno.malattie) {
+        duplicazione.oreOrdinarie = null;
+      }
+    });
+  }
+
+  onChangePermHours(giorno: any) {
+    // Verifica che il giorno non sia un giorno di ferie o malattia
+    if (!giorno.ferie && !giorno.malattie) {
+      // Definisci il numero totale di ore ordinarie disponibili (8 ore)
+      const totalHours = 8;
+      // Inizializza le ore di permesso a 0
+      let totalPermHours = 0;
+      // Somma le ore di permesso solo se sono definite e comprese tra 0 e 8
+      if (giorno.permessiRole !== null && giorno.permessiRole >= 0 && giorno.permessiRole <= 8) {
+        totalPermHours += giorno.permessiRole;
+      }
+      if (giorno.permessiExfestivita !== null && giorno.permessiExfestivita >= 0 && giorno.permessiExfestivita <= 8) {
+        totalPermHours += giorno.permessiExfestivita;
+      }
+      // Calcola le ore ordinarie sottraendo le ore di permesso dal totale
+      const remainingOrdinaryHours = Math.max(0, totalHours - totalPermHours);
+      // Per ogni duplicazione nel giorno, imposta le ore ordinarie
+      giorno.duplicazioniGiornoDto.forEach((duplicazione: any) => {
+        duplicazione.oreOrdinarie = remainingOrdinaryHours;
+      });
+    }
+  }
+
 
   rimuoviWeekend(): void {
     if (!this.rapportinoDto) {
@@ -927,7 +941,8 @@ export class UtenteComponent implements OnInit {
 
   onChange() {
     console.log('Valore selezionato:', this.lavoratoWeekend);
-    if (this.lavoratoWeekend === 'si') { //faccio il get rapportino senza la rimozione dei weekend
+    if (this.lavoratoWeekend === 'si') {
+      //faccio il get rapportino senza la rimozione dei weekend
       let body = {
         rapportinoDto: {
           anagrafica: {
@@ -991,7 +1006,8 @@ export class UtenteComponent implements OnInit {
         }
       );
     }
-    if (this.lavoratoWeekend === 'no') { //faccio il get rapportino con la rimozione dei weekend
+    if (this.lavoratoWeekend === 'no') {
+      //faccio il get rapportino con la rimozione dei weekend
       this.getRapportino();
     }
   }
@@ -1548,132 +1564,6 @@ export class UtenteComponent implements OnInit {
         }
       );
   }
-
-  // salvaRigaRapportino(formValue: any) {
-  //   console.log(formValue.value);
-
-  //   const giorni = this.rapportinoDto.map((giorno) => {
-  //     return {
-  //       duplicazioniGiornoDto: giorno.duplicazioniGiornoDto.map(
-  //         (duplicazione: any) => {
-  //           return {
-  //             cliente: duplicazione.cliente,
-  //             oreOrdinarie: duplicazione.oreOrdinarie,
-  //             fascia1: duplicazione.fascia1,
-  //             fascia2: duplicazione.fascia2,
-  //             fascia3: duplicazione.fascia3,
-  //           };
-  //         }
-  //       ),
-  //       ferie: giorno.ferie,
-  //       malattie: giorno.malattie,
-  //       permessi: giorno.permessi,
-  //       checkSmartWorking: giorno.checkSmartWorking,
-  //       checkOnSite: giorno.checkOnSite,
-  //       permessiRole: giorno.permessiRole,
-  //       permessiExfestivita: giorno.permessiExfestivita,
-  //       note: giorno.note,
-  //       numeroGiorno: giorno.numeroGiorno,
-  //       nomeGiorno: giorno.nomeGiorno,
-  //       festivitaNazionale: giorno.festivitaNazionale,
-  //       checkFestivita: giorno.checkFestivita,
-  //     };
-  //   });
-  //   for (const giorno of giorni) {
-  //     //imposto a null i booleani a false
-
-  //     if (!giorno.ferie) {
-  //       giorno.ferie = null;
-  //     }
-
-  //     if (!giorno.malattie) {
-  //       giorno.malattie = null;
-  //     }
-
-  //     if (!giorno.checkSmartWorking) {
-  //       giorno.checkSmartWorking = null;
-  //     }
-  //     if (!giorno.checkOnSite) {
-  //       giorno.checkOnSite = null;
-  //     }
-
-  //     console.log(
-  //       'Oggetto giorniArray iterato: ' + JSON.stringify(giorno, null, 2)
-  //     );
-  //   }
-
-  //   const body = {
-  //     rapportinoDto: {
-  //       mese: {
-  //         giorni: giorni,
-  //       },
-  //       anagrafica: {
-  //         codiceFiscale: this.codiceFiscale,
-  //       },
-  //       note: this.note,
-  //       giorniUtili: this.giorniUtili,
-  //       giorniLavorati: this.giorniLavorati,
-  //       annoRequest: this.selectedAnno,
-  //       meseRequest: this.selectedMese,
-  //     },
-  //   };
-  //   // console.log(JSON.stringify(body));
-  //   this.rapportinoService
-  //     .updateRapportino(localStorage.getItem('token'), body)
-  //     .subscribe(
-  //       (result: any) => {
-  //         const message = (result as any).esito.target;
-
-  //         if ((result as any).esito.code !== 200) {
-  //           const dialogRef = this.dialog.open(AlertDialogComponent, {
-  //             data: {
-  //               image: '../../../../assets/images/danger.png',
-  //               title: 'Salvataggio non riuscito:',
-  //               message: (result as any).esito.target,
-  //             },
-  //           });
-  //           this.rapportinoSalvato = false;
-  //           console.error(JSON.stringify(result));
-  //         }
-  //         if ((result as any).esito.target === 'HTTP error code: 400') {
-  //           const dialogRef = this.dialog.open(AlertDialogComponent, {
-  //             data: {
-  //               image: '../../../../assets/images/danger.png',
-  //               title: 'Hai inserito un valore non valido.',
-  //               message: 'Controlla e riprova.',
-  //             },
-  //           });
-  //         }
-  //         if ((result as any).esito.target === 'ERRORE_GENERICO') {
-  //           const dialogRef = this.dialog.open(AlertDialogComponent, {
-  //             data: {
-  //               image: '../../../../assets/images/danger.png',
-  //               title: 'Attenzione:',
-  //               message: 'Qualcosa é andato storto, controlla e riprova.',
-  //             },
-  //           });
-  //         }
-  //         if ((result as any).esito.code === 200) {
-  //           const dialogRef = this.dialog.open(AlertDialogComponent, {
-  //             data: {
-  //               image: '../../../../assets/images/logo.jpeg',
-  //               title: 'Dati salvati correttamente.',
-  //               message: (result as any).esito.target,
-  //             },
-  //           });
-  //           setTimeout(() => {
-  //             console.log('Ritardo');
-  //             this.getRapportino();
-  //           }, 1000);
-  //         }
-  //       },
-  //       (error: any) => {
-  //         console.error(
-  //           'Errore durante il salvataggio della riga: ' + JSON.stringify(error)
-  //         );
-  //       }
-  //     );
-  // }
 
   annulla() {
     this.getRapportino();

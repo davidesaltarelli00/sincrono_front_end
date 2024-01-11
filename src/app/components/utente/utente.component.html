@@ -280,7 +280,7 @@
                 <th>Periodo di riferimento</th>
                 <th>Giorni utili di lavoro</th>
                 <th *ngIf="ruolo==='DIPENDENTE'">Richieste</th>
-                <th >Ho lavorato un weekend</th>
+                <!-- <th >Ho lavorato un weekend</th> -->
               </tr>
             </thead>
             <tbody>
@@ -293,27 +293,29 @@
                 <td>{{giorniUtili}}</td>
                 <td *ngIf="ruolo==='DIPENDENTE'"> <button mat-mini-fab color="primary" [routerLink]="['/richieste']"> <i class="fa fa-envelope"></i>
                   </button> </td>
-                  <td>
+                  <!-- <td>
                     <select id="lavoratoWeekend" [(ngModel)]="lavoratoWeekend" (change)="onChange()">
                       <option value="no" selected>No</option>
                       <option value="si">Si</option>
                     </select> &nbsp;
                     <i class="fa fa-info-circle" matTooltip="Le ore lavorate inserite verranno conteggiate come straordinari." *ngIf="lavoratoWeekend==='si'" ></i>
-                  </td>
+                  </td> -->
                 </tr>
             </tbody>
           </table>
         </div>
       </div>
       <hr style="background-color: aliceblue;">
-      <div class="row">
+      <div class="row no-gutters">
         <div class="col-sm-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="font-size: 12px;">
           <mat-card [ngClass]="getBackgroundClasses(giorno)"
           [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') && !giorno.festivitaNazionale ? 'aliceblue' : (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') && giorno.festivitaNazionale ? 'rgb(238, 64, 64)' : (!giorno.checkFestivita ? (giorno.festivitaNazionale ? 'rgb(238, 64, 64)' : 'rgb(214, 234, 251)') : 'orange')}">
-            <label style="text-align: center;"> <button (click)="setEight()" style="width: 30px; height: 30px;" mat-mini-fab color="primary">{{giorno.numeroGiorno}}</button> {{giorno.nomeGiorno |titlecase }} </label>
+            <label style="text-align: center;">
+              <button (click)="toggleSetEight(giorno)" style="width: 20px; height: 20px;" [disabled]="giorno.ferie || giorno.malattie" mat-mini-fab color="primary">
+                {{giorno.numeroGiorno}}</button>{{giorno.nomeGiorno |titlecase }} </label>
             <div class="container-card" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
               <div class="row">
-                <div class="col-8" *ngIf="numeroCommessePresenti>1" >
+                <div class="col-7" *ngIf="numeroCommessePresenti>1" >
                     <label for="cliente-{{ i }}{{j}}">Cliente</label>
                     <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
                       [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}"
@@ -327,25 +329,23 @@
                     <div *ngIf="!duplicazione.cliente && duplicazione.giorno" class="error-message">Campo obbligatorio
                     </div>
                 </div>
-                <div class="col-4">
-                    <label for="ore-ordinarie-{{ i }}{{j}}" matTooltipPosition="above"
-                      matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Ore</label>
-                    <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text"
+                <div class="col-2">
+                    <label for="ore-ordinarie-{{ i }}{{j}}" matTooltipPosition="above">Ore</label>
+                    <!-- <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text"
                       class="form-control form-control-sm" step="0.5" min="0" max="8" id="ore-ordinarie-{{ i }}{{j}}"
-                      name="ore-ordinarie-{{ i }}{{j}}" [(ngModel)]="duplicazione.oreOrdinarie">
+                      name="ore-ordinarie-{{ i }}{{j}}" [(ngModel)]="duplicazione.oreOrdinarie"> -->
+                      <p [hidden]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"  id="ore-ordinarie-{{ i }}{{j}}"> {{duplicazione.oreOrdinarie ? duplicazione.oreOrdinarie : '``'}}</p>
+                </div>
+                <div class="col-3">
+                  <label for="extra--{{i}}{{j}}">Extra</label>
+                  <button mat-mini-fab color="primary"  style="width: 20px; height: 20px;"
+                  (click)=" mostraNascondiStraordinari(i,j)"
+                  [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Extra time"> <i
+                    class="fa fa-clock"></i> </button>
                 </div>
               </div>
-              <br>
-              <div class="row">
-
-                <div class="col-4">
-                <!-- <label for="extratime">Extra time</label> <br> -->
-                <button mat-mini-fab color="primary"  style="width: 30px; height: 30px;"
-                (click)=" mostraNascondiStraordinari(i,j)"
-                [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" matTooltip="Extra time"> <i
-                  class="fa fa-clock"></i> </button>
-                </div>
-
+             <!--duplicazione-->
+              <!-- <div class="row">
                 <div class="col-4" *ngIf="numeroCommessePresenti>1">
                   <button style="width: 30px; height: 30px;"
                     [disabled]="risultatoCheckFreeze ||  giorno.malattie || giorno.ferie || aziendeClienti.length<1 "
@@ -357,7 +357,7 @@
                     [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie " mat-mini-fab color="warn"
                     (click)="eliminaRiga(i,j)" matTooltip="Elimina riga"><i class="fa fa-trash"></i></button>
                 </div>
-              </div>
+              </div> -->
               <!--straordinari-->
               <div class="row" *ngIf="checkstraordinari || showStraordinari[i]?.[j]">
                 <div class="col-4">
@@ -401,7 +401,7 @@
             <div class="row">
               <div class="col-4">
                 <!-- <div class="form-group"> -->
-                  <label for="onSite-{{i}}">Onsite</label>
+                  <label for="onSite-{{i}}">On site</label>
                   <input (change)="onChangePresenza($event)"
                     [(ngModel)]="giorno.checkOnSite"
                     [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkSmartWorking"
@@ -410,20 +410,18 @@
               </div>
               <div class="col-4">
                 <!-- <div class="form-group"> -->
-                  <label for="smartworking-{{i}}">Smart</label>
+                  <label style="float: inline-end;" for="smartworking-{{i}}">Smart</label>
                   <input (change)="onChangeSmartworking($event)"
                     [(ngModel)]="giorno.checkSmartWorking"
                     [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite"
                     class="form-check-input" type="checkbox" id="smartworking-{{i}}">
                 <!-- </div> -->
               </div>
-              <div class="col-4">
-                <!-- <div class="form-group"> -->
-                  <!-- <label for="assenze">Assenza</label> -->
-                  <button style="width: 30px; height: 30px;" (click)="mostraNascondiPermessi(i)" mat-mini-fab
+              <div class="col-4" style="text-align: center;">
+                  <label for="assenze">Assenza</label>
+                  <button style="width: 20px; height: 20px;" (click)="mostraNascondiPermessi(i)" mat-mini-fab
                     color="primary" [disabled]="risultatoCheckFreeze  " matTooltip="Assenze"> <i class="fa fa-ban"></i>
                   </button>
-                <!-- </div> -->
               </div>
             </div>
             <div class="row" *ngIf="checkpermessi || showPermessi[i] || showPermessiRole[i] || showPermessiExfestivita[i] " >
@@ -440,20 +438,58 @@
               <div class="col-6">
                 <!-- <div class="form-group"> -->
                   <label for="permessiRole-{{ i }}"
-                    matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Role</label>
-                  <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text"
+                    matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Rol</label>
+                  <!-- <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text" (change)="onChangePermHours(giorno)"
                     class="form-control form-control-sm" step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
-                    id="permessiRole-{{ i }}" name="permessiRole-{{ i }}" [(ngModel)]="giorno.permessiRole">
+                    id="permessiRole-{{ i }}" name="permessiRole-{{ i }}" [(ngModel)]="giorno.permessiRole"> -->
+                    <select (change)="onChangePermHours(giorno)" name="permessiRole-{{ i }}" id="permessiRole-{{ i }}" class="form-select form-select-sm" [(ngModel)]="giorno.permessiRole">
+                      <option value="" selected>Nessuna opzione</option>
+                      <option value="0.5">0.5</option>
+                      <option value="1">1</option>
+                      <option value="1.5">1.5</option>
+                      <option value="2">2</option>
+                      <option value="2.5">2.5</option>
+                      <option value="3">3</option>
+                      <option value="3.5">3.5</option>
+                      <option value="4">4</option>
+                      <option value="4.5">4.5</option>
+                      <option value="5">5</option>
+                      <option value="5.5">5.5</option>
+                      <option value="6">6</option>
+                      <option value="6.5">6.5</option>
+                      <option value="7">7</option>
+                      <option value="7.5">7.5</option>
+                      <option value="8">8</option>
+                    </select>
                 <!-- </div> -->
               </div>
               <div class="col-6">
                 <!-- <div class="form-group"> -->
                   <label for="permessiExfestivita-{{ i }}"
                     matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Festivitá</label>
-                  <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text"
+                  <!-- <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text" (change)="onChangePermHours(giorno)"
                     class="form-control form-control-sm" step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
                     id="permessiExfestivita-{{ i }}" name="permessiExfestivita-{{ i }}"
-                    [(ngModel)]="giorno.permessiExfestivita">
+                    [(ngModel)]="giorno.permessiExfestivita"> -->
+                    <select (change)="onChangePermHours(giorno)" name="permessiExfestivita-{{ i }}" id="permessiExfestivita-{{ i }}" class="form-select form-select-sm" [(ngModel)]="giorno.permessiExfestivita">
+                      <option value="" selected>Nessuna opzione</option>
+                      <option value="0.5">0.5</option>
+                      <option value="1">1</option>
+                      <option value="1.5">1.5</option>
+                      <option value="2">2</option>
+                      <option value="2.5">2.5</option>
+                      <option value="3">3</option>
+                      <option value="3.5">3.5</option>
+                      <option value="4">4</option>
+                      <option value="4.5">4.5</option>
+                      <option value="5">5</option>
+                      <option value="5.5">5.5</option>
+                      <option value="6">6</option>
+                      <option value="6.5">6.5</option>
+                      <option value="7">7</option>
+                      <option value="7.5">7.5</option>
+                      <option value="8">8</option>
+                    </select>
                 <!-- </div> -->
               </div>
              </div>
@@ -490,20 +526,14 @@
                 <!-- </div> -->
               </div>
             </div>
-            <div class="row" style="text-align: center;">
-                <div class="col-6">
-                <!-- <div class="form-group"> -->
-                  <!-- <label for="salvaRiga">Salva</label> -->
-                  <button [disabled]="risultatoCheckFreeze" mat-mini-fab color="primary"
+            <div class="row">
+                <div class="col-6" style="text-align: end;">
+                  <button [disabled]="risultatoCheckFreeze" mat-mini-fab color="primary" style="width: 20px; height: 20px; "
                     (click)="salvaRapportino(giorno)" matTooltip="Salva riga"><i class="fa fa-save"></i> </button>
-                <!-- </div> -->
               </div>
-              <div class="col-6">
-                <!-- <div class="form-group"> -->
-                  <!-- <label for="salvaRiga">Annulla</label> -->
-                  <button [disabled]="risultatoCheckFreeze" mat-mini-fab color="warn" (click)="annulla()"
+              <div class="col-6" style=" text-align: start;">
+                  <button [disabled]="risultatoCheckFreeze" style="width: 20px; height: 20px;" mat-mini-fab color="warn" (click)="annulla()"
                     matTooltip="Annulla"><i class="fa fa-undo"></i> </button>
-                <!-- </div> -->
               </div>
             </div>
           </mat-card>
