@@ -871,7 +871,11 @@ export class UtenteComponent implements OnInit {
   }
 
   toggleSetEight(giorno: any) {
-    if (giorno.duplicazioniGiornoDto.some((duplicazione: any) => duplicazione.oreOrdinarie === 8)) {
+    if (
+      giorno.duplicazioniGiornoDto.some(
+        (duplicazione: any) => duplicazione.oreOrdinarie === 8
+      )
+    ) {
       this.unsetEight(giorno);
     } else {
       this.setEight(giorno);
@@ -894,6 +898,28 @@ export class UtenteComponent implements OnInit {
     });
   }
 
+  onChangePermHours(giorno: any) {
+    // Verifica che il giorno non sia un giorno di ferie o malattia
+    if (!giorno.ferie && !giorno.malattie) {
+      // Definisci il numero totale di ore ordinarie disponibili (8 ore)
+      const totalHours = 8;
+      // Inizializza le ore di permesso a 0
+      let totalPermHours = 0;
+      // Somma le ore di permesso solo se sono definite e comprese tra 0 e 8
+      if (giorno.permessiRole !== null && giorno.permessiRole >= 0 && giorno.permessiRole <= 8) {
+        totalPermHours += giorno.permessiRole;
+      }
+      if (giorno.permessiExfestivita !== null && giorno.permessiExfestivita >= 0 && giorno.permessiExfestivita <= 8) {
+        totalPermHours += giorno.permessiExfestivita;
+      }
+      // Calcola le ore ordinarie sottraendo le ore di permesso dal totale
+      const remainingOrdinaryHours = Math.max(0, totalHours - totalPermHours);
+      // Per ogni duplicazione nel giorno, imposta le ore ordinarie
+      giorno.duplicazioniGiornoDto.forEach((duplicazione: any) => {
+        duplicazione.oreOrdinarie = remainingOrdinaryHours;
+      });
+    }
+  }
 
 
   rimuoviWeekend(): void {
@@ -915,7 +941,8 @@ export class UtenteComponent implements OnInit {
 
   onChange() {
     console.log('Valore selezionato:', this.lavoratoWeekend);
-    if (this.lavoratoWeekend === 'si') { //faccio il get rapportino senza la rimozione dei weekend
+    if (this.lavoratoWeekend === 'si') {
+      //faccio il get rapportino senza la rimozione dei weekend
       let body = {
         rapportinoDto: {
           anagrafica: {
@@ -979,7 +1006,8 @@ export class UtenteComponent implements OnInit {
         }
       );
     }
-    if (this.lavoratoWeekend === 'no') { //faccio il get rapportino con la rimozione dei weekend
+    if (this.lavoratoWeekend === 'no') {
+      //faccio il get rapportino con la rimozione dei weekend
       this.getRapportino();
     }
   }
@@ -1536,7 +1564,6 @@ export class UtenteComponent implements OnInit {
         }
       );
   }
-
 
   annulla() {
     this.getRapportino();

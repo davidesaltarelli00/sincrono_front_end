@@ -410,7 +410,7 @@
               </div>
               <div class="col-4">
                 <!-- <div class="form-group"> -->
-                  <label style="float: inline-end;" for="smartworking-{{i}}">Smartworking</label>
+                  <label style="float: inline-end;" for="smartworking-{{i}}">Smart</label>
                   <input (change)="onChangeSmartworking($event)"
                     [(ngModel)]="giorno.checkSmartWorking"
                     [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite"
@@ -439,7 +439,7 @@
                 <!-- <div class="form-group"> -->
                   <label for="permessiRole-{{ i }}"
                     matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Role</label>
-                  <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text"
+                  <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text" (change)="onChangePermHours(giorno)"
                     class="form-control form-control-sm" step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
                     id="permessiRole-{{ i }}" name="permessiRole-{{ i }}" [(ngModel)]="giorno.permessiRole">
                 <!-- </div> -->
@@ -448,7 +448,7 @@
                 <!-- <div class="form-group"> -->
                   <label for="permessiExfestivita-{{ i }}"
                     matTooltip="Inserisci i valori decimali separati dal punto, non dalla virgola (Ex: 4.5)">Festivitá</label>
-                  <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text"
+                  <input [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie" type="text" (change)="onChangePermHours(giorno)"
                     class="form-control form-control-sm" step="0.5" min="0" max="8" pattern="[0-8](\.[05])?"
                     id="permessiExfestivita-{{ i }}" name="permessiExfestivita-{{ i }}"
                     [(ngModel)]="giorno.permessiExfestivita">
