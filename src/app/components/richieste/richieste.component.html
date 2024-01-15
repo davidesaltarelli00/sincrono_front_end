@@ -442,7 +442,7 @@
               <table class="table table-bordered"  id="table-responsive">
                 <thead>
                   <tr>
-                    <th>ID</th>
+                    <!-- <th>ID</th> -->
                     <th>Tipo richiesta</th>
                     <th>Giorno</th>
                     <th>Stato</th>
@@ -453,7 +453,7 @@
                 <tbody>
                   <tr *ngFor="let richiesta of getCurrentPageItemsFerie()">
                     <ng-container *ngIf="richiesta.list && richiesta.list.length > 0 && richiesta.list[0].ferie">
-                      <td>{{richiesta.id}}</td>
+                      <!-- <td>{{richiesta.id}}</td> -->
                       <td>Ferie</td>
                       <td>
                         <ng-container *ngFor="let item of richiesta.list; let i = index">
@@ -499,7 +499,7 @@
               <table class="table table-bordered"  id="table-responsive">
                 <thead>
                   <tr>
-                    <th>ID</th>
+                    <!-- <th>ID</th> -->
                     <th>Giorno</th>
                     <th>Dalle ore</th>
                     <th>Alle ore</th>
@@ -511,7 +511,7 @@
                 <tbody>
                   <tr *ngFor="let richiesta of getCurrentPageItemsPermessi()">
                     <ng-container *ngIf="richiesta.list && richiesta.list.length > 0 && richiesta.list[0].permessi">
-                      <td>{{richiesta.id}}</td>
+                      <!-- <td>{{richiesta.id}}</td> -->
                       <td>
                         <ng-container *ngFor="let item of richiesta.list; let i = index">
                           {{ item.nGiorno }}
