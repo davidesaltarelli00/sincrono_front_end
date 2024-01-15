@@ -155,6 +155,7 @@ export class UtenteComponent implements OnInit {
   tokenExpirationTime: any;
   timer: any;
   lavoratoWeekend: string = 'no';
+  inserisciNote :boolean[]=[]
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -224,6 +225,13 @@ export class UtenteComponent implements OnInit {
       azienda.toLowerCase().includes(this.giorno.cliente.toLowerCase())
     );
     this.showError = false; // Resetta l'errore quando l'utente inizia a digitare
+  }
+
+  toggleNote(index: number) {
+    if (!this.inserisciNote[index]) {
+      this.inserisciNote[index] = false;
+    }
+    this.inserisciNote[index] = !this.inserisciNote[index];
   }
 
   toggleOnSite(giorno: any): void {
@@ -906,10 +914,18 @@ export class UtenteComponent implements OnInit {
       // Inizializza le ore di permesso a 0
       let totalPermHours = 0;
       // Somma le ore di permesso solo se sono definite e comprese tra 0 e 8
-      if (giorno.permessiRole !== null && giorno.permessiRole >= 0 && giorno.permessiRole <= 8) {
+      if (
+        giorno.permessiRole !== null &&
+        giorno.permessiRole >= 0 &&
+        giorno.permessiRole <= 8
+      ) {
         totalPermHours += giorno.permessiRole;
       }
-      if (giorno.permessiExfestivita !== null && giorno.permessiExfestivita >= 0 && giorno.permessiExfestivita <= 8) {
+      if (
+        giorno.permessiExfestivita !== null &&
+        giorno.permessiExfestivita >= 0 &&
+        giorno.permessiExfestivita <= 8
+      ) {
         totalPermHours += giorno.permessiExfestivita;
       }
       // Calcola le ore ordinarie sottraendo le ore di permesso dal totale
@@ -920,7 +936,6 @@ export class UtenteComponent implements OnInit {
       });
     }
   }
-
 
   rimuoviWeekend(): void {
     if (!this.rapportinoDto) {
@@ -1153,7 +1168,6 @@ export class UtenteComponent implements OnInit {
       ) {
         almenoUnCampoPermessiValorizzato = true;
       }
-
       // Verifica se tutti i campi permessi sono null
       const tuttiCampiPermessiNull = giorno.duplicazioniGiornoDto.every(
         (duplicazione: any) =>
@@ -1163,42 +1177,11 @@ export class UtenteComponent implements OnInit {
           duplicazione.ferie === null &&
           duplicazione.malattie === null
       );
-
       // Imposta la visibilità in base alla condizione
       this.showPermessi[i] =
         almenoUnCampoPermessiValorizzato && !tuttiCampiPermessiNull;
     }
 
-    // for (let i = 0; i < giorni.length; i++) {
-    //   const giorno = giorni[i];
-    //   let almenoUnCampoPermessiValorizzato = false;
-    //     if (
-    //       giorno.permessi ||
-    //       giorno.permessiRole ||
-    //       giorno.permessiExfestivita
-    //     ) {
-    //       almenoUnCampoPermessiValorizzato = true;
-    //       break;
-    //     }
-
-    //   // Verifica se tutti i campi straordinari sono null
-    //   const tuttiCampiPermessiNull = giorno.duplicazioniGiornoDto.every(
-    //     (duplicazione: any) =>
-    //       duplicazione.permessi === null &&
-    //       duplicazione.permessiRole === null &&
-    //       duplicazione.permessiExfestivita === null
-    //   );
-
-    //   if (almenoUnCampoPermessiValorizzato && !tuttiCampiPermessiNull) {
-    //     // Se troviamo almeno un campo straordinario valorizzato, impostiamo la visibilità a true solo per quella cella
-    //     this.showPermessi[i] = giorno.duplicazioniGiornoDto.map(() => true);
-    //   } else {
-    //     // Altrimenti, impostiamo la visibilità a false per tutte le celle
-    //     this.showPermessi[i] = giorno.duplicazioniGiornoDto.map(
-    //       () => false
-    //     );
-    //   }
-    // }
   }
 
   changeOptionAssenza(event: any, index: number) {
