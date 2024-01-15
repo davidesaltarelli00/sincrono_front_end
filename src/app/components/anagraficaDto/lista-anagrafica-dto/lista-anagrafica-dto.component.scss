@@ -8,8 +8,10 @@
 input:invalid {
   border-color: red;
 }
+
 #button{
   background-color: green;
+  color: white;
 }
 
 .dark-mode #button{
@@ -40,10 +42,10 @@ td {
 // paginazione light mode
 .pagination {
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  // margin-top: 20px;
+  // margin-bottom: 20px;
 }
 
 .pagination ul {
