@@ -1,7 +1,49 @@
-table,
-th,
-td {
+#table-anagrafica {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin: auto;
   text-align: center;
+}
+
+#table-anagrafica th, #table-anagrafica td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#table-anagrafica th {
+  background-color: #343a40;
+  color: white;
+}
+
+@media screen and (max-width: 768px) {
+  .container-toolbar {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .logo-link {
+    display: block;
+    margin: 0 auto;
+  }
+  .logo-image {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+  }
+  #table-anagrafica {
+    overflow-x: auto;
+    text-align: center;
+  }
+
+  #table-anagrafica th, #table-anagrafica td {
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 .social-icon {
@@ -15,7 +57,7 @@ td {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  // margin-top: 20px;
 }
 
 .pagination ul {
@@ -54,16 +96,6 @@ td {
 }
 
 
-.dark-mode #toolbar {
-  color: #ffffff;
-  /* Testo bianco */
-  display: flex;
-  background-color: #333;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #f3f3f3;
-
-}
 
 /* styles.css o nel tuo componente-specifico.css */
 .dark-mode * {
@@ -82,10 +114,6 @@ td {
 .dark-mode select {
   background-color: #444;
   color: #fff;
-}
-
-.dark-mode table {
-  border-color: #555;
 }
 
 .dark-mode th,
@@ -127,37 +155,6 @@ td {
   border: 1px solid #666;
 }
 
-#toolbar {
-  background-color: #333;
-  color: #f2f2f2;
-}
-
-.container-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #333;
-  color: white;
-  padding: 10px;
-}
-
-.logo-link {
-  margin-right: 10px;
-}
-
-.logo-image {
-  border-radius: 100%;
-}
-
-.toolbar-menu {
-  display: flex;
-  gap: 10px;
-}
-
-.toolbar-link {
-  color: white;
-  text-decoration: none;
-}
 
 .form-switch {
   margin-right: 10px;
@@ -169,11 +166,7 @@ td {
 }
 
 @media screen and (max-width: 1115px) {
-  .container-toolbar {
-    background-color: #333;
-    padding: 10px;
-    text-align: center;
-  }
+
 
   .logo-link {
     display: block;
@@ -190,102 +183,11 @@ td {
     width: 100%;
     margin-bottom: 10px;
   }
-
-  #table {
-    overflow-x: auto;
-    text-align: center;
-  }
-
-  #table th,
-  #table td {
-    white-space: nowrap;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-  }
 }
 
-@media screen and (max-width: 830px) {
-  .hamburger-menu {
-    cursor: pointer;
-    color: var(--text-color);
-    font-size: 20px;
-  }
 
-  .toolbar-link {
-    display: none;
-  }
 
-  .hamburger-icon {
-    display: block;
-  }
-}
 
-@media screen and (min-width: 831px) {
-  .hamburger-menu {
-    display: none;
-  }
-
-  .toolbar-link {
-    display: flex;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .container-toolbar {
-    background-color: #333;
-    padding: 10px;
-    text-align: center;
-  }
-
-  .logo-link {
-    display: block;
-    margin: 0 auto;
-  }
-
-  .logo-image {
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-  }
-
-  #table {
-    overflow-x: auto;
-    text-align: center;
-  }
-
-  #table th,
-  #table td {
-    white-space: nowrap;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .table {
-    width: 100%;
-    margin-top: 20px;
-    /* Adjust margin as needed */
-    border-collapse: collapse;
-
-    th,
-    td {
-      padding: 10px;
-      border: 1px solid #ddd;
-      /* Add border style as needed */
-    }
-
-    tbody tr:nth-child(even) {
-      background-color: #f2f2f2;
-      /* Add even row background color */
-    }
-
-    tbody tr:hover {
-      background-color: #ddd;
-      /* Add hover background color */
-    }
-  }
-}
 
 .footer {
   width: 100%;
@@ -368,4 +270,75 @@ select {
 
 mat-card {
   margin: 20px;
+}
+
+
+
+//navbar
+
+#toolbar {
+  background-color: #333;
+  color: #f2f2f2;
+}
+
+.container-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: white;
+  padding: 10px;
+}
+
+.logo-link {
+  margin-right: 10px;
+}
+
+.logo-image {
+  border-radius: 100%;
+}
+
+.toolbar-menu {
+  display: flex;
+  gap: 10px;
+}
+
+.toolbar-link {
+  color: white;
+  text-decoration: none;
+}
+
+.form-switch {
+  margin-right: 10px;
+}
+
+:root {
+  --primary-color: #333;
+  --text-color: white;
+}
+
+@media screen and (max-width: 830px) {
+  .hamburger-menu {
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 20px;
+  }
+
+  .toolbar-link {
+    display: none;
+  }
+
+  .hamburger-icon {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 831px) {
+  .hamburger-menu {
+    display: none;
+  }
+
+  .toolbar-link {
+    display: flex;
+  }
 }

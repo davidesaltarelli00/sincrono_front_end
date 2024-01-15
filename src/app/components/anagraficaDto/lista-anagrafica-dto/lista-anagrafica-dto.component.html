@@ -391,43 +391,55 @@
     </mat-expansion-panel>
     <br>
     <div class="row">
-      <div class="col-4">
-        <mat-card style="height: 100%;">
-          <div
-            style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
-            <label>Esporta in excel</label>
-            <button (click)="exportListaAnagraficaToExcel()" style="margin: 5px;" matTooltip="Esporta in excel"
-              mat-mini-fab id="button">
-              <i class="fa-solid fa-file-export"></i>
-            </button>
-          </div>
+      <div class="col-12">
+        <mat-card>
+          <mat-card-content>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-3 mb-2">
+                  <button (click)="exportListaAnagraficaToExcel()" matTooltip="Esporta in excel" class="btn btn-success" id="button">
+                    Esporta in excel <i class="fa-solid fa-file-export"></i>
+                  </button>
+                </div>
+                <div class="col-md-3 mb-2">
+                  <button mat-flat-button id="button" class="btn btn-success" [routerLink]="['/nuova-anagrafica']">
+                    Nuova anagrafica <i matTooltip="Inserisci Nuova Anagrafica" class="fa fa-plus"></i>
+                  </button>
+                </div>
+                <div class="col-md-3 mb-2">
+                  <button mat-flat-button id="button" class="btn btn-success" disabled [routerLink]="['/documenti']">
+                    Inserimento da Excel <i class="fa fa-file-upload"></i>
+                  </button>
+                </div>
+                <div class="col-md-3">
+                  <div class="pagination d-flex justify-content-end">
+                    <ul class="pagination-list">
+                      <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+                        <span> <i class="fa fa-arrow-left"></i> </span>
+                      </li>
+                      <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page" (click)="goToPage(page)">
+                        <span>{{ page }}</span>
+                      </li>
+                      <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
+                        <span> <i class="fa fa-arrow-right"></i> </span>
+                      </li>
+                      <li>
+                        <select name="itemsPerPage" id="itemsPerPage" class="form-select" (change)="onChaneItemsPerPage($event)"
+                          [(ngModel)]="itemsPerPage">
+                          <option value="25">25</option>
+                          <option value="50">50</option>
+                          <option value="100">100</option>
+                        </select>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
         </mat-card>
       </div>
-
-      <div class="col-4">
-        <mat-card style="height: 100%;">
-          <div
-            style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
-            <label>Inserisci nuova anagrafica</label>
-            <button mat-mini-fab id="button" [routerLink]="['/nuova-anagrafica']">
-              <i matTooltip="Inserisci Nuova Anagrafica" class="fa fa-plus"></i>
-            </button>
-          </div>
-        </mat-card>
-      </div>
-      <!-- <div class="col-4">
-        <mat-card style="height: 100%;">
-          <div
-            style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
-            <label>Inserisci nuova anagrafica da excel</label>
-            <button mat-mini-fab id="button"  [routerLink]="['/documenti']">
-              <i matTooltip="Carica documenti" class="fa fa-file-upload"></i>
-            </button>
-          </div>
-        </mat-card>
-      </div> -->
     </div>
-
     <br>
     <div class="row" *ngIf="pageData.length===0">
       <div class="col-12">
@@ -438,28 +450,7 @@
     <div class="row" *ngIf="pageData.length>0">
       <div class="col-12">
         <div class="table-responsive">
-          <div class="pagination">
-            <ul>
-              <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-                <span> <i class="fa fa-arrow-left"></i> </span>
-              </li>
-              <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
-                (click)="goToPage(page)">
-                <span>{{ page }}</span>
-              </li>
-              <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
-                <span> <i class="fa fa-arrow-right"></i> </span>
-              </li>
-              <li>
-                <select name="itemsPerPage" id="itemsPerPage" class="form-select" (change)="onChaneItemsPerPage($event)"
-                  [(ngModel)]="itemsPerPage">
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-              </li>
-            </ul>
-          </div>
+
           <table id="table-anagrafica" class="table table-bordered" *ngIf="!mobile">
             <thead class="thead-dark">
               <tr>
@@ -639,37 +630,11 @@
               </div>
             </div>
           </div>
-
           <div *ngIf="messaggio!=null">{{messaggio}}</div>
-          <div class="pagination">
-            <ul>
-              <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-                <span> <i class="fa fa-arrow-left"></i> </span>
-              </li>
-              <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
-                (click)="goToPage(page)">
-                <span>{{ page }}</span>
-              </li>
-              <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
-                <span> <i class="fa fa-arrow-right"></i> </span>
-              </li>
-              <li>
-                <select name="itemsPerPage" id="itemsPerPage" class="form-select" (change)="onChaneItemsPerPage($event)"
-                  [(ngModel)]="itemsPerPage">
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-              </li>
-            </ul>
-          </div>
           <div id="finePagina"></div>
-
         </div>
       </div>
     </div>
-
-
   </div>
   <footer>
     <div class="footer">

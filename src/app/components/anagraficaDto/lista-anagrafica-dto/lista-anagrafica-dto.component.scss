@@ -8,8 +8,10 @@
 input:invalid {
   border-color: red;
 }
+
 #button{
   background-color: green;
+  color: white;
 }
 
 .dark-mode #button{
@@ -40,10 +42,10 @@ td {
 // paginazione light mode
 .pagination {
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  // margin-top: 20px;
+  // margin-bottom: 20px;
 }
 
 .pagination ul {
@@ -365,50 +367,43 @@ button.toggle-button {
   cursor: pointer;
 }
 
-/* Stili specifici per dark mode */
 .dark-mode button.toggle-button {
   background-color: #333;
   color: #fff;
-  /* Altri stili specifici per il dark mode per il bottone di toggle */
 }
 
-/* Stili comuni per mat-list */
 mat-list {
   width: 100%;
 }
 
-/* Stili comuni per mat-list-item */
 mat-list-item {
   padding: 16px;
-  border-bottom: 1px solid #ddd; /* Aggiungi una sottolineatura tra gli elementi della lista */
+  border-bottom: 1px solid #ddd;
 }
 
-/* Stili comuni per gli anchor (link) all'interno di mat-list-item */
 mat-list-item a {
-  color: inherit; /* Eredità del colore del testo dallo stile del padre */
-  text-decoration: none; /* Rimuovi la sottolineatura dei link */
+  color: inherit;
+  text-decoration: none;
 }
 
-/* Stili specifici per dark mode per mat-list e mat-list-item */
 .dark-mode mat-list {
-  background-color: #333; /* Colore di sfondo scuro per la lista */
-  color: #fff; /* Colore del testo chiaro per la lista */
+  background-color: #333;
+  color: #fff;
 }
 
 .dark-mode mat-list-item {
-  border-color: #555; /* Colore del bordo scuro per gli elementi della lista */
-  background-color: #444; /* Colore di sfondo scuro per gli elementi della lista */
-  color: #fff; /* Colore del testo chiaro per gli elementi della lista */
+  border-color: #555;
+  background-color: #444;
+  color: #fff;
 }
 
 .dark-mode mat-list-item a {
-  color: #fff; /* Colore del testo chiaro per i link in dark mode */
+  color: #fff;
 }
 
 .dark-mode mat-expansion-panel{
   border: 1px solid #f1f1f1;
 }
-
 
 //tabella anagrafiche responsive
 #table-anagrafica {
@@ -432,31 +427,22 @@ mat-list-item a {
 
 @media screen and (max-width: 768px) {
   .container-toolbar {
-    /* Styles for smaller screens (e.g., mobile devices) */
     background-color: #333;
-    /* Change background color */
     padding: 10px;
-    /* Add padding around the container */
     text-align: center;
-    /* Center the content in the container */
   }
 
   .logo-link {
     display: block;
-    /* Make the logo a block-level element */
     margin: 0 auto;
-    /* Center the logo horizontally */
   }
-
   .logo-image {
     border-radius: 50%;
     width: 60px;
-    /* Adjust the logo image size for mobile */
     height: 60px;
   }
   #table-anagrafica {
     overflow-x: auto;
-    // display: block;
     text-align: center;
   }
 

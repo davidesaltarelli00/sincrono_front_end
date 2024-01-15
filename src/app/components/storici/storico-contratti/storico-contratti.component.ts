@@ -1,16 +1,26 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  HostListener,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StoricoService } from '../storico-service';
 import { ActivatedRoute } from '@angular/router';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { ProfileBoxService } from '../../profile-box/profile-box.service';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { AnagraficaDtoService } from '../../anagraficaDto/anagraficaDto-service';
 import { ThemeService } from 'src/app/theme.service';
 import { MenuService } from '../../menu.service';
+import { AuthService } from '../../login/login-service';
 
 declare var $: any;
 
@@ -20,7 +30,7 @@ declare var $: any;
   styleUrls: ['./storico-contratti.component.scss'],
 })
 export class StoricoContrattiComponent implements OnInit {
-  lista: any;
+  lista: any[] = [];
   idAnagrafica: any;
   id: any = this.activatedRoute.snapshot.params['id'];
   userLoggedName: any;
@@ -37,12 +47,16 @@ export class StoricoContrattiComponent implements OnInit {
   listaItem: any[] = [];
   anagrafica: any;
   currentPage: number = 1;
-  itemsPerPage: number = 3;
+  itemsPerPage: number = 10;
   tipoContratto: any;
   pageData: any[] = [];
   windowWidth: any;
   mobile: any;
   isHamburgerMenuOpen: boolean = false;
+  tokenExpirationTime: any;
+  timer: any;
+  idAnagraficaLoggata: any;
+  tipoContrattoDettagio:any;
 
   constructor(
     private storicoService: StoricoService,
@@ -54,7 +68,9 @@ export class StoricoContrattiComponent implements OnInit {
     public themeService: ThemeService,
     private http: HttpClient,
     private menuService: MenuService,
-    private anagraficaDtoService: AnagraficaDtoService
+    private anagraficaDtoService: AnagraficaDtoService,
+    private cdRef: ChangeDetectorRef,
+    private authService: AuthService
   ) {
     this.windowWidth = window.innerWidth;
     if (window.innerWidth >= 900) {
@@ -76,39 +92,81 @@ export class StoricoContrattiComponent implements OnInit {
     this.themeService.toggleDarkMode();
   }
 
-  ngOnInit(): void {
-    if (this.token != null) {
-      this.getUserLogged();
-      this.getUserRole();
-      this.detailAnagrafica();
-    }
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
+  }
 
-    this.idAnagrafica = this.activatedRoute.snapshot.params['id'];
-    this.storicoService
-      .getStoricoContratti(this.idAnagrafica, localStorage.getItem('token'))
-      .subscribe(
-        (resp: any) => {
-          if ((resp as any).esito.code !== 200) {
-            const dialogRef = this.dialog.open(AlertDialogComponent, {
-              data: {
-                title: 'Caricamento non riuscito:',
-                message: (resp as any).esito.target,
-              },
-            });
-          } else {
-            this.lista = resp.list;
-            this.pageData = this.getCurrentPageItems();
-            this.currentPage = 1;
-            console.log('currentPage:', this.currentPage);
-            console.log('pageData:', this.pageData);
-          }
-        },
-        (error: any) => {
-          console.error(
-            'Si e verificato un errore durante il caricamento dei dati:' + error
+  ngOnInit(): void {
+    if (this.token) {
+      const tokenParts = this.token.split('.');
+      const tokenPayload = JSON.parse(atob(tokenParts[1]));
+      const currentTime = Date.now() / 1000;
+      this.tokenExpirationTime = Math.floor(tokenPayload.exp - currentTime);
+      this.timer = setInterval(() => {
+        this.tokenExpirationTime -= 1;
+        this.cdRef.detectChanges();
+        if (this.tokenExpirationTime === 0) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Attenzione:',
+              message: 'Sessione terminata; esegui il login.',
+            },
+          });
+          this.authService.logout().subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenProvvisorio');
+                sessionStorage.clear();
+                this.router.navigate(['/login']);
+                this.dialog.closeAll();
+              } else {
+                console.log(
+                  'Errore durante il logout:',
+                  response.status,
+                  response.body
+                );
+                this.handleLogoutError();
+              }
+            },
+            (error: HttpErrorResponse) => {
+              if (error.status === 403) {
+                console.log('Errore 403: Accesso negato');
+                this.handleLogoutError();
+              } else {
+                console.log('Errore durante il logout:', error.message);
+                this.handleLogoutError();
+              }
+            }
           );
         }
-      );
+      }, 1000);
+    }
+    if (this.token != null) {
+      this.getUserLogged();
+      this.detailAnagrafica();
+    }
+  }
+
+  formatTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(
+      remainingSeconds
+    )}`;
+  }
+
+  pad(value: number): string {
+    return value.toString().padStart(2, '0');
+  }
+
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
   }
 
   @HostListener('window:resize', ['$event'])
@@ -127,6 +185,7 @@ export class StoricoContrattiComponent implements OnInit {
     console.log(`Navigating to ${route}`);
     this.router.navigate([route]);
   }
+
   //paginazione
   getCurrentPageItems(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -145,7 +204,7 @@ export class StoricoContrattiComponent implements OnInit {
     if (Array.isArray(this.lista)) {
       return Math.ceil(this.lista.length / this.itemsPerPage);
     }
-    return 0; // Handle the case where lista is not an array
+    return 0;
   }
 
   getPaginationArray(): number[] {
@@ -153,17 +212,62 @@ export class StoricoContrattiComponent implements OnInit {
       const totalPages = this.getTotalPages();
       return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
-    return []; // Handle the case where lista is not an array
+    return [];
   }
 
   detailAnagrafica() {
     this.anagraficaDtoService
       .detailAnagraficaDto(this.id, localStorage.getItem('token'))
-      .subscribe((resp: any) => {
-        console.log(resp);
-        this.anagrafica = (resp as any)['anagraficaDto'];
+      .subscribe(
+        (resp: any) => {
+          if ((resp as any).esito.code !== 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Caricamento anagrafica non riuscito:',
+                message: (resp as any).esito.target,
+              },
+            });
+          } else {
+            // console.log(resp);
+            this.anagrafica = (resp as any)['anagraficaDto'];
+            this.detailContract();
+          }
+        },
+        (error: any) => {
+          console.error(
+            'ERRORE Durante il dettaglio dell anagrafica: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
 
-      });
+  detailContract() {
+    this.idAnagrafica = this.activatedRoute.snapshot.params['id'];
+    this.storicoService
+      .getStoricoContratti(this.idAnagrafica, localStorage.getItem('token'))
+      .subscribe(
+        (resp: any) => {
+          if ((resp as any).esito.code !== 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Caricamento del contratto non riuscito:',
+                message: (resp as any).esito.target,
+              },
+            });
+          } else {
+            this.lista = resp['list'];
+            this.pageData = this.getCurrentPageItems();
+            this.currentPage = 1;
+          }
+        },
+        (error: any) => {
+          console.error(
+            'Si e verificato un errore durante il caricamento dei dati del contratto:' +
+              JSON.stringify(error)
+          );
+        }
+      );
   }
 
   //metodi nav
@@ -177,23 +281,9 @@ export class StoricoContrattiComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-      },
-      (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
-        );
-      }
-    );
-  }
-
-  getUserRole() {
-    this.profileBoxService.getData().subscribe(
-      (response: any) => {
-        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
-
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
+        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
         ) {
@@ -210,30 +300,47 @@ export class StoricoContrattiComponent implements OnInit {
       },
       (error: any) => {
         console.error(
-          'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-          error
+          'Si é verificato il seguente errore durante il recupero dei dati : ' +
+            error
         );
-        this.shouldReloadPage = true;
       }
     );
   }
 
+  // getUserRole() {
+  //   this.profileBoxService.getData().subscribe(
+  //     (response: any) => {
+  //       console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+
+  //     },
+  //     (error: any) => {
+  //       console.error(
+  //         'Si è verificato il seguente errore durante il recupero del ruolo: ' +
+  //         error
+  //       );
+  //       this.shouldReloadPage = true;
+  //     }
+  //   );
+  // }
+
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        // console.log(
-        //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        // );
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-        this.jsonData = { list: [] };
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          // console.log(
+          //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          // );
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
 
   getPermissions(functionId: number) {

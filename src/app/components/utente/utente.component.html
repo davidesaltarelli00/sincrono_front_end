@@ -310,12 +310,15 @@
         <div class="col-sm-2" *ngFor="let giorno of rapportinoDto; let i = index;  trackBy: trackByFn" style="font-size: 12px;">
           <mat-card [ngClass]="getBackgroundClasses(giorno)"
           [ngStyle]="{'background-color': (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') && !giorno.festivitaNazionale ? 'aliceblue' : (giorno.nomeGiorno === 'sabato' || giorno.nomeGiorno === 'domenica') && giorno.festivitaNazionale ? 'rgb(238, 64, 64)' : (!giorno.checkFestivita ? (giorno.festivitaNazionale ? 'rgb(238, 64, 64)' : 'rgb(214, 234, 251)') : 'orange')}">
+           <mat-card-title>
             <label style="text-align: center;">
-              <button (click)="toggleSetEight(giorno)" style="width: 20px; height: 20px;" [disabled]="giorno.ferie || giorno.malattie" mat-mini-fab color="primary">
+              <button (click)="toggleSetEight(giorno)"  [disabled]="giorno.ferie || giorno.malattie" mat-mini-fab color="primary">
                 {{giorno.numeroGiorno}}</button>{{giorno.nomeGiorno |titlecase }} </label>
+           </mat-card-title>
+           <mat-card-content>
             <div class="container-card" *ngFor="let duplicazione of giorno.duplicazioniGiornoDto; let j = index;  trackBy: trackByFn">
               <div class="row">
-                <div class="col-7" *ngIf="numeroCommessePresenti>1" >
+                <div class="col-7" > <!-- *ngIf="numeroCommessePresenti>1"-->
                     <label for="cliente-{{ i }}{{j}}">Cliente</label>
                     <select [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie"
                       [ngClass]="{'has-error': !duplicazione.cliente && giorno.duplicazioniGiornoDto.giorno}"
@@ -405,16 +408,16 @@
                   <input (change)="onChangePresenza($event)"
                     [(ngModel)]="giorno.checkOnSite"
                     [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkSmartWorking"
-                    class="form-check-input" type="checkbox" id="onSite-{{i}}">
+                    data-toggle="toggle"  type="checkbox" id="onSite-{{i}}">
                 <!-- </div> -->
               </div>
               <div class="col-4">
                 <!-- <div class="form-group"> -->
-                  <label style="float: inline-end;" for="smartworking-{{i}}">Smart</label>
+                  <label  for="smartworking-{{i}}">Smart</label> <br>
                   <input (change)="onChangeSmartworking($event)"
                     [(ngModel)]="giorno.checkSmartWorking"
                     [disabled]="risultatoCheckFreeze || giorno.malattie || giorno.ferie || giorno.checkOnSite"
-                    class="form-check-input" type="checkbox" id="smartworking-{{i}}">
+                    data-toggle="toggle" type="checkbox" id="smartworking-{{i}}">
                 <!-- </div> -->
               </div>
               <div class="col-4" style="text-align: center;">
@@ -517,25 +520,29 @@
             </div>
             <div class="row">
               <div class="col-12">
-                <!-- <div class="form-group"> -->
                   <label for="note-{{ i }}">Note</label>
                   <input [disabled]="risultatoCheckFreeze  || giorno.ferie" placeholder="Inserire note"
                     [ngClass]="{'has-error': !giorno.note && giorno.duplicazioniGiornoDto.giorno}" type="text"
                     class="form-control form-control-sm" matTooltip="{{giorno.note}}" id="note-{{ i }}"
                     name="note-{{ i }}" [(ngModel)]="giorno.note" maxlength="64">
-                <!-- </div> -->
               </div>
             </div>
             <div class="row">
-                <div class="col-6" style="text-align: end;">
+              <!-- <div class="col-4">
+                <button [disabled]="risultatoCheckFreeze" mat-mini-fab color="primary" matTooltip="Aggiungi note" style="width: 20px; height: 20px; " (click)="toggleNote(i)">
+                  <i class="fa fa-message"></i>
+                </button>
+              </div> -->
+                <div class="col-6">
                   <button [disabled]="risultatoCheckFreeze" mat-mini-fab color="primary" style="width: 20px; height: 20px; "
                     (click)="salvaRapportino(giorno)" matTooltip="Salva riga"><i class="fa fa-save"></i> </button>
               </div>
-              <div class="col-6" style=" text-align: start;">
+              <div class="col-6">
                   <button [disabled]="risultatoCheckFreeze" style="width: 20px; height: 20px;" mat-mini-fab color="warn" (click)="annulla()"
                     matTooltip="Annulla"><i class="fa fa-undo"></i> </button>
               </div>
             </div>
+           </mat-card-content>
           </mat-card>
           <br>
         </div>
