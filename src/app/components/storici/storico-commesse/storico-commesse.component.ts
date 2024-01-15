@@ -7,6 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { ThemeService } from 'src/app/theme.service';
 import { MenuService } from '../../menu.service';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 
 declare var $: any;
 
@@ -130,18 +131,31 @@ export class StoricoCommesseComponent implements OnInit {
         ruolo: null,
       },
     };
-
-    console.log(JSON.stringify(payload));
-
+    // console.log(JSON.stringify(payload));
     this.storicoService
       .riattivaCommessa(payload, localStorage.getItem('token'))
       .subscribe(
         (res: any) => {
-          console.log(
-            'Commessa riattivata correttamente: ' + JSON.stringify(res)
-          );
-          alert('Commessa riattivata correttamente.');
-          this.router.navigate(['/dettaglio-anagrafica/', this.id]);
+          if ((res as any).esito.code != 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Attenzione:',
+                message:
+                  'Riattivazione non riuscita:' + (res as any).esito.target,
+              },
+            });
+          } else {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Attenzione:',
+                message:
+                  'Commessa riattivata correttamente:' +
+                  (res as any).esito.target,
+              },
+            });
+            // this.router.navigate(['/dettaglio-anagrafica/', this.id]);
+            this.ngOnInit();
+          }
         },
         (error: any) => {
           alert(

@@ -10,6 +10,8 @@ import { MaterialModule } from 'src/app/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NuovaAnagraficaDtoExcelComponent } from './nuova-anagrafica-dto-excel/nuova-anagrafica-dto-excel.component';
+import { StoricoContrattiComponent } from '../storici/storico-contratti/storico-contratti.component';
+import { StoricoCommesseComponent } from '../storici/storico-commesse/storico-commesse.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { NuovaAnagraficaDtoExcelComponent } from './nuova-anagrafica-dto-excel/n
     DettaglioAnagraficaDtoComponent,
     NuovaAnagraficaDtoComponent,
     ModificaAnagraficaDtoComponent,
-    NuovaAnagraficaDtoExcelComponent
+    NuovaAnagraficaDtoExcelComponent,
+    StoricoContrattiComponent,
+    StoricoCommesseComponent
   ],
   imports: [
     CommonModule,
