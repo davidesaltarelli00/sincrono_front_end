@@ -1,101 +1,12 @@
 <html>
 
 <head>
-  <title>Dashboard</title>
-  <style>
-    #toolbar {
-      background-color: #007bff;
-      /* Colore blu aziendale */
-      color: #ffffff;
-      /* Testo bianco */
-      display: flex;
-      background-color: #333;
-      justify-content: space-between;
-      /* Allinea gli elementi a sinistra e a destra */
-      align-items: center;
-      /* Allinea verticalmente gli elementi al centro */
-    }
-
-    .logo-link {
-      margin-right: 10px;
-    }
-
-    .toolbar-menu {
-      display: flex;
-      gap: 10px;
-      background-color: #333;
-      margin-right: auto;
-    }
-
-    .toolbar-link {
-      text-decoration: none;
-      color: #ffffff;
-      /* padding: 10px; */
-    }
-
-    a {
-      color: white;
-    }
-
-    .toolbar-link:hover {
-      color: #d8d8d8;
-    }
-
-    .user-icon,
-    .logout-icon {
-      color: #ffffff;
-      cursor: pointer;
-    }
-
-
-    #toolbar {
-      background-color: #007bff;
-      /* Colore blu aziendale */
-      color: #ffffff;
-      /* Testo bianco */
-      display: flex;
-      background-color: #333;
-      justify-content: space-between;
-      /* Allinea gli elementi a sinistra e a destra */
-      align-items: center;
-      /* Allinea verticalmente gli elementi al centro */
-    }
-
-    .logo-link {
-      margin-right: 10px;
-    }
-
-    .toolbar-menu {
-      display: flex;
-      gap: 10px;
-      background-color: #333;
-      margin-right: auto;
-    }
-
-    .toolbar-link {
-      text-decoration: none;
-      color: #ffffff;
-      /* padding: 10px; */
-    }
-
-    a {
-      color: white;
-    }
-
-    .toolbar-link:hover {
-      color: #d8d8d8;
-    }
-
-    .user-icon,
-    .logout-icon {
-      color: #ffffff;
-      cursor: pointer;
-    }
-  </style>
+  <title>Storico contratti</title>
 </head>
 
 <body [class.dark-mode]="themeService.isDarkModeEnabled()">
-  <div class="container-toolbar" *ngIf="!mobile">
+
+  <div class="container-toolbar" *ngIf="!mobile && jsonData?.list">
     <div class="row align-items-center">
       <div class="col-auto">
         <a [routerLink]="['/home']" class="logo-link">
@@ -104,16 +15,14 @@
       </div>
 
       <div class="col-auto">
-        <button *ngIf="getWindowWidth() < 830" mat-icon-button [matMenuTriggerFor]="hamburgerMenu"
-          (click)="toggleHamburgerMenu()" class="hamburger-icon">
+        <button  *ngIf="getWindowWidth() < 830" mat-icon-button [matMenuTriggerFor]="hamburgerMenu" (click)="toggleHamburgerMenu()" class="hamburger-icon">
           <mat-icon>menu</mat-icon>
         </button>
       </div>
 
       <div class="col-auto">
         <mat-menu #hamburgerMenu="matMenu" class="hamburger-menu">
-          <button id="menu-voice" mat-menu-item *ngFor="let menuItem of jsonData.list"
-            (click)="navigateTo(menuItem.percorso)">
+          <button id="menu-voice" mat-menu-item *ngFor="let menuItem of jsonData.list" (click)="navigateTo(menuItem.percorso)">
             {{ menuItem.nome }}
           </button>
         </mat-menu>
@@ -126,13 +35,14 @@
         </div>
       </div>
 
+      <div class="col-auto" *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen">
+        <a style="color:white; cursor: pointer;" (click)="vaiAlRapportino()">Rapportino</a>
+      </div>
+
       <div class="col-auto">
-        <div class="form-check form-switch"
-          matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
-          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()"
-            type="checkbox" id="flexSwitchCheckDefault">
-          <label class="form-check-label" for="flexSwitchCheckDefault"
-            matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
+        <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
         </div>
       </div>
 
@@ -152,24 +62,27 @@
     </div>
   </div>
 
-  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
-    <mat-toolbar id="toolbar" *ngIf="token && mobile">
+ <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && mobile  && jsonData?.list">
       <a [routerLink]="['/home']" class="logo-link">
         <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
       </a>
-      <button
-        style="background-color:#333;color:white;margin-left:-10px;margin-right:3px;border-radius:1px;padding:5px;"
+      <button style="background-color:#333;color:white;margin-left:-10px;margin-right:3px;border-radius:1px;padding:5px;"
         mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
         <ng-template matMenuContent>
-          <button style="background-color:#333;color:white" mat-menu-item *ngFor="let menuItem of jsonData.list"
+          <button  mat-menu-item *ngFor="let menuItem of jsonData.list"
             [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
             {{ menuItem.nome }}
           </button>
+          <button mat-menu-item  (click)="vaiAlRapportino()">
+            Rapportino
+          </button>
         </ng-template>
       </mat-menu>
+
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
         <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
@@ -180,6 +93,7 @@
       </span>
     </mat-toolbar>
   </div>
+
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
@@ -199,15 +113,25 @@
             [routerLink]="['/dettaglio-anagrafica/'+idAnagrafica]"></i> </h3>
       </div>
     </div>
-    <div class="row" [hidden]="pageData.length===0">
+    <div class="row">
       <div class="col-12">
-        <h3>
-          Qui sono consultabili tutte le modifiche effettuate nel tempo al contratto di {{anagrafica?.anagrafica?.nome
-          |titlecase }} {{anagrafica?.anagrafica?.cognome
-          |titlecase}}
-        </h3>
+        <h3> Qui sono consultabili tutte le modifiche effettuate nel tempo al contratto di {{anagrafica?.anagrafica?.nome |titlecase }} {{anagrafica?.anagrafica?.cognome |titlecase}}</h3>
+        <div class="pagination">
+          <ul>
+            <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+              <span> <i class="fa fa-arrow-left"></i> </span>
+            </li>
+            <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
+              (click)="goToPage(page)">
+              <span>{{ page }}</span>
+            </li>
+            <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
+              <span> <i class="fa fa-arrow-right"></i> </span>
+            </li>
+          </ul>
+        </div>
         <div class="table-responsive">
-          <table class="table table-striped table-bordered">
+          <table class="table table-striped table-bordered" *ngIf="lista">
             <thead>
               <tr>
                 <th>Contratto</th>
@@ -229,42 +153,26 @@
             </thead>
             <tbody>
               <tr *ngFor="let data of pageData; let i=index;">
-                <td>{{data.tipoContratto.descrizione ? data.tipoContratto.descrizione : 'Dato non inserito.'}}</td>
-                <td>{{data.mesiDurata ? data.mesiDurata : 'Dato non inserito.'}}</td>
-                <td>{{data.tipoLivelloContratto.ccnl ? data.tipoLivelloContratto.ccnl : 'Dato non inserito'}}</td>
-                <td>{{data.tipoLivelloContratto.livello ? data.tipoLivelloContratto.livello : 'Dato non inserito'}}</td>
-                <td>{{data.tipoLivelloContratto.minimiRet23 ? data.tipoLivelloContratto.minimiRet23 : 'Dato non inserito.'}}</td>
-                <td>{{data.tipoCcnl.numeroMensilita ? data.tipoCcnl.numeroMensilita : 'Dato non inserito.'}}</td>
-                <td>{{data.tipoAzienda.descrizione ? data.tipoAzienda.descrizione : 'Dato non inserito.'}}</td>
-                <td>{{data.sedeAssunzione ? data.sedeAssunzione : 'Dato non inserito.'}}</td>
-                <td>{{data.dataAssunzione | date: 'dd/MM/yyyy'}}</td>
-                <td *ngIf="data.tipoContratto.descrizione!='Indeterminato'">{{data.dataFineRapporto |
-                  date:'dd/MM/yyyy'}}</td>
-                <td *ngIf="data.tipoContratto.descrizione=='Indeterminato'"></td>
-                <td>{{data.qualifica ? data.qualifica :'Dato non inserito.'}}</td>
-                <td>{{data.tipoCanaleReclutamento.descrizione ? data.tipoCanaleReclutamento.descrizione: 'Dato non inserito.'}}</td>
-                <td>{{data.pc ? 'Si' : 'No'}}</td>
-                <td>{{data.tutor ? data.tutor : 'Dato non inserito.'}}</td>
-                <td> {{data.pfi ? 'Si' : 'No'}}</td>
+                <td>{{data?.tipoContratto?.descrizione ? data?.tipoContratto?.descrizione : 'Dato non inserito.'}}</td>
+                <td>{{data?.mesiDurata ? data.mesiDurata : 'Dato non inserito.'}}</td>
+                <td>{{data?.tipoLivelloContratto.ccnl ? data.tipoLivelloContratto.ccnl : 'Dato non inserito'}}</td>
+                <td>{{data?.tipoLivelloContratto.livello ? data.tipoLivelloContratto.livello : 'Dato non inserito'}}</td>
+                <td>{{data?.tipoLivelloContratto.minimiRet23 ? data.tipoLivelloContratto.minimiRet23 : 'Dato non inserito.'}}</td>
+                <td>{{data?.tipoCcnl.numeroMensilita ? data.tipoCcnl.numeroMensilita : 'Dato non inserito.'}}</td>
+                <td>{{data?.tipoAzienda.descrizione ? data.tipoAzienda.descrizione : 'Dato non inserito.'}}</td>
+                <td>{{data?.sedeAssunzione ? data.sedeAssunzione : 'Dato non inserito.'}}</td>
+                <td>{{data?.dataAssunzione | date: 'dd/MM/yyyy'}}</td>
+                <td *ngIf="data?.tipoContratto?.descrizione!='Indeterminato'">{{data?.dataFineRapporto | date:'dd/MM/yyyy'}}</td>
+                <td *ngIf="data?.tipoContratto?.descrizione=='Indeterminato'"></td>
+                <td>{{data?.qualifica ? data.qualifica :'Dato non inserito.'}}</td>
+                <td>{{data?.tipoCanaleReclutamento?.descrizione ? data?.tipoCanaleReclutamento?.descrizione: 'Dato non inserito.'}}</td>
+                <td>{{data?.pc ? 'Si' : 'No'}}</td>
+                <td>{{data?.tutor ? data.tutor : 'Dato non inserito.'}}</td>
+                <td> {{data?.pfi ? 'Si' : 'No'}}</td>
               </tr>
             </tbody>
           </table>
-          <div class="pagination">
-            <ul>
-              <li [class.disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-                <span> <i class="fa fa-arrow-left"></i> </span>
-              </li>
-              <li *ngFor="let page of getPaginationArray()" [class.active]="currentPage === page"
-                (click)="goToPage(page)">
-                <span>{{ page }}</span>
-              </li>
-              <li [class.disabled]="currentPage === getTotalPages()" (click)="goToPage(currentPage + 1)">
-                <span> <i class="fa fa-arrow-right"></i> </span>
-              </li>
-            </ul>
-          </div>
         </div>
-        <br><br>
       </div>
     </div>
   </div>
