@@ -7,6 +7,8 @@ import { NgModule } from '@angular/core';
 import { AuthGuard } from '../login/AuthGuard';
 import { RoleGuard } from '../login/RoleGuard ';
 import { NuovaAnagraficaDtoExcelComponent } from './nuova-anagrafica-dto-excel/nuova-anagrafica-dto-excel.component';
+import { StoricoContrattiComponent } from '../storici/storico-contratti/storico-contratti.component';
+import { StoricoCommesseComponent } from '../storici/storico-commesse/storico-commesse.component';
 
 const routes: Routes = [
   {
@@ -34,6 +36,17 @@ const routes: Routes = [
     path: 'nuova-anagrafica-dto-excel/:codiceFiscale',
     component: NuovaAnagraficaDtoExcelComponent,
     canActivate: [AuthGuard, RoleGuard],
+  },
+
+  {
+    path: 'storico-contratti/:id',
+    component: StoricoContrattiComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'storico-commesse-anagrafica/:id',
+    component: StoricoCommesseComponent,
+    canActivate: [AuthGuard],
   },
 ];
 

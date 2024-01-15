@@ -73,8 +73,6 @@ import { RapportinoModule } from './components/utente/rapportino.module';
     HomeComponent,
     ModalInfoCommesseComponent,
     LoginComponent,
-    StoricoContrattiComponent,
-    StoricoCommesseComponent,
     ProfileBoxComponent,
     CambioPasswordComponent,
     RecuperoPasswordComponent,

@@ -7,6 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { ThemeService } from 'src/app/theme.service';
 import { MenuService } from '../../menu.service';
+import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 
 declare var $: any;
 
@@ -22,6 +23,8 @@ export class StoricoCommesseComponent implements OnInit {
   // paginazione
   currentPage: number = 1;
   itemsPerPage: number = 3; // Numero di elementi per pagina
+  pageData: any[] = [];
+
   id = this.activatedRouter.snapshot.params['id'];
   userLoggedName: any;
   userLoggedSurname: any;
@@ -33,10 +36,11 @@ export class StoricoCommesseComponent implements OnInit {
   idNav: any;
   tokenProvvisorio: any;
   idUtente: any;
-  pageData: any[] = [];
   windowWidth: any;
   mobile: any;
   isHamburgerMenuOpen: boolean = false;
+  idAnagraficaLoggata: any;
+
   constructor(
     private router: Router,
     private activatedRouter: ActivatedRoute,
@@ -61,13 +65,12 @@ export class StoricoCommesseComponent implements OnInit {
     ) {
       this.mobile = true;
     }
-
   }
 
   ngOnInit(): void {
     if (this.token != null) {
       this.getUserLogged();
-      this.getUserRole();
+      // this.getUserRole();
     }
     var idAnagrafica = this.activatedRouter.snapshot.params['id'];
     this.storicoService
@@ -75,14 +78,19 @@ export class StoricoCommesseComponent implements OnInit {
       .subscribe(
         (resp: any) => {
           this.lista = resp.list;
-          this.lista = this.getCurrentPageItems();
-          console.log(JSON.stringify(resp.list));
+          this.pageData = this.getCurrentPageItems();
+          this.currentPage = 1;
         },
         (error: any) => {
           console.error('Errore durante il caricamento dei dati: ' + error);
         }
       );
   }
+
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.windowWidth = window.innerWidth;
@@ -123,50 +131,67 @@ export class StoricoCommesseComponent implements OnInit {
         ruolo: null,
       },
     };
-
-    console.log(JSON.stringify(payload));
-
+    // console.log(JSON.stringify(payload));
     this.storicoService
       .riattivaCommessa(payload, localStorage.getItem('token'))
       .subscribe(
         (res: any) => {
-          console.log(
-            'Commessa riattivata correttamente: ' + JSON.stringify(res)
-          );
-          alert('Commessa riattivata correttamente.');
-          this.router.navigate(['/dettaglio-anagrafica/', this.id]);
+          if ((res as any).esito.code != 200) {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Attenzione:',
+                message:
+                  'Riattivazione non riuscita:' + (res as any).esito.target,
+              },
+            });
+          } else {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                title: 'Attenzione:',
+                message:
+                  'Commessa riattivata correttamente:' +
+                  (res as any).esito.target,
+              },
+            });
+            // this.router.navigate(['/dettaglio-anagrafica/', this.id]);
+            this.ngOnInit();
+          }
         },
         (error: any) => {
           alert(
             'Si è verificato un errore durante la storicizzazione della commessa selezionata: ' +
-            error
+              error
           );
         }
       );
   }
-
-  //paginazione
   getCurrentPageItems(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     return this.lista.slice(startIndex, endIndex);
   }
 
-  getTotalPages(): number {
-    return Math.ceil(this.lista.length / this.itemsPerPage);
-  }
-
-  getPaginationArray(): number[] {
-    const totalPages = this.getTotalPages();
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
-  }
-
   goToPage(pageNumber: number) {
     if (pageNumber >= 1 && pageNumber <= this.getTotalPages()) {
       this.currentPage = pageNumber;
+      this.pageData = this.getCurrentPageItems();
     }
   }
 
+  getTotalPages(): number {
+    if (Array.isArray(this.lista)) {
+      return Math.ceil(this.lista.length / this.itemsPerPage);
+    }
+    return 0;
+  }
+
+  getPaginationArray(): number[] {
+    if (Array.isArray(this.lista)) {
+      const totalPages = this.getTotalPages();
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    return [];
+  }
   //fine paginazione
 
   //metodi nav
@@ -180,22 +205,8 @@ export class StoricoCommesseComponent implements OnInit {
         localStorage.getItem('token');
         this.userLoggedName = response.anagraficaDto.anagrafica.nome;
         this.userLoggedSurname = response.anagraficaDto.anagrafica.cognome;
-      },
-      (error: any) => {
-        console.error(
-          'Si é verificato il seguente errore durante il recupero dei dati : ' +
-          error
-        );
-      }
-    );
-  }
-
-  getUserRole() {
-    this.profileBoxService.getData().subscribe(
-      (response: any) => {
-        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+        this.idAnagraficaLoggata = response.anagraficaDto.anagrafica.id;
         this.idUtente = response.anagraficaDto.anagrafica.utente.id;
-
         this.userRoleNav = response.anagraficaDto.ruolo.nome;
         if (
           (this.userRoleNav = response.anagraficaDto.ruolo.nome === 'ADMIN')
@@ -213,8 +224,22 @@ export class StoricoCommesseComponent implements OnInit {
       },
       (error: any) => {
         console.error(
+          'Si é verificato il seguente errore durante il recupero dei dati : ' +
+            error
+        );
+      }
+    );
+  }
+
+  getUserRole() {
+    this.profileBoxService.getData().subscribe(
+      (response: any) => {
+        console.log('DATI GET USER ROLE:' + JSON.stringify(response));
+      },
+      (error: any) => {
+        console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-          error
+            error
         );
         this.shouldReloadPage = true;
       }
@@ -222,21 +247,23 @@ export class StoricoCommesseComponent implements OnInit {
   }
 
   generateMenuByUserRole() {
-    this.menuService.generateMenuByUserRole(this.token, this.idUtente).subscribe(
-      (data: any) => {
-        this.jsonData = data;
-        this.idFunzione = data.list[0].id;
-        // console.log(
-        //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
-        // );
-        this.shouldReloadPage = false;
-      },
-      (error: any) => {
-        console.error('Errore nella generazione del menu:', error);
-        this.shouldReloadPage = true;
-        this.jsonData = { list: [] };
-      }
-    );
+    this.menuService
+      .generateMenuByUserRole(this.token, this.idUtente)
+      .subscribe(
+        (data: any) => {
+          this.jsonData = data;
+          this.idFunzione = data.list[0].id;
+          // console.log(
+          //   JSON.stringify('DATI NAVBAR: ' + JSON.stringify(this.jsonData))
+          // );
+          this.shouldReloadPage = false;
+        },
+        (error: any) => {
+          console.error('Errore nella generazione del menu:', error);
+          this.shouldReloadPage = true;
+          this.jsonData = { list: [] };
+        }
+      );
   }
 
   getPermissions(functionId: number) {
@@ -254,7 +281,6 @@ export class StoricoCommesseComponent implements OnInit {
     this.themeService.toggleDarkMode();
   }
 }
-
 
 interface MenuData {
   esito: {

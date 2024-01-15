@@ -94,7 +94,8 @@
 </head>
 
 <body [class.dark-mode]="themeService.isDarkModeEnabled()">
-  <div class="container-toolbar" *ngIf="!mobile">
+
+  <div class="container-toolbar" *ngIf="!mobile && jsonData?.list">
     <div class="row align-items-center">
       <div class="col-auto">
         <a [routerLink]="['/home']" class="logo-link">
@@ -103,16 +104,14 @@
       </div>
 
       <div class="col-auto">
-        <button *ngIf="getWindowWidth() < 830" mat-icon-button [matMenuTriggerFor]="hamburgerMenu"
-          (click)="toggleHamburgerMenu()" class="hamburger-icon">
+        <button  *ngIf="getWindowWidth() < 830" mat-icon-button [matMenuTriggerFor]="hamburgerMenu" (click)="toggleHamburgerMenu()" class="hamburger-icon">
           <mat-icon>menu</mat-icon>
         </button>
       </div>
 
       <div class="col-auto">
         <mat-menu #hamburgerMenu="matMenu" class="hamburger-menu">
-          <button id="menu-voice" mat-menu-item *ngFor="let menuItem of jsonData.list"
-            (click)="navigateTo(menuItem.percorso)">
+          <button id="menu-voice" mat-menu-item *ngFor="let menuItem of jsonData.list" (click)="navigateTo(menuItem.percorso)">
             {{ menuItem.nome }}
           </button>
         </mat-menu>
@@ -125,13 +124,14 @@
         </div>
       </div>
 
+      <div class="col-auto" *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen">
+        <a style="color:white; cursor: pointer;" (click)="vaiAlRapportino()">Rapportino</a>
+      </div>
+
       <div class="col-auto">
-        <div class="form-check form-switch"
-          matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
-          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()"
-            type="checkbox" id="flexSwitchCheckDefault">
-          <label class="form-check-label" for="flexSwitchCheckDefault"
-            matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
+        <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
         </div>
       </div>
 
@@ -151,24 +151,27 @@
     </div>
   </div>
 
-  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
-    <mat-toolbar id="toolbar" *ngIf="token && mobile">
+ <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && mobile  && jsonData?.list">
       <a [routerLink]="['/home']" class="logo-link">
         <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
       </a>
-      <button
-        style="background-color:#333;color:white;margin-left:-10px;margin-right:3px;border-radius:1px;padding:5px;"
+      <button style="background-color:#333;color:white;margin-left:-10px;margin-right:3px;border-radius:1px;padding:5px;"
         mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
         <ng-template matMenuContent>
-          <button style="background-color:#333;color:white" mat-menu-item *ngFor="let menuItem of jsonData.list"
+          <button  mat-menu-item *ngFor="let menuItem of jsonData.list"
             [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
             {{ menuItem.nome }}
           </button>
+          <button mat-menu-item  (click)="vaiAlRapportino()">
+            Rapportino
+          </button>
         </ng-template>
       </mat-menu>
+
       <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
         <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
         <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
@@ -179,15 +182,17 @@
       </span>
     </mat-toolbar>
   </div>
+
   <div class="container-fluid">
     <h1>Storico Commesse </h1>
+    <legend>Elenco delle commesse archiviate </legend>
     <!--
       per Anagrafica selezionata   <button class="btn btn-success" style="background-color: rgb(24, 122, 0); color: white;"
       [routerLink]="['/dettaglio-anagrafica/'+id]">Torna al dettaglio</button>
     -->
     <div class="table-responsive">
 
-      <table class="table table-striped table-bordered">
+      <table class="table table-striped table-bordered" id="table-anagrafica">
         <thead class="thead-dark">
           <tr>
             <th scope="col">Cliente</th>
@@ -205,7 +210,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of lista; let i=index">
+          <tr *ngFor="let data of pageData; let i=index">
             <td>{{ data.tipoAziendaCliente.descrizione ? data.tipoAziendaCliente.descrizione : 'Dato non inserito' }}
             </td>
             <td>{{ data.clienteFinale ? data.clienteFinale : 'Dato non inserito' }}</td>
@@ -213,9 +218,10 @@
             <td>{{ data.distacco ? 'Sì' : 'No'}}</td>
             <td>{{ this.transformDate(data.dataInizio) }}</td>
             <td>{{ this.transformDate(data.dataFine) }}</td>
-            <td>{{ data.tariffaGiornaliera ? data.tariffaGiornaliera : 'Dato non inserito' }} € </td>
+            <td *ngIf="data.tariffaGiornaliera">{{ data.tariffaGiornaliera}} € </td>
+            <td *ngIf="!data.tariffaGiornaliera" style="color: rgb(164, 0, 0);">Dato non inserito</td>
             <td>{{ data.aziendaDiFatturazioneInterna ? data.aziendaDiFatturazioneInterna : 'Dato non inserito' }}</td>
-            <td>{{data.attivo ? 'Attivo' : 'Non attivo'}}</td>
+            <td>{{data.attivo ? 'Commessa attiva' : ' Commessa non attiva'}}</td>
             <td> {{data.attesaLavori ? 'Sì' : 'No'}}</td>
             <td> <button class="btn btn-success" (click)="riattivaCommessa(data.id, i)"> <i class="fa fa-file"></i>
               </button> </td>

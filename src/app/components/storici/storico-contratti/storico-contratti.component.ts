@@ -47,7 +47,7 @@ export class StoricoContrattiComponent implements OnInit {
   listaItem: any[] = [];
   anagrafica: any;
   currentPage: number = 1;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 5;
   tipoContratto: any;
   pageData: any[] = [];
   windowWidth: any;

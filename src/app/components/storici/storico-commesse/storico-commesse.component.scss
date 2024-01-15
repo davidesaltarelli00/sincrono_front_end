@@ -1,48 +1,50 @@
-/* Stili per il grafico a torta */
-.pie-chart {
-  width: 200px;
-  /* Regola le dimensioni a tuo piacimento */
-  height: 200px;
-  /* Regola le dimensioni a tuo piacimento */
-  border-radius: 50%;
-  position: relative;
-  background-color: #f0f0f0;
-  /* Colore di sfondo del grafico a torta */
-}
-
-.slice {
+#table-anagrafica {
   width: 100%;
-  height: 100%;
-  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-  position: absolute;
-  transform-origin: center center;
-}
-
-.inner-circle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-weight: bold;
-}
-
-/* Stili per il grafico a barre orizzontale */
-.bar-chart {
+  border-collapse: collapse;
   margin-top: 20px;
-  /* Spazio tra i grafici */
+  margin: auto;
+  text-align: center;
 }
 
-.bar {
-  background-color: #007BFF;
-  /* Colore delle barre, puoi personalizzarlo */
+#table-anagrafica th, #table-anagrafica td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#table-anagrafica th {
+  background-color: #343a40;
   color: white;
-  padding: 10px;
-  margin-bottom: 5px;
-  /* Spazio tra le barre */
-  border-radius: 5px;
 }
 
+@media screen and (max-width: 768px) {
+  .container-toolbar {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+  }
 
+  .logo-link {
+    display: block;
+    margin: 0 auto;
+  }
+  .logo-image {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+  }
+  #table-anagrafica {
+    overflow-x: auto;
+    text-align: center;
+  }
+
+  #table-anagrafica th, #table-anagrafica td {
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
 
 // paginazione
 .pagination {
@@ -100,7 +102,6 @@
 
 }
 
-/* styles.css o nel tuo componente-specifico.css */
 .dark-mode * {
   background-color: #333;
   color: #fff;
@@ -228,18 +229,6 @@
     margin-bottom: 10px;
   }
 
-  #table {
-    overflow-x: auto;
-    text-align: center;
-  }
-
-  #table th,
-  #table td {
-    white-space: nowrap;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-  }
 }
 
 @media screen and (max-width: 830px) {
@@ -285,52 +274,13 @@
     width: 60px;
     height: 60px;
   }
-
-  #table {
-    overflow-x: auto;
-    text-align: center;
-  }
-
-  #table th,
-  #table td {
-    white-space: nowrap;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .table {
-    width: 100%;
-    margin-top: 20px;
-    /* Adjust margin as needed */
-    border-collapse: collapse;
-
-    th,
-    td {
-      padding: 10px;
-      border: 1px solid #ddd;
-      /* Add border style as needed */
-    }
-
-    tbody tr:nth-child(even) {
-      background-color: #f2f2f2;
-      /* Add even row background color */
-    }
-
-    tbody tr:hover {
-      background-color: #ddd;
-      /* Add hover background color */
-    }
-  }
 }
 
 .footer {
   width: 100%;
   background-color: #333;
-  // position: fixed;
   bottom: 0;
   left: 0;
-  // z-index: 1000;
 }
 
 .dark-mode .footer {

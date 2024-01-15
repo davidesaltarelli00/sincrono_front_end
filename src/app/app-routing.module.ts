@@ -159,11 +159,7 @@ const routes: Routes = [
 
   { path: 'login', component: LoginComponent },
 
-  {
-    path: 'storico-contratti/:id',
-    component: StoricoContrattiComponent,
-    canActivate: [AuthGuard],
-  },
+
 
   {
     path: 'info-commesse/:id',
@@ -177,11 +173,7 @@ const routes: Routes = [
   },
 
   //STORICO COMMESSE
-  {
-    path: 'storico-commesse-anagrafica/:id',
-    component: StoricoCommesseComponent,
-    canActivate: [AuthGuard],
-  },
+
 
   {
     path: 'aggiungi-commessa/:id',
