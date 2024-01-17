@@ -67,6 +67,7 @@ import { RichiesteModule } from './components/richieste/richieste.module';
 import { RapportinoModule } from './components/utente/rapportino.module';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { BreadcrumbService } from './components/Breadcrumb.service';
+import { DashboardModule } from './components/dashboard/dashboard.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,7 +75,6 @@ import { BreadcrumbService } from './components/Breadcrumb.service';
     ModificaContrattoComponent,
     NuovoContrattoComponent,
     ListaContrattiComponent,
-    ListaDashboardComponent,
     HighlightNullFieldDirective,
     HomeComponent,
     ModalInfoCommesseComponent,
@@ -118,6 +118,7 @@ import { BreadcrumbService } from './components/Breadcrumb.service';
     OrganicoModule,
     RapportinoModule,
     RichiesteModule,
+    DashboardModule
   ],
   providers: [
     DatePipe,

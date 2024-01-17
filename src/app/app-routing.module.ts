@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { DettaglioContrattoComponent } from './components/contratto/dettaglio-contratto/dettaglio-contratto.component';
 import { NuovoContrattoComponent } from './components/contratto/nuovo-contratto/nuovo-contratto.component';
 import { ModificaContrattoComponent } from './components/contratto/modifica-contratto/modifica-contratto.component';
-import { ListaDashboardComponent } from './components/dashboard/lista-dashboard/lista-dashboard.component';
 import { ListaContrattiComponent } from './components/contratto/lista-contratti/lista-contratti.component';
 import { LoginComponent } from './components/login/login/login.component';
 import { StoricoContrattiComponent } from './components/storici/storico-contratti/storico-contratti.component';
@@ -73,6 +72,14 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard, RoleGuard],
   },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./components/dashboard/dashboard.module').then(
+        (m) => m.DashboardModule
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+  },
 
   {
     path: '',
@@ -98,7 +105,6 @@ const routes: Routes = [
     component: ModificaCommessaComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
-
 
   //CONTRATTO
   {
@@ -141,12 +147,6 @@ const routes: Routes = [
     component: RecuperoPasswordComponent,
   },
 
-  //DASHBOARD
-  {
-    path: 'dashboard',
-    component: ListaDashboardComponent,
-    canActivate: [AuthGuard, RoleGuard],
-  },
   {
     path: 'immagine',
     component: ImmagineComponent,
@@ -154,8 +154,6 @@ const routes: Routes = [
   },
 
   { path: 'login', component: LoginComponent },
-
-
 
   {
     path: 'info-commesse/:id',
@@ -169,7 +167,6 @@ const routes: Routes = [
   },
 
   //STORICO COMMESSE
-
 
   {
     path: 'aggiungi-commessa/:id',

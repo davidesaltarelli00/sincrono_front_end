@@ -206,7 +206,7 @@
                     <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"> <i
                       class="fa fa-pencil " (click)="modificaAnagrafica()"></i></button></h1>
 
-                <table class="table table-bordered ">
+                <table class="table table-striped ">
                   <tbody>
 
 
@@ -247,7 +247,7 @@
             <div class="row">
               <div class="col-12">
                 <legend>Dati di nascita</legend>
-                <table class="table table-bordered ">
+                <table class="table table-striped ">
                   <tbody>
                     <tr>
                       <td><strong>Data di nascita:</strong></td>
@@ -279,7 +279,7 @@
             <div class="row">
               <div class="col-12">
                 <legend>Dati residenza/domicilio</legend>
-                <table class="table table-bordered">
+                <table class="table table-striped">
                   <tbody>
                     <tr>
                       <td><strong>Residenza:</strong></td>
@@ -317,7 +317,7 @@
               </div>
             </div>
             <div class="container-contratto" [hidden]="data?.contratto===null">
-              <table class="table table-bordered">
+              <table class="table table-striped">
                 <tbody>
                   <tr>
                     <td><strong>Nome Azienda:</strong></td>
@@ -402,7 +402,7 @@
               <div class="row" *ngIf="data?.contratto?.partTime===true">
                 <div class="col-12">
                   <h1>Dati part-time</h1>
-                  <table class="table table-bordered">
+                  <table class="table table-striped">
                     <tbody>
                       <tr>
                         <td><strong>Part time</strong></td>
@@ -430,7 +430,7 @@
                       <i class="fa fa-pencil"></i>
                     </button></h1> <br>
                   <h1>Retribuzione</h1>
-                  <table class="table table-bordered">
+                  <table class="table table-striped">
                     <tbody>
                       <tr>
                         <td><strong>Retribuzione mensile lorda:</strong></td>
@@ -457,7 +457,7 @@
               <div class="row">
                 <div class="col-12">
                   <h1>RAL</h1>
-                  <table class="table table-bordered">
+                  <table class="table table-striped">
                     <tbody>
                       <tr>
                         <td><strong>RAL annua</strong></td>
@@ -477,7 +477,7 @@
               <div class="row">
                 <div class="col-12">
                   <h1>Diaria</h1>
-                  <table class="table table-bordered">
+                  <table class="table table-striped">
                     <tbody>
                       <tr>
                         <td><strong>Diaria mensile</strong></td>
@@ -495,7 +495,7 @@
               <div class="row" [hidden]="data?.contratto?.tipoContratto.descrizione!='P.Iva'">
                 <div class="col-12">
                   <h1>Dati economici partita IVA</h1>
-                  <table class="table table-bordered">
+                  <table class="table table-striped">
                     <tbody>
                       <tr>
                         <td><strong>Tariffa partita IVA</strong></td>
@@ -514,7 +514,7 @@
               <div class="row">
                 <div class="col-12">
                   <h1>Ticket e agevolazioni</h1>
-                  <table class="table table-bordered">
+                  <table class="table table-striped">
                     <tbody>
                       <tr>
                         <td> <strong>Ticket:</strong> </td>
@@ -533,7 +533,7 @@
               <div class="row">
                 <div class="col-12">
                   <h1>Costo aziendale</h1>
-                  <table class="table table-bordered">
+                  <table class="table table-striped">
                     <tbody>
                       <tr>
                         <td><strong>Costo aziendale</strong></td>
@@ -632,7 +632,7 @@
                 (click)="modificaCommessa()">
                 <i class="fa fa-pencil"></i>
               </button></h1>
-            <table class="table table-bordered">
+            <table class="table table-striped">
               <tbody>
                 <tr>
                   <td>
