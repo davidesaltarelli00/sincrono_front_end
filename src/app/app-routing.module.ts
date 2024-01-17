@@ -98,11 +98,7 @@ const routes: Routes = [
     component: ModificaCommessaComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
-  {
-    path: 'documenti',
-    component: CaricamentoDocumentiComponent,
-    canActivate: [AuthGuard, RoleGuard],
-  },
+
 
   //CONTRATTO
   {

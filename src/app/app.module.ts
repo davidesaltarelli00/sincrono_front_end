@@ -10,7 +10,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { saveAs } from 'file-saver';
-import { APP_BASE_HREF, LocationStrategy, PlatformLocation } from '@angular/common';
+import {
+  APP_BASE_HREF,
+  LocationStrategy,
+  PlatformLocation,
+} from '@angular/common';
 
 //CONTRATTO
 import { ListaContrattiComponent } from './components/contratto/lista-contratti/lista-contratti.component';
@@ -61,6 +65,8 @@ import { AnagraficaDtoModule } from './components/anagraficaDto/anagraficaDto.mo
 import { OrganicoModule } from './components/organico/organico.module';
 import { RichiesteModule } from './components/richieste/richieste.module';
 import { RapportinoModule } from './components/utente/rapportino.module';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { BreadcrumbService } from './components/Breadcrumb.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -89,7 +95,6 @@ import { RapportinoModule } from './components/utente/rapportino.module';
     BottoniComponent,
     MailSollecitaComponent,
     AlertConfermaComponent,
-    CaricamentoDocumentiComponent,
     FooterComponent,
     TutorialCompilazioneRapportinoComponent,
     AggiungiCommessaComponent,
@@ -112,15 +117,19 @@ import { RapportinoModule } from './components/utente/rapportino.module';
     AnagraficaDtoModule,
     OrganicoModule,
     RapportinoModule,
-    RichiesteModule
+    RichiesteModule,
   ],
-  providers: [DatePipe, CurrencyPipe,  {
-    provide: APP_BASE_HREF,
-    useFactory: (platformLocation: PlatformLocation) => {
-      return platformLocation.getBaseHrefFromDOM();
+  providers: [
+    DatePipe,
+    CurrencyPipe,
+    {
+      provide: APP_BASE_HREF,
+      useFactory: (platformLocation: PlatformLocation) => {
+        return platformLocation.getBaseHrefFromDOM();
+      },
+      deps: [PlatformLocation],
     },
-    deps: [PlatformLocation],
-  },],
+  ],
   //  { provide: LOCALE_ID, useValue: 'it-IT' }
   bootstrap: [AppComponent],
 })

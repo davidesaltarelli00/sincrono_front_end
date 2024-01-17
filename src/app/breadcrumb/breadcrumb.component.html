@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><b>You are here</b></li>
+            <ng-container *ngIf="b && b.length > 0">
+              <li *ngFor="let breadcrumb of b">
+                <ng-container *ngIf="breadcrumb.active; else elseBlock">
+                  <li class="{{breadcrumb.class}}">{{breadcrumb.label}}</li>
+                </ng-container>
+                <ng-template #elseBlock>
+                  <li class="{{breadcrumb.class}}"><a [routerLink]="breadcrumb.url">{{breadcrumb.label}}</a></li>
+                </ng-template>
+              </li>
+            </ng-container>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
