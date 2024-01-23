@@ -140,7 +140,7 @@
                          <th>Contratto</th>
                          <th>Numero commesse</th>
                          <th>Documenti</th>
-                         <th>Amministrazione</th>
+                         <!-- <th>Amministrazione</th> -->
                        </tr>
                       </thead>
                       <tbody>
@@ -149,9 +149,9 @@
                          <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione}} </td>
                          <td>{{elencoCommesse.length}}</td>
                          <td> Rapportino <button class="btn btn-success" (click)="goToRapportinoByCodiceFiscale()" matTooltip="Rapportino."> <i class="fa fa-file"></i> </button> </td>
-                          <td>
+                          <!-- <td>
                             <button class="btn btn-primary" (click)="goToAdministration()" ><i class="fa fa-user-tie"></i></button>
-                          </td>
+                          </td> -->
                         </tr>
                       </tbody>
                      </table>

@@ -18,7 +18,8 @@ import { ContrattoService } from '../../contratto/contratto-service';
 import { ThemeService } from 'src/app/theme.service';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
-import { TreeNode, TreeService } from '../tree.service';
+import { CreateNodeDialogComponent } from '../create-node-dialog/create-node-dialog.component';
+import { TreeNode } from '../tree.service';
 
 @Component({
   selector: 'app-gestione-ruoli',
@@ -57,7 +58,7 @@ export class GestioneRuoliComponent implements OnInit {
   orarioAttuale: Date = new Date();
   tokenExpirationTime: any;
   timer: any;
-
+  @Input() nodes: TreeNode[]=[];
 
   constructor(
     private authService: AuthService,
@@ -69,8 +70,7 @@ export class GestioneRuoliComponent implements OnInit {
     private menuService: MenuService,
     private contrattoService: ContrattoService,
     public themeService: ThemeService,
-    private cdRef: ChangeDetectorRef,
-    public treeService: TreeService
+    private cdRef: ChangeDetectorRef
   ) {
     this.windowWidth = window.innerWidth;
     if (window.innerWidth >= 900) {
@@ -88,6 +88,27 @@ export class GestioneRuoliComponent implements OnInit {
     }
   }
 
+  createChildNode(parentNode: TreeNode): void {
+    const dialogRef = this.dialog.open(CreateNodeDialogComponent, {
+      width: '250px',
+      data: { parentNode: parentNode }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const newChildNode: TreeNode = { name: result, children: [] };
+
+        if (!parentNode.children) {
+          parentNode.children = [];
+        }
+        parentNode.children.push(newChildNode);
+
+        // Aggiorna la visualizzazione
+        this.nodes = [...this.nodes];
+      }
+    });
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.windowWidth = window.innerWidth;
@@ -102,26 +123,6 @@ export class GestioneRuoliComponent implements OnInit {
   navigateTo(route: string): void {
     console.log(`Navigating to ${route}`);
     this.router.navigate([route]);
-  }
-
-
-
-  addRootNode(): void {
-    const newNode = this.treeService.createNewBranch();
-    this.treeService.addNode(null, newNode);
-  }
-
-  addNode(parent: TreeNode): void {
-    const newNode = this.treeService.createNewBranch();
-    this.treeService.addNode(parent, newNode);
-  }
-
-  removeNode(parent: TreeNode | null, index: number): void {
-    this.treeService.removeNode(parent, index);
-  }
-
-  toggleNodeDetails(node: TreeNode): void {
-    node.showDetails = !node.showDetails;
   }
 
   ngOnInit(): void {

@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Creare un nuovo nodo</h2>
+    <mat-dialog-content>
+      <p>Inserisci il nome del nuovo nodo:</p>
+      <mat-form-field>
+        <input matInput [(ngModel)]="newNodeName" placeholder="Nome del nodo">
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button (click)="onNoClick()">Annulla</button>
+      <button mat-button (click)="onConfirmClick()">Conferma</button>
+    </mat-dialog-actions>

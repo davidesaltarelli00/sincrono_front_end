@@ -100,12 +100,39 @@
     </mat-toolbar>
   </div>
 <div class="container-fluid">
-  <mat-drawer-container class="example-container">
-    <mat-drawer mode="side" opened>Drawer content</mat-drawer>
-    <mat-drawer-content>
+  <div class="row">
+    <div class="col-md-10" style="margin: auto;">
+      <mat-card style="text-align: center;">
+        <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono" class="img-fluid"></h1>
+        <h1>Gestione Ruoli </h1>
+      </mat-card>
+    </div>
+  </div>
 
-    </mat-drawer-content>
-  </mat-drawer-container>
+  <div class="row">
+    <div class="col-12">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <p>Lista dei ruoli</p>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul>
+            <li *ngFor="let node of nodes">
+              <p>
+                <i class="fa fa-folder"></i>
+                <a style="color: blue; cursor: pointer;" (click)="createChildNode(node)">
+                  {{ node.name }}
+                </a>
+              </p>
+              <app-gestione-ruoli *ngIf="node.children" [nodes]="node.children"></app-gestione-ruoli>
+            </li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
 
 </div>
   <div id="finePagina"></div>
