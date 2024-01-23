@@ -68,6 +68,8 @@ import { RapportinoModule } from './components/utente/rapportino.module';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { BreadcrumbService } from './components/Breadcrumb.service';
 import { DashboardModule } from './components/dashboard/dashboard.module';
+import { GestioneRuoliComponent } from './components/amministrazione/gestione-ruoli/gestione-ruoli.component';
+import { AmministrazioneModule } from './components/amministrazione/amministrazione.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -118,7 +120,8 @@ import { DashboardModule } from './components/dashboard/dashboard.module';
     OrganicoModule,
     RapportinoModule,
     RichiesteModule,
-    DashboardModule
+    DashboardModule,
+    AmministrazioneModule
   ],
   providers: [
     DatePipe,

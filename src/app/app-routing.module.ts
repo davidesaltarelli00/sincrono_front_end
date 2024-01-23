@@ -59,6 +59,14 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
+      import('./components/amministrazione/amministrazione.module').then(
+        (m) => m.AmministrazioneModule
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: '',
+    loadChildren: () =>
       import('./components/organico/organico.module').then(
         (m) => m.OrganicoModule
       ),
