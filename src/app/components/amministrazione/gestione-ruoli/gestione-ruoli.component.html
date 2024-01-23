@@ -118,17 +118,29 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <ul>
-            <li *ngFor="let node of nodes">
-              <p>
-                <i class="fa fa-folder"></i>
-                <a style="color: blue; cursor: pointer;" (click)="createChildNode(node)">
-                  {{ node.name }}
-                </a>
-              </p>
-              <app-gestione-ruoli *ngIf="node.children" [nodes]="node.children"></app-gestione-ruoli>
-            </li>
-          </ul>
+          <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+            <!-- This is the tree node template for leaf nodes -->
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+              <!-- use a disabled button to provide padding for tree leaf -->
+              <button mat-icon-button disabled></button>
+              {{node.name}}
+            </mat-tree-node>
+            <!-- This is the tree node template for expandable nodes -->
+            <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+              <button mat-icon-button matTreeNodeToggle
+                      [attr.aria-label]="'Toggle ' + node.name">
+                <mat-icon class="mat-icon-rtl-mirror">
+                  {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+              </button>
+              {{node.name}}
+            </mat-tree-node>
+          </mat-tree>
+
+
+          <!-- Copyright 2024 Google LLC. All Rights Reserved.
+              Use of this source code is governed by an MIT-style license that
+              can be found in the LICENSE file at https://angular.io/license -->
         </mat-card-content>
       </mat-card>
     </div>

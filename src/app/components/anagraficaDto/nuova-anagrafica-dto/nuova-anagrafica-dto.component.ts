@@ -117,6 +117,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   idAnagraficaLoggata: any;
   tokenExpirationTime: any;
   timer: any;
+  elencoProvince: any[] = [];
+  elencoComuni: any[] = [];
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -190,10 +192,56 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         categoriaProtetta: new FormControl(''),
         statoDiNascita: new FormControl(''),
         cittadinanza: new FormControl(''),
-        provinciaDiNascita: new FormControl(''),
-        comuneDiNascita: new FormControl(''),
-        residenza: new FormControl(''),
-        domicilio: new FormControl(''),
+        provinciaDiNascita: new FormGroup({
+          id: new FormControl(''),
+          siglaProvincia: new FormControl(''),
+          denominazione_provincia:new FormControl(''),
+          tipologiaProvincia: new FormControl(''),
+          numeroComuni:new FormControl('')
+        }),
+        comuneDiNascita: new FormGroup({
+          id: new FormControl(''),
+          siglaProvincia: new FormControl(''),
+          codiceIstat: new FormControl(''),
+          denominazioneItaAltra: new FormControl(''),
+          denominazione_ita: new FormControl(''),
+          denominazione_altra: new FormControl(''),
+          flag_capoluogo:new FormControl('')
+        }),
+        provinciaResidenza: new FormGroup({
+          id: new FormControl(''),
+          siglaProvincia: new FormControl(''),
+          denominazione_provincia:new FormControl(''),
+          tipologiaProvincia: new FormControl(''),
+          numeroComuni:new FormControl('')
+        }),
+        comuneResidenza: new FormGroup({
+          id: new FormControl(''),
+          siglaProvincia: new FormControl(''),
+          codiceIstat: new FormControl(''),
+          denominazioneItaAltra: new FormControl(''),
+          denominazione_ita: new FormControl(''),
+          denominazione_altra: new FormControl(''),
+          flag_capoluogo:new FormControl('')
+        }),
+        provinciaDomicilio: new FormGroup({
+          id: new FormControl(''),
+          siglaProvincia: new FormControl(''),
+          denominazione_provincia:new FormControl(''),
+          tipologiaProvincia: new FormControl(''),
+          numeroComuni:new FormControl('')
+        }),
+        comuneDomicilio: new FormGroup({
+          id: new FormControl(''),
+          siglaProvincia: new FormControl(''),
+          codiceIstat: new FormControl(''),
+          denominazioneItaAltra: new FormControl(''),
+          denominazione_ita: new FormControl(''),
+          denominazione_altra: new FormControl(''),
+          flag_capoluogo:new FormControl('')
+        }),
+        indirizzoResidenza: new FormControl(''),
+        indirizzoDomicilio: new FormControl(''),
         dataDiNascita: new FormControl(''),
         tipoCanaleReclutamento: new FormGroup({
           id: new FormControl('', Validators.required),
@@ -358,6 +406,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       this.getUserLogged();
       // this.getUserRole();
       this.caricaMappa();
+      this.getProvince();
+      this.getComuni();
     }
 
     //INIZIO porzione di codice necessaria alla disabilitazione dei campi "distaccoAzienda" e "DistaccoData" nelle commesseç
@@ -1462,6 +1512,33 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     //     buttonDuplica.setAttribute("disabled", "true");
     //   }
     // }
+  }
+
+  getProvince() {
+    this.anagraficaDtoService.getProvince(this.token).subscribe(
+      (resp: any) => {
+        this.elencoProvince = (resp as any)['list'];
+      },
+      (error: any) => {
+        console.error(
+          'Errore durante il caricamento delle province:' +
+            JSON.stringify(error)
+        );
+      }
+    );
+  }
+  getComuni() {
+    this.anagraficaDtoService.getComuni(this.token).subscribe(
+      (resp: any) => {
+        this.elencoComuni = (resp as any)['list'];
+      },
+      (error: any) => {
+        console.error(
+          'Errore durante il caricamento delle province:' +
+            JSON.stringify(error)
+        );
+      }
+    );
   }
 
   caricaTipoCanaleReclutamento() {

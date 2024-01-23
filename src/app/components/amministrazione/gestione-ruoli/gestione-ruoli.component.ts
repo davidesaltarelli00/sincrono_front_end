@@ -20,6 +20,34 @@ import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.componen
 import { AlertLogoutComponent } from '../../alert-logout/alert-logout.component';
 import { CreateNodeDialogComponent } from '../create-node-dialog/create-node-dialog.component';
 import { TreeNode } from '../tree.service';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+interface Node {
+  name: string;
+  children?: Node[];
+}
+
+const FLAT_TREE_DATA: Node[] = [
+  {
+    name: 'Flat Group 1',
+    children: [{name: 'Flat Leaf 1.1'}, {name: 'Flat Leaf 1.2'}, {name: 'Flat Leaf 1.3'}],
+  },
+  {
+    name: 'Flat Group 2',
+    children: [
+      {
+        name: 'Flat Group 2.1',
+        children: [{name: 'Flat Leaf 2.1.1'}, {name: 'Flat Leaf 2.1.2'}, {name: 'Flat Leaf 2.1.3'}],
+      },
+    ],
+  },
+];
+
+interface ExampleFlatNode {
+  expandable: boolean;
+  name: string;
+  level: number;
+}
 
 @Component({
   selector: 'app-gestione-ruoli',
@@ -60,6 +88,28 @@ export class GestioneRuoliComponent implements OnInit {
   timer: any;
   @Input() nodes: TreeNode[]=[];
 
+  private _transformer = (node: Node, level: number) => {
+    return {
+      expandable: !!node.children && node.children.length > 0,
+      name: node.name,
+      level: level,
+    };
+  };
+
+  treeControl = new FlatTreeControl<ExampleFlatNode>(
+    node => node.level,
+    node => node.expandable,
+  );
+
+  treeFlattener = new MatTreeFlattener(
+    this._transformer,
+    node => node.level,
+    node => node.expandable,
+    node => node.children,
+  );
+
+  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+
   constructor(
     private authService: AuthService,
     private profileBoxService: ProfileBoxService,
@@ -72,6 +122,7 @@ export class GestioneRuoliComponent implements OnInit {
     public themeService: ThemeService,
     private cdRef: ChangeDetectorRef
   ) {
+    this.dataSource.data = FLAT_TREE_DATA;
     this.windowWidth = window.innerWidth;
     if (window.innerWidth >= 900) {
       // 768px portrait
@@ -108,6 +159,8 @@ export class GestioneRuoliComponent implements OnInit {
       }
     });
   }
+
+  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
