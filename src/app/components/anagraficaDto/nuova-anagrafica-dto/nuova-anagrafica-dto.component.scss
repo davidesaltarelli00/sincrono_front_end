@@ -90,7 +90,7 @@ select {
 }
 
 mat-card {
-  margin: 10px;
+  margin: 20px;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -463,9 +463,7 @@ input[type="checkbox"]:disabled+.slider::before {
   }
 
   .logo-image {
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    border-radius: 1000%;
   }
 }
 

@@ -477,6 +477,11 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       'contratto.tipoAzienda.id'
     );
 
+    const PFIcontrol = this.AnagraficaDto.get('contratto.pfi');
+      if(PFIcontrol){
+        PFIcontrol.disable();
+      }
+
     const valoreTicketControl = this.AnagraficaDto.get(
       'contratto.valoreTicket'
     );
