@@ -99,23 +99,19 @@
 
   <div class="container-fluid" *ngIf="ruolo==='ADMIN'" >
     <div class="row">
-      <div class="col-12">
+      <div class="col-md-12">
         <br>
-        <mat-card style="text-align: center;">
-          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+        <mat-card class="text-center">
+          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono" class="img-fluid"></h1>
           <h1>Nuova anagrafica  <i class="fa fa-user"></i> <i class="fa fa-plus"></i> </h1>
         </mat-card>
       </div>
     </div>
-    <!-- <div class="row">
-      <div class="col-12">
-        <app-breadcrumb></app-breadcrumb>
-      </div>
-    </div> -->
+
     <form [formGroup]="AnagraficaDto">
       <div *ngIf="currentStep === 1">
         <div class="row">
-          <div class="col-12">
+          <div class="col-lg-12">
             <mat-stepper #stepper [selectedIndex]="currentStep - 1">
               <mat-step>
                 <ng-template matStepLabel>Anagrafica</ng-template>
