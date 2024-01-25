@@ -345,6 +345,116 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.router.navigate([route]);
   }
 
+
+  onChangeProvinciaResidenza(event:any){ //metodo per catturare la provincia di residenza selezionata e filtrare i comuni
+    const selectedValue = parseInt(event.target.value, 10);
+    if (!isNaN(selectedValue)) {
+      const selectedObject = this.elencoProvince.find(
+        (provincia: any) => provincia.id === selectedValue
+      );
+      if (selectedObject) {
+        console.log('Provincia selezionata: ', JSON.stringify(selectedObject));
+        //qui andrá l endpoint per i comuni
+        this.anagraficaDtoService.getComuni(localStorage.getItem('token'), selectedObject.siglaProvincia).subscribe(
+          (resp: any) => {
+            this.elencoComuni = (resp as any)['list'];
+            const comuniControl=this.anagraficaDto.get('anagrafica.comuneResidenza.id');
+            if(this.elencoComuni.length>0 && comuniControl){
+              comuniControl.enable();
+            }
+          },
+          (error: any) => {
+            console.error(
+              'Errore durante il caricamento delle province:' +
+                JSON.stringify(error)
+            );
+          }
+        )
+      } else {
+        console.log('Azienda non trovata nella lista');
+      }
+    } else {
+      console.log('Valore non valido o provincia non selezionata');
+      const comuniControl = this.anagraficaDto.get('anagrafica.comuneResidenza.id');
+      if(comuniControl){
+        comuniControl.disable();
+        comuniControl.setValue("");
+      }
+    }
+  }
+  onChangeProvinciaDomicilio(event:any){ //metodo per catturare la provincia di domicilio selezionata e filtrare i comuni
+    const selectedValue = parseInt(event.target.value, 10);
+    if (!isNaN(selectedValue)) {
+      const selectedObject = this.elencoProvince.find(
+        (provincia: any) => provincia.id === selectedValue
+      );
+      if (selectedObject) {
+        console.log('Provincia domicilio selezionata: ', JSON.stringify(selectedObject));
+        this.anagraficaDtoService.getComuni(localStorage.getItem('token'), selectedObject.siglaProvincia).subscribe(
+          (resp: any) => {
+            this.elencoComuni = (resp as any)['list'];
+            const comuniDomicilioControl=this.anagraficaDto.get('anagrafica.comuneDomicilio.id');
+            if(this.elencoComuni.length>0 && comuniDomicilioControl){
+              comuniDomicilioControl.enable();
+            }
+          },
+          (error: any) => {
+            console.error(
+              'Errore durante il caricamento delle province:' +
+                JSON.stringify(error)
+            );
+          }
+        )
+      } else {
+        console.log('Azienda non trovata nella lista');
+      }
+    } else {
+      console.log('Valore non valido o provincia domicilio non selezionata');
+      const comuniControl = this.anagraficaDto.get('anagrafica.comuneDomicilio.id');
+      if(comuniControl){
+        comuniControl.disable();
+        comuniControl.setValue("");
+      }
+    }
+  }
+
+  onChangeProvinciaNascita(event:any){ //metodo per catturare la provincia di nascita selezionata e filtrare i comuni
+    const selectedValue = parseInt(event.target.value, 10);
+    if (!isNaN(selectedValue)) {
+      const selectedObject = this.elencoProvince.find(
+        (provincia: any) => provincia.id === selectedValue
+      );
+      if (selectedObject) {
+        console.log('Provincia di nascita selezionata: ', JSON.stringify(selectedObject));
+        this.anagraficaDtoService.getComuni(localStorage.getItem('token'), selectedObject.siglaProvincia).subscribe(
+          (resp: any) => {
+            this.elencoComuni = (resp as any)['list'];
+            const comuniNascitaControl=this.anagraficaDto.get('anagrafica.comuneDiNascita.id');
+            if(this.elencoComuni.length>0 && comuniNascitaControl){
+              comuniNascitaControl.enable();
+            }
+          },
+          (error: any) => {
+            console.error(
+              'Errore durante il caricamento delle province:' +
+                JSON.stringify(error)
+            );
+          }
+        )
+      } else {
+        console.log('Azienda non trovata nella lista');
+      }
+    } else {
+      console.log('Valore non valido o provincia nascita non selezionata');
+      const comuneNascitaControl = this.anagraficaDto.get('anagrafica.comuneDiNascita.id');
+      if(comuneNascitaControl){
+        comuneNascitaControl.disable();
+        comuneNascitaControl.setValue("");
+      }
+    }
+  }
+
+
   ngOnInit(): void {
     if (this.token) {
       const tokenParts = this.token.split('.');
@@ -550,19 +660,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.anagraficaDtoService.getProvince(this.token).subscribe(
       (resp: any) => {
         this.elencoProvince = (resp as any)['list'];
-      },
-      (error: any) => {
-        console.error(
-          'Errore durante il caricamento delle province:' +
-            JSON.stringify(error)
-        );
-      }
-    );
-  }
-  getComuni(siglaProvincia:any) {
-    this.anagraficaDtoService.getComuni(this.token, siglaProvincia).subscribe(
-      (resp: any) => {
-        this.elencoComuni = (resp as any)['list'];
       },
       (error: any) => {
         console.error(
