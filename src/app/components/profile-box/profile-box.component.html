@@ -140,6 +140,7 @@
                          <th>Contratto</th>
                          <th>Numero commesse</th>
                          <th>Documenti</th>
+                         <!-- <th>Amministrazione</th> -->
                        </tr>
                       </thead>
                       <tbody>
@@ -148,7 +149,10 @@
                          <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione}} </td>
                          <td>{{elencoCommesse.length}}</td>
                          <td> Rapportino <button class="btn btn-success" (click)="goToRapportinoByCodiceFiscale()" matTooltip="Rapportino."> <i class="fa fa-file"></i> </button> </td>
-                       </tr>
+                          <!-- <td>
+                            <button class="btn btn-primary" (click)="goToAdministration()" ><i class="fa fa-user-tie"></i></button>
+                          </td> -->
+                        </tr>
                       </tbody>
                      </table>
                   </div>
@@ -359,7 +363,7 @@
           <div class="row">
             <div class="col-12">
               <mat-card class="profile-box">
-                <h3>Contratto <i class="fa fa-file-contract"></i> <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                <h3>Contratto <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
                   matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                   <i class="fa fa-exclamation-triangle"></i> </button></h3>
                 <div class="table-responsive">
@@ -444,7 +448,7 @@
           <div class="row">
             <div class="col-12">
               <mat-card class="profile-box">
-                <h3>Commesse <i class="fa-solid fa-briefcase"></i> <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                <h3>Commesse <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
                   matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                   <i class="fa fa-exclamation-triangle"></i> </button></h3>
                 <mat-card-content *ngIf="elencoCommesse.length>0">
@@ -498,7 +502,7 @@
           <div class="row">
             <div class="col-12">
               <mat-card class="profile-box">
-                <h3>Accesso <i class="fa fa-cog" ></i> </h3>
+                <h3>Accesso</h3>
                 <table class="table table-striped">
                   <thead>
                    <tr>
@@ -567,7 +571,7 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <table class="table table-bordered">
+      <table class="table table-striped">
         <tbody>
           <tr>
             <td><strong>Ruolo</strong></td>
@@ -593,7 +597,7 @@
   <div class="row">
     <div class="col-12">
       <h3>Dati anagrafici <i class="fa fa-user"></i> </h3>
-      <table class="table table-bordered">
+      <table class="table table-striped">
         <tbody>
           <tr>
             <td><strong>Nominativo</strong></td>
@@ -632,7 +636,7 @@
   <div class="row">
     <div class="col-12">
       <h3>Contatti <i class="fa fa-phone"></i> &nbsp; <i class="fa fa-envelope"></i> </h3>
-      <table class="table table-bordered">
+      <table class="table table-striped">
         <tbody>
           <tr>
             <td><strong>Cellulare privato</strong></td>
@@ -663,7 +667,7 @@
     <div class="col-12">
       <h3>Residenza e domicilio <i class="fa fa-address-card" aria-hidden="true"></i>
       </h3>
-      <table class="table table-bordered">
+      <table class="table table-striped">
         <tbody>
           <tr>
             <td><strong>Residenza</strong></td>
@@ -680,7 +684,7 @@
   <div class="row">
     <div class="col-12">
       <h3>Referenze <i class="fa fa-school"></i> </h3>
-      <table class="table table-bordered">
+      <table class="table table-striped">
         <tbody>
           <tr>
             <td><strong>Titolo di studio</strong></td>
@@ -697,7 +701,7 @@
   <div class="row">
     <div class="col-12">
       <h3>Altre informazioni <i class="fa fa-info-circle" ></i> </h3>
-      <table class="table table-bordered">
+      <table class="table table-striped">
         <tbody>
           <tr>
             <td><strong>Categoria protetta</strong></td>
@@ -726,7 +730,7 @@
   <div class="row">
     <div class="col-12">
       <h3>Contratto <i class="fa fa-file-contract"></i></h3>
-      <table class="table table-bordered" >
+      <table class="table table-striped" >
         <tbody>
           <tr>
             <td><strong>Tipo Contratto</strong></td>
@@ -786,8 +790,8 @@
   </div>
   <div class="row" *ngIf="elencoCommesse.length<1">
     <div class="col-12">
-      <h3>Commesse <i class="fa-solid fa-briefcase"></i></h3>
-      <table class="table table-bordered" >
+      <h3>Commesse</h3>
+      <table class="table table-striped" >
       <tbody>
         <tr>
           <td>
@@ -800,7 +804,7 @@
   </div>
   <div class="row" *ngIf="elencoCommesse.length>0">
     <div class="col-12">
-      <h3>Commesse <i class="fa fa-briefcase"></i></h3>
+      <h3>Commesse</h3>
       <mat-card *ngFor="let commessa of elencoCommesse; let i = index" class="commessa-card">
         <mat-card-title>
           <button mat-mini-fab color="primary">{{i+1}}</button>
@@ -853,8 +857,8 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <h3>Accesso <i class="fa fa-cog" ></i></h3>
-      <table class="table table-bordered">
+      <h3>Accesso</h3>
+      <table class="table table-striped">
         <tbody>
           <tr>
             <td><strong>Attivo</strong></td>

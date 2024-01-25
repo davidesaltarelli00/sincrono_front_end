@@ -68,9 +68,9 @@
 
  <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
     <mat-toolbar id="toolbar" *ngIf="token && mobile  && jsonData?.list">
-      <a [routerLink]="['/home']" class="logo-link">
+      <!-- <a [routerLink]="['/home']" class="logo-link">
         <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
-      </a>
+      </a> -->
       <button style="background-color:#333;color:white;margin-left:-10px;margin-right:3px;border-radius:1px;padding:5px;"
         mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>menu</mat-icon>
@@ -99,25 +99,22 @@
 
   <div class="container-fluid" *ngIf="ruolo==='ADMIN'" >
     <div class="row">
-      <div class="col-12">
+      <div class="col-md-12">
         <br>
-        <mat-card style="text-align: center;">
-          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
+        <mat-card class="text-center">
+          <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono" class="img-fluid"></h1>
           <h1>Nuova anagrafica  <i class="fa fa-user"></i> <i class="fa fa-plus"></i> </h1>
         </mat-card>
       </div>
     </div>
-    <br>
 
     <form [formGroup]="AnagraficaDto">
       <div *ngIf="currentStep === 1">
         <div class="row">
-          <div class="col-12">
+          <div class="col-lg-12">
             <mat-stepper #stepper [selectedIndex]="currentStep - 1">
               <mat-step>
                 <ng-template matStepLabel>Anagrafica</ng-template>
-                <mat-card>
-                  <mat-card-content>
                     <div class="row">
                       <div class="col-12">
                         <strong>
@@ -125,333 +122,163 @@
                         </strong>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col-md-3">
-                        <div formGroupName="ruolo" class="form-group">
-                          <label for="filter-ruoli">Ruolo *</label>
-                          <select [ngStyle]="{
-                                border: AnagraficaDto.get('ruolo.id')?.hasError(
-                                  'required'
-                                )
-                                  ? '1px solid red'
-                                  : '1px solid green'
-                              }" class="form-select" aria-label="Default select example" formControlName="id"
-                            type="number">
-                            <option value="">-- Seleziona un ruolo --</option>
-                            <option *ngFor="let ruolo of ruoli" [value]="ruolo.id">
-                              {{ ruolo.nome }}
-                            </option>
-                          </select>
-                          <div *ngIf="
-                                AnagraficaDto.get('ruolo.id')?.hasError(
-                                  'required'
-                                )
-                              " class="text-danger">
-                            Il campo ruolo è obbligatorio.
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <br />
-                    <div formGroupName="anagrafica">
-                      <div class="row" id="nominativo">
-                        <legend>Dati personali</legend>
-                        <div class="col-md-3">
-                          <label for="nome">Nome* </label>
-                          <div class="form-group">
-                            <input [ngStyle]="{
-                                  border: AnagraficaDto.get(
-                                    'anagrafica.nome'
-                                  )?.hasError('required')
-                                    ? '1px solid red'
-                                    : '1px solid green'
-                                }" id="anagrafica.nome" type="text" class="form-control"
-                              placeholder="Inserire il nome." formControlName="nome" />
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.nome'
-                                  )?.hasError('required')
-                                " class="text-danger">
-                              Il campo nome è obbligatorio.
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <label>Cognome* </label>
-                          <div class="form-group">
-                            <input [ngStyle]="{
-                                  border: AnagraficaDto.get(
-                                    'anagrafica.cognome'
-                                  )?.hasError('required')
-                                    ? '1px solid red'
-                                    : '1px solid green'
-                                }" id="anagrafica.cognome" type="text" class="form-control"
-                              placeholder="Inserire il cognome." formControlName="cognome" />
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.cognome'
-                                  )?.hasError('required')
-                                " class="text-danger">
-                              Il campo cognome è obbligatorio.
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="col-md-3">
-                          <label>Codice Fiscale*</label>
-                          <div class="form-group">
-                            <input #codiceFiscale [ngStyle]="{ border:AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('required') ||AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('minlength') ||AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('maxlength')? '1px solid red': '1px solid green'}"
-                             id="anagrafica.codiceFiscale" type="text" class="form-control"
-                              placeholder="Inserire il codice fiscale." formControlName="codiceFiscale" />
-                              <div class="text-end">{{ codiceFiscale.value.length || 0 }}/16</div>
-                            <div *ngIf=" AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('maxLength')" class="text-danger">
-                              Il campo non rispetta la lunghezza massima richiesta (16 caratteri)
-                            </div>
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.codiceFiscale'
-                                  )?.hasError('minLength')
-                                " class="text-danger">
-                              Il campo non rispetta la lunghezza minima
-                              richiesta (16 caratteri)
-                            </div>
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.codiceFiscale'
-                                  )?.hasError('required')
-                                " class="text-danger">
-                              Campo obbligatorio.
-                            </div>
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.codiceFiscale'
-                                  )?.hasError('required') &&
-                                  !AnagraficaDto.get('anagrafica.codiceFiscale')
-                                    ?.invalid
-                                " class="text-danger">
-                              Campo non valido.
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="col-md-3">
-                          <label for="filter-Tipo Azienda">Nome Azienda</label>
-                          <div formGroupName="tipoAzienda" class="form-group">
-                            <select (change)="onChangeTipoAzienda($event)" class="form-select"  [ngStyle]="{
-                              border: AnagraficaDto.get(
-                                'anagrafica.tipoAzienda.id'
-                              )?.hasError('required')
-                                ? '1px solid red'
-                                : '1px solid green'
-                            }"
-                              aria-label="Default select example" formControlName="id" type="number">
-                              <option value="">
-                                -- Seleziona azienda --
-                              </option>
-                              <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
-                                {{ tipoAzienda.descrizione }}
-                              </option>
-                            </select>
-                            <div *ngIf="
-                            AnagraficaDto.get(
-                              'anagrafica.tipoAzienda.id'
-                            )?.hasError('required')
-                          " class="text-danger">
-                        Campo obbligatorio.
-                      </div>
-                          </div>
-                        </div>
-
-                        <br />
-                      </div>
-
-                      <br />
-                      <legend>Recapiti</legend>
-                      <div class="row">
-                        <div class="col-md-3">
-                          <label>Cellulare Privato</label>
-                          <div class="form-group">
-                            <input type="text" class="form-control" formControlName="cellularePrivato"
-                            [ngStyle]="{
-                              border: AnagraficaDto.get(
-                                'anagrafica.cellularePrivato'
-                              )?.hasError('pattern')
-                                ? '1px solid red'
-                                : '1px solid #ccc'
-                            }"
-                            placeholder="Inserire cellulare privato." />
-
-                            <div *ngIf="AnagraficaDto.get('anagrafica.cellularePrivato')?.invalid && (AnagraficaDto.get('anagrafica.cellularePrivato')?.dirty || AnagraficaDto.get('anagrafica.cellularePrivato')?.touched)">
-                              <div *ngIf="AnagraficaDto.get('anagrafica.cellularePrivato')?.hasError('pattern')" class="text-danger">
-                                Il formato non è valido. Inserire un numero valido.
+                   <div class="row">
+                    <div class="col-12">
+                      <mat-card>
+                        <mat-card-title>
+                          <legend>Ruolo</legend>
+                        </mat-card-title>
+                        <mat-card-content>
+                          <div class="row">
+                            <div class="col-md-3">
+                              <div formGroupName="ruolo" class="form-group">
+                                <label for="filter-ruoli">Ruolo *</label>
+                                <select [ngStyle]="{
+                                      border: AnagraficaDto.get('ruolo.id')?.hasError(
+                                        'required'
+                                      )
+                                        ? '1px solid red'
+                                        : '1px solid green'
+                                    }" class="form-select" aria-label="Default select example" formControlName="id"
+                                  type="number">
+                                  <option value="">-- Seleziona un ruolo --</option>
+                                  <option *ngFor="let ruolo of ruoli" [value]="ruolo.id">
+                                    {{ ruolo.nome }}
+                                  </option>
+                                </select>
+                                <div *ngIf="
+                                      AnagraficaDto.get('ruolo.id')?.hasError(
+                                        'required'
+                                      )
+                                    " class="text-danger">
+                                  Il campo ruolo è obbligatorio.
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-
-                        <div class="col-md-3">
-                          <label>Cellulare Aziendale </label>
-                          <div class="form-group">
-                            <input type="text" class="form-control" formControlName="cellulareAziendale"
-                            [ngStyle]="{
-                              border: AnagraficaDto.get(
-                                'anagrafica.cellulareAziendale'
-                              )?.hasError('pattern')
-                                ? '1px solid red'
-                                : '1px solid #ccc'
-                            }"
-                              placeholder="Inserire cellulare aziendale." />
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.cellulareAziendale'
-                                  )?.hasError('pattern')
-                                " class="text-danger">
-                              Il formato cellulare aziendale non é valido.
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="col-md-3">
-                          <label>Email Privata </label>
-                          <div class="form-group">
-                            <input type="text" class="form-control" formControlName="mailPrivata"
-                              placeholder="Inserire mail privata." />
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.mailPrivata'
-                                  )?.hasError('pattern')
-                                " class="text-danger">
-                              Il formato della mail privata non è valido.
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="col-md-3">
-                          <label>Email Aziendale* </label>
-                          <div class="form-group">
-                            <input [ngStyle]="{
-                                  border: AnagraficaDto.get(
-                                    'anagrafica.mailAziendale'
-                                  )?.hasError('required')
-                                    ? '1px solid red'
-                                    : '1px solid green'
-                                }" id="anagrafica.mailAziendale" type="text" class="form-control"
-                              formControlName="mailAziendale" placeholder="Inserire mail aziendale." />
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.mailAziendale'
-                                  )?.hasError('required')
-                                " class="text-danger">
-                              Il campo mail aziendale è obbligatorio.
-                            </div>
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.mailAziendale'
-                                  )?.hasError('pattern')
-                                " class="text-danger">
-                              Formato non valido.
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                        </mat-card-content>
+                      </mat-card>
+                    </div>
+                   </div>
+                    <div formGroupName="anagrafica">
                       <div class="row">
-                        <div class="col-md-3">
-                          <label>Email Pec </label>
-                          <div class="form-group">
-                            <input type="text" class="form-control" formControlName="mailPec"
-                              placeholder="Inserire PEC." />
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'anagrafica.mailPec'
-                                  )?.hasError('pattern')
-                                " class="text-danger">
-                              Il formato della PEC non è valido.
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <br />
-                      <legend>Competenze</legend>
+                        <div class="col-12">
+                          <mat-card>
+                            <mat-card-title>
+                              <legend>Dati personali</legend>
+                            </mat-card-title>
+                            <mat-card-content>
+                              <div class="row">
+                                <div class="col-md-3">
+                                  <label for="nome">Nome* </label>
+                                  <div class="form-group">
+                                    <input [ngStyle]="{
+                                          border: AnagraficaDto.get(
+                                            'anagrafica.nome'
+                                          )?.hasError('required')
+                                            ? '1px solid red'
+                                            : '1px solid green'
+                                        }" id="anagrafica.nome" type="text" class="form-control"
+                                      placeholder="Inserire il nome." formControlName="nome" />
+                                    <div *ngIf="
+                                          AnagraficaDto.get(
+                                            'anagrafica.nome'
+                                          )?.hasError('required')
+                                        " class="text-danger">
+                                      Il campo nome è obbligatorio.
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3">
+                                  <label>Cognome* </label>
+                                  <div class="form-group">
+                                    <input [ngStyle]="{
+                                          border: AnagraficaDto.get(
+                                            'anagrafica.cognome'
+                                          )?.hasError('required')
+                                            ? '1px solid red'
+                                            : '1px solid green'
+                                        }" id="anagrafica.cognome" type="text" class="form-control"
+                                      placeholder="Inserire il cognome." formControlName="cognome" />
+                                    <div *ngIf="
+                                          AnagraficaDto.get(
+                                            'anagrafica.cognome'
+                                          )?.hasError('required')
+                                        " class="text-danger">
+                                      Il campo cognome è obbligatorio.
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                  <label>Codice Fiscale*</label>
+                                  <div class="form-group">
+                                    <input #codiceFiscale [ngStyle]="{ border:AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('required') ||AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('minlength') ||AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('maxlength')? '1px solid red': '1px solid green'}"
+                                     id="anagrafica.codiceFiscale" type="text" class="form-control"
+                                      placeholder="Inserire il codice fiscale." formControlName="codiceFiscale" />
+                                      <div class="text-end">{{ codiceFiscale.value.length || 0 }}/16</div>
+                                    <div *ngIf=" AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('maxLength')" class="text-danger">
+                                      Il campo non rispetta la lunghezza massima richiesta (16 caratteri)
+                                    </div>
+                                    <div *ngIf="
+                                          AnagraficaDto.get(
+                                            'anagrafica.codiceFiscale'
+                                          )?.hasError('minLength')
+                                        " class="text-danger">
+                                      Il campo non rispetta la lunghezza minima
+                                      richiesta (16 caratteri)
+                                    </div>
+                                    <div *ngIf="
+                                          AnagraficaDto.get(
+                                            'anagrafica.codiceFiscale'
+                                          )?.hasError('required')
+                                        " class="text-danger">
+                                      Campo obbligatorio.
+                                    </div>
+                                    <div *ngIf="
+                                          AnagraficaDto.get(
+                                            'anagrafica.codiceFiscale'
+                                          )?.hasError('required') &&
+                                          !AnagraficaDto.get('anagrafica.codiceFiscale')
+                                            ?.invalid
+                                        " class="text-danger">
+                                      Campo non valido.
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                  <label for="filter-Tipo Azienda">Nome Azienda</label>
+                                  <div formGroupName="tipoAzienda" class="form-group">
+                                    <select (change)="onChangeTipoAzienda($event)" class="form-select"  [ngStyle]="{
+                                      border: AnagraficaDto.get(
+                                        'anagrafica.tipoAzienda.id'
+                                      )?.hasError('required')
+                                        ? '1px solid red'
+                                        : '1px solid green'
+                                    }"
+                                      aria-label="Default select example" formControlName="id" type="number">
+                                      <option value="">
+                                        -- Seleziona azienda --
+                                      </option>
+                                      <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                                        {{ tipoAzienda.descrizione }}
+                                      </option>
+                                    </select>
+                                    <div *ngIf="
+                                    AnagraficaDto.get(
+                                      'anagrafica.tipoAzienda.id'
+                                    )?.hasError('required')
+                                  " class="text-danger">
+                                Campo obbligatorio.
+                              </div>
+                                  </div>
+                                </div>
+
+                                <br />
+                              </div>
+
                       <div class="row">
-                        <div class="col-md-3">
-                          <label>Titoli di Studio: </label>
-                          <div class="form-group">
-                            <input type="text" class="form-control" formControlName="titoliDiStudio"
-                              placeholder="Inserire titolo di studio." />
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <label>Altri Titoli </label>
-                          <div class="form-group">
-                            <input type="text" class="form-control" formControlName="altriTitoli"
-                              placeholder="Inserire altri titoli conseguiti." />
-                          </div>
-                        </div>
-                      </div>
-                      <br>
-                      <legend>Info Extra</legend>
-                      <div class="row">
-                        <div class="col-md-3">
-                          <label>Data di Nascita </label>
-                          <div class="form-group">
-                            <input type="date" placeholder="Data di nascita (Anno-mese-giorno)" class="form-control"
-                              formControlName="dataDiNascita" />
-                          </div>
-                        </div>
-
-                        <div class="col-md-3">
-                          <label>Stato di Nascita</label>
-                          <div class="form-group">
-                            <select class="form-select" (change)="onChangeNazione($event)" formControlName="statoDiNascita" name="statoDiNascita">
-                              <option value="" disabled selected>Seleziona una nazione</option>
-                              <option *ngFor="let nazione of nazioni" [value]="nazione">{{nazione}}</option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <div class="col-md-3">
-                          <label>Provincia di Nascita</label>
-                          <div class="form-group">
-                            <select class="form-select" formControlName="provinciaDiNascita" name="provinciaDiNascita">
-                              <option value="" disabled selected>Seleziona una provincia</option>
-                              <option *ngFor="let provincia of province" [value]="provincia?.nome">{{provincia?.nome}}</option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <div class="col-md-3">
-                          <label>Comune di Nascita </label>
-                          <div class="form-group">
-                            <input type="text" class="form-control" formControlName="comuneDiNascita"
-                              placeholder="Inserire comune di nascita." />
-                          </div>
-                        </div>
-
-                      </div>
-                      <br />
-                      <div class="row">
-                        <div class="col-md-3">
-                          <label>Cittadinanza </label>
-                          <div class="form-group">
-                            <input type="text" class="form-control" formControlName="cittadinanza"
-                              placeholder="Inserire cittadinanza." />
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <label>Residenza </label>
-                          <div class="form-group">
-                            <input type="text" class="form-control" formControlName="residenza"
-                              placeholder="Inserire residenza." />
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <label>Domicilio </label>
-                          <div class="form-group">
-                            <input type="text" class="form-control" formControlName="domicilio"
-                              placeholder="Inserire domicilio." />
-                          </div>
-                        </div>
                         <div class="col-md-3" formGroupName="tipoCanaleReclutamento">
                           <label for="tipoCanaleReclutamento">Canale reclutamento*</label>
                           <div class="form-group">
@@ -483,59 +310,380 @@
                           </div>
                         </div>
                       </div>
-                      <br />
+                            </mat-card-content>
+                          </mat-card>
+                        </div>
+                      </div>
                       <div class="row">
-                        <div class="col-md-3">
-                          <div class="form-group">
-                            <label>Coniugato </label> <br>
-                            <label class="toggle-switch">
-                              <div class="form-check">
-                                <input class="form-check-input"
-                                 type="checkbox" style="border-color: black"
-                                 formControlName="coniugato" (change)="onChangeConiugato($event)" />
-                                <span class="slider"></span>
+                        <div class="col-12">
+                          <mat-card>
+                            <mat-card-title>
+                              <legend>Dati di nascita</legend>
+                            </mat-card-title>
+                            <mat-card-content>
+                              <div class="row">
+                                <div class="col-md-2">
+                                  <label>Data di Nascita </label>
+                                  <div class="form-group">
+                                    <input type="date" placeholder="Data di nascita (Anno-mese-giorno)" class="form-control"
+                                      formControlName="dataDiNascita" />
+                                  </div>
+                                </div>
+                                <div class="col-md-2">
+                                  <label>Nazione</label>
+                                  <div class="form-group">
+                                    <!-- <select class="form-select" (change)="onChangeNazione($event)" formControlName="statoDiNascita" name="statoDiNascita">
+                                      <option value="" disabled selected>Seleziona una nazione</option>
+                                      <option *ngFor="let nazione of nazioni" [value]="nazione">{{nazione}}</option>
+                                    </select> -->
+                                    <input type="text" formControlName="statoDiNascita" placeholder="Nazione di nascita" class="form-control" name="statoDiNascita" id="statoDiNascita">
+                                  </div>
+                                </div>
+                                <div class="col-md-3">
+                                  <label>Provincia di Nascita</label>
+                                  <div class="form-group" formGroupName="provinciaDiNascita">
+                                 <select name="provinciaDiNascita" (change)="onChangeProvinciaNascita($event)" class="form-select" id="provinciaDiNascita" formControlName="id">
+                                  <option value="">
+                                    --nessuna selezione--
+                                  </option>
+                                  <option *ngFor=" let provincia of elencoProvince " [value]="provincia.id">
+                                    {{ provincia.denominazione_provincia }}
+                                  </option>
+                                 </select>
+                                  </div>
+                                </div>
+                                <div class="col-md-3">
+                                  <label>Comune di Nascita</label>
+                                  <div class="form-group" formGroupName="comuneDiNascita">
+                                 <select name="comuneDiNascita" class="form-select" id="comuneDiNascita" formControlName="id">
+                                  <option value="">
+                                    --nessuna selezione--
+                                  </option>
+                                  <option *ngFor=" let comune of elencoComuni " [value]="comune.id">
+                                    {{ comune.denominazione_ita }}
+                                  </option>
+                                 </select>
+                                  </div>
+                                </div>
+                                <div class="col-md-2">
+                                  <label>Cittadinanza </label>
+                                  <div class="form-group">
+                                    <input type="text" class="form-control" formControlName="cittadinanza"
+                                      placeholder="Inserire cittadinanza." />
+                                  </div>
+                                </div>
                               </div>
-                            </label>
-                          </div>
+                            </mat-card-content>
+                          </mat-card>
                         </div>
-                        <div class="col-md-3">
-                          <div class="form-group">
-                            <label>Figli a Carico</label><br>
-                            <label class="toggle-switch">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" style="border-color: black"
-                                  (change)="onFigliACaricoChange($event)" formControlName="figliACarico" />
-                                <span class="slider"></span>
+                       </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <mat-card>
+                            <mat-card-title>
+                              <legend>Recapiti</legend>
+                            </mat-card-title>
+                            <mat-card-content>
+                              <div class="row">
+                                <div class="col-md-4">
+                                  <label>Email Aziendale* <i class="fa fa-info-circle" matTooltip="Questo sará il nickname per l'utente relativo." ></i> </label>
+                                  <div class="form-group">
+                                    <input [ngStyle]="{
+                                          border: AnagraficaDto.get(
+                                            'anagrafica.mailAziendale'
+                                          )?.hasError('required')
+                                            ? '1px solid red'
+                                            : '1px solid green'
+                                        }" id="anagrafica.mailAziendale" type="text" class="form-control"
+                                      formControlName="mailAziendale" placeholder="Inserire mail aziendale." />
+                                    <div *ngIf="
+                                          AnagraficaDto.get(
+                                            'anagrafica.mailAziendale'
+                                          )?.hasError('required')
+                                        " class="text-danger">
+                                      Il campo mail aziendale è obbligatorio.
+                                    </div>
+                                    <div *ngIf="
+                                          AnagraficaDto.get(
+                                            'anagrafica.mailAziendale'
+                                          )?.hasError('pattern')
+                                        " class="text-danger">
+                                      Formato non valido.
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <label>Email Privata </label>
+                                  <div class="form-group">
+                                    <input type="text" class="form-control" formControlName="mailPrivata"
+                                      placeholder="Inserire mail privata." />
+                                    <div *ngIf="
+                                          AnagraficaDto.get(
+                                            'anagrafica.mailPrivata'
+                                          )?.hasError('pattern')
+                                        " class="text-danger">
+                                      Il formato della mail privata non è valido.
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <label>Email Pec </label>
+                                  <div class="form-group">
+                                    <input type="text" class="form-control" formControlName="mailPec"
+                                      placeholder="Inserire PEC." />
+                                    <div *ngIf="
+                                          AnagraficaDto.get(
+                                            'anagrafica.mailPec'
+                                          )?.hasError('pattern')
+                                        " class="text-danger">
+                                      Il formato della PEC non è valido.
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                            </label>
-                          </div>
+                              <br>
+                              <div class="row">
+                                <div class="col-md-4">
+                                  <label>Cellulare Privato</label>
+                                  <div class="form-group">
+                                    <input type="text" class="form-control" formControlName="cellularePrivato"
+                                    [ngStyle]="{
+                                      border: AnagraficaDto.get(
+                                        'anagrafica.cellularePrivato'
+                                      )?.hasError('pattern')
+                                        ? '1px solid red'
+                                        : '1px solid #ccc'
+                                    }"
+                                    placeholder="Inserire cellulare privato." />
+
+                                    <div *ngIf="AnagraficaDto.get('anagrafica.cellularePrivato')?.invalid && (AnagraficaDto.get('anagrafica.cellularePrivato')?.dirty || AnagraficaDto.get('anagrafica.cellularePrivato')?.touched)">
+                                      <div *ngIf="AnagraficaDto.get('anagrafica.cellularePrivato')?.hasError('pattern')" class="text-danger">
+                                        Il formato non è valido. Inserire un numero valido.
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                  <label>Cellulare Aziendale </label>
+                                  <div class="form-group">
+                                    <input type="text" class="form-control" formControlName="cellulareAziendale"
+                                    [ngStyle]="{
+                                      border: AnagraficaDto.get(
+                                        'anagrafica.cellulareAziendale'
+                                      )?.hasError('pattern')
+                                        ? '1px solid red'
+                                        : '1px solid #ccc'
+                                    }"
+                                      placeholder="Inserire cellulare aziendale." />
+                                    <div *ngIf="
+                                          AnagraficaDto.get(
+                                            'anagrafica.cellulareAziendale'
+                                          )?.hasError('pattern')
+                                        " class="text-danger">
+                                      Il formato cellulare aziendale non é valido.
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </mat-card-content>
+                          </mat-card>
                         </div>
-                        <div class="col-md-3">
-                          <div class="form-group">
-                            <label>Attesa lavori</label><br>
-                            <label class="toggle-switch">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" style="border-color: black"
-                                  (change)="onAttesaLavoriChange($event)" formControlName="attesaLavori" />
-                                <span class="slider"></span>
+                      </div>
+
+
+                     <div class="row">
+                      <div class="col-md-12">
+                        <mat-card>
+                          <mat-card-title>
+                            Residenza
+                          </mat-card-title>
+                          <mat-card-content>
+                            <div class="row">
+                              <div class="col-md-4">
+                                <label>Indirizzo di Residenza </label>
+                                <div class="form-group">
+                                  <input type="text" class="form-control" formControlName="indirizzoResidenza"
+                                  [ngStyle]="{ border: AnagraficaDto.get( 'anagrafica.indirizzoResidenza' )?.hasError('required') ? '1px solid red' : '1px solid green'}" placeholder="Inserire indirizzo residenza." />
+                                    <div *ngIf=" AnagraficaDto.get('anagrafica.indirizzoResidenza')?.hasError('required')" class="text-danger"> Il campo indirizzo residenza è obbligatorio. </div>
+                                </div>
                               </div>
-                            </label>
-                          </div>
+                              <div class="col-md-4">
+                                <label for="provinciaResidenza">Provincia di residenza</label>
+                                <div class="form-group" formGroupName="provinciaResidenza">
+                                  <select class="form-select" (change)="onChangeProvinciaResidenza($event)" name="provinciaResidenza" [ngStyle]="{ border: AnagraficaDto.get( 'anagrafica.provinciaResidenza.id' )?.hasError('required') ? '1px solid red' : '1px solid green'}" id="provinciaResidenza" formControlName="id">
+                                    <option value="">--Nessuna selezione--</option>
+                                    <option *ngFor=" let provincia of elencoProvince " [value]="provincia.id">
+                                      {{ provincia.denominazione_provincia }}
+                                    </option>
+                                  </select>
+                                  <div *ngIf=" AnagraficaDto.get('anagrafica.provinciaResidenza.id')?.hasError('required')" class="text-danger"> Il campo provincia di residenza è obbligatorio. </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                               <label for="comuneResidenza">Comune di residenza</label>
+                               <div class="form-group" formGroupName="comuneResidenza">
+                                <select name="comuneResidenza" class="form-select"
+                                [ngStyle]="{ border: AnagraficaDto.get( 'anagrafica.comuneResidenza.id' )?.hasError('required') ? '1px solid red' : '1px solid green'}"
+                                id="comuneResidenza" formControlName="id">
+                                  <option value=""> --nessuna selezione--</option>
+                                  <option *ngFor=" let comuneResidenza of elencoComuni " [value]="comuneResidenza.id">
+                                    {{ comuneResidenza.denominazione_ita }}
+                                  </option>
+                                 </select>
+                                 <div *ngIf=" AnagraficaDto.get('anagrafica.comuneResidenza.id')?.hasError('required')" class="text-danger"> Il campo comune di residenza è obbligatorio. </div>
+                               </div>
+                              </div>
+                            </div>
+                          </mat-card-content>
+                        </mat-card>
+                      </div>
+                     </div>
+                     <!-- Domicilio  -->
+                     <div class="row">
+                      <div class="col-md-12">
+                        <mat-card>
+                          <mat-card-title>
+                            Domicilio
+                          </mat-card-title>
+                          <mat-card-content>
+                            <div class="row">
+                              <div class="col-md-4">
+                                <label>Indirizzo di domicilio </label>
+                                <div class="form-group">
+                                  <input type="text" class="form-control" formControlName="indirizzoDomicilio"
+                                    placeholder="Inserire indirizzo di domicilio." />
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <label for="provinciaDomicilio">Provincia di domicilio</label>
+                                <div class="form-group" formGroupName="provinciaDomicilio">
+                                  <select class="form-select" name="provinciaDomicilio" id="provinciaDomicilio" (change)="onChangeProvinciaDomicilio($event)" formControlName="id">
+                                    <option value="">--Nessuna selezione--</option>
+                                    <option *ngFor=" let provinciaDomicilio of elencoProvince " [value]="provinciaDomicilio.id">
+                                      {{ provinciaDomicilio.denominazione_provincia }}
+                                    </option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                               <label for="comuneDomicilio">Comune di domicilio</label>
+                               <div class="form-group" formGroupName="comuneDomicilio">
+                                <select name="comuneDomicilio" class="form-select" id="comuneDomicilio" formControlName="id">
+                                  <option value="">
+                                    --nessuna selezione--
+                                  </option>
+                                  <option *ngFor=" let comuneDomicilio of elencoComuni " [value]="comuneDomicilio.id">
+                                    {{ comuneDomicilio.denominazione_ita }}
+                                  </option>
+                                 </select>
+                               </div>
+                              </div>
+                            </div>
+                          </mat-card-content>
+                        </mat-card>
+                      </div>
+                     </div>
+                      <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                          <mat-card>
+                            <mat-card-title>
+                              <legend>Extra</legend>
+                            </mat-card-title>
+                            <mat-card-content>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>Coniugato </label> <br>
+                                    <label class="toggle-switch">
+                                      <div class="form-check">
+                                        <input class="form-check-input"
+                                          type="checkbox" style="border-color: black"
+                                          formControlName="coniugato" (change)="onChangeConiugato($event)" />
+                                        <span class="slider"></span>
+                                      </div>
+                                    </label>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>Figli a Carico</label><br>
+                                    <label class="toggle-switch">
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" style="border-color: black"
+                                          (change)="onFigliACaricoChange($event)" formControlName="figliACarico" />
+                                        <span class="slider"></span>
+                                      </div>
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                              <br>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>Attesa lavori</label><br>
+                                    <label class="toggle-switch">
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" style="border-color: black"
+                                          (change)="onAttesaLavoriChange($event)" formControlName="attesaLavori" />
+                                        <span class="slider"></span>
+                                      </div>
+                                    </label>
+                                  </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>Categoria protetta</label><br>
+                                    <label class="toggle-switch">
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" style="border-color: black"
+                                          (change)="onCategoriaProtettaChange($event)" formControlName="categoriaProtetta" />
+                                        <span class="slider"></span>
+                                      </div>
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </mat-card-content>
+                          </mat-card>
                         </div>
 
-                        <div class="col-md-3">
-                          <div class="form-group">
-                            <label>Categoria protetta</label><br>
-                            <label class="toggle-switch">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" style="border-color: black"
-                                  (change)="onCategoriaProtettaChange($event)" formControlName="categoriaProtetta" />
-                                <span class="slider"></span>
-                              </div>
-                            </label>
+                        <div class="col-lg-6 col-md-12">
+                          <div class="row">
+                            <div class="col-12">
+                              <mat-card>
+                                <mat-card-title>
+                                  <legend>Competenze</legend>
+                                </mat-card-title>
+                                <mat-card-content>
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                      <label>Titoli di Studio: </label>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" formControlName="titoliDiStudio"
+                                          placeholder="Inserire titolo di studio." />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <br>
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                      <label>Altri Titoli </label>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" formControlName="altriTitoli"
+                                          placeholder="Inserire altri titoli conseguiti." />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </mat-card-content>
+                              </mat-card>
+                            </div>
                           </div>
                         </div>
                       </div>
+
                       <br>
                       <div class="text-center">
                         <button mat-mini-fab color="primary" disabled matStepperPrevious>«</button> &nbsp;
@@ -543,304 +691,209 @@
                       </div>
                       <br>
                     </div>
-                  </mat-card-content>
-                </mat-card>
               </mat-step>
 
               <mat-step>
                 <ng-template matStepLabel>Contratto</ng-template>
-                <div>
-                  <mat-card>
-                    <mat-card-content>
                       <div formGroupName="contratto">
                         <strong>
                           <h1 style="text-align: center">Contratto</h1>
                         </strong>
-                        <legend>Dati Tipologici</legend>
                         <div class="row">
-                          <div class="col-md-2" formGroupName="tipoAzienda">
-                            <label for="tipoAzienda">Azienda*</label>
-                            <select (change)="onChangeTipoAzienda($event)" class="form-select"
-                              aria-label="Default select example" id="contratto.tipoAzienda.id" formControlName="id"
-                              type="number" [ngStyle]="{
-                                  border: AnagraficaDto.get(
-                                    'contratto.tipoAzienda.id'
-                                  )?.hasError('required')
-                                    ? '1px solid red'
-                                    : '1px solid #f1f1f1'
-                                }">
-                              <option value="">--nessuna selezione--</option>
-                              <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
-                                {{ tipoAzienda.descrizione }}
-                              </option>
-                            </select>
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'contratto.tipoAzienda.id'
-                                  )?.hasError('required')
-                                " class="text-danger">
-                              Il campo nome azienda è obbligatorio.
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div formGroupName="tipoContratto">
-                              <label for="filter-TipoContratto">Tipo Contratto*</label>
-                              <select class="form-select" aria-label="Default select example"
-                                id="contratto.tipoContratto.id" formControlName="id"
-                                (change)="onTipoContrattoChange($event)" [ngStyle]="{
-                                    border: AnagraficaDto.get(
-                                      'contratto.tipoContratto.id'
-                                    )?.hasError('required')
-                                      ? '1px solid red'
-                                      : '1px solid #f1f1f1'
-                                  }">
-                                <option value="">
-                                  --nessuna selezione--
-                                </option>
-                                <option *ngFor="let tipoContratto of tipiContratti" [value]="tipoContratto.id">
-                                  {{ tipoContratto.descrizione }}
-                                </option>
-                              </select>
-                              <div *ngIf="
-                                    AnagraficaDto.get(
-                                      'contratto.tipoContratto.id'
-                                    )?.hasError('required')
-                                  " class="text-danger">
-                                Il campo tipo contratto è obbligatorio.
-                              </div>
-                            </div>
-                          </div>
+                          <div class="col-md-12">
+                            <mat-card>
+                              <mat-card-title>
+                        <legend>Dettagli contrattuali</legend>
+                              </mat-card-title>
+                              <mat-card-content>
+                                <div class="row">
+                                  <div class="col-md-2" formGroupName="tipoAzienda">
+                                    <label for="tipoAzienda">Azienda*</label>
+                                    <select (change)="onChangeTipoAzienda($event)" class="form-select"
+                                      aria-label="Default select example" id="contratto.tipoAzienda.id" formControlName="id"
+                                      type="number" [ngStyle]="{
+                                          border: AnagraficaDto.get(
+                                            'contratto.tipoAzienda.id'
+                                          )?.hasError('required')
+                                            ? '1px solid red'
+                                            : '1px solid #f1f1f1'
+                                        }">
+                                      <option value="">--nessuna selezione--</option>
+                                      <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                                        {{ tipoAzienda.descrizione }}
+                                      </option>
+                                    </select>
+                                    <div *ngIf="
+                                          AnagraficaDto.get(
+                                            'contratto.tipoAzienda.id'
+                                          )?.hasError('required')
+                                        " class="text-danger">
+                                      Il campo nome azienda è obbligatorio.
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3">
+                                    <div formGroupName="tipoContratto">
+                                      <label for="filter-TipoContratto">Tipo Contratto*</label>
+                                      <select class="form-select" aria-label="Default select example"
+                                        id="contratto.tipoContratto.id" formControlName="id"
+                                        (change)="onTipoContrattoChange($event)" [ngStyle]="{
+                                            border: AnagraficaDto.get(
+                                              'contratto.tipoContratto.id'
+                                            )?.hasError('required')
+                                              ? '1px solid red'
+                                              : '1px solid #f1f1f1'
+                                          }">
+                                        <option value="">
+                                          --nessuna selezione--
+                                        </option>
+                                        <option *ngFor="let tipoContratto of tipiContratti" [value]="tipoContratto.id">
+                                          {{ tipoContratto.descrizione }}
+                                        </option>
+                                      </select>
+                                      <div *ngIf="
+                                            AnagraficaDto.get(
+                                              'contratto.tipoContratto.id'
+                                            )?.hasError('required')
+                                          " class="text-danger">
+                                        Il campo tipo contratto è obbligatorio.
+                                      </div>
+                                    </div>
+                                  </div>
 
-                          <div class="col-md-2">
-                            <label>Mesi Durata </label>
-                            <input type="number" class="form-control" formControlName="mesiDurata"
-                              placeholder="Inserire mesi durata" [ngStyle]="{
-                                  border: AnagraficaDto.get(
-                                    'contratto.mesiDurata'
-                                  )?.hasError('required')
-                                    ? '1px solid red'
-                                    : '1px solid #f1f1f1'
-                                }" />
-                            <div *ngIf="
-                                  AnagraficaDto.get(
-                                    'contratto.mesiDurata'
-                                  )?.hasError('required')
-                                " class="text-danger">
-                              Il campo mesi durata è obbligatorio.
-                            </div>
-                            <div *ngIf="
-                                  AnagraficaDto.get('contratto.mesiDurata')
-                                    ?.invalid
-                                " class="text-danger">
-                              Formato non valido.
-                            </div>
-                          </div>
-                          <div class="col-3">
-                            <div formGroupName="tipoCcnl">
-                              <label for="tipoCcnl">CCNL*</label>
-                              <select (change)="onChangeCCNL($event)" class="form-select"
-                                aria-label="Default select example" id="contratto.tipoCcnl.id" formControlName="id"
-                                [ngStyle]="{
-                                    border: AnagraficaDto.get(
-                                      'contratto.tipoCcnl.id'
-                                    )?.hasError('required')
-                                      ? '1px solid red'
-                                      : '1px solid #f1f1f1'
-                                  }">
-                                <option value="">
-                                  --nessuna selezione--
-                                </option>
-                                <option *ngFor="
-                                      let contrattiNazionale of contrattiNazionali
-                                    " [value]="contrattiNazionale.id">
-                                  {{ contrattiNazionale.descrizione }}
-                                </option>
-                              </select>
-                              <div *ngIf="
-                                    AnagraficaDto.get(
-                                      'contratto.tipoCcnl.id'
-                                    )?.hasError('required')
-                                  " class="text-danger">
-                                Il campo CCNL è obbligatorio.
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-2">
-                            <div formGroupName="tipoLivelloContratto">
-                              <label for="filter-LivelloContratto">Livello Contratto*</label>
-                              <select (change)="onChangeLivelloContratto($event)" class="form-select" [ngStyle]="{
-                                border: AnagraficaDto.get(
-                                  'contratto.tipoLivelloContratto.id'
-                                )?.hasError('required')
-                                  ? '1px solid red'
-                                  : '1px solid #f1f1f1'
-                              }"
-                                aria-label="Default select example" id="contratto.tipoLivelloContratto.id"
-                                formControlName="id">
-                                <option value="">
-                                  --nessuna selezione--
-                                </option>
-                                <option *ngFor="
-                                      let tipoLivelloContratto of elencoLivelliCCNL
-                                    " [value]="tipoLivelloContratto.id">
-                                  {{ tipoLivelloContratto.livello }}
-                                </option>
-                              </select>
-                              <div
-                                *ngIf="AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.touched"
-                                class="text-danger"
-                              >
-                                Il campo tipo livello contratto è obbligatorio.
-                              </div>
-                            </div>
-                          </div>
+                                  <div class="col-md-2">
+                                    <label>Mesi Durata </label>
+                                    <input type="number" class="form-control" formControlName="mesiDurata"
+                                      placeholder="Inserire mesi durata" [ngStyle]="{
+                                          border: AnagraficaDto.get(
+                                            'contratto.mesiDurata'
+                                          )?.hasError('required')
+                                            ? '1px solid red'
+                                            : '1px solid #f1f1f1'
+                                        }" />
+                                    <div *ngIf="
+                                          AnagraficaDto.get(
+                                            'contratto.mesiDurata'
+                                          )?.hasError('required')
+                                        " class="text-danger">
+                                      Il campo mesi durata è obbligatorio.
+                                    </div>
+                                    <div *ngIf="
+                                          AnagraficaDto.get('contratto.mesiDurata')
+                                            ?.invalid
+                                        " class="text-danger">
+                                      Formato non valido.
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3">
+                                    <div formGroupName="tipoCcnl">
+                                      <label for="tipoCcnl">CCNL*</label>
+                                      <select (change)="onChangeCCNL($event)" class="form-select"
+                                        aria-label="Default select example" id="contratto.tipoCcnl.id" formControlName="id"
+                                        [ngStyle]="{
+                                            border: AnagraficaDto.get(
+                                              'contratto.tipoCcnl.id'
+                                            )?.hasError('required')
+                                              ? '1px solid red'
+                                              : '1px solid #f1f1f1'
+                                          }">
+                                        <option value="">
+                                          --nessuna selezione--
+                                        </option>
+                                        <option *ngFor="
+                                              let contrattiNazionale of contrattiNazionali
+                                            " [value]="contrattiNazionale.id">
+                                          {{ contrattiNazionale.descrizione }}
+                                        </option>
+                                      </select>
+                                      <div *ngIf="
+                                            AnagraficaDto.get(
+                                              'contratto.tipoCcnl.id'
+                                            )?.hasError('required')
+                                          " class="text-danger">
+                                        Il campo CCNL è obbligatorio.
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-2">
+                                    <div formGroupName="tipoLivelloContratto">
+                                      <label for="filter-LivelloContratto">Livello Contratto*</label>
+                                      <select (change)="onChangeLivelloContratto($event)" class="form-select" [ngStyle]="{
+                                        border: AnagraficaDto.get(
+                                          'contratto.tipoLivelloContratto.id'
+                                        )?.hasError('required')
+                                          ? '1px solid red'
+                                          : '1px solid #f1f1f1'
+                                      }"
+                                        aria-label="Default select example" id="contratto.tipoLivelloContratto.id"
+                                        formControlName="id">
+                                        <option value="">
+                                          --nessuna selezione--
+                                        </option>
+                                        <option *ngFor="
+                                              let tipoLivelloContratto of elencoLivelliCCNL
+                                            " [value]="tipoLivelloContratto.id">
+                                          {{ tipoLivelloContratto.livello }}
+                                        </option>
+                                      </select>
+                                      <div
+                                        *ngIf="AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.hasError('required') && AnagraficaDto.get('contratto.tipoLivelloContratto.id')?.touched"
+                                        class="text-danger"
+                                      >
+                                        Il campo tipo livello contratto è obbligatorio.
+                                      </div>
+                                    </div>
+                                  </div>
 
-                        </div>
-                        <br />
-                        <div class="row">
-
-
-                        </div>
-                        <br />
-                        <legend>Dettagli e date</legend>
-                        <div class="row">
-                          <div class="col-md-2">
-                            <label>Qualifica: </label>
-                            <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Inserire qualifica"
-                                formControlName="qualifica" />
-                            </div>
-                          </div>
-
-                          <div class="col-md-2">
-                            <label>Sede Assunzione: </label>
-                            <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Inserire la sede di assunzione"
-                                formControlName="sedeAssunzione" />
-                            </div>
-                          </div>
-                          <div class="col-md-2">
-                            <label>Computer aziendale: </label>
-                            <div class="form-group">
-                              <label class="toggle-switch">
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" style="border-color: black"
-                                    [checked]="data?.contratto?.pc === true" (change)="onPChange($event)"
-                                    formControlName="pc" />
-                                  <span class="slider"></span>
                                 </div>
-                              </label>
-                            </div>
-                          </div>
+                                <br>
+                                <div class="row">
+                                  <div class="col-md-3">
+                                    <label>Qualifica: </label>
+                                    <div class="form-group">
+                                      <input type="text" class="form-control" placeholder="Inserire qualifica"
+                                        formControlName="qualifica" />
+                                    </div>
+                                  </div>
 
-
-                          <div class="col-md-3">
-                            <label for="assicurazioneObbligatoria">Assicurazione obbligatoria:</label> <br>
-                            <label class="toggle-switch">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" (change)="
-                                      onChangeAssicurazioneObbligatoria($event)
-                                    " style="border-color: black" [checked]="
-                                      data?.contratto
-                                        ?.assicurazioneObbligatoria === true
-                                    " formControlName="assicurazioneObbligatoria" />
-                                <span class="slider"></span>
-                              </div>
-                            </label>
-                          </div>
-
-
-                        </div>
-                        <br />
-                        <div class="row">
-                          <div class="col-md-3">
-                            <label for="dataAssunzione">Data Assunzione*</label>
-                            <div class="form-group">
-                              <input type="date" class="form-control" name="dataInput" [ngStyle]="{
-                                    border: AnagraficaDto.get(
-                                      'contratto.dataAssunzione'
-                                    )?.hasError('required')
-                                      ? '1px solid red'
-                                      : '1px solid #f1f1f1'
-                                  }" formControlName="dataAssunzione"  placeholder="Inserire data assunzione" />
-                              <div *ngIf="
-                                    AnagraficaDto.get(
-                                      'contratto.dataAssunzione'
-                                    )?.hasError('required')
-                                  " class="text-danger">
-                                Il campo Data assunzione è obbligatorio.
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-3">
-                            <label for="dataFineProva">Data Fine prova</label>
-                            <div class="form-group">
-                              <input type="date" class="form-control" name="dataInput" formControlName="dataFineProva"
-                                [ngStyle]="{
-                                    border: AnagraficaDto.get(
-                                      'contratto.dataFineProva'
-                                    )?.hasError('required')
-                                      ? '1px solid red'
-                                      : '1px solid #f1f1f1'
-                                  }" />
-                              <div *ngIf="
-                                    AnagraficaDto.get(
-                                      'contratto.dataFineProva'
-                                    )?.hasError('required')
-                                  " class="text-danger">
-                                Il campo Data fine prova è obbligatorio.
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label for="dataFineContratto">Data Fine contratto</label>
-                              <input type="date" class="form-control" name="dataInput"
-                                formControlName="dataFineContratto" [ngStyle]="{
-                                    border: AnagraficaDto.get(
-                                      'contratto.dataFineContratto'
-                                    )?.hasError('required')
-                                      ? '1px solid red'
-                                      : '1px solid #f1f1f1'
-                                  }" />
-                              <div *ngIf="
-                                    AnagraficaDto.get(
-                                      'contratto.dataFineContratto'
-                                    )?.hasError('required')
-                                  " class="text-danger">
-                                Il campo Data Fine contratto è obbligatorio.
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <label for="dataFineRapporto">Data Fine Rapporto</label>
-                              <input type="date" class="form-control" name="dataInput"
-                                formControlName="dataFineRapporto" [ngStyle]="{
-                                    border: AnagraficaDto.get(
-                                      'contratto.dataFineRapporto'
-                                    )?.hasError('required')
-                                      ? '1px solid red'
-                                      : '1px solid #f1f1f1'
-                                  }" />
-                              <div *ngIf="
-                                    AnagraficaDto.get(
-                                      'contratto.dataFineRapporto'
-                                    )?.hasError('required')
-                                  " class="text-danger">
-                                Il campo Data Fine rapporto è obbligatorio.
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <br />
-                        <legend>Livello Dipendente</legend>
+                                  <div class="col-md-3">
+                                    <label>Sede Assunzione: </label>
+                                    <div class="form-group">
+                                      <input type="text" class="form-control" placeholder="Inserire la sede di assunzione"
+                                        formControlName="sedeAssunzione" />
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3">
+                                    <label>Computer aziendale: </label>
+                                    <div class="form-group">
+                                      <label class="toggle-switch">
+                                        <div class="form-check">
+                                          <input class="form-check-input" type="checkbox" style="border-color: black"
+                                            [checked]="data?.contratto?.pc === true" (change)="onPChange($event)"
+                                            formControlName="pc" />
+                                          <span class="slider"></span>
+                                        </div>
+                                      </label>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3">
+                                    <label for="assicurazioneObbligatoria">Assicurazione obbligatoria:</label> <br>
+                                    <label class="toggle-switch">
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" (change)="
+                                              onChangeAssicurazioneObbligatoria($event)
+                                            " style="border-color: black" [checked]="
+                                              data?.contratto
+                                                ?.assicurazioneObbligatoria === true
+                                            " formControlName="assicurazioneObbligatoria" />
+                                        <span class="slider"></span>
+                                      </div>
+                                    </label>
+                                  </div>
+                                </div>
+                                <br>
 
                         <div class="row">
-                          <div class="col-md-3">
+                          <div class="col-md-2">
                             <div class="form-group">
                               <label>Livello attuale: </label>
                               <div class="form-group">
@@ -849,7 +902,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-md-3">
+                          <div class="col-md-2">
                             <div class="form-group">
                               <label>Livello finale: </label>
                               <div class="form-group">
@@ -858,119 +911,12 @@
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <br>
-                        <div class="container-dati-economici">
-                          <legend>Retribuzione</legend>
-                          <div class="row">
-                            <div class="col-md-3">
-                              <label>Retribuzione Mensile Lorda: </label>
-                              <div class="form-group">
-                                <input type="number" class="form-control" placeholder="Inserire retribuzione lorda"
-                                  min="0" step="0.01" formControlName="retribuzioneMensileLorda"
-                                  (input)="calcolaMensileTot()" id="retribuzioneMensileLorda" />
-                              </div>
-                            </div>
-
-                            <div class="col-md-3">
-                              <label>Superminimo Mensile: </label>
-                              <div class="form-group">
-                                <input type="number" class="form-control" placeholder="Inserire superminimo mensile"
-                                  min="0" step="0.01" formControlName="superminimoMensile" id="superminimoMensile"
-                                  (input)="calcolaMensileTot()" />
-                              </div>
-                            </div>
-
-                            <div class="col-md-3">
-                              <label>Scatti Anzianita: </label>
-                              <div class="form-group">
-                                <input type="number" class="form-control" formControlName="scattiAnzianita"
-                                  placeholder="Inserire scatti anzianitá" min="0" step="0.01" id="scattiAnzianita"
-                                  (input)="calcolaMensileTot()" />
-                              </div>
-                            </div>
-                            <div class="col-md-3">
-                              <label >Mensile tot <i class="fa fa-calculator" matTooltip="Calcola RAL" (click)="calcoloRal()" ></i> </label>
-                              <div class="form-group">
-                                  <input type="number"  class="form-control"  readonly placeholder="Mensile tot" id="mensileTOT" />
-                              </div>
-                            </div>
-                          </div>
-                          <br />
-                          <div class="row">
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                <label for="retribuzioneNettaMensile">Retribuzione netta mensile</label>
-                                <input type="number" formControlName="retribuzioneNettaMensile"
-                                  placeholder="Inserire retribuzione netta mensile" min="0" step="0.01"
-                                  class="form-control" [ngStyle]="{
-                                      border: AnagraficaDto.get(
-                                        'contratto.retribuzioneNettaMensile'
-                                      )?.hasError('required')
-                                        ? '1px solid red'
-                                        : '1px solid #f1f1f1'
-                                    }" />
-                                <div *ngIf="
-                                      AnagraficaDto.get(
-                                        'contratto.retribuzioneNettaMensile'
-                                      )?.hasError('required')
-                                    " class="text-danger">
-                                  Il campo retribuzione netta mensile è
-                                  obbligatorio per questo tipo di contratto.
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <br />
-                          <div class="row">
-                            <legend>RAL</legend>
-                            <div class="col-3">
-                              <label>RAL Annua: </label>
-                              <div class="form-group">
-                                <input type="number" class="form-control" placeholder="Inserire RAL annua" min="0"
-                                  step="0.01" id="ralAnnua" formControlName="ralAnnua" (input)="calcoloRal()" />
-                              </div>
-                            </div>
-                            <div class="col-3">
-                              <label>Superminimo RAL: </label>
-                              <div class="form-group">
-                                <input type="number" class="form-control" placeholder="Inserire superminimo RAL" min="0"
-                                  step="0.01" formControlName="superminimoRal" />
-                              </div>
-                            </div>
-                          </div>
-                          <br />
-                          <div class="row">
-                            <legend>Diaria</legend>
-                            <div class="col-md-4">
-                              <label>Diaria Mensile: </label>
-                              <div class="form-group">
-                                <input type="number" class="form-control" placeholder="Inserire diaria mensile" min="0"
-                                  step="0.01" formControlName="diariaMensile" />
-                              </div>
-                            </div>
-                            <div class="col-md-4">
-                              <label>Diaria Giornaliera: </label>
-                              <div class="form-group">
-                                <input type="number" class="form-control" placeholder="Inserire diaria giornaliera"
-                                  min="0" step="0.01" formControlName="diariaGiornaliera" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                          <legend>Costo aziendale</legend>
-                          <div class="col-md-3">
+                          <div class="col-md-2">
                             <label for="costoAziendale">Costo aziendale:</label>
                             <div class="form-group">
-                              <input type="number" class="form-control" formControlName="costoAziendale" step="0.01">
+                              <input type="number" class="form-control" placeholder="Costo aziendale" formControlName="costoAziendale" step="0.01">
                             </div>
                           </div>
-                        </div>
-                        <br />
-                        <legend>Dati economici partita IVA</legend>
-                        <div class="row">
                           <div class="col-md-3">
                             <div class="form-group">
                               <label>Tariffa Partita IVA: </label>
@@ -992,7 +938,7 @@
                               questo tipo di contratto.
                             </div>
                           </div>
-                          <div class="col-md-3">
+                          <div class="col-md-3" >
                             <div class="form-group">
                               <label for="retribuzioneNettaGiornaliera">Retribuzione netta giornaliera</label>
                               <input type="number" formControlName="retribuzioneNettaGiornaliera"
@@ -1015,162 +961,416 @@
                             </div>
                           </div>
                         </div>
-                        <br />
-                        <div class="row">
-                          <legend>Part time</legend>
-                          <div class="col-3">
-                            <label for="partTime">Part time:</label> <br />
-                            <label class="toggle-switch">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" style="border-color: black" [checked]="
-                                      data?.contratto?.partTime === true
-                                    " (change)="onPartTimeChange($event)" formControlName="partTime" />
-                                <span class="slider"></span>
-                              </div>
-                            </label>
-                          </div>
-                          <div class="col-md-3">
-                            <label class="form-check-label">% Part time:
-                            </label>
-                            <div class="form-group">
-                              <input class="form-control" type="number" formControlName="percentualePartTime"
-                                placeholder="Percentuale part time (da 40% a 80%)" min="40" step="10" max="80"
-                                (input)="calculateRalPartTime()" />
-                            </div>
-                          </div>
-                          <div class="col-3">
-                            <label for="ral part time">RAL Part time</label>
-                            <input type="text" class="form-control" readonly formControlName="ralPartTime"
-                              [(ngModel)]="percentualePartTimeValue" placeholder="RAL part time" />
+                              </mat-card-content>
+                            </mat-card>
                           </div>
                         </div>
-
-                        <br />
-                        <legend>Ticket e Agevolazioni</legend>
-                        <br />
                         <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label>Ticket</label> <br>
-                              <label class="toggle-switch">
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" style="border-color: black"
-                                    (change)="onValoreTicketChange($event)" formControlName="ticket" />
-                                  <span class="slider"></span>
-                                </div>
-                              </label>
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <label>Valore Ticket: </label>
-                            <div class="form-group">
-                              <input type="number" placeholder="Inserire valore ticket" min="0" step="0.01"
-                                class="form-control" formControlName="valoreTicket" />
-                            </div>
-                          </div>
-                        </div>
-                        <br />
-                        <legend>Tutor e PFI</legend>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <label>Piano Formativo Individuale: </label><br>
-                            <label class="toggle-switch">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" style="border-color: black"
-                                  (change)="onPFIChange($event)" formControlName="pfi" />
-                                <span class="slider"></span>
-                              </div>
-                            </label>
-                          </div>
-
-                          <div class="col-md-6">
-                            <label>Tutor: </label>
-                            <div class="form-group">
-                              <input type="text" class="form-control" formControlName="tutor"
-                                placeholder="Inserire tutor." [ngStyle]="{
-                                    border: AnagraficaDto.get(
-                                      'contratto.tutor'
-                                    )?.hasError('required')
-                                      ? '1px solid red'
-                                      : '1px solid #f1f1f1'
-                                  }" />
-                              <div *ngIf="
-                                    AnagraficaDto.get(
-                                      'contratto.tutor'
-                                    )?.hasError('required')
-                                  " class="text-danger">
-                                Il campo tutor è obbligatorio.
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <br />
-                        <div class="row">
-                          <legend>Corso di sicurezza</legend>
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <div class="form-group">
-                                <label>Corso di Sicurezza: </label><br>
-                                <label class="toggle-switch">
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" style="border-color: black"
-                                      (change)="
-                                          onCorsoSicurezzaChange($event)
-                                        " formControlName="corsoSicurezza" />
-                                    <span class="slider"></span>
+                          <div class="col-md-12">
+                            <mat-card>
+                              <mat-card-title>
+                                <legend>Date</legend>
+                              </mat-card-title>
+                              <mat-card-content>
+                                <div class="row">
+                                  <div class="col-md-3">
+                                    <label for="dataAssunzione">Data Assunzione*</label>
+                                    <div class="form-group">
+                                      <input type="date" class="form-control" name="dataInput" [ngStyle]="{
+                                            border: AnagraficaDto.get(
+                                              'contratto.dataAssunzione'
+                                            )?.hasError('required')
+                                              ? '1px solid red'
+                                              : '1px solid #f1f1f1'
+                                          }" formControlName="dataAssunzione"  placeholder="Inserire data assunzione" />
+                                      <div *ngIf="
+                                            AnagraficaDto.get(
+                                              'contratto.dataAssunzione'
+                                            )?.hasError('required')
+                                          " class="text-danger">
+                                        Il campo Data assunzione è obbligatorio.
+                                      </div>
+                                    </div>
                                   </div>
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <div class="form-group">
-                                <label>Data corso di Sicurezza: </label>
-                                <input type="date" class="form-control" name="dataCorsoSicurezza"
-                                  formControlName="dataCorsoSicurezza" />
-                              </div>
-                            </div>
+
+                                  <div class="col-md-3">
+                                    <label for="dataFineProva">Data Fine prova</label>
+                                    <div class="form-group">
+                                      <input type="date" class="form-control" name="dataInput" formControlName="dataFineProva"
+                                        [ngStyle]="{
+                                            border: AnagraficaDto.get(
+                                              'contratto.dataFineProva'
+                                            )?.hasError('required')
+                                              ? '1px solid red'
+                                              : '1px solid #f1f1f1'
+                                          }" />
+                                      <div *ngIf="
+                                            AnagraficaDto.get(
+                                              'contratto.dataFineProva'
+                                            )?.hasError('required')
+                                          " class="text-danger">
+                                        Il campo Data fine prova è obbligatorio.
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-3">
+                                    <div class="form-group">
+                                      <label for="dataFineContratto">Data Fine contratto</label>
+                                      <input type="date" class="form-control" name="dataInput"
+                                        formControlName="dataFineContratto" [ngStyle]="{
+                                            border: AnagraficaDto.get(
+                                              'contratto.dataFineContratto'
+                                            )?.hasError('required')
+                                              ? '1px solid red'
+                                              : '1px solid #f1f1f1'
+                                          }" />
+                                      <div *ngIf="
+                                            AnagraficaDto.get(
+                                              'contratto.dataFineContratto'
+                                            )?.hasError('required')
+                                          " class="text-danger">
+                                        Il campo Data Fine contratto è obbligatorio.
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-3">
+                                    <div class="form-group">
+                                      <label for="dataFineRapporto">Data Fine Rapporto</label>
+                                      <input type="date" class="form-control" name="dataInput"
+                                        formControlName="dataFineRapporto" [ngStyle]="{
+                                            border: AnagraficaDto.get(
+                                              'contratto.dataFineRapporto'
+                                            )?.hasError('required')
+                                              ? '1px solid red'
+                                              : '1px solid #f1f1f1'
+                                          }" />
+                                      <div *ngIf="
+                                            AnagraficaDto.get(
+                                              'contratto.dataFineRapporto'
+                                            )?.hasError('required')
+                                          " class="text-danger">
+                                        Il campo Data Fine rapporto è obbligatorio.
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </mat-card-content>
+                            </mat-card>
                           </div>
                         </div>
-                        <br />
-
                         <div class="row">
                           <div class="col-12">
-                            <h3>Dati medici</h3>
+                            <mat-card>
+                              <mat-card-title>
+                                <legend>Retribuzione</legend>
+                              </mat-card-title>
+                              <mat-card-content>
+                                <div class="row">
+                                  <div class="col-md-3">
+                                    <label>Retribuzione Mensile Lorda: </label>
+                                    <div class="form-group">
+                                      <input type="number" class="form-control" placeholder="Inserire retribuzione lorda"
+                                        min="0" step="0.01" formControlName="retribuzioneMensileLorda"
+                                        (input)="calcolaMensileTot()" id="retribuzioneMensileLorda" />
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-3">
+                                    <label>Superminimo Mensile: </label>
+                                    <div class="form-group">
+                                      <input type="number" class="form-control" placeholder="Inserire superminimo mensile"
+                                        min="0" step="0.01" formControlName="superminimoMensile" id="superminimoMensile"
+                                        (input)="calcolaMensileTot()" />
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-3">
+                                    <label>Scatti Anzianita: </label>
+                                    <div class="form-group">
+                                      <input type="number" class="form-control" formControlName="scattiAnzianita"
+                                        placeholder="Inserire scatti anzianitá" min="0" step="0.01" id="scattiAnzianita"
+                                        (input)="calcolaMensileTot()" />
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3">
+                                    <label >Mensile tot <i class="fa fa-calculator" matTooltip="Calcola RAL" (click)="calcoloRal()" ></i> </label>
+                                    <div class="form-group">
+                                        <input type="number"  class="form-control"  readonly placeholder="Mensile tot" id="mensileTOT" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                  <div class="col-md-3">
+                                    <div class="form-group">
+                                      <label for="retribuzioneNettaMensile">Retribuzione netta mensile</label>
+                                      <input type="number" formControlName="retribuzioneNettaMensile"
+                                        placeholder="Inserire retribuzione netta mensile" min="0" step="0.01"
+                                        class="form-control" [ngStyle]="{
+                                            border: AnagraficaDto.get(
+                                              'contratto.retribuzioneNettaMensile'
+                                            )?.hasError('required')
+                                              ? '1px solid red'
+                                              : '1px solid #f1f1f1'
+                                          }" />
+                                      <div *ngIf="
+                                            AnagraficaDto.get(
+                                              'contratto.retribuzioneNettaMensile'
+                                            )?.hasError('required')
+                                          " class="text-danger">
+                                        Il campo retribuzione netta mensile è
+                                        obbligatorio per questo tipo di contratto.
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </mat-card-content>
+                            </mat-card>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-md-6">
-                            <label>Visita medica: </label><br>
-                            <div class="form-group">
-                              <label class="toggle-switch">
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" style="border-color: black"
-                                    (change)="onVisitaMedicaChange($event)" formControlName="visitaMedica" />
-                                  <span class="slider"></span>
+                            <mat-card>
+                              <mat-card-title>
+                                <legend>Retribuzione annuale lorda</legend>
+                              </mat-card-title>
+                              <mat-card-content>
+                               <div class="row">
+                                <div class="col-md-6">
+                                  <label>RAL Annua: </label>
+                                  <div class="form-group">
+                                    <input type="number" class="form-control" placeholder="Inserire RAL annua" min="0"
+                                      step="0.01" id="ralAnnua" formControlName="ralAnnua" (input)="calcoloRal()" />
+                                  </div>
                                 </div>
-                              </label>
-                            </div>
+                                <div class="col-md-6">
+                                  <label>Superminimo RAL: </label>
+                                  <div class="form-group">
+                                    <input type="number" class="form-control" placeholder="Inserire superminimo RAL" min="0"
+                                      step="0.01" formControlName="superminimoRal" />
+                                  </div>
+                                </div>
+                               </div>
+                              </mat-card-content>
+                            </mat-card>
                           </div>
                           <div class="col-md-6">
-                            <label for="dataVisitaMedica">Data visita medica</label>
-                            <div class="form-group">
-                              <input type="date" class="form-control" formControlName="dataVisitaMedica" />
-                            </div>
+                            <mat-card>
+                              <mat-card-title>
+                                <legend>Diaria</legend>
+                              </mat-card-title>
+                              <mat-card-content>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <label>Diaria Mensile: </label>
+                                    <div class="form-group">
+                                      <input type="number" class="form-control" placeholder="Inserire diaria mensile" min="0"
+                                        step="0.01" formControlName="diariaMensile" />
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <label>Diaria Giornaliera: </label>
+                                    <div class="form-group">
+                                      <input type="number" class="form-control" placeholder="Inserire diaria giornaliera"
+                                        min="0" step="0.01" formControlName="diariaGiornaliera" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </mat-card-content>
+                            </mat-card>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <mat-card>
+                              <mat-card-title>
+                                <legend>Part time</legend>
+                              </mat-card-title>
+                              <mat-card-content>
+                                <div class="row">
+                                  <div class="col-4">
+                                    <label for="partTime">Part time:</label> <br />
+                                    <label class="toggle-switch">
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" style="border-color: black" [checked]="
+                                              data?.contratto?.partTime === true
+                                            " (change)="onPartTimeChange($event)" formControlName="partTime" />
+                                        <span class="slider"></span>
+                                      </div>
+                                    </label>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <label class="form-check-label">% Part time:
+                                    </label>
+                                    <div class="form-group">
+                                      <input class="form-control" type="number" formControlName="percentualePartTime"
+                                        placeholder="Percentuale part time (da 40% a 80%)" min="40" step="10" max="80"
+                                        (input)="calculateRalPartTime()" />
+                                    </div>
+                                  </div>
+                                  <div class="col-4">
+                                    <label for="ral part time">RAL Part time</label>
+                                    <input type="text" class="form-control" readonly formControlName="ralPartTime"
+                                      [(ngModel)]="percentualePartTimeValue" placeholder="RAL part time" />
+                                  </div>
+                                </div>
+                              </mat-card-content>
+                            </mat-card>
+                          </div>
+                          <div class="col-md-6">
+                            <mat-card>
+                              <mat-card-title>
+                                <legend>Ticket e Agevolazioni</legend>
+                              </mat-card-title>
+                              <mat-card-content>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label>Ticket</label> <br>
+                                      <label class="toggle-switch">
+                                        <div class="form-check">
+                                          <input class="form-check-input" type="checkbox" style="border-color: black"
+                                            (change)="onValoreTicketChange($event)" formControlName="ticket" />
+                                          <span class="slider"></span>
+                                        </div>
+                                      </label>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <label>Valore Ticket: </label>
+                                    <div class="form-group">
+                                      <input type="number" placeholder="Inserire valore ticket" min="0" step="0.01"
+                                        class="form-control" formControlName="valoreTicket" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </mat-card-content>
+                            </mat-card>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-md-4">
+                            <mat-card style="height: 100%;">
+                              <mat-card-title>
+                                <legend>Piano formativo individuale e tutor <i class="fa fa-info-circle" matTooltip="I cambi si abiliteranno in caso di contratto di stage o apprendistato" ></i> </legend>
+                              </mat-card-title>
+                              <mat-card-content>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <label>PFI: </label><br>
+                                    <label class="toggle-switch">
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" style="border-color: black"
+                                          (change)="onPFIChange($event)" formControlName="pfi" />
+                                        <span class="slider"></span>
+                                      </div>
+                                    </label>
+                                  </div>
+
+                                  <div class="col-md-6">
+                                    <label>Tutor: </label>
+                                    <div class="form-group">
+                                      <input type="text" class="form-control" formControlName="tutor"
+                                        placeholder="Inserire tutor." [ngStyle]="{
+                                            border: AnagraficaDto.get(
+                                              'contratto.tutor'
+                                            )?.hasError('required')
+                                              ? '1px solid red'
+                                              : '1px solid #f1f1f1'
+                                          }" />
+                                      <div *ngIf="
+                                            AnagraficaDto.get(
+                                              'contratto.tutor'
+                                            )?.hasError('required')
+                                          " class="text-danger">
+                                        Il campo tutor è obbligatorio.
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </mat-card-content>
+                            </mat-card>
+                          </div>
+                          <div class="col-md-4">
+                            <mat-card  style="height: 100%;">
+                              <mat-card-title>
+                                <legend>Corso di sicurezza</legend>
+                              </mat-card-title>
+                              <mat-card-content>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <div class="form-group">
+                                        <label>Corso di Sicurezza: </label><br>
+                                        <label class="toggle-switch">
+                                          <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" style="border-color: black"
+                                              (change)="
+                                                  onCorsoSicurezzaChange($event)
+                                                " formControlName="corsoSicurezza" />
+                                            <span class="slider"></span>
+                                          </div>
+                                        </label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <div class="form-group">
+                                        <label>Data corso </label>
+                                        <input type="date" class="form-control" name="dataCorsoSicurezza"
+                                          formControlName="dataCorsoSicurezza" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </mat-card-content>
+                            </mat-card>
+                          </div>
+                          <div class="col-md-4">
+                            <mat-card  style="height: 100%;">
+                              <mat-card-title>
+                                <legend>Dati medici</legend>
+                              </mat-card-title>
+                              <mat-card-content>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <label>Visita medica: </label><br>
+                                    <div class="form-group">
+                                      <label class="toggle-switch">
+                                        <div class="form-check">
+                                          <input class="form-check-input" type="checkbox" style="border-color: black"
+                                            (change)="onVisitaMedicaChange($event)" formControlName="visitaMedica" />
+                                          <span class="slider"></span>
+                                        </div>
+                                      </label>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <label for="dataVisitaMedica">Data visita </label>
+                                    <div class="form-group">
+                                      <input type="date" class="form-control" formControlName="dataVisitaMedica" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </mat-card-content>
+                            </mat-card>
                           </div>
                         </div>
                       </div>
                       <br>
-                      <div class="text-center">
-                        <button mat-mini-fab color="primary" matStepperPrevious>«</button> &nbsp;
-                        <button mat-mini-fab color="primary" matStepperNext>»</button>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="text-center">
+                            <button mat-mini-fab color="primary" matStepperPrevious>«</button> &nbsp;
+                            <button mat-mini-fab color="primary" matStepperNext>»</button>
+                          </div>
+                        </div>
                       </div>
                       <br>
-                    </mat-card-content>
-                  </mat-card>
-                  <br />
-                </div>
               </mat-step>
 
               <mat-step>

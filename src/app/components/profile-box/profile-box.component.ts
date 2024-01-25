@@ -327,6 +327,10 @@ export class ProfileBoxComponent {
     this.router.navigate(['/utente/' + this.id]);
   }
 
+  goToAdministration(){
+    this.router.navigate(['/gestione-ruoli']);
+  }
+
   convertBase64ToImage(base64String: string): void {
     this.immagineConvertita = base64String;
   }

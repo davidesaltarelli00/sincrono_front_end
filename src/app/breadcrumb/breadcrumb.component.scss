@@ -1,0 +1,33 @@
+.container-fluid {
+  margin-bottom: 20px;
+}
+
+.breadcrumb {
+  background-color: #f8f9fa;
+  padding: 8px 15px;
+  border-radius: 4px;
+}
+
+.breadcrumb-item {
+  display: inline-block;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+  content: '>';
+  margin: 0 5px;
+  color: #6c757d;
+}
+
+.breadcrumb-item.active {
+  color: #007bff;
+  font-weight: bold;
+}
+
+.breadcrumb-item a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+  text-decoration: underline;
+}

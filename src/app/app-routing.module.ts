@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { DettaglioContrattoComponent } from './components/contratto/dettaglio-contratto/dettaglio-contratto.component';
 import { NuovoContrattoComponent } from './components/contratto/nuovo-contratto/nuovo-contratto.component';
 import { ModificaContrattoComponent } from './components/contratto/modifica-contratto/modifica-contratto.component';
-import { ListaDashboardComponent } from './components/dashboard/lista-dashboard/lista-dashboard.component';
 import { ListaContrattiComponent } from './components/contratto/lista-contratti/lista-contratti.component';
 import { LoginComponent } from './components/login/login/login.component';
 import { StoricoContrattiComponent } from './components/storici/storico-contratti/storico-contratti.component';
@@ -60,6 +59,14 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
+      import('./components/amministrazione/amministrazione.module').then(
+        (m) => m.AmministrazioneModule
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: '',
+    loadChildren: () =>
       import('./components/organico/organico.module').then(
         (m) => m.OrganicoModule
       ),
@@ -70,6 +77,14 @@ const routes: Routes = [
     loadChildren: () =>
       import('./components/utente/rapportino.module').then(
         (m) => m.RapportinoModule
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./components/dashboard/dashboard.module').then(
+        (m) => m.DashboardModule
       ),
     canActivate: [AuthGuard, RoleGuard],
   },
@@ -96,11 +111,6 @@ const routes: Routes = [
   {
     path: 'modifica-commessa/:id',
     component: ModificaCommessaComponent,
-    canActivate: [AuthGuard, RoleGuard],
-  },
-  {
-    path: 'documenti',
-    component: CaricamentoDocumentiComponent,
     canActivate: [AuthGuard, RoleGuard],
   },
 
@@ -145,12 +155,6 @@ const routes: Routes = [
     component: RecuperoPasswordComponent,
   },
 
-  //DASHBOARD
-  {
-    path: 'dashboard',
-    component: ListaDashboardComponent,
-    canActivate: [AuthGuard, RoleGuard],
-  },
   {
     path: 'immagine',
     component: ImmagineComponent,
@@ -158,8 +162,6 @@ const routes: Routes = [
   },
 
   { path: 'login', component: LoginComponent },
-
-
 
   {
     path: 'info-commesse/:id',
@@ -173,7 +175,6 @@ const routes: Routes = [
   },
 
   //STORICO COMMESSE
-
 
   {
     path: 'aggiungi-commessa/:id',

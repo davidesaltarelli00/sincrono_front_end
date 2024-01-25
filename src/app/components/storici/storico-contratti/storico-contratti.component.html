@@ -101,7 +101,7 @@
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
           <h1>Storico contratti di <a style="color: blue;" [routerLink]="['/dettaglio-anagrafica/'+idAnagrafica]">
-              {{anagrafica?.anagrafica?.nome |titlecase }} {{anagrafica?.anagrafica?.cognome |titlecase}} </a>  </h1>
+              {{anagrafica?.anagrafica?.nome |titlecase }} {{anagrafica?.anagrafica?.cognome |titlecase}}  <i class="fa fa-info-circle" ></i> </a> </h1>
         </mat-card>
       </div>
     </div>
@@ -143,7 +143,8 @@
         </div>
       </div>
     </div>
-    <div class="row" *ngIf="lista.length>0">
+    <!-- tabella per contratto determinato -->
+    <div class="row" *ngIf="lista.length>0 && tipoContrattoDettaglio==='determinato'">
       <div class="col-lg-12">
         <div class="table-responsive">
           <table class="table table-striped table-bordered" *ngIf="lista" style="font-size: 12px;" id="table-anagrafica">
@@ -158,12 +159,13 @@
                 <th>Azienda</th>
                 <th>Sede assunzione</th>
                 <th>Data inizio</th>
-                <th>Data fine</th>
                 <th>Qualifica</th>
                 <th>Assicurazione</th>
                 <th>PC aziendale</th>
-                <th>Tutor</th>
-                <th>PFI</th>
+                <th>Corso di sicurezza</th>
+                <th>Data corso sicurezza</th>
+                <th>Visita medica</th>
+                <th>Data visita medica</th>
               </tr>
             </thead>
             <tbody>
@@ -177,13 +179,193 @@
                 <td>{{data?.tipoAzienda.descrizione ? data.tipoAzienda.descrizione : 'Dato non inserito.'}}</td>
                 <td>{{data?.sedeAssunzione ? data.sedeAssunzione : 'Dato non inserito.'}}</td>
                 <td>{{data?.dataAssunzione | date: 'dd/MM/yyyy'}}</td>
-                <td *ngIf="data?.tipoContratto?.descrizione!='Indeterminato'">{{data?.dataFineRapporto | date:'dd/MM/yyyy'}}</td>
-                <td *ngIf="data?.tipoContratto?.descrizione=='Indeterminato'"></td>
                 <td>{{data?.qualifica ? data.qualifica :'Dato non inserito.'}}</td>
                 <td>{{data?.assicurazioneObbligatoria ? 'Si' : 'No'}}</td>
                 <td>{{data?.pc ? 'Si' : 'No'}}</td>
-                <td>{{data?.tutor ? data.tutor : 'Dato non inserito.'}}</td>
-                <td> {{data?.pfi ? 'Si' : 'No'}}</td>
+                <td>{{data?.corsoSicurezza ? 'Si' : 'No'}}</td>
+                <td>{{ data?.dataCorsoSicurezza ? (data?.dataCorsoSicurezza | date: 'dd/MM/yyyy') : 'Dato non inserito' }}</td>
+                <td>{{data?.visitaMedica ? 'Si' : 'No'}}</td>
+                <td>{{ data?.dataVisitaMedica ? (data?.dataVisitaMedica | date: 'dd/MM/yyyy') : 'Dato non inserito' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- tabella per contratto indeterminato  -->
+    <div class="row" *ngIf="lista.length>0 && tipoContrattoDettaglio==='indeterminato'">
+      <div class="col-lg-12">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered" *ngIf="lista" style="font-size: 12px;" id="table-anagrafica">
+            <thead>
+              <tr>
+                <th>Contratto</th>
+                <th>CCNL</th>
+                <th>Livello</th>
+                <th>Minimi ret 23</th>
+                <th>Mensilitá</th>
+                <th>Azienda</th>
+                <th>Sede assunzione</th>
+                <th>Data inizio</th>
+                <th>Qualifica</th>
+                <th>Assicurazione</th>
+                <th>PC aziendale</th>
+                <th>Ticket</th>
+                <th>Valore ticket</th>
+                <th>Corso di sicurezza</th>
+                <th>Data corso sicurezza</th>
+                <th>Visita medica</th>
+                <th>Data visita medica</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of pageData; let i=index;">
+                <td>{{data?.tipoContratto?.descrizione ? data?.tipoContratto?.descrizione : 'Dato non inserito.'}}</td>
+                <td>{{data?.tipoLivelloContratto.ccnl ? data.tipoLivelloContratto.ccnl : 'Dato non inserito'}}</td>
+                <td>{{data?.tipoLivelloContratto.livello ? data.tipoLivelloContratto.livello : 'Dato non inserito'}}</td>
+                <td>{{data?.tipoLivelloContratto.minimiRet23 ? data.tipoLivelloContratto.minimiRet23 : 'Dato non inserito.'}}</td>
+                <td>{{data?.tipoCcnl.numeroMensilita ? data.tipoCcnl.numeroMensilita : 'Dato non inserito.'}}</td>
+                <td>{{data?.tipoAzienda.descrizione ? data.tipoAzienda.descrizione : 'Dato non inserito.'}}</td>
+                <td>{{data?.sedeAssunzione ? data.sedeAssunzione : 'Dato non inserito.'}}</td>
+                <td>{{data?.dataAssunzione | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data?.qualifica ? data.qualifica :'Dato non inserito.'}}</td>
+                <td>{{data?.assicurazioneObbligatoria ? 'Si' : 'No'}}</td>
+                <td>{{data?.pc ? 'Si' : 'No'}}</td>
+                <td>{{data?.ticket ? 'Si' : 'No'}}</td>
+                <td>{{data?.valoreTicket ? data?.valoreTicket : 'Dato non inserito'}}</td>
+                <td>{{data?.corsoSicurezza ? 'Si' : 'No'}}</td>
+                <td>{{ data?.dataCorsoSicurezza ? (data?.dataCorsoSicurezza | date: 'dd/MM/yyyy') : 'Dato non inserito' }}</td>
+                <td>{{data?.visitaMedica ? 'Si' : 'No'}}</td>
+                <td>{{ data?.dataVisitaMedica ? (data?.dataVisitaMedica | date: 'dd/MM/yyyy') : 'Dato non inserito' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- tabella per contratto p.iva -->
+    <div class="row" *ngIf="lista.length>0 && tipoContrattoDettaglio==='p.iva'">
+      <div class="col-lg-12">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered" *ngIf="lista" style="font-size: 12px;" id="table-anagrafica">
+            <thead>
+              <tr>
+                <th>Contratto</th>
+                <th>CCNL</th>
+                <th>Livello</th>
+                <th>Minimi ret 23</th>
+                <th>Mensilitá</th>
+                <th>Azienda</th>
+                <th>Data inizio</th>
+                <th>Sede assunzione</th>
+                <th>Qualifica</th>
+                <th>Assicurazione</th>
+                <th>PC aziendale</th>
+                <th>Tariffa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of pageData; let i=index;">
+                <td>{{data?.tipoContratto?.descrizione ? data?.tipoContratto?.descrizione : 'Dato non inserito.'}}</td>
+                <td>{{data?.tipoLivelloContratto.ccnl ? data.tipoLivelloContratto.ccnl : 'Dato non inserito'}}</td>
+                <td>{{data?.tipoLivelloContratto.livello ? data.tipoLivelloContratto.livello : 'Dato non inserito'}}</td>
+                <td>{{data?.tipoLivelloContratto.minimiRet23 ? data.tipoLivelloContratto.minimiRet23 : 'Dato non inserito.'}}</td>
+                <td>{{data?.tipoCcnl.numeroMensilita ? data.tipoCcnl.numeroMensilita : 'Dato non inserito.'}}</td>
+                <td>{{data?.tipoAzienda.descrizione ? data.tipoAzienda.descrizione : 'Dato non inserito.'}}</td>
+                <td>{{data?.dataAssunzione | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data?.sedeAssunzione ? data.sedeAssunzione : 'Dato non inserito.'}}</td>
+                <td>{{data?.qualifica ? data.qualifica :'Dato non inserito.'}}</td>
+                <td>{{data?.assicurazioneObbligatoria ? 'Si' : 'No'}}</td>
+                <td>{{data?.pc ? 'Si' : 'No'}}</td>
+                <td>{{data?.tariffaPartitaIva ? data?.tariffaPartitaIva :'Dato non inserito.'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- tabella per contratto di tipo apprendistato -->
+    <div class="row" *ngIf="lista.length>0 && tipoContrattoDettaglio==='apprendistato'">
+      <div class="col-lg-12">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered" *ngIf="lista" style="font-size: 12px;" id="table-anagrafica">
+            <thead>
+              <tr>
+                <th>Contratto</th>
+                <th>Mesi durata</th>
+                <th>CCNL</th>
+                <th>Livello</th>
+                <th>Minimi ret 23</th>
+                <th>Mensilitá</th>
+                <th>Azienda</th>
+                <th>Sede assunzione</th>
+                <th>Data inizio</th>
+                <th>Qualifica</th>
+                <th>Assicurazione</th>
+                <th>PC aziendale</th>
+                <th>Corso di sicurezza</th>
+                <th>Data corso sicurezza</th>
+                <th>Visita medica</th>
+                <th>Data visita medica</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of pageData; let i=index;">
+                <td>{{data?.tipoContratto?.descrizione ? data?.tipoContratto?.descrizione : 'Dato non inserito.'}}</td>
+                <td>{{data?.mesiDurata ? data.mesiDurata : 'Dato non inserito.'}}</td>
+                <td>{{data?.tipoLivelloContratto.ccnl ? data.tipoLivelloContratto.ccnl : 'Dato non inserito'}}</td>
+                <td>{{data?.tipoLivelloContratto.livello ? data.tipoLivelloContratto.livello : 'Dato non inserito'}}</td>
+                <td>{{data?.tipoLivelloContratto.minimiRet23 ? data.tipoLivelloContratto.minimiRet23 : 'Dato non inserito.'}}</td>
+                <td>{{data?.tipoCcnl.numeroMensilita ? data.tipoCcnl.numeroMensilita : 'Dato non inserito.'}}</td>
+                <td>{{data?.tipoAzienda.descrizione ? data.tipoAzienda.descrizione : 'Dato non inserito.'}}</td>
+                <td>{{data?.sedeAssunzione ? data.sedeAssunzione : 'Dato non inserito.'}}</td>
+                <td>{{data?.dataAssunzione | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data?.qualifica ? data.qualifica :'Dato non inserito.'}}</td>
+                <td>{{data?.assicurazioneObbligatoria ? 'Si' : 'No'}}</td>
+                <td>{{data?.pc ? 'Si' : 'No'}}</td>
+                <td>{{data?.corsoSicurezza ? 'Si' : 'No'}}</td>
+                <td>{{ data?.dataCorsoSicurezza ? (data?.dataCorsoSicurezza | date: 'dd/MM/yyyy') : 'Dato non inserito' }}</td>
+                <td>{{data?.visitaMedica ? 'Si' : 'No'}}</td>
+                <td>{{ data?.dataVisitaMedica ? (data?.dataVisitaMedica | date: 'dd/MM/yyyy') : 'Dato non inserito' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- tabella per contratto di tipo stage -->
+    <div class="row" *ngIf="lista.length>0 && tipoContrattoDettaglio==='stage'">
+      <div class="col-lg-12">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered" *ngIf="lista" style="font-size: 12px;" id="table-anagrafica">
+            <thead>
+              <tr>
+                <th>Contratto</th>
+                <th>Mesi durata</th>
+                <th>CCNL</th>
+                <th>Livello</th>
+                <th>Azienda</th>
+                <th>Sede assunzione</th>
+                <th>Data inizio</th>
+                <th>Data fine</th>
+                <th>Qualifica</th>
+                <th>PC aziendale</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of pageData; let i=index;">
+                <td>{{data?.tipoContratto?.descrizione ? data?.tipoContratto?.descrizione : 'Dato non inserito.'}}</td>
+                <td>{{data?.mesiDurata ? data.mesiDurata : 'Dato non inserito.'}}</td>
+                <td>{{data?.tipoLivelloContratto.ccnl ? data.tipoLivelloContratto.ccnl : 'Dato non inserito'}}</td>
+                <td>{{data?.tipoLivelloContratto.livello ? data.tipoLivelloContratto.livello : 'Dato non inserito'}}</td>
+                <td>{{data?.tipoAzienda.descrizione ? data.tipoAzienda.descrizione : 'Dato non inserito.'}}</td>
+                <td>{{data?.sedeAssunzione ? data.sedeAssunzione : 'Dato non inserito.'}}</td>
+                <td>{{data?.dataAssunzione | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data?.dataFineRapporto | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data?.qualifica ? data.qualifica :'Dato non inserito.'}}</td>
+                <td>{{data?.pc ? 'Si' : 'No'}}</td>
               </tr>
             </tbody>
           </table>
@@ -192,6 +374,7 @@
     </div>
   </div>
   <br>
+
   <div id="finePagina"></div>
   <footer>
     <div class="footer">
@@ -253,7 +436,7 @@
 </html>
 
 <!--
-  {
+ {
     "esito": {
         "code": 200,
         "target": null,
@@ -261,46 +444,45 @@
     },
     "list": [
         {
-            "id": 8,
+            "id": 108,
             "tipoCausaFineRapporto": null,
-            "tipoCanaleReclutamento": {
-                "id": 1,
-                "descrizione": "Recruiting"
-            },
+            "tipoCausaFineContratto": null,
             "tipoContratto": {
-                "id": 5,
-                "descrizione": "Apprendistato"
+                "id": 2,
+                "descrizione": "p.iva"
             },
             "tipoLivelloContratto": {
-                "id": 16,
-                "ccnl": "TERZIARIO COMMERCIO",
-                "livello": "5",
-                "minimiRet23": 1538.11
+                "id": 20,
+                "ccnl": "METALMECCANICO PMI CONFAPI",
+                "livello": "2",
+                "minimiRet23": 2386.81
             },
             "tipoAzienda": {
                 "id": 4,
-                "descrizione": "Reymon"
+                "descrizione": "Zeroclock SRL"
             },
             "tipoCcnl": {
-                "id": 3,
-                "descrizione": "TERZIARIO COMMERCIO",
-                "numeroMensilita": 14
+                "id": 1,
+                "descrizione": "METALMECCANICO PMI CONFAPI",
+                "numeroMensilita": 13
             },
             "attivo": false,
-            "qualifica": "frontend developer",
-            "sedeAssunzione": null,
-            "dataAssunzione": "2022-02-09T23:00:00.000+00:00",
+            "qualifica": "Sistemista",
+            "sedeAssunzione": "Via vinicio cortese 147F",
+            "dataAssunzione": "2020-10-09T22:00:00.000+00:00",
             "dataInizioProva": null,
             "dataFineProva": null,
-            "dataFineRapporto": "2025-02-09T23:00:00.000+00:00",
-            "mesiDurata": 36,
-            "livelloAttuale": "5",
+            "dataFineRapporto": null,
+            "dataFineContratto": null,
+            "mesiDurata": null,
+            "livelloAttuale": "2",
             "livelloFinale": null,
             "partTime": null,
             "percentualePartTime": null,
-            "retribuzioneMensileLorda": 1538.11,
+            "costoAziendale": null,
+            "retribuzioneMensileLorda": 2386.81,
             "superminimoMensile": null,
-            "ralAnnua": 21533.54,
+            "ralAnnua": 31028.53,
             "superminimoRal": null,
             "diariaMensile": null,
             "diariaGiornaliera": null,
@@ -314,8 +496,68 @@
             "visitaMedica": null,
             "dataVisitaMedica": null,
             "scattiAnzianita": null,
-            "tariffaPartitaIva": null,
-            "assicurazioneObbligatoria": null,
+            "tariffaPartitaIva": 150.0,
+            "assicurazioneObbligatoria": true,
+            "retribuzioneNettaGiornaliera": 50.0,
+            "retribuzioneNettaMensile": null,
+            "diariaAnnua": null,
+            "ralPartTime": null
+        },
+        {
+            "id": 109,
+            "tipoCausaFineRapporto": null,
+            "tipoCausaFineContratto": null,
+            "tipoContratto": {
+                "id": 2,
+                "descrizione": "p.iva"
+            },
+            "tipoLivelloContratto": {
+                "id": 20,
+                "ccnl": "METALMECCANICO PMI CONFAPI",
+                "livello": "2",
+                "minimiRet23": 2386.81
+            },
+            "tipoAzienda": {
+                "id": 4,
+                "descrizione": "Zeroclock SRL"
+            },
+            "tipoCcnl": {
+                "id": 1,
+                "descrizione": "METALMECCANICO PMI CONFAPI",
+                "numeroMensilita": 13
+            },
+            "attivo": false,
+            "qualifica": "Sistemista",
+            "sedeAssunzione": "Via vinicio cortese 147F",
+            "dataAssunzione": "2020-10-09T22:00:00.000+00:00",
+            "dataInizioProva": null,
+            "dataFineProva": null,
+            "dataFineRapporto": null,
+            "dataFineContratto": null,
+            "mesiDurata": null,
+            "livelloAttuale": "2",
+            "livelloFinale": null,
+            "partTime": null,
+            "percentualePartTime": null,
+            "costoAziendale": null,
+            "retribuzioneMensileLorda": 2386.81,
+            "superminimoMensile": null,
+            "ralAnnua": 31028.53,
+            "superminimoRal": null,
+            "diariaMensile": null,
+            "diariaGiornaliera": null,
+            "ticket": null,
+            "valoreTicket": null,
+            "tutor": null,
+            "pfi": null,
+            "corsoSicurezza": null,
+            "dataCorsoSicurezza": null,
+            "pc": true,
+            "visitaMedica": null,
+            "dataVisitaMedica": null,
+            "scattiAnzianita": null,
+            "tariffaPartitaIva": 150.0,
+            "assicurazioneObbligatoria": true,
             "retribuzioneNettaGiornaliera": null,
             "retribuzioneNettaMensile": null,
             "diariaAnnua": null,

@@ -109,7 +109,11 @@
         </mat-card>
       </div>
     </div>
-    <br>
+    <!-- <div class="row">
+      <div class="col-12">
+        <app-breadcrumb></app-breadcrumb>
+      </div>
+    </div> -->
     <div class="row">
       <div class="col-md-4">
         <main>
@@ -202,7 +206,7 @@
                     <i class="fa fa-exclamation-triangle"></i> </button> &nbsp; <button class="btn btn-primary"> <i
                       class="fa fa-pencil " (click)="modificaAnagrafica()"></i></button></h1>
 
-                <table class="table table-bordered ">
+                <table class="table table-striped ">
                   <tbody>
 
 
@@ -243,7 +247,7 @@
             <div class="row">
               <div class="col-12">
                 <legend>Dati di nascita</legend>
-                <table class="table table-bordered ">
+                <table class="table table-striped ">
                   <tbody>
                     <tr>
                       <td><strong>Data di nascita:</strong></td>
@@ -251,11 +255,11 @@
                     </tr>
                     <tr>
                       <td><strong>Provincia di nascita:</strong></td>
-                      <td>{{ data?.anagrafica?.provinciaDiNascita ? data.anagrafica.provinciaDiNascita : 'Dato non inserito' | titlecase }}</td>
+                      <td>{{ data?.anagrafica?.provinciaDiNascita?.denominazione_provincia ? data.anagrafica.provinciaDiNascita?.denominazione_provincia : 'Dato non inserito' | titlecase }}</td>
                     </tr>
                     <tr>
                       <td><strong>Comune nascita:</strong></td>
-                      <td>{{ data?.anagrafica?.comuneDiNascita ? data.anagrafica.comuneDiNascita : 'Dato non inserito' |
+                      <td>{{ data?.anagrafica?.comuneDiNascita?.denominazioneItaAltra ? data.anagrafica.comuneDiNascita?.denominazioneItaAltra : 'Dato non inserito' |
                         titlecase }}</td>
                     </tr>
                     <tr>
@@ -275,17 +279,46 @@
             <div class="row">
               <div class="col-12">
                 <legend>Dati residenza/domicilio</legend>
-                <table class="table table-bordered">
+                <table class="table table-striped">
                   <tbody>
                     <tr>
                       <td><strong>Residenza:</strong></td>
-                      <td>{{ data?.anagrafica?.residenza ? data.anagrafica.residenza : 'Dato non inserito' | titlecase
-                        }}</td>
+                      <td>
+                        <table class="table table-bordered">
+                          <tr>
+                            <th>Indirizzo</th>
+                            <th>Comune</th>
+                            <th>Provincia</th>
+                            <th>Sigla</th>
+                          </tr>
+                          <tr>
+                            <td>{{ data?.anagrafica?.indirizzoResidenza ? data?.anagrafica?.indirizzoResidenza : 'Dato non inserito' | titlecase }}</td>
+                            <td>{{data?.anagrafica.comuneResidenza?.denominazioneItaAltra   }},</td>
+                            <td>{{data?.anagrafica?.provinciaResidenza?.denominazione_provincia }}</td>
+                            <td>{{data?.anagrafica?.provinciaResidenza?.siglaProvincia }}</td>
+                          </tr>
+                        </table>
+                     </td>
                     </tr>
                     <tr>
                       <td><strong>Domicilio:</strong></td>
-                      <td>{{ data?.anagrafica?.domicilio ? data.anagrafica.domicilio : 'Dato non inserito' | titlecase
-                        }}</td>
+                      <td>
+
+                        <table class="table table-bordered">
+                          <tr>
+                            <th>Indirizzo</th>
+                            <th>Comune</th>
+                            <th>Provincia</th>
+                            <th>Sigla</th>
+                          </tr>
+                          <tr>
+                            <td> {{ data?.anagrafica?.indirizzoDomicilio ? data?.anagrafica?.indirizzoDomicilio : 'Dato non inserito' | titlecase }}</td>
+                            <td>{{data?.anagrafica?.comuneDomicilio?.denominazioneItaAltra}}</td>
+                            <td>{{data?.anagrafica?.provinciaDomicilio?.denominazione_provincia}}</td>
+                            <td>{{data?.anagrafica?.provinciaDomicilio?.siglaProvincia}}</td>
+                          </tr>
+                        </table>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -313,7 +346,7 @@
               </div>
             </div>
             <div class="container-contratto" [hidden]="data?.contratto===null">
-              <table class="table table-bordered">
+              <table class="table table-striped">
                 <tbody>
                   <tr>
                     <td><strong>Nome Azienda:</strong></td>
@@ -398,7 +431,7 @@
               <div class="row" *ngIf="data?.contratto?.partTime===true">
                 <div class="col-12">
                   <h1>Dati part-time</h1>
-                  <table class="table table-bordered">
+                  <table class="table table-striped">
                     <tbody>
                       <tr>
                         <td><strong>Part time</strong></td>
@@ -426,7 +459,7 @@
                       <i class="fa fa-pencil"></i>
                     </button></h1> <br>
                   <h1>Retribuzione</h1>
-                  <table class="table table-bordered">
+                  <table class="table table-striped">
                     <tbody>
                       <tr>
                         <td><strong>Retribuzione mensile lorda:</strong></td>
@@ -453,7 +486,7 @@
               <div class="row">
                 <div class="col-12">
                   <h1>RAL</h1>
-                  <table class="table table-bordered">
+                  <table class="table table-striped">
                     <tbody>
                       <tr>
                         <td><strong>RAL annua</strong></td>
@@ -473,7 +506,7 @@
               <div class="row">
                 <div class="col-12">
                   <h1>Diaria</h1>
-                  <table class="table table-bordered">
+                  <table class="table table-striped">
                     <tbody>
                       <tr>
                         <td><strong>Diaria mensile</strong></td>
@@ -491,7 +524,7 @@
               <div class="row" [hidden]="data?.contratto?.tipoContratto.descrizione!='P.Iva'">
                 <div class="col-12">
                   <h1>Dati economici partita IVA</h1>
-                  <table class="table table-bordered">
+                  <table class="table table-striped">
                     <tbody>
                       <tr>
                         <td><strong>Tariffa partita IVA</strong></td>
@@ -510,7 +543,7 @@
               <div class="row">
                 <div class="col-12">
                   <h1>Ticket e agevolazioni</h1>
-                  <table class="table table-bordered">
+                  <table class="table table-striped">
                     <tbody>
                       <tr>
                         <td> <strong>Ticket:</strong> </td>
@@ -529,7 +562,7 @@
               <div class="row">
                 <div class="col-12">
                   <h1>Costo aziendale</h1>
-                  <table class="table table-bordered">
+                  <table class="table table-striped">
                     <tbody>
                       <tr>
                         <td><strong>Costo aziendale</strong></td>
@@ -628,7 +661,7 @@
                 (click)="modificaCommessa()">
                 <i class="fa fa-pencil"></i>
               </button></h1>
-            <table class="table table-bordered">
+            <table class="table table-striped">
               <tbody>
                 <tr>
                   <td>

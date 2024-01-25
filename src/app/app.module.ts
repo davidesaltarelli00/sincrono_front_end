@@ -10,7 +10,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { saveAs } from 'file-saver';
-import { APP_BASE_HREF, LocationStrategy, PlatformLocation } from '@angular/common';
+import {
+  APP_BASE_HREF,
+  PlatformLocation,
+} from '@angular/common';
 
 //CONTRATTO
 import { ListaContrattiComponent } from './components/contratto/lista-contratti/lista-contratti.component';
@@ -19,15 +22,12 @@ import { NuovoContrattoComponent } from './components/contratto/nuovo-contratto/
 import { ModificaContrattoComponent } from './components/contratto/modifica-contratto/modifica-contratto.component';
 
 //DASHBOARD
-import { ListaDashboardComponent } from './components/dashboard/lista-dashboard/lista-dashboard.component';
 
 //DASHBOARD
 
 //HOME
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login/login.component';
-import { StoricoContrattiComponent } from './components/storici/storico-contratti/storico-contratti.component';
-import { StoricoCommesseComponent } from './components/storici/storico-commesse/storico-commesse.component';
 
 import { MaterialModule } from './material.module';
 import { ProfileBoxComponent } from './components/profile-box/profile-box.component';
@@ -48,19 +48,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { ImmagineComponent } from './components/immagine/immagine.component';
 import { BottoniComponent } from './bottoni/bottoni.component';
 import { MailSollecitaComponent } from './components/mail-sollecita/mail-sollecita.component';
-import { CaricamentoDocumentiComponent } from './components/caricamento-documenti/caricamento-documenti.component';
 import { ModificaCommessaComponent } from './components/modifica-commessa/modifica-commessa.component';
 import { AlertConfermaComponent } from './alert-conferma/alert-conferma.component';
 import { SelectedDaysComponent } from './components/richieste/selected-days/selected-days.component';
-import { InsertPermessoComponent } from './components/richieste/insert-permesso/insert-permesso.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { TutorialCompilazioneRapportinoComponent } from './tutorial-compilazione-rapportino/tutorial-compilazione-rapportino.component';
-import { TruncatePipe } from './pipe/TruncatePipe';
 import { AggiungiCommessaComponent } from './components/aggiungi-commessa/aggiungi-commessa.component';
 import { AnagraficaDtoModule } from './components/anagraficaDto/anagraficaDto.module';
 import { OrganicoModule } from './components/organico/organico.module';
 import { RichiesteModule } from './components/richieste/richieste.module';
 import { RapportinoModule } from './components/utente/rapportino.module';
+import { DashboardModule } from './components/dashboard/dashboard.module';
+import { AmministrazioneModule } from './components/amministrazione/amministrazione.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -68,7 +67,6 @@ import { RapportinoModule } from './components/utente/rapportino.module';
     ModificaContrattoComponent,
     NuovoContrattoComponent,
     ListaContrattiComponent,
-    ListaDashboardComponent,
     HighlightNullFieldDirective,
     HomeComponent,
     ModalInfoCommesseComponent,
@@ -89,7 +87,6 @@ import { RapportinoModule } from './components/utente/rapportino.module';
     BottoniComponent,
     MailSollecitaComponent,
     AlertConfermaComponent,
-    CaricamentoDocumentiComponent,
     FooterComponent,
     TutorialCompilazioneRapportinoComponent,
     AggiungiCommessaComponent,
@@ -112,15 +109,21 @@ import { RapportinoModule } from './components/utente/rapportino.module';
     AnagraficaDtoModule,
     OrganicoModule,
     RapportinoModule,
-    RichiesteModule
+    RichiesteModule,
+    DashboardModule,
+    AmministrazioneModule
   ],
-  providers: [DatePipe, CurrencyPipe,  {
-    provide: APP_BASE_HREF,
-    useFactory: (platformLocation: PlatformLocation) => {
-      return platformLocation.getBaseHrefFromDOM();
+  providers: [
+    DatePipe,
+    CurrencyPipe,
+    {
+      provide: APP_BASE_HREF,
+      useFactory: (platformLocation: PlatformLocation) => {
+        return platformLocation.getBaseHrefFromDOM();
+      },
+      deps: [PlatformLocation],
     },
-    deps: [PlatformLocation],
-  },],
+  ],
   //  { provide: LOCALE_ID, useValue: 'it-IT' }
   bootstrap: [AppComponent],
 })

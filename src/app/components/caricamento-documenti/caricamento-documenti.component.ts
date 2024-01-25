@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { AnagraficaDtoService } from '../anagraficaDto/anagraficaDto-service';
 import { MenuService } from '../menu.service';
@@ -6,12 +6,13 @@ import { ProfileBoxService } from '../profile-box/profile-box.service';
 import { AlertLogoutComponent } from '../alert-logout/alert-logout.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from 'src/app/alert-dialog/alert-dialog.component';
-import { HttpEventType } from '@angular/common/http';
+import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { ThemeService } from 'src/app/theme.service';
 import { Observable, of } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { AuthService } from '../login/login-service';
 
 @Component({
   selector: 'app-caricamento-documenti',
@@ -46,7 +47,16 @@ export class CaricamentoDocumentiComponent implements OnInit {
   uploadProgressColor: string = 'primary';
   elencoAnagraficheNonInserite$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   risposta:any;
-
+  isVoiceActionActivated = false;
+  toggleMode: boolean = false;
+  aziendeClienti: any[] = [];
+  isHamburgerMenuOpen: boolean = false;
+  selectedMenuItem: string | undefined;
+  windowWidth: any;
+  orarioAttuale: Date = new Date();
+  tokenExpirationTime: any;
+  timer: any;
+  idAnagraficaLoggata:any;
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -55,9 +65,12 @@ export class CaricamentoDocumentiComponent implements OnInit {
     public themeService:ThemeService,
     private profileBoxService: ProfileBoxService,
     private dialog: MatDialog,
-    private cdr: ChangeDetectorRef,
-    private router:Router
+    private cdRef: ChangeDetectorRef,
+    private router:Router,
+    private authService: AuthService
   ) {
+
+    this.windowWidth = window.innerWidth;
     if (window.innerWidth >= 900) {
       // 768px portrait
       this.mobile = false;
@@ -71,9 +84,58 @@ export class CaricamentoDocumentiComponent implements OnInit {
     ) {
       this.mobile = true;
     }
+
   }
 
   ngOnInit(): void {
+    if (this.token) {
+      const tokenParts = this.token.split('.');
+      const tokenPayload = JSON.parse(atob(tokenParts[1]));
+      const currentTime = Date.now() / 1000;
+      this.tokenExpirationTime = Math.floor(tokenPayload.exp - currentTime);
+      this.timer = setInterval(() => {
+        this.tokenExpirationTime -= 1;
+        this.cdRef.detectChanges();
+
+        if (this.tokenExpirationTime === 0) {
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            data: {
+              image: '../../../../assets/images/danger.png',
+              title: 'Attenzione:',
+              message: 'Sessione terminata; esegui il login.',
+            },
+          });
+
+          this.authService.logout().subscribe(
+            (response: any) => {
+              if (response.status === 200) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenProvvisorio');
+                sessionStorage.clear();
+                this.router.navigate(['/login']);
+                this.dialog.closeAll();
+              } else {
+                console.log(
+                  'Errore durante il logout:',
+                  response.status,
+                  response.body
+                );
+                this.handleLogoutError();
+              }
+            },
+            (error: HttpErrorResponse) => {
+              if (error.status === 403) {
+                console.log('Errore 403: Accesso negato');
+                this.handleLogoutError();
+              } else {
+                console.log('Errore durante il logout:', error.message);
+                this.handleLogoutError();
+              }
+            }
+          );
+        }
+      }, 1000);
+    }
     if (this.token != null) {
       this.getUserLogged();
       this.getUserRole();
@@ -81,7 +143,45 @@ export class CaricamentoDocumentiComponent implements OnInit {
     }
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.windowWidth = window.innerWidth;
+  }
 
+  getWindowWidth(): number {
+    return this.windowWidth;
+  }
+  toggleHamburgerMenu(): void {
+    this.isHamburgerMenuOpen = !this.isHamburgerMenuOpen;
+  }
+  navigateTo(route: string): void {
+    console.log(`Navigating to ${route}`);
+    this.router.navigate([route]);
+  }
+
+  vaiAlRapportino() {
+    this.router.navigate(['/utente/' + this.idAnagraficaLoggata]);
+  }
+
+  formatTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(
+      remainingSeconds
+    )}`;
+  }
+
+  pad(value: number): string {
+    return value.toString().padStart(2, '0');
+  }
+
+  private handleLogoutError() {
+    sessionStorage.clear();
+    window.location.href = 'login';
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenProvvisorio');
+  }
 
   salvaDocumento() {
     let body = {
@@ -106,7 +206,7 @@ export class CaricamentoDocumentiComponent implements OnInit {
           this.risposta = event.body.list;
           this.elencoAnagraficheNonInserite$.next(this.risposta);
           localStorage.setItem('DatiSbagliati', JSON.stringify(this.risposta));
-          this.cdr.detectChanges();
+          this.cdRef.detectChanges();
           console.log("Elenco anagrafiche non inserite:", JSON.stringify(this.elencoAnagraficheNonInserite$));
 
         }
@@ -185,7 +285,7 @@ export class CaricamentoDocumentiComponent implements OnInit {
 
     // Display the preview
     this.previewData = htmlString;*/
-  
+
 //  }
 previewExcel(base64String: string): void {
   const binaryString = atob(base64String);
@@ -210,37 +310,37 @@ sheetToHtml(sheet: XLSX.WorkSheet): string {
   const range = sheet['!ref'] ? XLSX.utils.decode_range(sheet['!ref']) : { s: { r: 0, c: 0 }, e: { r: 0, c: 0 } };
 
   let html = '<table style="border-collapse: collapse; width: 100%;">';
-  
+
   for (let R = range.s.r; R <= range.e.r; ++R) {
     html += '<tr>';
     for (let C = range.s.c; C <= range.e.c; ++C) {
       const cell_address = { c: C, r: R };
       const cell_ref = XLSX.utils.encode_cell(cell_address);
       const cell = sheet[cell_ref];
-  
+
       // Get the cell value
       const value = cell ? cell.v : '';
-  
+
       // Get the cell style
       const cellStyle = XLSX.utils.format_cell(cell);
-  
+
       // Map Excel color codes to CSS color values
       const backgroundColorMatch = cellStyle.match(/background-color:(.*?);/);
       const backgroundColor = backgroundColorMatch ? backgroundColorMatch[1] : '';
-  
+
       const fontColorMatch = cellStyle.match(/color:(.*?);/);
       const fontColor = fontColorMatch ? fontColorMatch[1] : '';
-  
+
       // Determine the background color for the row and text color for the first row
       const rowBackgroundColor = R === range.s.r ? 'gray' : backgroundColor;
       const textColor = R === range.s.r ? 'white' : fontColor;
-  
+
       // Apply style and color to the HTML with borders
       html += `<td style="background-color:${rowBackgroundColor}; color:${textColor}; border: 1px solid #000; padding: 8px;">${value}</td>`;
     }
     html += '</tr>';
   }
-  
+
   html += '</table>';
   return html;
 }

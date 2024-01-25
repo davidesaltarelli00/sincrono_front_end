@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .node {
+      margin-left: 20px;
+    }
+</style>
+<body>
+  <div id="inizioPagina"></div>
+  <div class="container-toolbar" *ngIf="!mobile && jsonData?.list">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <a [routerLink]="['/home']" class="logo-link">
+          <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+        </a>
+      </div>
+
+      <div class="col-auto">
+        <button  *ngIf="getWindowWidth() < 830" mat-icon-button [matMenuTriggerFor]="hamburgerMenu" (click)="toggleHamburgerMenu()" class="hamburger-icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+
+      <div class="col-auto">
+        <mat-menu #hamburgerMenu="matMenu" class="hamburger-menu">
+          <button id="menu-voice" mat-menu-item *ngFor="let menuItem of jsonData.list" (click)="navigateTo(menuItem.percorso)">
+            {{ menuItem.nome }}
+          </button>
+        </mat-menu>
+
+        <div class="toolbar-menu" *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen">
+          <a (click)="getPermissions(menuItem.id)" style="color: white;" class="toolbar-link"
+            *ngFor="let menuItem of jsonData.list" [routerLink]="[menuItem.percorso]">
+            {{ menuItem.nome }}
+          </a>
+        </div>
+      </div>
+
+      <div class="col-auto" *ngIf="jsonData && jsonData.list && !isHamburgerMenuOpen">
+        <a style="color:white; cursor: pointer;" (click)="vaiAlRapportino()">Rapportino</a>
+      </div>
+
+      <div class="col-auto">
+        <div class="form-check form-switch" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}">
+          <input class="form-check-input" [checked]="themeService.isDarkModeEnabled()" (click)="toggleDarkMode()" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault" matTooltip="{{ themeService.isDarkModeEnabled() ? 'Light mode' : 'Dark Mode' }}"></label>
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <div style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+          <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+          <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+          <i class="fa fa-user"></i>
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <div style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <div class="container-toolbar" [hidden]="tokenProvvisorio != null && tokenProvvisorio == null">
+    <mat-toolbar id="toolbar" *ngIf="token && mobile  && jsonData?.list">
+      <a [routerLink]="['/home']" class="logo-link">
+        <img class="logo-image" width="40" height="40" src="../../../../assets/images/logo.jpeg" alt="Logo">
+      </a>
+      <button style="background-color:#333;color:white;margin-left:-10px;margin-right:3px;border-radius:1px;padding:5px;"
+        mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <ng-template matMenuContent>
+          <button  mat-menu-item *ngFor="let menuItem of jsonData.list"
+            [routerLink]="[menuItem.percorso]" (click)="getPermissions(menuItem.id)">
+            {{ menuItem.nome }}
+          </button>
+          <button mat-menu-item  (click)="vaiAlRapportino()">
+            Rapportino
+          </button>
+        </ng-template>
+      </mat-menu>
+
+      <span style="cursor: pointer;" mat-icon-button [routerLink]="['/profile-box']" class="user-icon">
+        <small *ngIf="userRoleNav===false">{{userLoggedName}} {{userLoggedSurname}} (Admin) &nbsp;</small>
+        <small *ngIf="userRoleNav===true">{{userLoggedName}} {{userLoggedSurname}} (Dipendente) &nbsp;</small>
+        <i class="fa fa-user"></i>
+      </span> &nbsp;&nbsp;
+      <span style="cursor: pointer;" mat-icon-button (click)="logout()" class="logout-icon">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </span>
+    </mat-toolbar>
+  </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-10" style="margin: auto;">
+      <mat-card style="text-align: center;">
+        <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono" class="img-fluid"></h1>
+        <h1>Gestione Ruoli </h1>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <p>Lista dei ruoli</p>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+            <!-- This is the tree node template for leaf nodes -->
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+              <!-- use a disabled button to provide padding for tree leaf -->
+              <button mat-icon-button disabled></button>
+              {{node.name}}
+            </mat-tree-node>
+            <!-- This is the tree node template for expandable nodes -->
+            <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+              <button mat-icon-button matTreeNodeToggle
+                      [attr.aria-label]="'Toggle ' + node.name">
+                <mat-icon class="mat-icon-rtl-mirror">
+                  {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+              </button>
+              {{node.name}}
+            </mat-tree-node>
+          </mat-tree>
+
+
+          <!-- Copyright 2024 Google LLC. All Rights Reserved.
+              Use of this source code is governed by an MIT-style license that
+              can be found in the LICENSE file at https://angular.io/license -->
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+</div>
+  <div id="finePagina"></div>
+</body>
+</html>

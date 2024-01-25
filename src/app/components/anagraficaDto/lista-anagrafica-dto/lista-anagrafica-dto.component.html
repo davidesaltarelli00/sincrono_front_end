@@ -116,7 +116,11 @@
         </mat-card>
       </div>
     </div>
-    <br>
+    <!-- <div class="row">
+      <div class="col-12">
+        <app-breadcrumb></app-breadcrumb>
+      </div>
+    </div> -->
     <mat-expansion-panel>
       <mat-expansion-panel-header (click)="mostraFiltri = !mostraFiltri">
 
@@ -407,7 +411,7 @@
                   </button>
                 </div>
                 <div class="col-md-3 mb-2">
-                  <button mat-flat-button id="button" class="btn btn-success" disabled [routerLink]="['/documenti']">
+                  <button mat-flat-button id="button" class="btn btn-success"  [routerLink]="['/documenti']"> <!--disabled-->
                     Inserimento da Excel <i class="fa fa-file-upload"></i>
                   </button>
                 </div>
@@ -451,7 +455,7 @@
       <div class="col-12">
         <div class="table-responsive">
 
-          <table id="table-anagrafica" class="table table-bordered" *ngIf="!mobile">
+          <table id="table-anagrafica" class="table table-striped" *ngIf="!mobile">
             <thead class="thead-dark">
               <tr>
                 <th scope="col">Ruolo</th>

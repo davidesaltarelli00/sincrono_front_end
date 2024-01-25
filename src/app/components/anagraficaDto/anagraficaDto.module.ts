@@ -12,6 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NuovaAnagraficaDtoExcelComponent } from './nuova-anagrafica-dto-excel/nuova-anagrafica-dto-excel.component';
 import { StoricoContrattiComponent } from '../storici/storico-contratti/storico-contratti.component';
 import { StoricoCommesseComponent } from '../storici/storico-commesse/storico-commesse.component';
+import { CaricamentoDocumentiComponent } from '../caricamento-documenti/caricamento-documenti.component';
+import { BreadcrumbComponent } from 'src/app/breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { StoricoCommesseComponent } from '../storici/storico-commesse/storico-co
     ModificaAnagraficaDtoComponent,
     NuovaAnagraficaDtoExcelComponent,
     StoricoContrattiComponent,
-    StoricoCommesseComponent
+    StoricoCommesseComponent,
+    CaricamentoDocumentiComponent,
+    BreadcrumbComponent
   ],
   imports: [
     CommonModule,

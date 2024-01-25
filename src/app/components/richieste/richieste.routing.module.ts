@@ -10,17 +10,17 @@ const routes: Routes = [
   {
     path: 'richieste',
     component: RichiesteComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path: 'richieste/:id',
     component: DettaglioRichiestaComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path: 'update-richiesta/:id',
     component: ModificaRichiestaComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
 ];
 

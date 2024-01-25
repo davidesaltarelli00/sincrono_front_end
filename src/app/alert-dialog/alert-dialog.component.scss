@@ -1,7 +1,26 @@
-img{
-  max-height: 30%;
+
+.container-fluid {
+  background-color: #f4f4f4; /* Sfondo leggero */
+  padding: 20px; /* Aggiungi spazio intorno al contenitore */
 }
-// .dark-mode body, .container-fluid, mat-card{
-//   background-color: #444;
-//   color: white;
-// }
+
+mat-card {
+  width: 300px; /* Imposta la larghezza della card */
+}
+
+mat-card-title {
+  text-align: end;
+}
+
+mat-card-content {
+  text-align: center;
+}
+
+img {
+  max-height: 100px; /* Limita l'altezza dell'immagine */
+  margin-bottom: 10px; /* Aggiungi spazio sotto l'immagine */
+}
+
+button {
+  margin-top: 10px; /* Aggiungi spazio sopra il pulsante */
+}

@@ -56,7 +56,7 @@ export class StoricoContrattiComponent implements OnInit {
   tokenExpirationTime: any;
   timer: any;
   idAnagraficaLoggata: any;
-  tipoContrattoDettagio:any;
+  tipoContrattoDettaglio: any;
 
   constructor(
     private storicoService: StoricoService,
@@ -230,7 +230,13 @@ export class StoricoContrattiComponent implements OnInit {
           } else {
             // console.log(resp);
             this.anagrafica = (resp as any)['anagraficaDto'];
-            this.detailContract();
+            this.tipoContrattoDettaglio = (resp as any)['anagraficaDto'][
+              'contratto'
+            ]['tipoContratto']['descrizione'];
+            console.log(
+              'TIPO DI CONTRATTO DELL UTENTE: ' + this.tipoContrattoDettaglio
+            );
+            this.listaStoricoContratti();
           }
         },
         (error: any) => {
@@ -242,7 +248,7 @@ export class StoricoContrattiComponent implements OnInit {
       );
   }
 
-  detailContract() {
+  listaStoricoContratti() {
     this.idAnagrafica = this.activatedRoute.snapshot.params['id'];
     this.storicoService
       .getStoricoContratti(this.idAnagrafica, localStorage.getItem('token'))
