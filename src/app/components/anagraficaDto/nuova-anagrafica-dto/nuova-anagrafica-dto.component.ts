@@ -209,14 +209,14 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           flag_capoluogo:new FormControl('')
         }),
         provinciaResidenza: new FormGroup({
-          id: new FormControl(''),
+          id: new FormControl('',Validators.required),
           siglaProvincia: new FormControl(''),
           denominazione_provincia:new FormControl(''),
           tipologiaProvincia: new FormControl(''),
           numeroComuni:new FormControl('')
         }),
         comuneResidenza: new FormGroup({
-          id: new FormControl(''),
+          id: new FormControl('',Validators.required),
           siglaProvincia: new FormControl(''),
           codiceIstat: new FormControl(''),
           denominazioneItaAltra: new FormControl(''),
@@ -240,7 +240,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           denominazione_altra: new FormControl(''),
           flag_capoluogo:new FormControl('')
         }),
-        indirizzoResidenza: new FormControl(''),
+        indirizzoResidenza: new FormControl('',Validators.required),
         indirizzoDomicilio: new FormControl(''),
         dataDiNascita: new FormControl(''),
         tipoCanaleReclutamento: new FormGroup({
@@ -350,6 +350,17 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
   clearCodiceFiscale() {
     this.AnagraficaDto.get('anagrafica.codiceFiscale')?.setValue('');
+  }
+
+  onChangeProvinciaResidenza(event:any){ //metodo per catturare la provincia di residenza selezionata
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      const isChecked = target.value;
+      console.log('Provincia selezionata: ' + isChecked);
+      //qui andrá l endpoint per filtrare i comuni di residenza
+    } else{
+      console.warn("La provincia selezionata é null");
+    }
   }
 
   ngOnInit(): void {

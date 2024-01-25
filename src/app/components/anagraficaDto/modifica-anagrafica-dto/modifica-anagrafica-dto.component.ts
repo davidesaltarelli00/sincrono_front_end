@@ -126,6 +126,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   ruolo: any;
   tokenExpirationTime: any;
   timer: any;
+  elencoProvince: any[]=[];
+  elencoComuni: any[]=[];
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -181,41 +183,18 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     this.anagraficaDto = this.formBuilder.group({
       anagrafica: this.formBuilder.group({
         id: [this.id],
-        // attivo: [true],
         tipoAzienda: this.formBuilder.group({ id: [''] }),
         nome: ['', Validators.required],
         cognome: ['', Validators.required],
         codiceFiscale: ['', Validators.required],
-        comuneDiNascita: [''],
         dataDiNascita: [''],
-        residenza: [''],
-        domicilio: [''],
+        indirizzoResidenza: [''],
+        indirizzoDomicilio: [''],
         cellularePrivato: ['', Validators.pattern(/^[0-9]{10}$/)],
         cellulareAziendale: ['', Validators.pattern(/^[0-9]{10}$/)],
-        mailPrivata: [
-          '',
-          Validators.pattern(
-            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
-          ),
-        ],
-        mailAziendale: [
-          '',
-          [
-            Validators.required,
-            Validators.pattern(
-              '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
-            ),
-          ],
-        ],
-        mailPec: [
-          '',
-          [
-            Validators.required,
-            Validators.pattern(
-              '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'
-            ),
-          ],
-        ],
+        mailPrivata: ['',Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),],
+        mailAziendale: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),],],
+        mailPec: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),],],
         titoliDiStudio: [''],
         altriTitoli: [''],
         coniugato: [''],
@@ -223,12 +202,58 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         attesaLavori: [''],
         tipoCanaleReclutamento: this.formBuilder.group({
           id: [''],
-          // descrizione: [''],
         }),
         categoriaProtetta: [''],
         statoDiNascita: [''],
         cittadinanza: [''],
-        provinciaDiNascita: [''],
+        provinciaDiNascita: this.formBuilder.group({
+          id: [''],
+          siglaProvincia:  [''],
+          denominazione_provincia: [''],
+          tipologiaProvincia:  [''],
+          numeroComuni: ['']
+        }),
+        comuneDiNascita:this.formBuilder.group({
+          id: [''],
+          siglaProvincia: [''],
+          codiceIstat:  [''],
+          denominazioneItaAltra:  [''],
+          denominazione_ita:  [''],
+          denominazione_altra:  [''],
+          flag_capoluogo: ['']
+        }),
+        provinciaResidenza: this.formBuilder.group({
+          id: [''],
+          siglaProvincia: [''],
+          denominazione_provincia:[''],
+          tipologiaProvincia: [''],
+          numeroComuni:[''],
+        }),
+        comuneResidenza: this.formBuilder.group({
+          id: [''],
+          siglaProvincia: [''],
+          codiceIstat: [''],
+          denominazioneItaAltra:[''],
+          denominazione_ita: [''],
+          denominazione_altra: [''],
+          flag_capoluogo: [''],
+        }),
+        provinciaDomicilio: this.formBuilder.group({
+          id: [''],
+          siglaProvincia: [''],
+          denominazione_provincia:[''],
+          tipologiaProvincia: [''],
+          numeroComuni:[''],
+        }),
+        comuneDomicilio:this.formBuilder.group({
+          id: [''],
+          siglaProvincia: [''],
+          codiceIstat: [''],
+          denominazioneItaAltra:[''],
+          denominazione_ita: [''],
+          denominazione_altra: [''],
+          flag_capoluogo: [''],
+        }),
       }),
       commesse: this.formBuilder.array([]),
 
@@ -391,12 +416,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.caricaLivelloContratto();
       this.caricaMappa();
       this.caricaTipoCausaFineContratto();
-
-      // const mailAziendale=this.anagraficaDto.get('anagrafica.mailAziendale');
-      // if(mailAziendale){
-      //   mailAziendale.disable();
-      //   this.anagraficaDto.updateValueAndValidity();
-      // }
+      this.getProvince();
+      this.getComuni();
 
       const tipoContratto = this.anagraficaDto.get(
         'contratto.tipoContratto.id'
@@ -525,6 +546,34 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.nazioni = this.dati.map((item: any) => item.nazione);
     });
   }
+
+  getProvince() {
+    this.anagraficaDtoService.getProvince(this.token).subscribe(
+      (resp: any) => {
+        this.elencoProvince = (resp as any)['list'];
+      },
+      (error: any) => {
+        console.error(
+          'Errore durante il caricamento delle province:' +
+            JSON.stringify(error)
+        );
+      }
+    );
+  }
+  getComuni() {
+    this.anagraficaDtoService.getComuni(this.token).subscribe(
+      (resp: any) => {
+        this.elencoComuni = (resp as any)['list'];
+      },
+      (error: any) => {
+        console.error(
+          'Errore durante il caricamento delle province:' +
+            JSON.stringify(error)
+        );
+      }
+    );
+  }
+
 
   onChangeNazione(event: any) {
     this.statoDiNascita = event.target.value; // Imposta la nazione selezionata

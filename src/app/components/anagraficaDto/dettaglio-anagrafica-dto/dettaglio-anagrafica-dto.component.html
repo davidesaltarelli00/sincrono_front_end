@@ -255,11 +255,11 @@
                     </tr>
                     <tr>
                       <td><strong>Provincia di nascita:</strong></td>
-                      <td>{{ data?.anagrafica?.provinciaDiNascita ? data.anagrafica.provinciaDiNascita : 'Dato non inserito' | titlecase }}</td>
+                      <td>{{ data?.anagrafica?.provinciaDiNascita?.denominazione_provincia ? data.anagrafica.provinciaDiNascita?.denominazione_provincia : 'Dato non inserito' | titlecase }}</td>
                     </tr>
                     <tr>
                       <td><strong>Comune nascita:</strong></td>
-                      <td>{{ data?.anagrafica?.comuneDiNascita ? data.anagrafica.comuneDiNascita : 'Dato non inserito' |
+                      <td>{{ data?.anagrafica?.comuneDiNascita?.denominazioneItaAltra ? data.anagrafica.comuneDiNascita?.denominazioneItaAltra : 'Dato non inserito' |
                         titlecase }}</td>
                     </tr>
                     <tr>
@@ -283,13 +283,42 @@
                   <tbody>
                     <tr>
                       <td><strong>Residenza:</strong></td>
-                      <td>{{ data?.anagrafica?.residenza ? data.anagrafica.residenza : 'Dato non inserito' | titlecase
-                        }}</td>
+                      <td>
+                        <table class="table table-bordered">
+                          <tr>
+                            <th>Indirizzo</th>
+                            <th>Comune</th>
+                            <th>Provincia</th>
+                            <th>Sigla</th>
+                          </tr>
+                          <tr>
+                            <td>{{ data?.anagrafica?.indirizzoResidenza ? data.anagrafica?.indirizzoResidenza : 'Dato non inserito' | titlecase }}</td>
+                            <td>{{data?.anagrafica.comuneResidenza?.denominazioneItaAltra   }},</td>
+                            <td>{{data?.anagrafica.provinciaResidenza?.denominazione_provincia }}</td>
+                            <td>{{data?.anagrafica.provinciaResidenza?.siglaProvincia }}</td>
+                          </tr>
+                        </table>
+                     </td>
                     </tr>
                     <tr>
                       <td><strong>Domicilio:</strong></td>
-                      <td>{{ data?.anagrafica?.domicilio ? data.anagrafica.domicilio : 'Dato non inserito' | titlecase
-                        }}</td>
+                      <td>
+
+                        <table class="table table-bordered">
+                          <tr>
+                            <th>Indirizzo</th>
+                            <th>Comune</th>
+                            <th>Provincia</th>
+                            <th>Sigla</th>
+                          </tr>
+                          <tr>
+                            <td> {{ data?.anagrafica?.indirizzoDomicilio ? data?.anagrafica?.indirizzoDomicilio : 'Dato non inserito' | titlecase }}</td>
+                            <td>{{data?.anagrafica?.comuneDomicilio?.denominazioneItaAltra}}</td>
+                            <td>{{data?.anagrafica?.provinciaDomicilio.denominazione_provincia}}</td>
+                            <td>{{data?.anagrafica?.provinciaDomicilio?.siglaProvincia}}</td>
+                          </tr>
+                        </table>
+                      </td>
                     </tr>
                   </tbody>
                 </table>

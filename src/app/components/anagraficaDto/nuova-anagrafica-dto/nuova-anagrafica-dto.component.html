@@ -495,24 +495,28 @@
                                 <label>Indirizzo di Residenza </label>
                                 <div class="form-group">
                                   <input type="text" class="form-control" formControlName="indirizzoResidenza"
-                                    placeholder="Inserire indirizzo residenza." />
+                                  [ngStyle]="{ border: AnagraficaDto.get( 'anagrafica.indirizzoResidenza' )?.hasError('required') ? '1px solid red' : '1px solid green'}" placeholder="Inserire indirizzo residenza." />
+                                    <div *ngIf=" AnagraficaDto.get('anagrafica.indirizzoResidenza')?.hasError('required')" class="text-danger"> Il campo indirizzo residenza è obbligatorio. </div>
                                 </div>
                               </div>
                               <div class="col-md-4">
                                 <label for="provinciaResidenza">Provincia di residenza</label>
                                 <div class="form-group" formGroupName="provinciaResidenza">
-                                  <select class="form-select" name="provinciaResidenza" id="provinciaResidenza" formControlName="id">
+                                  <select class="form-select" (change)="onChangeProvinciaResidenza($event)" name="provinciaResidenza" [ngStyle]="{ border: AnagraficaDto.get( 'anagrafica.provinciaResidenza.id' )?.hasError('required') ? '1px solid red' : '1px solid green'}" id="provinciaResidenza" formControlName="id">
                                     <option value="">--Nessuna selezione--</option>
                                     <option *ngFor=" let provincia of elencoProvince " [value]="provincia.id">
                                       {{ provincia.denominazione_provincia }}
                                     </option>
                                   </select>
+                                  <div *ngIf=" AnagraficaDto.get('anagrafica.provinciaResidenza.id')?.hasError('required')" class="text-danger"> Il campo provincia di residenza è obbligatorio. </div>
                                 </div>
                               </div>
                               <div class="col-md-4">
                                <label for="comuneResidenza">Comune di residenza</label>
                                <div class="form-group" formGroupName="comuneResidenza">
-                                <select name="comuneResidenza" class="form-select" id="comuneResidenza" formControlName="id">
+                                <select name="comuneResidenza" class="form-select"
+                                [ngStyle]="{ border: AnagraficaDto.get( 'anagrafica.comuneResidenza.id' )?.hasError('required') ? '1px solid red' : '1px solid green'}"
+                                id="comuneResidenza" formControlName="id">
                                   <option value="">
                                     --nessuna selezione--
                                   </option>
@@ -520,6 +524,7 @@
                                     {{ comuneResidenza.denominazione_ita }}
                                   </option>
                                  </select>
+                                 <div *ngIf=" AnagraficaDto.get('anagrafica.comuneResidenza.id')?.hasError('required')" class="text-danger"> Il campo comune di residenza è obbligatorio. </div>
                                </div>
                               </div>
                             </div>

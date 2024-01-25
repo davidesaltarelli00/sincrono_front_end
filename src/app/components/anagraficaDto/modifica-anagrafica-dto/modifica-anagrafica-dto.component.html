@@ -225,16 +225,11 @@
             <mat-step label="Anagrafica">
               <div class="row">
                 <div class="col-12">
-                  <mat-card>
-                    <mat-card-title>
                       <div class="row">
                         <div class="col-12">
                           <h1 style="text-align: center;">Anagrafica</h1>
                         </div>
                       </div>
-                    </mat-card-title>
-                    <mat-card-subtitle style="text-align: center;">Dati anagrafici</mat-card-subtitle> <br>
-                    <mat-card-content>
                       <legend>Ruolo e dati anagrafici</legend>
                       <div class="row">
                         <div class="col-md-3">
@@ -364,21 +359,29 @@
 
                           <div class="col-md-3">
                             <label>Provincia di Nascita</label>
-                            <div class="form-group">
-                              <select class="form-select" formControlName="provinciaDiNascita"
-                                value="{{data?.anagrafica?.provinciaDiNascita}}" name="provinciaDiNascita">
-                                <option value="" disabled selected>Seleziona una provincia</option>
-                                <option *ngFor="let provincia of province" [value]="provincia?.nome">{{provincia?.nome}}
-                                </option>
-                              </select>
+                            <div class="form-group" formGroupName="provinciaDiNascita">
+                           <select name="provinciaDiNascita" class="form-select" id="provinciaDiNascita" formControlName="id">
+                            <option value="">
+                              --nessuna selezione--
+                            </option>
+                            <option *ngFor=" let provincia of elencoProvince " [value]="provincia.id">
+                              {{ provincia.denominazione_provincia }}
+                            </option>
+                           </select>
                             </div>
                           </div>
 
                           <div class="col-md-3">
-                            <label>Comune di Nascita </label>
-                            <div class="form-group">
-                              <input type="text" class="form-control" formControlName="comuneDiNascita"
-                                placeholder="Inserire comune di nascita." />
+                            <label>Comune di Nascita</label>
+                            <div class="form-group" formGroupName="comuneDiNascita">
+                           <select name="comuneDiNascita" class="form-select" id="comuneDiNascita" formControlName="id">
+                            <option value="">
+                              --nessuna selezione--
+                            </option>
+                            <option *ngFor=" let comune of elencoComuni " [value]="comune.id">
+                              {{ comune.denominazione_ita }}
+                            </option>
+                           </select>
                             </div>
                           </div>
 
@@ -393,21 +396,96 @@
                               <!--formControlName="cittadinanza"-->
                             </div>
                           </div>
-                          <div class="col-md-3">
-                            <label>Residenza </label>
-                            <div class="form-group">
-                              <input type="text" class="form-control" formControlName="residenza"
-                                placeholder="Inserire residenza." />
+                          <div class="row">
+                            <div class="col-md-12">
+                              <mat-card>
+                                <mat-card-title>
+                                  Residenza
+                                </mat-card-title>
+                                <mat-card-content>
+                                  <div class="row">
+                                    <div class="col-md-4">
+                                      <label>Indirizzo di Residenza </label>
+                                      <div class="form-group">
+                                        <input type="text" class="form-control" formControlName="indirizzoResidenza"
+                                          placeholder="Inserire indirizzo residenza." />
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <label for="provinciaResidenza">Provincia di residenza</label>
+                                      <div class="form-group" formGroupName="provinciaResidenza">
+                                        <select class="form-select" name="provinciaResidenza" id="provinciaResidenza" formControlName="id">
+                                          <option value="">--Nessuna selezione--</option>
+                                          <option *ngFor=" let provincia of elencoProvince " [value]="provincia.id">
+                                            {{ provincia.denominazione_provincia }}
+                                          </option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                     <label for="comuneResidenza">Comune di residenza</label>
+                                     <div class="form-group" formGroupName="comuneResidenza">
+                                      <select name="comuneResidenza" class="form-select" id="comuneResidenza" formControlName="id">
+                                        <option value="">
+                                          --nessuna selezione--
+                                        </option>
+                                        <option *ngFor=" let comuneResidenza of elencoComuni " [value]="comuneResidenza.id">
+                                          {{ comuneResidenza.denominazione_ita }}
+                                        </option>
+                                       </select>
+                                     </div>
+                                    </div>
+                                  </div>
+                                </mat-card-content>
+                              </mat-card>
                             </div>
-                          </div>
-                          <div class="col-md-3">
-                            <label>Domicilio </label>
-                            <div class="form-group">
-                              <input type="text" class="form-control" formControlName="domicilio"
-                                placeholder="Inserire domicilio." />
-                            </div>
-                          </div>
+                           </div>
+
                         </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <mat-card>
+                              <mat-card-title>
+                                Domicilio
+                              </mat-card-title>
+                              <mat-card-content>
+                                <div class="row">
+                                  <div class="col-md-4">
+                                    <label>Indirizzo di domicilio </label>
+                                    <div class="form-group">
+                                      <input type="text" class="form-control" formControlName="indirizzoDomicilio"
+                                        placeholder="Inserire indirizzo di domicilio." />
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <label for="provinciaDomicilio">Provincia di domicilio</label>
+                                    <div class="form-group" formGroupName="provinciaDomicilio">
+                                      <select class="form-select" name="provinciaDomicilio" id="provinciaDomicilio" formControlName="id">
+                                        <option value="">--Nessuna selezione--</option>
+                                        <option *ngFor=" let provinciaDomicilio of elencoProvince " [value]="provinciaDomicilio.id">
+                                          {{ provinciaDomicilio.denominazione_provincia }}
+                                        </option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                   <label for="comuneDomicilio">Comune di domicilio</label>
+                                   <div class="form-group" formGroupName="comuneDomicilio">
+                                    <select name="comuneDomicilio" class="form-select" id="comuneDomicilio" formControlName="id">
+                                      <option value="">
+                                        --nessuna selezione--
+                                      </option>
+                                      <option *ngFor=" let comuneDomicilio of elencoComuni " [value]="comuneDomicilio.id">
+                                        {{ comuneDomicilio.denominazione_ita }}
+                                      </option>
+                                     </select>
+                                   </div>
+                                  </div>
+                                </div>
+                              </mat-card-content>
+                            </mat-card>
+                          </div>
+                         </div>
                         <br />
                         <div class="row">
                           <legend>Info familiari</legend>
@@ -481,8 +559,6 @@
                         <button mat-mini-fab color="primary" matStepperNext>»</button>
                       </div>
                       <br>
-                    </mat-card-content>
-                  </mat-card>
                 </div>
               </div>
             </mat-step>
