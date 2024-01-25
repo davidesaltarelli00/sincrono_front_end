@@ -292,10 +292,10 @@
                             <th>Sigla</th>
                           </tr>
                           <tr>
-                            <td>{{ data?.anagrafica?.indirizzoResidenza ? data.anagrafica?.indirizzoResidenza : 'Dato non inserito' | titlecase }}</td>
+                            <td>{{ data?.anagrafica?.indirizzoResidenza ? data?.anagrafica?.indirizzoResidenza : 'Dato non inserito' | titlecase }}</td>
                             <td>{{data?.anagrafica.comuneResidenza?.denominazioneItaAltra   }},</td>
-                            <td>{{data?.anagrafica.provinciaResidenza?.denominazione_provincia }}</td>
-                            <td>{{data?.anagrafica.provinciaResidenza?.siglaProvincia }}</td>
+                            <td>{{data?.anagrafica?.provinciaResidenza?.denominazione_provincia }}</td>
+                            <td>{{data?.anagrafica?.provinciaResidenza?.siglaProvincia }}</td>
                           </tr>
                         </table>
                      </td>
@@ -314,7 +314,7 @@
                           <tr>
                             <td> {{ data?.anagrafica?.indirizzoDomicilio ? data?.anagrafica?.indirizzoDomicilio : 'Dato non inserito' | titlecase }}</td>
                             <td>{{data?.anagrafica?.comuneDomicilio?.denominazioneItaAltra}}</td>
-                            <td>{{data?.anagrafica?.provinciaDomicilio.denominazione_provincia}}</td>
+                            <td>{{data?.anagrafica?.provinciaDomicilio?.denominazione_provincia}}</td>
                             <td>{{data?.anagrafica?.provinciaDomicilio?.siglaProvincia}}</td>
                           </tr>
                         </table>

@@ -1906,6 +1906,18 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           if (obj.tipoCcnl && Object.keys(obj.tipoCcnl).length === 0) {
             delete obj.tipoCcnl;
           }
+          if (obj.provinciaDiNascita && Object.keys(obj.provinciaDiNascita).length === 0) {
+            delete obj.provinciaDiNascita;
+          }
+          if (obj.comuneDiNascita && Object.keys(obj.comuneDiNascita).length === 0) {
+            delete obj.comuneDiNascita;
+          }
+          if (obj.provinciaDomicilio && Object.keys(obj.provinciaDomicilio).length === 0) {
+            delete obj.provinciaDomicilio;
+          }
+          if (obj.comuneDomicilio && Object.keys(obj.comuneDomicilio).length === 0) {
+            delete obj.comuneDomicilio;
+          }
           if (
             obj.tipoLivelloContratto &&
             Object.keys(obj.tipoLivelloContratto).length === 0

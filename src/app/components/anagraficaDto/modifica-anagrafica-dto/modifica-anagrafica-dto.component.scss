@@ -371,6 +371,9 @@ input[type="checkbox"]:disabled+.slider::before {
   box-sizing: border-box;
 }
 
+.anagrafica{
+  color: blue;
+}
 
 
 
@@ -381,6 +384,10 @@ input[type="checkbox"]:disabled+.slider::before {
 .dark-mode body{
   background-color: #333;
   color: #fff;
+}
+
+.dark-mode .anagrafica{
+  color: #2196F3;
 }
 
 .dark-mode input::placeholder {
