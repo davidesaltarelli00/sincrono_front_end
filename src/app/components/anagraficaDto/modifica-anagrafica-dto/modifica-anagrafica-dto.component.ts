@@ -417,7 +417,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.caricaMappa();
       this.caricaTipoCausaFineContratto();
       this.getProvince();
-      this.getComuni();
 
       const tipoContratto = this.anagraficaDto.get(
         'contratto.tipoContratto.id'
@@ -560,8 +559,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       }
     );
   }
-  getComuni() {
-    this.anagraficaDtoService.getComuni(this.token).subscribe(
+  getComuni(siglaProvincia:any) {
+    this.anagraficaDtoService.getComuni(this.token, siglaProvincia).subscribe(
       (resp: any) => {
         this.elencoComuni = (resp as any)['list'];
       },

@@ -501,7 +501,7 @@
                                     <div class="col-md-4">
                                      <label for="comuneResidenza">Comune di residenza</label>
                                      <div class="form-group" formGroupName="comuneResidenza">
-                                      <select name="comuneResidenza" class="form-select" id="comuneResidenza" formControlName="id">
+                                      <select name="comuneResidenza" class="form-select" (change)="getComuni($event)" id="comuneResidenza" formControlName="id">
                                         <option value="">
                                           --nessuna selezione--
                                         </option>

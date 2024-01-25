@@ -142,13 +142,14 @@ export class AnagraficaDtoService {
       headers: headers,
     });
   }
-  getComuni(token: any): Observable<any> {
+
+  getComuni(token: any, siglaProvincia:any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(this.url + `comuni-map`, {
+    return this.http.get<any>(this.url + `comuni-by-provincia/${siglaProvincia}`, {
       headers: headers,
     });
   }
