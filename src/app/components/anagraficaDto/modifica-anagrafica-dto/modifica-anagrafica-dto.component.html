@@ -230,97 +230,187 @@
                           <h1 style="text-align: center;">Anagrafica</h1>
                         </div>
                       </div>
-                      <legend>Ruolo e dati anagrafici</legend>
                       <div class="row">
-                        <div class="col-md-3">
-                          <div class="form-group" formGroupName="ruolo">
-                            <label for="ruolo">Ruolo *</label>
-                            <select class="form-select" aria-label="Default select example" id="ruolo.id"
-                              formControlName="id" type="number">
-                              <option value="">--nessuna selezione--</option>
-                              <option *ngFor="let ruolo of ruoli" value="{{ ruolo.id }}">
-                                {{ ruolo.nome }}
-                              </option>
-                            </select>
-                          </div>
+                        <div class="col-md-12">
+                          <mat-card>
+                            <mat-card-title>
+                              <legend>Ruolo </legend>
+                            </mat-card-title>
+                            <mat-card-content>
+                              <div class="row">
+                                <div class="col-md-3">
+                                  <div class="form-group" formGroupName="ruolo">
+                                    <label for="ruolo">Ruolo *</label>
+                                    <select class="form-select" aria-label="Default select example" id="ruolo.id"
+                                      formControlName="id" type="number">
+                                      <option value="">--nessuna selezione--</option>
+                                      <option *ngFor="let ruolo of ruoli" value="{{ ruolo.id }}">
+                                        {{ ruolo.nome }}
+                                      </option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </mat-card-content>
+                          </mat-card>
                         </div>
                       </div>
-                      <br>
                       <!-- Campi dell'anagrafica -->
                       <div formGroupName="anagrafica">
                         <div class="col-12">
                           <label for="id" hidden>ID:</label>
                           <input type="hidden" class="form-control" readonly id="id" formControlName="id" />
                         </div>
-
                         <div class="row">
+                          <div class="col-md-12">
+                            <mat-card>
+                              <mat-card-title>
+                                <legend>Anagrafica</legend>
+                              </mat-card-title>
+                              <mat-card-content>
+                                <div class="row">
 
-                          <div class="col-md-3">
-                            <label for="nome">Nome:</label>
-                            <input placeholder="Inserire nome" type="text" class="form-control" id="nome"
-                              formControlName="nome" />
-                          </div>
-                          <div class="col-md-3">
-                            <label for="cognome">Cognome:</label>
-                            <input placeholder="Inserire cognome" type="text" class="form-control" id="cognome"
-                              formControlName="cognome" />
-                          </div>
-                          <div class="col-md-3">
-                            <label for="codiceFiscale">Codice Fiscale:</label>
-                            <input placeholder="Inserire codice fiscale" type="text" class="form-control"
-                              id="codiceFiscale" formControlName="codiceFiscale" />
-                          </div>
+                                  <div class="col-md-3">
+                                    <label for="nome">Nome:</label>
+                                    <input placeholder="Inserire nome" type="text" class="form-control" id="nome"
+                                      formControlName="nome" />
+                                  </div>
+                                  <div class="col-md-3">
+                                    <label for="cognome">Cognome:</label>
+                                    <input placeholder="Inserire cognome" type="text" class="form-control" id="cognome"
+                                      formControlName="cognome" />
+                                  </div>
+                                  <div class="col-md-3">
+                                    <label for="codiceFiscale">Codice Fiscale:</label>
+                                    <input placeholder="Inserire codice fiscale" type="text" class="form-control"
+                                      id="codiceFiscale" formControlName="codiceFiscale" />
+                                  </div>
 
-                          <div class="col-md-3">
-                            <div class="form-group" formGroupName="tipoAzienda">
-                              <label for="tipoAzienda">Nome Azienda</label>
-                              <select class="form-select" aria-label="Default select example"
-                                id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
-                                <option value="">--nessuna selezione--</option>
-                                <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
-                                  {{ tipoAzienda.descrizione }}
-                                </option>
-                              </select>
-                            </div>
+                                  <div class="col-md-3">
+                                    <div class="form-group" formGroupName="tipoAzienda">
+                                      <label for="tipoAzienda">Nome Azienda</label>
+                                      <select class="form-select" aria-label="Default select example"
+                                        id="anagrafica.tipoAzienda.id" formControlName="id" type="number">
+                                        <option value="">--nessuna selezione--</option>
+                                        <option *ngFor="let tipoAzienda of tipiAziende" [value]="tipoAzienda.id">
+                                          {{ tipoAzienda.descrizione }}
+                                        </option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div> <br>
+                                <div class="row">
+                                  <div class="col-md-3">
+                                    <label>Canale Reclutamento * </label>
+                                    <div class="form-group" formGroupName="tipoCanaleReclutamento">
+                                      <select class="form-select" aria-label="Default select example"
+                                        id="anagrafica.tipoCanaleReclutamento.id" formControlName="id" type="number">
+                                        <option value="">--nessuna selezione--</option>
+                                        <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento"
+                                          [value]="tipoCanaleReclutamento.id">
+                                          {{ tipoCanaleReclutamento.descrizione }}
+                                        </option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                              </mat-card-content>
+                            </mat-card>
                           </div>
                         </div>
                         <br>
                         <div class="row">
-                          <legend>Recapiti</legend>
-                          <div class="col-md-3">
-                            <label for="cellularePrivato">Cellulare Privato:</label>
-                            <input placeholder="Inserire cellulare privato" type="text" class="form-control"
-                              id="cellularePrivato" formControlName="cellularePrivato" />
-                          </div>
-                          <div class="col-md-3">
-                            <label for="cellulareAziendale">Cellulare Aziendale:</label>
-                            <input placeholder="Inserire cellulare aziendale" type="text" class="form-control"
-                              id="cellulareAziendale" formControlName="cellulareAziendale" />
-                          </div>
-                          <div class="col-md-3">
-                            <label for="mailPrivata">Mail Privata:</label>
-                            <input type="text" placeholder="Inserire mail privata" class="form-control" id="mailPrivata"
-                              formControlName="mailPrivata" />
-                          </div>
-                          <div class="col-md-3">
-                            <label for="mailAziendale">Mail Aziendale:</label>
-                            <input type="text" placeholder="Inserire mail aziendale" class="form-control"
-                              id="mailAziendale" formControlName="mailAziendale" />
-                            <div
-                              *ngIf="anagraficaDto.get('anagrafica.mailAziendale')?.hasError('required') && anagraficaDto.get('anagrafica.mailAziendale')?.hasError('touched') "
-                              class="text-danger">
-                              Il campo mail aziendale è obbligatorio.
-                            </div>
+                          <div class="col-md-12">
+                            <mat-card>
+                              <mat-card-title>
+                                <legend>Recapiti</legend>
+                              </mat-card-title>
+                              <mat-card-content>
+                                <div class="row">
+                                  <div class="col-md-4">
+                                    <label for="mailAziendale">Mail Aziendale:</label>
+                                    <input [ngStyle]="{
+                                      border: anagraficaDto.get(
+                                        'anagrafica.mailAziendale'
+                                      )?.hasError('required')
+                                        ? '1px solid red'
+                                        : '1px solid green'
+                                    }" type="text" placeholder="Inserire mail aziendale" class="form-control"
+                                      id="mailAziendale" formControlName="mailAziendale" />
+                                      <div *ngIf="
+                                      anagraficaDto.get(
+                                        'anagrafica.mailAziendale'
+                                      )?.hasError('required')
+                                    " class="text-danger">
+                                  Il campo mail aziendale è obbligatorio.
+                                </div>
+                                <div *ngIf="
+                                      anagraficaDto.get(
+                                        'anagrafica.mailAziendale'
+                                      )?.hasError('pattern')
+                                    " class="text-danger">
+                                  Formato non valido.
+                                </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <label for="mailPrivata">Mail Privata:</label>
+                                    <input type="text" placeholder="Inserire mail privata" class="form-control" id="mailPrivata"
+                                      formControlName="mailPrivata"
+                                      [ngStyle]="{
+                                        border: anagraficaDto.get(
+                                          'anagrafica.mailPrivata'
+                                        )?.hasError('required')
+                                          ? '1px solid red'
+                                          : '1px solid green'
+                                      }"
+                                      />
+                                      <div *ngIf="
+                                      anagraficaDto.get(
+                                        'anagrafica.mailPrivata'
+                                      )?.hasError('pattern')
+                                    " class="text-danger">
+                                  Formato non valido.
+                                </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <label for="mailPec">Mail PEC:</label>
+                                    <input type="text" placeholder="Inserire PEC" class="form-control" id="mailPec"
+                                      formControlName="mailPec"
+                                      [ngStyle]="{
+                                        border: anagraficaDto.get(
+                                          'anagrafica.mailPec'
+                                        )?.hasError('pattern')
+                                          ? '1px solid red'
+                                          : '1px solid green'
+                                      }"
+                                      />
+                                      <div *ngIf="
+                                      anagraficaDto.get(
+                                        'anagrafica.mailPec'
+                                      )?.hasError('pattern')
+                                    " class="text-danger">
+                                  Formato non valido.
+                                </div>
+                                  </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                  <div class="col-md-4">
+                                    <label for="cellularePrivato">Cellulare Privato:</label>
+                                    <input placeholder="Inserire cellulare privato" type="text" class="form-control"
+                                      id="cellularePrivato" formControlName="cellularePrivato" />
+                                  </div>
+                                  <div class="col-md-4">
+                                    <label for="cellulareAziendale">Cellulare Aziendale:</label>
+                                    <input placeholder="Inserire cellulare aziendale" type="text" class="form-control"
+                                      id="cellulareAziendale" formControlName="cellulareAziendale" />
+                                  </div>
+                                </div>
+                              </mat-card-content>
+                            </mat-card>
                           </div>
                         </div>
-                        <br>
-                        <div class="row">
-                          <div class="col-md-3">
-                            <label for="mailPec">Mail PEC:</label>
-                            <input type="text" placeholder="Inserire PEC" class="form-control" id="mailPec"
-                              formControlName="mailPec" />
-                          </div>
-                        </div>
+
                         <br>
                         <div class="row">
                           <legend>Titoli</legend> <br>
@@ -538,19 +628,7 @@
                               </div>
                             </label>
                           </div>
-                          <div class="col-md-3">
-                            <label>Canale Reclutamento * </label>
-                            <div class="form-group" formGroupName="tipoCanaleReclutamento">
-                              <select class="form-select" aria-label="Default select example"
-                                id="anagrafica.tipoCanaleReclutamento.id" formControlName="id" type="number">
-                                <option value="">--nessuna selezione--</option>
-                                <option *ngFor="let tipoCanaleReclutamento of tipologicaCanaliReclutamento"
-                                  [value]="tipoCanaleReclutamento.id">
-                                  {{ tipoCanaleReclutamento.descrizione }}
-                                </option>
-                              </select>
-                            </div>
-                          </div>
+
                         </div>
                       </div>
                       <br>

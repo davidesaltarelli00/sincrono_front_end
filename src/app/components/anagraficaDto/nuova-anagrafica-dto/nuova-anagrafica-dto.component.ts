@@ -1629,6 +1629,18 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           if (obj.tipoAzienda && Object.keys(obj.tipoAzienda).length === 0) {
             delete obj.tipoAzienda;
           }
+          if (obj.provinciaDiNascita && Object.keys(obj.provinciaDiNascita).length === 0) {
+            delete obj.provinciaDiNascita;
+          }
+          if (obj.comuneDiNascita && Object.keys(obj.comuneDiNascita).length === 0) {
+            delete obj.comuneDiNascita;
+          }
+          if (obj.provinciaDomicilio && Object.keys(obj.provinciaDomicilio).length === 0) {
+            delete obj.provinciaDomicilio;
+          }
+          if (obj.comuneDomicilio && Object.keys(obj.comuneDomicilio).length === 0) {
+            delete obj.comuneDomicilio;
+          }
           if (obj.tipoCcnl && Object.keys(obj.tipoCcnl).length === 0) {
             delete obj.tipoCcnl;
           }

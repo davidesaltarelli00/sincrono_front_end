@@ -1,69 +1,4 @@
 
-// /* Stile generale del toggle switch */
-// .toggle-switch {
-//   display: inline-block;
-//   position: relative;
-//   width: 60px;
-//   height: 34px;
-// }
-
-// /* Nasconde la checkbox reale */
-// .toggle-switch input {
-//   opacity: 0;
-//   width: 0;
-//   height: 0;
-// }
-
-// /* Stile del slider (il cursore del toggle) */
-// .slider {
-//   position: absolute;
-//   cursor: pointer;
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-//   background-color: #ccc;
-//   /* Colore di sfondo quando disattivato */
-//   transition: 0.4s;
-//   /* Effetto di transizione */
-//   border-radius: 34px;
-// }
-
-// /* Cambia il colore di sfondo quando attivato */
-// .toggle-switch input:checked+.slider {
-//   background-color: #2196F3;
-// }
-
-// /* Stile del cursore del toggle */
-// .slider:before {
-//   position: absolute;
-//   content: "";
-//   height: 26px;
-//   width: 26px;
-//   left: 4px;
-//   bottom: 4px;
-//   background-color: white;
-//   transition: 0.4s;
-//   border-radius: 50%;
-// }
-
-// /* Posizione del cursore quando attivato */
-// .toggle-switch input:checked+.slider:before {
-//   transform: translateX(26px);
-// }
-
-// /* Opzionale: stile aggiuntivo per l'etichetta del toggle switch */
-// .toggle-switch label {
-//   display: flex;
-//   align-items: center;
-//   user-select: none;
-//   cursor: pointer;
-// }
-
-// .custom-prefix {
-//   background-color: black;
-//   color: white;
-// }
 //navbar
 
 #toolbar{
@@ -155,9 +90,7 @@ select {
   width: 50%;
 }
 
-mat-card {
-  margin: 20px;
-}
+
 
 /* Stili CSS per simulare una tabella */
 .commessa-list {
@@ -190,9 +123,6 @@ select {
   border-color: red;
 }
 
-mat-card-title {
-  text-align: center;
-}
 
 
 /* Stile generale del toggle switch */
@@ -295,12 +225,45 @@ mat-card-title {
   background-color: #0056b3;
 }
 
-mat-card-contnt {
-  width: 100%;
-}
 
 .campo-nullo {
   border: 1px solid red;
+}
+
+mat-card {
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: box-shadow 0.3s ease;
+}
+
+mat-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+mat-card-header {
+  background-color: #f0f0f0;
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+}
+
+mat-card-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+}
+
+mat-card-content {
+  padding: 16px;
+}
+
+mat-card-footer {
+  background-color: #f0f0f0;
+  padding: 16px;
+  border-top: 1px solid #ddd;
 }
 
 
