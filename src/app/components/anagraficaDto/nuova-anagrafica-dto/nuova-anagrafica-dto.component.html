@@ -500,7 +500,7 @@
                           </mat-card-title>
                           <mat-card-content>
                             <div class="row">
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                 <label>Indirizzo di Residenza </label>
                                 <div class="form-group">
                                   <input type="text" class="form-control" formControlName="indirizzoResidenza"
@@ -508,7 +508,7 @@
                                     <div *ngIf=" AnagraficaDto.get('anagrafica.indirizzoResidenza')?.hasError('required')" class="text-danger"> Il campo indirizzo residenza è obbligatorio. </div>
                                 </div>
                               </div>
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                 <label for="provinciaResidenza">Provincia di residenza</label>
                                 <div class="form-group" formGroupName="provinciaResidenza">
                                   <select class="form-select" (change)="onChangeProvinciaResidenza($event)" name="provinciaResidenza" [ngStyle]="{ border: AnagraficaDto.get( 'anagrafica.provinciaResidenza.id' )?.hasError('required') ? '1px solid red' : '1px solid green'}" id="provinciaResidenza" formControlName="id">
@@ -520,7 +520,7 @@
                                   <div *ngIf=" AnagraficaDto.get('anagrafica.provinciaResidenza.id')?.hasError('required')" class="text-danger"> Il campo provincia di residenza è obbligatorio. </div>
                                 </div>
                               </div>
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                <label for="comuneResidenza">Comune di residenza</label>
                                <div class="form-group" formGroupName="comuneResidenza">
                                 <select name="comuneResidenza" class="form-select"
@@ -534,13 +534,17 @@
                                  <div *ngIf=" AnagraficaDto.get('anagrafica.comuneResidenza.id')?.hasError('required')" class="text-danger"> Il campo comune di residenza è obbligatorio. </div>
                                </div>
                               </div>
+                              <div class="col-md-3">
+                                <label for="residenzaDomicilio">Residenza e domicilio sono uguali</label> <br>
+                                <input type="checkbox" [checked]="residenzaDomicilioUguali" id="toggleSwitch" (change)="equalsResidenzaDomicilio($event)">
+                              </div>
                             </div>
                           </mat-card-content>
                         </mat-card>
                       </div>
                      </div>
                      <!-- Domicilio  -->
-                     <div class="row">
+                     <div class="row" *ngIf="!residenzaDomicilioUguali" > <!---->
                       <div class="col-md-12">
                         <mat-card>
                           <mat-card-title>
@@ -552,24 +556,40 @@
                                 <label>Indirizzo di domicilio </label>
                                 <div class="form-group">
                                   <input type="text" class="form-control" formControlName="indirizzoDomicilio"
+                                  [ngStyle]="{border: AnagraficaDto.get('anagrafica.indirizzoDomicilio')?.hasError('required') ? '1px solid red' : '1px solid #ccc' }"
                                     placeholder="Inserire indirizzo di domicilio." />
+                                    <div *ngIf=" AnagraficaDto.get('anagrafica.indirizzoDomicilio')?.hasError('required')" class="text-danger">
+                                      Il campo indirizzo di domicilio è obbligatorio.
+                                    </div>
                                 </div>
                               </div>
                               <div class="col-md-4">
                                 <label for="provinciaDomicilio">Provincia di domicilio</label>
                                 <div class="form-group" formGroupName="provinciaDomicilio">
-                                  <select class="form-select" name="provinciaDomicilio" id="provinciaDomicilio" (change)="onChangeProvinciaDomicilio($event)" formControlName="id">
+                                  <select class="form-select" name="provinciaDomicilio"
+                                  [ngStyle]="{ border: AnagraficaDto.get('anagrafica.provinciaDomicilio.id')?.hasError('required') ? '1px solid red' : '1px solid #ccc'}"
+                                  id="provinciaDomicilio" (change)="onChangeProvinciaDomicilio($event)"
+                                   formControlName="id">
                                     <option value="">--Nessuna selezione--</option>
                                     <option *ngFor=" let provinciaDomicilio of elencoProvince " [value]="provinciaDomicilio.id">
                                       {{ provinciaDomicilio.denominazione_provincia }}
                                     </option>
                                   </select>
+                                  <div *ngIf="
+                                  AnagraficaDto.get(
+                                    'anagrafica.provinciaDomicilio.id'
+                                  )?.hasError('required')
+                                " class="text-danger">
+                              Il campo provincia di domicilio è obbligatorio.
+                            </div>
                                 </div>
                               </div>
                               <div class="col-md-4">
                                <label for="comuneDomicilio">Comune di domicilio</label>
                                <div class="form-group" formGroupName="comuneDomicilio">
-                                <select name="comuneDomicilio" class="form-select" id="comuneDomicilio" formControlName="id">
+                                <select name="comuneDomicilio" class="form-select"
+                                [ngStyle]="{ border: AnagraficaDto.get('anagrafica.comuneDomicilio.id')?.hasError('required') ? '1px solid red' : '1px solid #ccc'}"
+                                id="comuneDomicilio" formControlName="id">
                                   <option value="">
                                     --nessuna selezione--
                                   </option>
@@ -577,6 +597,13 @@
                                     {{ comuneDomicilio.denominazione_ita }}
                                   </option>
                                  </select>
+                                 <div *ngIf="
+                                 AnagraficaDto.get(
+                                   'anagrafica.comuneDomicilio.id'
+                                 )?.hasError('required')
+                               " class="text-danger">
+                             Il campo comune di domicilio è obbligatorio.
+                           </div>
                                </div>
                               </div>
                             </div>

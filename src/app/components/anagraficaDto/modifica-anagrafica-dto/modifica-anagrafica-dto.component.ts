@@ -128,6 +128,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   timer: any;
   elencoProvince: any[]=[];
   elencoComuni: any[]=[];
+  siglaProvinciaNascita: any;
+  siglaProvinciaResidenza:any;
+  siglaProvinciaDomicilio:any;
+  residenzaDomicilioUguali: boolean = true;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -821,43 +825,52 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe((resp: any) => {
         // console.log(this.activatedRouter.snapshot.params['id']);
         this.data = (resp as any)['anagraficaDto'];
-        this.selectedTipoContrattoId = (resp as any)['anagraficaDto'][
-          'contratto'
-        ]['tipoContratto']['id'];
-        this.descrizioneLivelloCCNL = (resp as any)['anagraficaDto'][
-          'contratto'
-        ]['tipoLivelloContratto']['ccnl'];
+        this.selectedTipoContrattoId = (resp as any)['anagraficaDto']['contratto']['tipoContratto']['id'];
+        this.siglaProvinciaNascita=(resp as any)['anagraficaDto']['anagrafica']['provinciaDiNascita']['siglaProvincia'];
+        this.siglaProvinciaResidenza=(resp as any)['anagraficaDto']['anagrafica']['provinciaResidenza']['siglaProvincia'];
+        this.siglaProvinciaDomicilio=(resp as any)['anagraficaDto']['anagrafica']['provinciaDomicilio']['siglaProvincia'];
+
+        this.anagraficaDtoService.getComuni(localStorage.getItem('token'), this.siglaProvinciaNascita).subscribe(
+          (resp:any)=>{
+            this.elencoComuni=(resp as any)['list'];
+          },
+          (error:any)=>{
+
+          }
+        );
+        this.anagraficaDtoService.getComuni(localStorage.getItem('token'), this.siglaProvinciaResidenza).subscribe(
+          (resp:any)=>{
+            this.elencoComuni=(resp as any)['list'];
+          },
+          (error:any)=>{
+
+          }
+        );
+
+        this.anagraficaDtoService.getComuni(localStorage.getItem('token'), this.siglaProvinciaDomicilio).subscribe(
+          (resp:any)=>{
+            this.elencoComuni=(resp as any)['list'];
+          },
+          (error:any)=>{
+
+          }
+        );
+
+        this.descrizioneLivelloCCNL = (resp as any)['anagraficaDto']['contratto']['tipoLivelloContratto']['ccnl'];
         this.setForm();
-        this.anagraficaDtoService
-          .changeCCNL(
-            localStorage.getItem('token'),
-            this.descrizioneLivelloCCNL
-          )
-          .subscribe(
+        this.anagraficaDtoService.changeCCNL(localStorage.getItem('token'),this.descrizioneLivelloCCNL).subscribe(
             (response: any) => {
               this.elencoLivelliCCNL = response.list;
             },
             (error: any) => {
-              // console.error(
-              //   'Errore durante il caricamento dei livelli di contratto: ' +
-              //     error
-              // );
             }
           );
 
-        // Iteriamo attraverso le chiavi dell'oggetto
         for (const key in resp) {
           if (resp.hasOwnProperty(key)) {
-            // Verifichiamo se il valore associato alla chiave è null
             if (resp[key] === null) {
-              // Applichiamo una classe CSS per evidenziare il campo con bordo rosso
-              // console.log(`Campo "${key}" è null.`);
-              // Trova l'elemento HTML corrispondente al campo
               const element = document.querySelector(`[name="${key}"]`);
               if (element) {
-                // console.log(
-                //   `Applicazione della classe CSS "campo-nullo" per "${key}"`
-                // );
                 this.renderer.addClass(element, 'campo-nullo');
               }
             }
@@ -979,6 +992,11 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         distaccoDataControl.disable();
       }
     });
+  }
+
+  equalsResidenzaDomicilio(event: any): void {
+    this.residenzaDomicilioUguali = event.target.checked;
+    console.log('Toggle Switch is now:', this.residenzaDomicilioUguali);
   }
 
   enableDistaccoFieldsForCommessa(commessaControl: AbstractControl): void {

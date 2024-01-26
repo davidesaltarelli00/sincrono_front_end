@@ -119,6 +119,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   timer: any;
   elencoProvince: any[] = [];
   elencoComuni: any[] = [];
+  residenzaDomicilioUguali=true;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -699,6 +700,43 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       this.dati = data;
       this.nazioni = this.dati.map((item: any) => item.nazione);
     });
+  }
+
+  equalsResidenzaDomicilio(event: any): void {
+    this.residenzaDomicilioUguali = event.target.checked;
+    console.log('Toggle Switch is now:', this.residenzaDomicilioUguali);
+    const indirizzoDomicilioControl=this.AnagraficaDto.get('anagrafica.indirizzoDomicilio');
+      const provinciaDomicilioControl=this.AnagraficaDto.get('anagrafica.provinciaDomicilio.id');
+      const comuniDomicilioControl=this.AnagraficaDto.get('anagrafica.comuneDomicilio.id');
+    if(this.residenzaDomicilioUguali && indirizzoDomicilioControl && provinciaDomicilioControl && comuniDomicilioControl){
+
+      indirizzoDomicilioControl.disable();
+      indirizzoDomicilioControl.setValue(null);
+      indirizzoDomicilioControl.clearValidators();
+      indirizzoDomicilioControl.updateValueAndValidity();
+
+      provinciaDomicilioControl.disable();
+      provinciaDomicilioControl.setValue("");
+      provinciaDomicilioControl.clearValidators();
+      provinciaDomicilioControl.updateValueAndValidity();
+
+      comuniDomicilioControl.disable();
+      comuniDomicilioControl.setValue("");
+      comuniDomicilioControl.clearValidators();
+      comuniDomicilioControl.updateValueAndValidity();
+
+    }
+    if(!this.residenzaDomicilioUguali && indirizzoDomicilioControl && provinciaDomicilioControl && comuniDomicilioControl){
+      indirizzoDomicilioControl.enable();
+      indirizzoDomicilioControl.setValidators([Validators.required]);
+      indirizzoDomicilioControl.updateValueAndValidity();
+      provinciaDomicilioControl.enable();
+      provinciaDomicilioControl.setValidators([Validators.required]);
+      provinciaDomicilioControl.updateValueAndValidity();
+      // comuniDomicilioControl.enable(); //questo resta disattivato per permettere l uso del filtro dei comuni
+      comuniDomicilioControl.setValidators([Validators.required]);
+      comuniDomicilioControl.updateValueAndValidity();
+    }
   }
 
   onChangeNazione(event: any) {

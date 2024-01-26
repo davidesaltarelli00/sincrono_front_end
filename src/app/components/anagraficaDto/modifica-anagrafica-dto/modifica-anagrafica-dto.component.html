@@ -483,14 +483,14 @@
                                 </mat-card-title>
                                 <mat-card-content>
                                   <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                       <label>Indirizzo di Residenza </label>
                                       <div class="form-group">
                                         <input type="text" class="form-control" formControlName="indirizzoResidenza"
                                           placeholder="Inserire indirizzo residenza." />
                                       </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                       <label for="provinciaResidenza">Provincia di residenza</label>
                                       <div class="form-group" formGroupName="provinciaResidenza">
                                         <select class="form-select" (change)="onChangeProvinciaResidenza($event)" name="provinciaResidenza" id="provinciaResidenza" formControlName="id">
@@ -501,7 +501,7 @@
                                         </select>
                                       </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                      <label for="comuneResidenza">Comune di residenza</label>
                                      <div class="form-group" formGroupName="comuneResidenza">
                                       <select name="comuneResidenza" class="form-select"  id="comuneResidenza" formControlName="id">
@@ -514,13 +514,17 @@
                                        </select>
                                      </div>
                                     </div>
+                                    <div class="col-md-3">
+                                      <label for="residenzaDomicilio">Residenza e domicilio sono uguali</label> <br>
+                                      <input type="checkbox" [checked]="residenzaDomicilioUguali" id="toggleSwitch" (change)="equalsResidenzaDomicilio($event)">
+                                    </div>
                                   </div>
                                 </mat-card-content>
                               </mat-card>
                             </div>
                            </div>
 
-                        <div class="row">
+                        <div class="row" *ngIf="!residenzaDomicilioUguali">
                           <div class="col-md-12">
                             <mat-card>
                               <mat-card-title>
