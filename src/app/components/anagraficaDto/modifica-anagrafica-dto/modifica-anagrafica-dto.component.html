@@ -516,7 +516,7 @@
                                     </div>
                                     <div class="col-md-3">
                                       <label for="residenzaDomicilio">Residenza e domicilio sono uguali</label> <br>
-                                      <input type="checkbox" [checked]="residenzaDomicilioUguali" id="toggleSwitch" (change)="equalsResidenzaDomicilio($event)">
+                                      <input type="checkbox" formControlName="residenzaDomicilioUguali" [checked]="residenzaDomicilioUguali" id="toggleSwitch" (change)="equalsResidenzaDomicilio($event)">
                                     </div>
                                   </div>
                                 </mat-card-content>
@@ -536,7 +536,11 @@
                                     <label>Indirizzo di domicilio </label>
                                     <div class="form-group">
                                       <input type="text" class="form-control" formControlName="indirizzoDomicilio"
+                                      [ngStyle]="{border: anagraficaDto.get('anagrafica.indirizzoDomicilio')?.hasError('required') ? '1px solid red' : '1px solid #ccc' }"
                                         placeholder="Inserire indirizzo di domicilio." />
+                                        <div *ngIf=" anagraficaDto.get('anagrafica.indirizzoDomicilio')?.hasError('required')" class="text-danger">
+                                          Il campo indirizzo di domicilio è obbligatorio.
+                                        </div>
                                     </div>
                                   </div>
                                   <div class="col-md-4">

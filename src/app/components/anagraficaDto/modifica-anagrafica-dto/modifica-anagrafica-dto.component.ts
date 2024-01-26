@@ -131,7 +131,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   siglaProvinciaNascita: any;
   siglaProvinciaResidenza:any;
   siglaProvinciaDomicilio:any;
-  residenzaDomicilioUguali: boolean = true;
+  residenzaDomicilioUguali: any;
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -207,6 +207,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         tipoCanaleReclutamento: this.formBuilder.group({
           id: [''],
         }),
+      residenzaDomicilioUguali:[''],
         categoriaProtetta: [''],
         statoDiNascita: [''],
         cittadinanza: [''],
@@ -825,11 +826,13 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       .subscribe((resp: any) => {
         // console.log(this.activatedRouter.snapshot.params['id']);
         this.data = (resp as any)['anagraficaDto'];
+        console.log('Dati restituiti dal dettaglio: ' + JSON.stringify(this.data));
         this.selectedTipoContrattoId = (resp as any)['anagraficaDto']['contratto']['tipoContratto']['id'];
-        this.siglaProvinciaNascita=(resp as any)['anagraficaDto']['anagrafica']['provinciaDiNascita']['siglaProvincia'];
-        this.siglaProvinciaResidenza=(resp as any)['anagraficaDto']['anagrafica']['provinciaResidenza']['siglaProvincia'];
-        this.siglaProvinciaDomicilio=(resp as any)['anagraficaDto']['anagrafica']['provinciaDomicilio']['siglaProvincia'];
-
+        // this.siglaProvinciaNascita=(resp as any)['anagraficaDto']['anagrafica']['provinciaDiNascita']['siglaProvincia'];
+        // this.siglaProvinciaResidenza=(resp as any)['anagraficaDto']['anagrafica']['provinciaResidenza']['siglaProvincia'];
+        // this.siglaProvinciaDomicilio=(resp as any)['anagraficaDto']['anagrafica']['provinciaDomicilio']['siglaProvincia'];
+        this.residenzaDomicilioUguali=(resp as any)['anagraficaDto']['residenzaDomicilioUguali'];
+        console.log("Residenza e domicilio sono uguali? "+ this.residenzaDomicilioUguali);
         this.anagraficaDtoService.getComuni(localStorage.getItem('token'), this.siglaProvinciaNascita).subscribe(
           (resp:any)=>{
             this.elencoComuni=(resp as any)['list'];
@@ -996,7 +999,38 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
   equalsResidenzaDomicilio(event: any): void {
     this.residenzaDomicilioUguali = event.target.checked;
-    console.log('Toggle Switch is now:', this.residenzaDomicilioUguali);
+    const indirizzoDomicilioControl=this.anagraficaDto.get('anagrafica.indirizzoDomicilio');
+      const provinciaDomicilioControl=this.anagraficaDto.get('anagrafica.provinciaDomicilio.id');
+      const comuniDomicilioControl=this.anagraficaDto.get('anagrafica.comuneDomicilio.id');
+    if(this.residenzaDomicilioUguali && indirizzoDomicilioControl && provinciaDomicilioControl && comuniDomicilioControl){
+
+      indirizzoDomicilioControl.disable();
+      indirizzoDomicilioControl.setValue(null);
+      indirizzoDomicilioControl.clearValidators();
+      indirizzoDomicilioControl.updateValueAndValidity();
+
+      provinciaDomicilioControl.disable();
+      provinciaDomicilioControl.setValue("");
+      provinciaDomicilioControl.clearValidators();
+      provinciaDomicilioControl.updateValueAndValidity();
+
+      comuniDomicilioControl.disable();
+      comuniDomicilioControl.setValue("");
+      comuniDomicilioControl.clearValidators();
+      comuniDomicilioControl.updateValueAndValidity();
+
+    }
+    if(!this.residenzaDomicilioUguali && indirizzoDomicilioControl && provinciaDomicilioControl && comuniDomicilioControl){
+      indirizzoDomicilioControl.enable();
+      indirizzoDomicilioControl.setValidators([Validators.required]);
+      indirizzoDomicilioControl.updateValueAndValidity();
+      provinciaDomicilioControl.enable();
+      provinciaDomicilioControl.setValidators([Validators.required]);
+      provinciaDomicilioControl.updateValueAndValidity();
+      // comuniDomicilioControl.enable(); //questo resta disattivato per permettere l uso del filtro dei comuni
+      comuniDomicilioControl.setValidators([Validators.required]);
+      comuniDomicilioControl.updateValueAndValidity();
+    }
   }
 
   enableDistaccoFieldsForCommessa(commessaControl: AbstractControl): void {
@@ -2023,6 +2057,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           if (obj.provinciaDiNascita && Object.keys(obj.provinciaDiNascita).length === 0) {
             delete obj.provinciaDiNascita;
           }
+          if (obj.provinciaDiNascita && Object.keys(obj.provinciaDiNascita).length === 0) {
+            delete obj.provinciaDiNascita;
+          }
           if (obj.comuneDiNascita && Object.keys(obj.comuneDiNascita).length === 0) {
             delete obj.comuneDiNascita;
           }
@@ -2067,12 +2104,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       removeEmpty(this.anagraficaDto.value);
       const payload = {
         anagraficaDto: this.anagraficaDto.value,
-        // anagrafica: this.anagraficaDto.get('anagrafica')?.value,
-        // contratto: this.anagraficaDto.get('contratto')?.value,
-        // commesse: this.anagraficaDto.get('commesse')?.value,
-        // ruolo: this.anagraficaDto.get('ruolo')?.value,
       };
-      // console.log('Payload backend:', payload);
       this.anagraficaDtoService
         .update(payload, localStorage.getItem('token'))
         .subscribe(
@@ -2086,7 +2118,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 },
               });
             } else {
-              // console.log('Payload inviato con successo al server:', response);
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
                   image: '../../../../assets/images/logo.jpeg',

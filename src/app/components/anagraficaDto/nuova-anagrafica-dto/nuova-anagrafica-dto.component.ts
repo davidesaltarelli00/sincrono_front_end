@@ -193,6 +193,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         categoriaProtetta: new FormControl(''),
         statoDiNascita: new FormControl(''),
         cittadinanza: new FormControl(''),
+        residenzaDomicilioUguali:new FormControl(true),
         provinciaDiNascita: new FormGroup({
           id: new FormControl(''),
           siglaProvincia: new FormControl(''),

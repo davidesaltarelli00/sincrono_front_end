@@ -536,7 +536,7 @@
                               </div>
                               <div class="col-md-3">
                                 <label for="residenzaDomicilio">Residenza e domicilio sono uguali</label> <br>
-                                <input type="checkbox" [checked]="residenzaDomicilioUguali" id="toggleSwitch" (change)="equalsResidenzaDomicilio($event)">
+                                <input type="checkbox" formControlName="residenzaDomicilioUguali" [checked]="residenzaDomicilioUguali" id="toggleSwitch" (change)="equalsResidenzaDomicilio($event)">
                               </div>
                             </div>
                           </mat-card-content>
