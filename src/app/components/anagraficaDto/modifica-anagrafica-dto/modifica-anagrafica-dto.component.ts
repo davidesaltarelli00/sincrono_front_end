@@ -128,6 +128,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   timer: any;
   elencoProvince: any[]=[];
   elencoComuni: any[]=[];
+  elencoComuniNascita:any[]=[];
+  elencoComuniResidenza:any[]=[];
+  elencoComuniDomicilio:any[]=[];
   siglaProvinciaNascita: any;
   siglaProvinciaResidenza:any;
   siglaProvinciaDomicilio:any;
@@ -536,7 +539,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.caricaMappa();
       this.caricaTipoCausaFineContratto();
       this.getProvince();
-
       const tipoContratto = this.anagraficaDto.get(
         'contratto.tipoContratto.id'
       );
@@ -800,24 +802,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           'yyyy-MM-dd'
         );
       }
-      // console.log(
-      //   '************************************ \n DATA DISTACCO DELLE COMMESSE CONVERTITE: \n' +
-      //     '' +
-      //     commessa.distaccoData +
-      //     '\n'
-      // );
-      // console.log(
-      //   'DATE INIZIO DELLE COMMESSE CONVERTITE: \n' +
-      //     '' +
-      //     commessa.dataInizio +
-      //     '\n'
-      // );
-      // console.log(
-      //   'DATE FINE DELLE COMMESSE CONVERTITE: \n' +
-      //     '' +
-      //     commessa.dataFine +
-      //     '\n'
-      // );
     }
   }
 
@@ -828,41 +812,49 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         localStorage.getItem('token')
       )
       .subscribe((resp: any) => {
-        // console.log(this.activatedRouter.snapshot.params['id']);
         this.data = (resp as any)['anagraficaDto'];
-        console.log('Dati restituiti dal dettaglio: ' + JSON.stringify(this.data));
+
+        // Provincia di Nascita
+        this.siglaProvinciaNascita = this.data?.anagrafica?.provinciaDiNascita?.siglaProvincia;
+        if (this.data && this.siglaProvinciaNascita) {
+          this.anagraficaDtoService.getComuni(localStorage.getItem('token'), this.siglaProvinciaNascita).subscribe(
+            (resp: any) => {
+              this.elencoComuniNascita = (resp as any)['list'];
+            },
+            (error: any) => {
+              console.error("Errore durante il caricamento dei comuni di nascita: " + JSON.stringify(error));
+            }
+          );
+        }
+
+        // Provincia di Residenza
+        this.siglaProvinciaResidenza = this.data?.anagrafica?.provinciaResidenza?.siglaProvincia;
+        if (this.data && this.siglaProvinciaResidenza) {
+          this.anagraficaDtoService.getComuni(localStorage.getItem('token'), this.siglaProvinciaResidenza).subscribe(
+            (resp: any) => {
+              this.elencoComuniResidenza = (resp as any)['list'];
+            },
+            (error: any) => {
+              console.error("Errore durante il caricamento dei comuni di residenza: " + JSON.stringify(error));
+            }
+          );
+        }
+
+        // Provincia di Domicilio
+        this.siglaProvinciaDomicilio = this.data?.anagrafica?.provinciaDomicilio?.siglaProvincia;
+        if (this.data && this.siglaProvinciaDomicilio) {
+          this.anagraficaDtoService.getComuni(localStorage.getItem('token'), this.siglaProvinciaDomicilio).subscribe(
+            (resp: any) => {
+              this.elencoComuniDomicilio = (resp as any)['list'];
+            },
+            (error: any) => {
+              console.error("Errore durante il caricamento dei comuni di domicilio: " + JSON.stringify(error));
+            }
+          );
+        }
+
         this.selectedTipoContrattoId = (resp as any)['anagraficaDto']['contratto']['tipoContratto']['id'];
-        // this.siglaProvinciaNascita=(resp as any)['anagraficaDto']['anagrafica']['provinciaDiNascita']['siglaProvincia'];
-        // this.siglaProvinciaResidenza=(resp as any)['anagraficaDto']['anagrafica']['provinciaResidenza']['siglaProvincia'];
-        // this.siglaProvinciaDomicilio=(resp as any)['anagraficaDto']['anagrafica']['provinciaDomicilio']['siglaProvincia'];
-        this.residenzaDomicilioUguali=(resp as any)['anagraficaDto']['residenzaDomicilioUguali'];
-        console.log("Residenza e domicilio sono uguali? "+ this.residenzaDomicilioUguali);
-        this.anagraficaDtoService.getComuni(localStorage.getItem('token'), this.siglaProvinciaNascita).subscribe(
-          (resp:any)=>{
-            this.elencoComuni=(resp as any)['list'];
-          },
-          (error:any)=>{
-
-          }
-        );
-        this.anagraficaDtoService.getComuni(localStorage.getItem('token'), this.siglaProvinciaResidenza).subscribe(
-          (resp:any)=>{
-            this.elencoComuni=(resp as any)['list'];
-          },
-          (error:any)=>{
-
-          }
-        );
-
-        this.anagraficaDtoService.getComuni(localStorage.getItem('token'), this.siglaProvinciaDomicilio).subscribe(
-          (resp:any)=>{
-            this.elencoComuni=(resp as any)['list'];
-          },
-          (error:any)=>{
-
-          }
-        );
-
+        this.residenzaDomicilioUguali=(resp as any)['anagraficaDto']['anagrafica']['residenzaDomicilioUguali'];
         this.descrizioneLivelloCCNL = (resp as any)['anagraficaDto']['contratto']['tipoLivelloContratto']['ccnl'];
         this.setForm();
         this.anagraficaDtoService.changeCCNL(localStorage.getItem('token'),this.descrizioneLivelloCCNL).subscribe(
@@ -986,6 +978,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       }
     });
   }
+
+
 
   disableDistaccoFieldsForAllCommesse(): void {
     const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;

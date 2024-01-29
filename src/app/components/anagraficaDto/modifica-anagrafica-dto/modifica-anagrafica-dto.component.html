@@ -366,8 +366,8 @@
                                     <option value="">
                                       --nessuna selezione--
                                     </option>
-                                    <option *ngFor=" let comune of elencoComuni " [value]="comune.id">
-                                      {{ comune.denominazione_ita }}
+                                    <option *ngFor=" let comuneNascita of elencoComuniNascita " [value]="comuneNascita.id">
+                                      {{ comuneNascita.denominazione_ita }}
                                     </option>
                                    </select>
                                     </div>
@@ -514,7 +514,7 @@
                                         <option value="">
                                           --nessuna selezione--
                                         </option>
-                                        <option *ngFor=" let comuneResidenza of elencoComuni " [value]="comuneResidenza.id">
+                                        <option *ngFor=" let comuneResidenza of elencoComuniResidenza " [value]="comuneResidenza.id">
                                           {{ comuneResidenza.denominazione_ita }}
                                         </option>
                                        </select>
@@ -575,7 +575,7 @@
                                       <option value="">
                                         --nessuna selezione--
                                       </option>
-                                      <option *ngFor=" let comuneDomicilio of elencoComuni " [value]="comuneDomicilio.id">
+                                      <option *ngFor=" let comuneDomicilio of elencoComuniDomicilio " [value]="comuneDomicilio.id">
                                         {{ comuneDomicilio.denominazione_ita }}
                                       </option>
                                      </select>
