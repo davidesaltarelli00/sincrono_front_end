@@ -511,7 +511,7 @@
                               <div class="col-md-2">
                                 <label>CAP</label>
                                 <div class="form-group">
-                                  <input type="number" class="form-control" formControlName="capResidenza" [ngStyle]="{ border: AnagraficaDto.get('anagrafica.capResidenza')?.hasError('required') ? '1px solid red' : '1px solid green'}" placeholder="Inserire CAP residenza." />
+                                  <input type="text" class="form-control" formControlName="capResidenza" [ngStyle]="{ border: AnagraficaDto.get('anagrafica.capResidenza')?.hasError('required') ? '1px solid red' : '1px solid green'}" placeholder="Inserire CAP residenza." />
                                   <div *ngIf="AnagraficaDto.get('anagrafica.capResidenza')?.hasError('required')" class="text-danger">
                                     Il campo CAP residenza è obbligatorio.
                                   </div>
@@ -581,7 +581,7 @@
                               <div class="col-md-2">
                                 <label>CAP</label>
                                 <div class="form-group">
-                                  <input type="number" class="form-control" formControlName="capDomicilio" [ngStyle]="{ border: AnagraficaDto.get('anagrafica.capDomicilio')?.hasError('required') ? '1px solid red' : '1px solid #ccc'}" placeholder="Inserire CAP domicilio." />
+                                  <input type="text" class="form-control" formControlName="capDomicilio" [ngStyle]="{ border: AnagraficaDto.get('anagrafica.capDomicilio')?.hasError('required') ? '1px solid red' : '1px solid #ccc'}" placeholder="Inserire CAP domicilio." />
                                   <div *ngIf="AnagraficaDto.get('anagrafica.capDomicilio')?.hasError('required')" class="text-danger">
                                     Il campo CAP domicilio è obbligatorio.
                                   </div>
