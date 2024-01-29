@@ -359,7 +359,7 @@
                                     </div>
                                   </div>
 
-                                  <div class="col-md-3">
+                                  <div class="col-md-3" *ngIf="elencoComuniNascita.length>0">
                                     <label>Comune di Nascita</label>
                                     <div class="form-group" formGroupName="comuneDiNascita">
                                    <select name="comuneDiNascita" class="form-select" id="comuneDiNascita" formControlName="id">
@@ -367,6 +367,19 @@
                                       --nessuna selezione--
                                     </option>
                                     <option *ngFor=" let comuneNascita of elencoComuniNascita " [value]="comuneNascita.id">
+                                      {{ comuneNascita.denominazione_ita }}
+                                    </option>
+                                   </select>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3" *ngIf="elencoComuni.length>0">
+                                    <label>Comune di Nascita</label>
+                                    <div class="form-group" formGroupName="comuneDiNascita">
+                                   <select name="comuneDiNascita" class="form-select" id="comuneDiNascita" formControlName="id">
+                                    <option value="">
+                                      --nessuna selezione--
+                                    </option>
+                                    <option *ngFor=" let comuneNascita of elencoComuni " [value]="comuneNascita.id">
                                       {{ comuneNascita.denominazione_ita }}
                                     </option>
                                    </select>
@@ -507,7 +520,7 @@
                                         </select>
                                       </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3" *ngIf="elencoComuniResidenza.length>0">
                                      <label for="comuneResidenza">Comune di residenza</label>
                                      <div class="form-group" formGroupName="comuneResidenza">
                                       <select name="comuneResidenza" class="form-select"  id="comuneResidenza" formControlName="id">
@@ -515,6 +528,19 @@
                                           --nessuna selezione--
                                         </option>
                                         <option *ngFor=" let comuneResidenza of elencoComuniResidenza " [value]="comuneResidenza.id">
+                                          {{ comuneResidenza.denominazione_ita }}
+                                        </option>
+                                       </select>
+                                     </div>
+                                    </div>
+                                    <div class="col-md-3" *ngIf="elencoComuni.length>0">
+                                     <label for="comuneResidenza">Comune di residenza</label>
+                                     <div class="form-group" formGroupName="comuneResidenza">
+                                      <select name="comuneResidenza" class="form-select"  id="comuneResidenza" formControlName="id">
+                                        <option value="">
+                                          --nessuna selezione--
+                                        </option>
+                                        <option *ngFor=" let comuneResidenza of elencoComuni " [value]="comuneResidenza.id">
                                           {{ comuneResidenza.denominazione_ita }}
                                         </option>
                                        </select>
@@ -568,7 +594,7 @@
                                       </select>
                                     </div>
                                   </div>
-                                  <div class="col-md-3">
+                                  <div class="col-md-3" *ngIf="elencoComuniDomicilio.length>0">
                                    <label for="comuneDomicilio">Comune di domicilio</label>
                                    <div class="form-group" formGroupName="comuneDomicilio">
                                     <select name="comuneDomicilio" class="form-select" id="comuneDomicilio" formControlName="id">
@@ -576,6 +602,19 @@
                                         --nessuna selezione--
                                       </option>
                                       <option *ngFor=" let comuneDomicilio of elencoComuniDomicilio " [value]="comuneDomicilio.id">
+                                        {{ comuneDomicilio.denominazione_ita }}
+                                      </option>
+                                     </select>
+                                   </div>
+                                  </div>
+                                  <div class="col-md-3" *ngIf="elencoComuni.length>0">
+                                   <label for="comuneDomicilio">Comune di domicilio</label>
+                                   <div class="form-group" formGroupName="comuneDomicilio">
+                                    <select name="comuneDomicilio" class="form-select" id="comuneDomicilio" formControlName="id">
+                                      <option value="">
+                                        --nessuna selezione--
+                                      </option>
+                                      <option *ngFor=" let comuneDomicilio of elencoComuni " [value]="comuneDomicilio.id">
                                         {{ comuneDomicilio.denominazione_ita }}
                                       </option>
                                      </select>
