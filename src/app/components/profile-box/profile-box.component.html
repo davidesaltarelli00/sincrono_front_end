@@ -212,8 +212,8 @@
                           <td>{{anagrafica?.anagraficaDto.anagrafica?.cittadinanza ? anagrafica?.anagraficaDto.anagrafica?.cittadinanza : 'Dato non inserito' }}</td>
                           <td>{{ anagrafica?.anagraficaDto.anagrafica?.dataDiNascita ? (anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy") : 'Dato non inserito' }} </td>
                           <td>{{anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.statoDiNascita : 'Dato non inserito.'  }}</td>
-                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita : 'Dato non inserito.'  }}</td>
-                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita ? anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita : 'Dato non inserito.'  }}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita?.denominazione_provincia ? anagrafica?.anagraficaDto?.anagrafica?.provinciaDiNascita?.denominazione_provincia : 'Dato non inserito.'  }}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita?.denominazione_ita ? anagrafica?.anagraficaDto?.anagrafica?.comuneDiNascita?.denominazione_ita : 'Dato non inserito.'  }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -278,7 +278,7 @@
             <div class="col-6">
               <mat-card class="profile-box">
                 <mat-card-title>
-                  <h3>Residenza e domicilio <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                  <h3>Residenza <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
                     matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
                     <i class="fa fa-exclamation-triangle"></i> </button></h3>
                 </mat-card-title>
@@ -286,24 +286,63 @@
                   <div class="table-responsive">
                     <table class="table table-striped">
                       <thead>
-                       <tr>
-                         <th>Residenza</th>
-                         <th>Domicilio</th>
-                       </tr>
+                        <th>Indirizzo</th>
+                        <th>Comune</th>
+                        <th>Provincia</th>
+                        <th>Sigla</th>
+                        <th>Residenza estera</th>
                       </thead>
-                       <tbody>
-                         <tr>
-                           <td>{{ anagrafica?.anagraficaDto.anagrafica?.residenza ? anagrafica?.anagraficaDto.anagrafica?.residenza : 'Dato non inserito' }}</td>
-                           <td>{{ anagrafica?.anagraficaDto.anagrafica?.domicilio ? anagrafica?.anagraficaDto.anagrafica?.domicilio : 'Dato non inserito.' }}</td>
-                         </tr>
-                       </tbody>
-                     </table>
+                      <tbody>
+                        <tr>
+                          <td>{{ anagrafica?.anagraficaDto.anagrafica?.indirizzoResidenza ? anagrafica?.anagraficaDto.anagrafica?.indirizzoResidenza : 'Dato non inserito' }}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.comuneResidenza?.denominazioneItaAltra}}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.provinciaResidenza?.denominazione_provincia}}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.provinciaResidenza?.siglaProvincia}}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.localitaResidenzaEstera ? anagrafica?.anagraficaDto?.anagrafica?.localitaResidenzaEstera :'Dato non inserito'}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </mat-card-content>
-
               </mat-card>
             </div>
             <div class="col-6">
+              <mat-card class="profile-box">
+                <mat-card-title>
+                  <h3>
+                    Domicilio <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
+                    matTooltip="{{anagrafica?.anagraficaDto?.anagrafica?.nome |titlecase}} {{anagrafica?.anagraficaDto?.anagrafica?.cognome|titlecase}} non lavora piú qui, causa {{anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione}}">
+                    <i class="fa fa-exclamation-triangle"></i> </button>
+                  </h3>
+                </mat-card-title>
+                <mat-card-content>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <th>Indirizzo</th>
+                        <th>Comune</th>
+                        <th>Provincia</th>
+                        <th>Sigla</th>
+                        <th>Domicilio estero</th>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td> {{anagrafica?.anagraficaDto?.anagrafica?.indirizzoDomicilio ? anagrafica?.anagraficaDto?.anagrafica?.indirizzoDomicilio : 'Dato non inserito' | titlecase }}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.comuneDomicilio?.denominazioneItaAltra}}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.provinciaDomicilio?.denominazione_provincia}}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.provinciaDomicilio?.siglaProvincia}}</td>
+                          <td>{{anagrafica?.anagraficaDto?.anagrafica?.localitaDomicilioEstero ? anagrafica?.anagraficaDto?.anagrafica?.localitaDomicilioEstero : 'Dato non inserito'}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-12">
               <mat-card class="profile-box">
                 <mat-card-title>
                   <h3>Referenze <button class="btn btn-danger" *ngIf="anagrafica?.anagraficaDto?.contratto?.tipoCausaFineRapporto?.descrizione!=null"
