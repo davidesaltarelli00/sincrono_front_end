@@ -491,6 +491,12 @@
                                       </div>
                                     </div>
                                     <div class="col-md-3">
+                                      <label>CAP</label>
+                                      <div class="form-group">
+                                        <input type="number" class="form-control" formControlName="capResidenza"  placeholder="Inserire CAP residenza." />
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3">
                                       <label for="provinciaResidenza">Provincia di residenza</label>
                                       <div class="form-group" formGroupName="provinciaResidenza">
                                         <select class="form-select" (change)="onChangeProvinciaResidenza($event)" name="provinciaResidenza" id="provinciaResidenza" formControlName="id">
@@ -514,6 +520,8 @@
                                        </select>
                                      </div>
                                     </div>
+                                  </div> <br>
+                                  <div class="row">
                                     <div class="col-md-3">
                                       <label for="residenzaDomicilio">Residenza e domicilio sono uguali</label> <br>
                                       <input type="checkbox" formControlName="residenzaDomicilioUguali" [checked]="residenzaDomicilioUguali" id="toggleSwitch" (change)="equalsResidenzaDomicilio($event)">
@@ -532,7 +540,7 @@
                               </mat-card-title>
                               <mat-card-content>
                                 <div class="row">
-                                  <div class="col-md-4">
+                                  <div class="col-md-3">
                                     <label>Indirizzo di domicilio </label>
                                     <div class="form-group">
                                       <input type="text" class="form-control" formControlName="indirizzoDomicilio"
@@ -543,7 +551,13 @@
                                         </div>
                                     </div>
                                   </div>
-                                  <div class="col-md-4">
+                                  <div class="col-md-3">
+                                    <label>CAP domicilio</label>
+                                    <div class="form-group">
+                                      <input type="number" class="form-control" formControlName="capDomicilio" [ngStyle]="{ border: anagraficaDto.get('anagrafica.capDomicilio')?.hasError('required') ? '1px solid red' : '1px solid #ccc'}" placeholder="Inserire CAP domicilio." />
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3">
                                     <label for="provinciaDomicilio">Provincia di domicilio</label>
                                     <div class="form-group" formGroupName="provinciaDomicilio">
                                       <select (change)="onChangeProvinciaDomicilio($event)" class="form-select" name="provinciaDomicilio" id="provinciaDomicilio" formControlName="id">
@@ -554,7 +568,7 @@
                                       </select>
                                     </div>
                                   </div>
-                                  <div class="col-md-4">
+                                  <div class="col-md-3">
                                    <label for="comuneDomicilio">Comune di domicilio</label>
                                    <div class="form-group" formGroupName="comuneDomicilio">
                                     <select name="comuneDomicilio" class="form-select" id="comuneDomicilio" formControlName="id">
@@ -572,6 +586,32 @@
                             </mat-card>
                           </div>
                          </div>
+                         <div class="row">
+                          <div class="col-md-12">
+                            <mat-card>
+                              <mat-card-title>
+                                <legend>Residenza o domicilio esteri</legend>
+                              </mat-card-title>
+                              <mat-card-content>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label for="localitaResidenzaEstera">Localitá residenza estera</label>
+                                      <input type="text" class="form-control" name="localitaResidenzaEstera" id="localitaResidenzaEstera" formControlName="localitaResidenzaEstera" placeholder="Inserire localitá di residenza estera">
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label for="localitaDomicilioEstero">Localitá domicilio estera</label>
+                                      <input type="text" class="form-control" name="localitaDomicilioEstero" id="localitaDomicilioEstero" formControlName="localitaDomicilioEstero" placeholder="Inserire localitá di domicilio estera">
+                                    </div>
+                                  </div>
+                                </div>
+                              </mat-card-content>
+                            </mat-card>
+                          </div>
+                         </div>
+                         <br>
                         <div class="row">
                           <div class="col-md-6">
                             <mat-card>

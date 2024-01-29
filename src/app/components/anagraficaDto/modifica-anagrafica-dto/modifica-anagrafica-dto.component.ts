@@ -211,6 +211,10 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         categoriaProtetta: [''],
         statoDiNascita: [''],
         cittadinanza: [''],
+        capResidenza: [''],
+        capDomicilio:  [''],
+        localitaResidenzaEstera:  [''],
+        localitaDomicilioEstero: [''],
         provinciaDiNascita: this.formBuilder.group({
           id: [''],
           siglaProvincia:  [''],
@@ -999,15 +1003,22 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
 
   equalsResidenzaDomicilio(event: any): void {
     this.residenzaDomicilioUguali = event.target.checked;
+    console.log('Toggle Switch is now:', this.residenzaDomicilioUguali);
     const indirizzoDomicilioControl=this.anagraficaDto.get('anagrafica.indirizzoDomicilio');
       const provinciaDomicilioControl=this.anagraficaDto.get('anagrafica.provinciaDomicilio.id');
       const comuniDomicilioControl=this.anagraficaDto.get('anagrafica.comuneDomicilio.id');
-    if(this.residenzaDomicilioUguali && indirizzoDomicilioControl && provinciaDomicilioControl && comuniDomicilioControl){
+      const capDomicilioControl=this.anagraficaDto.get('anagrafica.capDomicilio');
+    if(this.residenzaDomicilioUguali && indirizzoDomicilioControl && provinciaDomicilioControl && comuniDomicilioControl && capDomicilioControl){
 
       indirizzoDomicilioControl.disable();
       indirizzoDomicilioControl.setValue(null);
       indirizzoDomicilioControl.clearValidators();
       indirizzoDomicilioControl.updateValueAndValidity();
+
+      capDomicilioControl.disable();
+      capDomicilioControl.setValue(null);
+      capDomicilioControl.clearValidators();
+      capDomicilioControl.updateValueAndValidity();
 
       provinciaDomicilioControl.disable();
       provinciaDomicilioControl.setValue("");
@@ -1020,10 +1031,14 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       comuniDomicilioControl.updateValueAndValidity();
 
     }
-    if(!this.residenzaDomicilioUguali && indirizzoDomicilioControl && provinciaDomicilioControl && comuniDomicilioControl){
+    if(!this.residenzaDomicilioUguali && indirizzoDomicilioControl && provinciaDomicilioControl && comuniDomicilioControl && capDomicilioControl){
       indirizzoDomicilioControl.enable();
       indirizzoDomicilioControl.setValidators([Validators.required]);
       indirizzoDomicilioControl.updateValueAndValidity();
+      capDomicilioControl.enable();
+      capDomicilioControl.setValidators([Validators.required]);
+      capDomicilioControl.updateValueAndValidity();
+
       provinciaDomicilioControl.enable();
       provinciaDomicilioControl.setValidators([Validators.required]);
       provinciaDomicilioControl.updateValueAndValidity();
