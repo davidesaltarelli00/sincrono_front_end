@@ -107,7 +107,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
   capitali: any[] = [];
   province: any[] = [];
   dati: any = [];
-  statoDiNascita: any;
   provinciaDiNascita: string = '';
   ruolo: any;
   base64Documento: any;
@@ -193,7 +192,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         categoriaProtetta: new FormControl(''),
         statoDiNascita: new FormControl(''),
         cittadinanza: new FormControl(''),
-        residenzaDomicilioUguali:new FormControl(''),
+        residenzaDomicilioUguali:new FormControl(true),
         provinciaDiNascita: new FormGroup({
           id: new FormControl(''),
           siglaProvincia: new FormControl(''),
@@ -754,45 +753,6 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
     }
   }
 
-  onChangeNazione(event: any) {
-    this.statoDiNascita = event.target.value; // Imposta la nazione selezionata
-
-    // Inizializza le capitali con un array vuoto
-    this.capitali = [];
-
-    // Se "Italia" è selezionata, ottieni tutte le province italiane
-    if (this.statoDiNascita === 'Italia') {
-      this.province =
-        this.dati
-          .find((item: any) => item.nazione === 'Italia')
-          ?.province.flatMap((regione: any) => regione.province) || [];
-
-      // Inoltre, imposta le capitali italiane
-      this.capitali =
-        this.dati
-          .find((item: any) => item.nazione === 'Italia')
-          ?.province.map((regione: any) => regione.capitale) || [];
-    } else {
-      // Altrimenti, filtra le province in base alla nazione selezionata
-      this.province =
-        this.dati.find((item: any) => item.nazione === this.statoDiNascita)
-          ?.province || [];
-
-      // Recupera la capitale della nazione selezionata
-      const capitaleNazione = this.dati.find(
-        (item: any) => item.nazione === this.statoDiNascita
-      )?.capitale;
-
-      // Se la capitale è definita, aggiungila all'array delle capitali
-      if (capitaleNazione) {
-        this.capitali.push(capitaleNazione);
-      }
-    }
-
-    // console.log('Nazione selezionata: ' + this.statoDiNascita);
-    // console.log('Province selezionate: ' + JSON.stringify(this.province));
-    // console.log('Capitali selezionate: ' + JSON.stringify(this.capitali));
-  }
 
   calcoloRAL() {
     const retribuzioneMensileLorda = this.AnagraficaDto.get(
