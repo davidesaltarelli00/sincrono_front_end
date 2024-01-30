@@ -197,8 +197,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         dataDiNascita: [''],
         indirizzoResidenza: [''],
         indirizzoDomicilio: [''],
-        cellularePrivato: ['', Validators.pattern(/^[0-9]{10}$/)],
-        cellulareAziendale: ['', Validators.pattern(/^[0-9]{10}$/)],
+        cellularePrivato: ['',  Validators.pattern(/^(\+\d{1,3}\s?)?\d{10,}$/)],
+        cellulareAziendale: ['',Validators.pattern(/^(\+\d{1,3}\s?)?\d{10,}$/)],
         mailPrivata: ['',Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),],
         mailAziendale: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),],],
         mailPec: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),],],
@@ -284,7 +284,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         tipoLivelloContratto: this.formBuilder.group({
           id: [''],
         }),
-        qualifica: [''],
+        qualifica: ['', Validators.required],
         sedeAssunzione: [''],
         dataAssunzione: [''],
         dataInizioProva: [''],
@@ -2749,6 +2749,21 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         RALControl.setValue(RALCalcolata.toFixed(2));
         // console.log('RAL CALCOLATA:' + RALCalcolata.toFixed(2));
       }
+    }
+  }
+
+  rimuoviSpaziCellularePrivato() {
+    const cellularePrivatoControl = this.anagraficaDto.get('anagrafica.cellularePrivato');
+    if (cellularePrivatoControl) {
+      const cellularePrivatoSenzaSpazi = cellularePrivatoControl.value.replace(/\s/g, '');
+      cellularePrivatoControl.setValue(cellularePrivatoSenzaSpazi);
+    }
+  }
+  rimuoviSpaziCellulareAziendale() {
+    const cellulareAziendaleControl = this.anagraficaDto.get('anagrafica.cellulareAziendale');
+    if (cellulareAziendaleControl) {
+      const cellulareAziendaleSenzaSpazi = cellulareAziendaleControl.value.replace(/\s/g, '');
+      cellulareAziendaleControl.setValue(cellulareAziendaleSenzaSpazi);
     }
   }
 

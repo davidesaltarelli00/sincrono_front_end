@@ -205,7 +205,7 @@
         <br>
         <mat-card style="text-align: center;">
           <h1><img src="../../../../assets/images/logoSincronoCompleto.png" alt="Logo Sincrono"></h1>
-          <h1>Modifica anagrafica di <a class="anagrafica" [routerLink]="['/dettaglio-anagrafica/', id]">{{data?.anagrafica?.nome}} {{data?.anagrafica?.cognome}}</a> <i class="fa fa-user"></i>
+          <h1>Modifica anagrafica di <a class="anagrafica" [routerLink]="['/dettaglio-anagrafica/', id]">{{data?.anagrafica?.nome |titlecase }} {{data?.anagrafica?.cognome |titlecase}}</a> <i class="fa fa-user"></i>
             <i class="fa fa-pencil"></i>
           </h1>
         </mat-card>

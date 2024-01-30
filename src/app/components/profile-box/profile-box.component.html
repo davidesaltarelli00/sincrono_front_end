@@ -139,8 +139,6 @@
                          <th>Ruolo</th>
                          <th>Contratto</th>
                          <th>Numero commesse</th>
-                         <th>Documenti</th>
-                         <!-- <th>Amministrazione</th> -->
                        </tr>
                       </thead>
                       <tbody>
@@ -148,10 +146,6 @@
                          <td>{{anagrafica?.anagraficaDto?.ruolo?.descrizione}} </td>
                          <td>{{ anagrafica?.anagraficaDto?.contratto?.tipoContratto?.descrizione}} </td>
                          <td>{{elencoCommesse.length}}</td>
-                         <td> Rapportino <button class="btn btn-success" (click)="goToRapportinoByCodiceFiscale()" matTooltip="Rapportino."> <i class="fa fa-file"></i> </button> </td>
-                          <!-- <td>
-                            <button class="btn btn-primary" (click)="goToAdministration()" ><i class="fa fa-user-tie"></i></button>
-                          </td> -->
                         </tr>
                       </tbody>
                      </table>
@@ -177,7 +171,6 @@
                         <tr>
                           <th>Nome</th>
                           <th>Cognome</th>
-                          <!-- <th>Data e luogo di nascita</th> -->
                           <th>Codice fiscale</th>
                         </tr>
                       </thead>
@@ -185,11 +178,7 @@
                         <tr>
                           <td>{{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }}</td>
                           <td>{{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }}</td>
-                          <!-- <td *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita != null">
-                            {{anagrafica?.anagraficaDto.anagrafica?.dataDiNascita | date : "dd/MM/yyyy"}},
-                            {{ anagrafica?.anagraficaDto.anagrafica?.comuneDiNascita }}
-                          </td> -->
-                          <!-- <td *ngIf="anagrafica?.anagraficaDto.anagrafica?.dataDiNascita == null">Dato non inserito.</td> -->
+
                           <td>{{ anagrafica?.anagraficaDto.anagrafica?.codiceFiscale }}</td>
                         </tr>
                       </tbody>
@@ -624,10 +613,7 @@
             <td><strong>Numero commesse</strong></td>
             <td>{{elencoCommesse.length}}</td>
           </tr>
-          <tr>
-            <td><strong>Rapportino</strong></td>
-            <td>Rapportino <button class="btn btn-success" (click)="goToRapportinoByCodiceFiscale()" matTooltip="Rapportino."> <i class="fa fa-file"></i> </button></td>
-          </tr>
+
         </tbody>
       </table>
 
@@ -803,12 +789,6 @@
               {{anagrafica?.anagraficaDto.contratto?.tipoLivelloContratto?.livello ? anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.livello : 'Dato non inserito.'}}
             </td>
           </tr>
-          <!-- <tr>
-            <td><strong>Minimi retributivi 23</strong></td>
-            <td>
-              {{anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.minimiRet23 ? anagrafica?.anagraficaDto?.contratto?.tipoLivelloContratto?.minimiRet23 : 'Dato non inserito.'}}
-            </td>
-          </tr> -->
           <tr>
             <td><strong>Numero mensilitá</strong></td>
             <td>
@@ -879,7 +859,6 @@
             <strong class="label">Azienda fatturazione interna:</strong> {{ commessa.aziendaDiFatturazioneInterna }}
           </div>
 
-          <!-- Pulsanti di azione -->
           <div *ngIf="ruolo !== 'DIPENDENTE'" class="action-buttons">
             <button class="btn btn-success" matTooltip="Archivia commessa" (click)="storicizzaCommessa(commessa.id, i)">
               <i class="fa fa-file"></i> Archivia

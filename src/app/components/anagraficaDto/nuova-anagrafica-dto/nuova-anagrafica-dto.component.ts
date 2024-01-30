@@ -164,10 +164,10 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
           Validators.maxLength(16),
         ]),
         cellularePrivato: new FormControl('', [
-          Validators.pattern(/^(\+\d{2}\s?)?(\d{3}[\s.-]?\d{3}[\s.-]?\d{4})$/),
+          Validators.pattern(/^(\+\d{1,3}\s?)?\d{10,}$/)
         ]),
         cellulareAziendale: new FormControl('', [
-          Validators.pattern(/^(\+\d{2}\s?)?(\d{3}[\s.-]?\d{3}[\s.-]?\d{4})$/),
+          Validators.pattern(/^(\+\d{1,3}\s?)?\d{10,}$/)
         ]),
         mailPrivata: new FormControl(
           '',
@@ -273,7 +273,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         tipoCcnl: new FormGroup({
           id: new FormControl('', Validators.required),
         }),
-        qualifica: new FormControl(''),
+        qualifica: new FormControl('', Validators.required),
         sedeAssunzione: new FormControl(''),
         dataAssunzione: new FormControl('', Validators.required), //, Validators.required
         dataInizioProva: new FormControl(''),
@@ -2153,6 +2153,21 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       retribuzioneMensileLordaControl?.setValue(1538.12);
     } else {
       retribuzioneMensileLordaControl?.setValue(null);
+    }
+  }
+
+  rimuoviSpaziCellularePrivato() {
+    const cellularePrivatoControl = this.AnagraficaDto.get('anagrafica.cellularePrivato');
+    if (cellularePrivatoControl) {
+      const cellularePrivatoSenzaSpazi = cellularePrivatoControl.value.replace(/\s/g, '');
+      cellularePrivatoControl.setValue(cellularePrivatoSenzaSpazi);
+    }
+  }
+  rimuoviSpaziCellulareAziendale() {
+    const cellulareAziendaleControl = this.AnagraficaDto.get('anagrafica.cellulareAziendale');
+    if (cellulareAziendaleControl) {
+      const cellulareAziendaleSenzaSpazi = cellulareAziendaleControl.value.replace(/\s/g, '');
+      cellulareAziendaleControl.setValue(cellulareAziendaleSenzaSpazi);
     }
   }
 
