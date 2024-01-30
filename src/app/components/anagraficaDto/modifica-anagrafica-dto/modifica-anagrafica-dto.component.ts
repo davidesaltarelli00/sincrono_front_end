@@ -288,6 +288,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           denominazione_altra: [''],
           flag_capoluogo: [''],
         }),
+        piva: [''],
+        nomeAzienda:[''] //ragione sociale
       }),
       commesse: this.formBuilder.array([]),
 

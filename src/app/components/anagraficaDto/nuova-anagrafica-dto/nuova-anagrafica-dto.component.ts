@@ -280,6 +280,8 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         coniugato: new FormControl(false),
         figliACarico: new FormControl(false),
         attesaLavori: new FormControl(false),
+        piva: new FormControl(''),
+        nomeAzienda:new FormControl('') //ragione sociale
       }),
       commesse: this.formBuilder.array([]),
 
