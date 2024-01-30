@@ -135,6 +135,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   siglaProvinciaResidenza:any;
   siglaProvinciaDomicilio:any;
   residenzaDomicilioUguali: any;
+  elencoNazioni: any[] = [];
+  elencoCittadinanze1: any[] = [];
+  elencoCittadinanze2: any[] = [];
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -212,8 +215,27 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         }),
       residenzaDomicilioUguali:[''],
         categoriaProtetta: [''],
-        statoDiNascita: [''],
-        cittadinanza: [''],
+        idStatoNascita:  this.formBuilder.group({
+          id: [''],
+          siglaNazione: [''],
+          codiceBelfiore: [''],
+          denominazioneNazione: [''],
+          denominazioneCittadinanza: ['']
+        }),
+        idCittadinanza1: this.formBuilder.group({
+          id:[''],
+          siglaNazione:[''],
+          codiceBelfiore: [''],
+          denominazioneNazione:[''],
+          denominazioneCittadinanza: ['']
+        }),
+        idCittadinanza2: this.formBuilder.group({
+          id:[''],
+          siglaNazione: [''],
+          codiceBelfiore: [''],
+          denominazioneNazione: [''],
+          denominazioneCittadinanza: ['']
+        }),
         capResidenza: [''],
         capDomicilio:  [''],
         localitaResidenzaEstera:  [''],
@@ -539,6 +561,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.caricaMappa();
       this.caricaTipoCausaFineContratto();
       this.getProvince();
+      this. getAllNazioni();
+      this.getAllCittadinanze1();
+      this.getAllCittadinanze2();
       const tipoContratto = this.anagraficaDto.get(
         'contratto.tipoContratto.id'
       );
@@ -682,45 +707,45 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
 
-  onChangeNazione(event: any) {
-    this.statoDiNascita = event.target.value; // Imposta la nazione selezionata
+  // onChangeNazione(event: any) {
+  //   this.statoDiNascita = event.target.value; // Imposta la nazione selezionata
 
-    // Inizializza le capitali con un array vuoto
-    this.capitali = [];
+  //   // Inizializza le capitali con un array vuoto
+  //   this.capitali = [];
 
-    // Se "Italia" è selezionata, ottieni tutte le province italiane
-    if (this.statoDiNascita === 'Italia') {
-      this.province =
-        this.dati
-          .find((item: any) => item.nazione === 'Italia')
-          ?.province.flatMap((regione: any) => regione.province) || [];
+  //   // Se "Italia" è selezionata, ottieni tutte le province italiane
+  //   if (this.statoDiNascita === 'Italia') {
+  //     this.province =
+  //       this.dati
+  //         .find((item: any) => item.nazione === 'Italia')
+  //         ?.province.flatMap((regione: any) => regione.province) || [];
 
-      // Inoltre, imposta le capitali italiane
-      this.capitali =
-        this.dati
-          .find((item: any) => item.nazione === 'Italia')
-          ?.province.map((regione: any) => regione.capitale) || [];
-    } else {
-      // Altrimenti, filtra le province in base alla nazione selezionata
-      this.province =
-        this.dati.find((item: any) => item.nazione === this.statoDiNascita)
-          ?.province || [];
+  //     // Inoltre, imposta le capitali italiane
+  //     this.capitali =
+  //       this.dati
+  //         .find((item: any) => item.nazione === 'Italia')
+  //         ?.province.map((regione: any) => regione.capitale) || [];
+  //   } else {
+  //     // Altrimenti, filtra le province in base alla nazione selezionata
+  //     this.province =
+  //       this.dati.find((item: any) => item.nazione === this.statoDiNascita)
+  //         ?.province || [];
 
-      // Recupera la capitale della nazione selezionata
-      const capitaleNazione = this.dati.find(
-        (item: any) => item.nazione === this.statoDiNascita
-      )?.capitale;
+  //     // Recupera la capitale della nazione selezionata
+  //     const capitaleNazione = this.dati.find(
+  //       (item: any) => item.nazione === this.statoDiNascita
+  //     )?.capitale;
 
-      // Se la capitale è definita, aggiungila all'array delle capitali
-      if (capitaleNazione) {
-        this.capitali.push(capitaleNazione);
-      }
-    }
+  //     // Se la capitale è definita, aggiungila all'array delle capitali
+  //     if (capitaleNazione) {
+  //       this.capitali.push(capitaleNazione);
+  //     }
+  //   }
 
-    // console.log('Nazione selezionata: ' + this.statoDiNascita);
-    // console.log('Province selezionate: ' + JSON.stringify(this.province));
-    // console.log('Capitali selezionate: ' + JSON.stringify(this.capitali));
-  }
+  //   // console.log('Nazione selezionata: ' + this.statoDiNascita);
+  //   // console.log('Province selezionate: ' + JSON.stringify(this.province));
+  //   // console.log('Capitali selezionate: ' + JSON.stringify(this.capitali));
+  // }
 
   onChangeAziendaCliente(event: any) {
     const selectedValue = parseInt(event.target.value, 10);
@@ -2696,6 +2721,53 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         break;
     }
   }
+
+  getAllNazioni() {
+    this.anagraficaDtoService
+      .getAllNazioni(localStorage.getItem('token'))
+      .subscribe(
+        (result: any) => {
+          this.elencoNazioni = result['list'];
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il caricamento delle nazioni: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
+  getAllCittadinanze1() {
+    this.anagraficaDtoService
+      .getAllNazioni(localStorage.getItem('token'))
+      .subscribe(
+        (result: any) => {
+          this.elencoCittadinanze1 = result['list'];
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il caricamento delle nazioni: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
+  getAllCittadinanze2() {
+    this.anagraficaDtoService
+      .getAllNazioni(localStorage.getItem('token'))
+      .subscribe(
+        (result: any) => {
+          this.elencoCittadinanze2 = result['list'];
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il caricamento delle nazioni: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
+
 
   calcolaMensileTot() {
     const retribuzioneMensileLorda =

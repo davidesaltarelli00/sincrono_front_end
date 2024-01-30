@@ -335,13 +335,12 @@
                                   </div>
                                   <div class="col-md-2">
                                     <label>Nazione di Nascita</label>
-                                    <div class="form-group">
-                                      <!-- <select class="form-select" (change)="onChangeNazione($event)"
-                                        formControlName="statoDiNascita" name="statoDiNascita">
-                                        <option value="" disabled selected>Seleziona una nazione</option>
-                                        <option *ngFor="let nazione of nazioni" [value]="nazione">{{nazione}}</option>
-                                      </select> -->
-                                      <input type="text" class="form-control" name="statoDiNascita" id="statoDiNascita" formControlName="statoDiNascita" placeholder="Nazione di nascita">
+                                    <div class="form-group" formGroupName="idStatoNascita">
+                                      <!-- <input type="text" formControlName="statoDiNascita" placeholder="Nazione di nascita" class="form-control" name="statoDiNascita" id="statoDiNascita"> -->
+                                      <select name="idStatoNascita" id="idStatoNascita" class="form-select" formControlName="id" >
+                                        <option value="" selected>Nessuna selezione</option>
+                                        <option *ngFor="let nazione of elencoNazioni" [value]="nazione.id" > {{nazione.denominazioneNazione}} </option>
+                                      </select>
                                     </div>
                                   </div>
 
@@ -385,11 +384,26 @@
                                    </select>
                                     </div>
                                   </div>
-                                  <div class="col-md-2">
-                                    <label>Cittadinanza </label>
+
+                                </div>
+                                <br>
+                                <div class="row" >
+                                  <div class="col-md-3" formGroupName="idCittadinanza1">
+                                    <label>Prima cittadinanza </label>
                                     <div class="form-group">
-                                      <input type="text" class="form-control" formControlName="cittadinanza"
-                                        placeholder="Inserire cittadinanza." />
+                                      <select name="idCittadinanza1" id="idCittadinanza1" class="form-select" formControlName="id" >
+                                        <option value="" selected>Nessuna selezione</option>
+                                        <option *ngFor="let nazione of elencoCittadinanze1" [value]="nazione.id" > {{nazione.denominazioneCittadinanza}} </option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3" formGroupName="idCittadinanza2">
+                                    <label>Seconda cittadinanza </label>
+                                    <div class="form-group">
+                                      <select name="idCittadinanza2" id="idCittadinanza2" class="form-select" formControlName="id" >
+                                        <option value="" selected>Nessuna selezione</option>
+                                        <option *ngFor="let nazione of elencoCittadinanze2" [value]="nazione.id" > {{nazione.denominazioneCittadinanza}} </option>
+                                      </select>
                                     </div>
                                   </div>
                                 </div>
