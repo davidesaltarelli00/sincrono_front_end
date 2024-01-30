@@ -221,6 +221,17 @@ export class AnagraficaDtoService {
     });
   }
 
+  getAllNazioni(token:any):Observable<any>{
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(this.url + `nazioni-list`, {
+      headers: headers,
+    });
+  }
+
   getContrattoNazionale(token: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
