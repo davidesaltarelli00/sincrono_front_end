@@ -104,12 +104,12 @@
     </div>
     <br>
     <div class="row">
-      <div class="col-12">
+      <div class="col-md-12">
         <div class="profile-box-container">
-          <mat-card>
+          <mat-card >
             <mat-card-content>
               <div class="row" id="profilo" >
-                <div class="col-4"  id="sezione-immagine">
+                <div class="col-md-4"  id="sezione-immagine">
                   <div class="image-container" >
                     <div class="image-container rounded">
                       <label style="float: right;" for="fileInput" class="file-input-label" *ngIf="!immagineCancellata && immagineConvertita && !salvaImmagine">
@@ -131,7 +131,7 @@
                  </div>
                  <h3 style="text-align:center"> {{ anagrafica?.anagraficaDto.anagrafica?.nome |titlecase }} {{ anagrafica?.anagraficaDto.anagrafica?.cognome |titlecase }} </h3>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6" id="card-profilo">
                   <div class="table-responsive">
                     <table class="table table-striped" style="text-align: center;" >
                       <thead>
