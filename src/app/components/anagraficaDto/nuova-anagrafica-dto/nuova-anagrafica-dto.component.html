@@ -325,47 +325,41 @@
                                 <div class="col-md-3">
                                   <label>Data di Nascita </label>
                                   <div class="form-group">
-                                    <input type="date" placeholder="Data di nascita (Anno-mese-giorno)" class="form-control"
-                                      formControlName="dataDiNascita" />
+                                    <input type="date" placeholder="Data di nascita (Anno-mese-giorno)" class="form-control" formControlName="dataDiNascita" />
                                   </div>
                                 </div>
+                              </div>
+                            
+                              <div class="row">
                                 <div class="col-md-3">
                                   <label>Nazione</label>
                                   <div class="form-group" formGroupName="idStatoNascita">
-                                    <!-- <input type="text" formControlName="statoDiNascita" placeholder="Nazione di nascita" class="form-control" name="statoDiNascita" id="statoDiNascita"> -->
-                                    <select name="idStatoNascita" id="idStatoNascita" class="form-select" formControlName="id" >
+                                    <select name="idStatoNascita" id="idStatoNascita" class="form-select" formControlName="id">
                                       <option value="" selected>Nessuna selezione</option>
-                                      <option *ngFor="let nazione of elencoNazioni" [value]="nazione.id" > {{nazione.denominazioneNazione}} </option>
+                                      <option *ngFor="let nazione of elencoNazioni" [value]="nazione.id">{{nazione.denominazioneNazione}}</option>
                                     </select>
                                   </div>
                                 </div>
+                            
                                 <div class="col-md-3">
                                   <label>Provincia di Nascita</label>
                                   <div class="form-group" formGroupName="provinciaDiNascita">
-                                 <select name="provinciaDiNascita" (change)="onChangeProvinciaNascita($event)" class="form-select" id="provinciaDiNascita" formControlName="id">
-                                  <option value="">
-                                    --nessuna selezione--
-                                  </option>
-                                  <option *ngFor=" let provincia of elencoProvince " [value]="provincia.id">
-                                    {{ provincia.denominazione_provincia }}
-                                  </option>
-                                 </select>
+                                    <select name="provinciaDiNascita" (change)="onChangeProvinciaNascita($event)" class="form-select" id="provinciaDiNascita" formControlName="id">
+                                      <option value="--nessuna selezione--">--nessuna selezione--</option>
+                                      <option *ngFor="let provincia of elencoProvince" [value]="provincia.id">{{provincia.denominazione_provincia}}</option>
+                                    </select>
                                   </div>
                                 </div>
+                            
                                 <div class="col-md-3">
                                   <label>Comune di Nascita</label>
                                   <div class="form-group" formGroupName="comuneDiNascita">
-                                 <select name="comuneDiNascita" class="form-select" id="comuneDiNascita" formControlName="id">
-                                  <option value="">
-                                    --nessuna selezione--
-                                  </option>
-                                  <option *ngFor=" let comune of elencoComuni " [value]="comune.id">
-                                    {{ comune.denominazione_ita }}
-                                  </option>
-                                 </select>
+                                    <select name="comuneDiNascita" class="form-select" id="comuneDiNascita" formControlName="id">
+                                      <option value="--nessuna selezione--">--nessuna selezione--</option>
+                                      <option *ngFor="let comune of elencoComuni" [value]="comune.id">{{comune.denominazione_ita}}</option>
+                                    </select>
                                   </div>
                                 </div>
-
                               </div>
                               <br>
                               <div class="row" >
@@ -563,6 +557,12 @@
                                  <div *ngIf=" AnagraficaDto.get('anagrafica.comuneResidenza.id')?.hasError('required')" class="text-danger"> Il campo comune di residenza è obbligatorio. </div>
                                </div>
                               </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label for="localitaResidenzaEstera">Localitá residenza estera</label>
+                                  <input type="text" class="form-control" formControlName="localitaResidenzaEstera" placeholder=" localitá di residenza estera">
+                                </div>
+                              </div>
                             </div> <br>
                             <div class="row">
                               <div class="col-md-3">
@@ -649,6 +649,12 @@
                            </div>
                                </div>
                               </div>
+                              <div class="col-md-3">
+                              <div class="form-group">
+                                <label for="localitaDomicilioEstero">Localitá domicilio estera</label>
+                                <input type="text" class="form-control" formControlName="localitaDomicilioEstero" placeholder=" localitá di domicilio estera">
+                              </div>
+                              </div>
                             </div>
                           </mat-card-content>
                         </mat-card>
@@ -656,27 +662,7 @@
                      </div>
                      <div class="row">
                       <div class="col-md-12">
-                        <mat-card>
-                          <mat-card-title>
-                            <legend>Residenza o domicilio esteri</legend>
-                          </mat-card-title>
-                          <mat-card-content>
-                            <div class="row">
-                              <div class="col-md-6">
-                                <div class="form-group">
-                                  <label for="localitaResidenzaEstera">Localitá residenza estera</label>
-                                  <input type="text" class="form-control" formControlName="localitaResidenzaEstera" placeholder=" localitá di residenza estera">
-                                </div>
-                              </div>
-                              <div class="col-md-6">
-                                <div class="form-group">
-                                  <label for="localitaDomicilioEstero">Localitá domicilio estera</label>
-                                  <input type="text" class="form-control" formControlName="localitaDomicilioEstero" placeholder=" localitá di domicilio estera">
-                                </div>
-                              </div>
-                            </div>
-                          </mat-card-content>
-                        </mat-card>
+                       
                       </div>
                      </div>
                      <br>
