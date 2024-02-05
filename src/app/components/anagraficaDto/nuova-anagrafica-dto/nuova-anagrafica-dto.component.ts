@@ -193,7 +193,21 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         titoliDiStudio: new FormControl(''),
         altriTitoli: new FormControl(''),
         categoriaProtetta: new FormControl(''),
-        idStatoNascita:  new FormGroup({
+        idStatoNascita: new FormGroup({
+          id: new FormControl(''),
+          siglaNazione: new FormControl(''),
+          codiceBelfiore: new FormControl(''),
+          denominazioneNazione: new FormControl(''),
+          denominazioneCittadinanza: new FormControl('')
+        }),
+        idStatoResidenzaEstera: new FormGroup({
+          id: new FormControl(''),
+          siglaNazione: new FormControl(''),
+          codiceBelfiore: new FormControl(''),
+          denominazioneNazione: new FormControl(''),
+          denominazioneCittadinanza: new FormControl('')
+        }),
+        idStatoDomicilioEstero: new FormGroup({
           id: new FormControl(''),
           siglaNazione: new FormControl(''),
           codiceBelfiore: new FormControl(''),
@@ -281,7 +295,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         figliACarico: new FormControl(false),
         attesaLavori: new FormControl(false),
         piva: new FormControl(''),
-        nomeAzienda:new FormControl('') //ragione sociale
+        nomeAzienda: new FormControl('') //ragione sociale
       }),
       commesse: this.formBuilder.array([]),
 
@@ -412,7 +426,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
             (error: any) => {
               console.error(
                 'Errore durante il caricamento delle province:' +
-                  JSON.stringify(error)
+                JSON.stringify(error)
               );
             }
           );
@@ -460,7 +474,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
             (error: any) => {
               console.error(
                 'Errore durante il caricamento delle province:' +
-                  JSON.stringify(error)
+                JSON.stringify(error)
               );
             }
           );
@@ -509,7 +523,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
             (error: any) => {
               console.error(
                 'Errore durante il caricamento delle province:' +
-                  JSON.stringify(error)
+                JSON.stringify(error)
               );
             }
           );
@@ -580,7 +594,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
     if (this.token != null) {
       this.getUserLogged();
-      this. getAllNazioni();
+      this.getAllNazioni();
       this.getAllCittadinanze1();
       this.getAllCittadinanze2();
       this.caricaMappa();
@@ -1748,7 +1762,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Errore durante il caricamento delle province:' +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       }
     );
@@ -1765,7 +1779,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.log(
             'Errore durante il caricamento della tipologica Motivazione fine rapporto: ' +
-              JSON.stringify(error)
+            JSON.stringify(error)
           );
         }
       );
@@ -2161,13 +2175,13 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
               this.elencoLivelliCCNL = response.list;
               console.log(
                 '+-+-+-+-+-+-+-+-+-+-+-NUOVA LISTA LIVELLI CCNL+-+-+-+-+-+-+-+-+-+-+-' +
-                  JSON.stringify(this.elencoLivelliCCNL)
+                JSON.stringify(this.elencoLivelliCCNL)
               );
             },
             (error: any) => {
               console.error(
                 'Errore durante il caricamento dei livelli di contratto: ' +
-                  error
+                error
               );
             }
           );
@@ -2234,14 +2248,14 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
     console.log(
       'Il metodo ha questi valori:\n' +
-        'Tipo contratto: ' +
-        tipoContrattoControl +
-        '\n' +
-        'Livello contratto: ' +
-        tipoLivelloContrattoControl +
-        '\n' +
-        'Tipo CCNL: ' +
-        tipoCcnlControl
+      'Tipo contratto: ' +
+      tipoContrattoControl +
+      '\n' +
+      'Livello contratto: ' +
+      tipoLivelloContrattoControl +
+      '\n' +
+      'Tipo CCNL: ' +
+      tipoCcnlControl
     );
 
     if (
@@ -2288,7 +2302,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.error(
             'Errore durante il caricamento delle nazioni: ' +
-              JSON.stringify(error)
+            JSON.stringify(error)
           );
         }
       );
@@ -2303,7 +2317,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.error(
             'Errore durante il caricamento delle nazioni: ' +
-              JSON.stringify(error)
+            JSON.stringify(error)
           );
         }
       );
@@ -2318,7 +2332,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
         (error: any) => {
           console.error(
             'Errore durante il caricamento delle nazioni: ' +
-              JSON.stringify(error)
+            JSON.stringify(error)
           );
         }
       );
@@ -2389,7 +2403,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
       (error: any) => {
         console.error(
           'Si è verificato il seguente errore durante il recupero del ruolo: ' +
-            error
+          error
         );
         this.shouldReloadPage = true;
       }
@@ -2415,7 +2429,7 @@ export class NuovaAnagraficaDtoComponent implements OnInit {
 
   getPermissions(functionId: number) {
     this.menuService.getPermissions(this.token, functionId).subscribe(
-      (data: any) => {},
+      (data: any) => { },
       (error: any) => {
         console.error('Errore nella generazione dei permessi:', error);
       }

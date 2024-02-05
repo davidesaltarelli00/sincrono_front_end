@@ -558,6 +558,15 @@
                                </div>
                               </div>
                               <div class="col-md-6">
+                                <label>Stato di residenza estera</label>
+                                <div class="form-group" formGroupName="idStatoResidenzaEstera">
+                                  <select name="idStatoResidenzaEstera" id="idStatoResidenzaEstera" class="form-select" formControlName="id">
+                                    <option value="" selected>Nessuna selezione</option>
+                                    <option *ngFor="let nazione of elencoNazioni" [value]="nazione.id">{{nazione.denominazioneNazione}}</option>
+                                  </select>
+                                </div>
+                              </div>                            
+                              <div class="col-md-6">
                                 <div class="form-group">
                                   <label for="localitaResidenzaEstera">Localitá residenza estera</label>
                                   <input type="text" class="form-control" formControlName="localitaResidenzaEstera" placeholder=" localitá di residenza estera">
@@ -649,6 +658,15 @@
                            </div>
                                </div>
                               </div>
+                              <div class="col-md-6">
+                                <label>Stato di domicilio estero</label>
+                                <div class="form-group" formGroupName="idStatoDomicilioEstero">
+                                  <select name="idStatoDomicilioEstero" id="idStatoResidenzaEstera" class="form-select" formControlName="id">
+                                    <option value="" selected>Nessuna selezione</option>
+                                    <option *ngFor="let nazione of elencoNazioni" [value]="nazione.id">{{nazione.denominazioneNazione}}</option>
+                                  </select>
+                                </div>
+                              </div> 
                               <div class="col-md-3">
                               <div class="form-group">
                                 <label for="localitaDomicilioEstero">Localitá domicilio estera</label>
