@@ -179,7 +179,7 @@
                                             ? '1px solid red'
                                             : '1px solid green'
                                         }" id="anagrafica.nome" type="text" class="form-control"
-                                      placeholder="Inserire il nome." formControlName="nome" />
+                                      placeholder="  nome." formControlName="nome" />
                                     <div *ngIf="
                                           AnagraficaDto.get(
                                             'anagrafica.nome'
@@ -199,7 +199,7 @@
                                             ? '1px solid red'
                                             : '1px solid green'
                                         }" id="anagrafica.cognome" type="text" class="form-control"
-                                      placeholder="Inserire il cognome." formControlName="cognome" />
+                                      placeholder="  cognome." formControlName="cognome" />
                                     <div *ngIf="
                                           AnagraficaDto.get(
                                             'anagrafica.cognome'
@@ -215,7 +215,7 @@
                                   <div class="form-group">
                                     <input #codiceFiscale [ngStyle]="{ border:AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('required') ||AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('minlength') ||AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('maxlength')? '1px solid red': '1px solid green'}"
                                      id="anagrafica.codiceFiscale" type="text" class="form-control"
-                                      placeholder="Inserire il codice fiscale." formControlName="codiceFiscale" />
+                                      placeholder="  codice fiscale." formControlName="codiceFiscale" />
                                       <div class="text-end">{{ codiceFiscale.value.length || 0 }}/16</div>
                                     <div *ngIf=" AnagraficaDto.get('anagrafica.codiceFiscale')?.hasError('maxLength')" class="text-danger">
                                       Il campo non rispetta la lunghezza massima richiesta (16 caratteri)
@@ -322,21 +322,21 @@
                             </mat-card-title>
                             <mat-card-content>
                               <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                   <label>Data di Nascita </label>
                                   <div class="form-group">
                                     <input type="date" placeholder="Data di nascita (Anno-mese-giorno)" class="form-control"
                                       formControlName="dataDiNascita" />
                                   </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                   <label>Nazione</label>
-                                  <div class="form-group">
-                                    <!-- <select class="form-select" (change)="onChangeNazione($event)" formControlName="statoDiNascita" name="statoDiNascita">
-                                      <option value="" disabled selected>Seleziona una nazione</option>
-                                      <option *ngFor="let nazione of nazioni" [value]="nazione">{{nazione}}</option>
-                                    </select> -->
-                                    <input type="text" formControlName="statoDiNascita" placeholder="Nazione di nascita" class="form-control" name="statoDiNascita" id="statoDiNascita">
+                                  <div class="form-group" formGroupName="idStatoNascita">
+                                    <!-- <input type="text" formControlName="statoDiNascita" placeholder="Nazione di nascita" class="form-control" name="statoDiNascita" id="statoDiNascita"> -->
+                                    <select name="idStatoNascita" id="idStatoNascita" class="form-select" formControlName="id" >
+                                      <option value="" selected>Nessuna selezione</option>
+                                      <option *ngFor="let nazione of elencoNazioni" [value]="nazione.id" > {{nazione.denominazioneNazione}} </option>
+                                    </select>
                                   </div>
                                 </div>
                                 <div class="col-md-3">
@@ -365,11 +365,26 @@
                                  </select>
                                   </div>
                                 </div>
-                                <div class="col-md-2">
-                                  <label>Cittadinanza </label>
+
+                              </div>
+                              <br>
+                              <div class="row" >
+                                <div class="col-md-3" formGroupName="idCittadinanza1">
+                                  <label>Prima cittadinanza </label>
                                   <div class="form-group">
-                                    <input type="text" class="form-control" formControlName="cittadinanza"
-                                      placeholder="Inserire cittadinanza." />
+                                    <select name="idCittadinanza1" id="idCittadinanza1" class="form-select" formControlName="id" >
+                                      <option value="" selected>Nessuna selezione</option>
+                                      <option *ngFor="let nazione of elencoCittadinanze1" [value]="nazione.id" > {{nazione.denominazioneCittadinanza}} </option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-md-3" formGroupName="idCittadinanza2">
+                                  <label>Seconda cittadinanza </label>
+                                  <div class="form-group">
+                                    <select name="idCittadinanza2" id="idCittadinanza2" class="form-select" formControlName="id" >
+                                      <option value="" selected>Nessuna selezione</option>
+                                      <option *ngFor="let nazione of elencoCittadinanze2" [value]="nazione.id" > {{nazione.denominazioneCittadinanza}} </option>
+                                    </select>
                                   </div>
                                 </div>
                               </div>
@@ -395,7 +410,7 @@
                                             ? '1px solid red'
                                             : '1px solid green'
                                         }" id="anagrafica.mailAziendale" type="text" class="form-control"
-                                      formControlName="mailAziendale" placeholder="Inserire mail aziendale." />
+                                      formControlName="mailAziendale" placeholder=" mail aziendale." />
                                     <div *ngIf="
                                           AnagraficaDto.get(
                                             'anagrafica.mailAziendale'
@@ -416,7 +431,7 @@
                                   <label>Email Privata </label>
                                   <div class="form-group">
                                     <input type="text" class="form-control" formControlName="mailPrivata"
-                                      placeholder="Inserire mail privata." />
+                                      placeholder=" mail privata." />
                                     <div *ngIf="
                                           AnagraficaDto.get(
                                             'anagrafica.mailPrivata'
@@ -430,7 +445,7 @@
                                   <label>Email Pec </label>
                                   <div class="form-group">
                                     <input type="text" class="form-control" formControlName="mailPec"
-                                      placeholder="Inserire PEC." />
+                                      placeholder=" PEC." />
                                     <div *ngIf="
                                           AnagraficaDto.get(
                                             'anagrafica.mailPec'
@@ -454,11 +469,12 @@
                                         ? '1px solid red'
                                         : '1px solid #ccc'
                                     }"
-                                    placeholder="Inserire cellulare privato." />
+                                     (input)="rimuoviSpaziCellularePrivato()"
+                                    placeholder=" cellulare privato." />
 
                                     <div *ngIf="AnagraficaDto.get('anagrafica.cellularePrivato')?.invalid && (AnagraficaDto.get('anagrafica.cellularePrivato')?.dirty || AnagraficaDto.get('anagrafica.cellularePrivato')?.touched)">
                                       <div *ngIf="AnagraficaDto.get('anagrafica.cellularePrivato')?.hasError('pattern')" class="text-danger">
-                                        Il formato non è valido. Inserire un numero valido.
+                                        Il formato non è valido.  un numero valido.
                                       </div>
                                     </div>
                                   </div>
@@ -474,8 +490,8 @@
                                       )?.hasError('pattern')
                                         ? '1px solid red'
                                         : '1px solid #ccc'
-                                    }"
-                                      placeholder="Inserire cellulare aziendale." />
+                                    }"  (input)="rimuoviSpaziCellulareAziendale()"
+                                      placeholder=" cellulare aziendale." />
                                     <div *ngIf="
                                           AnagraficaDto.get(
                                             'anagrafica.cellulareAziendale'
@@ -500,15 +516,28 @@
                           </mat-card-title>
                           <mat-card-content>
                             <div class="row">
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                 <label>Indirizzo di Residenza </label>
                                 <div class="form-group">
                                   <input type="text" class="form-control" formControlName="indirizzoResidenza"
-                                  [ngStyle]="{ border: AnagraficaDto.get( 'anagrafica.indirizzoResidenza' )?.hasError('required') ? '1px solid red' : '1px solid green'}" placeholder="Inserire indirizzo residenza." />
+                                  [ngStyle]="{ border: AnagraficaDto.get( 'anagrafica.indirizzoResidenza' )?.hasError('required') ? '1px solid red' : '1px solid green'}" placeholder=" indirizzo residenza." />
                                     <div *ngIf=" AnagraficaDto.get('anagrafica.indirizzoResidenza')?.hasError('required')" class="text-danger"> Il campo indirizzo residenza è obbligatorio. </div>
                                 </div>
                               </div>
-                              <div class="col-md-4">
+                              <div class="col-md-2">
+                                <label>CAP</label>
+                                <div class="form-group">
+                                  <input type="text" class="form-control" formControlName="capResidenza" [ngStyle]="{ border: AnagraficaDto.get('anagrafica.capResidenza')?.hasError('required') ? '1px solid red' : '1px solid green'}" placeholder=" CAP residenza." />
+                                  <div *ngIf="AnagraficaDto.get('anagrafica.capResidenza')?.hasError('required')" class="text-danger">
+                                    Il campo CAP residenza è obbligatorio.
+                                  </div>
+                                  <div *ngIf="AnagraficaDto.get('anagrafica.capResidenza')?.hasError('pattern')" class="text-danger">
+                                    Il CAP deve essere composto da 5 cifre numeriche.
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="col-md-3">
                                 <label for="provinciaResidenza">Provincia di residenza</label>
                                 <div class="form-group" formGroupName="provinciaResidenza">
                                   <select class="form-select" (change)="onChangeProvinciaResidenza($event)" name="provinciaResidenza" [ngStyle]="{ border: AnagraficaDto.get( 'anagrafica.provinciaResidenza.id' )?.hasError('required') ? '1px solid red' : '1px solid green'}" id="provinciaResidenza" formControlName="id">
@@ -520,7 +549,7 @@
                                   <div *ngIf=" AnagraficaDto.get('anagrafica.provinciaResidenza.id')?.hasError('required')" class="text-danger"> Il campo provincia di residenza è obbligatorio. </div>
                                 </div>
                               </div>
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                <label for="comuneResidenza">Comune di residenza</label>
                                <div class="form-group" formGroupName="comuneResidenza">
                                 <select name="comuneResidenza" class="form-select"
@@ -534,13 +563,19 @@
                                  <div *ngIf=" AnagraficaDto.get('anagrafica.comuneResidenza.id')?.hasError('required')" class="text-danger"> Il campo comune di residenza è obbligatorio. </div>
                                </div>
                               </div>
+                            </div> <br>
+                            <div class="row">
+                              <div class="col-md-3">
+                                <label for="residenzaDomicilio">Residenza e domicilio sono uguali</label> <br>
+                                <input type="checkbox" formControlName="residenzaDomicilioUguali" [checked]="residenzaDomicilioUguali" id="toggleSwitch" (change)="equalsResidenzaDomicilio($event)">
+                              </div>
                             </div>
                           </mat-card-content>
                         </mat-card>
                       </div>
                      </div>
                      <!-- Domicilio  -->
-                     <div class="row">
+                     <div class="row" *ngIf="!residenzaDomicilioUguali" > <!---->
                       <div class="col-md-12">
                         <mat-card>
                           <mat-card-title>
@@ -548,28 +583,56 @@
                           </mat-card-title>
                           <mat-card-content>
                             <div class="row">
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                 <label>Indirizzo di domicilio </label>
                                 <div class="form-group">
                                   <input type="text" class="form-control" formControlName="indirizzoDomicilio"
-                                    placeholder="Inserire indirizzo di domicilio." />
+                                  [ngStyle]="{border: AnagraficaDto.get('anagrafica.indirizzoDomicilio')?.hasError('required') ? '1px solid red' : '1px solid #ccc' }"
+                                    placeholder=" indirizzo di domicilio." />
+                                    <div *ngIf=" AnagraficaDto.get('anagrafica.indirizzoDomicilio')?.hasError('required')" class="text-danger">
+                                      Il campo indirizzo di domicilio è obbligatorio.
+                                    </div>
                                 </div>
                               </div>
-                              <div class="col-md-4">
+                              <div class="col-md-2">
+                                <label>CAP</label>
+                                <div class="form-group">
+                                  <input type="text" class="form-control" formControlName="capDomicilio" [ngStyle]="{ border: AnagraficaDto.get('anagrafica.capDomicilio')?.hasError('required') ? '1px solid red' : '1px solid #ccc'}" placeholder=" CAP domicilio." />
+                                  <div *ngIf="AnagraficaDto.get('anagrafica.capDomicilio')?.hasError('required')" class="text-danger">
+                                    Il campo CAP domicilio è obbligatorio.
+                                  </div>
+                                  <div *ngIf="AnagraficaDto.get('anagrafica.capDomicilio')?.hasError('pattern')" class="text-danger">
+                                    Il CAP deve essere composto da 5 cifre numeriche.
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-3">
                                 <label for="provinciaDomicilio">Provincia di domicilio</label>
                                 <div class="form-group" formGroupName="provinciaDomicilio">
-                                  <select class="form-select" name="provinciaDomicilio" id="provinciaDomicilio" (change)="onChangeProvinciaDomicilio($event)" formControlName="id">
+                                  <select class="form-select" name="provinciaDomicilio"
+                                  [ngStyle]="{ border: AnagraficaDto.get('anagrafica.provinciaDomicilio.id')?.hasError('required') ? '1px solid red' : '1px solid #ccc'}"
+                                  id="provinciaDomicilio" (change)="onChangeProvinciaDomicilio($event)"
+                                   formControlName="id">
                                     <option value="">--Nessuna selezione--</option>
                                     <option *ngFor=" let provinciaDomicilio of elencoProvince " [value]="provinciaDomicilio.id">
                                       {{ provinciaDomicilio.denominazione_provincia }}
                                     </option>
                                   </select>
+                                  <div *ngIf="
+                                  AnagraficaDto.get(
+                                    'anagrafica.provinciaDomicilio.id'
+                                  )?.hasError('required')
+                                " class="text-danger">
+                              Il campo provincia di domicilio è obbligatorio.
+                            </div>
                                 </div>
                               </div>
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                <label for="comuneDomicilio">Comune di domicilio</label>
                                <div class="form-group" formGroupName="comuneDomicilio">
-                                <select name="comuneDomicilio" class="form-select" id="comuneDomicilio" formControlName="id">
+                                <select name="comuneDomicilio" class="form-select"
+                                [ngStyle]="{ border: AnagraficaDto.get('anagrafica.comuneDomicilio.id')?.hasError('required') ? '1px solid red' : '1px solid #ccc'}"
+                                id="comuneDomicilio" formControlName="id">
                                   <option value="">
                                     --nessuna selezione--
                                   </option>
@@ -577,6 +640,13 @@
                                     {{ comuneDomicilio.denominazione_ita }}
                                   </option>
                                  </select>
+                                 <div *ngIf="
+                                 AnagraficaDto.get(
+                                   'anagrafica.comuneDomicilio.id'
+                                 )?.hasError('required')
+                               " class="text-danger">
+                             Il campo comune di domicilio è obbligatorio.
+                           </div>
                                </div>
                               </div>
                             </div>
@@ -584,6 +654,58 @@
                         </mat-card>
                       </div>
                      </div>
+                     <div class="row">
+                      <div class="col-md-12">
+                        <mat-card>
+                          <mat-card-title>
+                            <legend>Residenza o domicilio esteri</legend>
+                          </mat-card-title>
+                          <mat-card-content>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label for="localitaResidenzaEstera">Localitá residenza estera</label>
+                                  <input type="text" class="form-control" formControlName="localitaResidenzaEstera" placeholder=" localitá di residenza estera">
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label for="localitaDomicilioEstero">Localitá domicilio estera</label>
+                                  <input type="text" class="form-control" formControlName="localitaDomicilioEstero" placeholder=" localitá di domicilio estera">
+                                </div>
+                              </div>
+                            </div>
+                          </mat-card-content>
+                        </mat-card>
+                      </div>
+                     </div>
+                     <br>
+                     <div class="row" >
+                      <div class="col-md-12" >
+                        <mat-card>
+                          <mat-card-title>
+                            <legend>Dati per la partita iva</legend>
+                          </mat-card-title>
+                          <mat-card-content>
+                            <div class="row" >
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label for="piva">Partita iva</label>
+                                  <input type="text" class="form-control" formControlName="piva" placeholder="Partita IVA">
+                                </div>
+                              </div>
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label for="nomeAzienda">Ragione sociale <i class="fa fa-info-circle" matTooltip="Nome azienda" ></i> </label>
+                                  <input type="text" class="form-control" formControlName="nomeAzienda" placeholder=" ragione sociale">
+                                </div>
+                              </div>
+                            </div>
+                          </mat-card-content>
+                        </mat-card>
+                      </div>
+                     </div>
+                     <br>
                       <div class="row">
                         <div class="col-lg-6 col-md-12">
                           <mat-card>
@@ -663,7 +785,7 @@
                                       <label>Titoli di Studio: </label>
                                       <div class="form-group">
                                         <input type="text" class="form-control" formControlName="titoliDiStudio"
-                                          placeholder="Inserire titolo di studio." />
+                                          placeholder=" titolo di studio." />
                                       </div>
                                     </div>
                                   </div>
@@ -673,7 +795,7 @@
                                       <label>Altri Titoli </label>
                                       <div class="form-group">
                                         <input type="text" class="form-control" formControlName="altriTitoli"
-                                          placeholder="Inserire altri titoli conseguiti." />
+                                          placeholder=" altri titoli conseguiti." />
                                       </div>
                                     </div>
                                   </div>
@@ -763,7 +885,7 @@
                                   <div class="col-md-2">
                                     <label>Mesi Durata </label>
                                     <input type="number" class="form-control" formControlName="mesiDurata"
-                                      placeholder="Inserire mesi durata" [ngStyle]="{
+                                      placeholder=" mesi durata" [ngStyle]="{
                                           border: AnagraficaDto.get(
                                             'contratto.mesiDurata'
                                           )?.hasError('required')
@@ -848,17 +970,19 @@
                                 <br>
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Qualifica: </label>
+                                    <label>Qualifica * </label>
                                     <div class="form-group">
-                                      <input type="text" class="form-control" placeholder="Inserire qualifica"
+                                      <input type="text" class="form-control" placeholder=" qualifica"
+                                      [ngStyle]="{ border: AnagraficaDto.get('contratto.qualifica' )?.hasError('required') ? '1px solid red' : '1px solid #f1f1f1'}"
                                         formControlName="qualifica" />
+                                        <div *ngIf="AnagraficaDto.get('contratto.qualifica')?.hasError('required')" class="text-danger">Il campo qualifica è obbligatorio.</div>
                                     </div>
                                   </div>
 
                                   <div class="col-md-3">
                                     <label>Sede Assunzione: </label>
                                     <div class="form-group">
-                                      <input type="text" class="form-control" placeholder="Inserire la sede di assunzione"
+                                      <input type="text" class="form-control" placeholder="Sede di assunzione"
                                         formControlName="sedeAssunzione" />
                                     </div>
                                   </div>
@@ -897,7 +1021,7 @@
                             <div class="form-group">
                               <label>Livello attuale: </label>
                               <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Inserire livello attuale"
+                                <input type="text" class="form-control" placeholder=" livello attuale"
                                   formControlName="livelloAttuale" />
                               </div>
                             </div>
@@ -906,7 +1030,7 @@
                             <div class="form-group">
                               <label>Livello finale: </label>
                               <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Inserire livello finale"
+                                <input type="text" class="form-control" placeholder=" livello finale"
                                   formControlName="livelloFinale" />
                               </div>
                             </div>
@@ -921,7 +1045,7 @@
                             <div class="form-group">
                               <label>Tariffa Partita IVA: </label>
                               <input type="number" class="form-control" formControlName="tariffaPartitaIva"
-                                placeholder="Inserire tariffa partita iva" min="0" step="0.01" [ngStyle]="{
+                                placeholder=" tariffa partita iva" min="0" step="0.01" [ngStyle]="{
                                     border: AnagraficaDto.get(
                                       'contratto.tariffaPartitaIva'
                                     )?.hasError('required')
@@ -942,7 +1066,7 @@
                             <div class="form-group">
                               <label for="retribuzioneNettaGiornaliera">Retribuzione netta giornaliera</label>
                               <input type="number" formControlName="retribuzioneNettaGiornaliera"
-                                placeholder="Inserire retribuzione netta giornaliera" min="0" step="0.01"
+                                placeholder=" retribuzione netta giornaliera" min="0" step="0.01"
                                 class="form-control" [ngStyle]="{
                                     border: AnagraficaDto.get(
                                       'contratto.retribuzioneNettaGiornaliera'
@@ -982,7 +1106,7 @@
                                             )?.hasError('required')
                                               ? '1px solid red'
                                               : '1px solid #f1f1f1'
-                                          }" formControlName="dataAssunzione"  placeholder="Inserire data assunzione" />
+                                          }" formControlName="dataAssunzione"  placeholder=" data assunzione" />
                                       <div *ngIf="
                                             AnagraficaDto.get(
                                               'contratto.dataAssunzione'
@@ -1071,7 +1195,7 @@
                                   <div class="col-md-3">
                                     <label>Retribuzione Mensile Lorda: </label>
                                     <div class="form-group">
-                                      <input type="number" class="form-control" placeholder="Inserire retribuzione lorda"
+                                      <input type="number" class="form-control" placeholder=" retribuzione lorda"
                                         min="0" step="0.01" formControlName="retribuzioneMensileLorda"
                                         (input)="calcolaMensileTot()" id="retribuzioneMensileLorda" />
                                     </div>
@@ -1080,7 +1204,7 @@
                                   <div class="col-md-3">
                                     <label>Superminimo Mensile: </label>
                                     <div class="form-group">
-                                      <input type="number" class="form-control" placeholder="Inserire superminimo mensile"
+                                      <input type="number" class="form-control" placeholder=" superminimo mensile"
                                         min="0" step="0.01" formControlName="superminimoMensile" id="superminimoMensile"
                                         (input)="calcolaMensileTot()" />
                                     </div>
@@ -1090,16 +1214,20 @@
                                     <label>Scatti Anzianita: </label>
                                     <div class="form-group">
                                       <input type="number" class="form-control" formControlName="scattiAnzianita"
-                                        placeholder="Inserire scatti anzianitá" min="0" step="0.01" id="scattiAnzianita"
+                                        placeholder=" scatti anzianitá" min="0" step="0.01" id="scattiAnzianita"
                                         (input)="calcolaMensileTot()" />
                                     </div>
                                   </div>
                                   <div class="col-md-3">
-                                    <label >Mensile tot <i class="fa fa-calculator" matTooltip="Calcola RAL" (click)="calcoloRal()" ></i> </label>
-                                    <div class="form-group">
-                                        <input type="number"  class="form-control"  readonly placeholder="Mensile tot" id="mensileTOT" />
+                                    <label>Totale mensile</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" readonly placeholder="Mensile tot" id="mensileTOT" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button" matTooltip="Calcola RAL" (click)="calcoloRal()">Calcola RAL <i class="fa fa-calculator"></i></button>
+                                        </div>
                                     </div>
-                                  </div>
+                                </div>
+
                                 </div>
                                 <br>
                                 <div class="row">
@@ -1107,7 +1235,7 @@
                                     <div class="form-group">
                                       <label for="retribuzioneNettaMensile">Retribuzione netta mensile</label>
                                       <input type="number" formControlName="retribuzioneNettaMensile"
-                                        placeholder="Inserire retribuzione netta mensile" min="0" step="0.01"
+                                        placeholder=" retribuzione netta mensile" min="0" step="0.01"
                                         class="form-control" [ngStyle]="{
                                             border: AnagraficaDto.get(
                                               'contratto.retribuzioneNettaMensile'
@@ -1141,14 +1269,14 @@
                                 <div class="col-md-6">
                                   <label>RAL Annua: </label>
                                   <div class="form-group">
-                                    <input type="number" class="form-control" placeholder="Inserire RAL annua" min="0"
+                                    <input type="number" class="form-control" placeholder=" RAL annua" min="0"
                                       step="0.01" id="ralAnnua" formControlName="ralAnnua" (input)="calcoloRal()" />
                                   </div>
                                 </div>
                                 <div class="col-md-6">
                                   <label>Superminimo RAL: </label>
                                   <div class="form-group">
-                                    <input type="number" class="form-control" placeholder="Inserire superminimo RAL" min="0"
+                                    <input type="number" class="form-control" placeholder=" superminimo RAL" min="0"
                                       step="0.01" formControlName="superminimoRal" />
                                   </div>
                                 </div>
@@ -1166,14 +1294,14 @@
                                   <div class="col-md-6">
                                     <label>Diaria Mensile: </label>
                                     <div class="form-group">
-                                      <input type="number" class="form-control" placeholder="Inserire diaria mensile" min="0"
+                                      <input type="number" class="form-control" placeholder=" diaria mensile" min="0"
                                         step="0.01" formControlName="diariaMensile" />
                                     </div>
                                   </div>
                                   <div class="col-md-6">
                                     <label>Diaria Giornaliera: </label>
                                     <div class="form-group">
-                                      <input type="number" class="form-control" placeholder="Inserire diaria giornaliera"
+                                      <input type="number" class="form-control" placeholder=" diaria giornaliera"
                                         min="0" step="0.01" formControlName="diariaGiornaliera" />
                                     </div>
                                   </div>
@@ -1241,7 +1369,7 @@
                                   <div class="col-md-6">
                                     <label>Valore Ticket: </label>
                                     <div class="form-group">
-                                      <input type="number" placeholder="Inserire valore ticket" min="0" step="0.01"
+                                      <input type="number" placeholder=" valore ticket" min="0" step="0.01"
                                         class="form-control" formControlName="valoreTicket" />
                                     </div>
                                   </div>
@@ -1274,7 +1402,7 @@
                                     <label>Tutor: </label>
                                     <div class="form-group">
                                       <input type="text" class="form-control" formControlName="tutor"
-                                        placeholder="Inserire tutor." [ngStyle]="{
+                                        placeholder=" tutor." [ngStyle]="{
                                             border: AnagraficaDto.get(
                                               'contratto.tutor'
                                             )?.hasError('required')
@@ -1419,7 +1547,7 @@
                                 <div class="form-group">
                                   <input type="text"
                                     [ngStyle]="{ 'border': commessa.get('clienteFinale')?.value=='' ? '1px solid red' : ''}"
-                                    class="form-control" placeholder="Inserire cliente finale"
+                                    class="form-control" placeholder=" cliente finale"
                                     formControlName="clienteFinale" />
                                   <div *ngIf="commessa.get('clienteFinale')?.hasError('required')" class="text-danger">
                                     Il campo Cliente Finale è obbligatorio.
@@ -1433,7 +1561,7 @@
                                   <input type="text" class="form-control"
                                     [ngStyle]="{ 'border': commessa.get('aziendaDiFatturazioneInterna')?.value=='' ? '1px solid red' : ''}"
                                     formControlName="aziendaDiFatturazioneInterna"
-                                    placeholder="Inserire azienda di fatturazione interna" />
+                                    placeholder=" azienda di fatturazione interna" />
                                   <div *ngIf="commessa.get('aziendaDiFatturazioneInterna')?.hasError('required')"
                                     class="text-danger">
                                     Il campo Azienda di fatturazione interna è obbligatorio.
@@ -1443,7 +1571,7 @@
                               <div class="col-md-3">
                                 <label>Titolo Posizione: </label>
                                 <div class="form-group">
-                                  <input placeholder="Inserire titolo posizione"
+                                  <input placeholder=" titolo posizione"
                                     [ngStyle]="{ 'border': commessa.get('titoloPosizione')?.value=='' ? '1px solid red' : ''}"
                                     type="text" class="form-control" formControlName="titoloPosizione" />
                                   <div *ngIf="commessa.get('titoloPosizione')?.hasError('required')"
@@ -1476,14 +1604,14 @@
                                 <div class="form-group">
                                   <label for="distaccoAzienda">Distacco azienda</label>
                                   <input type="text" class="form-control" formControlName="distaccoAzienda"
-                                    placeholder="Inserire distacco azienda." />
+                                    placeholder=" distacco azienda." />
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label for="distaccoData">Data distacco</label>
                                   <input type="date" class="form-control" formControlName="distaccoData"
-                                    placeholder="Inserire data distacco." />
+                                    placeholder=" data distacco." />
                                 </div>
                               </div>
                             </div>
@@ -1494,16 +1622,16 @@
                                 <label>Data Inizio: </label>
                                 <div class="form-group">
                                   <input type="date" class="form-control" formControlName="dataInizio"
-                                    placeholder="Inserire data inizio" />
+                                    placeholder=" data inizio" />
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <label>Data Fine: <i class="fa fa-question-circle"
-                                    matTooltip="Inserire la data di fine commessa se la commessa é terminata o si sa una data di fine."></i>
+                                    matTooltip=" la data di fine commessa se la commessa é terminata o si sa una data di fine."></i>
                                 </label>
                                 <div class="form-group">
                                   <input type="date" class="form-control" formControlName="dataFine"
-                                    placeholder="Inserire data fine" />
+                                    placeholder=" data fine" />
                                 </div>
                               </div>
                             </div>
@@ -1514,7 +1642,7 @@
                                 <label>Tariffa giornaliera: </label>
                                 <div class="form-group">
                                   <input type="number" min="0" step="0.01" class="form-control"
-                                    formControlName="tariffaGiornaliera" placeholder="Inserire tariffa giornaliera" />
+                                    formControlName="tariffaGiornaliera" placeholder=" tariffa giornaliera" />
                                 </div>
                               </div>
                             </div>

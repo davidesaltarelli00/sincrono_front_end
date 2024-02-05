@@ -128,6 +128,16 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   timer: any;
   elencoProvince: any[]=[];
   elencoComuni: any[]=[];
+  elencoComuniNascita:any[]=[];
+  elencoComuniResidenza:any[]=[];
+  elencoComuniDomicilio:any[]=[];
+  siglaProvinciaNascita: any;
+  siglaProvinciaResidenza:any;
+  siglaProvinciaDomicilio:any;
+  residenzaDomicilioUguali: any;
+  elencoNazioni: any[] = [];
+  elencoCittadinanze1: any[] = [];
+  elencoCittadinanze2: any[] = [];
 
   constructor(
     private anagraficaDtoService: AnagraficaDtoService,
@@ -190,8 +200,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         dataDiNascita: [''],
         indirizzoResidenza: [''],
         indirizzoDomicilio: [''],
-        cellularePrivato: ['', Validators.pattern(/^[0-9]{10}$/)],
-        cellulareAziendale: ['', Validators.pattern(/^[0-9]{10}$/)],
+        cellularePrivato: ['',  Validators.pattern(/^(\+\d{1,3}\s?)?\d{10,}$/)],
+        cellulareAziendale: ['',Validators.pattern(/^(\+\d{1,3}\s?)?\d{10,}$/)],
         mailPrivata: ['',Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),],
         mailAziendale: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),],],
         mailPec: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'),],],
@@ -203,9 +213,33 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         tipoCanaleReclutamento: this.formBuilder.group({
           id: [''],
         }),
+      residenzaDomicilioUguali:[''],
         categoriaProtetta: [''],
-        statoDiNascita: [''],
-        cittadinanza: [''],
+        idStatoNascita:  this.formBuilder.group({
+          id: [''],
+          siglaNazione: [''],
+          codiceBelfiore: [''],
+          denominazioneNazione: [''],
+          denominazioneCittadinanza: ['']
+        }),
+        idCittadinanza1: this.formBuilder.group({
+          id:[''],
+          siglaNazione:[''],
+          codiceBelfiore: [''],
+          denominazioneNazione:[''],
+          denominazioneCittadinanza: ['']
+        }),
+        idCittadinanza2: this.formBuilder.group({
+          id:[''],
+          siglaNazione: [''],
+          codiceBelfiore: [''],
+          denominazioneNazione: [''],
+          denominazioneCittadinanza: ['']
+        }),
+        capResidenza: [''],
+        capDomicilio:  [''],
+        localitaResidenzaEstera:  [''],
+        localitaDomicilioEstero: [''],
         provinciaDiNascita: this.formBuilder.group({
           id: [''],
           siglaProvincia:  [''],
@@ -254,6 +288,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           denominazione_altra: [''],
           flag_capoluogo: [''],
         }),
+        piva: [''],
+        nomeAzienda:[''] //ragione sociale
       }),
       commesse: this.formBuilder.array([]),
 
@@ -272,7 +308,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         tipoLivelloContratto: this.formBuilder.group({
           id: [''],
         }),
-        qualifica: [''],
+        qualifica: ['', Validators.required],
         sedeAssunzione: [''],
         dataAssunzione: [''],
         dataInizioProva: [''],
@@ -527,7 +563,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       this.caricaMappa();
       this.caricaTipoCausaFineContratto();
       this.getProvince();
-
+      this. getAllNazioni();
+      this.getAllCittadinanze1();
+      this.getAllCittadinanze2();
       const tipoContratto = this.anagraficaDto.get(
         'contratto.tipoContratto.id'
       );
@@ -671,45 +709,45 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
   }
 
 
-  onChangeNazione(event: any) {
-    this.statoDiNascita = event.target.value; // Imposta la nazione selezionata
+  // onChangeNazione(event: any) {
+  //   this.statoDiNascita = event.target.value; // Imposta la nazione selezionata
 
-    // Inizializza le capitali con un array vuoto
-    this.capitali = [];
+  //   // Inizializza le capitali con un array vuoto
+  //   this.capitali = [];
 
-    // Se "Italia" è selezionata, ottieni tutte le province italiane
-    if (this.statoDiNascita === 'Italia') {
-      this.province =
-        this.dati
-          .find((item: any) => item.nazione === 'Italia')
-          ?.province.flatMap((regione: any) => regione.province) || [];
+  //   // Se "Italia" è selezionata, ottieni tutte le province italiane
+  //   if (this.statoDiNascita === 'Italia') {
+  //     this.province =
+  //       this.dati
+  //         .find((item: any) => item.nazione === 'Italia')
+  //         ?.province.flatMap((regione: any) => regione.province) || [];
 
-      // Inoltre, imposta le capitali italiane
-      this.capitali =
-        this.dati
-          .find((item: any) => item.nazione === 'Italia')
-          ?.province.map((regione: any) => regione.capitale) || [];
-    } else {
-      // Altrimenti, filtra le province in base alla nazione selezionata
-      this.province =
-        this.dati.find((item: any) => item.nazione === this.statoDiNascita)
-          ?.province || [];
+  //     // Inoltre, imposta le capitali italiane
+  //     this.capitali =
+  //       this.dati
+  //         .find((item: any) => item.nazione === 'Italia')
+  //         ?.province.map((regione: any) => regione.capitale) || [];
+  //   } else {
+  //     // Altrimenti, filtra le province in base alla nazione selezionata
+  //     this.province =
+  //       this.dati.find((item: any) => item.nazione === this.statoDiNascita)
+  //         ?.province || [];
 
-      // Recupera la capitale della nazione selezionata
-      const capitaleNazione = this.dati.find(
-        (item: any) => item.nazione === this.statoDiNascita
-      )?.capitale;
+  //     // Recupera la capitale della nazione selezionata
+  //     const capitaleNazione = this.dati.find(
+  //       (item: any) => item.nazione === this.statoDiNascita
+  //     )?.capitale;
 
-      // Se la capitale è definita, aggiungila all'array delle capitali
-      if (capitaleNazione) {
-        this.capitali.push(capitaleNazione);
-      }
-    }
+  //     // Se la capitale è definita, aggiungila all'array delle capitali
+  //     if (capitaleNazione) {
+  //       this.capitali.push(capitaleNazione);
+  //     }
+  //   }
 
-    // console.log('Nazione selezionata: ' + this.statoDiNascita);
-    // console.log('Province selezionate: ' + JSON.stringify(this.province));
-    // console.log('Capitali selezionate: ' + JSON.stringify(this.capitali));
-  }
+  //   // console.log('Nazione selezionata: ' + this.statoDiNascita);
+  //   // console.log('Province selezionate: ' + JSON.stringify(this.province));
+  //   // console.log('Capitali selezionate: ' + JSON.stringify(this.capitali));
+  // }
 
   onChangeAziendaCliente(event: any) {
     const selectedValue = parseInt(event.target.value, 10);
@@ -791,24 +829,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           'yyyy-MM-dd'
         );
       }
-      // console.log(
-      //   '************************************ \n DATA DISTACCO DELLE COMMESSE CONVERTITE: \n' +
-      //     '' +
-      //     commessa.distaccoData +
-      //     '\n'
-      // );
-      // console.log(
-      //   'DATE INIZIO DELLE COMMESSE CONVERTITE: \n' +
-      //     '' +
-      //     commessa.dataInizio +
-      //     '\n'
-      // );
-      // console.log(
-      //   'DATE FINE DELLE COMMESSE CONVERTITE: \n' +
-      //     '' +
-      //     commessa.dataFine +
-      //     '\n'
-      // );
     }
   }
 
@@ -819,45 +839,64 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         localStorage.getItem('token')
       )
       .subscribe((resp: any) => {
-        // console.log(this.activatedRouter.snapshot.params['id']);
         this.data = (resp as any)['anagraficaDto'];
-        this.selectedTipoContrattoId = (resp as any)['anagraficaDto'][
-          'contratto'
-        ]['tipoContratto']['id'];
-        this.descrizioneLivelloCCNL = (resp as any)['anagraficaDto'][
-          'contratto'
-        ]['tipoLivelloContratto']['ccnl'];
+
+        // Provincia di Nascita
+        this.siglaProvinciaNascita = this.data?.anagrafica?.provinciaDiNascita?.siglaProvincia;
+        if (this.data && this.siglaProvinciaNascita) {
+          this.anagraficaDtoService.getComuni(localStorage.getItem('token'), this.siglaProvinciaNascita).subscribe(
+            (resp: any) => {
+              this.elencoComuniNascita = (resp as any)['list'];
+            },
+            (error: any) => {
+              console.error("Errore durante il caricamento dei comuni di nascita: " + JSON.stringify(error));
+            }
+          );
+        }
+
+        // Provincia di Residenza
+        this.siglaProvinciaResidenza = this.data?.anagrafica?.provinciaResidenza?.siglaProvincia;
+        if (this.data && this.siglaProvinciaResidenza) {
+          this.anagraficaDtoService.getComuni(localStorage.getItem('token'), this.siglaProvinciaResidenza).subscribe(
+            (resp: any) => {
+              this.elencoComuniResidenza = (resp as any)['list'];
+            },
+            (error: any) => {
+              console.error("Errore durante il caricamento dei comuni di residenza: " + JSON.stringify(error));
+            }
+          );
+        }
+
+        // Provincia di Domicilio
+        this.siglaProvinciaDomicilio = this.data?.anagrafica?.provinciaDomicilio?.siglaProvincia;
+        if (this.data && this.siglaProvinciaDomicilio) {
+          this.anagraficaDtoService.getComuni(localStorage.getItem('token'), this.siglaProvinciaDomicilio).subscribe(
+            (resp: any) => {
+              this.elencoComuniDomicilio = (resp as any)['list'];
+            },
+            (error: any) => {
+              console.error("Errore durante il caricamento dei comuni di domicilio: " + JSON.stringify(error));
+            }
+          );
+        }
+
+        this.selectedTipoContrattoId = (resp as any)['anagraficaDto']['contratto']['tipoContratto']['id'];
+        this.residenzaDomicilioUguali=(resp as any)['anagraficaDto']['anagrafica']['residenzaDomicilioUguali'];
+        this.descrizioneLivelloCCNL = (resp as any)['anagraficaDto']['contratto']['tipoLivelloContratto']['ccnl'];
         this.setForm();
-        this.anagraficaDtoService
-          .changeCCNL(
-            localStorage.getItem('token'),
-            this.descrizioneLivelloCCNL
-          )
-          .subscribe(
+        this.anagraficaDtoService.changeCCNL(localStorage.getItem('token'),this.descrizioneLivelloCCNL).subscribe(
             (response: any) => {
               this.elencoLivelliCCNL = response.list;
             },
             (error: any) => {
-              // console.error(
-              //   'Errore durante il caricamento dei livelli di contratto: ' +
-              //     error
-              // );
             }
           );
 
-        // Iteriamo attraverso le chiavi dell'oggetto
         for (const key in resp) {
           if (resp.hasOwnProperty(key)) {
-            // Verifichiamo se il valore associato alla chiave è null
             if (resp[key] === null) {
-              // Applichiamo una classe CSS per evidenziare il campo con bordo rosso
-              // console.log(`Campo "${key}" è null.`);
-              // Trova l'elemento HTML corrispondente al campo
               const element = document.querySelector(`[name="${key}"]`);
               if (element) {
-                // console.log(
-                //   `Applicazione della classe CSS "campo-nullo" per "${key}"`
-                // );
                 this.renderer.addClass(element, 'campo-nullo');
               }
             }
@@ -967,6 +1006,8 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     });
   }
 
+
+
   disableDistaccoFieldsForAllCommesse(): void {
     const commesseFormArray = this.anagraficaDto.get('commesse') as FormArray;
     commesseFormArray.controls.forEach((commessaControl: AbstractControl) => {
@@ -979,6 +1020,53 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         distaccoDataControl.disable();
       }
     });
+  }
+
+  equalsResidenzaDomicilio(event: any): void {
+    this.residenzaDomicilioUguali = event.target.checked;
+    console.log('Toggle Switch is now:', this.residenzaDomicilioUguali);
+    const indirizzoDomicilioControl=this.anagraficaDto.get('anagrafica.indirizzoDomicilio');
+      const provinciaDomicilioControl=this.anagraficaDto.get('anagrafica.provinciaDomicilio.id');
+      const comuniDomicilioControl=this.anagraficaDto.get('anagrafica.comuneDomicilio.id');
+      const capDomicilioControl=this.anagraficaDto.get('anagrafica.capDomicilio');
+    if(this.residenzaDomicilioUguali && indirizzoDomicilioControl && provinciaDomicilioControl && comuniDomicilioControl && capDomicilioControl){
+
+      indirizzoDomicilioControl.disable();
+      indirizzoDomicilioControl.setValue(null);
+      indirizzoDomicilioControl.clearValidators();
+      indirizzoDomicilioControl.updateValueAndValidity();
+
+      capDomicilioControl.disable();
+      capDomicilioControl.setValue(null);
+      capDomicilioControl.clearValidators();
+      capDomicilioControl.updateValueAndValidity();
+
+      provinciaDomicilioControl.disable();
+      provinciaDomicilioControl.setValue("");
+      provinciaDomicilioControl.clearValidators();
+      provinciaDomicilioControl.updateValueAndValidity();
+
+      comuniDomicilioControl.disable();
+      comuniDomicilioControl.setValue("");
+      comuniDomicilioControl.clearValidators();
+      comuniDomicilioControl.updateValueAndValidity();
+
+    }
+    if(!this.residenzaDomicilioUguali && indirizzoDomicilioControl && provinciaDomicilioControl && comuniDomicilioControl && capDomicilioControl){
+      indirizzoDomicilioControl.enable();
+      indirizzoDomicilioControl.setValidators([Validators.required]);
+      indirizzoDomicilioControl.updateValueAndValidity();
+      capDomicilioControl.enable();
+      capDomicilioControl.setValidators([Validators.required]);
+      capDomicilioControl.updateValueAndValidity();
+
+      provinciaDomicilioControl.enable();
+      provinciaDomicilioControl.setValidators([Validators.required]);
+      provinciaDomicilioControl.updateValueAndValidity();
+      // comuniDomicilioControl.enable(); //questo resta disattivato per permettere l uso del filtro dei comuni
+      comuniDomicilioControl.setValidators([Validators.required]);
+      comuniDomicilioControl.updateValueAndValidity();
+    }
   }
 
   enableDistaccoFieldsForCommessa(commessaControl: AbstractControl): void {
@@ -2005,6 +2093,9 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
           if (obj.provinciaDiNascita && Object.keys(obj.provinciaDiNascita).length === 0) {
             delete obj.provinciaDiNascita;
           }
+          if (obj.provinciaDiNascita && Object.keys(obj.provinciaDiNascita).length === 0) {
+            delete obj.provinciaDiNascita;
+          }
           if (obj.comuneDiNascita && Object.keys(obj.comuneDiNascita).length === 0) {
             delete obj.comuneDiNascita;
           }
@@ -2049,12 +2140,7 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
       removeEmpty(this.anagraficaDto.value);
       const payload = {
         anagraficaDto: this.anagraficaDto.value,
-        // anagrafica: this.anagraficaDto.get('anagrafica')?.value,
-        // contratto: this.anagraficaDto.get('contratto')?.value,
-        // commesse: this.anagraficaDto.get('commesse')?.value,
-        // ruolo: this.anagraficaDto.get('ruolo')?.value,
       };
-      // console.log('Payload backend:', payload);
       this.anagraficaDtoService
         .update(payload, localStorage.getItem('token'))
         .subscribe(
@@ -2068,7 +2154,6 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
                 },
               });
             } else {
-              // console.log('Payload inviato con successo al server:', response);
               const dialogRef = this.dialog.open(AlertDialogComponent, {
                 data: {
                   image: '../../../../assets/images/logo.jpeg',
@@ -2639,6 +2724,53 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
     }
   }
 
+  getAllNazioni() {
+    this.anagraficaDtoService
+      .getAllNazioni(localStorage.getItem('token'))
+      .subscribe(
+        (result: any) => {
+          this.elencoNazioni = result['list'];
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il caricamento delle nazioni: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
+  getAllCittadinanze1() {
+    this.anagraficaDtoService
+      .getAllNazioni(localStorage.getItem('token'))
+      .subscribe(
+        (result: any) => {
+          this.elencoCittadinanze1 = result['list'];
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il caricamento delle nazioni: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
+  getAllCittadinanze2() {
+    this.anagraficaDtoService
+      .getAllNazioni(localStorage.getItem('token'))
+      .subscribe(
+        (result: any) => {
+          this.elencoCittadinanze2 = result['list'];
+        },
+        (error: any) => {
+          console.error(
+            'Errore durante il caricamento delle nazioni: ' +
+              JSON.stringify(error)
+          );
+        }
+      );
+  }
+
+
   calcolaMensileTot() {
     const retribuzioneMensileLorda =
       parseFloat(
@@ -2691,6 +2823,21 @@ export class ModificaAnagraficaDtoComponent implements OnInit {
         RALControl.setValue(RALCalcolata.toFixed(2));
         // console.log('RAL CALCOLATA:' + RALCalcolata.toFixed(2));
       }
+    }
+  }
+
+  rimuoviSpaziCellularePrivato() {
+    const cellularePrivatoControl = this.anagraficaDto.get('anagrafica.cellularePrivato');
+    if (cellularePrivatoControl) {
+      const cellularePrivatoSenzaSpazi = cellularePrivatoControl.value.replace(/\s/g, '');
+      cellularePrivatoControl.setValue(cellularePrivatoSenzaSpazi);
+    }
+  }
+  rimuoviSpaziCellulareAziendale() {
+    const cellulareAziendaleControl = this.anagraficaDto.get('anagrafica.cellulareAziendale');
+    if (cellulareAziendaleControl) {
+      const cellulareAziendaleSenzaSpazi = cellulareAziendaleControl.value.replace(/\s/g, '');
+      cellulareAziendaleControl.setValue(cellulareAziendaleSenzaSpazi);
     }
   }
 

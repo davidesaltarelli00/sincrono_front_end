@@ -163,6 +163,51 @@ export class DettaglioAnagraficaDtoComponent {
 
   ngOnInit(): void {
     if (this.token) {
+      this.getUserLogged();
+      this.anagraficaDtoService
+        .detailAnagraficaDto(this.id, localStorage.getItem('token'))
+        .subscribe(
+          (resp: any) => {
+            this.data = (resp as any)['anagraficaDto'];
+            this.codiceFiscaleDettaglio = (resp as any)['anagraficaDto'][ 'anagrafica' ]['codiceFiscale'];
+            this.elencoCommesse = (resp as any)['anagraficaDto'][ 'commesse' ];
+            this.getImage();
+            console.log(JSON.stringify(this.data));
+            if (
+              (resp as any)?.anagraficaDto?.contratto?.tipoCausaFineRapporto
+                ?.id != null
+            ) {
+              //conversione date
+              if (
+                (resp as any)['anagraficaDto']['contratto'][
+                  'dataFineRapporto'
+                ]
+              ) {
+                (resp as any)['anagraficaDto']['contratto'][
+                  'dataFineRapporto'
+                ] = this.datePipe.transform(
+                  (resp as any)['anagraficaDto']['contratto'][
+                    'dataFineRapporto'
+                  ],
+                  'dd-MM-yyyy'
+                );
+              }
+            }
+          },
+
+          (error: any) => {
+            const dialogRef = this.dialog.open(AlertDialogComponent, {
+              data: {
+                image: '../../../../assets/images/danger.png',
+                title: 'Attenzione:',
+                message: 'Errore durante il caricamento della anagrafica.',
+              },
+            });
+          }
+        );
+
+      this.uppercaseCodiceFiscale();
+
       const tokenParts = this.token.split('.');
       const tokenPayload = JSON.parse(atob(tokenParts[1]));
       const currentTime = Date.now() / 1000;
@@ -208,50 +253,6 @@ export class DettaglioAnagraficaDtoComponent {
             }
           );
         } else {
-          this.getUserLogged();
-          this.anagraficaDtoService
-            .detailAnagraficaDto(this.id, localStorage.getItem('token'))
-            .subscribe(
-              (resp: any) => {
-                this.data = (resp as any)['anagraficaDto'];
-                this.codiceFiscaleDettaglio = (resp as any)['anagraficaDto'][ 'anagrafica' ]['codiceFiscale'];
-                this.elencoCommesse = (resp as any)['anagraficaDto'][ 'commesse' ];
-                this.getImage();
-
-                if (
-                  (resp as any)?.anagraficaDto?.contratto?.tipoCausaFineRapporto
-                    ?.id != null
-                ) {
-                  //conversione date
-                  if (
-                    (resp as any)['anagraficaDto']['contratto'][
-                      'dataFineRapporto'
-                    ]
-                  ) {
-                    (resp as any)['anagraficaDto']['contratto'][
-                      'dataFineRapporto'
-                    ] = this.datePipe.transform(
-                      (resp as any)['anagraficaDto']['contratto'][
-                        'dataFineRapporto'
-                      ],
-                      'dd-MM-yyyy'
-                    );
-                  }
-                }
-              },
-
-              (error: any) => {
-                const dialogRef = this.dialog.open(AlertDialogComponent, {
-                  data: {
-                    image: '../../../../assets/images/danger.png',
-                    title: 'Attenzione:',
-                    message: 'Errore durante il caricamento della anagrafica.',
-                  },
-                });
-              }
-            );
-
-          this.uppercaseCodiceFiscale();
         }
       }, 1000);
     }

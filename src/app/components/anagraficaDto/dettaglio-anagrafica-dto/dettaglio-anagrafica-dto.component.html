@@ -290,17 +290,20 @@
                             <th>Comune</th>
                             <th>Provincia</th>
                             <th>Sigla</th>
+                            <th>Residenza estera</th>
                           </tr>
                           <tr>
                             <td>{{ data?.anagrafica?.indirizzoResidenza ? data?.anagrafica?.indirizzoResidenza : 'Dato non inserito' | titlecase }}</td>
                             <td>{{data?.anagrafica.comuneResidenza?.denominazioneItaAltra   }},</td>
                             <td>{{data?.anagrafica?.provinciaResidenza?.denominazione_provincia }}</td>
                             <td>{{data?.anagrafica?.provinciaResidenza?.siglaProvincia }}</td>
+                            <td>{{data?.anagrafica?.localitaResidenzaEstera ? data?.anagrafica?.localitaResidenzaEstera: 'Dato non inserito' }}</td>
+
                           </tr>
                         </table>
                      </td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="data?.anagrafica?.indirizzoDomicilio">
                       <td><strong>Domicilio:</strong></td>
                       <td>
 
@@ -310,12 +313,14 @@
                             <th>Comune</th>
                             <th>Provincia</th>
                             <th>Sigla</th>
+                            <th>Domicilio estero</th>
                           </tr>
                           <tr>
                             <td> {{ data?.anagrafica?.indirizzoDomicilio ? data?.anagrafica?.indirizzoDomicilio : 'Dato non inserito' | titlecase }}</td>
                             <td>{{data?.anagrafica?.comuneDomicilio?.denominazioneItaAltra}}</td>
                             <td>{{data?.anagrafica?.provinciaDomicilio?.denominazione_provincia}}</td>
                             <td>{{data?.anagrafica?.provinciaDomicilio?.siglaProvincia}}</td>
+                            <td>{{data?.anagrafica?.localitaDomicilioEstero ? data?.anagrafica?.localitaDomicilioEstero : 'Dato non inserito'}}</td>
                           </tr>
                         </table>
                       </td>
